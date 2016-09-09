@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+    	<meta charset="utf-8">
+    	<title>Thing Description Playground</title>
+		<link rel="stylesheet" type="text/css" href="css/pure-0.6.0.css" />
+		<link rel="stylesheet" type="text/css" href="css/jquery-linedtextarea.css" />
+		<link rel="stylesheet" type="text/css" href="css/playground.css" />
+		<script type="text/javascript" src="js/jsonld-0.3.15.js"></script>
+		<script type="text/javascript" src="js/ajv-4.0.1.js"></script>
+		<script type="text/javascript" src="js/jquery-2.2.3.js"></script>
+		<script type="text/javascript" src="js/jquery-linedtextarea.js"></script>
+		<script type="text/javascript" src="js/playground.js"></script>
+	</head>
+	<body>
+		<div class="pure-g wrap">
+			<h1 class="pure-u-1 header">Thing Description Playground</h1>
+			<form class="main" action="javascript:validate()" method="post">
+				<div class="pure-u-3-5">
+					<textarea id="td-text" name="td-text" rows="20" placeholder="Enter Thing Description here..."></textarea>
+				</div>
+				<div class="pure-u-2-5">
+					<div class="panel">
+						<table class="pure-table">
+							<tbody>
+								<tr>
+									<td>
+										<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+										  <circle id="spot-json" cx="10" cy="10" r="9" />
+										</svg>
+									</td>
+									<td>JSON validation</td>
+								</tr>
+								<tr>
+									<td>
+										<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+										  <circle id="spot-json-schema" cx="10" cy="10" r="9" />
+										</svg>
+									</td>
+									<td>JSON Schema validation</td>
+								</tr>
+								<tr>
+									<td>
+										<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+										  <circle id="spot-json-ld" cx="10" cy="10" r="9" />
+										</svg>
+									</td>
+									<td>JSON-LD validation</td>
+								</tr>
+								<tr>
+									<td>
+										<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+										  <circle id="spot-owl" cx="10" cy="10" r="9" />
+										</svg>
+									</td>
+									<td>TD/OWL validation</td>
+								</tr>
+							</tbody>
+						</table>
+						<button id="td-validate" class="pure-button" disabled="disabled">Validate</button>
+					</div>
+				</div>
+			</form>
+			<div class="pure-u-1">
+				<pre id="console">Waiting for validation...&#13;&#10;</pre>
+			</div>
+		</div>
+	</body>
+</html>

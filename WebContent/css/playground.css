@@ -1,0 +1,44 @@
+.header {
+	font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.wrap {
+	max-width: 840px;
+	margin: 0 auto;
+}
+
+.main {
+	width: 100%;
+}
+
+.panel {
+    padding-left: 1em;
+}
+
+.panel button {
+	float: right;
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+.panel table {
+	width: 100%;
+}
+
+textarea {
+	font-family: 'Droid Sans Mono', "Courier New", monospace;
+	width: 100%;
+	resize: none;
+}
+
+#console {
+	font-family: 'Droid Sans Mono', "Courier New", monospace;
+	background: #333;
+	color: #FFF;
+	margin-top: 1em;
+	padding: 1em;
+}
+
+#spot-json, #spot-json-schema, #spot-json-ld, #spot-owl {
+	visibility: hidden;
+}
