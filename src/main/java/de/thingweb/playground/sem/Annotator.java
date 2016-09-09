@@ -52,7 +52,7 @@ import de.thingweb.playground.sem.JenaAxiomFactory;
 
 public class Annotator {
     
-    public static final String WOT_URI = "http://www.w3c.org/wot/td";
+    public static final String WOT_URI = "http://w3c.github.io/wot/wot.owl";
     
     private static final OWLOntologyManager sManager = OWLManager.createOWLOntologyManager();
     private static final OWLDataFactory sFactory = sManager.getOWLDataFactory();
@@ -152,32 +152,6 @@ public class Annotator {
 	    }
 	}
 	sManager.applyChanges(inverseChanges);
-    }
-    
-    public static void main(String[] args) throws OWLOntologyCreationException, FileNotFoundException, IOException {
-	Annotator annotator = new Annotator(new HashMap<String, String>() {
-	    {
-		put("http://www.loa-cnr.it/ontologies/DUL.owl", "file:///d:/ontologies/DUL.xml");
-		put("http://purl.oclc.org/NET/ssnx/ssn", "file:///d:/ontologies/ssn.xml");
-		
-		put("http://www.loa-cnr.it/ontologies/IRE/IRE.owl", "file:///d:/ontologies/IRE-extended.xml");
-		put("http://www.loa-cnr.it/ontologies/KCO/KCO.owl#", "file:///d:/ontologies/KCO.owl.xml");
-		put("http://www.loa-cnr.it/ontologies/IOLite.owl", "file:///d:/ontologies/IOLite.owl.xml");
-
-		put("http://homepages.laas.fr/nseydoux/ontologies/IoT-O", "file:///d:/ontologies/IoT-O.xml");
-		put("http://elite.polito.it/ontologies/poweront.owl", "file:///d:/ontologies/poweront.xml");
-		put("http://homepages.laas.fr/nseydoux/ontologies/IoT-Lifecycle", "file:///d:/ontologies/IoT-lifecycle.xml");
-		put("http://homepages.laas.fr/nseydoux/ontologies/SAN", "file:///d:/ontologies/SAN.xml");
-		put("http://iserve.kmi.open.ac.uk/ns/msm/msm-2014-09-03.rdf", "file:///d:/ontologies/msm.xml");
-
-		put("http://purl.oclc.org/NET/UNIS/fiware/iot-lite#", "file:///d:/ontologies/iot-lite.xml");
-		
-		put ("http://www.w3c.org/wot/td", "file:///d:/ontologies/w3c-wot-td.v2.0.rdf");
-	    }
-	});
-	
-	annotator.addThingDescription(new FileInputStream("test\\led-wot-practices-example.ttl"), "Turtle");
-//	annotator.addAnnotation("http://localhost/color", "http://purl.oclc.org/NET/ssnx/ssn#SensorOutput");
     }
     
 }
