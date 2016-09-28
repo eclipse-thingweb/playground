@@ -3,10 +3,13 @@
   <display-name>td-playground</display-name>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
-    <welcome-file>index.htm</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.htm</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <servlet>
+  	<servlet-name>sem</servlet-name>
+  	<servlet-class>de.thingweb.playground.servlet.AnnotatorServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>sem</servlet-name>
+  	<url-pattern>/sem</url-pattern>
+  </servlet-mapping>
 </web-app>
