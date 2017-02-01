@@ -84,7 +84,7 @@ import de.thingweb.playground.sem.JenaAxiomFactory;
 
 public class Annotator {
 
-  public static final String WOT_URI = "http://w3c.github.io/wot/wot.owl";
+  public static final String WOT_URI = "http://w3c.github.io/wot/w3c-wot-td-ontology.owl";
 
   private static final OWLOntologyManager sManager = OWLManager.createOWLOntologyManager();
   private static final OWLDataFactory sFactory = sManager.getOWLDataFactory();
