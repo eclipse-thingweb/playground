@@ -1,0 +1,211 @@
+{
+  "title": "WoT TD Schema for Prague Plug Fest",
+  "description": "JSON Schema representation of the TD serialisation format.",
+  "$schema ": "http://json-schema.org/draft-06/schema#",
+  "id": "http://w3c.org/wot/schemas/w3c-wot-td.json",
+  "type": "object",
+  "properties": {
+    "base": {
+      "$ref": "#/definitions/url"
+    },
+    "@type": {
+      "$ref": "#/definitions/type_declaration"
+    },
+    "@context": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/context"
+      }
+    },
+    "name": {
+      "type": "string"
+    },
+    "interaction": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/interaction"
+      }
+    },
+    "link": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/link"
+      }
+    },
+    "form": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/form"
+      }
+    }
+  },
+  "required": [
+    "@type",
+    "name",
+    "interaction"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "context": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/jsonld_url"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "type_declaration": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "form_declaration": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/form_element"
+      }
+    },
+    "form_element": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "type": "string"
+        },
+        "rel": {
+          "type": "string"
+        },
+        "mediaType": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "href",
+        "rel",
+        "mediaType"
+      ],
+      "additionalProperties": true
+    },
+    "interaction": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/property_element"
+        },
+        {
+          "$ref": "#/definitions/action_element"
+        },
+        {
+          "$ref": "#/definitions/event_element"
+        }
+      ]
+    },
+    "property_element": {
+      "type": "object",
+      "@type": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "Property"
+          ]
+        }
+      },
+      "name": "string",
+      "outputData": {
+        "$ref": "#/definitions/output_data"
+      },
+      "writable": {
+        "type": "boolean"
+      },
+      "observable": {
+        "type": "boolean"
+      },
+      "form": {
+        "$ref": "#/definitions/form_declaration"
+      }
+    },
+    "action_element": {
+      "type": "object",
+      "@type": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "Action"
+          ]
+        }
+      },
+      "name": "string",
+      "form": {
+        "$ref": "#/definitions/form_declaration"
+      }
+    },
+    "event_element": {
+      "type": "object",
+      "@type": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "Event"
+          ]
+        }
+      },
+      "name": "string",
+      "outputData": {
+        "$ref": "#/definitions/output_data"
+      },
+      "writable": {
+        "type": "boolean"
+      },
+      "observable": {
+        "type": "boolean"
+      },
+      "form": {
+        "$ref": "#/definitions/form_declaration"
+      }
+    },
+    "link": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "$ref": "#/definitions/url"
+        },
+        "rel": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "href",
+        "rel"
+      ]
+    },
+    "form": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "$ref": "#/definitions/url"
+        },
+        "rel": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "href",
+        "rel"
+      ]
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(([^#]*))?(#(.*))?"
+    },
+    "jsonld_url": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "http://[^/?#]*"
+    }
+  }
+}
