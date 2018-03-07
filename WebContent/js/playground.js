@@ -60,7 +60,7 @@ function log(message) {
 $(function() {
 	$('#td-text').linedtextarea();
 	
-	$.getJSON('td-schema-01.json', function(schema) {
+	$.getJSON('td-schema-lagally.json', function(schema) {
 		ajv = Ajv();
 		ajv.addSchema(schema, 'td');
 		

@@ -36,7 +36,7 @@
       "type": "array",
       "items": {
         "$ref": "#/definitions/form"
-      }
+      } 
     }
   },
   "required": [
@@ -72,13 +72,13 @@
       "type": "object",
       "properties": {
         "href": {
-          "type": "string" 
+          "$ref": "#/definitions/url"
         },
         "rel": {
           "type": "string"
         },
         "mediaType": {
-          "type": "string" 
+          "type": "string"
         }
       },
       "required": [
@@ -107,9 +107,10 @@
         "type": "array",
         "items": {
           "type": "string",
-          "enum": [ 
-            "Property"
-          ]
+          "contains": {
+            "type": "string",
+            "enum":["Property"]
+          }
         }
       },
       "name": "string",
@@ -124,23 +125,26 @@
       },
       "form": {
         "$ref": "#/definitions/form_declaration"
-      }
+      },
+      "additionalProperties": true
     },
-    "action_element": {
+    "action_element":{
       "type": "object",
       "@type": {
         "type": "array",
         "items": {
           "type": "string",
-          "enum": [ 
-            "Action"
-          ]
+          "contains": {
+            "type": "string",
+            "enum":["Action"]
+          }
         }
       },
       "name": "string",
       "form": {
         "$ref": "#/definitions/form_declaration"
-      }
+      },
+      "additionalProperties": true
     },
     "event_element": {
       "type": "object",
@@ -148,24 +152,26 @@
         "type": "array",
         "items": {
           "type": "string",
-          "enum": [
-            "Event"
-          ]
+          "contains": {
+            "type": "string",
+            "enum":["Event"]
+          }
         }
       },
       "name": "string",
       "outputData": {
         "$ref": "#/definitions/output_data"
       },
-      "writable": { 
+      "writable": { NO  
         "type": "boolean"
       },
-      "observable": {
+      "observable": { NO
         "type": "boolean"
       },
       "form": {
         "$ref": "#/definitions/form_declaration"
-      }
+      },
+      ?"additionalProperties": false
     },
     "link": {
       "type": "object",
@@ -180,7 +186,8 @@
       "required": [
         "href",
         "rel"
-      ]
+      ],
+      ?"additionalProperties": false
     },
     "form": {
       "type": "object",
