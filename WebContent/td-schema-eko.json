@@ -126,6 +126,14 @@
       "form": {
         "$ref": "#/definitions/form_declaration"
       },
+      "required": [
+        "@type",
+        "name",
+        "form",
+        "outputData",
+        "writable",
+        "observable"
+      ],
       "additionalProperties": true
     },
     "action_element":{
@@ -144,6 +152,12 @@
       "form": {
         "$ref": "#/definitions/form_declaration"
       },
+      OUTPUT AND INPUT DATA
+      "required": [
+        "@type",
+        "name",
+        "form"
+      ],
       "additionalProperties": true
     },
     "event_element": {
@@ -162,16 +176,16 @@
       "outputData": {
         "$ref": "#/definitions/output_data"
       },
-      "writable": { NO  
-        "type": "boolean"
-      },
-      "observable": { NO
-        "type": "boolean"
-      },
       "form": {
         "$ref": "#/definitions/form_declaration"
       },
-      ?"additionalProperties": false
+      OUTPUT SCHEMA
+      "required": [
+        "@type",
+        "name",
+        "form"
+      ],  
+      "additionalProperties": true
     },
     "link": {
       "type": "object",
@@ -187,7 +201,7 @@
         "href",
         "rel"
       ],
-      ?"additionalProperties": false
+      ? what about "additionalProperties": false
     },
     "form": {
       "type": "object",
@@ -215,4 +229,30 @@
       "pattern": "http://[^/?#]*"
     }
   }
+  CHECK THiS OUTPUT
+  "data": {
+      "title": "Data type",
+      "anyOf": [{
+          "description": "URI of an XSD built-in type",
+          "type": "string"
+        }, {
+          "description": "URI and media type for a complex type (XSD, SenML...)",
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "href": {
+              "type": "string"
+            },
+            "mediatype": {
+              "type": "string"
+            }
+          },
+          "required": ["name", "href", "mediatype"]
+        }, {
+          "$ref": "http://json-schema.org/draft-04/schema#"
+        }
+      ]
+    }
 }
