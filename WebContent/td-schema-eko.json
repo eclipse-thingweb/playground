@@ -36,7 +36,7 @@
       "type": "array",
       "items": {
         "$ref": "#/definitions/form"
-      } 
+      }
     }
   },
   "required": [
@@ -44,7 +44,7 @@
     "name",
     "interaction"
   ],
-  "additionalProperties": false,
+  "additionalProperties": true,
   "definitions": {
     "context": {
       "anyOf": [
@@ -103,56 +103,84 @@
     },
     "property_element": {
       "type": "object",
-      "@type": {
-        "type": "array",
-        "items": {
-          "type": "string",
-          "contains": {
-            "type": "string",
-            "enum":["Property"]
+      "properties": {
+        "@type": {
+          "type": "array",
+          "items": [
+            {
+              "type": "string",
+              "enum": [
+                "Property"
+              ]
+            }
+          ],
+          "minItems": 1,
+          "not": {
+            "contains": {
+              "type": "number"
+            }
           }
+        },
+        "name": {
+          "type": "string"
+        },
+        "schema": {
+          "$ref": "#/definitions/data"
+        },
+        "writable": {
+          "type": "boolean"
+        },
+        "observable": {
+          "type": "boolean"
+        },
+        "form": {
+          "$ref": "#/definitions/form_declaration"
         }
-      },
-      "name": "string",
-      "outputData": {
-        "$ref": "#/definitions/output_data"
-      },
-      "writable": {
-        "type": "boolean"
-      },
-      "observable": {
-        "type": "boolean"
-      },
-      "form": {
-        "$ref": "#/definitions/form_declaration"
       },
       "required": [
         "@type",
         "name",
         "form",
-        "outputData",
+        "schema",
         "writable",
         "observable"
       ],
       "additionalProperties": true
     },
-    "action_element":{
+    "action_element": {
       "type": "object",
-      "@type": {
-        "type": "array",
-        "items": {
-          "type": "string",
-          "contains": {
+      "properties": {
+        "@type": {
+          "type": "array",
+          "items": {
             "type": "string",
-            "enum":["Action"]
+            "contains": {
+              "type": "string",
+              "enum": [
+                "Action"
+              ]
+            }
+          },
+          "minItems": 1,
+          "not": {
+            "contains": {
+              "type": "number"
+            }
           }
+        },
+        "name": {
+          "type": "string"
+        },
+        "form": {
+          "$ref": "#/definitions/form_declaration"
+        },
+        "inputSchema": {
+          "$ref": "#/definitions/data"
+        },
+        "outputSchema": {
+          "$ref": "#/definitions/data"
         }
       },
-      "name": "string",
-      "form": {
-        "$ref": "#/definitions/form_declaration"
-      },
-      OUTPUT AND INPUT DATA
       "required": [
         "@type",
         "name",
@@ -162,34 +190,48 @@
     },
     "event_element": {
       "type": "object",
-      "@type": {
-        "type": "array",
-        "items": {
-          "type": "string",
-          "contains": {
-            "type": "string",
-            "enum":["Event"]
+      "properties": {
+        "@type": {
+          "type": "array",
+          "items": [
+            {
+              "type": "string",
+              "enum": [
+                "Action"
+              ]
+            }
+          ],
+          "minItems": 1,
+          "not": {
+            "contains": {
+              "type": "number"
+            }
           }
+        },
+        "name": {
+          "type": "string"
+        },
+        "form": {
+          "$ref": "#/definitions/form_declaration"
+        },
+        "schema": {
+          "$ref": "#/definitions/data"
         }
       },
-      "name": "string",
-      "outputData": {
-        "$ref": "#/definitions/output_data"
-      },
-      "form": {
-        "$ref": "#/definitions/form_declaration"
-      },
-      OUTPUT SCHEMA
       "required": [
         "@type",
         "name",
-        "form"
-      ],  
+        "form",
+        "schema"
+      ],
       "additionalProperties": true
     },
     "link": {
       "type": "object",
       "properties": {
+        "anchor": {
+          "$ref": "#/definitions/url"
+        },
         "href": {
           "$ref": "#/definitions/url"
         },
@@ -201,7 +243,7 @@
         "href",
         "rel"
       ],
-      ? what about "additionalProperties": false
+      "additionalProperties": true
     },
     "form": {
       "type": "object",
@@ -226,16 +268,16 @@
     "jsonld_url": {
       "type": "string",
       "format": "uri",
-      "pattern": "http://[^/?#]*"
-    }
-  }
-  CHECK THiS OUTPUT
-  "data": {
+      "pattern": "http://[^/?#]*|https://[^/?#]*"
+    },
+    "data": {
       "title": "Data type",
-      "anyOf": [{
+      "anyOf": [
+        {
           "description": "URI of an XSD built-in type",
           "type": "string"
-        }, {
+        },
+        {
           "description": "URI and media type for a complex type (XSD, SenML...)",
           "type": "object",
           "properties": {
@@ -249,10 +291,16 @@
               "type": "string"
             }
           },
-          "required": ["name", "href", "mediatype"]
-        }, {
+          "required": [
+            "name",
+            "href",
+            "mediatype"
+          ]
+        },
+        {
           "$ref": "http://json-schema.org/draft-04/schema#"
         }
       ]
     }
+  }
 }
