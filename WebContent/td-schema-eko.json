@@ -2,7 +2,6 @@
   "title": "WoT TD Schema for Prague Plug Fest",
   "description": "JSON Schema representation of the TD serialisation format.",
   "$schema ": "http://json-schema.org/draft-06/schema#",
-  "id": "http://w3c.org/wot/schemas/w3c-wot-td.json",
   "type": "object",
   "properties": {
     "base": {
@@ -40,7 +39,6 @@
     }
   },
   "required": [
-    "@type",
     "name",
     "interaction"
   ],
@@ -83,7 +81,6 @@
       },
       "required": [
         "href",
-        "rel",
         "mediaType"
       ],
       "additionalProperties": true
@@ -140,7 +137,6 @@
       "required": [
         "@type",
         "name",
-        "form",
         "schema",
         "writable",
         "observable"
@@ -150,17 +146,17 @@
     "action_element": {
       "type": "object",
       "properties": {
-        "@type": {
+                "@type": {
           "type": "array",
-          "items": {
-            "type": "string",
-            "contains": {
+          "items": [
+            {
               "type": "string",
               "enum": [
                 "Action"
               ]
             }
-          },
+          ],
+            
           "minItems": 1,
           "not": {
             "contains": {
@@ -183,8 +179,7 @@
       },
       "required": [
         "@type",
-        "name",
-        "form"
+        "name"
       ],
       "additionalProperties": true
     },
@@ -197,7 +192,7 @@
             {
               "type": "string",
               "enum": [
-                "Action"
+                "Event"
               ]
             }
           ],
@@ -221,7 +216,6 @@
       "required": [
         "@type",
         "name",
-        "form",
         "schema"
       ],
       "additionalProperties": true
@@ -253,11 +247,14 @@
         },
         "rel": {
           "type": "string"
-        }
-      },
+        },
+        "mediatype": {
+              "type": "string"
+            }
+        },
       "required": [
         "href",
-        "rel"
+        "mediatype"
       ]
     },
     "url": {
@@ -298,7 +295,7 @@
           ]
         },
         {
-          "$ref": "http://json-schema.org/draft-04/schema#"
+          "$ref": "http://json-schema.org/draft-06/schema#"
         }
       ]
     }
