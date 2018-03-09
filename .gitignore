@@ -23,3 +23,12 @@ hs_err_pid*
 
 .settings
 .vscode
+
+.settings/
+.vscode/
+
+.settings/*
+.vscode/*
+
+/.settings/
+/.vscode/
