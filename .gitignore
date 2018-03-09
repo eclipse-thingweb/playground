@@ -20,15 +20,6 @@ hs_err_pid*
 .classpath
 .idea
 .iml
-
-.settings
-.vscode
-
-.settings/
-.vscode/
-
-.settings/*
-.vscode/*
-
 /.settings/
 /.vscode/
+thingweb-playground.iml
