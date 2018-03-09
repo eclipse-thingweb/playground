@@ -11,10 +11,7 @@
       "$ref": "#/definitions/type_declaration"
     },
     "@context": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/context"
-      }
+      "$ref": "#/definitions/context"
     },
     "name": {
       "type": "string"
@@ -45,14 +42,23 @@
   "additionalProperties": true,
   "definitions": {
     "context": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/jsonld_url"
-        },
-        {
-          "type": "object"
-        }
-      ]
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/definitions/url"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "contains": {
+        "type": "string",
+        "enum": [
+          "https://w3c.github.io/wot/w3c-wot-td-context.jsonld"
+        ]
+      }
     },
     "type_declaration": {
       "type": "array",
@@ -146,7 +152,7 @@
     "action_element": {
       "type": "object",
       "properties": {
-                "@type": {
+        "@type": {
           "type": "array",
           "items": [
             {
@@ -156,7 +162,6 @@
               ]
             }
           ],
-            
           "minItems": 1,
           "not": {
             "contains": {
@@ -249,9 +254,9 @@
           "type": "string"
         },
         "mediatype": {
-              "type": "string"
-            }
-        },
+          "type": "string"
+        }
+      },
       "required": [
         "href",
         "mediatype"
