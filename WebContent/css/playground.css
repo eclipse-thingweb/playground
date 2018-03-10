@@ -28,7 +28,6 @@
 textarea {
 	font-family: 'Droid Sans Mono', "Courier New", monospace;
 	width: 100%;
-	resize: none;
 }
 
 #console {

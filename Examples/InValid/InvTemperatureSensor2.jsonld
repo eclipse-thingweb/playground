@@ -1,0 +1,24 @@
+{
+  "description":"Invalid json-ld file because @context is missing, invalid TD because writable of a property is missing. Even if it is not writable it should be specified",
+  "name": "myTempSensor",
+  "interaction": [
+    {
+      "@type": [
+        "Property",
+        "Temperature"
+      ],
+      "reference": "threshold",
+      "name": "myTemp",
+      "schema": {
+        "type": "number"
+      },
+      "observable": true,
+      "form": [
+        {
+          "href": "coap:///www.example.com:5683/temp/val",
+          "mediaType": "application/json"
+        }
+      ]
+    }
+  ]
+}

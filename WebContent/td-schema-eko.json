@@ -28,16 +28,16 @@
         "$ref": "#/definitions/link"
       }
     },
-    "form": {
+    "security": {
       "type": "array",
       "items": {
-        "$ref": "#/definitions/form"
+        "$ref": "#/definitions/security"
       }
     }
   },
   "required": [
     "name",
-    "interaction"
+    "@context"
   ],
   "additionalProperties": true,
   "definitions": {
@@ -236,6 +236,9 @@
         },
         "rel": {
           "type": "string"
+        },
+        "mediatype": {
+          "type": "string"
         }
       },
       "required": [
@@ -261,6 +264,9 @@
         "href",
         "mediatype"
       ]
+    },
+    "security": {
+      "type": "object"
     },
     "url": {
       "type": "string",
