@@ -1,0 +1,45 @@
+{
+  "@context": [
+    "https://w3c.github.io/wot/w3c-wot-td-context.jsonld",
+    "https://w3c.github.io/wot/w3c-wot-common-context.jsonld"
+  ],
+  "@type": [
+    "Sensor"
+  ],
+  "description":"An Action doesnt need to have input or output schema",
+  "name": "myTempSensor",
+  "base": "coap:///www.example.com:5683/temp/",
+  "interaction": [
+    {
+      "@type": [
+        "Property",
+        "Temperature"
+      ],
+      "reference": "threshold",
+      "name": "myTemp",
+      "schema": {
+        "type": "number"
+      },
+      "writable": false,
+      "observable": true,
+      "form": [
+        {
+          "href": "coap:///www.example.com:5683/temp/val",
+          "mediaType": "application/json"
+        }
+      ]
+    },
+    {
+      "@type": [
+        "Action"
+      ],
+      "name": "increase",
+      "form": [
+        {
+          "href": "coap:///www.example.com:5683/temp/increase",
+          "mediaType": "application/json"
+        }
+      ]
+    }
+  ]
+}

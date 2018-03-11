@@ -14,7 +14,7 @@ Java EE server implementing the Servlet API
 
 ## Examples
 
-- Some example Thing Descriptions are provided in the Examples folder of the root directory. There are both valid and not valid ones.
+- Some example Thing Descriptions are provided in the Examples folder at directory WebContent/Examples. There are both valid and invalid ones.
 
 ## Troubleshooting
 
