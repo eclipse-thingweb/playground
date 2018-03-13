@@ -1,0 +1,81 @@
+{
+  "@context": [
+    "https://w3c.github.io/wot/w3c-wot-td-context.jsonld",
+    "https://w3c.github.io/wot/w3c-wot-common-context.jsonld"
+  ],
+  "@type": [
+    "Sensor"
+  ],
+  "name": "myTempSensor",
+  "base": "coap:///www.example.com:5683/temp/",
+  "interaction": [
+    {
+      "@type": [
+        "Property",
+        "Temperature"
+      ],
+      "reference": "threshold",
+      "name": "myTemp",
+      "schema": {
+        "type": "number"
+      },
+      "writable": false,
+      "observable": true,
+      "form": [
+        {
+          "href": "coap:///www.example.com:5683/temp/val",
+          "mediaType": "application/json"
+        }
+      ]
+    },
+    {
+      "@type": [
+        "Property",
+        "Temperature"
+      ],
+      "name": "myThreshold",
+      "schema": {
+        "type": "number"
+      },
+      "writable": true,
+      "observable": true,
+      "form": [
+        {
+          "href": "coap:///www.example.com:5683/temp/thr",
+          "mediaType": "application/json"
+        }
+      ]
+    },
+    {
+      "@type": [
+        "Event"
+      ],
+      "schema": {
+        "type": "number"
+      },
+      "name": "myChange",
+      "property": "temp",
+      "form": [
+        {
+          "href": "coap:///www.example.com:5683/temp/val/changed",
+          "mediaType": "application/json"
+        }
+      ]
+    },
+    {
+      "@type": [
+        "Event"
+      ],
+      "schema": {
+        "type": "number"
+      },
+      "name": "myWarning",
+      "form": [
+        {
+          "href": "coap:///www.example.com:5683/temp/val/high",
+          "mediaType": "application/json"
+        }
+      ]
+    }
+  ]
+}

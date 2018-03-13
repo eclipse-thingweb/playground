@@ -39,7 +39,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import jdk.internal.dynalink.MonomorphicCallSite;
+//import jdk.internal.dynalink.MonomorphicCallSite;
 
 import org.semanticweb.HermiT.Configuration;
 import org.semanticweb.HermiT.Reasoner;

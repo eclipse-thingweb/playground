@@ -1,0 +1,314 @@
+{
+  "title": "WoT TD Schema for Prague Plug Fest",
+  "description": "JSON Schema representation of the TD serialisation format.",
+  "$schema ": "http://json-schema.org/draft-06/schema#",
+  "type": "object",
+  "properties": {
+    "base": {
+      "$ref": "#/definitions/url"
+    },
+    "@type": {
+      "$ref": "#/definitions/type_declaration"
+    },
+    "@context": {
+      "$ref": "#/definitions/context"
+    },
+    "name": {
+      "type": "string"
+    },
+    "interaction": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/interaction"
+      }
+    },
+    "link": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/link"
+      }
+    },
+    "security": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/security"
+      }
+    }
+  },
+  "required": [
+    "name",
+    "@context"
+  ],
+  "additionalProperties": true,
+  "definitions": {
+    "context": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/definitions/url"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "contains": {
+        "type": "string",
+        "enum": [
+          "https://w3c.github.io/wot/w3c-wot-td-context.jsonld"
+        ]
+      }
+    },
+    "type_declaration": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "form_declaration": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/form_element"
+      }
+    },
+    "form_element": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "$ref": "#/definitions/url"
+        },
+        "rel": {
+          "type": "string"
+        },
+        "mediaType": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "href",
+        "mediaType"
+      ],
+      "additionalProperties": true
+    },
+    "interaction": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/property_element"
+        },
+        {
+          "$ref": "#/definitions/action_element"
+        },
+        {
+          "$ref": "#/definitions/event_element"
+        }
+      ]
+    },
+    "property_element": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "array",
+          "items": [
+            {
+              "type": "string",
+              "enum": [
+                "Property"
+              ]
+            }
+          ],
+          "minItems": 1,
+          "not": {
+            "contains": {
+              "type": "number"
+            }
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "schema": {
+          "$ref": "#/definitions/data"
+        },
+        "writable": {
+          "type": "boolean"
+        },
+        "observable": {
+          "type": "boolean"
+        },
+        "form": {
+          "$ref": "#/definitions/form_declaration"
+        }
+      },
+      "required": [
+        "@type",
+        "name",
+        "schema",
+        "writable",
+        "observable"
+      ],
+      "additionalProperties": true
+    },
+    "action_element": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "array",
+          "items": [
+            {
+              "type": "string",
+              "enum": [
+                "Action"
+              ]
+            }
+          ],
+          "minItems": 1,
+          "not": {
+            "contains": {
+              "type": "number"
+            }
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "form": {
+          "$ref": "#/definitions/form_declaration"
+        },
+        "inputSchema": {
+          "$ref": "#/definitions/data"
+        },
+        "outputSchema": {
+          "$ref": "#/definitions/data"
+        }
+      },
+      "required": [
+        "@type",
+        "name"
+      ],
+      "additionalProperties": true
+    },
+    "event_element": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "array",
+          "items": [
+            {
+              "type": "string",
+              "enum": [
+                "Event"
+              ]
+            }
+          ],
+          "minItems": 1,
+          "not": {
+            "contains": {
+              "type": "number"
+            }
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "form": {
+          "$ref": "#/definitions/form_declaration"
+        },
+        "schema": {
+          "$ref": "#/definitions/data"
+        }
+      },
+      "required": [
+        "@type",
+        "name",
+        "schema"
+      ],
+      "additionalProperties": true
+    },
+    "link": {
+      "type": "object",
+      "properties": {
+        "anchor": {
+          "$ref": "#/definitions/url"
+        },
+        "href": {
+          "$ref": "#/definitions/url"
+        },
+        "rel": {
+          "type": "string"
+        },
+        "mediatype": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "href",
+        "rel"
+      ],
+      "additionalProperties": true
+    },
+    "form": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "$ref": "#/definitions/url"
+        },
+        "rel": {
+          "type": "string"
+        },
+        "mediatype": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "href",
+        "mediatype"
+      ]
+    },
+    "security": {
+      "type": "object"
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(([^#]*))?(#(.*))?"
+    },
+    "jsonld_url": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "http://[^/?#]*|https://[^/?#]*"
+    },
+    "data": {
+      "title": "Data type",
+      "anyOf": [
+        {
+          "description": "URI of an XSD built-in type",
+          "type": "string"
+        },
+        {
+          "description": "URI and media type for a complex type (XSD, SenML...)",
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "href": {
+              "type": "string"
+            },
+            "mediatype": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "href",
+            "mediatype"
+          ]
+        },
+        {
+          "$ref": "http://json-schema.org/draft-06/schema#"
+        }
+      ]
+    }
+  }
+}
