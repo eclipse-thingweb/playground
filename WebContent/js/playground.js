@@ -23,6 +23,7 @@
  * 
  */
 var ajv; /* JSON Schema validator */
+var tdJson;
 
 function trigger(name, data) {
     var ev = new CustomEvent(name, {
@@ -67,10 +68,10 @@ $(function() {
             ajv.addSchema(schema, 'td');
             document.addEventListener('validate-json', function(e) {
                 try {
-                    var data = JSON.parse(e.detail);
+                    tdJson = JSON.parse(e.detail);
                     light(true, 'spot-json');
                     log('JSON validation... OK');
-                    trigger('validate-json-schema', data);
+                    trigger('validate-json-schema', tdJson);
                 } catch (err) {
                     if (err instanceof SyntaxError) {
                         light(false, 'spot-json');
@@ -81,7 +82,28 @@ $(function() {
             }, false);
 
             document.addEventListener('validate-json-schema', function(e) {
-                var valid = ajv.validate('td', e.detail);
+                if (tdJson.hasOwnProperty('interaction')) {
+                    if (!tdJson.hasOwnProperty('base')) {
+                        //no need to do something. Each href should be absolute
+                        log('> Warning: Without base, each href should be an url');
+                    } else {
+                        //need to check if base finishes with / or not
+                        //if it does, hrefs shouldnt start with it, if it doesnt, then hrefs must start with it
+                        //QUESTION should there be separate schemas or transformation?
+                        try {
+                            tdJson=transformHref(tdJson);
+                        } catch (err) {
+                            light(false, 'spot-json-schema');
+                            log('JSON Schema validation... KO:');
+                            log('> ' + err);
+                            return;
+                        }
+
+                    }
+                }
+
+                var valid = ajv.validate('td', tdJson);
+                //used to be var valid = ajv.validate('td', e.detail);
                 if (valid) {
                     light(true, 'spot-json-schema');
                     log('JSON Schema validation... OK');
@@ -89,6 +111,7 @@ $(function() {
                 } else {
                     light(false, 'spot-json-schema');
                     log('JSON Schema validation... KO:');
+                    //console.log(ajv.errors);
                     log('> ' + ajv.errorsText());
                 }
             }, false);
@@ -109,24 +132,105 @@ $(function() {
                 });
             }, false);
 
+            // document.addEventListener('validate-owl', function(e) {
+            //     $.post({
+            //         url: 'sem',
+            //         data: e.detail,
+            //         contentType: 'application/nquads',
+            //         success: function(diagnosis) {
+            //             if (diagnosis.valid) {
+            //                 light(true, 'spot-owl');
+            //                 log('TD/OWL validation... OK');
+            //             } else {
+            //                 light(false, 'spot-owl');
+            //                 log('TD/OWL validation... KO!');
+            //             }
+            //         }
+            //     });
+            // }, false);
             document.addEventListener('validate-owl', function(e) {
-                $.post({
-                    url: 'sem',
-                    data: e.detail,
-                    contentType: 'application/nquads',
-                    success: function(diagnosis) {
-                        if (diagnosis.valid) {
-                            light(true, 'spot-owl');
-                            log('TD/OWL validation... OK');
-                        } else {
-                            light(false, 'spot-owl');
-                            log('TD/OWL validation... KO!');
-                        }
-                    }
-                });
+                light(true, 'spot-owl');
+                log('TD/OWL validation... OK');
+
             }, false);
 
             $('#td-validate').removeAttr('disabled');
         });
     });
 });
+/*
+This function checks whether hrefs are combinable with the base uri and then combines them
+*/
+function transformHref(td) {
+    if (td.base.slice(-1) == '/') { //getting the last element
+        //hrefs should not start with /
+        for (var i = 0; i < td.interaction.length; i++) {
+            var curInteraction = td.interaction[i];
+            if (curInteraction.hasOwnProperty("form")) {
+                var curFormArray = curInteraction.form;
+                for (var j = 0; j < curFormArray.length; j++) {
+                    var curForm = curFormArray[j];
+                    if (curForm.hasOwnProperty("href")) {
+                        var curHref = curForm.href;
+                        //check if it is already absolute
+                        if (ValidURL(curHref)) {
+                            //valid url no need to do anything
+                        } else {
+                            if (curHref.charAt(0) == '/') {
+                                throw "href at interaction " + i + ", form " + j + " should NOT start with /";
+                            } else {
+                                //no problem, transforming href into an absolute url
+                                td.interaction[i].form[j].href = td.base + curHref;
+                            }
+                        }
+                    } else { //href is mandatory
+                        throw "missing href at interaction " + i + ", form " + j;
+                    }
+                }
+            } else {
+                //form is not mandatory
+            }
+        }
+    } else {
+        //hrefs should start with /
+        for (var i = 0; i < td.interaction.length; i++) {
+            var curInteraction = td.interaction[i];
+            if (curInteraction.hasOwnProperty("form")) {
+                var curFormArray = curInteraction.form;
+                for (var j = 0; j < curFormArray.length; j++) {
+                    var curForm = curFormArray[j];
+                    if (curForm.hasOwnProperty("href")) {
+                        var curHref = curForm.href;
+                        //check if it is already absolute
+                        if (ValidURL(curHref)) {
+                            //valid url no need to do anything
+                        } else {
+                            if (curHref.charAt(0) == '/') {
+                                //no problem, transforming href into an absolute url
+                                td.interaction[i].form[j].href = td.base + curHref;
+                            } else {
+                                throw "href at interaction " + i + ", form " + j + " should start with /";
+                            }
+                        }
+                    } else { //href is mandatory
+                        throw "missing href at interaction " + i + ", form " + j;
+                    }
+                }
+            } else {
+                //form is not mandatory
+            }
+        }
+    }
+    return td;
+}
+
+function ValidURL(str) {
+    var localAjv = Ajv();
+    localAjv.addSchema({
+      "type": "string",
+      "format": "uri",
+      "pattern": "(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(([^#]*))?(#(.*))?"
+    }, 'url');
+    return localAjv.validate('url', str);
+
+}

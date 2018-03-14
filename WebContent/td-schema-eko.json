@@ -247,24 +247,6 @@
       ],
       "additionalProperties": true
     },
-    "form": {
-      "type": "object",
-      "properties": {
-        "href": {
-          "$ref": "#/definitions/url"
-        },
-        "rel": {
-          "type": "string"
-        },
-        "mediatype": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "href",
-        "mediatype"
-      ]
-    },
     "security": {
       "type": "object"
     },
