@@ -1,0 +1,32 @@
+{
+  "description":"Invalid href because without base key you have to have absolute URLs",
+  "@context": [
+    "https://w3c.github.io/wot/w3c-wot-td-context.jsonld",
+    "https://w3c.github.io/wot/w3c-wot-common-context.jsonld"
+  ],
+  "@type": [
+    "Sensor"
+  ],
+  "name": "myTempSensor",
+  "interaction": [
+    {
+      "@type": [
+        "Property",
+        "Temperature"
+      ],
+      "reference": "threshold",
+      "name": "myTemp",
+      "schema": {
+        "type": "number"
+      },
+      "writable": false,
+      "observable": true,
+      "form": [
+        {
+          "href": "/val",
+          "mediaType": "application/json"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "description":"Invalid href because if base finishes with /, hrefs should not start with /",
+  "@context": [
+    "https://w3c.github.io/wot/w3c-wot-td-context.jsonld",
+    "https://w3c.github.io/wot/w3c-wot-common-context.jsonld"
+  ],
+  "@type": [
+    "Sensor"
+  ],
+  "name": "myTempSensor",
+  "base": "coap:///www.example.com:5683/temp/",
+  "interaction": [
+    {
+      "@type": [
+        "Property",
+        "Temperature"
+      ],
+      "reference": "threshold",
+      "name": "myTemp",
+      "schema": {
+        "type": "number"
+      },
+      "writable": false,
+      "observable": true,
+      "form": [
+        {
+          "href": "/val",
+          "mediaType": "application/json"
+        }
+      ]
+    }
+  ]
+}
