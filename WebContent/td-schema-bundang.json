@@ -16,16 +16,28 @@
     "name": {
       "type": "string"
     },
-    "interaction": {
-      "type": "array",
+    "properties": {
+      "type": "object",
       "items": {
-        "$ref": "#/definitions/interaction"
+        "$ref": "#/definitions/properties"
       }
     },
-    "link": {
+    "actions": {
+      "type": "object",
+      "items": {
+        "$ref": "#/definitions/actions"
+      }
+    },
+    "events": {
+      "type": "object",
+      "items": {
+        "$ref": "#/definitions/events"
+      }
+    },
+    "links": {
       "type": "array",
       "items": {
-        "$ref": "#/definitions/link"
+        "$ref": "#/definitions/links"
       }
     },
     "security": {
@@ -91,18 +103,13 @@
       ],
       "additionalProperties": true
     },
-    "interaction": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/property_element"
-        },
-        {
-          "$ref": "#/definitions/action_element"
-        },
-        {
-          "$ref": "#/definitions/event_element"
+    "properties": {
+      "additionalProperties": {
+        "type": "object",
+        "items": {
+          "$ref": "#/definitions/property_element" 
         }
-      ]
+      }
     },
     "property_element": {
       "type": "object",
@@ -124,10 +131,10 @@
             }
           }
         },
-        "name": {
+        "label": {
           "type": "string"
         },
-        "schema": {
+        "properties": {
           "$ref": "#/definitions/data"
         },
         "writable": {
@@ -136,18 +143,24 @@
         "observable": {
           "type": "boolean"
         },
-        "form": {
+        "forms": {
           "$ref": "#/definitions/form_declaration"
         }
       },
       "required": [
-        "@type",
-        "name",
-        "schema",
+        "properties",
         "writable",
         "observable"
       ],
       "additionalProperties": true
+    },
+    "actions": {
+      "additionalProperties": {
+        "type": "object",
+        "items": {
+          "$ref": "#/definitions/action_element" 
+        }
+      }
     },
     "action_element": {
       "type": "object",
@@ -169,24 +182,29 @@
             }
           }
         },
-        "name": {
+        "label": {
           "type": "string"
         },
-        "form": {
+        "forms": {
           "$ref": "#/definitions/form_declaration"
         },
-        "inputSchema": {
+        "input": {
           "$ref": "#/definitions/data"
         },
-        "outputSchema": {
+        "output": {
           "$ref": "#/definitions/data"
         }
       },
-      "required": [
-        "@type",
-        "name"
-      ],
+      "required": [],
       "additionalProperties": true
+    },
+    "events": {
+      "additionalProperties": {
+        "type": "object",
+        "items": {
+          "$ref": "#/definitions/event_element" 
+        }
+      }
     },
     "event_element": {
       "type": "object",
@@ -208,24 +226,20 @@
             }
           }
         },
-        "name": {
+        "label": {
           "type": "string"
         },
-        "form": {
+        "forms": {
           "$ref": "#/definitions/form_declaration"
         },
-        "schema": {
+        "properties": {
           "$ref": "#/definitions/data"
         }
       },
-      "required": [
-        "@type",
-        "name",
-        "schema"
-      ],
+      "required": [],
       "additionalProperties": true
     },
-    "link": {
+    "links": {
       "type": "object",
       "properties": {
         "anchor": {
@@ -247,7 +261,7 @@
       ],
       "additionalProperties": true
     },
-    "form": {
+    "forms": {
       "type": "object",
       "properties": {
         "href": {
