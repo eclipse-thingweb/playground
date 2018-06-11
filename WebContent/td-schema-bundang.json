@@ -1,0 +1,328 @@
+{
+  "title": "WoT TD Schema for Bundang Plug Fest",
+  "description": "JSON Schema representation of the TD serialisation format.",
+  "$schema ": "http://json-schema.org/draft-06/schema#",
+  "type": "object",
+  "properties": {
+    "base": {
+      "$ref": "#/definitions/url"
+    },
+    "@type": {
+      "$ref": "#/definitions/type_declaration"
+    },
+    "@context": {
+      "$ref": "#/definitions/context"
+    },
+    "name": {
+      "type": "string"
+    },
+    "properties": {
+      "type": "object",
+      "items": {
+        "$ref": "#/definitions/properties"
+      }
+    },
+    "actions": {
+      "type": "object",
+      "items": {
+        "$ref": "#/definitions/actions"
+      }
+    },
+    "events": {
+      "type": "object",
+      "items": {
+        "$ref": "#/definitions/events"
+      }
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/links"
+      }
+    },
+    "security": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/security"
+      }
+    }
+  },
+  "required": [
+    "name",
+    "@context"
+  ],
+  "additionalProperties": true,
+  "definitions": {
+    "context": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/definitions/url"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "contains": {
+        "type": "string",
+        "enum": [
+          "https://w3c.github.io/wot/w3c-wot-td-context.jsonld"
+        ]
+      }
+    },
+    "type_declaration": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "form_declaration": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/form_element"
+      }
+    },
+    "form_element": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "$ref": "#/definitions/url"
+        },
+        "rel": {
+          "type": "string"
+        },
+        "mediaType": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "href",
+        "mediaType"
+      ],
+      "additionalProperties": true
+    },
+    "properties": {
+      "additionalProperties": {
+        "type": "object",
+        "items": {
+          "$ref": "#/definitions/property_element" 
+        }
+      }
+    },
+    "property_element": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "array",
+          "items": [
+            {
+              "type": "string",
+              "enum": [
+                "Property"
+              ]
+            }
+          ],
+          "minItems": 1,
+          "not": {
+            "contains": {
+              "type": "number"
+            }
+          }
+        },
+        "label": {
+          "type": "string"
+        },
+        "properties": {
+          "$ref": "#/definitions/data"
+        },
+        "writable": {
+          "type": "boolean"
+        },
+        "observable": {
+          "type": "boolean"
+        },
+        "forms": {
+          "$ref": "#/definitions/form_declaration"
+        }
+      },
+      "required": [
+        "properties",
+        "writable",
+        "observable"
+      ],
+      "additionalProperties": true
+    },
+    "actions": {
+      "additionalProperties": {
+        "type": "object",
+        "items": {
+          "$ref": "#/definitions/action_element" 
+        }
+      }
+    },
+    "action_element": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "array",
+          "items": [
+            {
+              "type": "string",
+              "enum": [
+                "Action"
+              ]
+            }
+          ],
+          "minItems": 1,
+          "not": {
+            "contains": {
+              "type": "number"
+            }
+          }
+        },
+        "label": {
+          "type": "string"
+        },
+        "forms": {
+          "$ref": "#/definitions/form_declaration"
+        },
+        "input": {
+          "$ref": "#/definitions/data"
+        },
+        "output": {
+          "$ref": "#/definitions/data"
+        }
+      },
+      "required": [],
+      "additionalProperties": true
+    },
+    "events": {
+      "additionalProperties": {
+        "type": "object",
+        "items": {
+          "$ref": "#/definitions/event_element" 
+        }
+      }
+    },
+    "event_element": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "array",
+          "items": [
+            {
+              "type": "string",
+              "enum": [
+                "Event"
+              ]
+            }
+          ],
+          "minItems": 1,
+          "not": {
+            "contains": {
+              "type": "number"
+            }
+          }
+        },
+        "label": {
+          "type": "string"
+        },
+        "forms": {
+          "$ref": "#/definitions/form_declaration"
+        },
+        "properties": {
+          "$ref": "#/definitions/data"
+        }
+      },
+      "required": [],
+      "additionalProperties": true
+    },
+    "links": {
+      "type": "object",
+      "properties": {
+        "anchor": {
+          "$ref": "#/definitions/url"
+        },
+        "href": {
+          "$ref": "#/definitions/url"
+        },
+        "rel": {
+          "type": "string"
+        },
+        "mediatype": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "href",
+        "rel"
+      ],
+      "additionalProperties": true
+    },
+    "forms": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "$ref": "#/definitions/url"
+        },
+        "rel": {
+          "type": "string"
+        },
+        "mediatype": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "href",
+        "mediatype"
+      ]
+    },
+    "security": {
+      "type": "object"
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(([^#]*))?(#(.*))?"
+    },
+    "jsonld_url": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "http://[^/?#]*|https://[^/?#]*"
+    },
+    "data": {
+      "title": "Data type",
+      "anyOf": [
+        {
+          "description": "URI of an XSD built-in type",
+          "type": "string"
+        },
+        {
+          "description": "URI and media type for a complex type (XSD, SenML...)",
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "href": {
+              "type": "string"
+            },
+            "mediatype": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "href",
+            "mediatype"
+          ]
+        },
+        {
+          "$ref": "http://json-schema.org/draft-06/schema#"
+        }
+      ]
+    }
+  }
+}

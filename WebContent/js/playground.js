@@ -60,7 +60,7 @@ function log(message) {
 
 $(function() {
     $('#td-text').linedtextarea();
-    $.getJSON('td-schema-eko.json', function(schema) {
+    $.getJSON('td-schema-bundang.json', function(schema) {
         ajv = Ajv();
         $.getJSON('json-schema-draft-06.json', function(draft) {
             ajv.addMetaSchema(draft);
