@@ -16,6 +16,12 @@
     "name": {
       "type": "string"
     },
+    "id": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
     "properties": {
       "type": "object",
       "items": {
@@ -40,16 +46,20 @@
         "$ref": "#/definitions/links"
       }
     },
+    "support": {
+      "type": "string"
+    },
     "security": {
       "type": "array",
       "items": {
-        "$ref": "#/definitions/security"
+        "$ref": "#/definitions/securityScheme"
       }
     }
   },
   "required": [
     "name",
-    "@context"
+    "@context",
+    "id"
   ],
   "additionalProperties": true,
   "definitions": {
@@ -95,11 +105,20 @@
         },
         "mediaType": {
           "type": "string"
+        },
+        "security": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/securityScheme"
+          }
+        },
+        "scopes": {
+          "type": "string"
         }
       },
       "required": [
         "href",
-        "mediaType"
+        "mediatype"
       ],
       "additionalProperties": true
     },
@@ -111,25 +130,30 @@
         }
       }
     },
+    "actions": {
+      "additionalProperties": {
+        "type": "object",
+        "items": {
+          "$ref": "#/definitions/action_element" 
+        }
+      }
+    },
+    "events": {
+      "additionalProperties": {
+        "type": "object",
+        "items": {
+          "$ref": "#/definitions/event_element" 
+        }
+      }
+    },
     "property_element": {
       "type": "object",
       "properties": {
+        "description": {
+          "type": "string"
+        },
         "@type": {
-          "type": "array",
-          "items": [
-            {
-              "type": "string",
-              "enum": [
-                "Property"
-              ]
-            }
-          ],
-          "minItems": 1,
-          "not": {
-            "contains": {
-              "type": "number"
-            }
-          }
+          "type": "array"
         },
         "label": {
           "type": "string"
@@ -145,6 +169,15 @@
         },
         "forms": {
           "$ref": "#/definitions/form_declaration"
+        },
+        "scopes": {
+          "type": "string"
+        },
+        "security": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/securityScheme"
+          }
         }
       },
       "required": [
@@ -154,33 +187,14 @@
       ],
       "additionalProperties": true
     },
-    "actions": {
-      "additionalProperties": {
-        "type": "object",
-        "items": {
-          "$ref": "#/definitions/action_element" 
-        }
-      }
-    },
     "action_element": {
       "type": "object",
       "properties": {
+        "description": {
+          "type": "string"
+        },
         "@type": {
-          "type": "array",
-          "items": [
-            {
-              "type": "string",
-              "enum": [
-                "Action"
-              ]
-            }
-          ],
-          "minItems": 1,
-          "not": {
-            "contains": {
-              "type": "number"
-            }
-          }
+          "type": "array"
         },
         "label": {
           "type": "string"
@@ -193,47 +207,46 @@
         },
         "output": {
           "$ref": "#/definitions/data"
+        },
+        "scopes": {
+          "type": "string"
+        },
+        "security": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/securityScheme"
+          }
         }
       },
       "required": [],
       "additionalProperties": true
     },
-    "events": {
-      "additionalProperties": {
-        "type": "object",
-        "items": {
-          "$ref": "#/definitions/event_element" 
-        }
-      }
-    },
     "event_element": {
       "type": "object",
       "properties": {
+        "description": {
+          "type": "string"
+        },
         "@type": {
-          "type": "array",
-          "items": [
-            {
-              "type": "string",
-              "enum": [
-                "Event"
-              ]
-            }
-          ],
-          "minItems": 1,
-          "not": {
-            "contains": {
-              "type": "number"
-            }
-          }
+          "type": "array"
         },
         "label": {
           "type": "string"
         },
+        "properties": {
+          "$ref": "#/definitions/data"
+        },
         "forms": {
           "$ref": "#/definitions/form_declaration"
         },
-        "properties": {
-          "$ref": "#/definitions/data"
+        "scopes": {
+          "type": "string"
+        },
+        "security": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/securityScheme"
+          }
         }
       },
       "required": [],
@@ -257,7 +270,7 @@
       },
       "required": [
         "href",
-        "rel"
+        "mediatype"
       ],
       "additionalProperties": true
     },
@@ -279,7 +292,7 @@
         "mediatype"
       ]
     },
-    "security": {
+    "securityScheme": {
       "type": "object"
     },
     "url": {
@@ -323,6 +336,57 @@
           "$ref": "http://json-schema.org/draft-06/schema#"
         }
       ]
+    },
+    "dataSchema":{
+      "type":"object",
+      "properties":{
+        "description": {
+          "type": "string"
+        },
+        "enum":{
+          "type":"array",
+          "items":{
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "object"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "array"
+              }
+            ]
+          }
+        },
+        "type":{
+          "type":"string",
+          "enum":["string","boolean","object","number","array"],
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "object"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "array"
+            }
+          ]
+        },
+      
     }
   }
 }
