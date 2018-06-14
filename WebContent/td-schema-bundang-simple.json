@@ -58,7 +58,6 @@
   },
   "required": [
     "name",
-    "@context",
     "id"
   ],
   "additionalProperties": true,
@@ -83,10 +82,7 @@
       }
     },
     "type_declaration": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
+      "type": "string"
     },
     "form_declaration": {
       "type": "array",
@@ -117,8 +113,7 @@
         }
       },
       "required": [
-        "href",
-        "mediatype"
+        "href"
       ],
       "additionalProperties": true
     },
@@ -126,7 +121,7 @@
       "additionalProperties": {
         "type": "object",
         "items": {
-          "$ref": "#/definitions/property_element" 
+          "$ref": "#/definitions/property_element"
         }
       }
     },
@@ -134,7 +129,7 @@
       "additionalProperties": {
         "type": "object",
         "items": {
-          "$ref": "#/definitions/action_element" 
+          "$ref": "#/definitions/action_element"
         }
       }
     },
@@ -142,7 +137,7 @@
       "additionalProperties": {
         "type": "object",
         "items": {
-          "$ref": "#/definitions/event_element" 
+          "$ref": "#/definitions/event_element"
         }
       }
     },
@@ -153,13 +148,10 @@
           "type": "string"
         },
         "@type": {
-          "type": "array"
+          "$ref": "#/definitions/type_declaration"
         },
         "label": {
           "type": "string"
-        },
-        "properties": {
-          "$ref": "#/definitions/data"
         },
         "writable": {
           "type": "boolean"
@@ -180,11 +172,7 @@
           }
         }
       },
-      "required": [
-        "properties",
-        "writable",
-        "observable"
-      ],
+      "required": [],
       "additionalProperties": true
     },
     "action_element": {
@@ -194,7 +182,7 @@
           "type": "string"
         },
         "@type": {
-          "type": "array"
+          "$ref": "#/definitions/type_declaration"
         },
         "label": {
           "type": "string"
@@ -228,13 +216,10 @@
           "type": "string"
         },
         "@type": {
-          "type": "array"
+          "$ref": "#/definitions/type_declaration"
         },
         "label": {
           "type": "string"
-        },
-        "properties": {
-          "$ref": "#/definitions/data"
         },
         "forms": {
           "$ref": "#/definitions/form_declaration"
@@ -269,8 +254,7 @@
         }
       },
       "required": [
-        "href",
-        "mediatype"
+        "href"
       ],
       "additionalProperties": true
     },
@@ -288,8 +272,7 @@
         }
       },
       "required": [
-        "href",
-        "mediatype"
+        "href"
       ]
     },
     "securityScheme": {
@@ -337,15 +320,15 @@
         }
       ]
     },
-    "dataSchema":{
-      "type":"object",
-      "properties":{
+    "dataSchema": {
+      "type": "object",
+      "properties": {
         "description": {
           "type": "string"
         },
-        "enum":{
-          "type":"array",
-          "items":{
+        "enum": {
+          "type": "array",
+          "items": {
             "anyOf": [
               {
                 "type": "string"
@@ -365,28 +348,17 @@
             ]
           }
         },
-        "type":{
-          "type":"string",
-          "enum":["string","boolean","object","number","array"],
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "boolean"
-            },
-            {
-              "type": "object"
-            },
-            {
-              "type": "number"
-            },
-            {
-              "type": "array"
-            }
+        "type": {
+          "type": "string",
+          "enum": [
+            "string",
+            "boolean",
+            "object",
+            "number",
+            "array"
           ]
-        },
-      
+        }
+      }
     }
   }
 }

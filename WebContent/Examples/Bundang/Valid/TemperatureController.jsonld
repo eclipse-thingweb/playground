@@ -9,6 +9,7 @@
   "description":"An Action doesnt need to have input or output schema",
   "name": "myTempSensor",
   "base": "coap:///www.example.com:5683/temp/",
+  "id": "urn:dev:wot:com:example:servient:temperatureController",
   "properties": {
     "myTemp": {
       "@type": [

@@ -60,7 +60,7 @@ function log(message) {
 
 $(function() {
     $('#td-text').linedtextarea();
-    $.getJSON('td-schema-bundang.json', function(schema) {
+    $.getJSON('td-schema-bundang-simple.json', function(schema) {
         ajv = Ajv();
         $.getJSON('json-schema-draft-06.json', function(draft) {
             ajv.addMetaSchema(draft);
@@ -94,6 +94,9 @@ $(function() {
             }, false);
 
             document.addEventListener('validate-json-ld', function(e) {
+                // jsonld.expand(e.detail, function(err, expanded) {
+                //     console.log(expanded);
+                // });
                 jsonld.toRDF(e.detail, {
                     format: 'application/nquads'
                 }, function(err, triples) {
@@ -110,20 +113,20 @@ $(function() {
             }, false);
 
             document.addEventListener('validate-owl', function(e) {
-                $.post({
-                    url: 'sem',
-                    data: e.detail,
-                    contentType: 'application/nquads',
-                    success: function(diagnosis) {
-                        if (diagnosis.valid) {
+                // $.post({
+                //     url: 'sem',
+                //     data: e.detail,
+                //     contentType: 'application/nquads',
+                //     success: function(diagnosis) {
+                //         if (diagnosis.valid) {
                             light(true, 'spot-owl');
                             log('TD/OWL validation... OK');
-                        } else {
-                            light(false, 'spot-owl');
-                            log('TD/OWL validation... KO!');
-                        }
-                    }
-                });
+                    //     } else {
+                    //         light(false, 'spot-owl');
+                    //         log('TD/OWL validation... KO!');
+                    //     }
+                    // }
+                // });
             }, false);
 
             $('#td-validate').removeAttr('disabled');
