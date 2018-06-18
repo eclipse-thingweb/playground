@@ -371,3 +371,7 @@ function ValidURL(str) {
     return localAjv.validate('url', str);
 
 }
+
+function checkEnumConst(td){
+    
+}
