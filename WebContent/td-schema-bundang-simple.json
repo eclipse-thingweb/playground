@@ -63,23 +63,33 @@
   "additionalProperties": true,
   "definitions": {
     "context": {
-      "type": "array",
-      "items": {
-        "anyOf": [
-          {
-            "$ref": "#/definitions/url"
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/url"
+              },
+              {
+                "type": "object"
+              }
+            ]
           },
-          {
-            "type": "object"
+          "contains": {
+            "type": "string",
+            "enum": [
+              "https://w3c.github.io/wot/w3c-wot-td-context.jsonld"
+            ]
           }
-        ]
-      },
-      "contains": {
-        "type": "string",
-        "enum": [
-          "https://w3c.github.io/wot/w3c-wot-td-context.jsonld"
-        ]
-      }
+        },
+        {
+          "type": "string",
+          "enum": [
+            "https://w3c.github.io/wot/w3c-wot-td-context.jsonld"
+          ]
+        }
+      ]
     },
     "type_declaration": {
       "type": "string"
