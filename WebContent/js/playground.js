@@ -85,7 +85,7 @@ $(function() {
                 if (tdJson.hasOwnProperty('properties')||tdJson.hasOwnProperty('actions')||tdJson.hasOwnProperty('events')) {
                     if (!tdJson.hasOwnProperty('base')) {
                         //no need to do something. Each href should be absolute
-                        log('> Warning: Without base, each href should be an url');
+                        log('> Warning: Without base, each href should be an absolute URL');
                     } else {
                         //need to check if base finishes with / or not
                         //if it does, hrefs shouldnt start with it, if it doesnt, then hrefs must start with it
@@ -98,8 +98,8 @@ $(function() {
                             log('> ' + err);
                             return;
                         }
-
                     }
+                    checkEnumConst(tdJson);
                 }
 
                 var valid = ajv.validate('td', tdJson);
@@ -164,197 +164,209 @@ This function checks whether hrefs are combinable with the base uri and then com
 function transformHref(td) {
     if (td.base.slice(-1) == '/') { //getting the last element
         //hrefs should not start with /
-        tdProperties = Object.keys(td.properties);
-        for (var i = 0; i < tdProperties.length; i++) {
-            var curPropertyName = tdProperties[i];
-            var curProperty = td.properties[curPropertyName];
-            if (curProperty.hasOwnProperty("forms")) {
-                var curFormArray = curProperty.forms;
-                for (var j = 0; j < curFormArray.length; j++) {
-                    var curForm = curFormArray[j];
-                    if (curForm.hasOwnProperty("href")) {
-                        var curHref = curForm.href;
-                        //check if it is already absolute
-                        if (ValidURL(curHref)) {
-                            //valid url no need to do anything
-                        } else {
-                            if (curHref.charAt(0) == '/') {
-                                throw "href at property " + curPropertyName + ", form " + j + " should NOT start with /";
+        if(td.hasOwnProperty("properties")){
+            tdProperties = Object.keys(td.properties);
+            for (var i = 0; i < tdProperties.length; i++) {
+                var curPropertyName = tdProperties[i];
+                var curProperty = td.properties[curPropertyName];
+                if (curProperty.hasOwnProperty("forms")) {
+                    var curFormArray = curProperty.forms;
+                    for (var j = 0; j < curFormArray.length; j++) {
+                        var curForm = curFormArray[j];
+                        if (curForm.hasOwnProperty("href")) {
+                            var curHref = curForm.href;
+                            //check if it is already absolute
+                            if (ValidURL(curHref)) {
+                                //valid url no need to do anything
                             } else {
-                                //no problem, transforming href into an absolute url
-                                td.properties[curPropertyName].forms[j].href = td.base + curHref;
+                                if (curHref.charAt(0) == '/') {
+                                    throw "href at property " + curPropertyName + ", form " + j + " should NOT start with /";
+                                } else {
+                                    //no problem, transforming href into an absolute url
+                                    td.properties[curPropertyName].forms[j].href = td.base + curHref;
+                                }
                             }
+                        } else { //href is mandatory
+                            throw "missing href at property " + curPropertyName + ", form " + j;
                         }
-                    } else { //href is mandatory
-                        throw "missing href at property " + curPropertyName + ", form " + j;
                     }
+                } else if(curProperty.hasOwnProperty("form")){
+                    log('> Warning: forms is used instead of form at property' + curPropertyName);
+                } else {
+                    //form is not mandatory
                 }
-            } else if(curProperty.hasOwnProperty("form")){
-                log('> Warning: forms is used instead of form at property' + curPropertyName);
-            } else {
-                //form is not mandatory
             }
         }
         //for actions
-        tdActions = Object.keys(td.actions);
-        for (var i = 0; i < tdActions.length; i++) {
-            var curActionName = tdActions[i];
-            var curAction = td.actions[curActionName];
-            if (curAction.hasOwnProperty("forms")) {
-                var curFormArray = curAction.forms;
-                for (var j = 0; j < curFormArray.length; j++) {
-                    var curForm = curFormArray[j];
-                    if (curForm.hasOwnProperty("href")) {
-                        var curHref = curForm.href;
-                        //check if it is already absolute
-                        if (ValidURL(curHref)) {
-                            //valid url no need to do anything
-                        } else {
-                            if (curHref.charAt(0) == '/') {
-                                throw "href at action " + curActionName + ", form " + j + " should NOT start with /";
+        if(td.hasOwnProperty("actions")){
+            tdActions = Object.keys(td.actions);
+            for (var i = 0; i < tdActions.length; i++) {
+                var curActionName = tdActions[i];
+                var curAction = td.actions[curActionName];
+                if (curAction.hasOwnProperty("forms")) {
+                    var curFormArray = curAction.forms;
+                    for (var j = 0; j < curFormArray.length; j++) {
+                        var curForm = curFormArray[j];
+                        if (curForm.hasOwnProperty("href")) {
+                            var curHref = curForm.href;
+                            //check if it is already absolute
+                            if (ValidURL(curHref)) {
+                                //valid url no need to do anything
                             } else {
-                                //no problem, transforming href into an absolute url
-                                td.actions[curActionName].forms[j].href = td.base + curHref;
+                                if (curHref.charAt(0) == '/') {
+                                    throw "href at action " + curActionName + ", form " + j + " should NOT start with /";
+                                } else {
+                                    //no problem, transforming href into an absolute url
+                                    td.actions[curActionName].forms[j].href = td.base + curHref;
+                                }
                             }
+                        } else { //href is mandatory
+                            throw "missing href at action " + curActionName + ", form " + j;
                         }
-                    } else { //href is mandatory
-                        throw "missing href at action " + curActionName + ", form " + j;
                     }
+                } else if(curAction.hasOwnProperty("form")){
+                    log('> Warning: forms is used instead of form at action' + curActionName);
+                } else {
+                    //form is not mandatory
                 }
-            } else if(curAction.hasOwnProperty("form")){
-                log('> Warning: forms is used instead of form at action' + curActionName);
-            } else {
-                //form is not mandatory
             }
         }
         //for events
-        tdEvents = Object.keys(td.events);
-        for (var i = 0; i < tdEvents.length; i++) {
-            var curEventName = tdEvents[i];
-            var curEvent = td.events[curEventName];
-            if (curEvent.hasOwnProperty("forms")) {
-                var curFormArray = curEvent.forms;
-                for (var j = 0; j < curFormArray.length; j++) {
-                    var curForm = curFormArray[j];
-                    if (curForm.hasOwnProperty("href")) {
-                        var curHref = curForm.href;
-                        //check if it is already absolute
-                        if (ValidURL(curHref)) {
-                            //valid url no need to do anything
-                        } else {
-                            if (curHref.charAt(0) == '/') {
-                                throw "href at event " + curEventName + ", form " + j + " should NOT start with /";
+        if(td.hasOwnProperty("events")){
+            tdEvents = Object.keys(td.events);
+            for (var i = 0; i < tdEvents.length; i++) {
+                var curEventName = tdEvents[i];
+                var curEvent = td.events[curEventName];
+                if (curEvent.hasOwnProperty("forms")) {
+                    var curFormArray = curEvent.forms;
+                    for (var j = 0; j < curFormArray.length; j++) {
+                        var curForm = curFormArray[j];
+                        if (curForm.hasOwnProperty("href")) {
+                            var curHref = curForm.href;
+                            //check if it is already absolute
+                            if (ValidURL(curHref)) {
+                                //valid url no need to do anything
                             } else {
-                                //no problem, transforming href into an absolute url
-                                td.events[curEventName].forms[j].href = td.base + curHref;
+                                if (curHref.charAt(0) == '/') {
+                                    throw "href at event " + curEventName + ", form " + j + " should NOT start with /";
+                                } else {
+                                    //no problem, transforming href into an absolute url
+                                    td.events[curEventName].forms[j].href = td.base + curHref;
+                                }
                             }
+                        } else { //href is mandatory
+                            throw "missing href at event " + curEventName + ", form " + j;
                         }
-                    } else { //href is mandatory
-                        throw "missing href at event " + curEventName + ", form " + j;
                     }
+                } else if(curEvent.hasOwnProperty("form")){
+                    log('> Warning: forms is used instead of form at event' + curEventName);
+                } else {
+                    //form is not mandatory
                 }
-            } else if(curEvent.hasOwnProperty("form")){
-                log('> Warning: forms is used instead of form at event' + curEventName);
-            } else {
-                //form is not mandatory
             }
         }
     } else {
         //hrefs should start with /
         //for properties
-        tdProperties = Object.keys(td.properties);
-        for (var i = 0; i < tdProperties.length; i++) {
-            var curPropertyName = tdProperties[i];
-            var curProperty = td.properties[curPropertyName];
-            if (curProperty.hasOwnProperty("forms")) {
-                var curFormArray = curProperty.forms;
-                for (var j = 0; j < curFormArray.length; j++) {
-                    var curForm = curFormArray[j];
-                    if (curForm.hasOwnProperty("href")) {
-                        var curHref = curForm.href;
-                        //check if it is already absolute
-                        if (ValidURL(curHref)) {
-                            //valid url no need to do anything
-                        } else {
-                            if (curHref.charAt(0) == '/') {
-                                //no problem, transforming href into an absolute url
-                                td.properties[curPropertyName].forms[j].href = td.base + curHref;
+        if(td.hasOwnProperty("properties")){
+            tdProperties = Object.keys(td.properties);
+            for (var i = 0; i < tdProperties.length; i++) {
+                var curPropertyName = tdProperties[i];
+                var curProperty = td.properties[curPropertyName];
+                if (curProperty.hasOwnProperty("forms")) {
+                    var curFormArray = curProperty.forms;
+                    for (var j = 0; j < curFormArray.length; j++) {
+                        var curForm = curFormArray[j];
+                        if (curForm.hasOwnProperty("href")) {
+                            var curHref = curForm.href;
+                            //check if it is already absolute
+                            if (ValidURL(curHref)) {
+                                //valid url no need to do anything
                             } else {
-                                throw "href at property " + curPropertyName + ", form " + j + " should start with /";
+                                if (curHref.charAt(0) == '/') {
+                                    //no problem, transforming href into an absolute url
+                                    td.properties[curPropertyName].forms[j].href = td.base + curHref;
+                                } else {
+                                    throw "href at property " + curPropertyName + ", form " + j + " should start with /";
+                                }
                             }
+                        } else { //href is mandatory
+                            throw "missing href at property " + curPropertyName + ", form " + j;
                         }
-                    } else { //href is mandatory
-                        throw "missing href at property " + curPropertyName + ", form " + j;
                     }
-                }
-            } else if(curProperty.hasOwnProperty("form")){
-                log('> Warning: forms is used instead of form at property' + curPropertyName);
-            } else {
-                //form is not mandatory
+                } else if(curProperty.hasOwnProperty("form")){
+                    log('> Warning: forms is used instead of form at property' + curPropertyName);
+                } else {
+                    //form is not mandatory
+                }            
             }
         }
         //for actions
-        tdActions = Object.keys(td.actions);
-        for (var i = 0; i < tdActions.length; i++) {
-            var curActionName = tdActions[i];
-            var curAction = td.actions[curActionName];
-            if (curAction.hasOwnProperty("forms")) {
-                var curFormArray = curAction.forms;
-                for (var j = 0; j < curFormArray.length; j++) {
-                    var curForm = curFormArray[j];
-                    if (curForm.hasOwnProperty("href")) {
-                        var curHref = curForm.href;
-                        //check if it is already absolute
-                        if (ValidURL(curHref)) {
-                            //valid url no need to do anything
-                        } else {
-                            if (curHref.charAt(0) == '/') {
-                                //no problem, transforming href into an absolute url
-                                td.actions[curActionName].forms[j].href = td.base + curHref;
+        if(td.hasOwnProperty("actions")){
+            tdActions = Object.keys(td.actions);
+            for (var i = 0; i < tdActions.length; i++) {
+                var curActionName = tdActions[i];
+                var curAction = td.actions[curActionName];
+                if (curAction.hasOwnProperty("forms")) {
+                    var curFormArray = curAction.forms;
+                    for (var j = 0; j < curFormArray.length; j++) {
+                        var curForm = curFormArray[j];
+                        if (curForm.hasOwnProperty("href")) {
+                            var curHref = curForm.href;
+                            //check if it is already absolute
+                            if (ValidURL(curHref)) {
+                                //valid url no need to do anything
                             } else {
-                                throw "href at action " + curActionName + ", form " + j + " should start with /";
+                                if (curHref.charAt(0) == '/') {
+                                    //no problem, transforming href into an absolute url
+                                    td.actions[curActionName].forms[j].href = td.base + curHref;
+                                } else {
+                                    throw "href at action " + curActionName + ", form " + j + " should start with /";
+                                }
                             }
+                        } else { //href is mandatory
+                            throw "missing href at action " + curActionName + ", form " + j;
                         }
-                    } else { //href is mandatory
-                        throw "missing href at action " + curActionName + ", form " + j;
                     }
+                } else if(curAction.hasOwnProperty("form")){
+                    log('> Warning: forms is used instead of form at action' + curActionName);
+                } else {
+                    //form is not mandatory
                 }
-            } else if(curAction.hasOwnProperty("form")){
-                log('> Warning: forms is used instead of form at action' + curActionName);
-            } else {
-                //form is not mandatory
             }
         }
         //for events
-        tdEvents = Object.keys(td.events);
-        for (var i = 0; i < tdEvents.length; i++) {
-            var curEventName = tdEvents[i];
-            var curEvent = td.events[curEventName];
-            if (curEvent.hasOwnProperty("forms")) {
-                var curFormArray = curEvent.forms;
-                for (var j = 0; j < curFormArray.length; j++) {
-                    var curForm = curFormArray[j];
-                    if (curForm.hasOwnProperty("href")) {
-                        var curHref = curForm.href;
-                        //check if it is already absolute
-                        if (ValidURL(curHref)) {
-                            //valid url no need to do anything
-                        } else {
-                            if (curHref.charAt(0) == '/') {
-                                //no problem, transforming href into an absolute url
-                                td.events[curEventName].forms[j].href = td.base + curHref;
+        if(td.hasOwnProperty("events")){
+            tdEvents = Object.keys(td.events);
+            for (var i = 0; i < tdEvents.length; i++) {
+                var curEventName = tdEvents[i];
+                var curEvent = td.events[curEventName];
+                if (curEvent.hasOwnProperty("forms")) {
+                    var curFormArray = curEvent.forms;
+                    for (var j = 0; j < curFormArray.length; j++) {
+                        var curForm = curFormArray[j];
+                        if (curForm.hasOwnProperty("href")) {
+                            var curHref = curForm.href;
+                            //check if it is already absolute
+                            if (ValidURL(curHref)) {
+                                //valid url no need to do anything
                             } else {
-                                throw "href at event " + curEventName + ", form " + j + " should start with /";
+                                if (curHref.charAt(0) == '/') {
+                                    //no problem, transforming href into an absolute url
+                                    td.events[curEventName].forms[j].href = td.base + curHref;
+                                } else {
+                                    throw "href at event " + curEventName + ", form " + j + " should start with /";
+                                }
                             }
+                        } else { //href is mandatory
+                            throw "missing href at event " + curEventName + ", form " + j;
                         }
-                    } else { //href is mandatory
-                        throw "missing href at event " + curEventName + ", form " + j;
                     }
+                } else if(curEvent.hasOwnProperty("form")){
+                    log('> Warning: forms is used instead of form at event' + curEventName);
+                } else {
+                    //form is not mandatory
                 }
-            } else if(curEvent.hasOwnProperty("form")){
-                log('> Warning: forms is used instead of form at event' + curEventName);
-            } else {
-                //form is not mandatory
             }
         }
     }
@@ -372,6 +384,49 @@ function ValidURL(str) {
 
 }
 
+//checking whether a data schema has enum and const at the same and displaying a warning in case there are
 function checkEnumConst(td){
-    
+    if(td.hasOwnProperty("properties")){
+      //checking properties
+        tdProperties = Object.keys(td.properties);
+        for (var i = 0; i < tdProperties.length; i++) {
+            var curPropertyName = tdProperties[i];
+            var curProperty = td.properties[curPropertyName];
+            if (curProperty.hasOwnProperty("enum") && curProperty.hasOwnProperty("const")) {
+                log('> In property ' +curPropertyName+ ' enum and const are used at the same time, the values in enum can never be valid in the received JSON value');
+            }
+        }   
+    }
+    //checking actions
+    if(td.hasOwnProperty("actions")){    
+        tdActions = Object.keys(td.actions);
+        for (var i = 0; i < tdActions.length; i++) {
+            var curActionName = tdActions[i];
+            var curAction = td.actions[curActionName];
+            if (curAction.hasOwnProperty("input")){
+                var curInput=curAction.input;
+                if (curInput.hasOwnProperty("enum") && curInput.hasOwnProperty("const")) {
+                    log('> In the input of action ' +curActionName+ ' enum and const are used at the same time, the values in enum can never be valid in the received JSON value');
+                }  
+            }
+            if (curAction.hasOwnProperty("output")){
+                var curOutput=curAction.output;
+                if (output.hasOwnProperty("enum") && output.hasOwnProperty("const")) {
+                    log('> In the output of action ' +curActionName+ ' enum and const are used at the same time, the values in enum can never be valid in the received JSON value');
+                }  
+            }
+        }
+    }
+    //checking events
+    if(td.hasOwnProperty("events")){
+        tdEvents = Object.keys(td.events);
+        for (var i = 0; i < tdEvents.length; i++) {
+            var curEventName = tdEvents[i];
+            var curEvent = td.events[curEventName];
+            if (curEvent.hasOwnProperty("enum") && curEvent.hasOwnProperty("const")) {
+                log('> In event ' +curEventName+ ' enum and const are used at the same time, the values in enum can never be valid in the received JSON value');
+            }
+        }
+    }
+    return;
 }
