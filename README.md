@@ -14,7 +14,10 @@ Java EE server implementing the Servlet API
 
 ## Examples
 
-- Some example Thing Descriptions are provided in the Examples folder at directory WebContent/Examples. There are both valid and invalid ones.
+- Some example Thing Descriptions are provided in the Examples folder at directory WebContent/Examples. There are :
+    + Valid: 4 lights are lit green, no warning message is displayed
+    + Warning: 4 lights are lit green, at least one warning message is displayed, starting with !
+    + Invalid: At least one of the 4 lights are lit red, a warning message might be displayed
 
 ## Troubleshooting
 
