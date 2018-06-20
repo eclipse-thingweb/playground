@@ -92,7 +92,14 @@
       ]
     },
     "type_declaration": {
-      "type": "string"
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array"
+        }
+      ]
     },
     "form_declaration": {
       "type": "array",
