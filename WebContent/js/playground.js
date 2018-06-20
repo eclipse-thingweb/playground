@@ -126,6 +126,7 @@ $(function() {
                 
                 checkEnumConst(tdJson);
                 checkPropItems(tdJson);
+                checkInteractions(tdJson);
             }, false);
 
             document.addEventListener('validate-json-ld', function(e) {
@@ -524,4 +525,12 @@ function checkPropItems(td){
         }
     }
     return;
+}
+
+//checking whether the td contains interactions field that is remaining from the previous spec
+function checkInteractions(td){
+    if(td.hasOwnProperty("interactions")){
+        log('interactions are from the previous TD Specification, please use properties, actions, events instead');
+        light('WARNING', 'spot-json-schema');
+    }
 }
