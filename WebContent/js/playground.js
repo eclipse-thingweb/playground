@@ -36,7 +36,16 @@ function trigger(name, data) {
 function light(success, id) {
     var circle = $('#' + id);
     circle.css('visibility', 'visible');
-    var color = success ? 'green' : 'red';
+    if (success=='OK'){
+        color='green'
+    } else if(success=='KO') {
+        color='red'
+    } else if(success=='WARNING'){
+        color='orange'
+    } else {
+        color='black'
+    }
+    //var color = success ? 'green' : 'red';
     circle.attr('fill', color);
 }
 
@@ -69,12 +78,12 @@ $(function() {
             document.addEventListener('validate-json', function(e) {
                 try {
                     tdJson = JSON.parse(e.detail);
-                    light(true, 'spot-json');
+                    light('OK', 'spot-json');
                     log('JSON validation... OK');
                     trigger('validate-json-schema', tdJson);
                 } catch (err) {
                     if (err instanceof SyntaxError) {
-                        light(false, 'spot-json');
+                        light('KO', 'spot-json');
                         log('X JSON validation... KO:');
                         log('> ' + err.message);
                     }
@@ -93,28 +102,31 @@ $(function() {
                         try {
                             tdJson=transformHref(tdJson);
                         } catch (err) {
-                            light(false, 'spot-json-schema');
+                            light('KO', 'spot-json-schema');
                             log('X JSON Schema validation... KO:');
                             log('> ' + err);
                             return;
                         }
                     }
-                    checkEnumConst(tdJson);
-                    checkPropItems(tdJson);
+
                 }
 
                 var valid = ajv.validate('td', tdJson);
                 //used to be var valid = ajv.validate('td', e.detail);
                 if (valid) {
-                    light(true, 'spot-json-schema');
+                    light('OK', 'spot-json-schema');
                     log('JSON Schema validation... OK');
                     trigger('validate-json-ld', e.detail);
                 } else {
-                    light(false, 'spot-json-schema');
+                    light('KO', 'spot-json-schema');
                     log('X JSON Schema validation... KO:');
                     //console.log(ajv.errors);
                     log('> ' + ajv.errorsText());
                 }
+                
+                checkEnumConst(tdJson);
+                checkPropItems(tdJson);
+                checkInteractions(tdJson);
             }, false);
 
             document.addEventListener('validate-json-ld', function(e) {
@@ -122,11 +134,11 @@ $(function() {
                     format: 'application/nquads'
                 }, function(err, triples) {
                     if (!err) {
-                        light(true, 'spot-json-ld');
+                        light('OK', 'spot-json-ld');
                         log('JSON-LD validation... OK');
                         trigger('validate-owl', triples);
                     } else {
-                        light(false, 'spot-json-ld');
+                        light('KO', 'spot-json-ld');
                         log('X JSON-LD validation... KO:');
                         log('> ' + err);
                     }
@@ -150,7 +162,7 @@ $(function() {
             //     });
             // }, false);
             document.addEventListener('validate-owl', function(e) {
-                light(true, 'spot-owl');
+                light('OK', 'spot-owl');
                 log('TD/OWL validation... OK');
 
             }, false);
@@ -394,6 +406,7 @@ function checkEnumConst(td){
             var curPropertyName = tdProperties[i];
             var curProperty = td.properties[curPropertyName];
             if (curProperty.hasOwnProperty("enum") && curProperty.hasOwnProperty("const")) {
+                light('WARNING', 'spot-json-schema');
                 log('! In property ' +curPropertyName+ ' enum and const are used at the same time, the values in enum can never be valid in the received JSON value');
             }
         }   
@@ -408,12 +421,14 @@ function checkEnumConst(td){
                 var curInput=curAction.input;
                 if (curInput.hasOwnProperty("enum") && curInput.hasOwnProperty("const")) {
                     log('! In the input of action ' +curActionName+ ' enum and const are used at the same time, the values in enum can never be valid in the received JSON value');
+                    light('WARNING', 'spot-json-schema');
                 }  
             }
             if (curAction.hasOwnProperty("output")){
                 var curOutput=curAction.output;
                 if (curOutput.hasOwnProperty("enum") && curOutput.hasOwnProperty("const")) {
                     log('! In the output of action ' +curActionName+ ' enum and const are used at the same time, the values in enum can never be valid in the received JSON value');
+                    light('WARNING', 'spot-json-schema');
                 }  
             }
         }
@@ -426,6 +441,7 @@ function checkEnumConst(td){
             var curEvent = td.events[curEventName];
             if (curEvent.hasOwnProperty("enum") && curEvent.hasOwnProperty("const")) {
                 log('! In event ' +curEventName+ ' enum and const are used at the same time, the values in enum can never be valid in the received JSON value');
+                light('WARNING', 'spot-json-schema');
             }
         }
     }
@@ -444,9 +460,11 @@ function checkPropItems(td){
             if (curProperty.hasOwnProperty("type")){
                 if ((curProperty.type == "object") && !(curProperty.hasOwnProperty("properties"))) {
                     log('! In property ' +curPropertyName+ ', the type is object but its properties are not specified');
+                    light('WARNING', 'spot-json-schema');
                 }
                 if ((curProperty.type == "array") && !(curProperty.hasOwnProperty("items"))) {
                     log('! In property ' +curPropertyName+ ', the type is array but its items are not specified');
+                    light('WARNING', 'spot-json-schema');
                 }
             }
         }   
@@ -463,9 +481,11 @@ function checkPropItems(td){
                 if (curInput.hasOwnProperty("type")){
                     if ((curInput.type == "object") && !(curInput.hasOwnProperty("properties"))) {
                         log('! In the input of action ' +curActionName+ ', the type is object but its properties are not specified');
+                        light('WARNING', 'spot-json-schema');
                     }
                     if ((curInput.type == "array") && !(curInput.hasOwnProperty("items"))) {
                         log('! In the output of action ' +curActionName+ ', the type is array but its items are not specified');
+                        light('WARNING', 'spot-json-schema');
                     }  
                 }
             }
@@ -474,9 +494,11 @@ function checkPropItems(td){
                 if (curOutput.hasOwnProperty("type")){
                     if ((curOutput.type == "object") && !(curOutput.hasOwnProperty("properties"))) {
                         log('! In the output of action ' +curActionName+ ', the type is object but its properties are not specified');
+                        light('WARNING', 'spot-json-schema');
                     }  
                     if ((curOutput.type == "array") && !(curOutput.hasOwnProperty("items"))) {
                         log('! In the output of action ' +curActionName+ ', the type is array but its items are not specified');
+                        light('WARNING', 'spot-json-schema');
                     }  
                 }
             }
@@ -492,13 +514,23 @@ function checkPropItems(td){
             if (curEvent.hasOwnProperty("type")){
                 if ((curEvent.type =="object") && !(curEvent.hasOwnProperty("properties"))) {
                     log('! In event ' +curEventName+ ', the type is object but its properties are not specified');
+                    light('WARNING', 'spot-json-schema');
                 }
                 if ((curEvent.type =="array") && !(curEvent.hasOwnProperty("items"))) {
                     log('! In event ' +curEventName+ ', the type is array but its items are not specified');
+                    light('WARNING', 'spot-json-schema');
                 }
             }
             
         }
     }
     return;
+}
+
+//checking whether the td contains interactions field that is remaining from the previous spec
+function checkInteractions(td){
+    if(td.hasOwnProperty("interactions")){
+        log('interactions are from the previous TD Specification, please use properties, actions, events instead');
+        light('WARNING', 'spot-json-schema');
+    }
 }
