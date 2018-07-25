@@ -116,6 +116,9 @@ $(function() {
                 if (valid) {
                     light('OK', 'spot-json-schema');
                     log('JSON Schema validation... OK');
+                    checkEnumConst(tdJson);
+                    checkPropItems(tdJson);
+                    checkInteractions(tdJson);
                     trigger('validate-json-ld', e.detail);
                 } else {
                     light('KO', 'spot-json-schema');
@@ -124,9 +127,7 @@ $(function() {
                     log('> ' + ajv.errorsText());
                 }
                 
-                checkEnumConst(tdJson);
-                checkPropItems(tdJson);
-                checkInteractions(tdJson);
+
             }, false);
 
             document.addEventListener('validate-json-ld', function(e) {
@@ -533,4 +534,9 @@ function checkInteractions(td){
         log('interactions are from the previous TD Specification, please use properties, actions, events instead');
         light('WARNING', 'spot-json-schema');
     }
+    if(td.hasOwnProperty("interaction")){
+        log('interaction are from the previous TD Specification, please use properties, actions, events instead');
+        light('WARNING', 'spot-json-schema');
+    }
+    return;
 }

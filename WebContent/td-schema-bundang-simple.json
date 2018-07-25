@@ -189,7 +189,7 @@
           }
         }
       },
-      "required": [],
+      "required": ["label","forms"],
       "additionalProperties": true
     },
     "action_element": {
@@ -223,7 +223,7 @@
           }
         }
       },
-      "required": [],
+      "required": ["label","forms"],
       "additionalProperties": true
     },
     "event_element": {
@@ -251,7 +251,7 @@
           }
         }
       },
-      "required": [],
+      "required": ["label","forms"],
       "additionalProperties": true
     },
     "links": {
@@ -274,23 +274,6 @@
         "href"
       ],
       "additionalProperties": true
-    },
-    "forms": {
-      "type": "object",
-      "properties": {
-        "href": {
-          "$ref": "#/definitions/url"
-        },
-        "rel": {
-          "type": "string"
-        },
-        "mediatype": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "href"
-      ]
     },
     "securityScheme": {
       "type": "object"
