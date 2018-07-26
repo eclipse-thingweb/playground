@@ -107,12 +107,12 @@ fs.readFile(storedTdAddress, (err, tdData) => {
 
             //json ld validation
 
-            jsonld.toRDF(e.detail, {
+            jsonld.toRDF(tdJson, {
                 format: 'application/nquads'
             }, function (err, triples) {
                 if (!err) {
 
-                    log('JSON-LD validation... OK');
+                    console.log('JSON-LD validation... OK');
 
                 } else {
 
