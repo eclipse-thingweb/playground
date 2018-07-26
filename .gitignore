@@ -23,3 +23,7 @@ hs_err_pid*
 /.settings/
 /.vscode/
 thingweb-playground.iml
+
+# npm files
+package-lock.json
+./node_modules/*
