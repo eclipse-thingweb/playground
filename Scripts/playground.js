@@ -1,46 +1,80 @@
 const fs = require('fs');
+const jsonld = require('jsonld');
+var Ajv = require('ajv');
+
 
 var storedTdAddress;
+const schemaLocation = "./WebContent/td-schema-bundang-simple.json";
+const draftLocation = "./WebContent/json-schema-draft-06.json";
 
-process.argv.forEach(function (val, index, array) {
-    //console.log(index + ': ' + val);
-    if (index == 2) {
-        storedTdAddress = val;
-        console.log(storedTdAddress);
+//console.log("argv is ", process.argv);
+if (process.argv[2]) {
+    //console.log("there is second arg");
+    if (typeof process.argv[2] === "string") {
+        console.log("Taking TD found at ", process.argv[2], " for validation");
+        storedTdAddress = process.argv[2];
+    } else {
+        console.error("Second argument should be string");
+        throw "Argument error";
     }
-});
+} else {
+    console.error("There is NO second argument, put the location of the TD after the script call");
+    throw "Argument error";
+}
 
-fs.readFile(storedTdAddress, (err, data) => {
+fs.readFile(storedTdAddress, (err, tdData) => {
     if (err) {
-        console.error("Thing Description could not be found")
-        throw err
+        console.error("Thing Description could not be found at ", storedTdAddress);
+        throw err;
     };
-    //console.log("hi");
-    var td=JSON.parse(data);
-    console.log(td);
+    try {
+        var tdJson = JSON.parse(tdData);
+        console.log('JSON validation... OK');
+    } catch (err) {
+        console.error('X JSON validation... KO:');
+        console.error('> ' + err.message);
+        throw err;
+    }
 
-    getJSON('td-schema-bundang-simple.json', function (schema) {
-        ajv = Ajv();
-        $.getJSON('json-schema-draft-06.json', function (draft) {
+
+    //console.log(td);
+
+    fs.readFile(schemaLocation, (err, schemaData) => {
+        if (err) {
+            console.error("JSON Schema could not be found at ", schemaLocation);
+            throw err;
+        };
+        console.log("Taking Schema found at ", schemaLocation);
+        var schema = JSON.parse(schemaData);
+
+        fs.readFile(draftLocation, (err, draftData) => {
+            if (err) {
+                console.error("JSON Schema Draft could not be found at ", draftLocation);
+                throw err;
+            };
+            console.log("Taking Schema Draft found at ", draftLocation);
+            var draft = JSON.parse(draftData);
+
+            var ajv = new Ajv(); // options can be passed, e.g. {allErrors: true}
             ajv.addMetaSchema(draft);
             ajv.addSchema(schema, 'td');
-            try {
-                tdJson = JSON.parse(e.detail);
-                log('JSON validation... OK');
-            } catch (err) {
-                if (err instanceof SyntaxError) {
-
-                    log('X JSON validation... KO:');
-                    log('> ' + err.message);
-                }
-            }
+            // var validate = ajv.compile(schema);
+            // var valid = validate(data);
+            // if (!valid) console.log(validate.errors);
+            // //OR
+            // var valid = ajv.validate(schema, data);
+            // if (!valid) console.log(ajv.errors);
+            // //OR
+            // var valid = ajv.addSchema(schema, 'mySchema')
+            //     .validate('mySchema', data);
+            // if (!valid) console.log(ajv.errorsText());
 
             // schema validation
 
             if (tdJson.hasOwnProperty('properties') || tdJson.hasOwnProperty('actions') || tdJson.hasOwnProperty('events')) {
                 if (!tdJson.hasOwnProperty('base')) {
                     //no need to do something. Each href should be absolute
-                    log(':) Tip: Without base, each href should be an absolute URL');
+                    console.log(':) Tip: Without base, each href should be an absolute URL');
                 } else {
                     //need to check if base finishes with / or not
                     //if it does, hrefs shouldnt start with it, if it doesnt, then hrefs must start with it
@@ -48,9 +82,9 @@ fs.readFile(storedTdAddress, (err, data) => {
                     try {
                         tdJson = transformHref(tdJson);
                     } catch (err) {
-                        log('X JSON Schema validation... KO:');
-                        log('> ' + err);
-                        return;
+                        console.error('X JSON Schema validation... KO:');
+                        console.error('> ' + err);
+                        throw err;
                     }
                 }
 
@@ -59,17 +93,19 @@ fs.readFile(storedTdAddress, (err, data) => {
             //used to be var valid = ajv.validate('td', e.detail);
             if (valid) {
 
-                log('JSON Schema validation... OK');
+                console.log('JSON Schema validation... OK');
                 checkEnumConst(tdJson);
                 checkPropItems(tdJson);
                 checkInteractions(tdJson);
 
             } else {
-                
-                log('X JSON Schema validation... KO:');
+
+                console.error('X JSON Schema validation... KO:');
                 //console.log(ajv.errors);
-                log('> ' + ajv.errorsText());
+                console.error('> ' + ajv.errorsText());
             }
+
+            //json ld validation
 
             jsonld.toRDF(e.detail, {
                 format: 'application/nquads'
@@ -80,16 +116,14 @@ fs.readFile(storedTdAddress, (err, data) => {
 
                 } else {
 
-                    log('X JSON-LD validation... KO:');
-                    log('> ' + err);
+                    console.error('X JSON-LD validation... KO:');
+                    console.error('> ' + err);
                 }
             });
 
-            });
+        });
+
     });
-
-
-
 });
 
 function transformHref(td) {
@@ -122,7 +156,7 @@ function transformHref(td) {
                         }
                     }
                 } else if (curProperty.hasOwnProperty("form")) {
-                    log('! Warning: forms is used instead of form at property' + curPropertyName);
+                    console.warn('! Warning: forms is used instead of form at property' + curPropertyName);
                 } else {
                     //form is not mandatory
                 }
@@ -156,7 +190,7 @@ function transformHref(td) {
                         }
                     }
                 } else if (curAction.hasOwnProperty("form")) {
-                    log('! Warning: forms is used instead of form at action' + curActionName);
+                    console.warn('! Warning: forms is used instead of form at action' + curActionName);
                 } else {
                     //form is not mandatory
                 }
@@ -190,7 +224,7 @@ function transformHref(td) {
                         }
                     }
                 } else if (curEvent.hasOwnProperty("form")) {
-                    log('! Warning: forms is used instead of form at event' + curEventName);
+                    console.warn('! Warning: forms is used instead of form at event' + curEventName);
                 } else {
                     //form is not mandatory
                 }
@@ -226,7 +260,7 @@ function transformHref(td) {
                         }
                     }
                 } else if (curProperty.hasOwnProperty("form")) {
-                    log('! Warning: forms is used instead of form at property' + curPropertyName);
+                    console.warn('! Warning: forms is used instead of form at property' + curPropertyName);
                 } else {
                     //form is not mandatory
                 }
@@ -260,7 +294,7 @@ function transformHref(td) {
                         }
                     }
                 } else if (curAction.hasOwnProperty("form")) {
-                    log('! Warning: forms is used instead of form at action' + curActionName);
+                    console.warn('! Warning: forms is used instead of form at action' + curActionName);
                 } else {
                     //form is not mandatory
                 }
@@ -294,7 +328,7 @@ function transformHref(td) {
                         }
                     }
                 } else if (curEvent.hasOwnProperty("form")) {
-                    log('! Warning: forms is used instead of form at event' + curEventName);
+                    console.warn('! Warning: forms is used instead of form at event' + curEventName);
                 } else {
                     //form is not mandatory
                 }
@@ -324,8 +358,7 @@ function checkEnumConst(td) {
             var curPropertyName = tdProperties[i];
             var curProperty = td.properties[curPropertyName];
             if (curProperty.hasOwnProperty("enum") && curProperty.hasOwnProperty("const")) {
-                
-                log('! In property ' + curPropertyName + ' enum and const are used at the same time, the values in enum can never be valid in the received JSON value');
+                console.warn('! Warning: In property ' + curPropertyName + ' enum and const are used at the same time, the values in enum can never be valid in the received JSON value');
             }
         }
     }
@@ -338,14 +371,14 @@ function checkEnumConst(td) {
             if (curAction.hasOwnProperty("input")) {
                 var curInput = curAction.input;
                 if (curInput.hasOwnProperty("enum") && curInput.hasOwnProperty("const")) {
-                    log('! In the input of action ' + curActionName + ' enum and const are used at the same time, the values in enum can never be valid in the received JSON value');
+                    console.warn('! Warning: In the input of action ' + curActionName + ' enum and const are used at the same time, the values in enum can never be valid in the received JSON value');
                 }
             }
             if (curAction.hasOwnProperty("output")) {
                 var curOutput = curAction.output;
                 if (curOutput.hasOwnProperty("enum") && curOutput.hasOwnProperty("const")) {
-                    log('! In the output of action ' + curActionName + ' enum and const are used at the same time, the values in enum can never be valid in the received JSON value');
-                    
+                    console.warn('! Warning: In the output of action ' + curActionName + ' enum and const are used at the same time, the values in enum can never be valid in the received JSON value');
+
                 }
             }
         }
@@ -357,8 +390,8 @@ function checkEnumConst(td) {
             var curEventName = tdEvents[i];
             var curEvent = td.events[curEventName];
             if (curEvent.hasOwnProperty("enum") && curEvent.hasOwnProperty("const")) {
-                log('! In event ' + curEventName + ' enum and const are used at the same time, the values in enum can never be valid in the received JSON value');
-                
+                console.warn('! Warning: In event ' + curEventName + ' enum and const are used at the same time, the values in enum can never be valid in the received JSON value');
+
             }
         }
     }
@@ -376,12 +409,12 @@ function checkPropItems(td) {
 
             if (curProperty.hasOwnProperty("type")) {
                 if ((curProperty.type == "object") && !(curProperty.hasOwnProperty("properties"))) {
-                    log('! In property ' + curPropertyName + ', the type is object but its properties are not specified');
-                    
+                    console.warn('! Warning: In property ' + curPropertyName + ', the type is object but its properties are not specified');
+
                 }
                 if ((curProperty.type == "array") && !(curProperty.hasOwnProperty("items"))) {
-                    log('! In property ' + curPropertyName + ', the type is array but its items are not specified');
-                    
+                    console.warn('! Warning: In property ' + curPropertyName + ', the type is array but its items are not specified');
+
                 }
             }
         }
@@ -397,12 +430,12 @@ function checkPropItems(td) {
                 var curInput = curAction.input;
                 if (curInput.hasOwnProperty("type")) {
                     if ((curInput.type == "object") && !(curInput.hasOwnProperty("properties"))) {
-                        log('! In the input of action ' + curActionName + ', the type is object but its properties are not specified');
-                        
+                        console.warn('! Warning: In the input of action ' + curActionName + ', the type is object but its properties are not specified');
+
                     }
                     if ((curInput.type == "array") && !(curInput.hasOwnProperty("items"))) {
-                        log('! In the output of action ' + curActionName + ', the type is array but its items are not specified');
-                        
+                        console.warn('! Warning: In the output of action ' + curActionName + ', the type is array but its items are not specified');
+
                     }
                 }
             }
@@ -410,12 +443,12 @@ function checkPropItems(td) {
                 var curOutput = curAction.output;
                 if (curOutput.hasOwnProperty("type")) {
                     if ((curOutput.type == "object") && !(curOutput.hasOwnProperty("properties"))) {
-                        log('! In the output of action ' + curActionName + ', the type is object but its properties are not specified');
-                       
+                        console.warn('! Warning: In the output of action ' + curActionName + ', the type is object but its properties are not specified');
+
                     }
                     if ((curOutput.type == "array") && !(curOutput.hasOwnProperty("items"))) {
-                        log('! In the output of action ' + curActionName + ', the type is array but its items are not specified');
-                        
+                        console.warn('! Warning: In the output of action ' + curActionName + ', the type is array but its items are not specified');
+
                     }
                 }
             }
@@ -430,12 +463,12 @@ function checkPropItems(td) {
 
             if (curEvent.hasOwnProperty("type")) {
                 if ((curEvent.type == "object") && !(curEvent.hasOwnProperty("properties"))) {
-                    log('! In event ' + curEventName + ', the type is object but its properties are not specified');
-                    
+                    console.warn('! In event ' + curEventName + ', the type is object but its properties are not specified');
+
                 }
                 if ((curEvent.type == "array") && !(curEvent.hasOwnProperty("items"))) {
-                    log('! In event ' + curEventName + ', the type is array but its items are not specified');
-                    
+                    console.warn('! In event ' + curEventName + ', the type is array but its items are not specified');
+
                 }
             }
 
@@ -447,12 +480,12 @@ function checkPropItems(td) {
 //checking whether the td contains interactions field that is remaining from the previous spec
 function checkInteractions(td) {
     if (td.hasOwnProperty("interactions")) {
-        log('interactions are from the previous TD Specification, please use properties, actions, events instead');
-        
+        console.warn('interactions are from the previous TD Specification, please use properties, actions, events instead');
+
     }
     if (td.hasOwnProperty("interaction")) {
-        log('interaction are from the previous TD Specification, please use properties, actions, events instead');
-        
+        console.warn('interaction are from the previous TD Specification, please use properties, actions, events instead');
+
     }
     return;
 }
