@@ -79,14 +79,14 @@
           "contains": {
             "type": "string",
             "enum": [
-              "https://w3c.github.io/wot/w3c-wot-td-context.jsonld"
+              "https://w3c.github.io/wot-thing-description/context/td-context.jsonld"
             ]
           }
         },
         {
           "type": "string",
           "enum": [
-            "https://w3c.github.io/wot/w3c-wot-td-context.jsonld"
+            "https://w3c.github.io/wot-thing-description/context/td-context.jsonld"
           ]
         }
       ]
@@ -189,7 +189,7 @@
           }
         }
       },
-      "required": ["label","forms"],
+      "required": [],
       "additionalProperties": true
     },
     "action_element": {
@@ -223,7 +223,7 @@
           }
         }
       },
-      "required": ["label","forms"],
+      "required": [],
       "additionalProperties": true
     },
     "event_element": {
@@ -251,7 +251,7 @@
           }
         }
       },
-      "required": ["label","forms"],
+      "required": [],
       "additionalProperties": true
     },
     "links": {
