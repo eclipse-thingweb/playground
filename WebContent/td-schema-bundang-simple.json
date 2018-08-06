@@ -79,14 +79,16 @@
           "contains": {
             "type": "string",
             "enum": [
-              "https://w3c.github.io/wot-thing-description/context/td-context.jsonld"
+              "https://w3c.github.io/wot-thing-description/context/td-context.jsonld",
+              "http://www.w3.org/ns/td"
             ]
           }
         },
         {
           "type": "string",
           "enum": [
-            "https://w3c.github.io/wot-thing-description/context/td-context.jsonld"
+            "https://w3c.github.io/wot-thing-description/context/td-context.jsonld",
+            "http://www.w3.org/ns/td"
           ]
         }
       ]
