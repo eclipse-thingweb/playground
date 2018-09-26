@@ -3,11 +3,11 @@ Validation tool for W3C WoT Thing Descriptions. Your Thing Descriptions should b
 
 ## Using the Playground
 
-* It is hosted [here](http://plugfest.thingweb.io/playground/)
+* Online: It is hosted [here](http://plugfest.thingweb.io/playground/)
     * Simply paste a TD in the text field and click validate
-* You can use it offline by opening `thingweb-playground/WebContent/index.html` in a Web Browser.
+* Offline: by opening `thingweb-playground/WebContent/index.html` in a Web Browser.
     * Simply paste a TD in the text field and click validate
-* You can use it as a script:
+* Script:
     * Go to Scripts folder and run `npm install`
     * Run `node Scripts/playground.js "./WebContent/Examples/Bundang/Valid/MyLampThing.jsonld"` to validate a Thing Description found at `./WebContent/Examples/Bundang/Valid/MyLampThing.jsonld'. You can replace this with a TD you want to validate.
 
@@ -24,4 +24,6 @@ Validation tool for W3C WoT Thing Descriptions. Your Thing Descriptions should b
     * valid TDs
     * invalid TDs
     * warning TDs
-    * invalid args, such as integers or non valid paths
+    * Scripting: 
+        * invalid args, such as integers or non valid paths
+        * manual
