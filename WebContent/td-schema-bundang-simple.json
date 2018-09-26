@@ -225,7 +225,7 @@
           }
         }
       },
-      "required": [],
+      "required": ["forms"],
       "additionalProperties": true
     },
     "event_element": {

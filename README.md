@@ -7,7 +7,8 @@ Validation tool for W3C WoT Thing Descriptions. Your Thing Descriptions should b
     * Simply paste a TD in the text field and click validate
 * You can use it offline by opening `thingweb-playground/WebContent/index.html` in a Web Browser.
     * Simply paste a TD in the text field and click validate
-* You can use it as a script. 
+* You can use it as a script:
+    * Go to Scripts folder and run `npm install`
     * Run `node Scripts/playground.js "./WebContent/Examples/Bundang/Valid/MyLampThing.jsonld"` to validate a Thing Description found at `./WebContent/Examples/Bundang/Valid/MyLampThing.jsonld'. You can replace this with a TD you want to validate.
 
 ## Examples

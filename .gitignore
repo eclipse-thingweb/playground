@@ -26,4 +26,10 @@ thingweb-playground.iml
 
 # npm files
 package-lock.json
+*/package-lock.json
+./Scripts/package-lock.json
 ./node_modules/*
+*/node_modules/*
+Scripts/package-lock.json
+Scripts/node_modules
+Scripts/node_modules/*

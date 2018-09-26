@@ -4,8 +4,8 @@
   "description": "validates a Thing Description stored somewhere",
   "main": "playground.js",
   "dependencies": {
-    "ajv": "^6.5.2",
-    "jsonld": "^1.0.2"
+    "ajv": "^6.5.4",
+    "jsonld": "^1.1.0"
   },
   "devDependencies": {},
   "scripts": {
