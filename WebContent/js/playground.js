@@ -90,6 +90,10 @@ $(function() {
                 }
             }, false);
 
+document.addEventListener('valids', function (e) {
+    console.log("asda");
+});
+
             document.addEventListener('validate-json-schema', function(e) {
                 if (tdJson.hasOwnProperty('properties')||tdJson.hasOwnProperty('actions')||tdJson.hasOwnProperty('events')) {
                     if (!tdJson.hasOwnProperty('base')) {

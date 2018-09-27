@@ -1,29 +1,68 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>Thing Description Playground</title>
-		<link rel="stylesheet" type="text/css" href="css/pure-0.6.0.css" />
-		<link rel="stylesheet" type="text/css" href="css/jquery-linedtextarea.css" />
-		<link rel="stylesheet" type="text/css" href="css/playground.css" />
-		<script type="text/javascript" src="js/node_modules/jsonld/dist/jsonld.js"></script>
-		<script type="text/javascript" src="js/ajv.min.js"></script>
-		<script type="text/javascript" src="js/jquery-2.2.3.js"></script>
-		<script type="text/javascript" src="js/jquery-linedtextarea.js"></script>
-		<script type="text/javascript" src="js/playground.js"></script>
-	</head>
-	<body>
-		<div class="pure-g wrap">
-			<h1 class="pure-u-1 header">Thing Description Playground</h1>
-			<h3 class="pure-u-1 header">Validation of Thing Descriptions according to the  <a href="https://w3c.github.io/wot-thing-description/#" target="_blank">W3C Editor's Draft 21 September 2018</a></h3>
-			<form class="main" action="javascript:validate()" method="post">
-			<div class="pure-u-1">
-				<pre>Example Thing Descriptions are found <a href="https://github.com/thingweb/thingweb-playground/tree/master/WebContent/Examples/Bundang" target="_blank">here</a></pre>
+
+<head>
+	<meta charset="utf-8">
+	<title>Thing Description Playground - Validate your W3C Thing Description</title>
+	<link rel="stylesheet" type="text/css" href="css/pure-0.6.0.css" />
+	<link rel="stylesheet" type="text/css" href="css/jquery-linedtextarea.css" />
+	<link rel="stylesheet" type="text/css" href="css/playground.css" />
+	<script type="text/javascript" src="js/node_modules/jsonld/dist/jsonld.js"></script>
+	<script type="text/javascript" src="js/ajv.min.js"></script>
+	<script type="text/javascript" src="js/jquery-2.2.3.js"></script>
+	<script type="text/javascript" src="js/jquery-linedtextarea.js"></script>
+	<script type="text/javascript" src="js/playground.js"></script>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+	 crossorigin="anonymous">
+	<!--[if lte IE 8]>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-old-ie-min.css">
+<![endif]-->
+	<!--[if gt IE 8]><!-->
+	<link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css">
+	<!--<![endif]-->
+</head>
+<header>
+	<div class="container">
+		<img alt="Thingweb logo" src="logo.png">
+	</div>
+</header>
+
+<body>
+
+	<div class="pure-g wrap">
+		<h1 class="pure-u-1 header">Thing Description Playground</h1>
+		<h3 class="pure-u-1 header">Validation of Thing Descriptions according to the <a href="https://w3c.github.io/wot-thing-description/#"
+			 target="_blank">W3C Editor's Draft 21 September 2018</a></h3>
+		<form class="main" action="javascript:validate()" method="post">
+
+			<div class="pure-u-1 pure-u-md-3-24">
+				<pre>Examples</pre>
 			</div>
-			<div class="pure-u-3-5">
+			<div class="pure-u-1 pure-u-md-5-24">
+				<a class="pure-button button-success pure-button-active" href="https://github.com/thingweb/thingweb-playground/tree/master/WebContent/Examples/Bundang/Valid"
+				 target="_blank">
+					<i class="fas fa-check"></i>
+					Valid TDs
+				</a>
+			</div>
+			<div class="pure-u-1 pure-u-md-5-24">
+				<a class="pure-button button-warning pure-button-active" href="https://github.com/thingweb/thingweb-playground/tree/master/WebContent/Examples/Bundang/Warning"
+				 target="_blank">
+					<i class="fas fa-exclamation"></i>
+					Warning TDs
+				</a>
+			</div>
+			<div class="pure-u-1 pure-u-md-5-24">
+				<a class="pure-button button-error pure-button-active" href="#" target="_blank">
+					<i class="fas fa-times"></i>
+					Invalid TDs
+				</a>
+			</div>
+
+			<div class="pure-u-1 pure-u-md-3-4">
 				<textarea autofocus id="td-text" name="td-text" rows="20" placeholder="Enter Thing Description here..."></textarea>
 			</div>
-			<div class="pure-u-2-5">
+			<div class="pure-u-1 pure-u-md-1-4">
 				<div class="panel">
 					<table class="pure-table">
 						<tbody>
@@ -70,7 +109,8 @@
 							</tr>
 							<tr>
 								<td>JSON Schema Error?</td>
-								<td>Paste <a href="https://raw.githubusercontent.com/thingweb/thingweb-playground/master/WebContent/td-schema-bundang-simple.json" target="_blank">this schema</a>, <a href="https://jsonschemalint.com/#/version/draft-06/markup/json" target="_blank">here</a></td>
+								<td>Paste <a href="https://raw.githubusercontent.com/thingweb/thingweb-playground/master/WebContent/td-schema-bundang-simple.json"
+									 target="_blank">this schema</a>, <a href="https://jsonschemalint.com/#/version/draft-06/markup/json" target="_blank">here</a></td>
 							</tr>
 							<tr>
 								<td>JSON-LD Error?</td>
@@ -82,8 +122,42 @@
 			</div>
 		</form>
 		<div class="pure-u-1">
-		<pre id="console">Waiting for validation...&#13;&#10;</pre>
+			<pre id="console">Waiting for validation...&#13;&#10;</pre>
+		</div>
 	</div>
-</div>
+	
+	<div class="footer-shape">
+		<img src="footer-shape.jpg" width="100%">
+	</div>
+	<footer>
+		<div class="links">
+			<ul>
+				<li>
+					<a href="http://www.eclipse.org/">Eclipse Foundation</a>
+				</li>
+				<li>|</li>
+				<li>
+					<a href="http://www.eclipse.org/legal/privacy.php">Privacy policy</a>
+				</li>
+				<li>|</li>
+				<li>
+					<a href="http://www.eclipse.org/legal/termsofuse.php">Terms of use</a>
+				</li>
+				<li>|</li>
+				<li>
+					<a href="http://www.eclipse.org/legal/copyright.php">Copyright</a>
+				</li>
+				<li>|</li>
+				<li>
+					<a href="http://www.eclipse.org/legal">Legal</a>
+				</li>
+			</ul>
+		</div>
+		<div>
+			<p>Copyrights © 2018 Eclipse Thingweb. All Rights Reserved.</p>
+		</div>
+	</footer>
+
 </body>
+
 </html>
