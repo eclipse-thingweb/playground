@@ -102,9 +102,9 @@ fs.readFile(storedTdAddress, (err, tdData) => {
 
             } else {
 
-                console.error('X JSON Schema validation... KO:');
+                console.log('X JSON Schema validation... KO:');
                 //console.log(ajv.errors);
-                console.error('> ' + ajv.errorsText());
+                console.log('> ' + ajv.errorsText());
             }
 
             //json ld validation
@@ -118,8 +118,8 @@ fs.readFile(storedTdAddress, (err, tdData) => {
 
                 } else {
 
-                    console.error('X JSON-LD validation... KO:');
-                    console.error('> ' + err);
+                    console.log('X JSON-LD validation... KO:');
+                    console.log('> ' + err);
                 }
             });
 
@@ -158,7 +158,7 @@ function transformHref(td) {
                         }
                     }
                 } else if (curProperty.hasOwnProperty("form")) {
-                    console.warn('! Warning: forms is used instead of form at property' + curPropertyName);
+                    console.log('! Warning: forms is used instead of form at property' + curPropertyName);
                 } else {
                     //form is not mandatory
                 }
@@ -192,7 +192,7 @@ function transformHref(td) {
                         }
                     }
                 } else if (curAction.hasOwnProperty("form")) {
-                    console.warn('! Warning: forms is used instead of form at action' + curActionName);
+                    console.log('! Warning: forms is used instead of form at action' + curActionName);
                 } else {
                     //form is not mandatory
                 }
@@ -226,7 +226,7 @@ function transformHref(td) {
                         }
                     }
                 } else if (curEvent.hasOwnProperty("form")) {
-                    console.warn('! Warning: forms is used instead of form at event' + curEventName);
+                    console.log('! Warning: forms is used instead of form at event' + curEventName);
                 } else {
                     //form is not mandatory
                 }
@@ -262,7 +262,7 @@ function transformHref(td) {
                         }
                     }
                 } else if (curProperty.hasOwnProperty("form")) {
-                    console.warn('! Warning: forms is used instead of form at property' + curPropertyName);
+                    console.log('! Warning: forms is used instead of form at property' + curPropertyName);
                 } else {
                     //form is not mandatory
                 }
@@ -296,7 +296,7 @@ function transformHref(td) {
                         }
                     }
                 } else if (curAction.hasOwnProperty("form")) {
-                    console.warn('! Warning: forms is used instead of form at action' + curActionName);
+                    console.log('! Warning: forms is used instead of form at action' + curActionName);
                 } else {
                     //form is not mandatory
                 }
@@ -330,7 +330,7 @@ function transformHref(td) {
                         }
                     }
                 } else if (curEvent.hasOwnProperty("form")) {
-                    console.warn('! Warning: forms is used instead of form at event' + curEventName);
+                    console.log('! Warning: forms is used instead of form at event' + curEventName);
                 } else {
                     //form is not mandatory
                 }
@@ -360,7 +360,7 @@ function checkEnumConst(td) {
             var curPropertyName = tdProperties[i];
             var curProperty = td.properties[curPropertyName];
             if (curProperty.hasOwnProperty("enum") && curProperty.hasOwnProperty("const")) {
-                console.warn('! Warning: In property ' + curPropertyName + ' enum and const are used at the same time, the values in enum can never be valid in the received JSON value');
+                console.log('! Warning: In property ' + curPropertyName + ' enum and const are used at the same time, the values in enum can never be valid in the received JSON value');
             }
         }
     }
@@ -373,7 +373,7 @@ function checkEnumConst(td) {
             if (curAction.hasOwnProperty("input")) {
                 var curInput = curAction.input;
                 if (curInput.hasOwnProperty("enum") && curInput.hasOwnProperty("const")) {
-                    console.warn('! Warning: In the input of action ' + curActionName + ' enum and const are used at the same time, the values in enum can never be valid in the received JSON value');
+                    console.log('! Warning: In the input of action ' + curActionName + ' enum and const are used at the same time, the values in enum can never be valid in the received JSON value');
                 }
             }
             if (curAction.hasOwnProperty("output")) {
@@ -392,7 +392,7 @@ function checkEnumConst(td) {
             var curEventName = tdEvents[i];
             var curEvent = td.events[curEventName];
             if (curEvent.hasOwnProperty("enum") && curEvent.hasOwnProperty("const")) {
-                console.warn('! Warning: In event ' + curEventName + ' enum and const are used at the same time, the values in enum can never be valid in the received JSON value');
+                console.log('! Warning: In event ' + curEventName + ' enum and const are used at the same time, the values in enum can never be valid in the received JSON value');
 
             }
         }
@@ -411,11 +411,11 @@ function checkPropItems(td) {
 
             if (curProperty.hasOwnProperty("type")) {
                 if ((curProperty.type == "object") && !(curProperty.hasOwnProperty("properties"))) {
-                    console.warn('! Warning: In property ' + curPropertyName + ', the type is object but its properties are not specified');
+                    console.log('! Warning: In property ' + curPropertyName + ', the type is object but its properties are not specified');
 
                 }
                 if ((curProperty.type == "array") && !(curProperty.hasOwnProperty("items"))) {
-                    console.warn('! Warning: In property ' + curPropertyName + ', the type is array but its items are not specified');
+                    console.log('! Warning: In property ' + curPropertyName + ', the type is array but its items are not specified');
 
                 }
             }
@@ -432,11 +432,11 @@ function checkPropItems(td) {
                 var curInput = curAction.input;
                 if (curInput.hasOwnProperty("type")) {
                     if ((curInput.type == "object") && !(curInput.hasOwnProperty("properties"))) {
-                        console.warn('! Warning: In the input of action ' + curActionName + ', the type is object but its properties are not specified');
+                        console.log('! Warning: In the input of action ' + curActionName + ', the type is object but its properties are not specified');
 
                     }
                     if ((curInput.type == "array") && !(curInput.hasOwnProperty("items"))) {
-                        console.warn('! Warning: In the output of action ' + curActionName + ', the type is array but its items are not specified');
+                        console.log('! Warning: In the output of action ' + curActionName + ', the type is array but its items are not specified');
 
                     }
                 }
@@ -445,11 +445,11 @@ function checkPropItems(td) {
                 var curOutput = curAction.output;
                 if (curOutput.hasOwnProperty("type")) {
                     if ((curOutput.type == "object") && !(curOutput.hasOwnProperty("properties"))) {
-                        console.warn('! Warning: In the output of action ' + curActionName + ', the type is object but its properties are not specified');
+                        console.log('! Warning: In the output of action ' + curActionName + ', the type is object but its properties are not specified');
 
                     }
                     if ((curOutput.type == "array") && !(curOutput.hasOwnProperty("items"))) {
-                        console.warn('! Warning: In the output of action ' + curActionName + ', the type is array but its items are not specified');
+                        console.log('! Warning: In the output of action ' + curActionName + ', the type is array but its items are not specified');
 
                     }
                 }
@@ -465,11 +465,11 @@ function checkPropItems(td) {
 
             if (curEvent.hasOwnProperty("type")) {
                 if ((curEvent.type == "object") && !(curEvent.hasOwnProperty("properties"))) {
-                    console.warn('! In event ' + curEventName + ', the type is object but its properties are not specified');
+                    console.log('! In event ' + curEventName + ', the type is object but its properties are not specified');
 
                 }
                 if ((curEvent.type == "array") && !(curEvent.hasOwnProperty("items"))) {
-                    console.warn('! In event ' + curEventName + ', the type is array but its items are not specified');
+                    console.log('! In event ' + curEventName + ', the type is array but its items are not specified');
 
                 }
             }
@@ -482,11 +482,11 @@ function checkPropItems(td) {
 //checking whether the td contains interactions field that is remaining from the previous spec
 function checkInteractions(td) {
     if (td.hasOwnProperty("interactions")) {
-        console.warn('interactions are from the previous TD Specification, please use properties, actions, events instead');
+        console.log('interactions are from the previous TD Specification, please use properties, actions, events instead');
 
     }
     if (td.hasOwnProperty("interaction")) {
-        console.warn('interaction are from the previous TD Specification, please use properties, actions, events instead');
+        console.log('interaction are from the previous TD Specification, please use properties, actions, events instead');
 
     }
     return;

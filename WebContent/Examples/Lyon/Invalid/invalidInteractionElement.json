@@ -1,0 +1,33 @@
+{
+    "id": "urn:dev:wot:com:example:servient:lamp",
+    "name": "MyLampThing",
+    "description": "Invalid TD since the interaction called wrongAction is not object",
+    "security": [{
+        "scheme": "basic"
+    }],
+    "properties": {
+        "status": {
+            "type": "string",
+            "forms": [{
+                "href": "https://mylamp.example.com/status"
+            }]
+        }
+    },
+    "actions": {
+        "wrongAction":"shouldBeObject",
+        "toggle": {
+            "forms": [{
+                "href": "https://mylamp.example.com/toggle"
+            }]
+        }
+    },
+    "events": {
+        "overheating": {
+            "type": "string",
+            "forms": [{
+                "href": "https://mylamp.example.com/oh",
+                "subProtocol": "LongPoll"
+            }]
+        }
+    }
+}

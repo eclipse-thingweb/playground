@@ -34,7 +34,6 @@ body {
 textarea {
 	font-family: 'Droid Sans Mono', "Courier New", monospace;
 	width: 100%;
-	height: 100%;
 }
 
 .button-success,
@@ -94,9 +93,9 @@ footer a {
 	color: white;
 	font-family: 'Open Sans', sans-serif;
 	font-size: 17px;
-	padding: 10px 5px;
+	padding: 50px 5px;
 	text-decoration-line: none;
-	background: black;
+	background: #141414;
 	/* margin-top: 10px */
 }
 
@@ -106,9 +105,10 @@ footer p {
 	font-size: 14px;
 	/* padding-top: 12px; */
 	background: black;
-	margin-top: -20px;
+	margin-top: -1%;
 	padding-bottom: 100px;
-	text-align: center
+	text-align: center;
+	background: #141414;
 }
 
 header img {
@@ -117,7 +117,7 @@ header img {
 }
 
 .links {
-	background: black;
+	background: #141414;
 }
 
 .container {
