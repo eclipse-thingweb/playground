@@ -23,7 +23,7 @@
             "type": "string"
         },
         "properties": {
-            "additionalProperties": {              
+            "additionalProperties": {
                 "$ref": "#/definitions/property_element"
             }
         },
@@ -202,10 +202,8 @@
                         "$ref": "#/definitions/form_element"
                     }
                 },
-                "input": {
-                },
-                "output": {
-                },
+                "input": {},
+                "output": {},
                 "scopes": {
                     "type": "array",
                     "items": {
