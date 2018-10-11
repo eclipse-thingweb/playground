@@ -69,13 +69,17 @@ function log(message) {
 }
 
 $(function() {
+    console.log("one");
     $('#td-text').linedtextarea();
     $.getJSON('td-schema-lyon.json', function(schema) {
+        console.log("two");
         ajv = Ajv();
         $.getJSON('json-schema-draft-06.json', function(draft) {
+            console.log("three");
             ajv.addMetaSchema(draft);
             ajv.addSchema(schema, 'td');
             document.addEventListener('validate-json', function(e) {
+                console.log("four");
                 try {
                     tdJson = JSON.parse(e.detail);
                     light('OK', 'spot-json');
@@ -89,10 +93,6 @@ $(function() {
                     }
                 }
             }, false);
-
-document.addEventListener('valids', function (e) {
-    console.log("asda");
-});
 
             document.addEventListener('validate-json-schema', function(e) {
                 if (tdJson.hasOwnProperty('properties')||tdJson.hasOwnProperty('actions')||tdJson.hasOwnProperty('events')) {
