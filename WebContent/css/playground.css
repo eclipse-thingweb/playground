@@ -4,6 +4,9 @@
 	/* width: 50%; */
 
 }
+body {
+	background-color: white;
+}
 
 .wrap {
 	max-width: 90%;
@@ -31,6 +34,7 @@
 textarea {
 	font-family: 'Droid Sans Mono', "Courier New", monospace;
 	width: 100%;
+	height: 100%;
 }
 
 .button-success,

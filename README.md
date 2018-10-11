@@ -18,6 +18,18 @@ Validation tool for W3C WoT Thing Descriptions. Your Thing Descriptions should b
     + Warning: 4 lights are lit green, at least one warning message is displayed, starting with ! in the console
     + Invalid: At least one of the 4 lights are lit red.
 
+
+## Batch Testing
+
+For Linux:
+* Open a bash console in terminal
+* From the root directory of the playground, run `./batchTest.sh`
+    * This tests all the TDs in `WebContent/Examples/Lyon`
+        * A TD in `Valid` directory should be valid
+        * A TD in `Invalid` directory should be invalid, giving an error in at least one check
+        * A TD in `Warning` directory should give at least one warning in a check but should be valid at the same time
+* In order to test batch TDs, put them in the `WebContent/Examples/Lyon/Valid` directory.
+
 ## To-Do
 
 * test cases: 
