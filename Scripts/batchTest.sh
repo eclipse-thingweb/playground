@@ -11,7 +11,20 @@
 
 # This script tests Thing Descriptions found in the sub directories
 
+####################################################################################################################################
+# TD Counter
+####################################################################################################################################
 
+tdCount=0
+for curTD in $( ls ./WebContent/Examples/Lyon/Valid); do
+tdCount=$((tdCount+1))
+done
+for curTD in $( ls ./WebContent/Examples/Lyon/Invalid); do
+tdCount=$((tdCount+1))
+done
+for curTD in $( ls ./WebContent/Examples/Lyon/Warning); do
+tdCount=$((tdCount+1))
+done
 
 ####################################################################################################################################
 # Validity Test. These test should not produce any warning or error
@@ -23,7 +36,7 @@ countIsValid=0 # How many TDs of that directory are valid
 
 for curTD in $( ls ./WebContent/Examples/Lyon/Valid); do
     countValidTotal=$((countValidTotal+1))
-    echo item: $curTD
+    echo $countValidTotal "/" $tdCount "TD:" $curTD
     output=$(node Scripts/playground.js ./WebContent/Examples/Lyon/Valid/$curTD)
     #echo "my output is" $output
 
@@ -64,7 +77,7 @@ countIsInvalid=0
 
 for curTD in $( ls ./WebContent/Examples/Lyon/Invalid); do
     countInvalidTotal=$((countInvalidTotal+1))
-    echo item: $curTD
+    echo $((countValidTotal+countInvalidTotal)) "/" $tdCount "TD:" $curTD
     output=$(node Scripts/playground.js ./WebContent/Examples/Lyon/Invalid/$curTD)
     #echo "my output is" $output
 
@@ -84,7 +97,7 @@ else
     if [[ $countIsInvalid == $countInvalidTotal ]]; then
         echo "Invalidity test succesful. All TDs that are supposed to be invalid are indeed invalid"
     else 
-        echo "Invalidity test NOT succesful, " $countIsInvalid "/" $countInvalidTotal "passed the validity test"
+        echo "Invalidity test NOT succesful, " $countIsInvalid "/" $countInvalidTotal "passed the invalidity test"
     fi
 fi
 
@@ -98,8 +111,8 @@ countIsWarning=0
 
 for curTD in $( ls ./WebContent/Examples/Lyon/Warning); do
     countWarningTotal=$((countWarningTotal+1))
-    echo item: $curTD
-    output=$(node Scripts/playground.js ./WebContent/Examples/Lyon/Valid/$curTD)
+    echo $((countWarningTotal+countValidTotal+countInvalidTotal)) "/" $tdCount "TD:" $curTD
+    output=$(node Scripts/playground.js ./WebContent/Examples/Lyon/Warning/$curTD)
     #echo "my output is" $output
 
     if [[ $output == *"KO"* ]]; then
@@ -108,7 +121,7 @@ for curTD in $( ls ./WebContent/Examples/Lyon/Warning); do
         
     elif [[ $output == *"Warning"* ]]; then
         #echo $curTD "has passed the warning test"
-        countWarningTotal=$((countWarningTotal+1))
+        countIsWarning=$((countIsWarning+1))
 
     elif [[ $output == *"JSON-LD validation... OK"* ]]; then
         echo $curTD "was supposed to give a warning but passed all the tests"
@@ -122,8 +135,8 @@ if [[ $countWarningTotal == 0 ]]; then
     echo "No warning TDs to check has been found"
 else
     if [[ $countIsWarning == $countWarningTotal ]]; then
-        echo "Warning test succesful. All TDs that are supposed to be valid are indeed valid"
+        echo "Warning test succesful. All TDs that are supposed to give warning gave warning"
     else 
-        echo "Warning test NOT succesful, " $countIsWarning "/" $countWarningTotal "passed the validity test"
+        echo "Warning test NOT succesful, " $countIsWarning "/" $countWarningTotal "passed the warning test"
     fi
 fi

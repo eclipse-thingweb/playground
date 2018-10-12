@@ -1,7 +1,7 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
     "name": "MyLampThing",
-    "description": "Valid TD demonstrating how to use security in the root of the TD",
+    "description": "Valid TD demonstrating how to use links",
     "security": [
         {
             "scheme": "basic"
@@ -36,5 +36,10 @@
                 }
             ]
         }
-    }
+    },
+    "links": [{
+        "href": "https://servient.example.com/things/lampController",
+        "rel": "controlledBy",
+        "mediaType": "application/td+json"
+    }]
 }

@@ -1,10 +1,7 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
     "name": "MyLampThing",
-    "description": "Invalid TD since the interaction called wrongAction is not object",
-    "security": [{
-        "scheme": "basic"
-    }],
+    "description": "Warning TD since there is no security key for any form",
     "properties": {
         "status": {
             "type": "string",
@@ -14,7 +11,6 @@
         }
     },
     "actions": {
-        "wrongAction":"shouldBeObject",
         "toggle": {
             "forms": [{
                 "href": "https://mylamp.example.com/toggle"
@@ -23,8 +19,8 @@
     },
     "events": {
         "overheating": {
-            "data":{
-            "type": "string"
+            "data": {
+                "type": "string"
             },
             "forms": [{
                 "href": "https://mylamp.example.com/oh",
@@ -32,4 +28,5 @@
             }]
         }
     }
+
 }

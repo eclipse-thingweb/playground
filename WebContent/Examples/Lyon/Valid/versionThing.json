@@ -1,7 +1,7 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
     "name": "MyLampThing",
-    "description": "Valid TD demonstrating how to use security in the root of the TD",
+    "description": "Valid TD demonstrating how to use version with additional fields",
     "security": [
         {
             "scheme": "basic"
@@ -36,5 +36,10 @@
                 }
             ]
         }
+    },
+    "version": {
+        "instance": "1.2.1",
+        "xyz:firmware": "0.9.1",
+        "xyz:hardware": "1.0"
     }
 }

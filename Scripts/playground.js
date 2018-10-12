@@ -99,6 +99,7 @@ fs.readFile(storedTdAddress, (err, tdData) => {
                 checkEnumConst(tdJson);
                 checkPropItems(tdJson);
                 checkInteractions(tdJson);
+                checkSecurity(tdJson);
 
             } else {
 
@@ -482,12 +483,81 @@ function checkPropItems(td) {
 //checking whether the td contains interactions field that is remaining from the previous spec
 function checkInteractions(td) {
     if (td.hasOwnProperty("interactions")) {
-        console.log('interactions are from the previous TD Specification, please use properties, actions, events instead');
-
+        console.log('! Warning: interactions are from the previous TD Specification, please use properties, actions, events instead');
     }
     if (td.hasOwnProperty("interaction")) {
-        console.log('interaction are from the previous TD Specification, please use properties, actions, events instead');
+        console.log('! Warning: interaction are from the previous TD Specification, please use properties, actions, events instead');
 
     }
     return;
+}
+
+function checkSecurity(td) {
+    if (td.hasOwnProperty("security")) {
+//all good
+    } else {
+
+        if (td.hasOwnProperty("properties")) {
+            //checking properties
+            tdProperties = Object.keys(td.properties);
+            for (var i = 0; i < tdProperties.length; i++) {
+                var curPropertyName = tdProperties[i];
+                var curProperty = td.properties[curPropertyName];
+                if (curProperty.hasOwnProperty("security")) {
+                    //all good
+                } else {
+                    var curForms = curProperty.forms;
+                    for (var j = 0; j < curForms.length; j++) {
+                        var curForm = curForms[j];
+                        if (curForm.hasOwnProperty("security")) {
+                            //all good
+                        } else {
+                            console.log('! Warning: In property ' + curPropertyName + `, form ` + j + ' has no security scheme. TD should have either in the root OR for every form OR for every interaction');
+                        }
+                    }
+                }
+            }
+            if (td.hasOwnProperty("actions")) {
+                tdActions = Object.keys(td.actions);
+                for (var i = 0; i < tdActions.length; i++) {
+                    var curActionName = tdActions[i];
+                    var curAction = td.actions[curActionName];
+                    if (curAction.hasOwnProperty("security")) {
+                        //all good
+                    } else {
+                        var curForms = curAction.forms;
+                        for (var j = 0; j < curForms.length; j++) {
+                            var curForm = curForms[j];
+                            if (curForm.hasOwnProperty("security")) {
+                                //all good
+                            } else {
+                                console.log('! Warning: In action ' + curActionName + `, form ` + j + ' has no security scheme. TD should have either in the root OR for every form OR for every interaction');
+                            }
+                        }
+                    }
+                }
+            }
+            if (td.hasOwnProperty("events")) {
+                tdEvents = Object.keys(td.events);
+                for (var i = 0; i < tdEvents.length; i++) {
+                    var curEventName = tdEvents[i];
+                    var curEvent = td.events[curEventName];
+                    if (curEvent.hasOwnProperty("security")) {
+                        //all good
+                    } else {
+                        var curForms = curEvent.forms;
+                        for (var j = 0; j < curForms.length; j++) {
+                            var curForm = curForms[j];
+                            if (curForm.hasOwnProperty("security")) {
+                                //all good
+                            } else {
+                                console.log('! Warning: In event ' + curEventName + `, form ` + j + ' has no security scheme. TD should have either in the root OR for every form OR for every interaction');
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+return;
 }

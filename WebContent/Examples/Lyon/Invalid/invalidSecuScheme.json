@@ -1,10 +1,10 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
     "name": "MyLampThing",
-    "description": "Valid TD demonstrating how to use security in the root of the TD",
+    "description": "Invalid TD since security contains an unknown scheme",
     "security": [
         {
-            "scheme": "basic"
+            "scheme": "myScheme"
         }
     ],
     "properties": {

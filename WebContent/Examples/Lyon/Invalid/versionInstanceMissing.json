@@ -1,7 +1,7 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
     "name": "MyLampThing",
-    "description": "Valid TD demonstrating how to use security in the root of the TD",
+    "description": "Invalid TD since instance key is missing from version",
     "security": [
         {
             "scheme": "basic"
@@ -36,5 +36,9 @@
                 }
             ]
         }
+    },
+    "version": {
+        "xyz:firmware": "0.9.1",
+        "xyz:hardware": "1.0"
     }
 }

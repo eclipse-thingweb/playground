@@ -9,7 +9,7 @@
     ],
     "properties": {
         "status": {
-            "type": "string",
+            "enum": [],
             "forms": [
                 {
                     "href": "https://mylamp.example.com/status"

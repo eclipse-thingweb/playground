@@ -12,7 +12,8 @@
             "type": "string",
             "forms": [
                 {
-                    "href": "https://mylamp.example.com/status"
+                    "href": "https://mylamp.example.com/status",
+                    "op": ["writeProperty","invokeAction"]
                 }
             ]
         }

@@ -1,7 +1,7 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
     "name": "MyLampThing",
-    "description": "Valid TD demonstrating how to use security in the root of the TD",
+    "description": "Invalid TD since it is not allowed to have type outside data, subscription or cancellation in events",
     "security": [
         {
             "scheme": "basic"
@@ -28,7 +28,7 @@
     },
     "events": {
         "overheating": {
-            "data":{"type": "string"},
+            "type":"string",
             "forms": [
                 {
                     "href": "https://mylamp.example.com/oh",

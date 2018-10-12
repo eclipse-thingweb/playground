@@ -1,12 +1,7 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
     "name": "MyLampThing",
-    "description": "Valid TD demonstrating how to use security in the root of the TD",
-    "security": [
-        {
-            "scheme": "basic"
-        }
-    ],
+    "description": "Invalid TD since security contains an unknown scheme",
     "properties": {
         "status": {
             "type": "string",
@@ -21,14 +16,21 @@
         "toggle": {
             "forms": [
                 {
-                    "href": "https://mylamp.example.com/toggle"
+                    "href": "https://mylamp.example.com/toggle",
+                    "security": [
+                        {
+                            "scheme": "myScheme"
+                        }
+                    ]
                 }
             ]
         }
     },
     "events": {
         "overheating": {
-            "data":{"type": "string"},
+            "data": {
+                "type": "string"
+            },
             "forms": [
                 {
                     "href": "https://mylamp.example.com/oh",

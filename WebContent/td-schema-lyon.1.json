@@ -52,14 +52,14 @@
                 "$ref": "#/definitions/securityScheme"
             }
         },
-        "version": {
-            "type": "object",
-            "properties": {
-                "instance": {
-                    "type": "string"
+        "version":{
+            "type":"object",
+            "properties":{
+                "instance":{
+                    "type":"string"
                 }
             },
-            "required": [
+            "required":[
                 "instance"
             ]
         }
@@ -118,33 +118,15 @@
                 "href": {
                     "$ref": "#/definitions/url"
                 },
-                "op": {
-                    "oneOf": [
-                        {
-                            "type": "string",
-                            "enum": [
-                                "readProperty",
-                                "writeProperty",
-                                "observeProperty",
-                                "invokeAction",
-                                "subscribeEvent",
-                                "unsubscribeEvent"
-                            ]
-                        },
-                        {
-                            "type": "array",
-                            "items": {
-                                "type": "string",
-                                "enum": [
-                                    "readProperty",
-                                    "writeProperty",
-                                    "observeProperty",
-                                    "invokeAction",
-                                    "subscribeEvent",
-                                    "unsubscribeEvent"
-                                ]
-                            }
-                        }
+                "rel": {
+                    "type": "string",
+                    "enum": [
+                        "readproperty",
+                        "writeproperty",
+                        "observeproperty",
+                        "invokeaction",
+                        "subscribeevent",
+                        "unsubscribeevent"
                     ]
                 },
                 "mediaType": {
@@ -162,7 +144,7 @@
                         "type": "string"
                     }
                 },
-                "subProtocol": {
+                "subprotocol": {
                     "type": "string",
                     "enum": [
                         "LongPoll"
@@ -183,11 +165,11 @@
                 "title": {
                     "type": "string"
                 },
-                "uriVariables": {
-                    "$ref": "#/definitions/dataSchema"
-                },
                 "@type": {
                     "$ref": "#/definitions/type_declaration"
+                },
+                "label": {
+                    "type": "string"
                 },
                 "writable": {
                     "type": "boolean"
@@ -212,24 +194,6 @@
                     "items": {
                         "$ref": "#/definitions/securityScheme"
                     }
-                },
-                "enum": {
-                    "type": "array",
-                    "minItems": 1,
-                    "uniqueItems": true
-                },
-                "const": {},
-                "type": {
-                    "type": "string",
-                    "enum": [
-                        "boolean",
-                        "integer",
-                        "number",
-                        "string",
-                        "object",
-                        "array",
-                        "null"
-                    ]
                 }
             },
             "required": [
@@ -246,11 +210,11 @@
                 "title": {
                     "type": "string"
                 },
-                "uriVariables": {
-                    "$ref": "#/definitions/dataSchema"
-                },
                 "@type": {
                     "$ref": "#/definitions/type_declaration"
+                },
+                "label": {
+                    "type": "string"
                 },
                 "forms": {
                     "type": "array",
@@ -258,12 +222,8 @@
                         "$ref": "#/definitions/form_element"
                     }
                 },
-                "input": {
-                    "$ref": "#/definitions/dataSchema"
-                },
-                "output": {
-                    "$ref": "#/definitions/dataSchema"
-                },
+                "input": {},
+                "output": {},
                 "scopes": {
                     "type": "array",
                     "items": {
@@ -288,14 +248,14 @@
                 "description": {
                     "type": "string"
                 },
-                "uriVariables": {
-                    "$ref": "#/definitions/dataSchema"
-                },
                 "title": {
                     "type": "string"
                 },
                 "@type": {
                     "$ref": "#/definitions/type_declaration"
+                },
+                "label": {
+                    "type": "string"
                 },
                 "forms": {
                     "type": "array",
@@ -314,24 +274,6 @@
                     "items": {
                         "$ref": "#/definitions/securityScheme"
                     }
-                },
-                "subscription": {
-                    "$ref": "#/definitions/dataSchema"
-                },
-                "data": {
-                    "$ref": "#/definitions/dataSchema"
-                },
-                "cancellation": {
-                    "$ref": "#/definitions/dataSchema"
-                },
-                "type": {
-                    "not": {}
-                },
-                "enum": {
-                    "not": {}
-                },
-                "const": {
-                    "not": {}
                 }
             },
             "required": [
@@ -345,7 +287,7 @@
                 "description": {
                     "type": "string"
                 },
-                "title": {
+                "title":{
                     "type": "string"
                 },
                 "enum": {
@@ -353,20 +295,110 @@
                     "minItems": 1,
                     "uniqueItems": true
                 },
-                "const": {},
-                "type": {
-                    "type": "string",
-                    "enum": [
-                        "boolean",
-                        "integer",
-                        "number",
-                        "string",
-                        "object",
-                        "array",
-                        "null"
-                    ]
+                "const": {}
+            },
+            "oneOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "string"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "boolean"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "number"
+                            ]
+                        },
+                        "minimum": {
+                            "type": "number"
+                        },
+                        "maximum": {
+                            "type": "number"
+                        }
+                    }
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "integer"
+                            ]
+                        },
+                        "properties": {},
+                        "minimum": {
+                            "type": "integer"
+                        },
+                        "maximum": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "array"
+                            ]
+                        },
+                        "properties": {},
+                        "items": {
+                            "$ref ": "# / definitions / dataSchema "
+                        },
+                        "minItems": {
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "maxItems": {
+                            "type": "integer",
+                            "minimum": 0
+                        }
+                    }
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "object"
+                            ]
+                        },
+                        "properties": {
+                            "$ref": "#/definitions/dataSchema"
+                        },
+                        "required": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
                 }
-            }
+            ]
         },
         "link_element": {
             "type": "object",
