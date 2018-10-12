@@ -1,9 +1,15 @@
 .header {
 	font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	/* margin: auto; */
+	/* width: 50%; */
+
+}
+body {
+	background-color: white;
 }
 
 .wrap {
-	max-width: 840px;
+	max-width: 90%;
 	margin: 0 auto;
 }
 
@@ -30,6 +36,32 @@ textarea {
 	width: 100%;
 }
 
+.button-success,
+.button-error,
+.button-warning{
+	color: white;
+	border-radius: 4px;
+	font-size: 125%;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+
+}
+
+.button-success {
+	background: rgb(28, 184, 65);
+	/* height: 50px; */
+	/* this is a green */
+}
+
+.button-error {
+	background: rgb(202, 60, 60);
+	/* this is a maroon */
+}
+
+.button-warning {
+	background: rgb(223, 117, 20);
+	/* this is an orange */
+}
+
 #console {
 	font-family: 'Droid Sans Mono', "Courier New", monospace;
 	background: #333;
@@ -40,4 +72,54 @@ textarea {
 
 #spot-json, #spot-json-schema, #spot-json-ld, #spot-owl {
 	visibility: hidden;
+}
+
+.footer-shape img {
+	height: 200px;
+	vertical-align: middle;
+	border-style: none;
+}
+
+footer ul {
+	list-style: none;
+	/* padding: 15px 0; */
+	margin-top: -10px;
+	text-align: center
+}
+
+footer li,
+footer a {
+	display: inline-block;
+	color: white;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 17px;
+	padding: 50px 5px;
+	text-decoration-line: none;
+	background: #141414;
+	/* margin-top: 10px */
+}
+
+footer p {
+	color: white;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 14px;
+	/* padding-top: 12px; */
+	background: black;
+	margin-top: -1%;
+	padding-bottom: 100px;
+	text-align: center;
+	background: #141414;
+}
+
+header img {
+	display: block;
+	margin: auto;
+}
+
+.links {
+	background: #141414;
+}
+
+.container {
+	padding: 20px 0;
 }
