@@ -1,12 +1,15 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
     "name": "MyLampThing",
-    "description": "Warning TD since there is no security key for any form",
+    "description": "Error td since LongPoll shold be longpoll",
     "properties": {
         "status": {
             "type": "string",
             "forms": [{
                 "href": "https://mylamp.example.com/status"
+            }],
+            "security": [{
+                "scheme": "nosec"
             }]
         }
     },
@@ -14,6 +17,9 @@
         "toggle": {
             "forms": [{
                 "href": "https://mylamp.example.com/toggle"
+            }],
+            "security": [{
+                "scheme": "nosec"
             }]
         }
     },
@@ -24,7 +30,7 @@
             },
             "forms": [{
                 "href": "https://mylamp.example.com/oh",
-                "subProtocol": "longpoll"
+                "subProtocol": "LongPoll"
             }]
         }
     }
