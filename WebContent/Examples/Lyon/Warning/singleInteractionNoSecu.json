@@ -30,7 +30,7 @@
             },
             "forms": [{
                 "href": "https://mylamp.example.com/oh",
-                "subProtocol": "LongPoll"
+                "subProtocol": "longpoll"
             }]
         }
     }

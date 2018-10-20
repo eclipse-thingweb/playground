@@ -123,12 +123,12 @@
                         {
                             "type": "string",
                             "enum": [
-                                "readProperty",
-                                "writeProperty",
-                                "observeProperty",
-                                "invokeAction",
-                                "subscribeEvent",
-                                "unsubscribeEvent"
+                                "readproperty",
+                                "writeproperty",
+                                "observeproperty",
+                                "invokeaction",
+                                "subscribeevent",
+                                "unsubscribeevent"
                             ]
                         },
                         {
@@ -136,12 +136,12 @@
                             "items": {
                                 "type": "string",
                                 "enum": [
-                                    "readProperty",
-                                    "writeProperty",
-                                    "observeProperty",
-                                    "invokeAction",
-                                    "subscribeEvent",
-                                    "unsubscribeEvent"
+                                    "readproperty",
+                                    "writeproperty",
+                                    "observeproperty",
+                                    "invokeaction",
+                                    "subscribeevent",
+                                    "unsubscribeevent"
                                 ]
                             }
                         }
@@ -165,7 +165,7 @@
                 "subProtocol": {
                     "type": "string",
                     "enum": [
-                        "LongPoll"
+                        "longpoll"
                     ]
                 }
             },

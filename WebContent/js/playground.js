@@ -566,7 +566,7 @@ function checkSecurity(td) {
                         if (curForm.hasOwnProperty("security")) {
                             //all good
                         } else {
-                            log('! Warning: In property ' + curPropertyName + `, form ` + j + ' has no security scheme. TD should have either in the root OR for every form OR for every interaction');
+                            log('KO Error: In property ' + curPropertyName + `, form ` + j + ' has no security scheme. TD should have either in the root OR for every form OR for every interaction');
                             light('KO', 'spot-json-schema');
                         }
                     }
@@ -586,7 +586,7 @@ function checkSecurity(td) {
                             if (curForm.hasOwnProperty("security")) {
                                 //all good
                             } else {
-                                log('! Warning: In action ' + curActionName + `, form ` + j + ' has no security scheme. TD should have either in the root OR for every form OR for every interaction');
+                                log('KO Error: In action ' + curActionName + `, form ` + j + ' has no security scheme. TD should have either in the root OR for every form OR for every interaction');
                                 light('KO', 'spot-json-schema');
                             }
                         }
@@ -607,7 +607,7 @@ function checkSecurity(td) {
                             if (curForm.hasOwnProperty("security")) {
                                 //all good
                             } else {
-                                log('! Warning: In event ' + curEventName + `, form ` + j + ' has no security scheme. TD should have either in the root OR for every form OR for every interaction');
+                                log('KO Error: In event ' + curEventName + `, form ` + j + ' has no security scheme. TD should have either in the root OR for every form OR for every interaction');
                                 light('KO', 'spot-json-schema');
                             }
                         }
