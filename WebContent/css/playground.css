@@ -33,6 +33,7 @@ body {
 
 textarea {
 	font-family: 'Droid Sans Mono', "Courier New", monospace;
+	font-size: 100%;
 	width: 100%;
 }
 
