@@ -5,7 +5,6 @@ const Json2csvParser = require('json2csv').Parser;
 
 // Takes the second argument as the TD to validate
 
-
 var storedTdAddress;
 
 const draftLocation = "./AssertionTester/json-schema-draft-06.json";
@@ -45,8 +44,6 @@ fs.readFile(storedTdAddress, (err, tdData) => {
         throw err;
     }
 
-    var schemaLocation = "./AssertionTester/Assertions/td-additional-contexts.json";
-    //console.log(td);
 
     fs.readFile(draftLocation, (err, draftData) => {
         if (err) {
@@ -56,72 +53,84 @@ fs.readFile(storedTdAddress, (err, tdData) => {
         console.log("Taking Schema Draft found at ", draftLocation);
         var draft = JSON.parse(draftData);
 
-        fs.readFile(schemaLocation, (err, schemaData) => {
-                    
-            if (err) {
-                console.error("JSON Schema could not be found at ", schemaLocation);
-                throw err;
-            };
-            console.log("Taking Assertion Schema found at ", schemaLocation);
-            var schema = JSON.parse(schemaData);
+        // Iterating through assertions
 
-            // Validation starts here
+        var assertions = fs.readdirSync("./AssertionTester/Assertions/");
 
-            var ajv = new Ajv(); // options can be passed, e.g. {allErrors: true}
-            ajv.addMetaSchema(draft);
-            ajv.addSchema(schema, 'td');
+        assertions.forEach((curAssertion, index) => {
+            
+            var schemaLocation = "./AssertionTester/Assertions/" + curAssertion;
 
-            var valid = ajv.validate('td', tdJson);
-            //used to be var valid = ajv.validate('td', e.detail);
-            if (valid) {
-                console.log('JSON Schema validation... OK');
-                results.push({
-                    "assertion-id": schema.title,
-                    "result": "pass"
-                });
+            fs.readFile(schemaLocation, (err, schemaData) => {
 
-            } else {
-                console.log('X JSON Schema validation... KO:');
-                //console.log(ajv.errors);
-                console.log('> ' + ajv.errorsText());
-                if (ajv.errorsText().indexOf("required") > -1) {
-                    //failed because it doesnt have required thingy
+                if (err) {
+                    console.error("JSON Schema could not be found at ", schemaLocation);
+                    throw err;
+                };
+
+                console.log("Taking Assertion Schema found at ", schemaLocation);
+                var schema = JSON.parse(schemaData);
+
+                // Validation starts here
+
+                var ajv = new Ajv();
+                ajv.addMetaSchema(draft);
+                ajv.addSchema(schema, 'td');
+
+                var valid = ajv.validate('td', tdJson);
+                
+                if (valid) {
+                    console.log('Assertion '+ schema.title +' passed');
                     results.push({
                         "assertion-id": schema.title,
-                        "result": "not-impl",
-                        "additionalInfo": ajv.errorsText()
+                        "result": "pass"
                     });
+
                 } else {
-                    //failed because of some other reason
-                    results.push({
-                        "assertion-id": schema.title,
-                        "result": "fail",
-                        "additionalInfo": ajv.errorsText()
+                    
+                    console.log('> ' + ajv.errorsText());
+                    if (ajv.errorsText().indexOf("required") > -1) {
+                        //failed because it doesnt have required key which is a non implemented feature
+                        console.log('Assertion ' + schema.title + ' not implemented');
+                        results.push({
+                            "assertion-id": schema.title,
+                            "result": "not-impl",
+                            "additionalInfo": ajv.errorsText()
+                        });
+                    } else {
+                        //failed because of some other reason
+                        console.log('Assertion ' + schema.title + ' failed');
+                        results.push({
+                            "assertion-id": schema.title,
+                            "result": "fail",
+                            "additionalInfo": ajv.errorsText()
+                        });
+                    }
+                }
+
+                if (index == assertions.length-1) {
+                    console.log(results);
+                    var csv = json2csvParser.parse(results);
+
+                    console.log(csv);
+
+                    fs.writeFile("./AssertionTester/Results/result.json", JSON.stringify(results), function (err) {
+                        if (err) {
+                            return console.log(err);
+                        }
+
+                        console.log("The result json was saved!");
+                    });
+
+                    fs.writeFile("./AssertionTester/Results/result.csv", csv, function (err) {
+                        if (err) {
+                            return console.log(err);
+                        }
+
+                        console.log("The result csv was saved!");
                     });
                 }
-            }
-
-            console.log(results);
-            var csv = json2csvParser.parse(results);
-
-            console.log(csv);
-
-            fs.writeFile("./AssertionTester/Results/result.json", JSON.stringify(results), function (err) {
-                if (err) {
-                    return console.log(err);
-                }
-
-                console.log("The result json was saved!");
-            });
-
-            fs.writeFile("./AssertionTester/Results/result.csv", csv, function (err) {
-                if (err) {
-                    return console.log(err);
-                }
-
-                console.log("The result csv was saved!");
             });
         });
-
     });
 });

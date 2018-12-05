@@ -1,0 +1,23 @@
+{
+    "title": "td-version",
+    "description": "The mandatory vocabulary term as defined in the class Versioning, MUST be serialized as a JSON name.",
+    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "type": "object",
+    "properties": {
+        "version": {
+            "type": "object",
+            "properties": {
+                "instance": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "instance"
+            ]
+        }
+    },
+    "required": [
+        "version"
+    ],
+    "additionalProperties": true
+}
