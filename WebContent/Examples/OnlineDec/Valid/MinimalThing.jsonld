@@ -1,0 +1,5 @@
+{
+    "id": "urn:dev:wot:com:example:servient:lamp",
+    "name": "MyLampThing",
+    "description":"Valid TD with minimum information possible"
+}

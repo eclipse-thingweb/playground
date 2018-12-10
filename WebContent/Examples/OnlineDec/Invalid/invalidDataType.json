@@ -1,0 +1,22 @@
+{
+    "id": "urn:dev:wot:com:example:servient:lamp",
+    "name": "MyLampThing",
+    "description": "Invalid TD since the action contains a type that is not supported",
+    "security": [
+        {
+            "scheme": "basic"
+        }
+    ],
+    "actions": {
+        "status": {
+            "input": {
+                "type": "myAmazingType"
+            },
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status"
+                }
+            ]
+        }
+    }
+}

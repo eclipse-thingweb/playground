@@ -1,0 +1,39 @@
+{
+    "id": "urn:dev:wot:com:example:servient:lamp",
+    "description": "Invalid TD since it has no name key",
+    "security": [
+        {
+            "scheme": "basic"
+        }
+    ],
+    "properties": {
+        "status": {
+            "type": "string",
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status"
+                }
+            ]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/toggle"
+                }
+            ]
+        }
+    },
+    "events": {
+        "overheating": {
+            "data":{"type": "string"},
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/oh",
+                    "subProtocol": "LongPoll"
+                }
+            ]
+        }
+    }
+}
