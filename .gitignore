@@ -28,4 +28,5 @@ thingweb-playground.iml
 package-lock.json
 **/package-lock.json
 Scripts/node_modules
-Scripts/node_modules/*
+**/node_modules/*
+AssertionTester/Results/*

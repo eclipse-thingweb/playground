@@ -1,0 +1,41 @@
+{
+    "title": "td-additional-contexts",
+    "description": "When a single Thing Description instance involves several contexts, additional namespaces with prefixes MUST be appended to the @context array structure",
+    "also":["td-context"],
+    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "type": "object",
+    "properties": {
+        "@context": {
+            "$ref": "#/definitions/context"
+        }
+    },
+    "required": [
+        "@context"
+    ],
+    "additionalProperties": true,
+    "definitions": {
+        "context": {
+                "type": "array",
+                "items": {
+                    "anyOf": [{
+                            "$ref": "#/definitions/url"
+                        },
+                        {
+                            "type": "object"
+                        }
+                    ]
+                },
+                "contains": {
+                    "type": "string",
+                    "enum": [
+                        "http://www.w3.org/ns/td"
+                    ]
+                }           
+        },
+        "url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(([^#]*))?(#(.*))?"
+        }
+    }
+}
