@@ -9,7 +9,7 @@ var storedTdAddress;
 
 const draftLocation = "./AssertionTester/json-schema-draft-06.json";
 
-const fields = ['assertion-id', 'result'];
+const fields = ['ID', 'Status'];
 const json2csvParser = new Json2csvParser({
     fields
 });
@@ -82,8 +82,8 @@ fs.readFile(storedTdAddress, (err, tdData) => {
                 if (valid) {
                     console.log('Assertion '+ schema.title +' passed');
                     results.push({
-                        "assertion-id": schema.title,
-                        "result": "pass"
+                        "ID": schema.title,
+                        "Status": "pass"
                     });
 
                 } else {
@@ -93,16 +93,16 @@ fs.readFile(storedTdAddress, (err, tdData) => {
                         //failed because it doesnt have required key which is a non implemented feature
                         console.log('Assertion ' + schema.title + ' not implemented');
                         results.push({
-                            "assertion-id": schema.title,
-                            "result": "not-impl",
+                            "ID": schema.title,
+                            "Status": "not-impl",
                             "additionalInfo": ajv.errorsText()
                         });
                     } else {
                         //failed because of some other reason
                         console.log('Assertion ' + schema.title + ' failed');
                         results.push({
-                            "assertion-id": schema.title,
-                            "result": "fail",
+                            "ID": schema.title,
+                            "Status": "fail",
                             "additionalInfo": ajv.errorsText()
                         });
                     }
