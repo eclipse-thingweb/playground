@@ -78,6 +78,8 @@ fs.readFile(storedTdAddress, (err, tdData) => {
                 ajv.addSchema(schema, 'td');
 
                 var valid = ajv.validate('td', tdJson);
+
+                // TO-DO: Add a special check for td additional context. It should say not impl if the TD has a valid @context just as a string
                 
                 if (valid) {
                     console.log('Assertion '+ schema.title +' passed');
