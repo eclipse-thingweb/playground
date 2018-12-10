@@ -1,7 +1,9 @@
 # thingweb-playground
 Validation tool for W3C WoT Thing Descriptions. Your Thing Descriptions should be written according to the W3C standard found [here](https://w3c.github.io/wot-thing-description/#).
 
-## Using the Playground
+There are different tools that can be found in this repo. They will be split later on.
+
+## Browser based Thing Description Validation
 
 * Online: It is hosted [here](http://plugfest.thingweb.io/playground/)
     * Simply paste a TD in the text field and click validate
@@ -11,9 +13,20 @@ Validation tool for W3C WoT Thing Descriptions. Your Thing Descriptions should b
     * Simply paste a TD in the text field and click validate
     * Safari browser has unexpected behavior with JSON-LD documents
 
-* Script:
+## Script based Thing Description Validation
+
+This is a node.js based tool
+
     * Go to Scripts folder and run `npm install`
     * Run `node Scripts/playground.js "./WebContent/Examples/Bundang/Valid/MyLampThing.jsonld"` to validate a Thing Description found at `./WebContent/Examples/Bundang/Valid/MyLampThing.jsonld'. You can replace this with a TD you want to validate.
+
+## Script based Assertion Tester
+
+This tool checks which assertions are satisfied by a given Thing Description. The assertions are modeled as JSON Schema. This means that there are only JSON Schema testable assertions are checked. 'AssertionTester/Assertions' has these assertions. To use it from the root directory of the repository:
+* Run 'node ./AssertionTester/assertionTester.js an_example_TD_location'. E.g. 'node ./AssertionTester/assertionTester.js WebContent/Examples/Lyon/Valid/JsonLdThing.jsonld' 
+* The results are found in the 'AssertionTester/Results'
+  * There will be a .csv and a .json file. .csv has the format required by the test results display format and the .json has the same data and also the error message.
+  * The result can be pass, fail or not-impl 
 
 ## Examples
 
