@@ -15,7 +15,6 @@ hs_err_pid*
 /build/
 
 # eclipse and idea files
-
 .project
 .classpath
 .idea
@@ -29,4 +28,9 @@ package-lock.json
 **/package-lock.json
 Scripts/node_modules
 **/node_modules/*
-AssertionTester/Results/*
+Scripts/node_modules/**
+AssertionTester/node_modules/**
+
+# Assertion tester
+AssertionTester/Results/*.csv
+AssertionTester/Results/*.json

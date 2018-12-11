@@ -1,0 +1,45 @@
+{
+    "id": "urn:dev:wot:com:example:servient:lamp",
+    "name": "MyLampThing",
+    "description": "Valid TD demonstrating how to use version with additional fields",
+    "security": [
+        {
+            "scheme": "basic"
+        }
+    ],
+    "properties": {
+        "status": {
+            "type": "string",
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status"
+                }
+            ]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/toggle"
+                }
+            ]
+        }
+    },
+    "events": {
+        "overheating": {
+            "data":{"type": "string"},
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/oh",
+                    "subProtocol": "LongPoll"
+                }
+            ]
+        }
+    },
+    "version": {
+        "instance": "1.2.1",
+        "xyz:firmware": "0.9.1",
+        "xyz:hardware": "1.0"
+    }
+}

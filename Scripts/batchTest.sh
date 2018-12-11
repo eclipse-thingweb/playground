@@ -16,13 +16,13 @@
 ####################################################################################################################################
 
 tdCount=0
-for curTD in $( ls ./WebContent/Examples/Lyon/Valid); do
+for curTD in $( ls ./WebContent/Examples/OnlineDec/Valid); do
 tdCount=$((tdCount+1))
 done
-for curTD in $( ls ./WebContent/Examples/Lyon/Invalid); do
+for curTD in $( ls ./WebContent/Examples/OnlineDec/Invalid); do
 tdCount=$((tdCount+1))
 done
-for curTD in $( ls ./WebContent/Examples/Lyon/Warning); do
+for curTD in $( ls ./WebContent/Examples/OnlineDec/Warning); do
 tdCount=$((tdCount+1))
 done
 
@@ -34,10 +34,10 @@ done
 countValidTotal=0 # How many TDs found in the directory
 countIsValid=0 # How many TDs of that directory are valid
 
-for curTD in $( ls ./WebContent/Examples/Lyon/Valid); do
+for curTD in $( ls ./WebContent/Examples/OnlineDec/Valid); do
     countValidTotal=$((countValidTotal+1))
     echo $countValidTotal "/" $tdCount "TD:" $curTD
-    output=$(node Scripts/playground.js ./WebContent/Examples/Lyon/Valid/$curTD)
+    output=$(node Scripts/playground.js ./WebContent/Examples/OnlineDec/Valid/$curTD)
     #echo "my output is" $output
 
     if [[ $output == *"KO"* ]]; then
@@ -78,7 +78,7 @@ countIsInvalid=0
 for curTD in $( ls ./WebContent/Examples/Lyon/Invalid); do
     countInvalidTotal=$((countInvalidTotal+1))
     echo $((countValidTotal+countInvalidTotal)) "/" $tdCount "TD:" $curTD
-    output=$(node Scripts/playground.js ./WebContent/Examples/Lyon/Invalid/$curTD)
+    output=$(node Scripts/playground.js ./WebContent/Examples/OnlineDec/Invalid/$curTD)
     #echo "my output is" $output
 
     if [[ $output == *"KO"* ]]; then
@@ -112,7 +112,7 @@ countIsWarning=0
 for curTD in $( ls ./WebContent/Examples/Lyon/Warning); do
     countWarningTotal=$((countWarningTotal+1))
     echo $((countWarningTotal+countValidTotal+countInvalidTotal)) "/" $tdCount "TD:" $curTD
-    output=$(node Scripts/playground.js ./WebContent/Examples/Lyon/Warning/$curTD)
+    output=$(node Scripts/playground.js ./WebContent/Examples/OnlineDec/Warning/$curTD)
     #echo "my output is" $output
 
     if [[ $output == *"KO"* ]]; then

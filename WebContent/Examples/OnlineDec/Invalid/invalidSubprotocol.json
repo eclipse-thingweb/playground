@@ -1,0 +1,38 @@
+{
+    "id": "urn:dev:wot:com:example:servient:lamp",
+    "name": "MyLampThing",
+    "description": "Error td since LongPoll shold be longpoll",
+    "properties": {
+        "status": {
+            "type": "string",
+            "forms": [{
+                "href": "https://mylamp.example.com/status"
+            }],
+            "security": [{
+                "scheme": "nosec"
+            }]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "forms": [{
+                "href": "https://mylamp.example.com/toggle"
+            }],
+            "security": [{
+                "scheme": "nosec"
+            }]
+        }
+    },
+    "events": {
+        "overheating": {
+            "data": {
+                "type": "string"
+            },
+            "forms": [{
+                "href": "https://mylamp.example.com/oh",
+                "subProtocol": "LongPoll"
+            }]
+        }
+    }
+
+}
