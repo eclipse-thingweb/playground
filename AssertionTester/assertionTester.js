@@ -9,7 +9,7 @@ var storedTdAddress;
 
 const draftLocation = "./AssertionTester/json-schema-draft-06.json";
 
-const fields = ['ID', 'Status'];
+const fields = ['ID', 'Status', 'additionalInfo'];
 const json2csvParser = new Json2csvParser({
     fields
 });
