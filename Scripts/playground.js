@@ -6,7 +6,7 @@ var Ajv = require('ajv');
 
 
 var storedTdAddress;
-const schemaLocation = "./WebContent/td-schema-lyon.json";
+const schemaLocation = "./WebContent/td-schema.json";
 const draftLocation = "./WebContent/json-schema-draft-06.json";
 
 //console.log("argv is ", process.argv);

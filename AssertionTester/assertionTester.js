@@ -9,7 +9,7 @@ var storedTdAddress;
 
 const draftLocation = "./AssertionTester/json-schema-draft-06.json";
 
-const fields = ['ID', 'Status'];
+const fields = ['ID', 'Status', 'additionalInfo'];
 const json2csvParser = new Json2csvParser({
     fields
 });
@@ -73,7 +73,11 @@ fs.readFile(storedTdAddress, (err, tdData) => {
 
                 // Validation starts here
 
-                var ajv = new Ajv();
+                const avj_options = { 
+                    "$comment": function (v) {console.log("\n!!!! COMMENT",v)},
+                    "allErrors": true
+                };
+                var ajv = new Ajv(avj_options);
                 ajv.addMetaSchema(draft);
                 ajv.addSchema(schema, 'td');
 

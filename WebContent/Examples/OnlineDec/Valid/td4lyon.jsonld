@@ -1,0 +1,58 @@
+{
+    "@context": [
+        "http://www.w3.org/ns/td",
+        {"iot": "http://iotschema.org/"}
+    ],
+    "@type": "Thing",
+    "id": "urn:dev:wot:com:example:servient:lamp",
+    "name": "MyLampThing",
+    "description": "MyLampThing uses JSON-LD 1.1 serialization",
+    "security": [{"scheme": "psk"}],
+    "version": {"instance": "1.2.1"},
+    "properties": {
+        "status": {
+            "@type": "iot:SwitchStatus",
+             "title": "Status information",
+            "description": "Shows the current status of the lamp",
+            "writable": false,
+            "observable": false,
+            "type": "string",
+            "forms": [{
+                "href": "coaps://mylamp.example.com/status",
+                "mediaType": "application/json",
+                "op": "readProperty"
+            }]
+        }
+    },
+    "actions": {"toggle": {
+        "@type": "iot:SwitchStatus",
+        "description": "Turn on or off the lamp",
+        "uriVariables": {
+            "p": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 16,
+                "@type": "iot:SomeKindOfAngle"
+            },
+            "d": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1,
+                "@type": "iot:Direction"
+            }
+        },
+        "forms": [{
+            "href": "coaps://mylamp.example.com/toggle",
+            "mediaType": "application/json"
+        }]
+    }},
+    "events": {"overheating": {
+        "@type": "iot:TemperatureAlarm",
+        "description": "Lamp reaches a critical temperature (overheating)",
+        "data": {"type": "string"},
+        "forms": [{
+            "href": "coaps://mylamp.example.com/oh",
+            "mediaType": "application/json"
+        }]
+    }}
+}
