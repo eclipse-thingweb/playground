@@ -73,7 +73,11 @@ fs.readFile(storedTdAddress, (err, tdData) => {
 
                 // Validation starts here
 
-                var ajv = new Ajv();
+                const avj_options = { 
+                    "$comment": function (v) {console.log("\n!!!! COMMENT",v)},
+                    "allErrors": true
+                };
+                var ajv = new Ajv(avj_options);
                 ajv.addMetaSchema(draft);
                 ajv.addSchema(schema, 'td');
 

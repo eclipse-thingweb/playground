@@ -19,6 +19,7 @@
             "type": "object",
             "properties": {
                 "properties": {
+                    "$comment": "td-property-objects:properties",
                     "$ref": "#/definitions/dataSchema"
                 }
             },
