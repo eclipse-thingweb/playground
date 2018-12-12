@@ -22,9 +22,6 @@
                     "$ref": "#/definitions/dataSchema"
                 }
             },
-            "required": [
-                "properties"
-            ],
             "additionalProperties": true
         },
         "dataSchema": {
