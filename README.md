@@ -50,9 +50,9 @@ For Linux:
 ## To-Do
 
 * test cases: 
-    * valid TDs
-    * invalid TDs
-    * warning TDs
-    * Scripting: 
-        * invalid args, such as integers or non valid paths
-        * manual
+  * forms in the root with op from non root forms
+  * putting strings in security that are not defined in securityDefinitions
+  * op in event that has action or property op and vice versa
+* Scripting: 
+    * invalid args, such as integers or non valid paths
+    * manual
