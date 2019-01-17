@@ -2,92 +2,96 @@
     "title": "WoT TD Schema - December 2018",
     "description": "JSON Schema representation of the TD serialisation format.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
-    "type": "object",
-    "properties": {
-        "base": {
-            "$ref": "#/definitions/url"
-        },
-        "@type": {
-            "$ref": "#/definitions/type_declaration"
-        },
-        "@context": {
-            "$ref": "#/definitions/context"
-        },
-        "name": {
-            "type": "string"
-        },
-        "id": {
-            "type": "string"
-        },
-        "description": {
-            "type": "string"
-        },
-        "descriptions": {
-            "$ref": "#/definitions/descriptions"
-        },
+ 
+        "type": "object",
         "properties": {
-            "type": "object",
-            "additionalProperties": {
-                "$ref": "#/definitions/property_element"
-            }
-        },
-        "actions": {
-            "type": "object",
-            "additionalProperties": {
-                "$ref": "#/definitions/action_element"
-            }
-        },
-        "events": {
-            "type": "object",
-            "additionalProperties": {
-                "$ref": "#/definitions/event_element"
-            }
-        },
-        "links": {
-            "type": "array",
-            "items": {
-                "$ref": "#/definitions/link_element"
-            }
-        },
-        "support": {
-            "$ref": "#/definitions/url"
-        },
-        "securityDefinitions": {
-            "type": "object",
-            "additionalProperties": {
-                "$ref": "#/definitions/securityScheme"
-            }
-        },
-        "security": {
-            "type": "array",
-            "items": {
+            "base": {
+                "$ref": "#/definitions/url"
+            },
+            "@type": {
+                "$ref": "#/definitions/type_declaration"
+            },
+            "@context": {
+                "$ref": "#/definitions/context"
+            },
+            "name": {
                 "type": "string"
-            }
-        },
-        "created": {
-            "type": "string"
-        },
-        "lastModified": {
-            "type": "string"
-        },
-        "version": {
-            "type": "object",
+            },
+            "id": {
+                "type": "string"
+            },
+            "description": {
+                "type": "string"
+            },
+            "descriptions": {
+                "$ref": "#/definitions/descriptions"
+            },
             "properties": {
-                "instance": {
+                "not":{
+                "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/property_element"
+                    }
+                }
+            },
+            "actions": {
+                "type": "object",
+                "additionalProperties": {
+                    "$ref": "#/definitions/action_element"
+                }
+            },
+            "events": {
+                "type": "object",
+                "additionalProperties": {
+                    "$ref": "#/definitions/event_element"
+                }
+            },
+            "links": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/definitions/link_element"
+                }
+            },
+            "support": {
+                "$ref": "#/definitions/url"
+            },
+            "securityDefinitions": {
+                "type": "object",
+                "additionalProperties": {
+                    "$ref": "#/definitions/securityScheme"
+                }
+            },
+            "security": {
+                "type": "array",
+                "items": {
                     "type": "string"
                 }
             },
-            "required": [
-                "instance"
-            ]
-        }
-    },
-    "required": [
-        "name",
-        "id",
-        "security"
-    ],
-    "additionalProperties": true,
+            "created": {
+                "type": "string"
+            },
+            "lastModified": {
+                "type": "string"
+            },
+            "version": {
+                "type": "object",
+                "properties": {
+                    "instance": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "instance"
+                ]
+            }
+        },
+        "required": [
+            "name",
+            "id",
+            "security"
+        ],
+        "additionalProperties": true,
+
     "definitions": {
         "context": {
             "oneOf": [{
