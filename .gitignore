@@ -29,3 +29,5 @@ package-lock.json
 **/package-lock.json
 Scripts/node_modules
 Scripts/node_modules/*
+AssertionTester/node_modules/**
+Results
