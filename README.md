@@ -55,7 +55,7 @@ For Linux:
   * putting strings in security that are not defined in securityDefinitions
   * op in event that has action or property op and vice versa
   * empty form getting rejected
-  * using camel case when it shouldnt be and vice versa
+  * Not using camel case when it should be just normal
   * TD containing mediaType gets a warning
   * forms in the root
   * multiLanguage TD

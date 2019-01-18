@@ -1,18 +1,18 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
     "name": "MyLampThing",
-    "description": "Invalid TD since the interaction called wrongAction is not object",
+    "description": "Invalid TD due the an empty enum in data schema",
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic"
         }
     },
     "security": ["basic_sc"],
-    "actions": {
-        "wrongAction":"shouldBeObject",
-        "toggle": {
+    "properties": {
+        "status": {
+            "type": "array",
             "forms": [{
-                "href": "https://mylamp.example.com/toggle"
+                "href": "https://mylamp.example.com/status"
             }]
         }
     }

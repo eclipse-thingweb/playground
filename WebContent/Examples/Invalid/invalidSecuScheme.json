@@ -1,40 +1,11 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
     "name": "MyLampThing",
-    "description": "Invalid TD since security contains an unknown scheme",
-    "security": [
-        {
-            "scheme": "myScheme"
-        }
-    ],
-    "properties": {
-        "status": {
-            "type": "string",
-            "forms": [
-                {
-                    "href": "https://mylamp.example.com/status"
-                }
-            ]
+    "description": "Invalid TD since securityDefinition basic_sc contains an unknown scheme",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "mostSecureScheme"
         }
     },
-    "actions": {
-        "toggle": {
-            "forms": [
-                {
-                    "href": "https://mylamp.example.com/toggle"
-                }
-            ]
-        }
-    },
-    "events": {
-        "overheating": {
-            "data":{"type": "string"},
-            "forms": [
-                {
-                    "href": "https://mylamp.example.com/oh",
-                    "subProtocol": "LongPoll"
-                }
-            ]
-        }
-    }
+    "security":["basic_sc"]
 }

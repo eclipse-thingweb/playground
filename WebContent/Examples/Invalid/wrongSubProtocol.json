@@ -1,31 +1,13 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
     "name": "MyLampThing",
-    "description": "Valid TD demonstrating how to use security in the root of the TD",
-    "security": [
-        {
+    "description": "Invalid TD since overheating event has an unknown subprotocol",
+    "securityDefinitions": {
+        "basic_sc": {
             "scheme": "basic"
         }
-    ],
-    "properties": {
-        "status": {
-            "type": "string",
-            "forms": [
-                {
-                    "href": "https://mylamp.example.com/status"
-                }
-            ]
-        }
     },
-    "actions": {
-        "toggle": {
-            "forms": [
-                {
-                    "href": "https://mylamp.example.com/toggle"
-                }
-            ]
-        }
-    },
+    "security": ["basic_sc"],
     "events": {
         "overheating": {
             "data":{"type": "string"},
