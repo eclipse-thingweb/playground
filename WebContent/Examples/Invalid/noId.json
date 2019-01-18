@@ -1,0 +1,20 @@
+{
+    "name": "MyLampThing",
+    "description": "Invalid TD since it has no id",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic"
+        }
+    },
+    "security": ["basic_sc"],
+    "properties": {
+        "status": {
+            "type": "string",
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status"
+                }
+            ]
+        }
+    }
+}

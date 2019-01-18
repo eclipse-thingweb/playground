@@ -68,6 +68,16 @@ function log(message) {
     pgConsole.append(message + '&#13;&#10;');
 }
 
+function clearLog() {
+    var pgConsole = $('#console');
+    pgConsole.empty();
+    pgConsole.append("Reset! Waiting for validation... " + '&#13;&#10;');
+    reset('spot-json');
+    reset('spot-json-schema');
+    reset('spot-json-ld');
+    reset('spot-owl');
+}
+
 $(function () {
 
     $('#td-text').linedtextarea();
@@ -79,13 +89,14 @@ $(function () {
             ajv.addMetaSchema(draft);
             ajv.addSchema(schema, 'td');
             document.addEventListener('validate-json', function (e) {
-
                 try {
+                    log('------- New Validation Started -------');
                     tdJson = JSON.parse(e.detail);
                     light('OK', 'spot-json');
                     log('JSON validation... OK');
                     trigger('validate-json-schema', tdJson);
                 } catch (err) {
+                    console.log(err);
                     if (err instanceof SyntaxError) {
                         light('KO', 'spot-json');
                         log('X JSON validation... KO:');
@@ -130,6 +141,7 @@ $(function () {
                     log('X JSON Schema validation... KO:');
                     //console.log(ajv.errors);
                     log('> ' + ajv.errorsText());
+                    console.log(JSON.stringify(ajv.errors));
                 }
 
 
@@ -546,75 +558,127 @@ function checkInteractions(td) {
     return;
 }
 
+function arrayContainsOtherArray(parent, child) {
+
+    return child.every(elem => parent.indexOf(elem) > -1);
+}
+
 function checkSecurity(td) {
-    if (td.hasOwnProperty("security")) {
-        //all good
-    } else {
+    if (td.hasOwnProperty("securityDefinitions")) {
+        var securityDefinitionsObject = td.securityDefinitions;
+        var securityDefinitions = Object.keys(securityDefinitionsObject);
+
+
+        var rootSecurity = td.security;
+
+        if (arrayContainsOtherArray(securityDefinitions, rootSecurity)) {
+            // all good
+        } else {
+            log('KO Error: Security key in the root of the TD has security schemes not defined by the securityDefinitions');
+            light('KO', 'spot-json-schema');
+        }
 
         if (td.hasOwnProperty("properties")) {
-            //checking properties
+            //checking security in property level
             tdProperties = Object.keys(td.properties);
             for (var i = 0; i < tdProperties.length; i++) {
                 var curPropertyName = tdProperties[i];
                 var curProperty = td.properties[curPropertyName];
                 if (curProperty.hasOwnProperty("security")) {
-                    //all good
-                } else {
-                    var curForms = curProperty.forms;
-                    for (var j = 0; j < curForms.length; j++) {
-                        var curForm = curForms[j];
-                        if (curForm.hasOwnProperty("security")) {
-                            //all good
+                    var curSecurity = curProperty.security;
+                    if (arrayContainsOtherArray(securityDefinitions, curSecurity)) {
+                        // all good
+                    } else {
+                        log('KO Error: Security key in property ' + curPropertyName + '  has security schemes not defined by the securityDefinitions');
+                        light('KO', 'spot-json-schema');
+                    }
+                }
+                
+                // checking security in forms level
+                var curForms = curProperty.forms;
+                for (var j = 0; j < curForms.length; j++) {
+                    var curForm = curForms[j];
+                    if (curForm.hasOwnProperty("security")) {
+                        var curSecurity = curForm.security;
+                        if (arrayContainsOtherArray(securityDefinitions, curSecurity)) {
+                            // all good
                         } else {
-                            log('KO Error: In property ' + curPropertyName + `, form ` + j + ' has no security scheme. TD should have either in the root OR for every form OR for every interaction');
+                            log('KO Error: Security key in form ' + j + ' in property ' + curPropertyName + '  has security schemes not defined by the securityDefinitions');
                             light('KO', 'spot-json-schema');
                         }
                     }
                 }
             }
-            if (td.hasOwnProperty("actions")) {
-                tdActions = Object.keys(td.actions);
-                for (var i = 0; i < tdActions.length; i++) {
-                    var curActionName = tdActions[i];
-                    var curAction = td.actions[curActionName];
-                    if (curAction.hasOwnProperty("security")) {
-                        //all good
+        }
+
+        if (td.hasOwnProperty("actions")) {
+            //checking security in action level
+            tdActions = Object.keys(td.actions);
+            for (var i = 0; i < tdActions.length; i++) {
+                var curActionName = tdActions[i];
+                var curAction = td.actions[curActionName];
+                if (curAction.hasOwnProperty("security")) {
+                    var curSecurity = curAction.security;
+                    if (arrayContainsOtherArray(securityDefinitions, curSecurity)) {
+                        // all good
                     } else {
-                        var curForms = curAction.forms;
-                        for (var j = 0; j < curForms.length; j++) {
-                            var curForm = curForms[j];
-                            if (curForm.hasOwnProperty("security")) {
-                                //all good
-                            } else {
-                                log('KO Error: In action ' + curActionName + `, form ` + j + ' has no security scheme. TD should have either in the root OR for every form OR for every interaction');
-                                light('KO', 'spot-json-schema');
-                            }
+                        log('KO Error: Security key in action ' + curActionName + '  has security schemes not defined by the securityDefinitions');
+                        light('KO', 'spot-json-schema');
+                    }
+                }
+                // checking security in forms level 
+                var curForms = curAction.forms;
+                for (var j = 0; j < curForms.length; j++) {
+                    var curForm = curForms[j];
+                    if (curForm.hasOwnProperty("security")) {
+                        var curSecurity = curForm.security;
+                        if (arrayContainsOtherArray(securityDefinitions, curSecurity)) {
+                            // all good
+                        } else {
+                            log('KO Error: Security key in form ' + j + ' in action ' + curActionName + '  has security schemes not defined by the securityDefinitions');
+                            light('KO', 'spot-json-schema');
                         }
                     }
                 }
-            }
-            if (td.hasOwnProperty("events")) {
-                tdEvents = Object.keys(td.events);
-                for (var i = 0; i < tdEvents.length; i++) {
-                    var curEventName = tdEvents[i];
-                    var curEvent = td.events[curEventName];
-                    if (curEvent.hasOwnProperty("security")) {
-                        //all good
-                    } else {
-                        var curForms = curEvent.forms;
-                        for (var j = 0; j < curForms.length; j++) {
-                            var curForm = curForms[j];
-                            if (curForm.hasOwnProperty("security")) {
-                                //all good
-                            } else {
-                                log('KO Error: In event ' + curEventName + `, form ` + j + ' has no security scheme. TD should have either in the root OR for every form OR for every interaction');
-                                light('KO', 'spot-json-schema');
-                            }
-                        }
-                    }
-                }
+                
             }
         }
+
+        if (td.hasOwnProperty("events")) {
+            //checking security in event level
+            tdEvents = Object.keys(td.events);
+            for (var i = 0; i < tdEvents.length; i++) {
+                var curEventName = tdEvents[i];
+                var curEvent = td.events[curEventName];
+                if (curEvent.hasOwnProperty("security")) {
+                    var curSecurity = curEvent.security;
+                    if (arrayContainsOtherArray(securityDefinitions, curSecurity)) {
+                        // all good
+                    } else {
+                        log('KO Error: Security key in event ' + curEventName + '  has security schemes not defined by the securityDefinitions');
+                        light('KO', 'spot-json-schema');
+                    }
+                } 
+                // checking security in forms level
+                var curForms = curEvent.forms;
+                for (var j = 0; j < curForms.length; j++) {
+                    var curForm = curForms[j];
+                    if (curForm.hasOwnProperty("security")) {
+                        var curSecurity = curForm.security;
+                        if (arrayContainsOtherArray(securityDefinitions, curSecurity)) {
+                            // all good
+                        } else {
+                            log('KO Error: Security key in form ' + j + ' in event ' + curEventName + '  has security schemes not defined by the securityDefinitions');
+                            light('KO', 'spot-json-schema');
+                        }
+                    }
+                }
+                
+            }
+        }
+    } else {
+        log('KO Error: securityDefinitions is mandatory');
+        light('KO', 'spot-json-schema');
     }
     return;
 }

@@ -1,0 +1,37 @@
+{
+    "id": "urn:dev:wot:com:example:servient:lamp",
+    "name": "MyLampThing",
+    "description": "Valid TD demonstrating how to use forms in the root of the TD document",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic"
+        }
+    },
+    "security": ["basic_sc"],
+    "forms": [{
+        "href": "https://mylamp.example.com/allproperties",
+        "contentType": "application/json",
+        "op": ["readallproperties"],
+        "http:methodName": "GET"
+    },
+    {
+        "href": "https://mylamp.example.com/allproperties",
+        "contentType": "application/json",
+        "op": ["writeallproperties"],
+        "http:methodName": "PUT"
+    }],
+    "properties": {
+        "status": {
+            "type": "string",
+            "forms": [{
+                "href": "https://mylamp.example.com/status"
+            }]
+        },
+        "color": {
+            "type": "integer",
+            "forms": [{
+                "href": "https://mylamp.example.com/color"
+            }]
+        }
+    }
+}

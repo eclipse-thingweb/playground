@@ -461,7 +461,7 @@
                     "$ref": "#/definitions/dataSchema"
                 },
                 "unit": {
-                    "$ref": "#/definitions/dataSchema"
+                    "type": "string"
                 }
             },
             "required": [
@@ -634,7 +634,7 @@
                     "$ref": "#/definitions/dataSchema"
                 },
                 "unit": {
-                    "$ref": "#/definitions/dataSchema"
+                    "type": "string"
                 }
             }
         },
