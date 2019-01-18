@@ -51,15 +51,6 @@ For Linux:
 ## To-Do
 
 * test cases: 
-  * forms in the root with op from non root forms
-  * putting strings in security that are not defined in securityDefinitions
-  * op in event that has action or property op and vice versa
-  * empty form getting rejected
-  * Not using camel case when it should be just normal
-  * TD containing mediaType gets a warning
-  * forms in the root
-  * multiLanguage TD
 * Scripting: 
     * invalid args, such as integers or non valid paths
-    * manual
 * Needed Validation
