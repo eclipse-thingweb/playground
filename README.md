@@ -57,3 +57,5 @@ For Linux:
 * Scripting: 
     * invalid args, such as integers or non valid paths
     * manual
+* Needed Validation
+  * 
