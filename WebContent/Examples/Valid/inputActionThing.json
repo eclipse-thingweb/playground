@@ -1,25 +1,16 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
     "name": "MyLampThing",
-    "description": "Valid TD demonstrating how to use security in the root of the TD",
-    "security": [
-        {
+    "description": "Valid TD demonstrating how to use input and output data in actions",
+    "securityDefinitions": {
+        "basic_sc": {
             "scheme": "basic"
         }
-    ],
-    "properties": {
-        "status": {
-            "type": "string",
-            "forms": [
-                {
-                    "href": "https://mylamp.example.com/status"
-                }
-            ]
-        }
     },
+    "security": ["basic_sc"],
     "actions": {
         "fade": {
-            "label": "Fade in/out",
+            "title": "Fade in/out",
             "description": "Smooth fade in and out animation.",
             "input": {
                 "type": "object",
@@ -49,17 +40,6 @@
             "forms": [
                 {
                     "href": "http://mytemp.example.com:5683/fade"
-                }
-            ]
-        }
-    },
-    "events": {
-        "overheating": {
-            "data":{"type": "string"},
-            "forms": [
-                {
-                    "href": "https://mylamp.example.com/oh",
-                    "subProtocol": "LongPoll"
                 }
             ]
         }

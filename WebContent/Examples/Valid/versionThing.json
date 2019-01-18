@@ -2,11 +2,12 @@
     "id": "urn:dev:wot:com:example:servient:lamp",
     "name": "MyLampThing",
     "description": "Valid TD demonstrating how to use version with additional fields",
-    "security": [
-        {
+    "securityDefinitions": {
+        "basic_sc": {
             "scheme": "basic"
         }
-    ],
+    },
+    "security": ["basic_sc"],
     "properties": {
         "status": {
             "type": "string",
@@ -32,7 +33,7 @@
             "forms": [
                 {
                     "href": "https://mylamp.example.com/oh",
-                    "subProtocol": "LongPoll"
+                    "subProtocol": "longpoll"
                 }
             ]
         }

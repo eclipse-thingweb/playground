@@ -56,6 +56,9 @@ For Linux:
   * op in event that has action or property op and vice versa
   * empty form getting rejected
   * using camel case when it shouldnt be and vice versa
+  * TD containing mediaType gets a warning
+  * forms in the root
+  * multiLanguage TD
 * Scripting: 
     * invalid args, such as integers or non valid paths
     * manual

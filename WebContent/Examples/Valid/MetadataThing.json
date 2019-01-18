@@ -2,6 +2,12 @@
     "id": "urn:dev:wot:com:example:servient:lamp",
     "name": "MyLampThing",
     "description":"Valid TD with minimum mandatory information and additional non specified metadata",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic"
+        }
+    },
+    "security": ["basic_sc"],
     "area51": {
         "location": "Lincoln County, Nevada, U.S.",
         "elevation": 1360,
