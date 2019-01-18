@@ -1,18 +1,30 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
     "name": "MyLampThing",
-    "description":"Valid TD demonstrating how to use security in interaction level",
+    "description":"Valid TD demonstrating how to use security in interaction level by overwriting the root level security",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic"
+        },
+        "psk_sc": {
+            "scheme": "psk"
+        },
+        "nosec_sc": {
+            "scheme": "nosec"
+        }
+    },
+    "security": ["basic_sc"],
     "properties": {
         "status" : {
             "type": "string",
             "forms": [{"href": "https://mylamp.example.com/status"}],
-            "security": [{"scheme": "basic", "in":"header"}]
+            "security": ["psk_sc"]
         }
     },
     "actions": {
         "toggle" : {
             "forms": [{"href": "https://mylamp.example.com/toggle"}],
-            "security": [{"scheme": "nosec"}]
+            "security": ["basic_sc"]
         }
     },
     "events":{
@@ -20,9 +32,9 @@
             "data":{"type": "string"},
             "forms": [{
                 "href": "https://mylamp.example.com/oh",
-                "subProtocol": "LongPoll"
+                "subProtocol": "longpoll"
             }],
-            "security": [{"scheme": "cert","identity":"abcd123"}]
+            "security": ["nosec_sc"]
         }
     }
 }
