@@ -97,10 +97,12 @@
     "additionalProperties": true,
     "definitions": {
         "context": {
-            "oneOf": [{
+            "oneOf": [
+                {
                     "type": "array",
                     "items": {
-                        "anyOf": [{
+                        "anyOf": [
+                            {
                                 "$ref": "#/definitions/url"
                             },
                             {
@@ -124,7 +126,8 @@
             ]
         },
         "type_declaration": {
-            "oneOf": [{
+            "oneOf": [
+                {
                     "type": "string"
                 },
                 {
@@ -142,7 +145,8 @@
                     "$ref": "#/definitions/url"
                 },
                 "op": {
-                    "oneOf": [{
+                    "oneOf": [
+                        {
                             "type": "string",
                             "enum": [
                                 "readproperty",
@@ -205,7 +209,8 @@
                     "$ref": "#/definitions/url"
                 },
                 "op": {
-                    "oneOf": [{
+                    "oneOf": [
+                        {
                             "type": "string",
                             "enum": [
                                 "invokeaction"
@@ -264,7 +269,8 @@
                     "$ref": "#/definitions/url"
                 },
                 "op": {
-                    "oneOf": [{
+                    "oneOf": [
+                        {
                             "type": "string",
                             "enum": [
                                 "subscribeevent",
@@ -325,7 +331,8 @@
                     "$ref": "#/definitions/url"
                 },
                 "op": {
-                    "oneOf": [{
+                    "oneOf": [
+                        {
                             "type": "string",
                             "enum": [
                                 "readallproperties",
@@ -653,7 +660,8 @@
             "additionalProperties": true
         },
         "securityScheme": {
-            "oneOf": [{
+            "oneOf": [
+                {
                     "type": "object",
                     "properties": {
                         "description": {
