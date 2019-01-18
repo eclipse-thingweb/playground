@@ -53,6 +53,7 @@ For Linux:
   * forms in the root with op from non root forms
   * putting strings in security that are not defined in securityDefinitions
   * op in event that has action or property op and vice versa
+  * empty form getting rejected
 * Scripting: 
     * invalid args, such as integers or non valid paths
     * manual
