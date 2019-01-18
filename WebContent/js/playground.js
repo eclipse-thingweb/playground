@@ -71,7 +71,7 @@ function log(message) {
 $(function () {
 
     $('#td-text').linedtextarea();
-    $.getJSON('td-schema-lyon.json', function (schema) {
+    $.getJSON('td-schema.json', function (schema) {
 
         ajv = Ajv();
         $.getJSON('json-schema-draft-06.json', function (draft) {
