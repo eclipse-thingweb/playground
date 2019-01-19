@@ -4,7 +4,8 @@
     "description": "Invalid TD since the action contains a type that is not supported",
     "securityDefinitions": {
         "basic_sc": {
-            "scheme": "basic"
+            "scheme": "basic",
+            "in": "header"
         }
     },
     "security": ["basic_sc"],

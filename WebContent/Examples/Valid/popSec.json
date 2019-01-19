@@ -1,0 +1,23 @@
+{
+    "id": "urn:dev:wot:com:example:servient:lamp",
+    "name": "MyLampThing",
+    "description": "Valid TD copied from the spec's first example",
+    "securityDefinitions": {
+        "pop_sc": {
+            "scheme": "pop",
+            "in": "header",
+            "name": "example query parameter",
+            "format":"jwt",
+            "alg":"MD5"
+        }
+    },
+    "security": ["pop_sc"],
+    "properties": {
+        "status": {
+            "type": "string",
+            "forms": [{
+                "href": "https://mylamp.example.com/status"
+            }]
+        }
+    }
+}

@@ -4,7 +4,8 @@
     "description": "Invalid TD since 3rd form of brightness property has an op value reserved for events",
     "securityDefinitions": {
         "basic_sc": {
-            "scheme": "basic"
+            "scheme": "basic",
+            "in": "header"
         }
     },
     "security": ["basic_sc"],

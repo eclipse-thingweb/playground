@@ -4,7 +4,8 @@
     "description": "Invalid TD since instance key is missing from version",
     "securityDefinitions": {
         "basic_sc": {
-            "scheme": "basic"
+            "scheme": "basic",
+            "in": "header"
         }
     },
     "security": ["basic_sc"],

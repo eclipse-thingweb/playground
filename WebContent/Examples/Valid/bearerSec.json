@@ -1,0 +1,23 @@
+{
+    "id": "urn:dev:wot:com:example:servient:lamp",
+    "name": "MyLampThing",
+    "description": "Valid TD demonstrating how to use bearer security scheme",
+    "securityDefinitions": {
+        "bearer_sc": {
+            "scheme": "bearer",
+            "in":"header",
+            "format": "jwt",
+            "alg": "ES256",
+            "authorization": "https://servient.example.com:8443/"
+        }
+    },
+    "security": ["bearer_sc"],
+    "properties": {
+        "status": {
+            "type": "string",
+            "forms": [{
+                "href": "https://mylamp.example.com/status"
+            }]
+        }
+    }
+}

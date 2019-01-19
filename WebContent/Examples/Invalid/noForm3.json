@@ -4,7 +4,8 @@
     "description": "Invalid TD since event has no form in events",
     "securityDefinitions": {
         "basic_sc": {
-            "scheme": "basic"
+            "scheme": "basic",
+            "in": "header"
         }
     },
     "security": ["basic_sc"],

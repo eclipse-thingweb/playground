@@ -1,0 +1,25 @@
+{
+    "id": "urn:dev:wot:com:example:servient:lamp",
+    "name": "MyLampThing",
+    "description": "Valid TD showing how to specify another content type in an action response",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": ["basic_sc"],
+    "actions": {
+        "crop": {
+            "forms": [{
+                "href": "http://upsq1c.local:9191/api/frame/crop",
+                "contentType": "application/json",
+                "op": ["invokeaction"],
+                "http:methodName": "POST",
+                "response": {
+                    "contentType": "image/jpeg"
+                }
+            }]
+        }
+    }
+}
