@@ -11,7 +11,8 @@
     "description": "TD showing heavy use of JSON-LD annotations",
     "securityDefinitions": {
         "basic_sc": {
-            "scheme": "basic"
+            "scheme": "basic",
+            "in": "header"
         }
     },
     "security": ["basic_sc"],

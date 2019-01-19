@@ -4,7 +4,8 @@
     "description": "Invalid TD since it is not allowed to have const outside data, subscription or cancellation in events",
     "securityDefinitions": {
         "basic_sc": {
-            "scheme": "basic"
+            "scheme": "basic",
+            "in": "header"
         }
     },
     "security": ["basic_sc"],

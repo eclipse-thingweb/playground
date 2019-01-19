@@ -1,17 +1,18 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
     "name": "MyLampThing",
-    "description": "Invalid TD due the an empty enum in data schema",
+    "description": "Valid TD demonstrating how to use the digest scheme",
     "securityDefinitions": {
-        "basic_sc": {
-            "scheme": "basic",
+        "digest_sc": {
+            "scheme": "digest",
+            "qop": "auth",
             "in":"header"
         }
     },
-    "security": ["basic_sc"],
+    "security": ["digest_sc"],
     "properties": {
         "status": {
-            "type": "array",
+            "type": "string",
             "forms": [{
                 "href": "https://mylamp.example.com/status"
             }]

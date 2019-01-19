@@ -1,7 +1,7 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
     "name": "MyLampThing",
-    "description": "Invalid TD since security in toggle action references to an unknown securityDefinition",
+    "description": "Valid TD copied from the spec's first example",
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",
@@ -9,20 +9,12 @@
         }
     },
     "security": ["basic_sc"],
+    "support": "mailto:support@example.com",
     "properties": {
         "status": {
-            "description":"this interaction inherits the security from the root",
             "type": "string",
             "forms": [{
                 "href": "https://mylamp.example.com/status"
-            }]
-        }
-    },
-    "actions": {
-        "toggle": {
-            "forms": [{
-                "href": "https://mylamp.example.com/toggle",
-                "security": ["someScheme"]
             }]
         }
     }

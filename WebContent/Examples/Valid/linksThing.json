@@ -4,7 +4,8 @@
     "description": "Valid TD demonstrating how to use links",
     "securityDefinitions": {
         "basic_sc": {
-            "scheme": "basic"
+            "scheme": "basic",
+            "in": "header"
         }
     },
     "security": ["basic_sc"],

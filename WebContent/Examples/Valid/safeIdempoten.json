@@ -1,7 +1,7 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
     "name": "MyLampThing",
-    "description": "Error td since LongPoll should be longpoll",
+    "description": "Valid TD showing how to annotate actions with safe and idempotent",
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",
@@ -19,6 +19,8 @@
     },
     "actions": {
         "toggle": {
+            "idempotent": true,
+            "safe":true,
             "forms": [{
                 "href": "https://mylamp.example.com/toggle"
             }]
@@ -31,9 +33,8 @@
             },
             "forms": [{
                 "href": "https://mylamp.example.com/oh",
-                "subProtocol": "LongPoll"
+                "subprotocol": "longpoll"
             }]
         }
     }
-
 }

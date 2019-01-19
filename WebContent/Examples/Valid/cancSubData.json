@@ -1,7 +1,7 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
     "name": "MyLampThing",
-    "description": "Error td since LongPoll should be longpoll",
+    "description": "Valid TD demonstrating how to use data schema for cancellation and subscription",
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",
@@ -9,31 +9,23 @@
         }
     },
     "security": ["basic_sc"],
-    "properties": {
-        "status": {
-            "type": "string",
-            "forms": [{
-                "href": "https://mylamp.example.com/status"
-            }]
-        }
-    },
-    "actions": {
-        "toggle": {
-            "forms": [{
-                "href": "https://mylamp.example.com/toggle"
-            }]
-        }
-    },
     "events": {
         "overheating": {
             "data": {
                 "type": "string"
             },
+            "cancellation":{
+                "type":"integer",
+                "description":"The time in seconds before cancellation happens"
+            },
+            "subscription":{
+                "type": "string",
+                "enum":["always","once"]
+            },
             "forms": [{
                 "href": "https://mylamp.example.com/oh",
-                "subProtocol": "LongPoll"
+                "subprotocol": "longpoll"
             }]
         }
     }
-
 }
