@@ -4,7 +4,8 @@
     "description": "Invalid TD since forms cannot be an empty array",
     "securityDefinitions": {
         "basic_sc": {
-            "scheme": "basic"
+            "scheme": "basic",
+            "in": "header"
         }
     },
     "security": ["basic_sc"],

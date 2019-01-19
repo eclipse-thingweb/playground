@@ -1,14 +1,13 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
     "name": "MyLampThing",
-    "description": "Error td since LongPoll should be longpoll",
+    "description": "Invalid TD since the security field is empty",
     "securityDefinitions": {
-        "basic_sc": {
-            "scheme": "basic",
-            "in": "header"
+        "nosec_sc": {
+            "scheme": "nosec"
         }
     },
-    "security": ["basic_sc"],
+    "security": [],
     "properties": {
         "status": {
             "type": "string",
@@ -31,9 +30,8 @@
             },
             "forms": [{
                 "href": "https://mylamp.example.com/oh",
-                "subProtocol": "LongPoll"
+                "subprotocol": "longpoll"
             }]
         }
     }
-
 }

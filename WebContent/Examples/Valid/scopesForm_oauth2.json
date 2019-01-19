@@ -1,0 +1,25 @@
+{
+    "id": "urn:dev:wot:com:example:servient:lamp",
+    "name": "MyLampThing",
+    "description": "Valid TD showing how to use scopes and oauth2 security scheme",
+    "securityDefinitions": {
+        "oauth2_sc": {
+            "scheme": "oauth2",
+            "flow": "password",
+            "scopes": ["limited", "special"],
+            "refresh": "https://refreshServer.com/",
+            "authorization": "https://authServer.com/"
+        }
+    },
+    "security": ["oauth2_sc"],
+    "properties": {
+        "status": {
+            "type": "string",
+            "forms": [{
+                "href": "https://scopes.example.com/status",
+                "contentType": "application/json",
+                "scopes": ["limited"]
+            }]
+        }
+    }
+}

@@ -1,19 +1,20 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
     "name": "MyLampThing",
-    "description": "Invalid TD due the an empty enum in data schema",
+    "description": "Valid TD copied from the spec's first example",
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",
-            "in":"header"
+            "in": "header"
         }
     },
     "security": ["basic_sc"],
+    "base": "https://mylamp.example.com",
     "properties": {
         "status": {
-            "type": "array",
+            "type": "string",
             "forms": [{
-                "href": "https://mylamp.example.com/status"
+                "href": "/status"
             }]
         }
     }

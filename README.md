@@ -50,7 +50,9 @@ For Linux:
 
 ## To-Do
 
-* test cases: 
+* test cases:
+  
+  * scopes in interaction level
 * Scripting: 
     * invalid args, such as integers or non valid paths
 * Needed Validation

@@ -4,7 +4,8 @@
     "description": "Invalid TD since the interaction called wrongAction is not object",
     "securityDefinitions": {
         "basic_sc": {
-            "scheme": "basic"
+            "scheme": "basic",
+            "in": "header"
         }
     },
     "security": ["basic_sc"],

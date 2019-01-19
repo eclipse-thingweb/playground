@@ -5,7 +5,8 @@
     "description":"TD demonstrating the @context field as with the TD vocabulary URI",
     "securityDefinitions": {
         "basic_sc": {
-            "scheme": "basic"
+            "scheme": "basic",
+            "in": "header"
         }
     },
     "security": ["basic_sc"],
