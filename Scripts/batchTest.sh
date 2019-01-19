@@ -14,15 +14,18 @@
 ####################################################################################################################################
 # TD Counter
 ####################################################################################################################################
+tdValidFolder="./WebContent/Examples/Valid"
+tdInvalidFolder="./WebContent/Examples/Invalid"
+tdWarningFolder="./WebContent/Examples/Warning"
 
 tdCount=0
-for curTD in $( ls ./WebContent/Examples/OnlineDec/Valid); do
+for curTD in $( ls $tdValidFolder); do
 tdCount=$((tdCount+1))
 done
-for curTD in $( ls ./WebContent/Examples/OnlineDec/Invalid); do
+for curTD in $( ls $tdInvalidFolder); do
 tdCount=$((tdCount+1))
 done
-for curTD in $( ls ./WebContent/Examples/OnlineDec/Warning); do
+for curTD in $( ls $tdWarningFolder); do
 tdCount=$((tdCount+1))
 done
 
@@ -34,10 +37,10 @@ done
 countValidTotal=0 # How many TDs found in the directory
 countIsValid=0 # How many TDs of that directory are valid
 
-for curTD in $( ls ./WebContent/Examples/OnlineDec/Valid); do
+for curTD in $( ls $tdValidFolder); do
     countValidTotal=$((countValidTotal+1))
     echo $countValidTotal "/" $tdCount "TD:" $curTD
-    output=$(node Scripts/playground.js ./WebContent/Examples/OnlineDec/Valid/$curTD)
+    output=$(node Scripts/playground.js $tdValidFolder/$curTD)
     #echo "my output is" $output
 
     if [[ $output == *"KO"* ]]; then
@@ -75,10 +78,10 @@ fi
 countInvalidTotal=0
 countIsInvalid=0
 
-for curTD in $( ls ./WebContent/Examples/Lyon/Invalid); do
+for curTD in $( ls $tdInvalidFolder); do
     countInvalidTotal=$((countInvalidTotal+1))
     echo $((countValidTotal+countInvalidTotal)) "/" $tdCount "TD:" $curTD
-    output=$(node Scripts/playground.js ./WebContent/Examples/OnlineDec/Invalid/$curTD)
+    output=$(node Scripts/playground.js $tdInvalidFolder/$curTD)
     #echo "my output is" $output
 
     if [[ $output == *"KO"* ]]; then
@@ -109,10 +112,10 @@ countWarningTotal=0
 countIsWarning=0
 
 
-for curTD in $( ls ./WebContent/Examples/Lyon/Warning); do
+for curTD in $( ls $tdWarningFolder); do
     countWarningTotal=$((countWarningTotal+1))
     echo $((countWarningTotal+countValidTotal+countInvalidTotal)) "/" $tdCount "TD:" $curTD
-    output=$(node Scripts/playground.js ./WebContent/Examples/OnlineDec/Warning/$curTD)
+    output=$(node Scripts/playground.js $tdWarningFolder/$curTD)
     #echo "my output is" $output
 
     if [[ $output == *"KO"* ]]; then

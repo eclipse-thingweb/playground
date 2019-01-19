@@ -1,0 +1,33 @@
+{
+    "id": "urn:dev:wot:com:example:servient:lamp",
+    "name": "MyLampThing",
+    "description": "Valid TD showing multiple language support",
+    "descriptions": {
+        "en": "Human readable information.",
+        "de": "Menschenlesbare Informationen.",
+        "ja": "人間が読むことができる情報",
+        "zh-Hans": "人们可阅读的信息",
+        "zh-Hant": "人們可閱讀的資訊"
+    },
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic"
+        }
+    },
+    "security": ["basic_sc"],
+        "properties": {
+            "on": {
+                "titles": {
+                    "en": "On/Off",
+                    "de": "An/Aus",
+                    "ja": "オンオフ",
+                    "zh-Hans": "开关",
+                    "zh-Hant": "開關"
+                },
+                "type": "boolean",
+                "forms": [{
+                    "href": "https://mylamp.example.com/status"
+                }]
+            }
+        }
+}

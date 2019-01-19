@@ -41,18 +41,25 @@ This tool checks which assertions are satisfied by a given Thing Description. Th
 For Linux:
 * Open a bash console in terminal
 * From the root directory of the playground, run `./batchTest.sh`
-    * This tests all the TDs in `WebContent/Examples/Lyon`
+    * This tests all the TDs in `WebContent/Examples/`
         * A TD in `Valid` directory should be valid
         * A TD in `Invalid` directory should be invalid, giving an error in at least one check
         * A TD in `Warning` directory should give at least one warning in a check but should be valid at the same time
-* In order to test batch TDs, put them in the `WebContent/Examples/Lyon/Valid` directory.
+* In order to test batch TDs, put them in the `WebContent/Examples/Valid` directory.
+* You can change the folder where the valid, invalid and warning TDs should be located.
 
 ## To-Do
 
 * test cases: 
+<<<<<<< HEAD
   * forms in the root with op from non root forms
   * putting strings in security that are not defined in securityDefinitions
   * op in event that has action or property op and vice versa
 * Scripting: 
     * invalid args, such as integers or non valid paths
     * manual
+=======
+* Scripting: 
+    * invalid args, such as integers or non valid paths
+* Needed Validation
+>>>>>>> princeton-testfest
