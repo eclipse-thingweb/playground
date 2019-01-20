@@ -1,0 +1,86 @@
+{
+    "title": "td-additional-contexts",
+    "description": "When a single Thing Description instance involves several contexts, additional namespaces with prefixes MUST be appended to the @context array structure",
+    "is-complex":true,
+    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "type": "object",
+    "if": {
+        "required": ["@context"]
+    },
+    "then": {
+        "properties":{
+            "@context":{
+                "if":{
+                    "type":"string"
+                },
+                "then":{
+                    "const":"td-additional-contexts=not-impl"
+                },
+                "else":{
+                    "if":{
+                        "$ref": "#/definitions/context2"
+                    },
+                    "then":{
+                        "const": "td-additional-contexts=pass"
+                    },
+                    "else":{
+                        "if":{
+                            "$ref": "#/definitions/context1"
+                        },
+                        "then":{
+                            "const": "td-additional-contexts=not-impl"
+                        },
+                        "else":{
+                            "const": "td-additional-contexts=fail"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "additionalProperties": true,
+    "definitions": {
+        "context1": {
+            "type": "array",
+            "items": {
+                "anyOf": [{
+                        "$ref": "#/definitions/url"
+                    },
+                    {
+                        "type": "object"
+                    }
+                ]
+            },
+            "contains": {
+                "type": "string",
+                "enum": [
+                    "http://www.w3.org/ns/td"
+                ]
+            }
+        },
+        "context2": {
+                "type": "array",
+                "items": {
+                    "anyOf": [{
+                            "$ref": "#/definitions/url"
+                        },
+                        {
+                            "type": "object"
+                        }
+                    ]
+                },
+                "minItems":2,
+                "contains": {
+                    "type": "string",
+                    "enum": [
+                        "http://www.w3.org/ns/td"
+                    ]
+                }           
+        },
+        "url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(([^#]*))?(#(.*))?"
+        }
+    }
+}

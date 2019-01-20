@@ -15,7 +15,6 @@ hs_err_pid*
 /build/
 
 # eclipse and idea files
-
 .project
 .classpath
 .idea
@@ -28,6 +27,10 @@ thingweb-playground.iml
 package-lock.json
 **/package-lock.json
 Scripts/node_modules
-Scripts/node_modules/*
+**/node_modules/*
+Scripts/node_modules/**
 AssertionTester/node_modules/**
-Results
+
+# Assertion tester
+AssertionTester/Results/*.csv
+AssertionTester/Results/*.json

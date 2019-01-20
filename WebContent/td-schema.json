@@ -442,6 +442,12 @@
                     "uniqueItems": true
                 },
                 "const": {},
+                "required":{
+                    "type":"array",
+                    "items":{
+                        "type":"string"
+                    }
+                },
                 "type": {
                     "type": "string",
                     "enum": [

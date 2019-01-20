@@ -1,0 +1,133 @@
+{
+    "title": "td-property-arrays",
+    "description": "(In a property member value) The type of the members forms, required, enum, scopes, and security MUST be serialized as a JSON array.",
+    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "is-complex":false,
+    "type": "object",
+    "properties": {
+        "properties": {
+            "additionalProperties": {
+                "$ref": "#/definitions/property_element"
+            }
+        }
+    },
+    "required": [
+        "properties"
+    ],
+    "additionalProperties": true,
+    "definitions": {
+        "property_element": {
+            "type": "object",
+            "properties": {
+                "forms": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/form_element"
+                    }
+                },
+                "scopes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "security": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "required": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "enum": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true
+                }
+            },
+            "required": [
+                "forms", "scopes", "security","required","enum"
+            ],
+            "additionalProperties": true
+        },
+        "form_element": {
+            "type": "object",
+            "properties": {
+                "href": {
+                    "$ref": "#/definitions/url"
+                },
+                "op": {
+                    "oneOf": [{
+                            "type": "string",
+                            "enum": [
+                                "readproperty",
+                                "writeproperty",
+                                "observeproperty",
+                                "invokeaction",
+                                "subscribeevent",
+                                "unsubscribeevent"
+                            ]
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "readproperty",
+                                    "writeproperty",
+                                    "observeproperty",
+                                    "invokeaction",
+                                    "subscribeevent",
+                                    "unsubscribeevent"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "contentType": {
+                    "type": "string"
+                },
+                "security": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "scopes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "subProtocol": {
+                    "type": "string",
+                    "enum": [
+                        "longpoll"
+                    ]
+                },
+                "response": {
+                    "type": "object",
+                    "properties": {
+                        "contentType": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "required": [
+                "href",
+                "contentType"
+            ],
+            "additionalProperties": true
+        },
+        "url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(([^#]*))?(#(.*))?"
+        }
+    }
+}

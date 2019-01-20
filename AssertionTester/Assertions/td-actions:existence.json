@@ -1,0 +1,18 @@
+{
+    "title": "td-actions:existence",
+    "description": "Actions offered by a Thing MUST be collected in the JSON-object based actions member with (unique) Action names as JSON names.(Checking their existence)",
+    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "is-complex":false,
+    "type": "object",
+    "properties": {
+        "actions": {
+            "additionalProperties": {
+                "type": "object"
+            }
+        }
+    },
+    "required": [
+        "actions"
+    ],
+    "additionalProperties": true
+}

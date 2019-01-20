@@ -1,0 +1,47 @@
+{
+    "title": "td-event-arrays",
+    "description": "The type of the members forms, required, and enum, scopes, and security MUST be serialized as a JSON array.",
+    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "is-complex":false,
+    "type": "object",
+    "properties": {
+        "events": {
+            "additionalProperties": {
+                "$ref": "#/definitions/event_element"
+            }
+        }
+    },
+    "required": [
+        "events"
+    ],
+    "additionalProperties": true,
+    "definitions": {
+        "event_element": {
+            "type": "object",
+            "properties": {
+                "forms": {
+                    "type": "array",
+                    "items": {
+                        "type":"object"
+                    }
+                },
+                "scopes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "security": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "forms", "scopes", "security"
+            ],
+            "additionalProperties": true
+        }
+    }
+}

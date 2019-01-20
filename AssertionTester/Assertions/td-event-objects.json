@@ -1,0 +1,38 @@
+{
+    "title": "td-event-objects",
+    "description": "The type of the members subscription, data, and cancellation MUST be serialized as a JSON object.",
+    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "is-complex":false,
+    "type": "object",
+    "properties": {
+        "events": {
+            "additionalProperties": {
+                "$ref": "#/definitions/event_element"
+            }
+        }
+    },
+    "required": [
+        "events"
+    ],
+    "additionalProperties": true,
+    "definitions": {
+        "event_element": {
+            "type": "object",
+            "properties": {
+                "subscription": {
+                    "type": "object"
+                },
+                "data": {
+                    "type": "object"
+                },
+                "cancellation": {
+                    "type": "object"
+                }
+            },
+            "required": [
+                "subscription", "data", "cancellation"
+            ],
+            "additionalProperties": true
+        }
+    }
+}
