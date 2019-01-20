@@ -2,6 +2,7 @@
     "title": "td-action-arrays",
     "description": "The type of the members forms, scopes, and security MUST be serialized as a JSON array.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
+    "is-complex":false,
     "type": "object",
     "properties": {
         "actions": {
