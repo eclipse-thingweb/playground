@@ -106,6 +106,8 @@ fs.readFile(storedTdAddress, (err, tdData) => {
 
                 console.log('X JSON Schema validation... KO:');
                 //console.log(ajv.errors);
+
+                //TODO: Handle long error messages in case of oneOf
                 console.log('> ' + ajv.errorsText());
             }
 

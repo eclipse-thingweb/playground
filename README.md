@@ -124,12 +124,12 @@ td-jsonld-preprocessing-defaults
 td-vocab-links
 td-vocab-created
 td-vocab-version
-td-vocab-security
+DONE td-vocab-security
 td-vocab-events
 td-vocab-description
 td-vocab-name
-td-vocab-actions
-td-vocab-securityDefinitions
+DONE td-vocab-actions
+DONE td-vocab-securityDefinitions
 td-vocab-support
 td-vocab-base
 td-vocab-lastModified

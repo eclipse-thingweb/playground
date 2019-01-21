@@ -1,6 +1,6 @@
 {
     "title": "WoT TD Schema - January 2019",
-    "description": "JSON Schema representation of the TD serialisation format.",
+    "description": "JSON Schema representation of the Full TD serialisation format.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "type": "object",
     "properties": {
@@ -197,7 +197,7 @@
                 }
             },
             "required": [
-                "href"
+                "href", "contentType"
             ],
             "additionalProperties": true
         },
@@ -256,7 +256,7 @@
                 }
             },
             "required": [
-                "href"
+                "href", "contentType"
             ],
             "additionalProperties": true
         },
@@ -317,7 +317,7 @@
                 }
             },
             "required": [
-                "href"
+                "href", "contentType"
             ],
             "additionalProperties": true
         },
@@ -382,7 +382,7 @@
                 }
             },
             "required": [
-                "href"
+                "href", "contentType"
             ],
             "additionalProperties": true
         },
@@ -491,7 +491,10 @@
                 }
             },
             "required": [
-                "forms"
+                "forms",
+                "observable",
+                "writeOnly",
+                "readOnly"
             ],
             "additionalProperties": true
         },
@@ -549,7 +552,7 @@
                 }
             },
             "required": [
-                "forms"
+                "forms", "safe", "idempotent"
             ],
             "additionalProperties": true
         },
@@ -672,10 +675,8 @@
 
                 },
                 "minItems": {
-
                     "type": "integer",
                     "minimum": 0
-
                 },
                 "minimum": {
                     "type": "number"
@@ -692,7 +693,9 @@
                         "type": "string"
                     }
                 }
-            }
+            },
+            "required": [
+            ]
         },
         "link_element": {
             "type": "object",
@@ -760,30 +763,7 @@
                         }
                     },
                     "required": [
-                        "scheme"
-                    ]
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "description": {
-                            "type": "string"
-                        },
-                        "proxy": {
-                            "$ref": "#/definitions/url"
-                        },
-                        "scheme": {
-                            "type": "string",
-                            "enum": [
-                                "cert"
-                            ]
-                        },
-                        "identity": {
-                            "type": "string"
-                        }
-                    },
-                    "required": [
-                        "scheme"
+                        "scheme","in"
                     ]
                 },
                 {
@@ -814,7 +794,34 @@
                         }
                     },
                     "required": [
-                        "scheme"
+                        "scheme","qop","in"
+                    ]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "proxy": {
+                            "$ref": "#/definitions/url"
+                        },
+                        "scheme": {
+                            "type": "string",
+                            "enum": [
+                                "apikey"
+                            ]
+                        },
+                        "in": {
+                            "type": "string",
+                            "enum": ["header", "query", "body", "cookie"]
+                        },
+                        "name": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "scheme","in"
                     ]
                 },
                 {
@@ -848,6 +855,29 @@
                             "enum": ["header", "query", "body", "cookie"]
                         },
                         "name": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "scheme","in","alg","format"
+                    ]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "proxy": {
+                            "$ref": "#/definitions/url"
+                        },
+                        "scheme": {
+                            "type": "string",
+                            "enum": [
+                                "cert"
+                            ]
+                        },
+                        "identity": {
                             "type": "string"
                         }
                     },
@@ -937,34 +967,7 @@
                         }
                     },
                     "required": [
-                        "scheme"
-                    ]
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "description": {
-                            "type": "string"
-                        },
-                        "proxy": {
-                            "$ref": "#/definitions/url"
-                        },
-                        "scheme": {
-                            "type": "string",
-                            "enum": [
-                                "apikey"
-                            ]
-                        },
-                        "in": {
-                            "type": "string",
-                            "enum": ["header", "query", "body", "cookie"]
-                        },
-                        "name": {
-                            "type": "string"
-                        }
-                    },
-                    "required": [
-                        "scheme"
+                        "scheme","format","alg","in"
                     ]
                 },
                 {

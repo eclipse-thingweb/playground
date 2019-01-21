@@ -57,9 +57,10 @@ function reset(id) {
 function validate() {
     var text = $('#td-text').val();
     reset('spot-json');
-    reset('spot-json-schema');
+    reset('spot-simple-json-schema');
+    reset('spot-full-json-schema');
     reset('spot-json-ld');
-    reset('spot-owl');
+    reset('spot-add');
     trigger('validate-json', text);
 }
 
@@ -73,9 +74,10 @@ function clearLog() {
     pgConsole.empty();
     pgConsole.append("Reset! Waiting for validation... " + '&#13;&#10;');
     reset('spot-json');
-    reset('spot-json-schema');
+    reset('spot-simple-json-schema');
+    reset('spot-full-json-schema');
     reset('spot-json-ld');
-    reset('spot-owl');
+    reset('spot-add');
 }
 
 $(function () {
@@ -83,109 +85,124 @@ $(function () {
     $('#td-text').linedtextarea();
     $.getJSON('td-schema.json', function (schema) {
 
-        ajv = Ajv();
-        $.getJSON('json-schema-draft-06.json', function (draft) {
 
-            ajv.addMetaSchema(draft);
-            ajv.addSchema(schema, 'td');
-            document.addEventListener('validate-json', function (e) {
-                try {
-                    log('------- New Validation Started -------');
-                    tdJson = JSON.parse(e.detail);
-                    light('OK', 'spot-json');
-                    log('JSON validation... OK');
-                    trigger('validate-json-schema', tdJson);
-                } catch (err) {
-                    console.log(err);
-                    if (err instanceof SyntaxError) {
-                        light('KO', 'spot-json');
-                        log('X JSON validation... KO:');
-                        log('> ' + err.message);
-                    }
-                }
-            }, false);
+        $.getJSON('td-schema-full.json', function (schemaFull) {
 
-            document.addEventListener('validate-json-schema', function (e) {
-                if (tdJson.hasOwnProperty('properties') || tdJson.hasOwnProperty('actions') || tdJson.hasOwnProperty('events')) {
-                    if (!tdJson.hasOwnProperty('base')) {
-                        //no need to do something. Each href should be absolute
-                        log(':) Tip: Without base, each href should be an absolute URL');
-                    } else {
-                        //need to check if base finishes with / or not
-                        //if it does, hrefs shouldnt start with it, if it doesnt, then hrefs must start with it
-                        //QUESTION should there be separate schemas or transformation?
-                        try {
-                            tdJson = transformHref(tdJson);
-                        } catch (err) {
-                            light('KO', 'spot-json-schema');
-                            log('X JSON Schema validation... KO:');
-                            log('> ' + err);
-                            return;
+            ajv = Ajv();
+            $.getJSON('json-schema-draft-06.json', function (draft) {
+
+                ajv.addMetaSchema(draft);
+                ajv.addSchema(schema, 'td');
+                ajv.addSchema(schemaFull, 'td-full');
+
+                document.addEventListener('validate-json', function (e) {
+                    try {
+                        log('------- New Validation Started -------');
+                        tdJson = JSON.parse(e.detail);
+                        light('OK', 'spot-json');
+                        log('JSON validation... OK');
+                        trigger('validate-simple-json-schema', tdJson);
+                    } catch (err) {
+                        console.log(err);
+                        if (err instanceof SyntaxError) {
+                            light('KO', 'spot-json');
+                            log('X JSON validation... KO:');
+                            log('> ' + err.message);
                         }
                     }
+                }, false);
 
-                }
+                document.addEventListener('validate-simple-json-schema', function (e) {
+                    if (tdJson.hasOwnProperty('properties') || tdJson.hasOwnProperty('actions') || tdJson.hasOwnProperty('events')) {
+                        if (!tdJson.hasOwnProperty('base')) {
+                            //no need to do something. Each href should be absolute
+                            log(':) Tip: Without base, each href should be an absolute URL');
+                        } else {
+                            //need to check if base finishes with / or not
+                            //if it does, hrefs shouldnt start with it, if it doesnt, then hrefs must start with it
+                            //QUESTION should there be separate schemas or transformation?
+                            try {
+                                tdJson = transformHref(tdJson);
+                            } catch (err) {
+                                light('KO', 'spot-simple-json-schema');
+                                log('X JSON Schema validation... KO:');
+                                log('> ' + err);
+                                return;
+                            }
+                        }
 
-                var valid = ajv.validate('td', tdJson);
-                //used to be var valid = ajv.validate('td', e.detail);
-                if (valid) {
-                    light('OK', 'spot-json-schema');
-                    log('JSON Schema validation... OK');
+                    }
+
+                    var valid = ajv.validate('td', tdJson);
+                    //used to be var valid = ajv.validate('td', e.detail);
+                    if (valid) {
+                        light('OK', 'spot-simple-json-schema');
+                        log('JSON Schema validation... OK');
+                        trigger('validate-full-json-schema', tdJson);
+                    } else {
+                        light('KO', 'spot-simple-json-schema');
+                        log('X JSON Schema validation... KO:');
+                        //console.log(ajv.errors);
+                        log('> ' + ajv.errorsText());
+                        console.log(JSON.stringify(ajv.errors));
+                    }
+
+
+                }, false);
+
+                document.addEventListener('validate-full-json-schema', function (e) {
+                    var tdJson = e.detail;
+                    var valid = ajv.validate('td-full', tdJson);
+                    //used to be var valid = ajv.validate('td', e.detail);
+                    if (valid) {
+                        light('OK', 'spot-full-json-schema');
+                        log('JSON Schema validation... OK');
+                        trigger('validate-json-ld', tdJson);
+                    } else {
+                        light('KO', 'spot-full-json-schema');
+                        log('X JSON Schema validation... KO:');
+                        //console.log(ajv.errors);
+                        log('> ' + ajv.errorsText());
+                        console.log(JSON.stringify(ajv.errors));
+                        trigger('validate-json-ld', tdJson);
+                    }
+
+
+                }, false);
+
+                document.addEventListener('validate-json-ld', function (e) {
+                    jsonld.toRDF(e.detail, {
+                        format: 'application/nquads'
+                    }, function (err, triples) {
+                        if (!err) {
+                            light('OK', 'spot-json-ld');
+                            log('JSON-LD validation... OK');
+                            trigger('validate-add', triples);
+                        } else {
+                            light('KO', 'spot-json-ld');
+                            log('X JSON-LD validation... KO:');
+                            log('> ' + err);
+                        }
+                    });
+                }, false);
+
+                document.addEventListener('validate-add', function (e) {
+
+                    log('Additional checks...');
+
+                    light('OK', 'spot-add');
+
                     checkEnumConst(tdJson);
                     checkPropItems(tdJson);
                     checkInteractions(tdJson);
                     checkSecurity(tdJson);
-                    trigger('validate-json-ld', e.detail);
-                } else {
-                    light('KO', 'spot-json-schema');
-                    log('X JSON Schema validation... KO:');
-                    //console.log(ajv.errors);
-                    log('> ' + ajv.errorsText());
-                    console.log(JSON.stringify(ajv.errors));
-                }
+                    checkUniqueness(tdJson);
 
 
-            }, false);
+                }, false);
 
-            document.addEventListener('validate-json-ld', function (e) {
-                jsonld.toRDF(e.detail, {
-                    format: 'application/nquads'
-                }, function (err, triples) {
-                    if (!err) {
-                        light('OK', 'spot-json-ld');
-                        log('JSON-LD validation... OK');
-                        trigger('validate-owl', triples);
-                    } else {
-                        light('KO', 'spot-json-ld');
-                        log('X JSON-LD validation... KO:');
-                        log('> ' + err);
-                    }
-                });
-            }, false);
-
-            // document.addEventListener('validate-owl', function(e) {
-            //     $.post({
-            //         url: 'sem',
-            //         data: e.detail,
-            //         contentType: 'application/nquads',
-            //         success: function(diagnosis) {
-            //             if (diagnosis.valid) {
-            //                 light(true, 'spot-owl');
-            //                 log('TD/OWL validation... OK');
-            //             } else {
-            //                 light(false, 'spot-owl');
-            //                 log('TD/OWL validation... KO!');
-            //             }
-            //         }
-            //     });
-            // }, false);
-            document.addEventListener('validate-owl', function (e) {
-                light('OK', 'spot-owl');
-                log('TD/OWL validation... OK');
-
-            }, false);
-
-            $('#td-validate').removeAttr('disabled');
+                $('#td-validate').removeAttr('disabled');
+            });
         });
     });
 });
@@ -593,7 +610,7 @@ function checkSecurity(td) {
                         light('KO', 'spot-json-schema');
                     }
                 }
-                
+
                 // checking security in forms level
                 var curForms = curProperty.forms;
                 for (var j = 0; j < curForms.length; j++) {
@@ -640,7 +657,7 @@ function checkSecurity(td) {
                         }
                     }
                 }
-                
+
             }
         }
 
@@ -658,7 +675,7 @@ function checkSecurity(td) {
                         log('KO Error: Security key in event ' + curEventName + '  has security schemes not defined by the securityDefinitions');
                         light('KO', 'spot-json-schema');
                     }
-                } 
+                }
                 // checking security in forms level
                 var curForms = curEvent.forms;
                 for (var j = 0; j < curForms.length; j++) {
@@ -673,7 +690,7 @@ function checkSecurity(td) {
                         }
                     }
                 }
-                
+
             }
         }
     } else {
@@ -681,4 +698,27 @@ function checkSecurity(td) {
         light('KO', 'spot-json-schema');
     }
     return;
+}
+
+function checkUniqueness(td) {
+
+    // building the interaction name array
+    var tdInteractions = [];
+    if (td.hasOwnProperty("properties")) {
+        tdInteractions = tdInteractions.concat(Object.keys(td.properties));
+    }
+    if (td.hasOwnProperty("actions")) {
+        tdInteractions = tdInteractions.concat(Object.keys(td.actions));
+    }
+    if (td.hasOwnProperty("events")) {
+        tdInteractions = tdInteractions.concat(Object.keys(td.events));
+    }
+    // checking uniqueness
+
+    isDuplicate = (new Set(tdInteractions)).size !== tdInteractions.length;
+
+    if (isDuplicate) {
+        log('KO Error: Duplicate names are not allowed in Interactions');
+        light('KO', 'spot-json-add');
+    }
 }
