@@ -192,9 +192,12 @@ $(function () {
 
                     light('OK', 'spot-add');
 
+                    //can produce only warning
                     checkEnumConst(tdJson);
                     checkPropItems(tdJson);
                     checkInteractions(tdJson);
+
+                    //can produce error
                     checkSecurity(tdJson);
                     checkUniqueness(tdJson);
 
