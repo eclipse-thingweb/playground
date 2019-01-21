@@ -192,9 +192,12 @@ $(function () {
 
                     light('OK', 'spot-add');
 
+                    //can produce only warning
                     checkEnumConst(tdJson);
                     checkPropItems(tdJson);
                     checkInteractions(tdJson);
+
+                    //can produce error
                     checkSecurity(tdJson);
                     checkUniqueness(tdJson);
 
@@ -441,8 +444,9 @@ function checkEnumConst(td) {
             var curPropertyName = tdProperties[i];
             var curProperty = td.properties[curPropertyName];
             if (curProperty.hasOwnProperty("enum") && curProperty.hasOwnProperty("const")) {
-                light('WARNING', 'spot-json-schema');
+                light('WARNING', 'spot-add');
                 log('! In property ' + curPropertyName + ' enum and const are used at the same time, the values in enum can never be valid in the received JSON value');
+                return false;
             }
         }
     }
@@ -456,14 +460,15 @@ function checkEnumConst(td) {
                 var curInput = curAction.input;
                 if (curInput.hasOwnProperty("enum") && curInput.hasOwnProperty("const")) {
                     log('! In the input of action ' + curActionName + ' enum and const are used at the same time, the values in enum can never be valid in the received JSON value');
-                    light('WARNING', 'spot-json-schema');
+                    light('WARNING', 'spot-add');
                 }
             }
             if (curAction.hasOwnProperty("output")) {
                 var curOutput = curAction.output;
                 if (curOutput.hasOwnProperty("enum") && curOutput.hasOwnProperty("const")) {
                     log('! In the output of action ' + curActionName + ' enum and const are used at the same time, the values in enum can never be valid in the received JSON value');
-                    light('WARNING', 'spot-json-schema');
+                    light('WARNING', 'spot-add');
+                    return false;
                 }
             }
         }
@@ -476,11 +481,12 @@ function checkEnumConst(td) {
             var curEvent = td.events[curEventName];
             if (curEvent.hasOwnProperty("enum") && curEvent.hasOwnProperty("const")) {
                 log('! In event ' + curEventName + ' enum and const are used at the same time, the values in enum can never be valid in the received JSON value');
-                light('WARNING', 'spot-json-schema');
+                light('WARNING', 'spot-add');
+                return false;
             }
         }
     }
-    return;
+    return true;
 }
 
 //checking whether a data schema has object but not properties, array but no items
@@ -495,11 +501,13 @@ function checkPropItems(td) {
             if (curProperty.hasOwnProperty("type")) {
                 if ((curProperty.type == "object") && !(curProperty.hasOwnProperty("properties"))) {
                     log('! In property ' + curPropertyName + ', the type is object but its properties are not specified');
-                    light('WARNING', 'spot-json-schema');
+                    light('WARNING', 'spot-add');
+                    return false;
                 }
                 if ((curProperty.type == "array") && !(curProperty.hasOwnProperty("items"))) {
                     log('! In property ' + curPropertyName + ', the type is array but its items are not specified');
-                    light('WARNING', 'spot-json-schema');
+                    light('WARNING', 'spot-add');
+                    return false;
                 }
             }
         }
@@ -516,11 +524,13 @@ function checkPropItems(td) {
                 if (curInput.hasOwnProperty("type")) {
                     if ((curInput.type == "object") && !(curInput.hasOwnProperty("properties"))) {
                         log('! In the input of action ' + curActionName + ', the type is object but its properties are not specified');
-                        light('WARNING', 'spot-json-schema');
+                        light('WARNING', 'spot-add');
+                        return false;
                     }
                     if ((curInput.type == "array") && !(curInput.hasOwnProperty("items"))) {
                         log('! In the output of action ' + curActionName + ', the type is array but its items are not specified');
-                        light('WARNING', 'spot-json-schema');
+                        light('WARNING', 'spot-add');
+                        return false;
                     }
                 }
             }
@@ -529,11 +539,13 @@ function checkPropItems(td) {
                 if (curOutput.hasOwnProperty("type")) {
                     if ((curOutput.type == "object") && !(curOutput.hasOwnProperty("properties"))) {
                         log('! In the output of action ' + curActionName + ', the type is object but its properties are not specified');
-                        light('WARNING', 'spot-json-schema');
+                        light('WARNING', 'spot-add');
+                        return false;
                     }
                     if ((curOutput.type == "array") && !(curOutput.hasOwnProperty("items"))) {
                         log('! In the output of action ' + curActionName + ', the type is array but its items are not specified');
-                        light('WARNING', 'spot-json-schema');
+                        light('WARNING', 'spot-add');
+                        return false;
                     }
                 }
             }
@@ -549,11 +561,13 @@ function checkPropItems(td) {
             if (curEvent.hasOwnProperty("type")) {
                 if ((curEvent.type == "object") && !(curEvent.hasOwnProperty("properties"))) {
                     log('! In event ' + curEventName + ', the type is object but its properties are not specified');
-                    light('WARNING', 'spot-json-schema');
+                    light('WARNING', 'spot-add');
+                    return false;
                 }
                 if ((curEvent.type == "array") && !(curEvent.hasOwnProperty("items"))) {
                     log('! In event ' + curEventName + ', the type is array but its items are not specified');
-                    light('WARNING', 'spot-json-schema');
+                    light('WARNING', 'spot-add');
+                    return false;
                 }
             }
 
@@ -566,11 +580,13 @@ function checkPropItems(td) {
 function checkInteractions(td) {
     if (td.hasOwnProperty("interactions")) {
         log('interactions are from the previous TD Specification, please use properties, actions, events instead');
-        light('WARNING', 'spot-json-schema');
+        light('WARNING', 'spot-add');
+        return false;
     }
     if (td.hasOwnProperty("interaction")) {
         log('interaction are from the previous TD Specification, please use properties, actions, events instead');
-        light('WARNING', 'spot-json-schema');
+        light('WARNING', 'spot-add');
+        return false;
     }
     return;
 }
@@ -592,7 +608,8 @@ function checkSecurity(td) {
             // all good
         } else {
             log('KO Error: Security key in the root of the TD has security schemes not defined by the securityDefinitions');
-            light('KO', 'spot-json-schema');
+            light('KO', 'spot-add');
+            return false;
         }
 
         if (td.hasOwnProperty("properties")) {
@@ -607,7 +624,8 @@ function checkSecurity(td) {
                         // all good
                     } else {
                         log('KO Error: Security key in property ' + curPropertyName + '  has security schemes not defined by the securityDefinitions');
-                        light('KO', 'spot-json-schema');
+                        light('KO', 'spot-add');
+                        return false;
                     }
                 }
 
@@ -621,7 +639,8 @@ function checkSecurity(td) {
                             // all good
                         } else {
                             log('KO Error: Security key in form ' + j + ' in property ' + curPropertyName + '  has security schemes not defined by the securityDefinitions');
-                            light('KO', 'spot-json-schema');
+                            light('KO', 'spot-add');
+                            return false;
                         }
                     }
                 }
@@ -640,7 +659,8 @@ function checkSecurity(td) {
                         // all good
                     } else {
                         log('KO Error: Security key in action ' + curActionName + '  has security schemes not defined by the securityDefinitions');
-                        light('KO', 'spot-json-schema');
+                        light('KO', 'spot-add');
+                        return false;
                     }
                 }
                 // checking security in forms level 
@@ -653,7 +673,8 @@ function checkSecurity(td) {
                             // all good
                         } else {
                             log('KO Error: Security key in form ' + j + ' in action ' + curActionName + '  has security schemes not defined by the securityDefinitions');
-                            light('KO', 'spot-json-schema');
+                            light('KO', 'spot-add');
+                            return false;
                         }
                     }
                 }
@@ -673,7 +694,8 @@ function checkSecurity(td) {
                         // all good
                     } else {
                         log('KO Error: Security key in event ' + curEventName + '  has security schemes not defined by the securityDefinitions');
-                        light('KO', 'spot-json-schema');
+                        light('KO', 'spot-add');
+                        return false;
                     }
                 }
                 // checking security in forms level
@@ -686,7 +708,8 @@ function checkSecurity(td) {
                             // all good
                         } else {
                             log('KO Error: Security key in form ' + j + ' in event ' + curEventName + '  has security schemes not defined by the securityDefinitions');
-                            light('KO', 'spot-json-schema');
+                            light('KO', 'spot-add');
+                            return false;
                         }
                     }
                 }
@@ -695,7 +718,8 @@ function checkSecurity(td) {
         }
     } else {
         log('KO Error: securityDefinitions is mandatory');
-        light('KO', 'spot-json-schema');
+        light('KO', 'spot-add');
+        return false;
     }
     return;
 }
@@ -719,6 +743,7 @@ function checkUniqueness(td) {
 
     if (isDuplicate) {
         log('KO Error: Duplicate names are not allowed in Interactions');
-        light('KO', 'spot-json-add');
+        light('KO', 'spot-add');
+        return false;
     }
 }
