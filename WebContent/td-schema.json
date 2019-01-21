@@ -714,7 +714,7 @@
                         }
                     },
                     "required": [
-                        "scheme","in"
+                        "scheme"
                     ]
                 },
                 {
@@ -768,9 +768,7 @@
                         }
                     },
                     "required": [
-                        "scheme",
-                        "qop",
-                        "in"
+                        "scheme"
                     ]
                 },
                 {
@@ -808,10 +806,7 @@
                         }
                     },
                     "required": [
-                        "scheme",
-                        "in",
-                        "alg",
-                        "format"
+                        "scheme"
                     ]
                 },
                 {
@@ -896,8 +891,7 @@
                         }
                     },
                     "required": [
-                        "scheme",
-                        "flow"
+                        "scheme"
                     ]
                 },
                 {
@@ -924,8 +918,7 @@
                         }
                     },
                     "required": [
-                        "scheme",
-                        "in"
+                        "scheme"
                     ]
                 },
                 {
@@ -963,10 +956,7 @@
                         }
                     },
                     "required": [
-                        "scheme",
-                        "in",
-                        "alg",
-                        "format"
+                        "scheme"
                     ]
                 }
             ]

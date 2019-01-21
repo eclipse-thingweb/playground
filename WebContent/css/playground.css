@@ -4,6 +4,7 @@
 	/* width: 50%; */
 
 }
+
 body {
 	background-color: white;
 }
@@ -18,7 +19,7 @@ body {
 }
 
 .panel {
-    padding-left: 1em;
+	padding-left: 1em;
 }
 
 .panel button {
@@ -39,16 +40,16 @@ textarea {
 
 .button-success,
 .button-error,
-.button-warning{
+.button-warning {
 	color: white;
 	border-radius: 4px;
 	font-size: 60%;
 	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 	padding-right: 10px;
-margin-top: 0px;
-margin-left: -10px;
-margin-right: -10px;
-margin-bottom: 0px;
+	margin-top: 0px;
+	margin-left: -10px;
+	margin-right: -10px;
+	margin-bottom: 0px;
 }
 
 .button-success {
@@ -75,7 +76,11 @@ margin-bottom: 0px;
 	padding: 1em;
 }
 
-#spot-json, #spot-json-schema, #spot-json-ld, #spot-owl {
+#spot-json,
+#spot-simple-json-schema,
+#spot-full-json-schema,
+#spot-json-ld,
+#spot-add {
 	visibility: hidden;
 }
 

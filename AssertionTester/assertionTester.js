@@ -252,13 +252,12 @@ function checkVocabulary(tdJson) {
     ajv.addSchema(schema, 'td');
 
     var valid = ajv.validate('td', tdJson);
-    var otherAssertions = ["td-objects:securityDefinitions", "td-arrays:security", "td:security", "td-security-mandatory", "td-vocab-securityDefinitions", "td-vocab-security"];
+    var otherAssertions = ["td-objects:securityDefinitions", "td-arrays:security", "td:security", "td-security-mandatory", "td-vocab-securityDefinitions", "td-vocab-security", "td-vocab-scheme"];
 
     if (valid) {
         results.push({
             "ID": "td-vocabulary",
             "Status": "pass",
-            "additionalInfo": ""
         });
 
         otherAssertions.forEach(function (asser) {
@@ -320,7 +319,6 @@ function checkUniqueness(td) {
         results.push({
             "ID": "td-unique-identifiers",
             "Status": "pass",
-            "additionalInfo": ""
         });
 
         otherAssertions.forEach(function (asser) {

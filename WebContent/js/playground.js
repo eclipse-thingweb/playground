@@ -57,9 +57,10 @@ function reset(id) {
 function validate() {
     var text = $('#td-text').val();
     reset('spot-json');
-    reset('spot-json-schema');
+    reset('spot-simple-json-schema');
+    reset('spot-full-json-schema');
     reset('spot-json-ld');
-    reset('spot-owl');
+    reset('spot-add');
     trigger('validate-json', text);
 }
 
@@ -73,9 +74,10 @@ function clearLog() {
     pgConsole.empty();
     pgConsole.append("Reset! Waiting for validation... " + '&#13;&#10;');
     reset('spot-json');
-    reset('spot-json-schema');
+    reset('spot-simple-json-schema');
+    reset('spot-full-json-schema');
     reset('spot-json-ld');
-    reset('spot-owl');
+    reset('spot-add');
 }
 
 $(function () {
@@ -88,13 +90,14 @@ $(function () {
 
             ajv.addMetaSchema(draft);
             ajv.addSchema(schema, 'td');
+
             document.addEventListener('validate-json', function (e) {
                 try {
                     log('------- New Validation Started -------');
                     tdJson = JSON.parse(e.detail);
                     light('OK', 'spot-json');
                     log('JSON validation... OK');
-                    trigger('validate-json-schema', tdJson);
+                    trigger('validate-simple-json-schema', tdJson);
                 } catch (err) {
                     console.log(err);
                     if (err instanceof SyntaxError) {
@@ -105,7 +108,7 @@ $(function () {
                 }
             }, false);
 
-            document.addEventListener('validate-json-schema', function (e) {
+            document.addEventListener('validate-simple-json-schema', function (e) {
                 if (tdJson.hasOwnProperty('properties') || tdJson.hasOwnProperty('actions') || tdJson.hasOwnProperty('events')) {
                     if (!tdJson.hasOwnProperty('base')) {
                         //no need to do something. Each href should be absolute
@@ -117,7 +120,7 @@ $(function () {
                         try {
                             tdJson = transformHref(tdJson);
                         } catch (err) {
-                            light('KO', 'spot-json-schema');
+                            light('KO', 'spot-simple-json-schema');
                             log('X JSON Schema validation... KO:');
                             log('> ' + err);
                             return;
@@ -129,15 +132,30 @@ $(function () {
                 var valid = ajv.validate('td', tdJson);
                 //used to be var valid = ajv.validate('td', e.detail);
                 if (valid) {
-                    light('OK', 'spot-json-schema');
+                    light('OK', 'spot-simple-json-schema');
                     log('JSON Schema validation... OK');
-                    checkEnumConst(tdJson);
-                    checkPropItems(tdJson);
-                    checkInteractions(tdJson);
-                    checkSecurity(tdJson);
-                    trigger('validate-json-ld', e.detail);
+                    trigger('validate-full-json-schema', tdJson);
                 } else {
-                    light('KO', 'spot-json-schema');
+                    light('KO', 'spot-simple-json-schema');
+                    log('X JSON Schema validation... KO:');
+                    //console.log(ajv.errors);
+                    log('> ' + ajv.errorsText());
+                    console.log(JSON.stringify(ajv.errors));
+                }
+
+
+            }, false);
+
+            document.addEventListener('validate-full-json-schema', function (e) {
+                var tdJson = e.detail;
+                var valid = ajv.validate('td', tdJson);
+                //used to be var valid = ajv.validate('td', e.detail);
+                if (valid) {
+                    light('OK', 'spot-full-json-schema');
+                    log('JSON Schema validation... OK');
+                    trigger('validate-json-ld', tdJson);
+                } else {
+                    light('KO', 'spot-full-json-schema');
                     log('X JSON Schema validation... KO:');
                     //console.log(ajv.errors);
                     log('> ' + ajv.errorsText());
@@ -154,7 +172,7 @@ $(function () {
                     if (!err) {
                         light('OK', 'spot-json-ld');
                         log('JSON-LD validation... OK');
-                        trigger('validate-owl', triples);
+                        trigger('validate-add', triples);
                     } else {
                         light('KO', 'spot-json-ld');
                         log('X JSON-LD validation... KO:');
@@ -163,25 +181,18 @@ $(function () {
                 });
             }, false);
 
-            // document.addEventListener('validate-owl', function(e) {
-            //     $.post({
-            //         url: 'sem',
-            //         data: e.detail,
-            //         contentType: 'application/nquads',
-            //         success: function(diagnosis) {
-            //             if (diagnosis.valid) {
-            //                 light(true, 'spot-owl');
-            //                 log('TD/OWL validation... OK');
-            //             } else {
-            //                 light(false, 'spot-owl');
-            //                 log('TD/OWL validation... KO!');
-            //             }
-            //         }
-            //     });
-            // }, false);
-            document.addEventListener('validate-owl', function (e) {
-                light('OK', 'spot-owl');
-                log('TD/OWL validation... OK');
+            document.addEventListener('validate-add', function (e) {
+
+                log('Additional checks...');
+
+                light('OK', 'spot-add');
+
+                checkEnumConst(tdJson);
+                checkPropItems(tdJson);
+                checkInteractions(tdJson);
+                checkSecurity(tdJson);
+                checkUniqueness(tdJson);
+
 
             }, false);
 
@@ -681,4 +692,27 @@ function checkSecurity(td) {
         light('KO', 'spot-json-schema');
     }
     return;
+}
+
+function checkUniqueness(td) {
+
+    // building the interaction name array
+    var tdInteractions = [];
+    if (td.hasOwnProperty("properties")) {
+        tdInteractions = tdInteractions.concat(Object.keys(td.properties));
+    }
+    if (td.hasOwnProperty("actions")) {
+        tdInteractions = tdInteractions.concat(Object.keys(td.actions));
+    }
+    if (td.hasOwnProperty("events")) {
+        tdInteractions = tdInteractions.concat(Object.keys(td.events));
+    }
+    // checking uniqueness
+
+    isDuplicate = (new Set(tdInteractions)).size !== tdInteractions.length;
+
+    if (isDuplicate) {
+        log('KO Error: Duplicate names are not allowed in Interactions');
+        light('KO', 'spot-json-add');
+    }
 }
