@@ -3,7 +3,7 @@
     "description": "The version container MAY be used to provide additional application and/or device specific version information based on terms from non-TD namespaces.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": false,
-    "also":["td-objects:version"],
+    "also": ["td-objects:version", "td-vocab-version"],
     "type": "object",
     "properties": {
         "version": {

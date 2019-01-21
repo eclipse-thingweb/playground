@@ -252,7 +252,7 @@ function checkVocabulary(tdJson) {
     ajv.addSchema(schema, 'td');
 
     var valid = ajv.validate('td', tdJson);
-    var otherAssertions = ["td-objects:securityDefinitions", "td-arrays:security", "td:security", "td-security-mandatory"];
+    var otherAssertions = ["td-objects:securityDefinitions", "td-arrays:security", "td:security", "td-security-mandatory", "td-vocab-securityDefinitions", "td-vocab-security"];
 
     if (valid) {
         results.push({
