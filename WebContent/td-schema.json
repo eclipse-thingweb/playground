@@ -57,7 +57,7 @@
         },
         "securityDefinitions": {
             "type": "object",
-            "minProperties":1,
+            "minProperties": 1,
             "additionalProperties": {
                 "$ref": "#/definitions/securityScheme"
             }
@@ -79,7 +79,7 @@
         },
         "security": {
             "type": "array",
-            "minItems":1,
+            "minItems": 1,
             "items": {
                 "type": "string"
             }
@@ -100,12 +100,10 @@
     "additionalProperties": true,
     "definitions": {
         "context": {
-            "oneOf": [
-                {
+            "oneOf": [{
                     "type": "array",
                     "items": {
-                        "anyOf": [
-                            {
+                        "anyOf": [{
                                 "$ref": "#/definitions/url"
                             },
                             {
@@ -129,8 +127,7 @@
             ]
         },
         "type_declaration": {
-            "oneOf": [
-                {
+            "oneOf": [{
                     "type": "string"
                 },
                 {
@@ -148,8 +145,7 @@
                     "$ref": "#/definitions/url"
                 },
                 "op": {
-                    "oneOf": [
-                        {
+                    "oneOf": [{
                             "type": "string",
                             "enum": [
                                 "readproperty",
@@ -212,8 +208,7 @@
                     "$ref": "#/definitions/url"
                 },
                 "op": {
-                    "oneOf": [
-                        {
+                    "oneOf": [{
                             "type": "string",
                             "enum": [
                                 "invokeaction"
@@ -272,8 +267,7 @@
                     "$ref": "#/definitions/url"
                 },
                 "op": {
-                    "oneOf": [
-                        {
+                    "oneOf": [{
                             "type": "string",
                             "enum": [
                                 "subscribeevent",
@@ -334,8 +328,7 @@
                     "$ref": "#/definitions/url"
                 },
                 "op": {
-                    "oneOf": [
-                        {
+                    "oneOf": [{
                             "type": "string",
                             "enum": [
                                 "readallproperties",
@@ -436,18 +429,24 @@
                         "type": "string"
                     }
                 },
+                "writeOnly": {
+                    "type": "boolean"
+                },
+                "readOnly": {
+                    "type": "boolean"
+                },
+                "oneOf": {
+                    "$ref": "#/definitions/dataSchema"
+                },
+                "unit": {
+                    "type": "string"
+                },
                 "enum": {
                     "type": "array",
                     "minItems": 1,
                     "uniqueItems": true
                 },
                 "const": {},
-                "required":{
-                    "type":"array",
-                    "items":{
-                        "type":"string"
-                    }
-                },
                 "type": {
                     "type": "string",
                     "enum": [
@@ -460,17 +459,35 @@
                         "null"
                     ]
                 },
-                "writeOnly": {
-                    "type": "boolean"
-                },
-                "readOnly": {
-                    "type": "boolean"
-                },
-                "oneOf": {
+                "items": {
                     "$ref": "#/definitions/dataSchema"
                 },
-                "unit": {
-                    "type": "string"
+                "maxItems": {
+
+                    "type": "integer",
+                    "minimum": 0
+
+                },
+                "minItems": {
+
+                    "type": "integer",
+                    "minimum": 0
+
+                },
+                "minimum": {
+                    "type": "number"
+                },
+                "maximum": {
+                    "type": "number"
+                },
+                "properties": {
+                    "$ref": "#/definitions/dataSchema"
+                },
+                "required": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             },
             "required": [
@@ -609,6 +626,24 @@
                 "title": {
                     "type": "string"
                 },
+                "descriptions": {
+                    "$ref": "#/definitions/descriptions"
+                },
+                "titles": {
+                    "$ref": "#/definitions/titles"
+                },
+                "writeOnly": {
+                    "type": "boolean"
+                },
+                "readOnly": {
+                    "type": "boolean"
+                },
+                "oneOf": {
+                    "$ref": "#/definitions/dataSchema"
+                },
+                "unit": {
+                    "type": "string"
+                },
                 "enum": {
                     "type": "array",
                     "minItems": 1,
@@ -627,23 +662,35 @@
                         "null"
                     ]
                 },
-                "descriptions": {
-                    "$ref": "#/definitions/descriptions"
-                },
-                "titles": {
-                    "$ref": "#/definitions/titles"
-                },
-                "writeOnly": {
-                    "type": "boolean"
-                },
-                "readOnly": {
-                    "type": "boolean"
-                },
-                "oneOf": {
+                "items": {
                     "$ref": "#/definitions/dataSchema"
                 },
-                "unit": {
-                    "type": "string"
+                "maxItems": {
+
+                    "type": "integer",
+                    "minimum": 0
+
+                },
+                "minItems": {
+
+                    "type": "integer",
+                    "minimum": 0
+
+                },
+                "minimum": {
+                    "type": "number"
+                },
+                "maximum": {
+                    "type": "number"
+                },
+                "properties": {
+                    "$ref": "#/definitions/dataSchema"
+                },
+                "required": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },
@@ -669,8 +716,7 @@
             "additionalProperties": true
         },
         "securityScheme": {
-            "oneOf": [
-                {
+            "oneOf": [{
                     "type": "object",
                     "properties": {
                         "description": {
@@ -757,7 +803,7 @@
                         },
                         "qop": {
                             "type": "string",
-                            "enum":["auth","auth-int"]
+                            "enum": ["auth", "auth-int"]
                         },
                         "in": {
                             "type": "string",
@@ -791,15 +837,15 @@
                         },
                         "alg": {
                             "type": "string",
-                            "enum":["MD5","ES256","ES512-256"]
+                            "enum": ["MD5", "ES256", "ES512-256"]
                         },
                         "format": {
                             "type": "string",
-                            "enum":["jwt","jwe","jws"]
+                            "enum": ["jwt", "jwe", "jws"]
                         },
                         "in": {
                             "type": "string",
-                            "enum":["header","query","body","cookie"]
+                            "enum": ["header", "query", "body", "cookie"]
                         },
                         "name": {
                             "type": "string"
@@ -887,7 +933,7 @@
                         },
                         "flow": {
                             "type": "string",
-                            "enum":["implicit","password","client","code"]
+                            "enum": ["implicit", "password", "client", "code"]
                         }
                     },
                     "required": [
@@ -941,11 +987,11 @@
                         },
                         "format": {
                             "type": "string",
-                            "enum":["jwt","jwe","jws"]
+                            "enum": ["jwt", "jwe", "jws"]
                         },
                         "alg": {
                             "type": "string",
-                            "enum":["MD5","ES256","ES512-256"]
+                            "enum": ["MD5", "ES256", "ES512-256"]
                         },
                         "in": {
                             "type": "string",
