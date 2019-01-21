@@ -109,7 +109,7 @@ td-event-response-arrays
 td-form-protocolbindings
 td-form-contenttype
 td-forms-response
-td-links
+DONE td-links
 DONE td-security
 DONE td-security-mandatory
 td-security-overrides
@@ -121,16 +121,16 @@ td-content-type-default
 td-jsonld-preprocessing-context
 td-jsonld-preprocessing-prefix
 td-jsonld-preprocessing-defaults
-td-vocab-links
-td-vocab-created
-td-vocab-version
+DONE td-vocab-links
+DONE td-vocab-created
+DONE td-vocab-version
 DONE td-vocab-security
-td-vocab-events
+DONE td-vocab-events
 td-vocab-description
 td-vocab-name
 DONE td-vocab-actions
 DONE td-vocab-securityDefinitions
-td-vocab-support
+DONE td-vocab-support
 td-vocab-base
 td-vocab-lastModified
 td-vocab-properties
