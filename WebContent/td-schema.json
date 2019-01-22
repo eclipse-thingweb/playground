@@ -188,7 +188,10 @@
                     "type": "boolean"
                 },
                 "oneOf": {
-                    "$ref": "#/definitions/dataSchema"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
                 },
                 "unit": {
                     "type": "string"
@@ -233,7 +236,9 @@
                     "type": "number"
                 },
                 "properties": {
-                    "$ref": "#/definitions/dataSchema"
+                    "additionalProperties": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
                 },
                 "required": {
                     "type": "array",
@@ -651,7 +656,10 @@
                     "type": "boolean"
                 },
                 "oneOf": {
-                    "$ref": "#/definitions/dataSchema"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
                 },
                 "unit": {
                     "type": "string"

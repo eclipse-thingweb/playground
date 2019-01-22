@@ -99,16 +99,14 @@ function validate(storedTdAddress) {
                         console.log('Assertion ' + schema.title + ' not implemented');
                         results.push({
                             "ID": schema.title,
-                            "Status": "not-impl",
-                            "additionalInfo": ajv.errorsText()
+                            "Status": "not-impl"
                         });
                         if (schema.hasOwnProperty("also")) {
                             var otherAssertions = schema.also;
                             otherAssertions.forEach(function (asser) {
                                 results.push({
                                     "ID": asser,
-                                    "Status": "not-impl",
-                                    "additionalInfo": ajv.errorsText()
+                                    "Status": "not-impl"
                                 });
                             });
                         }
