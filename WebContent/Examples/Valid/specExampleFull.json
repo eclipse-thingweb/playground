@@ -26,8 +26,7 @@
             "idempotent": false,
             "safe": false,
             "forms": [{
-                "href": "https://mylamp.example.com/toggle",
-                "contentType": "application/json"
+                "href": "https://mylamp.example.com/toggle"
             }]
         }
     },

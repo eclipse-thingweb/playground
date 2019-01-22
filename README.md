@@ -136,7 +136,7 @@ DONE td-vocab-base
 DONE td-vocab-lastModified
 td-vocab-properties
 td-vocab-uriVariables
-td-vocab-forms
+DONE td-vocab-forms
 td-vocab-scopes
 td-vocab-title
 DONE td-vocab-observable
@@ -149,7 +149,7 @@ DONE td-vocab-data
 DONE td-vocab-cancellation
 DONE td-vocab-href
 td-vocab-response
-td-vocab-contentType
+DONE td-vocab-contentType HAS ISSUES
 td-vocab-subprotocol
 td-vocab-op
 DONE td-vocab-rel

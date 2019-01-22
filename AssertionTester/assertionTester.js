@@ -64,8 +64,6 @@ function validate(storedTdAddress) {
 
             assertions.forEach((curAssertion, index) => {
 
-                console.log(assertions)
-
                 var schemaLocation = "./AssertionTester/Assertions/" + curAssertion;
 
                 var schemaData = fs.readFileSync(schemaLocation);
@@ -85,6 +83,7 @@ function validate(storedTdAddress) {
                 ajv.addMetaSchema(draft);
                 ajv.addSchema(schema, 'td');
 
+                
                 var valid = ajv.validate('td', tdJson);
 
                 /*
@@ -100,28 +99,39 @@ function validate(storedTdAddress) {
                         console.log('Assertion ' + schema.title + ' not implemented');
                         results.push({
                             "ID": schema.title,
-                            "Status": "not-impl"
+                            "Status": "not-impl",
+                            "additionalInfo": ajv.errorsText()
                         });
                         if (schema.hasOwnProperty("also")) {
                             var otherAssertions = schema.also;
                             otherAssertions.forEach(function (asser) {
                                 results.push({
                                     "ID": asser,
-                                    "Status": "not-impl"
+                                    "Status": "not-impl",
+                                    "additionalInfo": ajv.errorsText()
                                 });
                             });
                         }
 
                     } else {
+                        console.log(ajv.errors);
                         var output = ajv.errors[0].params.allowedValue;
 
                         var resultStart = output.indexOf("=");
                         var result = output.slice(resultStart + 1);
                         console.log(result)
-                        results.push({
-                            "ID": schema.title,
-                            "Status": result
-                        });
+                        if(result == "pass"){
+                            results.push({
+                                "ID": schema.title,
+                                "Status": result
+                            });
+                        } else {
+                            results.push({
+                                "ID": schema.title,
+                                "Status": result,
+                                "additionalInfo": ajv.errorsText()
+                            });
+                        }
                         if (schema.hasOwnProperty("also")) {
                             var otherAssertions = schema.also;
                             otherAssertions.forEach(function (asser) {

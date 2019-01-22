@@ -3,13 +3,17 @@
     "description": " Each mandatory and optional vocabulary term as defined in the class Form, MUST be serialized as a JSON name. ",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
-    "also": ["td-vocab-href"],
+    "also": ["td-vocab-href", "td-vocab-forms"],
     "type": "object",
     "if": {
         "required": ["forms"],
         "properties": {
             "forms": {
-                "$ref": "#/definitions/form_element_root"
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                    "$ref": "#/definitions/form_element_root"
+                }
             }
         }
     },
