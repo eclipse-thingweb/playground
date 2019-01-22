@@ -105,7 +105,7 @@ DONE td-event-names
 DONE td-event-objects
 DONE td-event-arrays
 td-event-semantic
-td-forms
+DONE td-forms
 td-event-response-arrays
 td-form-protocolbindings
 td-form-contenttype
@@ -147,7 +147,7 @@ DONE td-vocab-safe
 DONE td-vocab-subscription
 DONE td-vocab-data
 DONE td-vocab-cancellation
-td-vocab-href
+DONE td-vocab-href
 td-vocab-response
 td-vocab-contentType
 td-vocab-subprotocol
