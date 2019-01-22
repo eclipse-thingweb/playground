@@ -1,6 +1,6 @@
 {
-    "title": "td-vocab-contenttype",
-    "description": "contentType: Assign a content type based on a media type [[!MEDIATYPES]] (e.g., 'application/json) and (optional) parameters (e.g., 'charset=utf-8'). ",
+    "title": "td-vocab-subprotocol",
+    "description": "subprotocol: Indicates the exact mechanism by which an interaction will be accomplished for a given protocol when there are multiple options. For example, for HTTP and Events, it indicates which of several available mechanisms should be used for asynchronous notifications. ",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
     "type": "object",
@@ -86,15 +86,18 @@
         "form_element": {
             "type": "object",
             "if": {
-                "required": ["contentType"],
+                "required": ["subprotocol"],
                 "properties": {
-                    "contentType": {
-                        "type": "string"
+                    "subProtocol": {
+                        "type": "string",
+                        "enum": [
+                            "longpoll"
+                        ]
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-contenttype=pass"
+                "const": "td-vocab-subprotocol=pass"
             },
             "else": {
                 "properties": {

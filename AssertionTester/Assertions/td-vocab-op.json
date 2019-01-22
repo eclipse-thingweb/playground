@@ -1,6 +1,6 @@
 {
-    "title": "td-vocab-contenttype",
-    "description": "contentType: Assign a content type based on a media type [[!MEDIATYPES]] (e.g., 'application/json) and (optional) parameters (e.g., 'charset=utf-8'). ",
+    "title": "td-vocab-op",
+    "description": "op: Indicates the expected result of performing the operation described by the form. For example, the Property interaction allows get and set operations. The protocol binding may contain a form for the get operation and a different form for the set operation. The op attribute indicates which form is which and allows the client to select the correct form for the operation required. ",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
     "type": "object",
@@ -86,20 +86,61 @@
         "form_element": {
             "type": "object",
             "if": {
-                "required": ["contentType"],
+                "required": ["op"],
                 "properties": {
-                    "contentType": {
-                        "type": "string"
+                    "op": {
+                        "anyOf": [{
+                                "type": "string",
+                                "enum": [
+                                    "readproperty",
+                                    "writeproperty",
+                                    "observeproperty"
+                                ]
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "type": "string",
+                                    "enum": [
+                                        "readproperty",
+                                        "writeproperty",
+                                        "observeproperty"
+                                    ]
+                                }
+                            }
+                        ]
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-contenttype=pass"
+                "const": "td-vocab-op=pass"
             },
             "else": {
                 "properties": {
                     "href": {
                         "$ref": "#/definitions/url"
+                    },
+                    "op": {
+                        "anyOf": [{
+                                "type": "string",
+                                "enum": [
+                                    "readproperty",
+                                    "writeproperty",
+                                    "observeproperty"
+                                ]
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "type": "string",
+                                    "enum": [
+                                        "readproperty",
+                                        "writeproperty",
+                                        "observeproperty"
+                                    ]
+                                }
+                            }
+                        ]
                     },
                     "contentType": {
                         "type": "string"

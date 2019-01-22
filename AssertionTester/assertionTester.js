@@ -114,7 +114,6 @@ function validate(storedTdAddress) {
                         }
 
                     } else {
-                        console.log(ajv.errors);
                         var output = ajv.errors[0].params.allowedValue;
 
                         var resultStart = output.indexOf("=");
@@ -217,7 +216,7 @@ function validate(storedTdAddress) {
                         console.log("The result json was saved!");
                     });
 
-                    fs.writeFile("./AssertionTester/Results/result.csv", csv, function (err) {
+                    fs.writeFile("./AssertionTester/Results/result"+tdJson.id+".csv", csv, function (err) {
                         if (err) {
                             return console.log(err);
                         }

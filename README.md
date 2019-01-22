@@ -83,42 +83,40 @@ DONE td-objects:version
 DONE td-objects:securityDefinitions
 DONE td-at-type
 DONE td-arrays:links
-td-arrays:scopes
+DONE td-arrays:scopes
 DONE td-arrays:security
 DONE td-properties:existence
 DONE td-properties:uniqueness
 td-property-names ?
 td-property-objects:properties
 td-property-objects:items
-td-property-arrays
-td-property-semantic
-td-property-defaults
+td-property-arrays:enum
+td-property-arrays:required
+td-property-arrays:oneOf
 DONE td-actions:existence
 DONE td-actions:uniqueness
 DONE td-action-names
 DONE td-action-objects
 DONE td-action-arrays
-td-action-semantic
 DONE td-events:existence
 DONE td-events:uniqueness
 DONE td-event-names
 DONE td-event-objects
 DONE td-event-arrays
-td-event-semantic
 DONE td-forms
-td-event-response-arrays
-td-form-protocolbindings
-td-form-contenttype
-td-forms-response
+??? td-event-response-arrays
+CANNOT TEST td-form-protocolbindings
+CANNOT TEST td-form-contenttype
+DONE td-forms-response
 DONE td-links
 DONE td-security
 DONE td-security-mandatory
 td-security-overrides
-td-security-binding
-td-security-no-extras
+CANNOT TEST td-security-binding
+CANNOT TEST td-security-no-extras
 td-media-type  STILL VALID?
 CANNOT TEST td-readOnly-observable-default
-td-content-type-default
+CANNOT TEST td-content-type-default
 td-jsonld-preprocessing-context
 td-jsonld-preprocessing-prefix
 td-jsonld-preprocessing-defaults
@@ -135,9 +133,9 @@ DONE td-vocab-support
 DONE td-vocab-base
 DONE td-vocab-lastModified
 td-vocab-properties
-td-vocab-uriVariables
+DONE td-vocab-uriVariables
 DONE td-vocab-forms
-td-vocab-scopes
+DONE td-vocab-scopes
 td-vocab-title
 DONE td-vocab-observable
 DONE td-vocab-idempotent
@@ -148,10 +146,10 @@ DONE td-vocab-subscription
 DONE td-vocab-data
 DONE td-vocab-cancellation
 DONE td-vocab-href
-td-vocab-response
-DONE td-vocab-contentType HAS ISSUES
-td-vocab-subprotocol
-td-vocab-op
+DONE td-vocab-response
+DONE td-vocab-contentType
+DONE td-vocab-subprotocol
+DONE td-vocab-op
 DONE td-vocab-rel
 DONE td-vocab-type
 DONE td-vocab-anchor

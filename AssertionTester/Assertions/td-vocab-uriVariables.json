@@ -1,0 +1,162 @@
+{
+    "title": "td-vocab-uriVariables",
+    "description": "uriVariables: Define URI template variables as collection based on DataSchema declarations.",
+    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "is-complex": true,
+    "also": ["td-arrays:scopes"],
+    "type": "object",
+    "properties": {
+        "properties": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/property_element"
+            }
+
+        },
+        "actions": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/action_element"
+            }
+        },
+        "events": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/event_element"
+            }
+        }
+    },
+    "additionalProperties": true,
+    "definitions": {
+        "property_element": {
+            "type": "object",
+            "if": {
+                "required": ["uriVariables"],
+                "properties": {
+                    "uriVariables": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
+                }
+            },
+            "then": {
+                "const": "td-vocab-uriVariables=pass"
+            }
+        },
+        "action_element": {
+            "type": "object",
+            "if": {
+                "required": ["uriVariables"],
+                "properties": {
+                    "uriVariables": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
+                }
+            },
+            "then": {
+                "const": "td-vocab-uriVariables=pass"
+            }
+        },
+        "event_element": {
+            "type": "object",
+            "if": {
+                "required": ["uriVariables"],
+                "properties": {
+                    "uriVariables": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
+                }
+            },
+            "then": {
+                "const": "td-vocab-uriVariables=pass"
+            }
+        },
+        "dataSchema": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "descriptions": {
+                    "$ref": "#/definitions/descriptions"
+                },
+                "titles": {
+                    "$ref": "#/definitions/titles"
+                },
+                "writeOnly": {
+                    "type": "boolean"
+                },
+                "readOnly": {
+                    "type": "boolean"
+                },
+                "oneOf": {
+                    "$ref": "#/definitions/dataSchema"
+                },
+                "unit": {
+                    "type": "string"
+                },
+                "enum": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true
+                },
+                "const": {},
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "boolean",
+                        "integer",
+                        "number",
+                        "string",
+                        "object",
+                        "array",
+                        "null"
+                    ]
+                },
+                "items": {
+                    "$ref": "#/definitions/dataSchema"
+                },
+                "maxItems": {
+
+                    "type": "integer",
+                    "minimum": 0
+
+                },
+                "minItems": {
+
+                    "type": "integer",
+                    "minimum": 0
+
+                },
+                "minimum": {
+                    "type": "number"
+                },
+                "maximum": {
+                    "type": "number"
+                },
+                "properties": {
+                    "$ref": "#/definitions/dataSchema"
+                },
+                "required": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "descriptions": {
+            "type": "object"
+        },
+        "titles": {
+            "type": "object"
+        },
+        "url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(([^#]*))?(#(.*))?"
+        }
+    }
+}
