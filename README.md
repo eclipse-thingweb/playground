@@ -75,32 +75,33 @@ DONE td-additional-contexts
 td-string-type
 td-integer-type
 td-number-type
-td-context-toplevel
-td-objects:properties
-td-objects:actions
-td-objects:events
+DONE td-context-toplevel
+DONE td-objects:properties
+DONE td-objects:actions
+DONE td-objects:events
 DONE td-objects:version
 DONE td-objects:securityDefinitions
 DONE td-at-type
-td-arrays:links
+DONE td-arrays:links
 td-arrays:scopes
 DONE td-arrays:security
 DONE td-properties:existence
 DONE td-properties:uniqueness
 td-property-names ?
-td-property-objects
+td-property-objects:properties
+td-property-objects:items
 td-property-arrays
 td-property-semantic
 td-property-defaults
 DONE td-actions:existence
 DONE td-actions:uniqueness
-td-action-names
+DONE td-action-names
 DONE td-action-objects
 DONE td-action-arrays
 td-action-semantic
 DONE td-events:existence
 DONE td-events:uniqueness
-td-event-names
+DONE td-event-names
 DONE td-event-objects
 DONE td-event-arrays
 td-event-semantic
@@ -115,8 +116,8 @@ DONE td-security-mandatory
 td-security-overrides
 td-security-binding
 td-security-no-extras
-td-media-type
-td-readOnly-observable-default
+td-media-type  STILL VALID?
+CANNOT TEST td-readOnly-observable-default
 td-content-type-default
 td-jsonld-preprocessing-context
 td-jsonld-preprocessing-prefix
@@ -131,30 +132,30 @@ td-vocab-name
 DONE td-vocab-actions
 DONE td-vocab-securityDefinitions
 DONE td-vocab-support
-td-vocab-base
-td-vocab-lastModified
+DONE td-vocab-base
+DONE td-vocab-lastModified
 td-vocab-properties
 td-vocab-uriVariables
 td-vocab-forms
 td-vocab-scopes
 td-vocab-title
-td-vocab-observable
-td-vocab-idempotent
-td-vocab-output
-td-vocab-input
-td-vocab-safe
-td-vocab-subscription
-td-vocab-data
-td-vocab-cancellation
+DONE td-vocab-observable
+DONE td-vocab-idempotent
+DONE td-vocab-output
+DONE td-vocab-input
+DONE td-vocab-safe
+DONE td-vocab-subscription
+DONE td-vocab-data
+DONE td-vocab-cancellation
 td-vocab-href
 td-vocab-response
 td-vocab-contentType
 td-vocab-subprotocol
 td-vocab-op
-td-vocab-rel
-td-vocab-type
-td-vocab-anchor
-td-vocab-instance
+DONE td-vocab-rel
+DONE td-vocab-type
+DONE td-vocab-anchor
+DONE td-vocab-instance
 td-vocab-readOnly
 td-vocab-enum
 td-vocab-const

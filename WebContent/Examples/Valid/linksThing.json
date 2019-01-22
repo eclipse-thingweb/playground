@@ -22,6 +22,7 @@
     "links": [{
         "href": "https://servient.example.com/things/lampController",
         "rel": "controlledBy",
-        "type": "application/td+json"
+        "type": "application/td+json",
+        "anchor": "https://servient.example.com/anchor"
     }]
 }

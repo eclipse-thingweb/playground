@@ -1,0 +1,33 @@
+{
+    "title": "td-vocab-rel",
+    "description": "rel: Indicates the relation to an other Thing.",
+    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "is-complex": false,
+    "type": "object",
+    "properties": {
+        "links": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/link_element"
+            }
+        }
+    },
+    "required": [
+        "links"
+    ],
+    "additionalProperties": true,
+    "definitions": {
+        "link_element": {
+            "type": "object",
+            "properties": {
+                "rel": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "rel"
+            ],
+            "additionalProperties": true
+        }
+    }
+}
