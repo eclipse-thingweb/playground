@@ -1,0 +1,13 @@
+{
+    "title": "td-vocab-lastModified",
+    "description": "lastModified: Provides information when the TD instance was last modified.",
+    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "is-complex": false,
+    "type": "object",
+    "properties": {
+        "lastModified": {
+            "type": "string"
+        }
+    },
+    "required": ["lastModified"]
+}

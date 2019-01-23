@@ -3,9 +3,11 @@
     "description": "The type of the members forms, required, and enum, scopes, and security MUST be serialized as a JSON array.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex":false,
+    "also": ["td-vocab-events", "td-event-names"],
     "type": "object",
     "properties": {
         "events": {
+            "minProperties": 1,
             "additionalProperties": {
                 "$ref": "#/definitions/event_element"
             }

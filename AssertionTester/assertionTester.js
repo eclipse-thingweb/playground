@@ -64,8 +64,6 @@ function validate(storedTdAddress) {
 
             assertions.forEach((curAssertion, index) => {
 
-                console.log(assertions)
-
                 var schemaLocation = "./AssertionTester/Assertions/" + curAssertion;
 
                 var schemaData = fs.readFileSync(schemaLocation);
@@ -85,6 +83,7 @@ function validate(storedTdAddress) {
                 ajv.addMetaSchema(draft);
                 ajv.addSchema(schema, 'td');
 
+                
                 var valid = ajv.validate('td', tdJson);
 
                 /*
@@ -118,10 +117,18 @@ function validate(storedTdAddress) {
                         var resultStart = output.indexOf("=");
                         var result = output.slice(resultStart + 1);
                         console.log(result)
-                        results.push({
-                            "ID": schema.title,
-                            "Status": result
-                        });
+                        if(result == "pass"){
+                            results.push({
+                                "ID": schema.title,
+                                "Status": result
+                            });
+                        } else {
+                            results.push({
+                                "ID": schema.title,
+                                "Status": result,
+                                "additionalInfo": ajv.errorsText()
+                            });
+                        }
                         if (schema.hasOwnProperty("also")) {
                             var otherAssertions = schema.also;
                             otherAssertions.forEach(function (asser) {
@@ -207,7 +214,7 @@ function validate(storedTdAddress) {
                         console.log("The result json was saved!");
                     });
 
-                    fs.writeFile("./AssertionTester/Results/result.csv", csv, function (err) {
+                    fs.writeFile("./AssertionTester/Results/result"+tdJson.id+".csv", csv, function (err) {
                         if (err) {
                             return console.log(err);
                         }
@@ -252,7 +259,7 @@ function checkVocabulary(tdJson) {
     ajv.addSchema(schema, 'td');
 
     var valid = ajv.validate('td', tdJson);
-    var otherAssertions = ["td-objects:securityDefinitions", "td-arrays:security", "td:security", "td-security-mandatory", "td-vocab-securityDefinitions", "td-vocab-security", "td-vocab-scheme"];
+    var otherAssertions = ["td-objects:securityDefinitions", "td-arrays:security", "td-vocab-security-1", "td-security-mandatory", "td-vocab-securityDefinitions", "td-vocab-security", "td-vocab-scheme", "td-context-toplevel", "td-vocab-name-1"];
 
     if (valid) {
         results.push({

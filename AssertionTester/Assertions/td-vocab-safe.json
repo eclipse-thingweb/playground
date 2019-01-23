@@ -1,0 +1,33 @@
+{
+    "title": "td-vocab-safe",
+    "description": "safe: Signals if the action is safe (=true) or not. Used to signal if there is no internal state (cf. resource state) is changed when invoking an Action. In that case responses can be cached as example.",
+    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "is-complex":false,
+    "type": "object",
+    "properties": {
+        "actions": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/action_element"
+            }
+        }
+    },
+    "required": [
+        "actions"
+    ],
+    "additionalProperties": true,
+    "definitions": {
+        "action_element": {
+            "type": "object",
+            "properties": {
+                "safe": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "safe"
+            ],
+            "additionalProperties": true
+        }
+    }
+}

@@ -34,3 +34,4 @@ AssertionTester/node_modules/**
 # Assertion tester
 AssertionTester/Results/*.csv
 AssertionTester/Results/*.json
+AssertionTester/.~lock.implementationReport.ods#

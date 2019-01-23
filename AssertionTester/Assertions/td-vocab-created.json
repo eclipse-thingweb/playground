@@ -1,0 +1,13 @@
+{
+    "title": "td-vocab-created",
+    "description": "created: Provides information when the TD instance was created.",
+    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "is-complex": false,
+    "type": "object",
+    "properties": {
+        "created": {
+            "type": "string"
+        }
+    },
+    "required": ["created"]
+}

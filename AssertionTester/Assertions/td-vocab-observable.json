@@ -1,0 +1,33 @@
+{
+    "title": "td-vocab-observable",
+    "description": "observable: Indicates whether a remote servient can subscribe to (\"observe\") the Property, to receive change notifications or periodic updates (true/false).",
+    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "is-complex":false,
+    "type": "object",
+    "properties": {
+        "properties": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/property_element"
+            }
+        }
+    },
+    "required": [
+        "properties"
+    ],
+    "additionalProperties": true,
+    "definitions": {
+        "property_element": {
+            "type": "object",
+            "properties": {
+                "observable": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "observable"
+            ],
+            "additionalProperties": true
+        }
+    }
+}

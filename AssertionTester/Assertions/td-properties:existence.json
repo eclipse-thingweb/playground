@@ -2,6 +2,7 @@
     "title": "td-properties:existence",
     "description": " Properties (and sub-properties) offered by a Thing MUST be collected in the JSON-object based properties member with (unique) Property names as JSON names. (Checking their existence)",
     "$schema ": "http://json-schema.org/draft-06/schema#",
+    "also": ["td-vocab-properties-1"],
     "is-complex":false,
     "type": "object",
     "properties": {
