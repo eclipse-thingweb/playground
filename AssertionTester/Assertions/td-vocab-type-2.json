@@ -1,9 +1,8 @@
 {
-    "title": "td-vocab-enum",
-    "description": "enum: Restricted set of values provided as an array.",
+    "title": "td-vocab-type-2",
+    "description": "type: Assignment of JSON-based data types compatible with JSON Schema (one of boolean, integer, number, string, object, array, or null). MAY be included. Type: string (one of object, array, string, number, integer, boolean, or null).",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
-    "also": ["td-data-schema-arrays:enum"],
     "type": "object",
     "properties": {
         "properties": {
@@ -11,7 +10,6 @@
             "additionalProperties": {
                 "$ref": "#/definitions/property_element"
             }
-
         },
         "actions": {
             "type": "object",
@@ -31,35 +29,24 @@
         "property_element": {
             "type": "object",
             "if": {
-                "required": ["enum"],
+                "required": ["type"],
                 "properties": {
-                    "enum": {
-                        "type": "array",
-                        "minItems": 1,
-                        "uniqueItems": true
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "boolean",
+                            "integer",
+                            "number",
+                            "string",
+                            "object",
+                            "array",
+                            "null"
+                        ]
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-enum=pass"
-            },
-            "else": {
-                "properties": {
-                    "properties": {
-                        "additionalProperties": {
-                            "$ref": "#/definitions/dataSchema"
-                        }
-                    },
-                    "oneOf": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/definitions/dataSchema"
-                        }
-                    },
-                    "items": {
-                        "$ref": "#/definitions/dataSchema"
-                    }
-                }
+                "const": "td-vocab-type-2=pass"
             }
         },
         "action_element": {
@@ -90,17 +77,24 @@
         "dataSchema": {
             "type": "object",
             "if": {
-                "required": ["enum"],
+                "required": ["type"],
                 "properties": {
-                    "enum": {
-                        "type": "array",
-                        "minItems": 1,
-                        "uniqueItems": true
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "boolean",
+                            "integer",
+                            "number",
+                            "string",
+                            "object",
+                            "array",
+                            "null"
+                        ]
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-enum=pass"
+                "const": "td-vocab-type-2=pass"
             },
             "else": {
                 "properties": {

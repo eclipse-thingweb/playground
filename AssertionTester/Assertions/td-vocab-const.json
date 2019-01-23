@@ -1,9 +1,8 @@
 {
-    "title": "td-vocab-enum",
-    "description": "enum: Restricted set of values provided as an array.",
+    "title": "td-vocab-const",
+    "description": "const: Provides a constant value. MAY be included. Type: any type.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
-    "also": ["td-data-schema-arrays:enum"],
     "type": "object",
     "properties": {
         "properties": {
@@ -11,7 +10,6 @@
             "additionalProperties": {
                 "$ref": "#/definitions/property_element"
             }
-
         },
         "actions": {
             "type": "object",
@@ -31,17 +29,13 @@
         "property_element": {
             "type": "object",
             "if": {
-                "required": ["enum"],
+                "required": ["const"],
                 "properties": {
-                    "enum": {
-                        "type": "array",
-                        "minItems": 1,
-                        "uniqueItems": true
-                    }
+                    "const": {}
                 }
             },
             "then": {
-                "const": "td-vocab-enum=pass"
+                "const": "td-vocab-const=pass"
             },
             "else": {
                 "properties": {
@@ -90,17 +84,13 @@
         "dataSchema": {
             "type": "object",
             "if": {
-                "required": ["enum"],
+                "required": ["const"],
                 "properties": {
-                    "enum": {
-                        "type": "array",
-                        "minItems": 1,
-                        "uniqueItems": true
-                    }
+                    "const": {}
                 }
             },
             "then": {
-                "const": "td-vocab-enum=pass"
+                "const": "td-vocab-const=pass"
             },
             "else": {
                 "properties": {
