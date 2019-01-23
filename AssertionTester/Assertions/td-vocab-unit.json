@@ -1,9 +1,8 @@
 {
-    "title": "td-vocab-enum",
-    "description": "enum: Restricted set of values provided as an array.",
+    "title": "td-vocab-unit",
+    "description": "unit: Provides unit information that is used, e.g., in international science, engineering, and business. MAY be included. Type: string.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
-    "also": ["td-data-schema-arrays:enum"],
     "type": "object",
     "properties": {
         "properties": {
@@ -11,6 +10,7 @@
             "additionalProperties": {
                 "$ref": "#/definitions/property_element"
             }
+
         },
         "actions": {
             "type": "object",
@@ -30,17 +30,15 @@
         "property_element": {
             "type": "object",
             "if": {
-                "required": ["enum"],
+                "required": ["unit"],
                 "properties": {
-                    "enum": {
-                        "type": "array",
-                        "minItems": 1,
-                        "uniqueItems": true
+                    "unit": {
+                        "type": "string"
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-enum=pass"
+                "const": "td-vocab-unit=pass"
             },
             "else": {
                 "properties": {
@@ -89,17 +87,15 @@
         "dataSchema": {
             "type": "object",
             "if": {
-                "required": ["enum"],
+                "required": ["unit"],
                 "properties": {
-                    "enum": {
-                        "type": "array",
-                        "minItems": 1,
-                        "uniqueItems": true
+                    "unit": {
+                        "type": "string"
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-enum=pass"
+                "const": "td-vocab-unit=pass"
             },
             "else": {
                 "properties": {

@@ -1,9 +1,9 @@
 {
-    "title": "td-vocab-enum",
-    "description": "enum: Restricted set of values provided as an array.",
+    "title": "td-vocab-required",
+    "description": "required: Defines which members of the object type are mandatory. MAY be included. Type: array of string.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
-    "also": ["td-data-schema-arrays:enum"],
+    "also": ["td-data-schema-arrays:required"],
     "type": "object",
     "properties": {
         "properties": {
@@ -30,17 +30,18 @@
         "property_element": {
             "type": "object",
             "if": {
-                "required": ["enum"],
+                "required": ["required"],
                 "properties": {
-                    "enum": {
+                    "required": {
                         "type": "array",
-                        "minItems": 1,
-                        "uniqueItems": true
+                        "items": {
+                            "type": "string"
+                        }
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-enum=pass"
+                "const": "td-vocab-required=pass"
             },
             "else": {
                 "properties": {
@@ -89,17 +90,18 @@
         "dataSchema": {
             "type": "object",
             "if": {
-                "required": ["enum"],
+                "required": ["required"],
                 "properties": {
-                    "enum": {
+                    "required": {
                         "type": "array",
-                        "minItems": 1,
-                        "uniqueItems": true
+                        "items": {
+                            "type": "string"
+                        }
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-enum=pass"
+                "const": "td-vocab-required=pass"
             },
             "else": {
                 "properties": {

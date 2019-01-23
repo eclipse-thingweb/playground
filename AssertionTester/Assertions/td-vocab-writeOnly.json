@@ -1,9 +1,8 @@
 {
-    "title": "td-vocab-enum",
-    "description": "enum: Restricted set of values provided as an array.",
+    "title": "td-vocab-writeOnly",
+    "description": "writeOnly: Boolean value that indicates whether a property interaction / value is write only (=true) or not (=false). MUST be included. Type: boolean.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
-    "also": ["td-data-schema-arrays:enum"],
     "type": "object",
     "properties": {
         "properties": {
@@ -30,17 +29,15 @@
         "property_element": {
             "type": "object",
             "if": {
-                "required": ["enum"],
+                "required": ["writeOnly"],
                 "properties": {
-                    "enum": {
-                        "type": "array",
-                        "minItems": 1,
-                        "uniqueItems": true
+                    "writeOnly": {
+                        "type": "boolean"
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-enum=pass"
+                "const": "td-vocab-writeOnly=pass"
             },
             "else": {
                 "properties": {
@@ -89,17 +86,15 @@
         "dataSchema": {
             "type": "object",
             "if": {
-                "required": ["enum"],
+                "required": ["writeOnly"],
                 "properties": {
-                    "enum": {
-                        "type": "array",
-                        "minItems": 1,
-                        "uniqueItems": true
+                    "writeOnly": {
+                        "type": "boolean"
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-enum=pass"
+                "const": "td-vocab-writeOnly=pass"
             },
             "else": {
                 "properties": {
@@ -158,10 +153,8 @@
 
                     },
                     "minItems": {
-
                         "type": "integer",
                         "minimum": 0
-
                     },
                     "minimum": {
                         "type": "number"

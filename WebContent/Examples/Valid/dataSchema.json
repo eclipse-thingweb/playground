@@ -11,6 +11,8 @@
     "security": ["basic_sc"],
     "properties": {
         "status": {
+            "readOnly":false,
+            "writeOnly": false,
             "forms": [{
                 "href": "https://mylamp.example.com/status"
             }]
@@ -26,11 +28,18 @@
                         "enum": ["test"]
                     },
                     "test2": {
-                        "type": "integer"
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 5
+                    },
+                    "test3": {
+                        "type": "number",
+                        "minimum": 1.4,
+                        "maximum": 10.4
                     }
-                }
+                },
+                "required": ["test1"]
             },
-            "required":["test1"],
             "forms": [{
                 "href": "https://mylamp.example.com/toggle"
             }]
@@ -39,7 +48,12 @@
     "events": {
         "overheating": {
             "data": {
-                "type": "string"
+                "type": "array",
+                "items": {
+                    "type": "string"
+                },
+                "minItems": 4,
+                "maxItems": 6
             },
             "forms": [{
                 "href": "https://mylamp.example.com/oh",

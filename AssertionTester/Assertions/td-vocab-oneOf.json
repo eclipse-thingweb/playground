@@ -1,9 +1,9 @@
 {
-    "title": "td-vocab-enum",
+    "title": "td-vocab-oneOf",
     "description": "enum: Restricted set of values provided as an array.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
-    "also": ["td-data-schema-arrays:enum"],
+    "also": ["td-data-schema-arrays:oneOf"],
     "type": "object",
     "properties": {
         "properties": {
@@ -11,6 +11,7 @@
             "additionalProperties": {
                 "$ref": "#/definitions/property_element"
             }
+
         },
         "actions": {
             "type": "object",
@@ -30,17 +31,18 @@
         "property_element": {
             "type": "object",
             "if": {
-                "required": ["enum"],
+                "required": ["oneOf"],
                 "properties": {
-                    "enum": {
+                    "oneOf": {
                         "type": "array",
-                        "minItems": 1,
-                        "uniqueItems": true
+                        "items": {
+                            "$ref": "#/definitions/dataSchema"
+                        }
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-enum=pass"
+                "const": "td-vocab-oneOf=pass"
             },
             "else": {
                 "properties": {
@@ -89,17 +91,18 @@
         "dataSchema": {
             "type": "object",
             "if": {
-                "required": ["enum"],
+                "required": ["oneOf"],
                 "properties": {
-                    "enum": {
+                    "oneOf": {
                         "type": "array",
-                        "minItems": 1,
-                        "uniqueItems": true
+                        "items": {
+                            "$ref": "#/definitions/dataSchema"
+                        }
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-enum=pass"
+                "const": "td-vocab-oneOf=pass"
             },
             "else": {
                 "properties": {

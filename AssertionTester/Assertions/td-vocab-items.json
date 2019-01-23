@@ -1,9 +1,8 @@
 {
-    "title": "td-vocab-enum",
-    "description": "enum: Restricted set of values provided as an array.",
+    "title": "td-vocab-items",
+    "description": "items: Used to define the characteristics of an array. MAY be included. Type: DataSchema.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
-    "also": ["td-data-schema-arrays:enum"],
     "type": "object",
     "properties": {
         "properties": {
@@ -30,17 +29,15 @@
         "property_element": {
             "type": "object",
             "if": {
-                "required": ["enum"],
+                "required": ["items"],
                 "properties": {
-                    "enum": {
-                        "type": "array",
-                        "minItems": 1,
-                        "uniqueItems": true
+                    "items": {
+                        "$ref": "#/definitions/dataSchema"
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-enum=pass"
+                "const": "td-vocab-items=pass"
             },
             "else": {
                 "properties": {
@@ -89,17 +86,15 @@
         "dataSchema": {
             "type": "object",
             "if": {
-                "required": ["enum"],
+                "required": ["items"],
                 "properties": {
-                    "enum": {
-                        "type": "array",
-                        "minItems": 1,
-                        "uniqueItems": true
+                    "items": {
+                        "$ref": "#/definitions/dataSchema"
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-enum=pass"
+                "const": "td-vocab-items=pass"
             },
             "else": {
                 "properties": {
