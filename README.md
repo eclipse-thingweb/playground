@@ -68,95 +68,28 @@ For Linux:
 
 * Assertions:
   
-DONE td-vocabulary
-DONE td-unique-identifiers
-DONE td-version
-DONE td-jsonld-keywords:@context
-DONE td-jsonld-keywords:@type
-DONE td-context
-DONE td-additional-contexts
 td-string-type
 td-integer-type
 td-number-type
-DONE td-context-toplevel
-DONE td-objects:properties
-DONE td-objects:actions
-DONE td-objects:events
-DONE td-objects:version
-DONE td-objects:securityDefinitions
-DONE td-at-type
-DONE td-arrays:links
-DONE td-arrays:scopes
-DONE td-arrays:security
-DONE td-properties:existence
-DONE td-properties:uniqueness
 td-property-names ?
 td-property-objects:properties
 td-property-objects:items
-td-property-arrays:enum
-td-property-arrays:required
-td-property-arrays:oneOf
-DONE td-actions:existence
-DONE td-actions:uniqueness
-DONE td-action-names
-DONE td-action-objects
-DONE td-action-arrays
-DONE td-events:existence
-DONE td-events:uniqueness
-DONE td-event-names
-DONE td-event-objects
-DONE td-event-arrays
-DONE td-forms
 ??? td-event-response-arrays
-CANNOT TEST td-form-protocolbindings
-CANNOT TEST td-form-contenttype
-DONE td-forms-response
-DONE td-links
-DONE td-security
-DONE td-security-mandatory
+CHANGED DONE td-forms-response
 td-security-overrides
-CANNOT TEST td-security-binding
-CANNOT TEST td-security-no-extras
 td-media-type  STILL VALID?
-CANNOT TEST td-readOnly-observable-default
-CANNOT TEST td-content-type-default
 td-jsonld-preprocessing-context
 td-jsonld-preprocessing-prefix
 td-jsonld-preprocessing-defaults
-DONE td-vocab-links
-DONE td-vocab-created
-DONE td-vocab-version
-DONE td-vocab-security
-DONE td-vocab-events
+CHANGED DONE td-vocab-security
 td-vocab-description
 td-vocab-name
-DONE td-vocab-actions
-DONE td-vocab-securityDefinitions
-DONE td-vocab-support
-DONE td-vocab-base
-DONE td-vocab-lastModified
 td-vocab-properties
-DONE td-vocab-uriVariables
-DONE td-vocab-forms
-DONE td-vocab-scopes
+CHANGED DONE td-vocab-forms
 td-vocab-title
-DONE td-vocab-observable
-DONE td-vocab-idempotent
-DONE td-vocab-output
-DONE td-vocab-input
-DONE td-vocab-safe
-DONE td-vocab-subscription
-DONE td-vocab-data
-DONE td-vocab-cancellation
-DONE td-vocab-href
-DONE td-vocab-response
-DONE td-vocab-contentType
-DONE td-vocab-subprotocol
-DONE td-vocab-op
-DONE td-vocab-rel
-DONE td-vocab-type
-DONE td-vocab-anchor
-DONE td-vocab-instance
+CHANGED DONE td-vocab-response
+CHANGED DONE td-vocab-contentType
+CHANGED DONE td-vocab-type
 td-vocab-readOnly
 td-vocab-enum
 td-vocab-const
