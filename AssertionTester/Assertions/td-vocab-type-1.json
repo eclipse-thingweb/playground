@@ -1,5 +1,5 @@
 {
-    "title": "td-vocab-type",
+    "title": "td-vocab-type-1",
     "description": "Provides a hint indicating what the media type [MEDIATYPES] of the result of dereferencing the link should be.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": false,
