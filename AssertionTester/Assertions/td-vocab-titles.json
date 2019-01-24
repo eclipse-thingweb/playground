@@ -2,7 +2,7 @@
     "title": "td-vocab-titles",
     "description": "titles: Provides multi-language human-readable titles (e.g., display a text for UI representation in different languages) of the interaction pattern. MAY be included. Type: MultiLanguage.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
-    "also": ["td-data-schema:titles","td-multi-languages:titles"],
+    "also": ["td-data-schema:titles", "td-multi-languages:titles", "td-property-names:titles"],
     "is-complex": true,
     "type": "object",
     "properties": {

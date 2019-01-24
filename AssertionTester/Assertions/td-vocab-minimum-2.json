@@ -3,7 +3,7 @@
     "description": "minimum: Specifies a minimum numeric value. Only applicable for associated number or integer types. MAY be included. Type: integer.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
-    "also": ["td-data-schema:minimum2"],
+    "also": ["td-data-schema:minimum2", "td-property-names:minimum2"],
     "type": "object",
     "properties": {
         "properties": {
