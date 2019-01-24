@@ -1,95 +1,141 @@
 {
-    "title": "td-vocab-maximum-1",
-    "description": "maximum: Specifies a maximum numeric value. Only applicable for associated number or integer types. MAY be included. Type: double.",
+    "title": "td-vocab-descriptions",
+    "description": "descriptions: Can be used to support (human-readable) information in different languages. MAY be included. Type: MultiLanguage.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
+    "also": ["td-multi-languages:descriptions"],
     "is-complex": true,
-    "also": ["td-data-schema:maximum1"],
     "type": "object",
-    "properties": {
+    "if": {
+        "required": ["descriptions"],
         "properties": {
-            "type": "object",
-            "additionalProperties": {
-                "$ref": "#/definitions/property_element"
-            }
-        },
-        "actions": {
-            "type": "object",
-            "additionalProperties": {
-                "$ref": "#/definitions/action_element"
-            }
-        },
-        "events": {
-            "type": "object",
-            "additionalProperties": {
-                "$ref": "#/definitions/event_element"
+            "descriptions": {
+                "$ref": "#/definitions/descriptions"
             }
         }
     },
-    "additionalProperties": true,
+    "then": {
+        "const": "td-vocab-descriptions=pass"
+    },
+    "else": {
+        "properties": {
+            "properties": {
+                "type": "object",
+                "additionalProperties": {
+                    "$ref": "#/definitions/property_element"
+                }
+            },
+            "actions": {
+                "type": "object",
+                "additionalProperties": {
+                    "$ref": "#/definitions/action_element"
+                }
+            },
+            "events": {
+                "type": "object",
+                "additionalProperties": {
+                    "$ref": "#/definitions/event_element"
+                }
+            }
+        },
+        "additionalProperties": true
+    },
     "definitions": {
         "property_element": {
             "type": "object",
             "if": {
-                "required": ["type", "maximum"],
+                "required": ["descriptions"],
                 "properties": {
-                    "type": {
-                        "type": "string",
-                        "enum": [
-                            "number"
-                        ]
-                    },
-                    "maximum": {
-                        "type": "number"
+                    "descriptions": {
+                        "$ref": "#/definitions/descriptions"
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-maximum-1=pass"
+                "const": "td-vocab-descriptions=pass"
+            },
+            "else": {
+                "properties": {
+                    "properties": {
+                        "additionalProperties": {
+                            "$ref": "#/definitions/dataSchema"
+                        }
+                    },
+                    "oneOf": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/dataSchema"
+                        }
+                    },
+                    "items": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
+                }
             }
         },
         "action_element": {
             "type": "object",
-            "properties": {
-                "input": {
-                    "$ref": "#/definitions/dataSchema"
-                },
-                "output": {
-                    "$ref": "#/definitions/dataSchema"
+            "if": {
+                "required": ["descriptions"],
+                "properties": {
+                    "descriptions": {
+                        "$ref": "#/definitions/descriptions"
+                    }
+                }
+            },
+            "then": {
+                "const": "td-vocab-descriptions=pass"
+            },
+            "else": {
+
+                "properties": {
+                    "input": {
+                        "$ref": "#/definitions/dataSchema"
+                    },
+                    "output": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
                 }
             }
         },
         "event_element": {
             "type": "object",
-            "properties": {
-                "subscription": {
-                    "$ref": "#/definitions/dataSchema"
-                },
-                "data": {
-                    "$ref": "#/definitions/dataSchema"
-                },
-                "cancellation": {
-                    "$ref": "#/definitions/dataSchema"
+            "if": {
+                "required": ["descriptions"],
+                "properties": {
+                    "descriptions": {
+                        "$ref": "#/definitions/descriptions"
+                    }
+                }
+            },
+            "then": {
+                "const": "td-vocab-descriptions=pass"
+            },
+            "else": {
+                "properties": {
+                    "subscription": {
+                        "$ref": "#/definitions/dataSchema"
+                    },
+                    "data": {
+                        "$ref": "#/definitions/dataSchema"
+                    },
+                    "cancellation": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
                 }
             }
         },
         "dataSchema": {
             "type": "object",
             "if": {
-                "required": ["type", "maximum"],
+                "required": ["descriptions"],
                 "properties": {
-                    "type": {
-                        "type": "string",
-                        "enum": [
-                            "number"
-                        ]
-                    },
-                    "maximum": {
-                        "type": "number"
+                    "description": {
+                        "$ref": "#/definitions/descriptions"
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-maximum-1=pass"
+                "const": "td-vocab-descriptions=pass"
             },
             "else": {
                 "properties": {
@@ -148,10 +194,8 @@
 
                     },
                     "minItems": {
-
                         "type": "integer",
                         "minimum": 0
-
                     },
                     "minimum": {
                         "type": "number"

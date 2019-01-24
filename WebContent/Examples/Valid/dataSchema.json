@@ -11,6 +11,7 @@
     "security": ["basic_sc"],
     "properties": {
         "status": {
+            
             "readOnly":false,
             "writeOnly": false,
             "forms": [{
