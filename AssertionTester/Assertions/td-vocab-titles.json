@@ -1,8 +1,8 @@
 {
-    "title": "td-vocab-type-2",
-    "description": "type: Assignment of JSON-based data types compatible with JSON Schema (one of boolean, integer, number, string, object, array, or null). MAY be included. Type: string (one of object, array, string, number, integer, boolean, or null).",
+    "title": "td-vocab-titles",
+    "description": "titles: Provides multi-language human-readable titles (e.g., display a text for UI representation in different languages) of the interaction pattern. MAY be included. Type: MultiLanguage.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
-    "also": ["td-data-schema:type", "td-property-names:type"],
+    "also": ["td-data-schema:titles", "td-multi-languages:titles", "td-property-names:titles"],
     "is-complex": true,
     "type": "object",
     "properties": {
@@ -30,72 +30,99 @@
         "property_element": {
             "type": "object",
             "if": {
-                "required": ["type"],
+                "required": ["titles"],
                 "properties": {
-                    "type": {
-                        "type": "string",
-                        "enum": [
-                            "boolean",
-                            "integer",
-                            "number",
-                            "string",
-                            "object",
-                            "array",
-                            "null"
-                        ]
+                    "titles": {
+                        "$ref": "#/definitions/titles"
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-type-2=pass"
+                "const": "td-vocab-titles=pass"
+            },
+            "else": {
+                "properties": {
+                    "properties": {
+                        "additionalProperties": {
+                            "$ref": "#/definitions/dataSchema"
+                        }
+                    },
+                    "oneOf": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/dataSchema"
+                        }
+                    },
+                    "items": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
+                }
             }
         },
         "action_element": {
             "type": "object",
-            "properties": {
-                "input": {
-                    "$ref": "#/definitions/dataSchema"
-                },
-                "output": {
-                    "$ref": "#/definitions/dataSchema"
+            "if": {
+                "required": ["titles"],
+                "properties": {
+                    "titles": {
+                        "$ref": "#/definitions/titles"
+                    }
+                }
+            },
+            "then": {
+                "const": "td-vocab-titles=pass"
+            },
+            "else": {
+
+                "properties": {
+                    "input": {
+                        "$ref": "#/definitions/dataSchema"
+                    },
+                    "output": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
                 }
             }
         },
         "event_element": {
             "type": "object",
-            "properties": {
-                "subscription": {
-                    "$ref": "#/definitions/dataSchema"
-                },
-                "data": {
-                    "$ref": "#/definitions/dataSchema"
-                },
-                "cancellation": {
-                    "$ref": "#/definitions/dataSchema"
+            "if": {
+                "required": ["titles"],
+                "properties": {
+                    "titles": {
+                        "$ref": "#/definitions/titles"
+                    }
+                }
+            },
+            "then": {
+                "const": "td-vocab-titles=pass"
+            },
+            "else": {
+                "properties": {
+                    "subscription": {
+                        "$ref": "#/definitions/dataSchema"
+                    },
+                    "data": {
+                        "$ref": "#/definitions/dataSchema"
+                    },
+                    "cancellation": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
                 }
             }
         },
         "dataSchema": {
             "type": "object",
             "if": {
-                "required": ["type"],
+                "required": ["titles"],
                 "properties": {
-                    "type": {
-                        "type": "string",
-                        "enum": [
-                            "boolean",
-                            "integer",
-                            "number",
-                            "string",
-                            "object",
-                            "array",
-                            "null"
-                        ]
+                    "titles": {
+                        "$ref": "#/definitions/titles"
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-type-2=pass"
+                "const": "td-vocab-titles=pass"
             },
             "else": {
                 "properties": {
@@ -154,10 +181,8 @@
 
                     },
                     "minItems": {
-
                         "type": "integer",
                         "minimum": 0
-
                     },
                     "minimum": {
                         "type": "number"

@@ -94,7 +94,14 @@
                                 "enum": [
                                     "readproperty",
                                     "writeproperty",
-                                    "observeproperty"
+                                    "observeproperty",
+                                    "readallproperties",
+                                    "writeallproperties",
+                                    "readmultipleproperties",
+                                    "writemultipleproperties",
+                                    "subscribeevent",
+                                    "unsubscribeevent",
+                                    "invokeaction"
                                 ]
                             },
                             {
@@ -104,7 +111,14 @@
                                     "enum": [
                                         "readproperty",
                                         "writeproperty",
-                                        "observeproperty"
+                                        "observeproperty",
+                                        "readallproperties",
+                                        "writeallproperties",
+                                        "readmultipleproperties",
+                                        "writemultipleproperties",
+                                        "subscribeevent",
+                                        "unsubscribeevent",
+                                        "invokeaction"
                                     ]
                                 }
                             }
@@ -126,7 +140,14 @@
                                 "enum": [
                                     "readproperty",
                                     "writeproperty",
-                                    "observeproperty"
+                                    "observeproperty",
+                                    "readallproperties",
+                                    "writeallproperties",
+                                    "readmultipleproperties",
+                                    "writemultipleproperties",
+                                    "subscribeevent",
+                                    "unsubscribeevent",
+                                    "invokeaction"
                                 ]
                             },
                             {
@@ -136,7 +157,14 @@
                                     "enum": [
                                         "readproperty",
                                         "writeproperty",
-                                        "observeproperty"
+                                        "observeproperty",
+                                        "readallproperties",
+                                        "writeallproperties",
+                                        "readmultipleproperties",
+                                        "writemultipleproperties",
+                                        "subscribeevent",
+                                        "unsubscribeevent",
+                                        "invokeaction"
                                     ]
                                 }
                             }

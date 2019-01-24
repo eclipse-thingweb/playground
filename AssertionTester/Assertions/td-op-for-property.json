@@ -1,0 +1,109 @@
+{
+    "title": "td-op-for-property",
+    "description": "When a forms term member is present in a Property instance, the value(s) of op in the forms MUST be one of readproperty, writeproperty or observeproperty. ",
+    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "is-complex": true,
+    "type": "object",
+        "if": {
+            "required": ["properties"],
+            "properties": {
+                "properties": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/property_element"
+                    }
+                }
+            }
+        },
+        "then": {
+            "const": "td-op-for-property=pass"
+        },
+
+    "additionalProperties": true,
+    "definitions": {
+        "property_element": {
+            "type": "object",
+            "properties": {
+                "forms": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "$ref": "#/definitions/form_element_property"
+                    }
+                }
+            },
+            "required": [
+                "forms"
+            ],
+            "additionalProperties": true
+        },
+        "form_element_property": {
+            "type": "object",
+            "properties": {
+                "href": {
+                    "$ref": "#/definitions/url"
+                },
+                "op": {
+                    "oneOf": [{
+                            "type": "string",
+                            "enum": [
+                                "readproperty",
+                                "writeproperty",
+                                "observeproperty"
+                            ]
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "readproperty",
+                                    "writeproperty",
+                                    "observeproperty"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "contentType": {
+                    "type": "string"
+                },
+                "security": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "scopes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "subProtocol": {
+                    "type": "string",
+                    "enum": [
+                        "longpoll"
+                    ]
+                },
+                "response": {
+                    "type": "object",
+                    "properties": {
+                        "contentType": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "required": [
+                "href","op"
+            ],
+            "additionalProperties": true
+        },
+        "url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(([^#]*))?(#(.*))?"
+        }
+    }
+}

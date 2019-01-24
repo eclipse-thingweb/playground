@@ -218,16 +218,12 @@
                     "$ref": "#/definitions/dataSchema"
                 },
                 "maxItems": {
-
                     "type": "integer",
                     "minimum": 0
-
                 },
                 "minItems": {
-
                     "type": "integer",
                     "minimum": 0
-
                 },
                 "minimum": {
                     "type": "number"

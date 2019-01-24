@@ -1,46 +1,62 @@
 {
-    "title": "td-vocab-enum",
-    "description": "enum: Restricted set of values provided as an array.",
+    "title": "td-title-description:descriptions",
+    "description": "If title and titles description and descriptions are defined at the same time at the JSON level, title and description MAY be seen as default text. ",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
-    "also": ["td-data-schema-arrays:enum", "td-data-schema:enum", "td-property-names:enum"],
     "type": "object",
-    "properties": {
+    "if": {
+        "required": ["descriptions", "description"],
         "properties": {
-            "type": "object",
-            "additionalProperties": {
-                "$ref": "#/definitions/property_element"
-            }
-        },
-        "actions": {
-            "type": "object",
-            "additionalProperties": {
-                "$ref": "#/definitions/action_element"
-            }
-        },
-        "events": {
-            "type": "object",
-            "additionalProperties": {
-                "$ref": "#/definitions/event_element"
+            "descriptions": {
+                "$ref": "#/definitions/descriptions"
+            },
+            "description": {
+                "$ref": "#/definitions/description"
             }
         }
     },
-    "additionalProperties": true,
+    "then": {
+        "const": "td-title-description:descriptions=pass"
+    },
+    "else": {
+        "properties": {
+            "properties": {
+                "type": "object",
+                "additionalProperties": {
+                    "$ref": "#/definitions/property_element"
+                }
+            },
+            "actions": {
+                "type": "object",
+                "additionalProperties": {
+                    "$ref": "#/definitions/action_element"
+                }
+            },
+            "events": {
+                "type": "object",
+                "additionalProperties": {
+                    "$ref": "#/definitions/event_element"
+                }
+            }
+        },
+        "additionalProperties": true
+    },
     "definitions": {
         "property_element": {
             "type": "object",
             "if": {
-                "required": ["enum"],
+                "required": ["descriptions", "description"],
                 "properties": {
-                    "enum": {
-                        "type": "array",
-                        "minItems": 1,
-                        "uniqueItems": true
+                    "descriptions": {
+                        "$ref": "#/definitions/descriptions"
+                    },
+                    "description": {
+                        "$ref": "#/definitions/description"
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-enum=pass"
+                "const": "td-title-description:descriptions=pass"
             },
             "else": {
                 "properties": {
@@ -63,43 +79,77 @@
         },
         "action_element": {
             "type": "object",
-            "properties": {
-                "input": {
-                    "$ref": "#/definitions/dataSchema"
-                },
-                "output": {
-                    "$ref": "#/definitions/dataSchema"
+            "if": {
+                "required": ["descriptions", "description"],
+                "properties": {
+                    "descriptions": {
+                        "$ref": "#/definitions/descriptions"
+                    },
+                    "description": {
+                        "$ref": "#/definitions/description"
+                    }
+                }
+            },
+            "then": {
+                "const": "td-title-description:descriptions=pass"
+            },
+            "else": {
+
+                "properties": {
+                    "input": {
+                        "$ref": "#/definitions/dataSchema"
+                    },
+                    "output": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
                 }
             }
         },
         "event_element": {
             "type": "object",
-            "properties": {
-                "subscription": {
-                    "$ref": "#/definitions/dataSchema"
-                },
-                "data": {
-                    "$ref": "#/definitions/dataSchema"
-                },
-                "cancellation": {
-                    "$ref": "#/definitions/dataSchema"
+            "if": {
+                "required": ["descriptions", "description"],
+                "properties": {
+                    "descriptions": {
+                        "$ref": "#/definitions/descriptions"
+                    },
+                    "description": {
+                        "$ref": "#/definitions/description"
+                    }
+                }
+            },
+            "then": {
+                "const": "td-title-description:descriptions=pass"
+            },
+            "else": {
+                "properties": {
+                    "subscription": {
+                        "$ref": "#/definitions/dataSchema"
+                    },
+                    "data": {
+                        "$ref": "#/definitions/dataSchema"
+                    },
+                    "cancellation": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
                 }
             }
         },
         "dataSchema": {
             "type": "object",
             "if": {
-                "required": ["enum"],
+                "required": ["descriptions", "description"],
                 "properties": {
-                    "enum": {
-                        "type": "array",
-                        "minItems": 1,
-                        "uniqueItems": true
+                    "descriptions": {
+                        "$ref": "#/definitions/descriptions"
+                    },
+                    "description": {
+                        "$ref": "#/definitions/description"
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-enum=pass"
+                "const": "td-title-description:descriptions=pass"
             },
             "else": {
                 "properties": {
@@ -158,10 +208,8 @@
 
                     },
                     "minItems": {
-
                         "type": "integer",
                         "minimum": 0
-
                     },
                     "minimum": {
                         "type": "number"

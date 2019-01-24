@@ -112,6 +112,7 @@ function validate(storedTdAddress) {
                         }
 
                     } else {
+                        console.log(ajv.errors);
                         var output = ajv.errors[0].params.allowedValue;
 
                         var resultStart = output.indexOf("=");
@@ -259,7 +260,7 @@ function checkVocabulary(tdJson) {
     ajv.addSchema(schema, 'td');
 
     var valid = ajv.validate('td', tdJson);
-    var otherAssertions = ["td-objects:securityDefinitions", "td-arrays:security", "td-vocab-security-1", "td-security-mandatory", "td-vocab-securityDefinitions", "td-vocab-security", "td-vocab-scheme", "td-context-toplevel", "td-vocab-name-1"];
+    var otherAssertions = ["td-objects:securityDefinitions", "td-arrays:security", "td-vocab-security-1", "td-security-mandatory", "td-vocab-securityDefinitions", "td-vocab-scheme", "td-context-toplevel", "td-vocab-name-1"];
 
     if (valid) {
         results.push({

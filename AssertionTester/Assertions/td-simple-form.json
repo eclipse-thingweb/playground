@@ -1,9 +1,9 @@
 {
-    "title": "td-forms",
-    "description": " Each mandatory and optional vocabulary term as defined in the class Form, MUST be serialized as a JSON name. ",
+    "title": "td-simple-form",
+    "description": "A Thing Description instance serialization MAY omit one ore more vocabulary terms that are mandatory () AND have default values based on the table above.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
-    "also": ["td-vocab-href", "td-vocab-forms"],
+    "also": ["td-vocab-href"],
     "type": "object",
     "if": {
         "required": ["forms"],
@@ -18,7 +18,7 @@
         }
     },
     "then": {
-        "const": "td-forms=pass"
+        "const": "td-simple-form=pass"
     },
     "else": {
         "if": {
@@ -33,7 +33,7 @@
             }
         },
         "then": {
-            "const": "td-forms=pass"
+            "const": "td-simple-form=pass"
         },
         "else": {
             "if": {
@@ -48,7 +48,7 @@
                 }
             },
             "then": {
-                "const": "td-forms=pass"
+                "const": "td-simple-form=pass"
             },
             "else": {
                 "if": {
@@ -63,10 +63,10 @@
                     }
                 },
                 "then": {
-                    "const": "td-forms=pass"
+                    "const": "td-simple-form=pass"
                 },
                 "else": {
-                    "const": "td-forms=not-impl"
+                    "const": "td-simple-form=not-impl"
                 }
             }
         }
