@@ -1,5 +1,5 @@
 {
-    "title": "td-vocab-contenttype",
+    "title": "td-vocab-contentType-2",
     "description": "contentType: Assign a content type based on a media type [[!MEDIATYPES]] (e.g., 'application/json) and (optional) parameters (e.g., 'charset=utf-8'). ",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
@@ -94,7 +94,7 @@
                 }
             },
             "then": {
-                "const": "td-vocab-contenttype=pass"
+                "const": "td-vocab-contentType-2=pass"
             },
             "else": {
                 "properties": {

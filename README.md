@@ -78,7 +78,6 @@ td-property-names ?
 td-property-objects:properties
 td-property-objects:items
 ??? td-event-response-arrays
-CHANGED DONE td-forms-response
 td-security-overrides
 td-media-type  STILL VALID?
 td-jsonld-preprocessing-context
@@ -87,11 +86,7 @@ td-jsonld-preprocessing-defaults
 td-vocab-description
 td-vocab-name
 td-vocab-properties
-CHANGED DONE td-vocab-forms
 td-vocab-title
-CHANGED DONE td-vocab-response
-CHANGED DONE td-vocab-contentType
-CHANGED DONE td-vocab-type
 td-vocab-readOnly
 td-vocab-enum
 td-vocab-const
