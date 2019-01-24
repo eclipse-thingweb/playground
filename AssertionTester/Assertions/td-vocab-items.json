@@ -3,6 +3,7 @@
     "description": "items: Used to define the characteristics of an array. MAY be included. Type: DataSchema.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
+    "also": ["td-data-schema:items"],
     "type": "object",
     "properties": {
         "properties": {

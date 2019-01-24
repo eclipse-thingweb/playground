@@ -1,9 +1,9 @@
 {
-    "title": "td-vocab-unit",
-    "description": "unit: Provides unit information that is used, e.g., in international science, engineering, and business. MAY be included. Type: string.",
+    "title": "td-vocab-maximum-2",
+    "description": "maximum: Specifies a maximum numeric value. Only applicable for associated number or integer types. MAY be included. Type: integer.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
-    "also":["td-data-schema:unit"],
     "is-complex": true,
+    "also": ["td-data-schema:maximum"],
     "type": "object",
     "properties": {
         "properties": {
@@ -11,7 +11,6 @@
             "additionalProperties": {
                 "$ref": "#/definitions/property_element"
             }
-
         },
         "actions": {
             "type": "object",
@@ -31,33 +30,21 @@
         "property_element": {
             "type": "object",
             "if": {
-                "required": ["unit"],
+                "required": ["type", "maximum"],
                 "properties": {
-                    "unit": {
-                        "type": "string"
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "integer"
+                        ]
+                    },
+                    "maximum": {
+                        "type": "number"
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-unit=pass"
-            },
-            "else": {
-                "properties": {
-                    "properties": {
-                        "additionalProperties": {
-                            "$ref": "#/definitions/dataSchema"
-                        }
-                    },
-                    "oneOf": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/definitions/dataSchema"
-                        }
-                    },
-                    "items": {
-                        "$ref": "#/definitions/dataSchema"
-                    }
-                }
+                "const": "td-vocab-maximum-2=pass"
             }
         },
         "action_element": {
@@ -88,15 +75,21 @@
         "dataSchema": {
             "type": "object",
             "if": {
-                "required": ["unit"],
+                "required": ["type", "maximum"],
                 "properties": {
-                    "unit": {
-                        "type": "string"
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "integer"
+                        ]
+                    },
+                    "maximum": {
+                        "type": "number"
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-unit=pass"
+                "const": "td-vocab-maximum-2=pass"
             },
             "else": {
                 "properties": {

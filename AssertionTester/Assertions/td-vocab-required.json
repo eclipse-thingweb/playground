@@ -3,7 +3,7 @@
     "description": "required: Defines which members of the object type are mandatory. MAY be included. Type: array of string.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
-    "also": ["td-data-schema-arrays:required"],
+    "also": ["td-data-schema-arrays:required", "td-data-schema:required"],
     "type": "object",
     "properties": {
         "properties": {
