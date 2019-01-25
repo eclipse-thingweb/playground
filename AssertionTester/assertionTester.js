@@ -203,17 +203,26 @@ function validate(storedTdAddress) {
 
                 // If reached the end
                 if (index == assertions.length - 1) {
-                    console.log(results);
-
+                   
+                    //sort the results
                     var orderedResults = {};
+                    // sort according to the ID in each item
+                    orderedResults=results.sort(function (a, b) {
+                        var idA = a.ID; 
+                        var idB = b.ID; 
+                        if (idA < idB) {
+                            return -1;
+                        }
+                        if (idA > idB) {
+                            return 1;
+                        }
 
-                    Object.keys(results).sort().forEach(function (key) {
-                        orderedResults[key] = results[key];
+                        // if ids are equal
+                        return 0;
                     });
+                    // console.log(orderedResults);
 
                     var csvResults = json2csvParser.parse(results);
-
-                    // csvResults.sort();
 
                     console.log(csvResults);
 
