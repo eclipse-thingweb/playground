@@ -203,11 +203,12 @@ function validate(storedTdAddress) {
 
                 // If reached the end
                 if (index == assertions.length - 1) {
-                   
+                    // create parent assertions
+                    createParents(results);
                     //sort the results
-                    var orderedResults = {};
+                    
                     // sort according to the ID in each item
-                    orderedResults=results.sort(function (a, b) {
+                    orderedResults = results.sort(function (a, b) {
                         var idA = a.ID; 
                         var idB = b.ID; 
                         if (idA < idB) {
@@ -220,18 +221,17 @@ function validate(storedTdAddress) {
                         // if ids are equal
                         return 0;
                     });
-                    // console.log(orderedResults);
 
-                    var csvResults = json2csvParser.parse(results);
+                    var csvResults = json2csvParser.parse(orderedResults);
 
                     console.log(csvResults);
 
-                    fs.writeFile("./AssertionTester/Results/result-" + tdJson.id + ".json", JSON.stringify(results), function (err) {
+                    fs.writeFile("./AssertionTester/Results/result-" + tdJson.id + ".json", JSON.stringify(orderedResults), function (err) {
                         if (err) {
                             return console.log(err);
                         }
 
-                        console.log("The result json was saved!");
+                        console.log("The result-" + tdJson.id+" json was saved!");
                     });
 
                     fs.writeFile("./AssertionTester/Results/result-" + tdJson.id + ".csv", csvResults, function (err) {
@@ -239,7 +239,7 @@ function validate(storedTdAddress) {
                             return console.log(err);
                         }
 
-                        console.log("The result csv was saved!");
+                        console.log("The result-" + tdJson.id + "csv was saved!");
                     });
                 }
 
@@ -247,6 +247,74 @@ function validate(storedTdAddress) {
         });
     });
 }
+
+function createParents(resultsJSON){
+
+    //create a json object with parent name keys and then each of them an array of children results
+
+    var parentsJson = {};
+    resultsJSON.forEach((curResult, index) => {
+        var curId = curResult.ID;
+        var underScoreLoc = curId.indexOf('_');
+        if (underScoreLoc === -1){
+            // this assertion is not a child assertion
+        } else {
+            var parentResultID = curId.slice(0,underScoreLoc);
+            // if it already exists push otherwise create an array and push
+            if (parentsJson.hasOwnProperty(parentResultID)) {
+                parentsJson[parentResultID].push(curResult);
+            } else {
+                parentsJson[parentResultID] = [];
+                parentsJson[parentResultID].push(curResult);
+            }         
+            console.log(parentsJson);
+        }
+    });
+
+    //Go through the object and push a result that is an OR of each children
+        // if one children is fail, result is fail
+        // if one children is not-impl, result is not-impl
+        // if none of these happen, then it implies it is pass, so result is pass
+        // "ID": schema.title,
+        // "Status": "not-impl" 
+
+    parentsJsonArray = Object.getOwnPropertyNames(parentsJson);
+    parentsJsonArray.forEach((curParentName, indexParent) => {
+
+        var curParent = parentsJson[curParentName];
+ 
+        for (let index = 0; index < curParent.length; index++) {
+            const curChild = curParent[index];
+            if(curChild.Status == "fail"){
+                //push fail and break, i.e stop going through children, we are done here!
+                results.push({
+                    "ID": curParentName,
+                    "Status": "fail",
+                    "additionalInfo": "Error message can be seen in the children assertions"
+                });
+                break;
+            } else if (curChild.Status == "not-impl") {
+                //push not-impl and break, i.e stop going through children, we are done here!
+                results.push({
+                    "ID": curParentName,
+                    "Status": "not-impl",
+                    "additionalInfo": "Error message can be seen in the children assertions"
+                });
+                break;
+            } else {
+                // if reached the end without break, push pass
+                if (index == curParent.length-1){
+                    results.push({
+                        "ID": curParentName,
+                        "Status": "pass",
+                    });
+                }
+            }
+        }
+    });
+
+}
+
 
 function doLeftOutChecks(td) {
 
