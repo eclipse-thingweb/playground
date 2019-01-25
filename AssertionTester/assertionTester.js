@@ -226,7 +226,7 @@ function validate(storedTdAddress) {
 
                     console.log(csvResults);
 
-                    fs.writeFile("./AssertionTester/Results/result" + tdJson.id + ".json", JSON.stringify(results), function (err) {
+                    fs.writeFile("./AssertionTester/Results/result-" + tdJson.id + ".json", JSON.stringify(results), function (err) {
                         if (err) {
                             return console.log(err);
                         }
@@ -234,7 +234,7 @@ function validate(storedTdAddress) {
                         console.log("The result json was saved!");
                     });
 
-                    fs.writeFile("./AssertionTester/Results/result" + tdJson.id + ".csv", csvResults, function (err) {
+                    fs.writeFile("./AssertionTester/Results/result-" + tdJson.id + ".csv", csvResults, function (err) {
                         if (err) {
                             return console.log(err);
                         }
@@ -279,7 +279,7 @@ function checkVocabulary(tdJson) {
     ajv.addSchema(schema, 'td');
 
     var valid = ajv.validate('td', tdJson);
-    var otherAssertions = ["td-objects:securityDefinitions", "td-arrays:security", "td-vocab-security-1", "td-security-mandatory", "td-vocab-securityDefinitions", "td-vocab-scheme", "td-context-toplevel", "td-vocab-name-1"];
+    var otherAssertions = ["td-objects_securityDefinitions", "td-arrays_security", "td-vocab-security-1", "td-security-mandatory", "td-vocab-securityDefinitions", "td-vocab-scheme", "td-context-toplevel", "td-vocab-name-1"];
 
     if (valid) {
         results.push({
@@ -311,7 +311,7 @@ function checkVocabulary(tdJson) {
 
 function checkUniqueness(td) {
 
-    var otherAssertions = ["td-properties:uniqueness", "td-actions:uniqueness", "td-events:uniqueness"];
+    var otherAssertions = ["td-properties_uniqueness", "td-actions_uniqueness", "td-events_uniqueness"];
 
     // building the interaction name array
     var tdInteractions = [];

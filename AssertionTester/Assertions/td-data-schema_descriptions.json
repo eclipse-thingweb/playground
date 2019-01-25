@@ -1,5 +1,5 @@
 {
-    "title": "td-data-schema:description",
+    "title": "td-data-schema_descriptions",
     "description": "Each mandatory and optional vocabulary term as defined in the class DataSchema, MUST be serialized as a JSON name. ",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
@@ -29,15 +29,15 @@
         "property_element": {
             "type": "object",
             "if": {
-                "required": ["description"],
+                "required": ["descriptions"],
                 "properties": {
-                    "description": {
-                        "$ref": "#/definitions/description"
+                    "descriptions": {
+                        "$ref": "#/definitions/descriptions"
                     }
                 }
             },
             "then": {
-                "const": "td-data-schema:description=pass"
+                "const": "td-data-schema_descriptions=pass"
             },
             "else": {
                 "properties": {
@@ -61,15 +61,15 @@
         "action_element": {
             "type": "object",
             "if": {
-                "required": ["description"],
+                "required": ["descriptions"],
                 "properties": {
-                    "description": {
-                        "$ref": "#/definitions/description"
+                    "descriptions": {
+                        "$ref": "#/definitions/descriptions"
                     }
                 }
             },
             "then": {
-                "const": "td-data-schema:description=pass"
+                "const": "td-data-schema_descriptions=pass"
             },
             "else": {
 
@@ -86,15 +86,15 @@
         "event_element": {
             "type": "object",
             "if": {
-                "required": ["description"],
+                "required": ["descriptions"],
                 "properties": {
-                    "description": {
-                        "$ref": "#/definitions/description"
+                    "descriptions": {
+                        "$ref": "#/definitions/descriptions"
                     }
                 }
             },
             "then": {
-                "const": "td-data-schema:description=pass"
+                "const": "td-data-schema_descriptions=pass"
             },
             "else": {
                 "properties": {
@@ -115,13 +115,13 @@
             "if": {
                 "required": ["descriptions"],
                 "properties": {
-                    "description": {
-                        "$ref": "#/definitions/description"
+                    "descriptions": {
+                        "$ref": "#/definitions/descriptions"
                     }
                 }
             },
             "then": {
-                "const": "td-data-schema:description=pass"
+                "const": "td-data-schema_descriptions=pass"
             },
             "else": {
                 "properties": {
