@@ -3,7 +3,7 @@
     "description": "forms: Indicates one or more endpoints at which operation(s) on this resource are accessible. MUST be included. Type: array of Form.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
-    "also": ["td-property-names:forms"],
+    "also": ["td-property-names_forms"],
     "type": "object",
     "properties": {
         "properties": {

@@ -3,7 +3,7 @@
     "description": "const: Provides a constant value. MAY be included. Type: any type.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
-    "also": ["td-data-schema:const", "td-property-names:const"],
+    "also": ["td-data-schema_const", "td-property-names_const"],
     "type": "object",
     "properties": {
         "properties": {

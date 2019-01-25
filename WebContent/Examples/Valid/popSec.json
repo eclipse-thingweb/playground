@@ -6,6 +6,7 @@
         "pop_sc": {
             "scheme": "pop",
             "in": "header",
+            "authorization": "https://servient.example.com:8443/",
             "name": "example query parameter",
             "format":"jwt",
             "alg":"MD5"

@@ -1,22 +1,22 @@
 {
-    "title": "td-title-description:descriptions",
+    "title": "td-title-description_titles",
     "description": "If title and titles description and descriptions are defined at the same time at the JSON level, title and description MAY be seen as default text. ",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
     "type": "object",
     "if": {
-        "required": ["descriptions", "description"],
+        "required": ["titles", "title"],
         "properties": {
-            "descriptions": {
-                "$ref": "#/definitions/descriptions"
+            "titles": {
+                "$ref": "#/definitions/titles"
             },
-            "description": {
-                "$ref": "#/definitions/description"
+            "title": {
+                "$ref": "#/definitions/title"
             }
         }
     },
     "then": {
-        "const": "td-title-description:descriptions=pass"
+        "const": "td-title-description_titles=pass"
     },
     "else": {
         "properties": {
@@ -45,18 +45,18 @@
         "property_element": {
             "type": "object",
             "if": {
-                "required": ["descriptions", "description"],
+                "required": ["titles", "title"],
                 "properties": {
-                    "descriptions": {
-                        "$ref": "#/definitions/descriptions"
+                    "titles": {
+                        "$ref": "#/definitions/titles"
                     },
-                    "description": {
-                        "$ref": "#/definitions/description"
+                    "title": {
+                        "$ref": "#/definitions/title"
                     }
                 }
             },
             "then": {
-                "const": "td-title-description:descriptions=pass"
+                "const": "td-title-description_titles=pass"
             },
             "else": {
                 "properties": {
@@ -80,18 +80,18 @@
         "action_element": {
             "type": "object",
             "if": {
-                "required": ["descriptions", "description"],
+                "required": ["titles", "title"],
                 "properties": {
-                    "descriptions": {
-                        "$ref": "#/definitions/descriptions"
+                    "titles": {
+                        "$ref": "#/definitions/titles"
                     },
-                    "description": {
-                        "$ref": "#/definitions/description"
+                    "title": {
+                        "$ref": "#/definitions/title"
                     }
                 }
             },
             "then": {
-                "const": "td-title-description:descriptions=pass"
+                "const": "td-title-description_titles=pass"
             },
             "else": {
 
@@ -108,18 +108,18 @@
         "event_element": {
             "type": "object",
             "if": {
-                "required": ["descriptions", "description"],
+                "required": ["titles", "title"],
                 "properties": {
-                    "descriptions": {
-                        "$ref": "#/definitions/descriptions"
+                    "titles": {
+                        "$ref": "#/definitions/titles"
                     },
-                    "description": {
-                        "$ref": "#/definitions/description"
+                    "title": {
+                        "$ref": "#/definitions/title"
                     }
                 }
             },
             "then": {
-                "const": "td-title-description:descriptions=pass"
+                "const": "td-title-description_titles=pass"
             },
             "else": {
                 "properties": {
@@ -138,18 +138,18 @@
         "dataSchema": {
             "type": "object",
             "if": {
-                "required": ["descriptions", "description"],
+                "required": ["titles", "title"],
                 "properties": {
-                    "descriptions": {
-                        "$ref": "#/definitions/descriptions"
+                    "titles": {
+                        "$ref": "#/definitions/titles"
                     },
-                    "description": {
-                        "$ref": "#/definitions/description"
+                    "title": {
+                        "$ref": "#/definitions/title"
                     }
                 }
             },
             "then": {
-                "const": "td-title-description:descriptions=pass"
+                "const": "td-title-description_titles=pass"
             },
             "else": {
                 "properties": {
