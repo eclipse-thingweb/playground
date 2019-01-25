@@ -3,7 +3,7 @@
     "description": "observable: Indicates whether a remote servient can subscribe to (\"observe\") the Property, to receive change notifications or periodic updates (true/false).",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex":false,
-    "also": ["td-property-names:observable"],
+    "also": ["td-property-names_observable"],
     "type": "object",
     "properties": {
         "properties": {

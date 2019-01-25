@@ -3,7 +3,7 @@
     "description": "enum: Restricted set of values provided as an array.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
-    "also": ["td-data-schema-arrays:enum", "td-data-schema:enum", "td-property-names:enum"],
+    "also": ["td-data-schema-arrays_enum", "td-data-schema_enum", "td-property-names_enum"],
     "type": "object",
     "properties": {
         "properties": {

@@ -3,7 +3,7 @@
     "description": "When a single Thing Description instance involves several contexts, additional namespaces with prefixes MUST be appended to the @context array structure",
     "is-complex": true,
     "$schema ": "http://json-schema.org/draft-06/schema#",
-    "also": ["td-jsonld-keywords:@context"],
+    "also": ["td-jsonld-keywords_@context"],
     "type": "object",
     "if": {
         "required": ["@context"]

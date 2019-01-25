@@ -1,5 +1,5 @@
 {
-    "id": "urn:dev:wot:com:example:servient:lamp",
+    "id": "urn:another",
     "name": "MyLampThing",
     "description": "Valid TD showing how to specify another content type in an action response",
     "securityDefinitions": {

@@ -2,7 +2,7 @@
     "title": "td-vocab-readOnly",
     "description": "readOnly: Boolean value that indicates whether a property interaction / value is read only (=true) or not (=false). MUST be included. Type: boolean.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
-    "also": ["td-data-schema:readOnly", "td-property-names:readOnly"],
+    "also": ["td-data-schema_readOnly", "td-property-names_readOnly"],
     "is-complex": true,
     "type": "object",
     "properties": {
