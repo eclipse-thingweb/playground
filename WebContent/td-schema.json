@@ -63,7 +63,7 @@
             }
         },
         "support": {
-            "$ref": "#/definitions/url"
+            "type": "string"
         },
         "created": {
             "type": "string"

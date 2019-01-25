@@ -158,6 +158,7 @@ function validate(storedTdAddress) {
                             });
                         }
                     } else {
+                        // failed because a required is not implemented
                         console.log('> ' + ajv.errorsText());
                         if (ajv.errorsText().indexOf("required") > -1) {
                             //failed because it doesnt have required key which is a non implemented feature

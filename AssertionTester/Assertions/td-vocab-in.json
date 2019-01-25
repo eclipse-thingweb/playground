@@ -1,0 +1,228 @@
+{
+    "title": "td-vocab-in",
+    "description": "in: Specifies the location of security authentication information (one of header, query, body, or cookie). MUST be included. Type: string.",
+    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "is-complex": true,
+    "type": "object",
+    "properties": {
+        "securityDefinitions": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+                "$ref": "#/definitions/securityScheme"
+            }
+        }
+    },
+    "required": [
+        "securityDefinitions"
+    ],
+    "additionalProperties": true,
+    "definitions": {
+        "securityScheme": {
+            "oneOf": [{
+                    "type": "object",
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "proxy": {
+                            "$ref": "#/definitions/url"
+                        },
+                        "scheme": {
+                            "type": "string",
+                            "enum": [
+                                "nosec"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "scheme"
+                    ]
+                },
+                {
+                    
+                        "type": "object",
+                        "if": {
+                            "in": {
+                                "type": "string",
+                                "enum": ["header", "query", "body", "cookie"]
+                            },
+                            "required": ["in"]
+                        },
+                        "then": {
+                            "const": "td-vocab-in=pass"
+                        }
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "proxy": {
+                            "$ref": "#/definitions/url"
+                        },
+                        "scheme": {
+                            "type": "string",
+                            "enum": [
+                                "cert"
+                            ]
+                        },
+                        "identity": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "scheme"
+                    ]
+                },
+                {
+
+                    "type": "object",
+                    "if": {
+                        "in": {
+                            "type": "string",
+                            "enum": ["header", "query", "body", "cookie"]
+                        },
+                        "required": ["in"]
+                    },
+                    "then": {
+                        "const": "td-vocab-in=pass"
+                    }
+                },
+                {
+
+                    "type": "object",
+                    "if": {
+                        "in": {
+                            "type": "string",
+                            "enum": ["header", "query", "body", "cookie"]
+                        },
+                        "required": ["in"]
+                    },
+                    "then": {
+                        "const": "td-vocab-in=pass"
+                    }
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "proxy": {
+                            "$ref": "#/definitions/url"
+                        },
+                        "scheme": {
+                            "type": "string",
+                            "enum": [
+                                "psk"
+                            ]
+                        },
+                        "identity": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "scheme"
+                    ]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "proxy": {
+                            "$ref": "#/definitions/url"
+                        },
+                        "scheme": {
+                            "type": "string",
+                            "enum": [
+                                "public"
+                            ]
+                        },
+                        "identity": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "scheme"
+                    ]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "proxy": {
+                            "$ref": "#/definitions/url"
+                        },
+                        "scheme": {
+                            "type": "string",
+                            "enum": [
+                                "oauth2"
+                            ]
+                        },
+                        "authorization": {
+                            "$ref": "#/definitions/url"
+                        },
+                        "token": {
+                            "$ref": "#/definitions/url"
+                        },
+                        "refresh": {
+                            "$ref": "#/definitions/url"
+                        },
+                        "scopes": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "flow": {
+                            "type": "string",
+                            "enum": ["implicit", "password", "client", "code"]
+                        }
+                    },
+                    "required": [
+                        "scheme"
+                    ]
+                },
+                {
+
+                    "type": "object",
+                    "if": {
+                        "in": {
+                            "type": "string",
+                            "enum": ["header", "query", "body", "cookie"]
+                        },
+                        "required": ["in"]
+                    },
+                    "then": {
+                        "const": "td-vocab-in=pass"
+                    }
+                },
+                {
+
+                    "type": "object",
+                    "if": {
+                        "in": {
+                            "type": "string",
+                            "enum": ["header", "query", "body", "cookie"]
+                        },
+                        "required": ["in"]
+                    },
+                    "then": {
+                        "const": "td-vocab-in=pass"
+                    }
+                }
+            ]
+        },
+        "url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(([^#]*))?(#(.*))?"
+        }
+    }
+}
