@@ -201,14 +201,23 @@ function validate(storedTdAddress) {
                 }
 
 
-
+                // If reached the end
                 if (index == assertions.length - 1) {
                     console.log(results);
-                    var csv = json2csvParser.parse(results);
 
-                    console.log(csv);
+                    var orderedResults = {};
 
-                    fs.writeFile("./AssertionTester/Results/result.json", JSON.stringify(results), function (err) {
+                    Object.keys(results).sort().forEach(function (key) {
+                        orderedResults[key] = results[key];
+                    });
+
+                    var csvResults = json2csvParser.parse(results);
+
+                    // csvResults.sort();
+
+                    console.log(csvResults);
+
+                    fs.writeFile("./AssertionTester/Results/result" + tdJson.id + ".json", JSON.stringify(results), function (err) {
                         if (err) {
                             return console.log(err);
                         }
@@ -216,7 +225,7 @@ function validate(storedTdAddress) {
                         console.log("The result json was saved!");
                     });
 
-                    fs.writeFile("./AssertionTester/Results/result"+tdJson.id+".csv", csv, function (err) {
+                    fs.writeFile("./AssertionTester/Results/result" + tdJson.id + ".csv", csvResults, function (err) {
                         if (err) {
                             return console.log(err);
                         }

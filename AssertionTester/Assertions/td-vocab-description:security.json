@@ -21,8 +21,10 @@
         "securityScheme": {
             "type": "object",
             "if": {
-                "description": {
-                    "type": "string"
+                "properties": {
+                    "description": {
+                        "type": "string"
+                    }
                 },
                 "required": ["description"]
             },

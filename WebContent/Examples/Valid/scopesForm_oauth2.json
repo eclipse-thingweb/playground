@@ -8,6 +8,7 @@
             "flow": "password",
             "scopes": ["limited", "special"],
             "refresh": "https://refreshServer.com/",
+            "token": "https://tokenServer.com/",
             "authorization": "https://authServer.com/"
         }
     },
