@@ -1,5 +1,5 @@
 {
-    "id": "urn:dev:wot:com:example:servient:lamp",
+    "id": "urn:constOneOf",
     "name": "MyLampThing",
     "description": "Valid TD showing how to use unit, oneOf and const",
     "securityDefinitions": {

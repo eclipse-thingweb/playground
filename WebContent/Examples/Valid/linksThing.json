@@ -1,5 +1,5 @@
 {
-    "id": "urn:dev:wot:com:example:servient:lamp",
+    "id": "urn:links",
     "name": "MyLampThing",
     "description": "Valid TD demonstrating how to use links",
     "securityDefinitions": {

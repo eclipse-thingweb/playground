@@ -1,5 +1,5 @@
 {
-    "id": "urn:dev:wot:com:example:servient:lamp",
+    "id": "urn:metadata",
     "name": "MyLampThing",
     "description":"Valid TD with minimum mandatory information and additional non specified metadata",
     "securityDefinitions": {

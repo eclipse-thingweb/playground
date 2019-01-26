@@ -1,5 +1,5 @@
 {
-    "id": "urn:dev:wot:com:example:servient:lamp",
+    "id": "urn:multilanguage",
     "name": "MyLampThing",
     "description": "Valid TD showing multiple language support",
     "descriptions": {

@@ -1,5 +1,5 @@
 {
-    "id": "urn:dev:wot:com:example:servient:lamp",
+    "id": "urn:dataSchema",
     "name": "MyLampThing",
     "description": "Valid TD copied from the spec's first example",
     "securityDefinitions": {

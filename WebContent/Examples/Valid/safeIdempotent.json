@@ -1,5 +1,5 @@
 {
-    "id": "urn:dev:wot:com:example:servient:lamp",
+    "id": "urn:safeIdempotent",
     "name": "MyLampThing",
     "description": "Valid TD showing how to annotate actions with safe and idempotent",
     "securityDefinitions": {

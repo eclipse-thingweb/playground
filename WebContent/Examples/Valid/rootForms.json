@@ -1,5 +1,5 @@
 {
-    "id": "urn:dev:wot:com:example:servient:lamp",
+    "id": "urn:rootForms",
     "name": "MyLampThing",
     "description": "Valid TD demonstrating how to use forms in the root of the TD document",
     "securityDefinitions": {
