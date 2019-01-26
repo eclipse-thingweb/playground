@@ -5,6 +5,7 @@
     "securityDefinitions": {
         "apikey_sc": {
             "scheme": "apikey",
+            "proxy": "https://someProxyServer.com",
             "in": "header",
             "name":"example query parameter"
         }

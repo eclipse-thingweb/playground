@@ -14,6 +14,7 @@
             "forms": [{
                 "href": "http://upsq1c.local:9191/api/frame/crop",
                 "contentType": "application/json",
+                "security": ["basic_sc"],
                 "op": ["invokeaction"],
                 "http:methodName": "POST",
                 "response": {
