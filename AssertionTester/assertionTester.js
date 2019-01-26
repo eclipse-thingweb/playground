@@ -12,6 +12,8 @@ const json2csvParser = new Json2csvParser({
 });
 var results = [];
 
+const nonImplementedAssertions = ["td-event-response-arrays", "td-form-protocolbindings", "td-security-binding", "td-security-no-extras", "td-data-schema-objects", "td-media-type", "td-readOnly-observable-writeOnly-default", "td-readOnly-observable-default", "td-content-type-default", "client-data-schema", "client-uri-template"];
+
 // Takes the second argument as the TD to validate
 
 if (process.argv[2]) {
@@ -212,6 +214,15 @@ function validate(storedTdAddress) {
             // create parent assertions
             createParents(results);
             //sort the results
+
+            // Push the non implemented assertions
+            nonImplementedAssertions.forEach((curNonImpl)=>{
+                results.push({
+                    "ID": curNonImpl,
+                    "Status": "null",
+                    "additionalInfo": "not testable with Assertion Tester"
+                });
+            });
 
             // sort according to the ID in each item
             orderedResults = results.sort(function (a, b) {

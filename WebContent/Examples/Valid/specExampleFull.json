@@ -5,6 +5,7 @@
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",
+            "description":"You can actually describe this scheme more!",
             "in": "header"
         }
     },
