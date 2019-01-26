@@ -42,6 +42,8 @@ This tool checks which assertions are satisfied by a given Thing Description. Th
   * `node AssertionTester/mergeResults.js ./AssertionTester/Results/result-urn:another.csv ./AssertionTester/Results/result-urn:dev:wot:com:example:servient:lamp.csv`
   * You can put as many TDs as you want after `AssertionTester/mergeResults.js`
 
+**WARNING**: There is a problem with relative URIs at the moment
+
 ### Contributing
 
 You can contribute by providing new JSON Schemas for assertions or by correcting them. There are two types of assertions:

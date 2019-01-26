@@ -14,7 +14,7 @@
         "status": {
             "type": "string",
             "forms": [{
-                "href": "/status"
+                "href": "https://mylamp.example.com/status"
             }]
         }
     }
