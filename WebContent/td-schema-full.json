@@ -436,7 +436,10 @@
                     "type": "boolean"
                 },
                 "oneOf": {
-                    "$ref": "#/definitions/dataSchema"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
                 },
                 "unit": {
                     "type": "string"
@@ -642,7 +645,10 @@
                     "type": "boolean"
                 },
                 "oneOf": {
-                    "$ref": "#/definitions/dataSchema"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
                 },
                 "unit": {
                     "type": "string"

@@ -1,5 +1,5 @@
 {
-    "id": "urn:dev:wot:com:example:servient:lamp",
+    "id": "urn:inputAction",
     "name": "MyLampThing",
     "description": "Valid TD demonstrating how to use input and output data in actions",
     "securityDefinitions": {

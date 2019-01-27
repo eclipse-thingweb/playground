@@ -1,5 +1,5 @@
 {
-    "id": "urn:dev:wot:com:example:servient:lamp",
+    "id": "urn:cancSubData",
     "name": "MyLampThing",
     "description": "Valid TD demonstrating how to use data schema for cancellation and subscription",
     "securityDefinitions": {

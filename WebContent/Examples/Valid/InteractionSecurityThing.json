@@ -1,5 +1,5 @@
 {
-    "id": "urn:dev:wot:com:example:servient:lamp",
+    "id": "urn:interactionSecurity",
     "name": "MyLampThing",
     "description":"Valid TD demonstrating how to use security in interaction level by overwriting the root level security",
     "securityDefinitions": {

@@ -1,5 +1,5 @@
 {
-    "id": "urn:dev:wot:com:example:servient:lamp",
+    "id": "urn:scopesFormOauth2",
     "name": "MyLampThing",
     "description": "Valid TD showing how to use scopes and oauth2 security scheme",
     "securityDefinitions": {
@@ -16,6 +16,17 @@
     "properties": {
         "status": {
             "type": "string",
+            "scopes": ["limited"],
+            "security": ["oauth2_sc"],
+            "forms": [{
+                "href": "https://scopes.example.com/status",
+                "contentType": "application/json",
+                "scopes": ["limited"]
+            }]
+        }
+    },
+    "actions": {
+        "mega": {
             "scopes": ["limited"],
             "security": ["oauth2_sc"],
             "forms": [{

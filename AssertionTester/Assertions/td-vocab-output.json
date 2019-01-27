@@ -2,7 +2,7 @@
     "title": "td-vocab-output",
     "description": "output: Used to define the output data schema of the action.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
-    "is-complex":false,
+    "is-complex": false,
     "type": "object",
     "properties": {
         "actions": {
@@ -51,7 +51,10 @@
                     "type": "boolean"
                 },
                 "oneOf": {
-                    "$ref": "#/definitions/dataSchema"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
                 },
                 "unit": {
                     "type": "string"

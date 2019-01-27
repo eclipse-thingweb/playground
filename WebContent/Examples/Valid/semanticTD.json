@@ -6,7 +6,7 @@
         }
     ],
     "@type": "Thing",
-    "id": "urn:dev:wot:com:example:servient:lamp",
+    "id": "urn:semantic",
     "name": "MyLampThing",
     "description": "TD showing heavy use of JSON-LD annotations",
     "securityDefinitions": {

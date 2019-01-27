@@ -30,10 +30,15 @@ This is a node.js based tool
 
 ## Script based Assertion Tester
 
-This tool checks which assertions are satisfied by a given Thing Description. The assertions are modeled as JSON Schema. This means that there are only JSON Schema testable assertions are checked. 'AssertionTester/Assertions' has these assertions. To use it from the root directory of the repository:
+111 out of 122 assertions of the TD specification can be tested with this tool.
 
-* Run 'node ./AssertionTester/assertionTester.js an_example_TD_location'. E.g. 'node ./AssertionTester/assertionTester.js WebContent/Examples/Valid/JsonLdThing.json' 
-* The results are found in the 'AssertionTester/Results'
+**WARNING:** There are some issues with parent assertion results. Even though the children are all `pass` the parent shows `not-impl`
+
+This tool checks which assertions are satisfied by a given Thing Description(s). The assertions are modeled as JSON Schema. This means that there are only JSON Schema testable assertions are checked. 'AssertionTester/Assertions' has these assertions. To use it from the root directory of the repository:
+
+* For single TD: Run 'node ./AssertionTester/assertionTester.js an_example_TD_location'. E.g. 'node ./AssertionTester/assertionTester.js WebContent/Examples/Valid/JsonLdThing.json' 
+* For a directory with TDs: Run 'node ./AssertionTester/assertionTester.js a_directory_location'. E.g. 'node ./AssertionTester/assertionTester.js WebContent/Examples/Valid/' 
+* The result(s) are found in the 'AssertionTester/Results' with a file per id of the tested TD(s)
   * There will be a .csv and a .json file. The .csv version has the format required by the implementation report and the .json version is provided for using the results in other tools, such as merging the results 
   * The result can be pass, fail or not-impl 
   * Some assertions have an underscore, i.e. `_` before the last word. This means that this assertion is composed of sub assertions. For example, td-actions assertion required the existence of action interaction in the TD and also the uniqueness of the names of actions. Because of this, there will be two assertions generated in the results with following names: td-actions_existence and td-actions_uniqueness. 
@@ -41,6 +46,8 @@ This tool checks which assertions are satisfied by a given Thing Description. Th
 * Merge the results if you have an implementation that produced multiple TDs. To do so, use the following command
   * `node AssertionTester/mergeResults.js ./AssertionTester/Results/result-urn:another.csv ./AssertionTester/Results/result-urn:dev:wot:com:example:servient:lamp.csv`
   * You can put as many TDs as you want after `AssertionTester/mergeResults.js`
+
+**WARNING**: There is a problem with relative URIs at the moment
 
 ### Contributing
 
@@ -62,6 +69,8 @@ You can contribute by providing new JSON Schemas for assertions or by correcting
   * Warning: 4 lights are lit green, at least one warning message is displayed, starting with ! in the console
   * Invalid: At least one of the 4 lights are lit red.
 
+These examples are used to generate the assertion list. You can find the merged result of the assertions implemented by all these examples at mergedResults.csv in the root of the playground.
+
 ## Batch Testing
 
 For Linux:
@@ -81,3 +90,15 @@ For Linux:
 * Scripting: 
     * invalid args, such as integers or non valid paths
 * Needed Validation
+* Assertion Tester
+  multi merge automatic
+  node AssertionTester/mergeResults.js ./AssertionTester/Results/result-urn:actionResponse.csv ./AssertionTester/Results/result-urn:actionRes
+ponse.csv ./AssertionTester/Results/result-urn:apiKey.csv ./AssertionTester/Results/result-urn:baseUri.csv ./AssertionTester/Results/result-urn:bearer.csv ./AssertionTester/Re
+sults/result-urn:cancSubData.csv ./AssertionTester/Results/result-urn:constOneOf.csv ./AssertionTester/Results/result-urn:contentTypeComplex.csv ./AssertionTester/Results/resu
+lt-urn:createdModified.csv ./AssertionTester/Results/result-urn:dataSchema.csv ./AssertionTester/Results/result-urn:digest.csv ./AssertionTester/Results/result-urn:formOpArray
+.csv ./AssertionTester/Results/result-urn:inputAction.csv ./AssertionTester/Results/result-urn:interactionSecurity.csv ./AssertionTester/Results/result-urn:jsonld.csv ./Assert
+ionTester/Results/result-urn:links.csv ./AssertionTester/Results/result-urn:metadata.csv ./AssertionTester/Results/result-urn:minimal.csv ./AssertionTester/Results/result-urn:
+multilanguage.csv ./AssertionTester/Results/result-urn:nosec.csv ./AssertionTester/Results/result-urn:popSec.csv ./AssertionTester/Results/result-urn:psk.csv ./AssertionTester
+/Results/result-urn:publicsec.csv ./AssertionTester/Results/result-urn:rootForms.csv ./AssertionTester/Results/result-urn:safeIdempotent.csv ./AssertionTester/Results/result-u
+rn:scopesFormOauth2.csv ./AssertionTester/Results/result-urn:semantic.csv ./AssertionTester/Results/result-urn:simple.csv ./AssertionTester/Results/result-urn:specExampleFull.
+csv ./AssertionTester/Results/result-urn:support.csv ./AssertionTester/Results/result-urn:version.csv

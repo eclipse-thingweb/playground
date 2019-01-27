@@ -1,6 +1,6 @@
 {
     "@context": "http://www.w3.org/ns/td",
-    "id": "urn:dev:wot:com:example:servient:lamp",
+    "id": "urn:jsonld",
     "name": "MyLampThing",
     "description":"TD demonstrating the @context field as with the TD vocabulary URI",
     "securityDefinitions": {

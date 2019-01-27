@@ -1,5 +1,5 @@
 {
-    "id": "urn:dev:wot:com:example:servient:lamp",
+    "id": "urn:constOneOf",
     "name": "MyLampThing",
     "description": "Valid TD showing how to use unit, oneOf and const",
     "securityDefinitions": {
@@ -11,25 +11,30 @@
     "security": ["basic_sc"],
     "properties": {
         "status": {
-            "const":"noYouActuallyHaveOnly1Status",
+            "const": "noYouActuallyHaveOnly1Status",
             "forms": [{
                 "href": "https://mylamp.example.com/status"
             }]
         },
         "something": {
-            "enum":[ "noYouActuallyHaveOnly1Status"],
+            "enum": ["noYouActuallyHaveOnly1Status"],
             "forms": [{
                 "href": "https://mylamp.example.com/status"
             }]
         }
     },
-    "actions":{
+    "actions": {
         "doSomething": {
-            "input":{
+            "input": {
                 "const": "noYouActuallyHaveOnly1Status"
             },
             "output": {
-                "oneOf": [{"type":"string"},{"type":"integer","unit":"m3"}]
+                "oneOf": [{
+                    "type": "string"
+                }, {
+                    "type": "integer",
+                    "unit": "m3"
+                }]
             },
             "forms": [{
                 "href": "https://mylamp.example.com/status"

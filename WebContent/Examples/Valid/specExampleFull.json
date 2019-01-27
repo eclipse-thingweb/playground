@@ -1,10 +1,11 @@
 {
-    "id": "urn:dev:wot:com:example:servient:lamp",
+    "id": "urn:specExampleFull",
     "description": "TD showing how each interaction can be fully annotated with the default values",
     "name": "MyLampThing",
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",
+            "description":"You can actually describe this scheme more!",
             "in": "header"
         }
     },
