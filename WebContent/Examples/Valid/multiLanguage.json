@@ -36,6 +36,13 @@
         "fade": {
             "title": "Fade in/out",
             "description": "Smooth fade in and out animation.",
+            "descriptions": {
+                "en": "Smooth fade in and out animation.",
+                "de": "In DE: Smooth fade in and out animation.",
+                "ja": "In JA: Smooth fade in and out animation.",
+                "zh-Hans": "人们可阅读的信息",
+                "zh-Hant": "人們可閱讀的資訊"
+            },
             "input": {
                 "type": "object",
                 "properties": {

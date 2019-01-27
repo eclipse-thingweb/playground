@@ -32,6 +32,8 @@ This is a node.js based tool
 
 111 out of 122 assertions of the TD specification can be tested with this tool.
 
+**WARNING:** There are some issues with parent assertion results. Even though the children are all `pass` the parent shows `not-impl`
+
 This tool checks which assertions are satisfied by a given Thing Description(s). The assertions are modeled as JSON Schema. This means that there are only JSON Schema testable assertions are checked. 'AssertionTester/Assertions' has these assertions. To use it from the root directory of the repository:
 
 * For single TD: Run 'node ./AssertionTester/assertionTester.js an_example_TD_location'. E.g. 'node ./AssertionTester/assertionTester.js WebContent/Examples/Valid/JsonLdThing.json' 
