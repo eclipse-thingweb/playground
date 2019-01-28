@@ -700,7 +700,9 @@
                     "type": "number"
                 },
                 "properties": {
-                    "$ref": "#/definitions/dataSchema"
+                    "additionalProperties": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
                 },
                 "required": {
                     "type": "array",
