@@ -11,7 +11,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "testTD": "node assertionTester.js",
+    "testImplementation": "node assertionTester.js"
   },
   "repository": {
     "type": "git",

@@ -36,8 +36,10 @@ This is a node.js based tool
 
 This tool checks which assertions are satisfied by a given Thing Description(s). The assertions are modeled as JSON Schema. This means that there are only JSON Schema testable assertions are checked. 'AssertionTester/Assertions' has these assertions. To use it from the root directory of the repository:
 
-* For single TD: Run 'node ./AssertionTester/assertionTester.js an_example_TD_location'. E.g. 'node ./AssertionTester/assertionTester.js WebContent/Examples/Valid/JsonLdThing.json' 
-* For a directory with TDs: Run 'node ./AssertionTester/assertionTester.js a_directory_location'. E.g. 'node ./AssertionTester/assertionTester.js WebContent/Examples/Valid/' 
+* Change to AssertionTester directory
+* Run npm install
+* For single TD: Run 'npm run-script testTD an_example_TD_location'. E.g. 'npm run-script testTD WebContent/Examples/Valid/JsonLdThing.json' 
+* For a directory with **only** TDs: Run 'npm run-script testImplementation a_directory_location'. E.g. 'npm run-script testImplementation WebContent/Examples/Valid/' 
 * The result(s) are found in the 'AssertionTester/Results' with a file per id of the tested TD(s)
   * There will be a .csv and a .json file. The .csv version has the format required by the implementation report and the .json version is provided for using the results in other tools, such as merging the results 
   * The result can be pass, fail or not-impl 
