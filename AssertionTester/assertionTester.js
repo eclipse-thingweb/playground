@@ -33,14 +33,15 @@ try {
     // check if it is a directory
     var dirLocation = secondArgument;
     var tdList = fs.readdirSync(dirLocation);
+    console.log("Validating an Implementation with Multiple TDs")
     tdList.forEach((curTD, index) => {
         // console.log(dirLocation + curTD)
-        console.log(tdList);
+        // console.log(tdList);
         validate(dirLocation + curTD);
     });
 } catch (error) {
     // not a directory so take the TD, hopefully
-    console.log("Not a Directory")
+    console.log("Validating a single TD")
     var storedTdAddress = secondArgument;
     validate(storedTdAddress);
 }
@@ -58,7 +59,12 @@ function validate(storedTdAddress) {
         throw err;
     }
 
-    doLeftOutChecks(tdJson);
+    var test = doLeftOutChecks(tdJson);
+    console.log("test result is ", test);
+    if (!test){
+        console.log("INVALID TD STOPPING")
+        return;
+    } else {
 
     var draftData = fs.readFileSync(draftLocation);
 
@@ -243,7 +249,8 @@ function validate(storedTdAddress) {
             console.log(csvResults);
             results = [];
 
-            fs.writeFile("./Results/result-" + tdJson.id + ".json", JSON.stringify(orderedResults), function (err) {
+            fs.writeFile("./Results/result-" + tdJson.id.replace(/:/g, "_")+ ".json", JSON.stringify(orderedResults),
+                    function (err) {
                 if (err) {
                     return console.log(err);
                 }
@@ -251,7 +258,7 @@ function validate(storedTdAddress) {
                 console.log("The result-" + tdJson.id + " json was saved!");
             });
 
-            fs.writeFile("./Results/result-" + tdJson.id + ".csv", csvResults, function (err) {
+            fs.writeFile("./Results/result-" + tdJson.id.replace(/:/g, "_") + ".csv", csvResults, function (err) {
                 if (err) {
                     return console.log(err);
                 }
@@ -261,7 +268,7 @@ function validate(storedTdAddress) {
         }
 
     });
-
+    }
 }
 
 function createParents(resultsJSON) {
@@ -335,7 +342,7 @@ function createParents(resultsJSON) {
 function doLeftOutChecks(td) {
 
     checkUniqueness(td);
-    checkVocabulary(td);
+    return checkVocabulary(td);
 }
 
 function checkVocabulary(tdJson) {
@@ -377,8 +384,10 @@ function checkVocabulary(tdJson) {
                 "Status": "pass"
             });
         });
+        return true;
 
     } else {
+        console.log("VALIDATION ERROR!!! : ", ajv.errorsText());
         results.push({
             "ID": "td-vocabulary",
             "Status": "fail",
@@ -390,6 +399,7 @@ function checkVocabulary(tdJson) {
                 "Status": "fail"
             });
         });
+        return false;
     }
 }
 
