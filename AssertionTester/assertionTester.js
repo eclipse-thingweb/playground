@@ -249,21 +249,22 @@ function validate(storedTdAddress) {
             console.log(csvResults);
             results = [];
 
-            fs.writeFile("./Results/result-" + tdJson.id.replace(/:/g, "_")+ ".json", JSON.stringify(orderedResults),
+            var fileName = tdJson.id.replace(/:/g, "_");
+            fs.writeFile("./Results/result-" + fileName + ".json", JSON.stringify(orderedResults),
                     function (err) {
                 if (err) {
                     return console.log(err);
                 }
 
-                console.log("The result-" + tdJson.id + " json was saved!");
+                console.log("The result-" + fileName + " json was saved!");
             });
 
-            fs.writeFile("./Results/result-" + tdJson.id.replace(/:/g, "_") + ".csv", csvResults, function (err) {
+            fs.writeFile("./Results/result-" + fileName + ".csv", csvResults, function (err) {
                 if (err) {
                     return console.log(err);
                 }
 
-                console.log("The result-" + tdJson.id + "csv was saved!");
+                console.log("The result-" + fileName + "csv was saved!");
             });
         }
 

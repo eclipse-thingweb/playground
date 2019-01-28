@@ -5,6 +5,7 @@
   "main": "playground.js",
   "dependencies": {
     "ajv": "^6.5.4",
+    "csvtojson": "^2.0.8",
     "json2csv": "^4.3.1",
     "jsonld": "^1.1.0"
   },
