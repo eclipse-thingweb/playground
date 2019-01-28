@@ -10,7 +10,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "testTD": "node assertionTester.js"
+    "testTD": "node assertionTester.js",
+    "testImplementation": "node assertionTester.js"
   },
   "repository": {
     "type": "git",
