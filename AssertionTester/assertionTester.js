@@ -4,7 +4,7 @@ const Json2csvParser = require('json2csv').Parser;
 
 var secondArgument;
 
-const draftLocation = "./AssertionTester/json-schema-draft-06.json";
+const draftLocation = "./json-schema-draft-06.json";
 
 const fields = ['ID', 'Status', 'additionalInfo'];
 const json2csvParser = new Json2csvParser({
@@ -12,8 +12,7 @@ const json2csvParser = new Json2csvParser({
 });
 var results = [];
 
-const nonImplementedAssertions = ["td-event-response-arrays", "td-form-protocolbindings", "td-security-binding", "td-security-no-extras", "td-data-schema-objects", "td-media-type", "td-readOnly-observable-writeOnly-default", "td-readOnly-observable-default", "td-content-type-default", "client-data-schema", "client-uri-template"];
-
+const nonImplementedAssertions = ["td-form-protocolbindings", "td-security-binding", "td-security-no-extras", "td-data-schema-objects", "td-media-type", "td-readOnly-observable-writeOnly-default", "td-readOnly-observable-default", "td-content-type-default", "client-data-schema", "client-uri-template","server-data-schema","server-data-schema-extras","client-data-schema-accept-extras","client-data-schema-no-extras","server-uri-template"];
 // Takes the second argument as the TD to validate
 
 if (process.argv[2]) {
@@ -68,11 +67,11 @@ function validate(storedTdAddress) {
 
     // Iterating through assertions
 
-    var assertions = fs.readdirSync("./AssertionTester/Assertions/");
+    var assertions = fs.readdirSync("./Assertions/");
 
     assertions.forEach((curAssertion, index) => {
 
-        var schemaLocation = "./AssertionTester/Assertions/" + curAssertion;
+        var schemaLocation = "./Assertions/" + curAssertion;
 
         var schemaData = fs.readFileSync(schemaLocation);
 
@@ -244,7 +243,7 @@ function validate(storedTdAddress) {
             console.log(csvResults);
             results = [];
 
-            fs.writeFile("./AssertionTester/Results/result-" + tdJson.id + ".json", JSON.stringify(orderedResults), function (err) {
+            fs.writeFile("./Results/result-" + tdJson.id + ".json", JSON.stringify(orderedResults), function (err) {
                 if (err) {
                     return console.log(err);
                 }
@@ -252,7 +251,7 @@ function validate(storedTdAddress) {
                 console.log("The result-" + tdJson.id + " json was saved!");
             });
 
-            fs.writeFile("./AssertionTester/Results/result-" + tdJson.id + ".csv", csvResults, function (err) {
+            fs.writeFile("./Results/result-" + tdJson.id + ".csv", csvResults, function (err) {
                 if (err) {
                     return console.log(err);
                 }
@@ -353,7 +352,7 @@ function checkVocabulary(tdJson) {
     // console.log("Taking Schema Draft found at ", draftLocation);
     var draft = JSON.parse(draftData);
 
-    var schemaData = fs.readFileSync("./WebContent/td-schema.json");
+    var schemaData = fs.readFileSync("../WebContent/td-schema.json");
 
     // console.log("Taking td-schema")
 
