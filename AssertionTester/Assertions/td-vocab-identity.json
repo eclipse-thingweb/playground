@@ -95,8 +95,7 @@
         },
         "url": {
             "type": "string",
-            "format": "uri",
-            "pattern": "(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(([^#]*))?(#(.*))?"
+            "format": "uri-reference"
         }
     }
 }
