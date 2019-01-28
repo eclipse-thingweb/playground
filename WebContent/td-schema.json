@@ -1025,7 +1025,7 @@
         },
         "url": {
             "type": "string",
-            "format": "uri",
+            "format": "uri-reference",
             "pattern": "(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(([^#]*))?(#(.*))?"
         }
     }
