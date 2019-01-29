@@ -90,9 +90,13 @@ function merge_results(results, done_callback) {
                 if ("fail" === st || "fail" === current_st) {
                     // failure dominates anything else
                     merged_results.set(id, ["fail", get_comment(st, current_st, "fail", cm, current_cm)]);
+
                 } else if ("pass" === st || "pass" === current_st) {
-                    // pass dominates not-impl
+                    // pass dominates null, since someone could have tested it somewhere
                     merged_results.set(id, ["pass", get_comment(st, current_st, "pass", cm, current_cm)]);
+                } else if (("null" === st || "null" === current_st)) {
+                    // null dominates not impl
+                    merged_results.set(id, ["null", get_comment(st, current_st, "null", cm, current_cm)]);
                 } else {
                     // both must be not-impl, but may need to update comments
                     merged_results.set(id, ["not-impl", get_comment(st, current_st, "not-impl", cm, current_cm)]);
