@@ -1,0 +1,27 @@
+{
+    "title": "td-action-names_titles",
+    "description": "Each optional vocabulary term as defined in the class Action and its superclass InteractionPattern MUST be serialized as a JSON name within an Action object.",
+    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "is-complex":false,
+    "type": "object",
+    "properties": {
+        "actions": {
+            "additionalProperties": {
+                "$ref": "#/definitions/action_element"
+            }
+        }
+    },
+    "required": [
+        "actions"
+    ],
+    "additionalProperties": true,
+    "definitions": {
+        "action_element": {
+            "type": "object",
+            "required": [
+                "titles"
+            ],
+            "additionalProperties": true
+        }
+    }
+}
