@@ -49,7 +49,7 @@ This tool checks which assertions are satisfied by a given Thing Description(s).
   * `npm run-script merge ./Results/result-urn:another.csv ./Results/result-urn:dev:wot:com:example:servient:lamp.csv`
   * You can put as many TDs as you want after `npm run-script merge`
 
-**WARNING**: There is a problem with relative URIs at the moment
+**WARNING**: If you see an error like `ajv.errors[0].params.allowedValue` this very probably means that your TD is not valid at a specific point. Scroll up to see the precise error message
 
 ### Contributing
 

@@ -12,7 +12,7 @@ const json2csvParser = new Json2csvParser({
 });
 var results = [];
 
-const nonImplementedAssertions = ["td-form-protocolbindings", "td-security-binding", "td-security-no-extras", "td-data-schema-objects", "td-media-type", "td-readOnly-observable-writeOnly-default", "td-readOnly-observable-default", "td-content-type-default", "client-data-schema", "client-uri-template","server-data-schema","server-data-schema-extras","client-data-schema-accept-extras","client-data-schema-no-extras","server-uri-template"];
+const nonImplementedAssertions = ["td-form-protocolbindings", "td-security-binding", "td-security-no-extras", "td-data-schema-objects", "td-media-type", "td-readOnly-observable-writeOnly-default", "td-readOnly-observable-default", "td-content-type-default", "client-data-schema", "client-uri-template", "server-data-schema", "server-data-schema-extras", "client-data-schema-accept-extras", "client-data-schema-no-extras", "server-uri-template","td-property-names_type","td-property-names_properties","td-property-names_items","td-property-names_oneOf","td-property-names_required","td-property-names_readOnly","td-property-names_writeOnly","td-property-names_minItems","td-property-names_maxItems","td-property-names_enum","td-property-names_minimum1","td-property-names_maximum1","td-property-names_minimum2","td-property-names_maximum2","td-property-names_const","td-property-names_unit","td-property-names_description","td-property-names_descriptions","td-property-names_title","td-property-names_titles","td-property-names_uriVariables","td-action-names_description","td-action-names_descriptions","td-action-names_title","td-action-names_titles","td-action-names_uriVariables","td-event-names_description","td-event-names_descriptions","td-event-names_title","td-event-names_titles","td-event-names_uriVariables"];
 // Takes the second argument as the TD to validate
 
 if (process.argv[2]) {
@@ -61,214 +61,235 @@ function validate(storedTdAddress) {
 
     var test = doLeftOutChecks(tdJson);
     console.log("test result is ", test);
-    if (!test){
-        console.log("INVALID TD STOPPING")
+    if (!test) {
+        console.log("INVALID TD STOPPING");
+        results = [];
         return;
     } else {
 
-    var draftData = fs.readFileSync(draftLocation);
+        var draftData = fs.readFileSync(draftLocation);
 
-    // console.log("Taking Schema Draft found at ", draftLocation);
-    var draft = JSON.parse(draftData);
+        // console.log("Taking Schema Draft found at ", draftLocation);
+        var draft = JSON.parse(draftData);
 
-    // Iterating through assertions
+        // Iterating through assertions
 
-    var assertions = fs.readdirSync("./Assertions/");
+        var assertions = fs.readdirSync("./Assertions/");
 
-    assertions.forEach((curAssertion, index) => {
+        assertions.forEach((curAssertion, index) => {
 
-        var schemaLocation = "./Assertions/" + curAssertion;
+            var schemaLocation = "./Assertions/" + curAssertion;
 
-        var schemaData = fs.readFileSync(schemaLocation);
+            var schemaData = fs.readFileSync(schemaLocation);
 
-        console.log("Taking Assertion Schema found at ", schemaLocation);
-        var schema = JSON.parse(schemaData);
+            console.log("Taking Assertion Schema found at ", schemaLocation);
+            var schema = JSON.parse(schemaData);
 
-        // Validation starts here
+            // Validation starts here
 
-        const avj_options = {
-            "$comment": function (v) {
-                console.log("\n!!!! COMMENT", v)
-            },
-            "allErrors": true
-        };
-        var ajv = new Ajv(avj_options);
-        ajv.addMetaSchema(draft);
-        ajv.addSchema(schema, 'td');
+            const avj_options = {
+                "$comment": function (v) {
+                    console.log("\n!!!! COMMENT", v)
+                },
+                "allErrors": true
+            };
+            var ajv = new Ajv(avj_options);
+            ajv.addMetaSchema(draft);
+            ajv.addSchema(schema, 'td');
 
 
-        var valid = ajv.validate('td', tdJson);
+            var valid = ajv.validate('td', tdJson);
 
-        /*
-            If valid then it is not implemented
-            if error says not-impl then it is not implemented
-            If somehow error says fail then it is failed
+            /*
+                If valid then it is not implemented
+                if error says not-impl then it is not implemented
+                If somehow error says fail then it is failed
 
-            Output is structured as follows:
-            [main assertion]:[sub assertion if exists]=[result]
-        */
-        if (schema["is-complex"]) {
-            if (valid) {
-                // console.log('Assertion ' + schema.title + ' not implemented');
-                results.push({
-                    "ID": schema.title,
-                    "Status": "not-impl"
-                });
-                if (schema.hasOwnProperty("also")) {
-                    var otherAssertions = schema.also;
-                    otherAssertions.forEach(function (asser) {
-                        results.push({
-                            "ID": asser,
-                            "Status": "not-impl"
-                        });
-                    });
-                }
-
-            } else {
-                console.log(ajv.errors);
-                var output = ajv.errors[0].params.allowedValue;
-
-                var resultStart = output.indexOf("=");
-                var result = output.slice(resultStart + 1);
-                
-                if (result == "pass") {
-                    results.push({
-                        "ID": schema.title,
-                        "Status": result
-                    });
-                } else {
-                    results.push({
-                        "ID": schema.title,
-                        "Status": result,
-                        "additionalInfo": ajv.errorsText()
-                    });
-                }
-                if (schema.hasOwnProperty("also")) {
-                    var otherAssertions = schema.also;
-                    otherAssertions.forEach(function (asser) {
-                        results.push({
-                            "ID": asser,
-                            "Status": result
-                        });
-                    });
-                }
-            }
-
-        } else {
-            if (valid) {
-                // console.log('Assertion ' + schema.title + ' implemented');
-                results.push({
-                    "ID": schema.title,
-                    "Status": "pass"
-                });
-                if (schema.hasOwnProperty("also")) {
-                    var otherAssertions = schema.also;
-                    otherAssertions.forEach(function (asser) {
-                        results.push({
-                            "ID": asser,
-                            "Status": "pass"
-                        });
-                    });
-                }
-            } else {
-                // failed because a required is not implemented
-                // console.log('> ' + ajv.errorsText());
-                if (ajv.errorsText().indexOf("required") > -1) {
-                    //failed because it doesnt have required key which is a non implemented feature
+                Output is structured as follows:
+                [main assertion]:[sub assertion if exists]=[result]
+            */
+            if (schema["is-complex"]) {
+                if (valid) {
                     // console.log('Assertion ' + schema.title + ' not implemented');
                     results.push({
                         "ID": schema.title,
-                        "Status": "not-impl",
-                        "additionalInfo": ajv.errorsText()
+                        "Status": "not-impl"
                     });
                     if (schema.hasOwnProperty("also")) {
                         var otherAssertions = schema.also;
                         otherAssertions.forEach(function (asser) {
                             results.push({
                                 "ID": asser,
-                                "Status": "not-impl",
+                                "Status": "not-impl"
+                            });
+                        });
+                    }
+
+                } else {
+                    console.log(ajv.errors);
+                    try {
+                        var output = ajv.errors[0].params.allowedValue;
+
+                        var resultStart = output.indexOf("=");
+                        var result = output.slice(resultStart + 1);
+
+                        if (result == "pass") {
+                            results.push({
+                                "ID": schema.title,
+                                "Status": result
+                            });
+                        } else {
+                            results.push({
+                                "ID": schema.title,
+                                "Status": result,
                                 "additionalInfo": ajv.errorsText()
+                            });
+                        }
+                        if (schema.hasOwnProperty("also")) {
+                            var otherAssertions = schema.also;
+                            otherAssertions.forEach(function (asser) {
+                                results.push({
+                                    "ID": asser,
+                                    "Status": result
+                                });
+                            });
+                        }
+                        //there was some other error, so it is fail
+                    } catch (error1) {
+                        results.push({
+                            "ID": schema.title,
+                            "Status": "fail",
+                            "additionalInfo": "Make sure you validate your TD before"
+                        });
+
+                        if (schema.hasOwnProperty("also")) {
+                            var otherAssertions = schema.also;
+                            otherAssertions.forEach(function (asser) {
+                                results.push({
+                                    "ID": asser,
+                                    "Status": "fail",
+                                    "additionalInfo": "Make sure you validate your TD before"
+                                });
+                            });
+                        }
+                    }
+                }
+
+            } else {
+                if (valid) {
+                    // console.log('Assertion ' + schema.title + ' implemented');
+                    results.push({
+                        "ID": schema.title,
+                        "Status": "pass"
+                    });
+                    if (schema.hasOwnProperty("also")) {
+                        var otherAssertions = schema.also;
+                        otherAssertions.forEach(function (asser) {
+                            results.push({
+                                "ID": asser,
+                                "Status": "pass"
                             });
                         });
                     }
                 } else {
-                    //failed because of some other reason
-                    // console.log('Assertion ' + schema.title + ' failed');
-                    results.push({
-                        "ID": schema.title,
-                        "Status": "fail",
-                        "additionalInfo": ajv.errorsText()
-                    });
-                    if (schema.hasOwnProperty("also")) {
-                        var otherAssertions = schema.also;
-                        otherAssertions.forEach(function (asser) {
-                            results.push({
-                                "ID": asser,
-                                "Status": "fail",
-                                "additionalInfo": ajv.errorsText()
-                            });
+                    // failed because a required is not implemented
+                    // console.log('> ' + ajv.errorsText());
+                    if (ajv.errorsText().indexOf("required") > -1) {
+                        //failed because it doesnt have required key which is a non implemented feature
+                        // console.log('Assertion ' + schema.title + ' not implemented');
+                        results.push({
+                            "ID": schema.title,
+                            "Status": "not-impl",
+                            "additionalInfo": ajv.errorsText()
                         });
+                        if (schema.hasOwnProperty("also")) {
+                            var otherAssertions = schema.also;
+                            otherAssertions.forEach(function (asser) {
+                                results.push({
+                                    "ID": asser,
+                                    "Status": "not-impl",
+                                    "additionalInfo": ajv.errorsText()
+                                });
+                            });
+                        }
+                    } else {
+                        //failed because of some other reason
+                        // console.log('Assertion ' + schema.title + ' failed');
+                        results.push({
+                            "ID": schema.title,
+                            "Status": "fail",
+                            "additionalInfo": ajv.errorsText()
+                        });
+                        if (schema.hasOwnProperty("also")) {
+                            var otherAssertions = schema.also;
+                            otherAssertions.forEach(function (asser) {
+                                results.push({
+                                    "ID": asser,
+                                    "Status": "fail",
+                                    "additionalInfo": ajv.errorsText()
+                                });
+                            });
+                        }
                     }
                 }
             }
-        }
 
 
-        // If reached the end
-        if (index == assertions.length - 1) {
-            // create parent assertions
-            createParents(results);
-            //sort the results
+            // If reached the end
+            if (index == assertions.length - 1) {
+                // create parent assertions
+                createParents(results);
+                //sort the results
 
-            // Push the non implemented assertions
-            nonImplementedAssertions.forEach((curNonImpl)=>{
-                results.push({
-                    "ID": curNonImpl,
-                    "Status": "null",
-                    "additionalInfo": "not testable with Assertion Tester"
+                // Push the non implemented assertions
+                nonImplementedAssertions.forEach((curNonImpl) => {
+                    results.push({
+                        "ID": curNonImpl,
+                        "Status": "null",
+                        "additionalInfo": "not testable with Assertion Tester"
+                    });
                 });
-            });
 
-            // sort according to the ID in each item
-            orderedResults = results.sort(function (a, b) {
-                var idA = a.ID;
-                var idB = b.ID;
-                if (idA < idB) {
-                    return -1;
-                }
-                if (idA > idB) {
-                    return 1;
-                }
+                // sort according to the ID in each item
+                orderedResults = results.sort(function (a, b) {
+                    var idA = a.ID;
+                    var idB = b.ID;
+                    if (idA < idB) {
+                        return -1;
+                    }
+                    if (idA > idB) {
+                        return 1;
+                    }
 
-                // if ids are equal
-                return 0;
-            });
+                    // if ids are equal
+                    return 0;
+                });
 
-            var csvResults = json2csvParser.parse(orderedResults);
+                var csvResults = json2csvParser.parse(orderedResults);
 
-            console.log(csvResults);
-            results = [];
+                console.log(csvResults);
+                results = [];
 
-            var fileName = tdJson.id.replace(/:/g, "_");
-            fs.writeFile("./Results/result-" + fileName + ".json", JSON.stringify(orderedResults),
+                var fileName = tdJson.id.replace(/:/g, "_");
+                fs.writeFile("./Results/result-" + fileName + ".json", JSON.stringify(orderedResults),
                     function (err) {
-                if (err) {
-                    return console.log(err);
-                }
+                        if (err) {
+                            return console.log(err);
+                        }
 
-                console.log("The result-" + fileName + " json was saved!");
-            });
+                        console.log("The result-" + fileName + " json was saved!");
+                    });
 
-            fs.writeFile("./Results/result-" + fileName + ".csv", csvResults, function (err) {
-                if (err) {
-                    return console.log(err);
-                }
+                fs.writeFile("./Results/result-" + fileName + ".csv", csvResults, function (err) {
+                    if (err) {
+                        return console.log(err);
+                    }
 
-                console.log("The result-" + fileName + "csv was saved!");
-            });
-        }
+                    console.log("The result-" + fileName + "csv was saved!");
+                });
+            }
 
-    });
+        });
     }
 }
 

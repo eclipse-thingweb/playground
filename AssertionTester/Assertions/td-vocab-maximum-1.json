@@ -3,7 +3,7 @@
     "description": "maximum: Specifies a maximum numeric value. Only applicable for associated number or integer types. MAY be included. Type: double.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
-    "also": ["td-data-schema_maximum1", "td-property-names_maximum1"],
+    "also": ["td-data-schema_maximum1"],
     "type": "object",
     "properties": {
         "properties": {

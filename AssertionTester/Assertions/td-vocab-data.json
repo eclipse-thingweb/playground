@@ -3,6 +3,7 @@
     "description": "data: Defines the data schema of the Event instance messages pushed by the Thing.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex":false,
+    "also": ["td-event-names_data", "td-event-objects_data"],
     "type": "object",
     "properties": {
         "events": {
