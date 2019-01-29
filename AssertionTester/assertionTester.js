@@ -78,6 +78,7 @@ function validate(storedTdAddress, outputLocation) {
     console.log("test result is ", test);
     if (!test) {
         console.log("INVALID TD STOPPING");
+        toOutput(tdJson.id);
         results = [];
         return;
     } else {
@@ -253,73 +254,78 @@ function validate(storedTdAddress, outputLocation) {
             // If reached the end
             if (index == assertions.length - 1) {
                 // create parent assertions
-                createParents(results);
-                //sort the results
-
-                // Push the non implemented assertions
-                nonImplementedAssertions.forEach((curNonImpl) => {
-                    results.push({
-                        "ID": curNonImpl,
-                        "Status": "null",
-                        "additionalInfo": "not testable with Assertion Tester"
-                    });
-                });
-
-                // sort according to the ID in each item
-                orderedResults = results.sort(function (a, b) {
-                    var idA = a.ID;
-                    var idB = b.ID;
-                    if (idA < idB) {
-                        return -1;
-                    }
-                    if (idA > idB) {
-                        return 1;
-                    }
-
-                    // if ids are equal
-                    return 0;
-                });
-
-                var csvResults = json2csvParser.parse(orderedResults);
-                results = [];
-                
-                //if output is specified output there
-                if (outputLocation) {
-                    
-                    fs.writeFile(outputLocation, csvResults, function (err) {
-                        if (err) {
-                            return console.log(err);
-                        }
-
-                        console.log("The csv was saved!");
-                    });
-
-                } else {
-                    //otherwise to console and save to default directories
-                    console.log(csvResults);
-                
-                    var fileName = tdJson.id.replace(/:/g, "_");
-                    fs.writeFile("./Results/result-" + fileName + ".json", JSON.stringify(orderedResults),
-                        function (err) {
-                            if (err) {
-                                return console.log(err);
-                            }
-
-                            console.log("The result-" + fileName + " json was saved!");
-                        });
-
-                    fs.writeFile("./Results/result-" + fileName + ".csv", csvResults, function (err) {
-                        if (err) {
-                            return console.log(err);
-                        }
-
-                        console.log("The result-" + fileName + "csv was saved!");
-                    });
-                }
+                toOutput(tdJson.id);
             }
 
         });
     }
+}
+
+function toOutput(tdId){
+       createParents(results);
+       //sort the results
+
+       // Push the non implemented assertions
+       nonImplementedAssertions.forEach((curNonImpl) => {
+           results.push({
+               "ID": curNonImpl,
+               "Status": "null",
+               "additionalInfo": "not testable with Assertion Tester"
+           });
+       });
+
+       // sort according to the ID in each item
+       orderedResults = results.sort(function (a, b) {
+           var idA = a.ID;
+           var idB = b.ID;
+           if (idA < idB) {
+               return -1;
+           }
+           if (idA > idB) {
+               return 1;
+           }
+
+           // if ids are equal
+           return 0;
+       });
+
+       var csvResults = json2csvParser.parse(orderedResults);
+       results = [];
+
+       //if output is specified output there
+       if (outputLocation) {
+
+           fs.writeFile(outputLocation, csvResults, function (err) {
+               if (err) {
+                   return console.log(err);
+               }
+
+               console.log("The csv was saved!");
+           });
+
+       } else {
+           //otherwise to console and save to default directories
+           console.log(csvResults);
+
+           var fileName = tdId.replace(/:/g, "_");
+           fs.writeFile("./Results/result-" + fileName + ".json", JSON.stringify(orderedResults),
+               function (err) {
+                   if (err) {
+                       return console.log(err);
+                   }
+
+                   console.log("The result-" + fileName + " json was saved!");
+               });
+
+           fs.writeFile("./Results/result-" + fileName + ".csv", csvResults, function (err) {
+               if (err) {
+                   return console.log(err);
+               }
+
+               console.log("The result-" + fileName + "csv was saved!");
+           });
+       }
+
 }
 
 function createParents(resultsJSON) {
