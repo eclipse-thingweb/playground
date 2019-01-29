@@ -18,7 +18,7 @@ const nonImplementedAssertions = ["td-form-protocolbindings", "td-security-bindi
 if (process.argv[2]) {
     //console.log("there is second arg");
     if (typeof process.argv[2] === "string") {
-        console.log("Taking argument ", process.argv[2]);
+        console.log("Taking input ", process.argv[2]);
         secondArgument = process.argv[2];
     } else {
         console.error("Second argument should be string");
@@ -29,24 +29,39 @@ if (process.argv[2]) {
     throw "Argument error";
 }
 
-try {
-    // check if it is a directory
-    var dirLocation = secondArgument;
-    var tdList = fs.readdirSync(dirLocation);
-    console.log("Validating an Implementation with Multiple TDs")
-    tdList.forEach((curTD, index) => {
-        // console.log(dirLocation + curTD)
-        // console.log(tdList);
-        validate(dirLocation + curTD);
-    });
-} catch (error) {
-    // not a directory so take the TD, hopefully
-    console.log("Validating a single TD")
-    var storedTdAddress = secondArgument;
-    validate(storedTdAddress);
+if (process.argv[3]) {
+    //console.log("there is second arg");
+    if (typeof process.argv[3] === "string") {
+        console.log("Taking output ", process.argv[3]);
+        var outputLocation = process.argv[3];
+        console.log("Validating a single TD and outputting result to ", outputLocation)
+        var storedTdAddress = secondArgument;
+        validate(storedTdAddress, outputLocation);
+    } else {
+        console.error("Second argument should be string");
+        throw "Argument error";
+    }
+} else {
+
+    try {
+        // check if it is a directory
+        var dirLocation = secondArgument;
+        var tdList = fs.readdirSync(dirLocation);
+        console.log("Validating an Implementation with Multiple TDs")
+        tdList.forEach((curTD) => {
+            // console.log(dirLocation + curTD)
+            // console.log(tdList);
+            validate(dirLocation + curTD);
+        });
+    } catch (error) {
+        // not a directory so take the TD, hopefully
+        console.log("Validating a single TD")
+        var storedTdAddress = secondArgument;
+        validate(storedTdAddress);
+    }
 }
 
-function validate(storedTdAddress) {
+function validate(storedTdAddress, outputLocation) {
     console.log("=================================================================")
     console.log("Taking TD found at ", storedTdAddress, " for validation");
     var tdData = fs.readFileSync(storedTdAddress);
@@ -266,27 +281,41 @@ function validate(storedTdAddress) {
                 });
 
                 var csvResults = json2csvParser.parse(orderedResults);
-
-                console.log(csvResults);
                 results = [];
-
-                var fileName = tdJson.id.replace(/:/g, "_");
-                fs.writeFile("./Results/result-" + fileName + ".json", JSON.stringify(orderedResults),
-                    function (err) {
+                
+                //if output is specified output there
+                if (outputLocation) {
+                    
+                    fs.writeFile(outputLocation, csvResults, function (err) {
                         if (err) {
                             return console.log(err);
                         }
 
-                        console.log("The result-" + fileName + " json was saved!");
+                        console.log("The csv was saved!");
                     });
 
-                fs.writeFile("./Results/result-" + fileName + ".csv", csvResults, function (err) {
-                    if (err) {
-                        return console.log(err);
-                    }
+                } else {
+                    //otherwise to console and save to default directories
+                    console.log(csvResults);
+                
+                    var fileName = tdJson.id.replace(/:/g, "_");
+                    fs.writeFile("./Results/result-" + fileName + ".json", JSON.stringify(orderedResults),
+                        function (err) {
+                            if (err) {
+                                return console.log(err);
+                            }
 
-                    console.log("The result-" + fileName + "csv was saved!");
-                });
+                            console.log("The result-" + fileName + " json was saved!");
+                        });
+
+                    fs.writeFile("./Results/result-" + fileName + ".csv", csvResults, function (err) {
+                        if (err) {
+                            return console.log(err);
+                        }
+
+                        console.log("The result-" + fileName + "csv was saved!");
+                    });
+                }
             }
 
         });
