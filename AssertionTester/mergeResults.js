@@ -31,6 +31,7 @@
 const csvtojson = require('csvtojson'); // V2
 const fs = require('fs');
 const Json2csvParser = require('json2csv').Parser;
+const path = require('path')
 
 // Parameters
 const debug_v = false;
@@ -126,7 +127,7 @@ function get_comment(
 function output_results(merged_results) {
     process.stdout.write('"ID","Status","Comment"\n');
     merged_results.forEach((data, id) => {
-        
+
         process.stdout.write('"' + id + '","' + data[0] + '",\n');
         // console.log("id is ",id," data is", data[0])
         json_results.push({
@@ -136,7 +137,9 @@ function output_results(merged_results) {
     });
 }
 
-if (process.argv.length > 2) {
+//if there is more than one argument, they are multiple results, if there is only one it is a directory
+
+if (process.argv.length > 3) {
     let files = process.argv.slice(2);
     get_results(files, [], function (input_results) {
         if (debug_v) console.warn("input results:\n", input_results);
@@ -153,9 +156,51 @@ if (process.argv.length > 2) {
                 console.log("The merged result csv was saved!");
                 process.exit(0);
             });
-            
+
         });
     });
+} else if (process.argv.length == 3) {
+    var loc = process.argv[2];
+
+    //filtering function, will return only csv files
+    const isCsv = fileName => {
+        if (fileName.indexOf(".csv") > 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // checking whether it is a directory
+    try {
+        var files = fs.readdirSync(loc).map(fileName => {
+            return path.join(loc, fileName)
+        }).filter(isCsv);
+    } catch (error) {
+        console.log(loc, " is not a directory, either put a directory or multiple result files as arguments");
+        process.exit();
+    }
+
+    get_results(files, [], function (results) {
+        if (debug_v) console.warn("input results:\n", input_results);
+        merge_results(results, function (merged_results) {
+            if (debug_v) console.warn("merged results:\n", merged_results);
+            output_results(merged_results);
+            // Success
+            var csvResults = json2csvParser.parse(json_results);
+            fs.writeFile("./Results/mergedResults.csv", csvResults, function (err) {
+                if (err) {
+                    return console.log(err);
+                }
+
+                console.log("The merged result csv was saved!");
+                process.exit(0);
+            });
+
+        });
+        results.forEach((result, index) => {});
+    });
+
 } else {
     // Usage
     console.warn("Usage:", process.argv[0], process.argv[1], "file1.csv file2.csv ...");
