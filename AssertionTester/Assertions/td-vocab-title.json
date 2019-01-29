@@ -2,7 +2,7 @@
     "title": "td-vocab-title",
     "description": "title: Provides a human-readable title (e.g., display a text for UI representation) of the interaction pattern based on a default language. MAY be included. Type: string.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
-    "also": ["td-data-schema_title", "td-property-names_title"],
+    "also": ["td-data-schema_title"],
     "is-complex": true,
     "type": "object",
     "properties": {

@@ -3,6 +3,7 @@
     "description": "input: Used to define the input data schema of the action.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex":false,
+    "also": ["td-action-objects_input","td-action-names_output"],
     "type": "object",
     "properties": {
         "actions": {
@@ -99,7 +100,9 @@
                     "type": "number"
                 },
                 "properties": {
-                    "$ref": "#/definitions/dataSchema"
+                    "additionalProperties": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
                 },
                 "required": {
                     "type": "array",

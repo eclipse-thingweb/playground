@@ -700,7 +700,9 @@
                     "type": "number"
                 },
                 "properties": {
-                    "$ref": "#/definitions/dataSchema"
+                    "additionalProperties": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
                 },
                 "required": {
                     "type": "array",
@@ -1025,8 +1027,7 @@
         },
         "url": {
             "type": "string",
-            "format": "uri-reference",
-            "pattern": "(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(([^#]*))?(#(.*))?"
+            "format": "uri-reference"
         }
     }
 }

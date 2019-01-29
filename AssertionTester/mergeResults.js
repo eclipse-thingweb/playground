@@ -145,7 +145,7 @@ if (process.argv.length > 2) {
             output_results(merged_results);
             // Success
             var csvResults = json2csvParser.parse(json_results);
-            fs.writeFile("./AssertionTester/Results/mergedResults.csv", csvResults, function (err) {
+            fs.writeFile("./Results/mergedResults.csv", csvResults, function (err) {
                 if (err) {
                     return console.log(err);
                 }

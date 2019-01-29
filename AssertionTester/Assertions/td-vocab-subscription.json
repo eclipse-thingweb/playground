@@ -2,6 +2,7 @@
     "title": "td-vocab-subscription",
     "description": "subscription: Defines data that needs to be passed upon subscription, e.g., filters or message format for setting up Webhooks.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
+    "also": ["td-event-names_subscription", "td-event-objects_subscription"],
     "is-complex":false,
     "type": "object",
     "properties": {
@@ -99,7 +100,9 @@
                     "type": "number"
                 },
                 "properties": {
-                    "$ref": "#/definitions/dataSchema"
+                    "additionalProperties": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
                 },
                 "required": {
                     "type": "array",

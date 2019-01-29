@@ -46,10 +46,10 @@ This tool checks which assertions are satisfied by a given Thing Description(s).
   * Some assertions have an underscore, i.e. `_` before the last word. This means that this assertion is composed of sub assertions. For example, td-actions assertion required the existence of action interaction in the TD and also the uniqueness of the names of actions. Because of this, there will be two assertions generated in the results with following names: td-actions_existence and td-actions_uniqueness. 
   * If there is a child, there is always a parent assertion. Look above to find the parent assertion. If one child assertion is not implemented, the parent will be also marked as not implemented.
 * Merge the results if you have an implementation that produced multiple TDs. To do so, use the following command
-  * `node AssertionTester/mergeResults.js ./AssertionTester/Results/result-urn:another.csv ./AssertionTester/Results/result-urn:dev:wot:com:example:servient:lamp.csv`
-  * You can put as many TDs as you want after `AssertionTester/mergeResults.js`
+  * `npm run-script merge ./Results/result-urn:another.csv ./Results/result-urn:dev:wot:com:example:servient:lamp.csv`
+  * You can put as many TDs as you want after `npm run-script merge`
 
-**WARNING**: There is a problem with relative URIs at the moment
+**WARNING**: If you see an error like `ajv.errors[0].params.allowedValue` this very probably means that your TD is not valid at a specific point. Scroll up to see the precise error message
 
 ### Contributing
 
