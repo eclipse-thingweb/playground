@@ -13,7 +13,7 @@
   "scripts": {
     "testTD": "node assertionTester.js",
     "testImplementation": "node assertionTester.js",
-    "merge":"node mergeResults.js"
+    "merge": "node mergeResults.js"
   },
   "repository": {
     "type": "git",
