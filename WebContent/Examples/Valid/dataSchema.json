@@ -11,7 +11,9 @@
     "security": ["basic_sc"],
     "properties": {
         "status": {
-            
+            "type":"number",
+            "minimum":5,
+            "maximum":1212,
             "readOnly":false,
             "writeOnly": false,
             "forms": [{
