@@ -1,22 +1,23 @@
 {
-    "title": "td-property-arrays",
-    "description": "(In a property member value) The type of the members forms, required, enum, scopes, and security MUST be serialized as a JSON array.",
+    "title": "td-event-arrays_scopes",
+    "description": "The type of the members forms, scopes, and security MUST be serialized as a JSON array.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex":false,
+    "also": ["td-event-names_scopes"],
     "type": "object",
     "properties": {
-        "properties": {
+        "events": {
             "additionalProperties": {
-                "$ref": "#/definitions/property_element"
+                "$ref": "#/definitions/event_element"
             }
         }
     },
     "required": [
-        "properties"
+        "events"
     ],
     "additionalProperties": true,
     "definitions": {
-        "property_element": {
+        "event_element": {
             "type": "object",
             "properties": {
                 "scopes": {
@@ -24,16 +25,10 @@
                     "items": {
                         "type": "string"
                     }
-                },
-                "security": {
-                    "type": "array"
-                },
-                "forms": {
-                    "type": "array"
                 }
             },
             "required": [
-                "scopes", "security", "forms"
+                "scopes"
             ],
             "additionalProperties": true
         }
