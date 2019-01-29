@@ -129,16 +129,114 @@ function get_comment(
     return comment;
 }
 
+function createParents(resultsJSON,merged_results) {
+
+    //create a json object with parent name keys and then each of them an array of children results
+
+    var parentsJson = {};
+    resultsJSON.forEach((curResult, index) => {
+        var curId = curResult.ID;
+        var underScoreLoc = curId.indexOf('_');
+        if (underScoreLoc === -1) {
+            // this assertion is not a child assertion
+        } else {
+            var parentResultID = curId.slice(0, underScoreLoc);
+            // if it already exists push otherwise create an array and push
+            if (parentsJson.hasOwnProperty(parentResultID)) {
+                parentsJson[parentResultID].push(curResult);
+            } else {
+                parentsJson[parentResultID] = [];
+                parentsJson[parentResultID].push(curResult);
+            }
+            // console.log(parentsJson);
+        }
+    });
+
+    //Go through the object and push a result that is an OR of each children
+    // if one children is fail, result is fail
+    // if one children is not-impl, result is not-impl
+    // if none of these happen, then it implies it is pass, so result is pass
+    // "ID": schema.title,
+    // "Status": "not-impl" 
+
+    parentsJsonArray = Object.getOwnPropertyNames(parentsJson);
+    parentsJsonArray.forEach((curParentName, indexParent) => {
+
+        var curParent = parentsJson[curParentName];
+
+        for (let index = 0; index < curParent.length; index++) {
+            const curChild = curParent[index];
+            let current = merged_results.get(curParent);
+            if (curChild.Status == "fail") {
+                //push fail and break, i.e stop going through children, we are done here!
+                // json_results
+                
+                
+                merged_results.set(current, ["fail"]);
+                // results.push({
+                //     "ID": curParentName,
+                //     "Status": "fail",
+                //     "additionalInfo": "Error message can be seen in the children assertions"
+                // });
+                break;
+            } else if (curChild.Status == "not-impl") {
+                //push not-impl and break, i.e stop going through children, we are done here!
+                merged_results.set(current, ["not-impl"]);
+                // results.push({
+                //     "ID": curParentName,
+                //     "Status": "not-impl",
+                //     "additionalInfo": "Error message can be seen in the children assertions"
+                // });
+                break;
+            } else {
+                // if reached the end without break, push pass
+                if (index == curParent.length - 1) {
+                    merged_results.set(current, ["pass"]);
+                    // results.push({
+                    //     "ID": curParentName,
+                    //     "Status": "pass",
+                    // });
+                }
+            }
+        }
+    });
+
+}
+
 function output_results(merged_results) {
     process.stdout.write('"ID","Status","Comment"\n');
+    // console.log(merged_results);
+    // process.exit();
     merged_results.forEach((data, id) => {
 
         process.stdout.write('"' + id + '","' + data[0] + '",\n');
-        // console.log("id is ",id," data is", data[0])
+       
         json_results.push({
             "ID": id,
             "Status": data[0]
         });
+    });
+    // console.log(json_results);
+    // process.exit();
+    // var newRes=[];
+    // createParents(json_results,merge_results);
+    //     merged_results.forEach((data, id) => {
+
+    //         process.stdout.write('"' + id + '","' + data[0] + '",\n');
+    //         // console.log("id is ",id," data is", data[0])
+    //         newRes.push({
+    //             "ID": id,
+    //             "Status": data[0]
+    //         });
+    //     });
+    var csvResults = json2csvParser.parse(json_results);
+    fs.writeFile("./Results/mergedResults.csv", csvResults, function (err) {
+        if (err) {
+            return console.log(err);
+        }
+
+        console.log("The merged result csv was saved!");
+        process.exit(0);
     });
 }
 
@@ -152,16 +250,6 @@ if (process.argv.length > 3) {
             if (debug_v) console.warn("merged results:\n", merged_results);
             output_results(merged_results);
             // Success
-            var csvResults = json2csvParser.parse(json_results);
-            fs.writeFile("./Results/mergedResults.csv", csvResults, function (err) {
-                if (err) {
-                    return console.log(err);
-                }
-
-                console.log("The merged result csv was saved!");
-                process.exit(0);
-            });
-
         });
     });
 } else if (process.argv.length == 3) {
@@ -192,18 +280,8 @@ if (process.argv.length > 3) {
             if (debug_v) console.warn("merged results:\n", merged_results);
             output_results(merged_results);
             // Success
-            var csvResults = json2csvParser.parse(json_results);
-            fs.writeFile("./Results/mergedResults.csv", csvResults, function (err) {
-                if (err) {
-                    return console.log(err);
-                }
-
-                console.log("The merged result csv was saved!");
-                process.exit(0);
-            });
-
         });
-        results.forEach((result, index) => {});
+        
     });
 
 } else {
