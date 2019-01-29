@@ -94,7 +94,8 @@ function merge_results(results, done_callback) {
                 } else if ("pass" === st || "pass" === current_st) {
                     // pass dominates null, since someone could have tested it somewhere
                     merged_results.set(id, ["pass", get_comment(st, current_st, "pass", cm, current_cm)]);
-                } else if (("null" === st || "null" === current_st)) {
+                
+                } else if (("null" === st && "null" === current_st)) {
                     // null dominates not impl
                     merged_results.set(id, ["null", get_comment(st, current_st, "null", cm, current_cm)]);
                 } else {
