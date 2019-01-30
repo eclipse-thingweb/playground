@@ -13,19 +13,12 @@
             }
         }
     },
-    "required": [
-        "actions"
-    ],
     "additionalProperties": true,
     "definitions": {
         "action_element": {
             "type": "object",
             "if": {
-                "properties": {
-                    "output": {
-                        "$ref": "#/definitions/dataSchema"
-                    }
-                },
+
                 "required": [
                     "output"
                 ],

@@ -43,6 +43,13 @@
                     "href": "http://mytemp.example.com:5683/fade"
                 }
             ]
+        },
+        "fade2": {
+            "title": "Fade in/out",
+            "description": "Smooth fade in and out animation.",
+            "forms": [{
+                "href": "http://mytemp.example.com:5683/fade2"
+            }]
         }
     }
 }
