@@ -35,5 +35,17 @@
                 "scopes": ["limited"]
             }]
         }
-    }
+    },
+        "events": {
+            "eventScope": {
+                "scopes": ["special"],
+                "security": ["oauth2_sc"],
+                "forms": [{
+                    "href": "https://scopes.example.com/status",
+                    "contentType": "application/json",
+                    "scopes": ["special"],
+                    "subprotocol":"longpoll"
+                }]
+            }
+        }
 }

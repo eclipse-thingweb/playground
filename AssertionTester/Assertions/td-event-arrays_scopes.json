@@ -2,7 +2,7 @@
     "title": "td-event-arrays_scopes",
     "description": "The type of the members forms, scopes, and security MUST be serialized as a JSON array.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
-    "is-complex":false,
+    "is-complex":true,
     "also": ["td-event-names_scopes"],
     "type": "object",
     "properties": {
@@ -12,25 +12,18 @@
             }
         }
     },
-    "required": [
-        "events"
-    ],
     "additionalProperties": true,
     "definitions": {
         "event_element": {
             "type": "object",
-            "properties": {
-                "scopes": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                }
+            "if": {
+                "required": [
+                    "scopes"
+                ]
             },
-            "required": [
-                "scopes"
-            ],
-            "additionalProperties": true
+            "then": {
+                "const": "td-event-names_scopes=pass"
+            }
         }
     }
 }
