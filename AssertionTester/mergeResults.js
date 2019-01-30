@@ -131,29 +131,29 @@ function merge_results(results, done_callback) {
                 parentsJson[parentID].push(childResult);
             }
         }
-        
+        console.log
         parentsJsonArray = Object.getOwnPropertyNames(parentsJson);
         parentsJsonArray.forEach((curParentId, indexParent) => {
 
             var curParent = parentsJson[curParentId];
             
             for (let index = 0; index < curParent.length; index++) {
-                const curChild = curParent[index];
-                if (curChild.Status == "fail") {
+                const curChildStatus = curParent[index];
+                if (curChildStatus == "fail") {
                     //push fail and break, i.e stop going through children, we are done here!
                     merged_results.set(curParentId, ["fail", "a child is failed"]);
                     break;
-                } else if (curChild.Status == "not-impl") {
+                } else if (curChildStatus == "not-impl") {
                     //push not-impl and break, i.e stop going through children, we are done here!
                     merged_results.set(curParentId, ["not-impl", "a child is not implemented"]);
                     break;
-                } else if (curChild.Status == "null"){
+                } else if (curChildStatus == "null"){
                     merged_results.set(curParentId, ["null", "a child is not tested"]);
                     break;
                 } else {
                     // if reached the end without break, push pass
                     if (index == curParent.length - 1) {
-                        merged_results.set(curParentId, ["pass", "all childs passed"]);
+                        merged_results.set(curParentId, ["pass", "all children passed"]);
                     }
                 }
             }
