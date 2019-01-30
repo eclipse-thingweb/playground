@@ -35,3 +35,4 @@ AssertionTester/node_modules/**
 AssertionTester/Results/*.csv
 AssertionTester/Results/*.json
 AssertionTester/.~lock.implementationReport.ods#
+AssertionTester/Results/mergedResults.csv

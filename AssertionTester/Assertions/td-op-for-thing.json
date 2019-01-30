@@ -79,7 +79,7 @@
                 }
             },
             "required": [
-                "href"
+                "href","op"
             ],
             "additionalProperties": true
         },

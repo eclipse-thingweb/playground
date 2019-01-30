@@ -50,7 +50,9 @@ This tool checks which assertions are satisfied by a given Thing Description(s).
   1. Give multiple result files as arguments: `npm run-script merge ./Results/result-urn:another.csv ./Results/result-urn:dev:wot:com:example:servient:lamp.csv`
      * You can put as many TDs as you want after `npm run-script merge`
   2. Give a directory containing multiple result files `npm run-script merge ./Results/`
-   
+* You can clean the Results directory with `npm run-script clean` in Linux
+* You can check the coverage of a results.csv file with `npm run-script coverage results.csv` which will output a table to the std output
+  
 **WARNING**: If you see an error like `ajv.errors[0].params.allowedValue` this very probably means that your TD is not valid at a specific point. Scroll up to see the precise error message
 
 ### Contributing
