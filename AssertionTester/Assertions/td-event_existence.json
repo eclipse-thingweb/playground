@@ -3,6 +3,7 @@
     "description": "Events offered by a Thing MUST be collected in the JSON-object based events member with (unique) Event names as JSON names. (Checking if they exist)",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex":false,
+    "also":["td-vocab-events"],
     "type": "object",
     "properties": {
         "events": {
