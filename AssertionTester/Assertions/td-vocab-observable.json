@@ -2,7 +2,7 @@
     "title": "td-vocab-observable",
     "description": "observable: Indicates whether a remote servient can subscribe to (\"observe\") the Property, to receive change notifications or periodic updates (true/false).",
     "$schema ": "http://json-schema.org/draft-06/schema#",
-    "is-complex":false,
+    "is-complex": true,
     "also": ["td-property-names_observable"],
     "type": "object",
     "properties": {
@@ -13,22 +13,23 @@
             }
         }
     },
-    "required": [
-        "properties"
-    ],
     "additionalProperties": true,
     "definitions": {
         "property_element": {
             "type": "object",
-            "properties": {
-                "observable": {
-                    "type": "boolean"
+            "if": {
+                "required": [
+                    "titles"
+                ],
+                "properties": {
+                    "observable": {
+                        "type": "boolean"
+                    }
                 }
             },
-            "required": [
-                "observable"
-            ],
-            "additionalProperties": true
+            "then": {
+                "const": "td-property-names_titles=pass"
+            }
         }
     }
 }

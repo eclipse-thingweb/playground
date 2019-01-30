@@ -2,8 +2,8 @@
     "title": "td-vocab-input",
     "description": "input: Used to define the input data schema of the action.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
-    "is-complex":false,
-    "also": ["td-action-objects_input","td-action-names_output"],
+    "is-complex": true,
+    "also": ["td-action-objects_input", "td-action-names_input"],
     "type": "object",
     "properties": {
         "actions": {
@@ -13,22 +13,24 @@
             }
         }
     },
-    "required": [
-        "actions"
-    ],
     "additionalProperties": true,
     "definitions": {
         "action_element": {
             "type": "object",
-            "properties": {
-                "input": {
-                    "$ref": "#/definitions/dataSchema"
-                }
+            "if": {
+                "properties": {
+                    "input": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
+                },
+                "required": [
+                    "input"
+                ],
+                "additionalProperties": true
             },
-            "required": [
-                "input"
-            ],
-            "additionalProperties": true
+            "then": {
+                "const": "td-vocab-input=pass"
+            }
         },
         "dataSchema": {
             "type": "object",
