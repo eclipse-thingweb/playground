@@ -14,7 +14,8 @@
     "testTD": "node assertionTester.js",
     "testImplementation": "node assertionTester.js",
     "merge": "node mergeResults.js",
-    "clean":"rm -r ./Results"
+    "clean": "find ./Results/* -delete",
+    "coverage": "node checkCoverage.js"
   },
   "repository": {
     "type": "git",

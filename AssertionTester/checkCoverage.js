@@ -53,10 +53,14 @@ var mergedResults = fs.readFileSync(secondArgument);
             }
             totalCount++;
         });
+
+        
         
         console.log("Failed Assertions:", failCount);
         console.log("Not-Implemented Assertions:", notImplCount);
         console.log("Not Tested Assertions:",nullCount);
         console.log("Passed Assertions:",passCount);
         console.log("Total Assertions",totalCount);
+
+
     })
