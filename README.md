@@ -30,9 +30,7 @@ This is a node.js based tool
 
 ## Script based Assertion Tester
 
-111 out of 122 assertions of the TD specification can be tested with this tool.
-
-**WARNING:** There are some issues with parent assertion results. Even though the children are all `pass` the parent shows `not-impl`
+212 out of 239 assertions of the TD specification can be tested with this tool.
 
 This tool checks which assertions are satisfied by a given Thing Description(s). The assertions are modeled as JSON Schema. This means that there are only JSON Schema testable assertions are checked. 'AssertionTester/Assertions' has these assertions. To use it from the root directory of the repository:
 
@@ -49,9 +47,9 @@ This tool checks which assertions are satisfied by a given Thing Description(s).
 * Merge the results if you have an implementation that produced multiple TDs. To do so, you can use one of the following ways:
   1. Give multiple result files as arguments: `npm run-script merge ./Results/result-urn:another.csv ./Results/result-urn:dev:wot:com:example:servient:lamp.csv`
      * You can put as many TDs as you want after `npm run-script merge`
-  2. Give a directory containing multiple result files `npm run-script merge ./Results/`
+  2. Give a directory containing multiple result files `npm run-script merge ./Results/*`
 * You can clean the Results directory with `npm run-script clean` in Linux
-* You can check the coverage of a results.csv file with `npm run-script coverage results.csv` which will output a table to the std output
+* You can check the coverage of a results.csv file with `npm run-script coverage results.csv` which will output a table to the std output indicating how many assertions passed, failed or not implemented
   
 **WARNING**: If you see an error like `ajv.errors[0].params.allowedValue` this very probably means that your TD is not valid at a specific point. Scroll up to see the precise error message
 
