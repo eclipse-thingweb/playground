@@ -3,7 +3,7 @@
     "description": "When a forms term member is present in a Thing instance, the value(s) of op in the forms MUST be one of readallproperties, writeallproperties, readmultipleproperties or writemultipleproperties. ",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "type": "object",
-    "is-complex": false,
+    "is-complex": true,
     "properties": {
         "forms": {
             "type": "array",
@@ -13,30 +13,17 @@
             }
         }
     },
-    "required": [
-        "forms"
-    ],
     "additionalProperties": true,
     "definitions": {
         "form_element_root": {
-            "type": "object",
-            "properties": {
-                "href": {
-                    "$ref": "#/definitions/url"
-                },
-                "op": {
-                    "oneOf": [{
-                            "type": "string",
-                            "enum": [
-                                "readallproperties",
-                                "writeallproperties",
-                                "readmultipleproperties",
-                                "writemultipleproperties"
-                            ]
-                        },
-                        {
-                            "type": "array",
-                            "items": {
+            "if": {
+                "type": "object",
+                "properties": {
+                    "href": {
+                        "$ref": "#/definitions/url"
+                    },
+                    "op": {
+                        "oneOf": [{
                                 "type": "string",
                                 "enum": [
                                     "readallproperties",
@@ -44,44 +31,29 @@
                                     "readmultipleproperties",
                                     "writemultipleproperties"
                                 ]
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "type": "string",
+                                    "enum": [
+                                        "readallproperties",
+                                        "writeallproperties",
+                                        "readmultipleproperties",
+                                        "writemultipleproperties"
+                                    ]
+                                }
                             }
-                        }
-                    ]
-                },
-                "contentType": {
-                    "type": "string"
-                },
-                "security": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
+                        ]
                     }
                 },
-                "scopes": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "subProtocol": {
-                    "type": "string",
-                    "enum": [
-                        "longpoll"
-                    ]
-                },
-                "response": {
-                    "type": "object",
-                    "properties": {
-                        "contentType": {
-                            "type": "string"
-                        }
-                    }
-                }
+                "required": [
+                    "href", "op"
+                ]
             },
-            "required": [
-                "href","op"
-            ],
-            "additionalProperties": true
+            "then": {
+                "const": "td-op-for-thing=pass"
+            }
         },
         "url": {
             "type": "string",

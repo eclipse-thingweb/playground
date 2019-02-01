@@ -4,19 +4,13 @@
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
     "type": "object",
-    "if": {
-        "required": ["events"],
-        "properties": {
-            "events": {
-                "type": "object",
-                "additionalProperties": {
-                    "$ref": "#/definitions/event_element"
-                }
+    "properties": {
+        "events": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/event_element"
             }
         }
-    },
-    "then": {
-        "const": "td-op-for-event=pass"
     },
     "additionalProperties": true,
     "definitions": {
@@ -37,65 +31,41 @@
             "additionalProperties": true
         },
         "form_element_event": {
-            "type": "object",
-            "properties": {
-                "href": {
-                    "$ref": "#/definitions/url"
-                },
-                "op": {
-                    "oneOf": [{
-                            "type": "string",
-                            "enum": [
-                                "subscribeevent",
-                                "unsubscribeevent"
-                            ]
-                        },
-                        {
-                            "type": "array",
-                            "items": {
+            "if":{
+                "type": "object",
+                "properties": {
+                    "href": {
+                        "$ref": "#/definitions/url"
+                    },
+                    "op": {
+                        "oneOf": [{
                                 "type": "string",
                                 "enum": [
                                     "subscribeevent",
                                     "unsubscribeevent"
                                 ]
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "type": "string",
+                                    "enum": [
+                                        "subscribeevent",
+                                        "unsubscribeevent"
+                                    ]
+                                }
                             }
-                        }
-                    ]
-                },
-                "contentType": {
-                    "type": "string"
-                },
-                "security": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
+                        ]
                     }
                 },
-                "scopes": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "subProtocol": {
-                    "type": "string",
-                    "enum": [
-                        "longpoll"
-                    ]
-                },
-                "response": {
-                    "type": "object",
-                    "properties": {
-                        "contentType": {
-                            "type": "string"
-                        }
-                    }
-                }
+                "required": [
+                    "href","op"
+                ],
+                "additionalProperties": true
             },
-            "required": [
-                "href"
-            ],
-            "additionalProperties": true
+            "then":{
+                "const":"td-op-for-event=pass"
+            }
         },
         "url": {
             "type": "string",
