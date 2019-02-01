@@ -6,7 +6,7 @@ var secondArgument;
 
 const draftLocation = "./json-schema-draft-06.json";
 
-const fields = ['ID', 'Status', 'additionalInfo'];
+const fields = ['ID', 'Status', 'Comment'];
 const json2csvParser = new Json2csvParser({
     fields
 });
@@ -158,7 +158,7 @@ function validate(storedTdAddress, outputLocation) {
                             results.push({
                                 "ID": schema.title,
                                 "Status": result,
-                                "additionalInfo": ajv.errorsText()
+                                "Comment": ajv.errorsText()
                             });
                         }
                         if (schema.hasOwnProperty("also")) {
@@ -175,7 +175,7 @@ function validate(storedTdAddress, outputLocation) {
                         results.push({
                             "ID": schema.title,
                             "Status": "fail",
-                            "additionalInfo": "Make sure you validate your TD before"
+                            "Comment": "Make sure you validate your TD before"
                         });
 
                         if (schema.hasOwnProperty("also")) {
@@ -184,7 +184,7 @@ function validate(storedTdAddress, outputLocation) {
                                 results.push({
                                     "ID": asser,
                                     "Status": "fail",
-                                    "additionalInfo": "Make sure you validate your TD before"
+                                    "Comment": "Make sure you validate your TD before"
                                 });
                             });
                         }
@@ -216,7 +216,7 @@ function validate(storedTdAddress, outputLocation) {
                         results.push({
                             "ID": schema.title,
                             "Status": "not-impl",
-                            "additionalInfo": ajv.errorsText()
+                            "Comment": ajv.errorsText()
                         });
                         if (schema.hasOwnProperty("also")) {
                             var otherAssertions = schema.also;
@@ -224,7 +224,7 @@ function validate(storedTdAddress, outputLocation) {
                                 results.push({
                                     "ID": asser,
                                     "Status": "not-impl",
-                                    "additionalInfo": ajv.errorsText()
+                                    "Comment": ajv.errorsText()
                                 });
                             });
                         }
@@ -234,7 +234,7 @@ function validate(storedTdAddress, outputLocation) {
                         results.push({
                             "ID": schema.title,
                             "Status": "fail",
-                            "additionalInfo": ajv.errorsText()
+                            "Comment": ajv.errorsText()
                         });
                         if (schema.hasOwnProperty("also")) {
                             var otherAssertions = schema.also;
@@ -242,7 +242,7 @@ function validate(storedTdAddress, outputLocation) {
                                 results.push({
                                     "ID": asser,
                                     "Status": "fail",
-                                    "additionalInfo": ajv.errorsText()
+                                    "Comment": ajv.errorsText()
                                 });
                             });
                         }
@@ -270,7 +270,7 @@ function toOutput(tdId){
            results.push({
                "ID": curNonImpl,
                "Status": "null",
-               "additionalInfo": "not testable with Assertion Tester"
+               "Comment": "not testable with Assertion Tester"
            });
        });
 
@@ -370,7 +370,7 @@ function createParents(resultsJSON) {
                 results.push({
                     "ID": curParentName,
                     "Status": "fail",
-                    "additionalInfo": "Error message can be seen in the children assertions"
+                    "Comment": "Error message can be seen in the children assertions"
                 });
                 break;
             } else if (curChild.Status == "not-impl") {
@@ -378,7 +378,7 @@ function createParents(resultsJSON) {
                 results.push({
                     "ID": curParentName,
                     "Status": "not-impl",
-                    "additionalInfo": "Error message can be seen in the children assertions"
+                    "Comment": "Error message can be seen in the children assertions"
                 });
                 break;
             } else {
@@ -448,7 +448,7 @@ function checkVocabulary(tdJson) {
         results.push({
             "ID": "td-vocabulary",
             "Status": "fail",
-            "additionalInfo": "invalid TD"
+            "Comment": "invalid TD"
         });
         otherAssertions.forEach(function (asser) {
             results.push({
@@ -484,7 +484,7 @@ function checkUniqueness(td) {
         results.push({
             "ID": "td-unique-identifiers",
             "Status": "fail",
-            "additionalInfo": "duplicate interaction names"
+            "Comment": "duplicate interaction names"
         });
         otherAssertions.forEach(function (asser) {
             results.push({
@@ -496,7 +496,7 @@ function checkUniqueness(td) {
         // console.log('Assertion td-unique-identifiers passed');
         results.push({
             "ID": "td-unique-identifiers",
-            "Status": "pass",
+            "Status": "pass"
         });
 
         otherAssertions.forEach(function (asser) {

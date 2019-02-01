@@ -1,6 +1,7 @@
 /* Merge test results.
  * Read from all assertion test results CSV files given on the
- * command line, send a merged file to stdout.
+ * command line, send a merged file to stdout.  Merged files
+ * are also sorted by ID.
  *
  * For file format and usage, see testing/README.md and testing/results.
  *
@@ -37,7 +38,7 @@ const path = require('path')
 const debug_v = false;
 json_results = [];
 // Configuration
-const fields = ['ID', 'Status', 'additionalInfo'];
+const fields = ['ID', 'Status', 'Comment'];
 const json2csvParser = new Json2csvParser({
     fields
 });
@@ -195,8 +196,13 @@ function output_results(merged_results) {
         json_results.push({
             "ID": id,
             "Status": data[0],
-            "additionalInfo":data[1]
+            "Comment":data[1]
         });
+    });
+
+    // sort
+    json_results.sort((a,b) => {
+      return (a.id < b.id) ? -1 : ((a.id > b.id) ? 1 : 0);
     });
 
     var csvResults = json2csvParser.parse(json_results);
@@ -210,9 +216,7 @@ function output_results(merged_results) {
     });
 }
 
-//if there is more than one argument, they are multiple results, if there is only one it is a directory
-
-if (process.argv.length > 3) {
+if (process.argv.length > 2) {
     let files = process.argv.slice(2);
     get_results(files, [], function (input_results) {
         if (debug_v) console.warn("input results:\n", input_results);
@@ -222,7 +226,9 @@ if (process.argv.length > 3) {
             // Success
         });
     });
-} else if (process.argv.length == 3) {
+} 
+/*
+else if (process.argv.length == 3) {
     var loc = process.argv[2];
 
     //filtering function, will return only csv files
@@ -253,8 +259,9 @@ if (process.argv.length > 3) {
         });
 
     });
-
-} else {
+} 
+*/
+else {
     // Usage
     console.warn("Usage:", process.argv[0], process.argv[1], "file1.csv file2.csv ...");
     console.warn("See testing/README.md and testing/results");

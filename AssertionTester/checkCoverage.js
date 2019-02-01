@@ -6,7 +6,7 @@ const Json2csvParser = require('json2csv').Parser;
 // Parameters
 json_results = [];
 // Configuration
-const fields = ['ID', 'Status', 'additionalInfo'];
+const fields = ['ID', 'Status', 'Comment'];
 const json2csvParser = new Json2csvParser({
     fields
 });
