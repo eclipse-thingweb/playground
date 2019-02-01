@@ -38,7 +38,7 @@ const path = require('path')
 const debug_v = false;
 json_results = [];
 // Configuration
-const fields = ['ID', 'Status', 'additionalInfo'];
+const fields = ['ID', 'Status', 'Comment'];
 const json2csvParser = new Json2csvParser({
     fields
 });
@@ -196,7 +196,7 @@ function output_results(merged_results) {
         json_results.push({
             "ID": id,
             "Status": data[0],
-            "additionalInfo":data[1]
+            "Comment":data[1]
         });
     });
 
