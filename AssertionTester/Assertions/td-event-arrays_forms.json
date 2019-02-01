@@ -26,7 +26,6 @@
                         "$ref": "#/definitions/form_element"
                     }
                 }
-
             },
             "required": [
                 "forms"

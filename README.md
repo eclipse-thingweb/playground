@@ -39,16 +39,20 @@ This tool checks which assertions are satisfied by a given Thing Description(s).
 * Change to AssertionTester directory
 * Run npm install
 * For single TD: Run 'npm run-script testTD an_example_TD_location'. E.g. 'npm run-script testTD WebContent/Examples/Valid/JsonLdThing.json' 
+  * You can specify the output location and filename in an argument that comes after the input, e.g. npm run-script testTD inputTD.json outputResult.csv
 * For a directory with **only** TDs: Run 'npm run-script testImplementation a_directory_location'. E.g. 'npm run-script testImplementation WebContent/Examples/Valid/' 
 * The result(s) are found in the 'AssertionTester/Results' with a file per id of the tested TD(s)
   * There will be a .csv and a .json file. The .csv version has the format required by the implementation report and the .json version is provided for using the results in other tools, such as merging the results 
   * The result can be pass, fail or not-impl 
   * Some assertions have an underscore, i.e. `_` before the last word. This means that this assertion is composed of sub assertions. For example, td-actions assertion required the existence of action interaction in the TD and also the uniqueness of the names of actions. Because of this, there will be two assertions generated in the results with following names: td-actions_existence and td-actions_uniqueness. 
   * If there is a child, there is always a parent assertion. Look above to find the parent assertion. If one child assertion is not implemented, the parent will be also marked as not implemented.
-* Merge the results if you have an implementation that produced multiple TDs. To do so, use the following command
-  * `npm run-script merge ./Results/result-urn:another.csv ./Results/result-urn:dev:wot:com:example:servient:lamp.csv`
-  * You can put as many TDs as you want after `npm run-script merge`
-
+* Merge the results if you have an implementation that produced multiple TDs. To do so, you can use one of the following ways:
+  1. Give multiple result files as arguments: `npm run-script merge ./Results/result-urn:another.csv ./Results/result-urn:dev:wot:com:example:servient:lamp.csv`
+     * You can put as many TDs as you want after `npm run-script merge`
+  2. Give a directory containing multiple result files `npm run-script merge ./Results/`
+* You can clean the Results directory with `npm run-script clean` in Linux
+* You can check the coverage of a results.csv file with `npm run-script coverage results.csv` which will output a table to the std output
+  
 **WARNING**: If you see an error like `ajv.errors[0].params.allowedValue` this very probably means that your TD is not valid at a specific point. Scroll up to see the precise error message
 
 ### Contributing

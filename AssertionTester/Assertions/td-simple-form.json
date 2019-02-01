@@ -3,7 +3,7 @@
     "description": "A Thing Description instance serialization MAY omit one ore more vocabulary terms that are mandatory () AND have default values based on the table above.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
-    "also": ["td-vocab-href"],
+    "also": ["td-vocab-href", "td-arrays_forms"],
     "type": "object",
     "if": {
         "required": ["forms"],

@@ -14,18 +14,25 @@
             "data": {
                 "type": "string"
             },
-            "cancellation":{
-                "type":"integer",
-                "description":"The time in seconds before cancellation happens"
+            "cancellation": {
+                "type": "integer",
+                "description": "The time in seconds before cancellation happens"
             },
-            "subscription":{
+            "subscription": {
                 "type": "string",
-                "enum":["always","once"]
+                "enum": ["always", "once"]
             },
             "forms": [{
                 "href": "https://mylamp.example.com/oh",
                 "subprotocol": "longpoll"
             }]
+        },
+        "simple": {
+            "forms": [{
+                "href": "https://mylamp.example.com/oh",
+                "subprotocol": "longpoll"
+            }]
+
         }
     }
 }

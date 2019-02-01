@@ -2,7 +2,7 @@
     "title": "td-vocab-type-1",
     "description": "Provides a hint indicating what the media type [MEDIATYPES] of the result of dereferencing the link should be.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
-    "is-complex": false,
+    "is-complex": true,
     "type": "object",
     "properties": {
         "links": {
@@ -12,22 +12,23 @@
             }
         }
     },
-    "required": [
-        "links"
-    ],
     "additionalProperties": true,
     "definitions": {
         "link_element": {
-            "type": "object",
-            "properties": {
-                "type": {
-                    "type": "string"
-                }
+            "if": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "type"
+                ]
             },
-            "required": [
-                "type"
-            ],
-            "additionalProperties": true
+            "then": {
+                "const": "td-vocab-type=pass"
+            }
         }
     }
 }

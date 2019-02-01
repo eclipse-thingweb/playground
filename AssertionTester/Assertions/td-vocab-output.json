@@ -2,7 +2,7 @@
     "title": "td-vocab-output",
     "description": "output: Used to define the output data schema of the action.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
-    "is-complex": false,
+    "is-complex": true,
     "also": ["td-action-objects_output","td-action-names_output"],
     "type": "object",
     "properties": {
@@ -13,22 +13,20 @@
             }
         }
     },
-    "required": [
-        "actions"
-    ],
     "additionalProperties": true,
     "definitions": {
         "action_element": {
             "type": "object",
-            "properties": {
-                "output": {
-                    "$ref": "#/definitions/dataSchema"
-                }
+            "if": {
+
+                "required": [
+                    "output"
+                ],
+                "additionalProperties": true
             },
-            "required": [
-                "output"
-            ],
-            "additionalProperties": true
+            "then": {
+                "const": "td-vocab-output=pass"
+            }
         },
         "dataSchema": {
             "type": "object",

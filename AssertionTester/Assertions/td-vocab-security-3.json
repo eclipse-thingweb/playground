@@ -5,69 +5,30 @@
     "is-complex": true,
     "also": ["td-security-overrides_form"],
     "type": "object",
-    "if": {
-        "required": ["forms"],
+    "properties": {
+        "forms": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "$ref": "#/definitions/form_element"
+            }
+        },
         "properties": {
-            "forms": {
-                "type": "array",
-                "minItems": 1,
-                "items": {
-                    "$ref": "#/definitions/form_element"
-                }
-            }
-        }
-    },
-    "then": {
-        "const": "td-vocab-security-3=pass"
-    },
-    "else": {
-        "if": {
-            "required": ["properties"],
-            "properties": {
-                "properties": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "$ref": "#/definitions/property_element"
-                    }
-                }
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/property_element"
             }
         },
-        "then": {
-            "const": "td-vocab-security-3=pass"
+        "actions": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/action_element"
+            }
         },
-        "else": {
-            "if": {
-                "required": ["actions"],
-                "properties": {
-                    "actions": {
-                        "type": "object",
-                        "additionalProperties": {
-                            "$ref": "#/definitions/action_element"
-                        }
-                    }
-                }
-            },
-            "then": {
-                "const": "td-vocab-security-3=pass"
-            },
-            "else": {
-                "if": {
-                    "required": ["events"],
-                    "properties": {
-                        "events": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "$ref": "#/definitions/event_element"
-                            }
-                        }
-                    }
-                },
-                "then": {
-                    "const": "td-vocab-security-3=pass"
-                },
-                "else": {
-                    "const": "td-simple-form=not-impl"
-                }
+        "events": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/event_element"
             }
         }
     },
@@ -123,44 +84,23 @@
         },
         "form_element": {
             "type": "object",
-            "properties": {
-                "href": {
-                    "$ref": "#/definitions/url"
-                },
-                "contentType": {
-                    "type": "string"
-                },
-                "security": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "scopes": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "subProtocol": {
-                    "type": "string",
-                    "enum": [
-                        "longpoll"
-                    ]
-                },
-                "response": {
-                    "type": "object",
-                    "properties": {
-                        "contentType": {
+            "if": {
+                "properties": {
+                    "security": {
+                        "type": "array",
+                        "items": {
                             "type": "string"
                         }
                     }
-                }
+                },
+                "required": [
+                    "security"
+                ],
+                "additionalProperties": true
             },
-            "required": [
-                "security"
-            ],
-            "additionalProperties": true
+            "then": {
+                "const": "td-vocab-security-3=pass"
+            }
         },
         "url": {
             "type": "string",

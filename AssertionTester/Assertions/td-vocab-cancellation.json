@@ -2,7 +2,7 @@
     "title": "td-vocab-cancellation",
     "description": "cancellation: Defines any data that needs to be passed to cancel a subscription, e.g., a specific message to remove a Webhook.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
-    "is-complex":false,
+    "is-complex":true,
     "also": ["td-event-names_cancellation", "td-event-objects_cancellation"],
     "type": "object",
     "properties": {
@@ -13,22 +13,24 @@
             }
         }
     },
-    "required": [
-        "events"
-    ],
     "additionalProperties": true,
     "definitions": {
         "event_element": {
-            "type": "object",
-            "properties": {
-                "cancellation": {
-                    "$ref": "#/definitions/dataSchema"
-                }
+            "if":{
+                "type": "object",
+                "properties": {
+                    "cancellation": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
+                },
+                "required": [
+                    "cancellation"
+                ],
+                "additionalProperties": true
             },
-            "required": [
-                "cancellation"
-            ],
-            "additionalProperties": true
+            "then":{
+                "const": "td-event-names_cancellation=pass"
+            }
         },
         "dataSchema": {
             "type": "object",

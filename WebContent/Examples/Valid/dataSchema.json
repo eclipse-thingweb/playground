@@ -11,13 +11,74 @@
     "security": ["basic_sc"],
     "properties": {
         "status": {
-            
-            "readOnly":false,
+            "type": "number",
+            "minimum": 5,
+            "maximum": 1212,
+            "unit":"complicatedTemperatureUnit",
+            "readOnly": false,
             "writeOnly": false,
             "forms": [{
                 "href": "https://mylamp.example.com/status"
             }]
-        }
+        },
+        "status2": {
+            "type": "number",
+            "enum": [1.2, 3.22],
+            "forms": [{
+                "href": "https://mylamp.example.com/status2"
+            }]
+        },
+        "status3": {
+            "type": "number",
+            "const": 1.2,
+            "forms": [{
+                "href": "https://mylamp.example.com/status3"
+            }]
+        },
+        "status4": {
+            "type": "array",
+            "items": {
+                "type": "number"
+            },
+            "minItems": 1,
+            "maxItems": 5,
+            "forms": [{
+                "href": "https://mylamp.example.com/status4"
+            }]
+        },
+        "status5": {
+            "oneOf": [{
+                "type": "array",
+                "items": {
+                    "type": "number"
+                },
+                "minItems": 1,
+                "maxItems": 5
+            }, {
+                "type": "array",
+                "items": {
+                    "type": "number"
+                },
+                "minItems": 6,
+                "maxItems": 10
+            }],
+            "forms": [{
+                "href": "https://mylamp.example.com/status5"
+            }]
+        },
+                "status6": {
+                    "description":"something",
+                    "type": "object",
+                    "properties":{
+                        "wow": {
+                            "type": "number"
+                        }
+                    },
+                    "required":["wow"],
+                    "forms": [{
+                        "href": "https://mylamp.example.com/status6"
+                    }]
+                }
     },
     "actions": {
         "toggle": {

@@ -2,7 +2,7 @@
     "title": "td-vocab-data",
     "description": "data: Defines the data schema of the Event instance messages pushed by the Thing.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
-    "is-complex":false,
+    "is-complex":true,
     "also": ["td-event-names_data", "td-event-objects_data"],
     "type": "object",
     "properties": {
@@ -13,22 +13,24 @@
             }
         }
     },
-    "required": [
-        "events"
-    ],
     "additionalProperties": true,
     "definitions": {
         "event_element": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/dataSchema"
-                }
+            "if": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
+                },
+                "required": [
+                    "data"
+                ],
+                "additionalProperties": true
             },
-            "required": [
-                "data"
-            ],
-            "additionalProperties": true
+            "then": {
+                "const": "td-event-names_data=pass"
+            }
         },
         "dataSchema": {
             "type": "object",

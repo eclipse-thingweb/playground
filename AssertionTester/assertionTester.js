@@ -12,13 +12,13 @@ const json2csvParser = new Json2csvParser({
 });
 var results = [];
 
-const nonImplementedAssertions = ["td-form-protocolbindings", "td-security-binding", "td-security-no-extras", "td-data-schema-objects", "td-media-type", "td-readOnly-observable-writeOnly-default", "td-readOnly-observable-default", "td-content-type-default", "client-data-schema", "client-uri-template", "server-data-schema", "server-data-schema-extras", "client-data-schema-accept-extras", "client-data-schema-no-extras", "server-uri-template","td-property-names_type","td-property-names_properties","td-property-names_items","td-property-names_oneOf","td-property-names_required","td-property-names_readOnly","td-property-names_writeOnly","td-property-names_minItems","td-property-names_maxItems","td-property-names_enum","td-property-names_minimum1","td-property-names_maximum1","td-property-names_minimum2","td-property-names_maximum2","td-property-names_const","td-property-names_unit","td-property-names_description","td-property-names_descriptions","td-property-names_title","td-property-names_titles","td-property-names_uriVariables","td-action-names_description","td-action-names_descriptions","td-action-names_title","td-action-names_titles","td-action-names_uriVariables","td-event-names_description","td-event-names_descriptions","td-event-names_title","td-event-names_titles","td-event-names_uriVariables"];
+const nonImplementedAssertions = ["td-form-protocolbindings", "td-security-binding", "td-security-no-extras", "td-data-schema-objects", "td-media-type", "td-readOnly-observable-writeOnly-default", "td-readOnly-observable-default", "td-content-type-default", "client-data-schema", "client-uri-template", "server-data-schema", "server-data-schema-extras", "client-data-schema-accept-extras", "client-data-schema-no-extras", "server-uri-template", "td-default-readOnly", "td-default-writeOnly", "td-default-observable", "td-default-contentType", "td-default-safe", "td-default-idempotent", "td-default-in-1", "td-default-in-2", "td-default-qop", "td-default-alg", "td-default-format", "td-default-flow"];
 // Takes the second argument as the TD to validate
 
 if (process.argv[2]) {
     //console.log("there is second arg");
     if (typeof process.argv[2] === "string") {
-        console.log("Taking argument ", process.argv[2]);
+        console.log("Taking input ", process.argv[2]);
         secondArgument = process.argv[2];
     } else {
         console.error("Second argument should be string");
@@ -29,24 +29,39 @@ if (process.argv[2]) {
     throw "Argument error";
 }
 
-try {
-    // check if it is a directory
-    var dirLocation = secondArgument;
-    var tdList = fs.readdirSync(dirLocation);
-    console.log("Validating an Implementation with Multiple TDs")
-    tdList.forEach((curTD, index) => {
-        // console.log(dirLocation + curTD)
-        // console.log(tdList);
-        validate(dirLocation + curTD);
-    });
-} catch (error) {
-    // not a directory so take the TD, hopefully
-    console.log("Validating a single TD")
-    var storedTdAddress = secondArgument;
-    validate(storedTdAddress);
+if (process.argv[3]) {
+    //console.log("there is second arg");
+    if (typeof process.argv[3] === "string") {
+        console.log("Taking output ", process.argv[3]);
+        var outputLocation = process.argv[3];
+        console.log("Validating a single TD and outputting result to ", outputLocation)
+        var storedTdAddress = secondArgument;
+        validate(storedTdAddress, outputLocation);
+    } else {
+        console.error("Second argument should be string");
+        throw "Argument error";
+    }
+} else {
+
+    try {
+        // check if it is a directory
+        var dirLocation = secondArgument;
+        var tdList = fs.readdirSync(dirLocation);
+        console.log("Validating an Implementation with Multiple TDs")
+        tdList.forEach((curTD) => {
+            // console.log(dirLocation + curTD)
+            // console.log(tdList);
+            validate(dirLocation + curTD);
+        });
+    } catch (error) {
+        // not a directory so take the TD, hopefully
+        console.log("Validating a single TD")
+        var storedTdAddress = secondArgument;
+        validate(storedTdAddress);
+    }
 }
 
-function validate(storedTdAddress) {
+function validate(storedTdAddress, outputLocation) {
     console.log("=================================================================")
     console.log("Taking TD found at ", storedTdAddress, " for validation");
     var tdData = fs.readFileSync(storedTdAddress);
@@ -63,6 +78,7 @@ function validate(storedTdAddress) {
     console.log("test result is ", test);
     if (!test) {
         console.log("INVALID TD STOPPING");
+        toOutput(tdJson.id);
         results = [];
         return;
     } else {
@@ -238,59 +254,78 @@ function validate(storedTdAddress) {
             // If reached the end
             if (index == assertions.length - 1) {
                 // create parent assertions
-                createParents(results);
-                //sort the results
-
-                // Push the non implemented assertions
-                nonImplementedAssertions.forEach((curNonImpl) => {
-                    results.push({
-                        "ID": curNonImpl,
-                        "Status": "null",
-                        "additionalInfo": "not testable with Assertion Tester"
-                    });
-                });
-
-                // sort according to the ID in each item
-                orderedResults = results.sort(function (a, b) {
-                    var idA = a.ID;
-                    var idB = b.ID;
-                    if (idA < idB) {
-                        return -1;
-                    }
-                    if (idA > idB) {
-                        return 1;
-                    }
-
-                    // if ids are equal
-                    return 0;
-                });
-
-                var csvResults = json2csvParser.parse(orderedResults);
-
-                console.log(csvResults);
-                results = [];
-
-                var fileName = tdJson.id.replace(/:/g, "_");
-                fs.writeFile("./Results/result-" + fileName + ".json", JSON.stringify(orderedResults),
-                    function (err) {
-                        if (err) {
-                            return console.log(err);
-                        }
-
-                        console.log("The result-" + fileName + " json was saved!");
-                    });
-
-                fs.writeFile("./Results/result-" + fileName + ".csv", csvResults, function (err) {
-                    if (err) {
-                        return console.log(err);
-                    }
-
-                    console.log("The result-" + fileName + "csv was saved!");
-                });
+                toOutput(tdJson.id);
             }
 
         });
     }
+}
+
+function toOutput(tdId){
+       createParents(results);
+       //sort the results
+
+       // Push the non implemented assertions
+       nonImplementedAssertions.forEach((curNonImpl) => {
+           results.push({
+               "ID": curNonImpl,
+               "Status": "null",
+               "additionalInfo": "not testable with Assertion Tester"
+           });
+       });
+
+       // sort according to the ID in each item
+       orderedResults = results.sort(function (a, b) {
+           var idA = a.ID;
+           var idB = b.ID;
+           if (idA < idB) {
+               return -1;
+           }
+           if (idA > idB) {
+               return 1;
+           }
+
+           // if ids are equal
+           return 0;
+       });
+
+       var csvResults = json2csvParser.parse(orderedResults);
+       results = [];
+
+       //if output is specified output there
+       if (outputLocation) {
+
+           fs.writeFile(outputLocation, csvResults, function (err) {
+               if (err) {
+                   return console.log(err);
+               }
+
+               console.log("The csv was saved!");
+           });
+
+       } else {
+           //otherwise to console and save to default directories
+           console.log(csvResults);
+
+           var fileName = tdId.replace(/:/g, "_");
+           fs.writeFile("./Results/result-" + fileName + ".json", JSON.stringify(orderedResults),
+               function (err) {
+                   if (err) {
+                       return console.log(err);
+                   }
+
+                   console.log("The result-" + fileName + " json was saved!");
+               });
+
+           fs.writeFile("./Results/result-" + fileName + ".csv", csvResults, function (err) {
+               if (err) {
+                   return console.log(err);
+               }
+
+               console.log("The result-" + fileName + "csv was saved!");
+           });
+       }
+
 }
 
 function createParents(resultsJSON) {
