@@ -1,7 +1,7 @@
 const fs = require('fs');
 var Ajv = require('ajv');
 const Json2csvParser = require('json2csv').Parser;
-
+var jsonValidator = require('json-dup-key-validator');
 var secondArgument;
 
 const draftLocation = "./json-schema-draft-06.json";
@@ -65,16 +65,12 @@ function validate(storedTdAddress, outputLocation) {
     console.log("=================================================================")
     console.log("Taking TD found at ", storedTdAddress, " for validation");
     var tdData = fs.readFileSync(storedTdAddress);
-    try {
-        var tdJson = JSON.parse(tdData);
-        console.log('JSON validation... OK');
-    } catch (err) {
-        console.error('X JSON validation... KO:');
-        console.error('> ' + err.message);
-        throw err;
-    }
+    var tdDataString = tdData.toString();
 
-    var test = doLeftOutChecks(tdJson);
+    var tdJson = checkUniqueness(tdDataString);
+
+    var test = checkVocabulary(tdJson);
+    
     console.log("test result is ", test);
     if (!test) {
         console.log("INVALID TD STOPPING");
@@ -256,75 +252,73 @@ function validate(storedTdAddress, outputLocation) {
                 // create parent assertions
                 toOutput(tdJson.id);
             }
-
         });
     }
 }
 
-function toOutput(tdId){
-       createParents(results);
-       //sort the results
+function toOutput(tdId) {
+    createParents(results);
 
-       // Push the non implemented assertions
-       nonImplementedAssertions.forEach((curNonImpl) => {
-           results.push({
-               "ID": curNonImpl,
-               "Status": "null",
-               "Comment": "not testable with Assertion Tester"
-           });
-       });
+    // Push the non implemented assertions
+    nonImplementedAssertions.forEach((curNonImpl) => {
+        results.push({
+            "ID": curNonImpl,
+            "Status": "null",
+            "Comment": "not testable with Assertion Tester"
+        });
+    });
 
-       // sort according to the ID in each item
-       orderedResults = results.sort(function (a, b) {
-           var idA = a.ID;
-           var idB = b.ID;
-           if (idA < idB) {
-               return -1;
-           }
-           if (idA > idB) {
-               return 1;
-           }
+    // sort according to the ID in each item
+    orderedResults = results.sort(function (a, b) {
+        var idA = a.ID;
+        var idB = b.ID;
+        if (idA < idB) {
+            return -1;
+        }
+        if (idA > idB) {
+            return 1;
+        }
 
-           // if ids are equal
-           return 0;
-       });
+        // if ids are equal
+        return 0;
+    });
 
-       var csvResults = json2csvParser.parse(orderedResults);
-       results = [];
+    var csvResults = json2csvParser.parse(orderedResults);
+    results = [];
 
-       //if output is specified output there
-       if (outputLocation) {
+    //if output is specified output there
+    if (outputLocation) {
 
-           fs.writeFile(outputLocation, csvResults, function (err) {
-               if (err) {
-                   return console.log(err);
-               }
+        fs.writeFile(outputLocation, csvResults, function (err) {
+            if (err) {
+                return console.log(err);
+            }
 
-               console.log("The csv was saved!");
-           });
+            console.log("The csv was saved!");
+        });
 
-       } else {
-           //otherwise to console and save to default directories
-           console.log(csvResults);
+    } else {
+        //otherwise to console and save to default directories
+        console.log(csvResults);
 
-           var fileName = tdId.replace(/:/g, "_");
-           fs.writeFile("./Results/result-" + fileName + ".json", JSON.stringify(orderedResults),
-               function (err) {
-                   if (err) {
-                       return console.log(err);
-                   }
+        var fileName = tdId.replace(/:/g, "_");
+        fs.writeFile("./Results/result-" + fileName + ".json", JSON.stringify(orderedResults),
+            function (err) {
+                if (err) {
+                    return console.log(err);
+                }
 
-                   console.log("The result-" + fileName + " json was saved!");
-               });
+                console.log("The result-" + fileName + " json was saved!");
+            });
 
-           fs.writeFile("./Results/result-" + fileName + ".csv", csvResults, function (err) {
-               if (err) {
-                   return console.log(err);
-               }
+        fs.writeFile("./Results/result-" + fileName + ".csv", csvResults, function (err) {
+            if (err) {
+                return console.log(err);
+            }
 
-               console.log("The result-" + fileName + "csv was saved!");
-           });
-       }
+            console.log("The result-" + fileName + "csv was saved!");
+        });
+    }
 
 }
 
@@ -395,13 +389,6 @@ function createParents(resultsJSON) {
 
 }
 
-
-function doLeftOutChecks(td) {
-
-    checkUniqueness(td);
-    return checkVocabulary(td);
-}
-
 function checkVocabulary(tdJson) {
     /*
     Validates the following assertions:
@@ -460,11 +447,130 @@ function checkVocabulary(tdJson) {
     }
 }
 
-function checkUniqueness(td) {
+function checkUniqueness(tdString) {
 
-    var otherAssertions = ["td-properties_uniqueness", "td-actions_uniqueness", "td-events_uniqueness"];
+    // We check whether an interaction pattern exists and if it does, whether its terms are unique
+    // then we put them together and check whether they are unique
 
-    // building the interaction name array
+    var x = jsonValidator.parse(tdString, false);
+
+    // building the interaction name array for each interaction
+    var tdInteractions = [];
+    var tdProperties = [];
+    var tdActions = [];
+    var tdEvents = [];
+
+    //check whether the propety exists before adding it to the tdProperties array
+
+    
+
+    if (td.hasOwnProperty("properties")) {
+        //delete td.properties.status;
+        tdProperties = Object.keys(td.properties);
+        console.log(JSON.stringify(td));
+        console.log(tdProperties);
+        process.exit();
+        var isDuplicate = (new Set(tdProperties)).size !== tdProperties.length;
+        if (isDuplicate) {
+            // console.log('Assertion td-unique-identifiers failed');
+            results.push({
+                "ID": "td-properties_uniqueness",
+                "Status": "fail",
+                "Comment": "duplicate property names"
+            });
+        } else {
+            results.push({
+                "ID": "td-properties_uniqueness",
+                "Status": "pass",
+                "Comment": ""
+            });
+        }
+    } else {
+        results.push({
+            "ID": "td-properties_uniqueness",
+            "Status": "not-impl",
+            "Comment": "There are no properties so no need to talk about uniqueness"
+        });
+    }
+
+    //same as above
+    if (td.hasOwnProperty("actions")) {
+        tdActions = Object.keys(td.actions);
+        var isDuplicate = (new Set(tdActions)).size !== tdActions.length;
+        if (isDuplicate) {
+            // console.log('Assertion td-unique-identifiers failed');
+            results.push({
+                "ID": "td-actions_uniqueness",
+                "Status": "fail",
+                "Comment": "duplicate action names"
+            });
+        } else {
+            results.push({
+                "ID": "td-actions_uniqueness",
+                "Status": "pass",
+                "Comment": ""
+            });
+        }
+    } else {
+        results.push({
+            "ID": "td-actions_uniqueness",
+            "Status": "not-impl",
+            "Comment": "There are no actions so no need to talk about uniqueness"
+        });
+    }
+
+    //same as properties
+    if (td.hasOwnProperty("events")) {
+        tdEvents = Object.keys(td.events);
+        var isDuplicate = (new Set(tdActions)).size !== tdActions.length;
+        if (isDuplicate) {
+            // console.log('Assertion td-unique-identifiers failed');
+            results.push({
+                "ID": "td-events_uniqueness",
+                "Status": "fail",
+                "Comment": "duplicate event names"
+            });
+        } else {
+            results.push({
+                "ID": "td-events_uniqueness",
+                "Status": "pass",
+                "Comment": ""
+            });
+        }
+    } else {
+        results.push({
+            "ID": "td-events_uniqueness",
+            "Status": "not-impl",
+            "Comment": "There are no events so no need to talk about uniqueness"
+        });
+    }
+    //put them together
+    tdInteractions=tdInteractions.concat(tdProperties, tdActions, tdEvents);
+    if (tdInteractions.length > 0) {
+        // checking uniqueness of all the patterns
+        var isDuplicate = (new Set(tdInteractions)).size !== tdInteractions.length;
+
+        if (isDuplicate) {
+            results.push({
+                "ID": "td-unique-identifiers",
+                "Status": "fail",
+                "Comment": "duplicate interaction names"
+            });
+        } else {
+            results.push({
+                "ID": "td-unique-identifiers",
+                "Status": "pass"
+            });
+        }
+    } else {
+        // no interactions so not impl
+            results.push({
+                "ID": "td-unique-identifiers",
+                "Status": "not-impl",
+                "Comment":"there are no interactions so we cannot talk about uniqueness"
+            });
+    }
+    /*
     var tdInteractions = [];
     if (td.hasOwnProperty("properties")) {
         tdInteractions = tdInteractions.concat(Object.keys(td.properties));
@@ -486,24 +592,11 @@ function checkUniqueness(td) {
             "Status": "fail",
             "Comment": "duplicate interaction names"
         });
-        otherAssertions.forEach(function (asser) {
-            results.push({
-                "ID": asser,
-                "Status": "fail"
-            });
-        });
     } else {
         // console.log('Assertion td-unique-identifiers passed');
         results.push({
             "ID": "td-unique-identifiers",
             "Status": "pass"
         });
-
-        otherAssertions.forEach(function (asser) {
-            results.push({
-                "ID": asser,
-                "Status": "pass"
-            });
-        });
-    }
+    }*/
 }
