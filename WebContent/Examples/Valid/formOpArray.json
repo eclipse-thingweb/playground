@@ -32,7 +32,30 @@
                     "subProtocol": "longpoll"
                 }
             ]
+        },
+        "simple": {
+            "forms": [{
+                "href": "http://example.org:9191/api/simple1"
+            }]
+        },
+        "simple2": {
+            "forms": [{
+                    "href": "http://example.org:9191/api/simple2",
+                    "op": ["readproperty"]
+                },
+                {
+                    "href": "http://example.org:9191/api/simple2",
+                    "http:methodName": "POST"
+                },
+                {
+                    "href": "http://example.org:9191/api/simple2/observe",
+                    "op": ["observeproperty"],
+                    "http:methodName": "GET",
+                    "subProtocol": "longpoll"
+                }
+            ]
         }
+
     },
     "actions": {
         "toggle": {
@@ -40,6 +63,21 @@
                 "href": "https://mylamp.example.com/toggle",
                 "op": ["invokeaction"]
             }]
+        },
+        "simple3": {
+            "forms": [{
+                "href": "https://mylamp.example.com/toggle"
+            }]
+        },
+        "simple4": {
+            "forms": [{
+                    "href": "https://mylamp.example.com/toggle",
+                    "op": ["invokeaction"]
+                },
+                {
+                    "href": "https://mylamp.example.com/toggle"
+                }
+            ]
         }
     },
     "events": {
@@ -52,6 +90,32 @@
                 "subProtocol": "longpoll",
                 "op": ["subscribeevent"]
             }]
+        },
+        "simple5": {
+            "forms": [{
+                "href": "https://mylamp.example.com/oh",
+                "subProtocol": "longpoll"
+            }]
+        },
+        "simple6": {
+            "data": {
+                "type": "string"
+            },
+            "forms": [{
+                    "href": "https://mylamp.example.com/oh",
+                    "subProtocol": "longpoll",
+                    "op": ["subscribeevent"]
+                },
+                {
+                    "href": "https://mylamp.example.com/oh",
+                    "subProtocol": "longpoll",
+                    "op": ["unsubscribeevent"]
+                },
+                {
+                    "href": "https://mylamp.example.com/oh",
+                    "subProtocol": "longpoll"
+                }
+            ]
         }
     }
 }

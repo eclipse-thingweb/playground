@@ -15,7 +15,6 @@
             "readOnly": false,
             "writeOnly": false,
             "observable": false,
-            
             "type": "string",
             "forms": [{
                 "href": "https://mylamp.example.com/status",

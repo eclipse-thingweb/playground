@@ -105,6 +105,11 @@
             "forms": [{
                 "href": "https://mylamp.example.com/toggle"
             }]
+        },
+        "toggle2": {
+            "forms": [{
+                "href": "https://mylamp.example.com/toggle2"
+            }]
         }
     },
     "events": {
@@ -119,6 +124,12 @@
             },
             "forms": [{
                 "href": "https://mylamp.example.com/oh",
+                "subprotocol": "longpoll"
+            }]
+        },
+        "overheating2": {
+            "forms": [{
+                "href": "https://mylamp.example.com/oh2",
                 "subprotocol": "longpoll"
             }]
         }

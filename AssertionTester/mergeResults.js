@@ -120,8 +120,7 @@ function merge_results(results, done_callback) {
         var underScoreLoc = curId.indexOf('_');
         if (underScoreLoc === -1) {
             //this is a parent or an assertion with no child so we dont care
-        }
-        else {
+        } else {
             // this is a child assertion
             var childResult = item[1][0];
             var parentID = curId.slice(0, underScoreLoc);
@@ -137,7 +136,7 @@ function merge_results(results, done_callback) {
         parentsJsonArray.forEach((curParentId, indexParent) => {
 
             var curParent = parentsJson[curParentId];
-            
+
             for (let index = 0; index < curParent.length; index++) {
                 const curChildStatus = curParent[index];
                 if (curChildStatus == "fail") {
@@ -148,7 +147,7 @@ function merge_results(results, done_callback) {
                     //push not-impl and break, i.e stop going through children, we are done here!
                     merged_results.set(curParentId, ["not-impl", "a child is not implemented"]);
                     break;
-                } else if (curChildStatus == "null"){
+                } else if (curChildStatus == "null") {
                     merged_results.set(curParentId, ["null", "a child is not tested"]);
                     break;
                 } else {
@@ -159,7 +158,7 @@ function merge_results(results, done_callback) {
                 }
             }
         });
-        
+
     }
     done_callback(merged_results);
 }
@@ -196,13 +195,13 @@ function output_results(merged_results) {
         json_results.push({
             "ID": id,
             "Status": data[0],
-            "Comment":data[1]
+            "Comment": data[1]
         });
     });
 
     // sort
-    json_results.sort((a,b) => {
-      return (a.id < b.id) ? -1 : ((a.id > b.id) ? 1 : 0);
+    json_results.sort((a, b) => {
+        return (a.id < b.id) ? -1 : ((a.id > b.id) ? 1 : 0);
     });
 
     var csvResults = json2csvParser.parse(json_results);
@@ -226,42 +225,7 @@ if (process.argv.length > 2) {
             // Success
         });
     });
-} 
-/*
-else if (process.argv.length == 3) {
-    var loc = process.argv[2];
-
-    //filtering function, will return only csv files
-    const isCsv = fileName => {
-        if (fileName.indexOf(".csv") > 1) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    // checking whether it is a directory
-    try {
-        var files = fs.readdirSync(loc).map(fileName => {
-            return path.join(loc, fileName)
-        }).filter(isCsv);
-    } catch (error) {
-        console.log(loc, " is not a directory, either put a directory or multiple result files as arguments");
-        process.exit();
-    }
-
-    get_results(files, [], function (results) {
-        if (debug_v) console.warn("input results:\n", input_results);
-        merge_results(results, function (merged_results) {
-            if (debug_v) console.warn("merged results:\n", merged_results);
-            output_results(merged_results);
-            // Success
-        });
-
-    });
-} 
-*/
-else {
+} else {
     // Usage
     console.warn("Usage:", process.argv[0], process.argv[1], "file1.csv file2.csv ...");
     console.warn("See testing/README.md and testing/results");

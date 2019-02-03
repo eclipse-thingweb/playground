@@ -19,7 +19,7 @@
             "type": "object",
             "if": {
                 "required": [
-                    "titles"
+                    "observable"
                 ],
                 "properties": {
                     "observable": {
@@ -28,7 +28,7 @@
                 }
             },
             "then": {
-                "const": "td-property-names_titles=pass"
+                "const": "td-property-names_observable=pass"
             }
         }
     }

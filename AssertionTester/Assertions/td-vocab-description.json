@@ -3,7 +3,6 @@
     "description": "description: Provides additional (human-readable) information based on a default language. MAY be included. Type: string.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
-    "also": ["td-data-schema_description"],
     "type": "object",
     "if": {
         "required": ["description"],
