@@ -6,6 +6,7 @@
   "dependencies": {
     "ajv": "^6.5.4",
     "csvtojson": "^2.0.8",
+    "json-dup-key-validator": "^1.0.2",
     "json2csv": "^4.3.1",
     "jsonld": "^1.1.0"
   },

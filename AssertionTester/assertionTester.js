@@ -70,7 +70,7 @@ function validate(storedTdAddress, outputLocation) {
     var tdJson = checkUniqueness(tdDataString);
 
     var test = checkVocabulary(tdJson);
-    
+
     console.log("test result is ", test);
     if (!test) {
         console.log("INVALID TD STOPPING");
@@ -449,154 +449,203 @@ function checkVocabulary(tdJson) {
 
 function checkUniqueness(tdString) {
 
-    // We check whether an interaction pattern exists and if it does, whether its terms are unique
-    // then we put them together and check whether they are unique
+    // There are two things being checked here:
+    // Whether in one interaction pattern there are duplicate names, e.g. two properties called temp
+    // And if all interaction patterns combined have duplicates, e.g. a property and action called light
 
-    var x = jsonValidator.parse(tdString, false);
+    // However, if there are no properties then it is not-impl
 
-    // building the interaction name array for each interaction
-    var tdInteractions = [];
-    var tdProperties = [];
-    var tdActions = [];
-    var tdEvents = [];
+    // jsonvalidator throws an error if there are duplicate names in the interaction level
+    try {
+        jsonValidator.parse(tdString, false);
 
-    //check whether the propety exists before adding it to the tdProperties array
+        var td = JSON.parse(tdString);
 
-    
+        // no problem in interaction level
+        var tdInteractions = [];
 
-    if (td.hasOwnProperty("properties")) {
-        //delete td.properties.status;
-        tdProperties = Object.keys(td.properties);
-        console.log(JSON.stringify(td));
-        console.log(tdProperties);
-        process.exit();
-        var isDuplicate = (new Set(tdProperties)).size !== tdProperties.length;
-        if (isDuplicate) {
-            // console.log('Assertion td-unique-identifiers failed');
-            results.push({
-                "ID": "td-properties_uniqueness",
-                "Status": "fail",
-                "Comment": "duplicate property names"
-            });
-        } else {
+        // checking whether there are properties at all, if not uniqueness is not impl
+        if (td.hasOwnProperty("properties")) {
+            tdInteractions = tdInteractions.concat(Object.keys(td.properties));
+            // then we can add unique properties pass 
             results.push({
                 "ID": "td-properties_uniqueness",
                 "Status": "pass",
                 "Comment": ""
             });
-        }
-    } else {
-        results.push({
-            "ID": "td-properties_uniqueness",
-            "Status": "not-impl",
-            "Comment": "There are no properties so no need to talk about uniqueness"
-        });
-    }
-
-    //same as above
-    if (td.hasOwnProperty("actions")) {
-        tdActions = Object.keys(td.actions);
-        var isDuplicate = (new Set(tdActions)).size !== tdActions.length;
-        if (isDuplicate) {
-            // console.log('Assertion td-unique-identifiers failed');
-            results.push({
-                "ID": "td-actions_uniqueness",
-                "Status": "fail",
-                "Comment": "duplicate action names"
-            });
         } else {
+            // then we add unique properties as not impl
+            results.push({
+                "ID": "td-properties_uniqueness",
+                "Status": "not-impl",
+                "Comment": "no properties"
+            });
+        }
+
+        if (td.hasOwnProperty("actions")) {
+            tdInteractions = tdInteractions.concat(Object.keys(td.actions));
             results.push({
                 "ID": "td-actions_uniqueness",
                 "Status": "pass",
                 "Comment": ""
             });
-        }
-    } else {
-        results.push({
-            "ID": "td-actions_uniqueness",
-            "Status": "not-impl",
-            "Comment": "There are no actions so no need to talk about uniqueness"
-        });
-    }
-
-    //same as properties
-    if (td.hasOwnProperty("events")) {
-        tdEvents = Object.keys(td.events);
-        var isDuplicate = (new Set(tdActions)).size !== tdActions.length;
-        if (isDuplicate) {
-            // console.log('Assertion td-unique-identifiers failed');
-            results.push({
-                "ID": "td-events_uniqueness",
-                "Status": "fail",
-                "Comment": "duplicate event names"
-            });
         } else {
+            // then we add unique actions as not impl
+            results.push({
+                "ID": "td-actions_uniqueness",
+                "Status": "not-impl",
+                "Comment": "no actions"
+            });
+        }
+
+        if (td.hasOwnProperty("events")) {
+            tdInteractions = tdInteractions.concat(Object.keys(td.events));
             results.push({
                 "ID": "td-events_uniqueness",
                 "Status": "pass",
                 "Comment": ""
             });
-        }
-    } else {
-        results.push({
-            "ID": "td-events_uniqueness",
-            "Status": "not-impl",
-            "Comment": "There are no events so no need to talk about uniqueness"
-        });
-    }
-    //put them together
-    tdInteractions=tdInteractions.concat(tdProperties, tdActions, tdEvents);
-    if (tdInteractions.length > 0) {
-        // checking uniqueness of all the patterns
-        var isDuplicate = (new Set(tdInteractions)).size !== tdInteractions.length;
-
-        if (isDuplicate) {
-            results.push({
-                "ID": "td-unique-identifiers",
-                "Status": "fail",
-                "Comment": "duplicate interaction names"
-            });
         } else {
+            // then we add unique events as not impl
             results.push({
-                "ID": "td-unique-identifiers",
-                "Status": "pass"
+                "ID": "td-events_uniqueness",
+                "Status": "not-impl",
+                "Comment": "no events"
             });
         }
-    } else {
-        // no interactions so not impl
+
+        if (tdInteractions.length > 0) {
+            // checking uniqueness between interactions
+            isDuplicate = (new Set(tdInteractions)).size !== tdInteractions.length;
+
+            if (isDuplicate) {
+                // if all is unique, then interactions are unique
+                results.push({
+                    "ID": "td-unique-identifiers",
+                    "Status": "fail",
+                    "Comment": "duplicate interaction names"
+                });
+
+            } else {
+                results.push({
+                    "ID": "td-unique-identifiers",
+                    "Status": "pass"
+                });
+            }
+        } else {
             results.push({
                 "ID": "td-unique-identifiers",
                 "Status": "not-impl",
-                "Comment":"there are no interactions so we cannot talk about uniqueness"
+                "Comment":"There are no interactions"
             });
-    }
-    /*
-    var tdInteractions = [];
-    if (td.hasOwnProperty("properties")) {
-        tdInteractions = tdInteractions.concat(Object.keys(td.properties));
-    }
-    if (td.hasOwnProperty("actions")) {
-        tdInteractions = tdInteractions.concat(Object.keys(td.actions));
-    }
-    if (td.hasOwnProperty("events")) {
-        tdInteractions = tdInteractions.concat(Object.keys(td.events));
-    }
-
-    // checking uniqueness
-    isDuplicate = (new Set(tdInteractions)).size !== tdInteractions.length;
-
-    if (isDuplicate) {
-        // console.log('Assertion td-unique-identifiers failed');
+        }
+        return td;
+    } catch (error) {
+        // there is a duplicate somewhere
         results.push({
             "ID": "td-unique-identifiers",
             "Status": "fail",
             "Comment": "duplicate interaction names"
         });
-    } else {
-        // console.log('Assertion td-unique-identifiers passed');
-        results.push({
-            "ID": "td-unique-identifiers",
-            "Status": "pass"
-        });
-    }*/
+
+        // convert it into string to be able to process it
+        // error is of form = Error: Syntax error: duplicated keys "overheating" near ting": {
+        var errorString = error.toString();
+        // to get the name, we need to remove the quotes around it
+        var startQuote = errorString.indexOf('"');
+        // slice to remove the part before the quote
+        var restString = errorString.slice(startQuote + 1);
+        // find where the interaction name ends
+        var endQuote = restString.indexOf('"');
+        // finally get the interaction name
+        var interactionName = restString.slice(0, endQuote);
+
+        //trying to find where this interaction is and put results accordingly
+        var td = JSON.parse(tdString);
+
+        if (td.hasOwnProperty("properties")) {
+            var tdProperties = td.properties;
+            if (tdProperties.hasOwnProperty(interactionName)) {
+                //duplicate was at properties but that fails the td-unique identifiers as well
+                // console.log("at property");
+                results.push({
+                    "ID": "td-properties_uniqueness",
+                    "Status": "fail",
+                    "Comment": "duplicate property names"
+                });
+                // since JSON.parse removes duplicates, we replace the duplicate name with duplicateName
+                tdString = tdString.replace(interactionName, "duplicateName");
+
+            } else {
+                // there is duplicate but not here, so pass
+                results.push({
+                    "ID": "td-properties_uniqueness",
+                    "Status": "pass",
+                    "Comment": ""
+                });
+            }
+        } else {
+            results.push({
+                "ID": "td-properties_uniqueness",
+                "Status": "not-impl",
+                "Comment": "no properties"
+            });
+        }
+
+        if (td.hasOwnProperty("actions")) {
+            var tdActions = td.actions;
+            if (tdActions.hasOwnProperty(interactionName)) {
+                //duplicate was at actions but that fails the td-unique identifiers as well
+                // console.log("at action");
+                results.push({
+                    "ID": "td-actions_uniqueness",
+                    "Status": "fail",
+                    "Comment": "duplicate action names"
+                });
+                // since JSON.parse removes duplicates, we replace the duplicate name with duplicateName
+                tdString = tdString.replace(interactionName, "duplicateName");
+            } else {
+                results.push({
+                    "ID": "td-actions_uniqueness",
+                    "Status": "pass",
+                    "Comment": ""
+                });
+            }
+        } else {
+            results.push({
+                "ID": "td-actions_uniqueness",
+                "Status": "not-impl",
+                "Comment": "no actions"
+            });
+        }
+
+        if (td.hasOwnProperty("events")) {
+            var tdEvents = td.events;
+            if (tdEvents.hasOwnProperty(interactionName)) {
+                //duplicate was at events but that fails the td-unique identifiers as well
+                // console.log("at event");
+                results.push({
+                    "ID": "td-events_uniqueness",
+                    "Status": "fail",
+                    "Comment": "duplicate event names"
+                });
+                // since JSON.parse removes duplicates, we replace the duplicate name with duplicateName
+                tdString = tdString.replace(interactionName, "duplicateName");
+            } else {
+                results.push({
+                    "ID": "td-events_uniqueness",
+                    "Status": "pass",
+                    "Comment": ""
+                });
+            }
+        } else {
+            results.push({
+                "ID": "td-events_uniqueness",
+                "Status": "not-impl",
+                "Comment": "no events"
+            });
+        }
+
+        return JSON.parse(tdString);
+    }
 }
