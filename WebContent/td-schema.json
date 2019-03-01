@@ -297,6 +297,9 @@
                 "description": {
                     "type": "string"
                 },
+                "title": {
+                    "type": "string"
+                },
                 "descriptions": {
                     "$ref": "#/definitions/descriptions"
                 },
@@ -308,9 +311,6 @@
                     "additionalProperties": {
                         "$ref": "#/definitions/dataSchema"
                     }
-                },
-                "title": {
-                    "type": "string"
                 },
                 "@type": {
                     "$ref": "#/definitions/type_declaration"
@@ -651,6 +651,9 @@
                     "minItems": 1,
                     "uniqueItems": true
                 },
+                "format": {
+                    "type": "string"
+                },
                 "const": {},
                 "type": {
                     "type": "string",
@@ -680,9 +683,6 @@
                 },
                 "maximum": {
                     "type": "number"
-                },
-                "format": {
-                    "type": "string"
                 },
                 "properties": {
                     "additionalProperties": {
