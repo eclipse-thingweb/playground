@@ -49,8 +49,6 @@ if (process.argv[3]) {
         var tdList = fs.readdirSync(dirLocation);
         console.log("Validating an Implementation with Multiple TDs")
         tdList.forEach((curTD) => {
-            // console.log(dirLocation + curTD)
-            // console.log(tdList);
             validate(dirLocation + curTD);
         });
     } catch (error) {
@@ -73,21 +71,18 @@ function validate(storedTdAddress, outputLocation) {
 
     console.log("test result is ", test);
     if (!test) {
-        console.log("INVALID TD STOPPING");
+        console.log("INVALID TD, SKIPPING TO NEXT TD");
         toOutput(tdJson.id);
         results = [];
         return;
     } else {
 
         var draftData = fs.readFileSync(draftLocation);
-
-        // console.log("Taking Schema Draft found at ", draftLocation);
         var draft = JSON.parse(draftData);
 
         // Iterating through assertions
 
         var assertions = fs.readdirSync("./Assertions/");
-
         assertions.forEach((curAssertion, index) => {
 
             var schemaLocation = "./Assertions/" + curAssertion;
@@ -308,7 +303,7 @@ function toOutput(tdId) {
                     return console.log(err);
                 }
 
-                console.log("The result-" + fileName + " json was saved!");
+                console.log("The result-" + fileName + ".json is saved!");
             });
 
         fs.writeFile("./Results/result-" + fileName + ".csv", csvResults, function (err) {
@@ -316,7 +311,7 @@ function toOutput(tdId) {
                 return console.log(err);
             }
 
-            console.log("The result-" + fileName + "csv was saved!");
+            console.log("The result-" + fileName + ".csv is saved!");
         });
     }
 
