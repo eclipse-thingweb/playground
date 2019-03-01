@@ -88,7 +88,7 @@
             "$ref": "#/definitions/type_declaration"
         },
         "@context": {
-            "$ref": "#/definitions/context"
+            "$ref": "#/definitions/thing-context"
         }
     },
     "required": [
@@ -99,7 +99,7 @@
     ],
     "additionalProperties": true,
     "definitions": {
-        "context": {
+        "thing-context": {
             "oneOf": [{
                     "type": "array",
                     "items": {
@@ -154,7 +154,10 @@
                     "$ref": "#/definitions/titles"
                 },
                 "uriVariables": {
-                    "$ref": "#/definitions/dataSchema"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
                 },
                 "@type": {
                     "$ref": "#/definitions/type_declaration"
@@ -168,18 +171,6 @@
                 },
                 "observable": {
                     "type": "boolean"
-                },
-                "scopes": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "security": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
                 },
                 "writeOnly": {
                     "type": "boolean"
@@ -200,6 +191,9 @@
                     "type": "array",
                     "minItems": 1,
                     "uniqueItems": true
+                },
+                "format": {
+                    "type": "string"
                 },
                 "const": {},
                 "type": {
@@ -264,7 +258,10 @@
                     "$ref": "#/definitions/titles"
                 },
                 "uriVariables": {
-                    "$ref": "#/definitions/dataSchema"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
                 },
                 "@type": {
                     "$ref": "#/definitions/type_declaration"
@@ -287,18 +284,6 @@
                 },
                 "idempotent": {
                     "type": "boolean"
-                },
-                "scopes": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "security": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
                 }
             },
             "required": [
@@ -312,6 +297,9 @@
                 "description": {
                     "type": "string"
                 },
+                "title": {
+                    "type": "string"
+                },
                 "descriptions": {
                     "$ref": "#/definitions/descriptions"
                 },
@@ -319,10 +307,10 @@
                     "$ref": "#/definitions/titles"
                 },
                 "uriVariables": {
-                    "$ref": "#/definitions/dataSchema"
-                },
-                "title": {
-                    "type": "string"
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
                 },
                 "@type": {
                     "$ref": "#/definitions/type_declaration"
@@ -332,18 +320,6 @@
                     "minItems": 1,
                     "items": {
                         "$ref": "#/definitions/form_element_event"
-                    }
-                },
-                "scopes": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "security": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
                     }
                 },
                 "subscription": {
@@ -382,7 +358,8 @@
                             "enum": [
                                 "readproperty",
                                 "writeproperty",
-                                "observeproperty"
+                                "observeproperty",
+                                "unobserveproperty"
                             ]
                         },
                         {
@@ -392,7 +369,8 @@
                                 "enum": [
                                     "readproperty",
                                     "writeproperty",
-                                    "observeproperty"
+                                    "observeproperty",
+                                    "unobserveproperty"
                                 ]
                             }
                         }
@@ -416,7 +394,9 @@
                 "subProtocol": {
                     "type": "string",
                     "enum": [
-                        "longpoll"
+                        "longpoll",
+                        "websub",
+                        "sse"
                     ]
                 },
                 "response": {
@@ -475,7 +455,9 @@
                 "subProtocol": {
                     "type": "string",
                     "enum": [
-                        "longpoll"
+                        "longpoll",
+                        "websub",
+                        "sse"
                     ]
                 },
                 "response": {
@@ -536,7 +518,9 @@
                 "subProtocol": {
                     "type": "string",
                     "enum": [
-                        "longpoll"
+                        "longpoll",
+                        "websub",
+                        "sse"
                     ]
                 },
                 "response": {
@@ -601,7 +585,9 @@
                 "subProtocol": {
                     "type": "string",
                     "enum": [
-                        "longpoll"
+                        "longpoll",
+                        "websub",
+                        "sse"
                     ]
                 },
                 "response": {
@@ -665,6 +651,9 @@
                     "minItems": 1,
                     "uniqueItems": true
                 },
+                "format": {
+                    "type": "string"
+                },
                 "const": {},
                 "type": {
                     "type": "string",
@@ -682,16 +671,12 @@
                     "$ref": "#/definitions/dataSchema"
                 },
                 "maxItems": {
-
                     "type": "integer",
                     "minimum": 0
-
                 },
                 "minItems": {
-
                     "type": "integer",
                     "minimum": 0
-
                 },
                 "minimum": {
                     "type": "number"
