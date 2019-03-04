@@ -1,5 +1,5 @@
 {
-    "title": "td-vocab-unit",
+    "title": "td-vocab-unit--DataSchema",
     "description": "unit: Provides unit information that is used, e.g., in international science, engineering, and business. MAY be included. Type: string.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "also": ["td-data-schema_unit"],
@@ -39,7 +39,7 @@
                 }
             },
             "then": {
-                "const": "td-vocab-unit=pass"
+                "const": "td-vocab-unit--DataSchema=pass"
             },
             "else": {
                 "properties": {
@@ -96,7 +96,7 @@
                 }
             },
             "then": {
-                "const": "td-vocab-unit=pass"
+                "const": "td-vocab-unit--DataSchema=pass"
             },
             "else": {
                 "properties": {
