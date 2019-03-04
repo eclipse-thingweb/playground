@@ -1,5 +1,5 @@
 {
-    "title": "td-vocab-type-2",
+    "title": "td-vocab-type--DataSchema",
     "description": "type: Assignment of JSON-based data types compatible with JSON Schema (one of boolean, integer, number, string, object, array, or null). MAY be included. Type: string (one of object, array, string, number, integer, boolean, or null).",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "also": ["td-data-schema_type"],
@@ -47,7 +47,7 @@
                 }
             },
             "then": {
-                "const": "td-vocab-type-2=pass"
+                "const": "td-vocab-type--DataSchema=pass"
             }
         },
         "action_element": {
@@ -95,7 +95,7 @@
                 }
             },
             "then": {
-                "const": "td-vocab-type-2=pass"
+                "const": "td-vocab-type--DataSchema=pass"
             },
             "else": {
                 "properties": {

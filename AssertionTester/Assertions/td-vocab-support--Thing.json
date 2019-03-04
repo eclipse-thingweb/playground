@@ -1,5 +1,5 @@
 {
-    "title": "td-vocab-support",
+    "title": "td-vocab-support--Thing",
     "description": "support: Provides information about the TD maintainer (e.g., author, link or telephone number to get support, etc).",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": false,

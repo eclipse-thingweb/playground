@@ -1,5 +1,5 @@
 {
-    "title": "td-vocab-type-1",
+    "title": "td-vocab-type--Link",
     "description": "Provides a hint indicating what the media type [MEDIATYPES] of the result of dereferencing the link should be.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
@@ -27,7 +27,7 @@
                 ]
             },
             "then": {
-                "const": "td-vocab-type=pass"
+                "const": "td-vocab-type--Link=pass"
             }
         }
     }
