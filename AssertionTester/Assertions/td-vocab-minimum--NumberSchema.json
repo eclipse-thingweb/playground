@@ -1,9 +1,9 @@
 {
-    "title": "td-vocab-minimum-2",
-    "description": "minimum: Specifies a minimum numeric value. Only applicable for associated number or integer types. MAY be included. Type: integer.",
+    "title": "td-vocab-minimum--NumberSchema",
+    "description": "minimum: Specifies a minimum numeric value. Only applicable for associated number or integer types. MAY be included. Type: double.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
-    "also": ["td-data-schema_minimum2"],
+    "also": ["td-data-schema_minimum1"],
     "type": "object",
     "properties": {
         "properties": {
@@ -35,7 +35,7 @@
                     "type": {
                         "type": "string",
                         "enum": [
-                            "integer"
+                            "number"
                         ]
                     },
                     "minimum": {
@@ -44,7 +44,7 @@
                 }
             },
             "then": {
-                "const": "td-vocab-minimum-2=pass"
+                "const": "td-vocab-minimum--NumberSchema=pass"
             },
             "else": {
                 "properties": {
@@ -98,7 +98,7 @@
                     "type": {
                         "type": "string",
                         "enum": [
-                            "integer"
+                            "number"
                         ]
                     },
                     "minimum": {
@@ -107,7 +107,7 @@
                 }
             },
             "then": {
-                "const": "td-vocab-minimum-2=pass"
+                "const": "td-vocab-minimum--NumberSchema=pass"
             },
             "else": {
                 "properties": {

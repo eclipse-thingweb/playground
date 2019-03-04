@@ -1,9 +1,9 @@
 {
-    "title": "td-vocab-maximum-2",
-    "description": "maximum: Specifies a maximum numeric value. Only applicable for associated number or integer types. MAY be included. Type: integer.",
+    "title": "td-vocab-maximum--NumberSchema",
+    "description": "maximum: Specifies a maximum numeric value. Only applicable for associated number or integer types. MAY be included. Type: double.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
-    "also": ["td-data-schema_maximum2"],
+    "also": ["td-data-schema_maximum1"],
     "type": "object",
     "properties": {
         "properties": {
@@ -35,7 +35,7 @@
                     "type": {
                         "type": "string",
                         "enum": [
-                            "integer"
+                            "number"
                         ]
                     },
                     "maximum": {
@@ -44,7 +44,7 @@
                 }
             },
             "then": {
-                "const": "td-vocab-maximum-2=pass"
+                "const": "td-vocab-maximum--NumberSchema=pass"
             },
             "else": {
                 "properties": {
@@ -98,7 +98,7 @@
                     "type": {
                         "type": "string",
                         "enum": [
-                            "integer"
+                            "number"
                         ]
                     },
                     "maximum": {
@@ -107,7 +107,7 @@
                 }
             },
             "then": {
-                "const": "td-vocab-maximum-2=pass"
+                "const": "td-vocab-maximum--NumberSchema=pass"
             },
             "else": {
                 "properties": {
