@@ -2,7 +2,7 @@
     "title": "td-vocab-format--PoPSecurityScheme",
     "description": "format: Specifies format of security authentication information (one of jwt, jwe, or jws). MUST be included. Type: string.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
-    "is-complex": false,
+    "is-complex": true,
     "type": "object",
     "properties": {
         "securityDefinitions": {
