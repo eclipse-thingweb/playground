@@ -1,5 +1,5 @@
 {
-    "title": "td-vocab-titles",
+    "title": "td-vocab-titles--DataSchema",
     "description": "titles: Provides multi-language human-readable titles (e.g., display a text for UI representation in different languages) of the interaction pattern. MAY be included. Type: MultiLanguage.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "also": ["td-data-schema_titles", "td-multi-languages_titles"],
@@ -29,85 +29,45 @@
     "definitions": {
         "property_element": {
             "type": "object",
-            "if": {
-                "required": ["titles"],
+            "properties": {
                 "properties": {
-                    "titles": {
-                        "$ref": "#/definitions/titles"
+                    "additionalProperties": {
+                        "$ref": "#/definitions/dataSchema"
                     }
-                }
-            },
-            "then": {
-                "const": "td-vocab-titles=pass"
-            },
-            "else": {
-                "properties": {
-                    "properties": {
-                        "additionalProperties": {
-                            "$ref": "#/definitions/dataSchema"
-                        }
-                    },
-                    "oneOf": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/definitions/dataSchema"
-                        }
-                    },
+                },
+                "oneOf": {
+                    "type": "array",
                     "items": {
                         "$ref": "#/definitions/dataSchema"
                     }
+                },
+                "items": {
+                    "$ref": "#/definitions/dataSchema"
                 }
             }
         },
         "action_element": {
             "type": "object",
-            "if": {
-                "required": ["titles"],
-                "properties": {
-                    "titles": {
-                        "$ref": "#/definitions/titles"
-                    }
-                }
-            },
-            "then": {
-                "const": "td-vocab-titles=pass"
-            },
-            "else": {
-
-                "properties": {
-                    "input": {
-                        "$ref": "#/definitions/dataSchema"
-                    },
-                    "output": {
-                        "$ref": "#/definitions/dataSchema"
-                    }
+            "properties": {
+                "input": {
+                    "$ref": "#/definitions/dataSchema"
+                },
+                "output": {
+                    "$ref": "#/definitions/dataSchema"
                 }
             }
         },
         "event_element": {
             "type": "object",
-            "if": {
-                "required": ["titles"],
-                "properties": {
-                    "titles": {
-                        "$ref": "#/definitions/titles"
-                    }
-                }
-            },
-            "then": {
-                "const": "td-vocab-titles=pass"
-            },
-            "else": {
-                "properties": {
-                    "subscription": {
-                        "$ref": "#/definitions/dataSchema"
-                    },
-                    "data": {
-                        "$ref": "#/definitions/dataSchema"
-                    },
-                    "cancellation": {
-                        "$ref": "#/definitions/dataSchema"
-                    }
+            "properties": {
+                "subscription": {
+                    "$ref": "#/definitions/dataSchema"
+                },
+                "data": {
+                    "$ref": "#/definitions/dataSchema"
+                },
+                "cancellation": {
+                    "$ref": "#/definitions/dataSchema"
                 }
             }
         },
@@ -122,7 +82,7 @@
                 }
             },
             "then": {
-                "const": "td-vocab-titles=pass"
+                "const": "td-vocab-titles--DataSchema=pass"
             },
             "else": {
                 "properties": {

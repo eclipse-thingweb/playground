@@ -1,7 +1,8 @@
 {
-    "title": "td-vocab-title--InteractionAffordance",
-    "description": "title: Provides a human-readable title (e.g., display a text for UI representation) of the interaction pattern based on a default language. MAY be included. Type: string.",
+    "title": "td-vocab-titles--InteractionAffordance",
+    "description": "titles: Provides multi-language human-readable titles (e.g., display a text for UI representation in different languages) of the interaction pattern. MAY be included. Type: MultiLanguage.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
+    "also": ["td-multi-languages_titles"],
     "is-complex": true,
     "type": "object",
     "properties": {
@@ -29,47 +30,47 @@
         "property_element": {
             "type": "object",
             "if": {
-                "required": ["title"],
+                "required": ["titles"],
                 "properties": {
-                    "title": {
-                        "$ref": "#/definitions/title"
+                    "titles": {
+                        "$ref": "#/definitions/titles"
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-title--InteractionAffordance=pass"
+                "const": "td-vocab-titles--InteractionAffordance=pass"
             }
         },
         "action_element": {
             "type": "object",
             "if": {
-                "required": ["title"],
+                "required": ["titles"],
                 "properties": {
-                    "title": {
-                        "$ref": "#/definitions/title"
+                    "titles": {
+                        "$ref": "#/definitions/titles"
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-title--InteractionAffordance=pass"
+                "const": "td-vocab-titles--InteractionAffordance=pass"
             }
         },
         "event_element": {
             "type": "object",
             "if": {
-                "required": ["title"],
+                "required": ["titles"],
                 "properties": {
-                    "title": {
-                        "$ref": "#/definitions/title"
+                    "titles": {
+                        "$ref": "#/definitions/titles"
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-title--InteractionAffordance=pass"
+                "const": "td-vocab-titles--InteractionAffordance=pass"
             }
         },
-        "title": {
-            "type": "string"
+        "titles": {
+            "type": "object"
         }
     }
 }
