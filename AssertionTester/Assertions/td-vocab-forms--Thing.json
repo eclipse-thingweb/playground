@@ -1,5 +1,5 @@
 {
-    "title": "td-vocab-forms-1",
+    "title": "td-vocab-forms--Thing",
     "description": "forms: Indicates one or more endpoints at which operation(s) on this resource are accessible. In this version of TD, all operations that can be described at the Thing level are concerning how to interact with the Thing's Property interaction resources collectively at once. MAY be included. Type: array of Form.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": false,
