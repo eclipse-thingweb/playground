@@ -1,8 +1,9 @@
 {
-    "title": "td-vocab-authorization--OAuth2SecurityScheme",
-    "description": "authorization: URI of the authorization server. MAY be included. Type: anyURI.",
+    "title": "td-vocab-scopes--OAuth2SecurityScheme",
+    "description": "scopes: Set of authorization scope identifiers, provided as an array. These are provided in tokens returned by an authorization server and associated with forms in order to identify what resources a client may access and how.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
+    "also": ["td-arrays_scopes"],
     "type": "object",
     "properties": {
         "securityDefinitions": {
@@ -55,11 +56,11 @@
                         }
                     },
                     "required": [
-                        "scheme", "authorization"
+                        "scheme", "scopes"
                     ]
             },
             "then": {
-                "const": "td-vocab-authorization--OAuth2SecurityScheme=pass"
+                "const": "td-vocab-scopes--OAuth2SecurityScheme=pass"
             }
         },
         "url": {
