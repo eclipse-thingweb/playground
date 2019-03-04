@@ -1,0 +1,69 @@
+{
+    "title": "td-vocab-authorization--PoPSecurityScheme",
+    "description": "authorization: URI of the authorization server. MAY be included. Type: anyURI.",
+    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "is-complex": true,
+    "type": "object",
+    "properties": {
+        "securityDefinitions": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+                "$ref": "#/definitions/securityScheme"
+            }
+        }
+    },
+    "required": [
+        "securityDefinitions"
+    ],
+    "additionalProperties": true,
+    "definitions": {
+        "securityScheme": {
+            "if": {
+                    "type": "object",
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "proxy": {
+                            "$ref": "#/definitions/url"
+                        },
+                        "scheme": {
+                            "type": "string",
+                            "enum": [
+                                "pop"
+                            ]
+                        },
+                        "authorization": {
+                            "$ref": "#/definitions/url"
+                        },
+                        "alg": {
+                            "type": "string",
+                            "enum": ["MD5", "ES256", "ES512-256"]
+                        },
+                        "format": {
+                            "type": "string",
+                            "enum": ["jwt", "jwe", "jws"]
+                        },
+                        "in": {
+                            "type": "string",
+                            "enum": ["header", "query", "body", "cookie"]
+                        },
+                        "name": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "scheme", "authorization"
+                    ]
+            },
+            "then": {
+                "const": "td-vocab-authorization--PoPSecurityScheme=pass"
+            }
+        },
+        "url": {
+            "type": "string",
+            "format": "uri-reference"
+        }
+    }
+}
