@@ -1,125 +1,72 @@
 {
-    "title": "td-vocab-description",
+    "title": "td-vocab-description--DataSchema",
     "description": "description: Provides additional (human-readable) information based on a default language. MAY be included. Type: string.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
     "type": "object",
-    "if": {
-        "required": ["description"],
+    "properties": {
         "properties": {
-            "description": {
-                "$ref": "#/definitions/description"
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/property_element"
+            }
+        },
+        "actions": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/action_element"
+            }
+        },
+        "events": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/event_element"
             }
         }
     },
-    "then": {
-        "const": "td-vocab-description=pass"
-    },
-    "else": {
-        "properties": {
-            "properties": {
-                "type": "object",
-                "additionalProperties": {
-                    "$ref": "#/definitions/property_element"
-                }
-            },
-            "actions": {
-                "type": "object",
-                "additionalProperties": {
-                    "$ref": "#/definitions/action_element"
-                }
-            },
-            "events": {
-                "type": "object",
-                "additionalProperties": {
-                    "$ref": "#/definitions/event_element"
-                }
-            }
-        },
-        "additionalProperties": true
-    },
+    "additionalProperties": true,
     "definitions": {
         "property_element": {
             "type": "object",
-            "if": {
-                "required": ["description"],
+            "properties": {
                 "properties": {
-                    "description": {
-                        "$ref": "#/definitions/description"
+                    "additionalProperties": {
+                        "$ref": "#/definitions/dataSchema"
                     }
-                }
-            },
-            "then": {
-                "const": "td-vocab-description=pass"
-            },
-            "else": {
-                "properties": {
-                    "properties": {
-                        "additionalProperties": {
-                            "$ref": "#/definitions/dataSchema"
-                        }
-                    },
-                    "oneOf": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/definitions/dataSchema"
-                        }
-                    },
+                },
+                "oneOf": {
+                    "type": "array",
                     "items": {
                         "$ref": "#/definitions/dataSchema"
                     }
+                },
+                "items": {
+                    "$ref": "#/definitions/dataSchema"
                 }
             }
         },
         "action_element": {
             "type": "object",
-            "if": {
-                "required": ["description"],
-                "properties": {
-                    "description": {
-                        "$ref": "#/definitions/description"
-                    }
-                }
-            },
-            "then": {
-                "const": "td-vocab-description=pass"
-            },
-            "else": {
-
-                "properties": {
-                    "input": {
-                        "$ref": "#/definitions/dataSchema"
-                    },
-                    "output": {
-                        "$ref": "#/definitions/dataSchema"
-                    }
+            "properties": {
+                "input": {
+                    "$ref": "#/definitions/dataSchema"
+                },
+                "output": {
+                    "$ref": "#/definitions/dataSchema"
                 }
             }
         },
         "event_element": {
             "type": "object",
-            "if": {
-                "required": ["description"],
-                "properties": {
-                    "description": {
-                        "$ref": "#/definitions/description"
-                    }
-                }
-            },
-            "then": {
-                "const": "td-vocab-description=pass"
-            },
-            "else": {
-                "properties": {
-                    "subscription": {
-                        "$ref": "#/definitions/dataSchema"
-                    },
-                    "data": {
-                        "$ref": "#/definitions/dataSchema"
-                    },
-                    "cancellation": {
-                        "$ref": "#/definitions/dataSchema"
-                    }
+            "properties": {
+                "subscription": {
+                    "$ref": "#/definitions/dataSchema"
+                },
+                "data": {
+                    "$ref": "#/definitions/dataSchema"
+                },
+                "cancellation": {
+                    "$ref": "#/definitions/dataSchema"
                 }
             }
         },
@@ -134,7 +81,7 @@
                 }
             },
             "then": {
-                "const": "td-vocab-description=pass"
+                "const": "td-vocab-description--DataSchema=pass"
             },
             "else": {
                 "properties": {
