@@ -2,7 +2,7 @@
     "title": "td-vocab-identity--PublicSecurityScheme",
     "description": "identity: Pre-shared key identity. MAY be included. Type: string.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
-    "is-complex": false,
+    "is-complex": true,
     "type": "object",
     "properties": {
         "securityDefinitions": {
@@ -19,27 +19,32 @@
     "additionalProperties": true,
     "definitions": {
         "securityScheme": {
-            "type": "object",
-            "properties": {
-                "description": {
-                    "type": "string"
+            "if": {
+                "type": "object",
+                "properties": {
+                    "description": {
+                        "type": "string"
+                    },
+                    "proxy": {
+                        "$ref": "#/definitions/url"
+                    },
+                    "scheme": {
+                        "type": "string",
+                        "enum": [
+                            "public"
+                        ]
+                    },
+                    "identity": {
+                        "type": "string"
+                    }
                 },
-                "proxy": {
-                    "$ref": "#/definitions/url"
-                },
-                "scheme": {
-                    "type": "string",
-                    "enum": [
-                        "public"
-                    ]
-                },
-                "identity": {
-                    "type": "string"
-                }
+                "required": [
+                    "scheme", "identity"
+                ]
             },
-            "required": [
-                "scheme", "identity"
-            ]
+            "then": {
+                "const": "td-vocab-identity--PublicSecurityScheme=pass"
+            }
         },
         "url": {
             "type": "string",
