@@ -29,7 +29,7 @@
                 "additionalProperties": true
             },
             "then": {
-                "const": "td-event-names_data=pass"
+                "const": "td-vocab-data--EventAffordance=pass"
             }
         },
         "dataSchema": {
