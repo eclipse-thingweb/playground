@@ -1,5 +1,5 @@
 {
-    "title": "td-vocab-readOnly",
+    "title": "td-vocab-readOnly--DataSchema",
     "description": "readOnly: Boolean value that indicates whether a property interaction / value is read only (=true) or not (=false). MUST be included. Type: boolean.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "also": ["td-data-schema_readOnly"],
@@ -38,7 +38,7 @@
                 }
             },
             "then": {
-                "const": "td-vocab-readOnly=pass"
+                "const": "td-vocab-readOnly--DataSchema=pass"
             },
             "else": {
                 "properties": {
@@ -95,7 +95,7 @@
                 }
             },
             "then": {
-                "const": "td-vocab-readOnly=pass"
+                "const": "td-vocab-readOnly--DataSchema=pass"
             },
             "else": {
                 "properties": {
