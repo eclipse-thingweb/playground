@@ -1,5 +1,5 @@
 {
-    "title": "td-vocab-output",
+    "title": "td-vocab-output--ActionAffordance",
     "description": "output: Used to define the output data schema of the action.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
@@ -25,7 +25,7 @@
                 "additionalProperties": true
             },
             "then": {
-                "const": "td-vocab-output=pass"
+                "const": "td-vocab-output--ActionAffordance=pass"
             }
         },
         "dataSchema": {
