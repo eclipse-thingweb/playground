@@ -1,5 +1,5 @@
 {
-    "title": "td-vocab-lastModified",
+    "title": "td-vocab-lastModified--Thing",
     "description": "lastModified: Provides information when the TD instance was last modified.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": false,

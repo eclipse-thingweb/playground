@@ -1,9 +1,9 @@
 {
-    "title": "td-vocab-maxItems",
-    "description": "maxItems: Defines the maximum number of items that have to be in the array. MAY be included. Type: unsignedInt.",
+    "title": "td-vocab-minItems--ArraySchema",
+    "description": "minItems: Defines the minimum number of items that have to be in the array. MAY be included. Type: unsignedInt.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
-    "also": ["td-data-schema_maxItems"],
+    "also": ["td-data-schema_minItems"],
     "type": "object",
     "properties": {
         "properties": {
@@ -30,16 +30,16 @@
         "property_element": {
             "type": "object",
             "if": {
-                "required": ["maxItems"],
+                "required": ["minItems"],
                 "properties": {
-                    "maxItems": {
+                    "minItems": {
                         "type": "integer",
                         "minimum": 0
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-maxItems=pass"
+                "const": "td-vocab-minItems--ArraySchema=pass"
             },
             "else": {
                 "properties": {
@@ -88,16 +88,16 @@
         "dataSchema": {
             "type": "object",
             "if": {
-                "required": ["maxItems"],
+                "required": ["minItems"],
                 "properties": {
-                    "maxItems": {
+                    "minItems": {
                         "type": "integer",
                         "minimum": 0
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-maxItems=pass"
+                "const": "td-vocab-minItems--ArraySchema=pass"
             },
             "else": {
                 "properties": {
@@ -156,8 +156,10 @@
 
                     },
                     "minItems": {
+
                         "type": "integer",
                         "minimum": 0
+
                     },
                     "minimum": {
                         "type": "number"
