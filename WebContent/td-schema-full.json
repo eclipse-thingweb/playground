@@ -22,6 +22,15 @@
                 "$ref": "#/definitions/action_element"
             }
         },
+        "events": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/event_element"
+            }
+        },
+        "description": {
+            "$ref": "#/definitions/description"
+        },
         "descriptions": {
             "$ref": "#/definitions/descriptions"
         },
@@ -35,9 +44,6 @@
             "required": [
                 "instance"
             ]
-        },
-        "description": {
-            "$ref": "#/definitions/description"
         },
         "links": {
             "type": "array",
@@ -70,12 +76,6 @@
         },
         "lastModified": {
             "type": "string"
-        },
-        "events": {
-            "type": "object",
-            "additionalProperties": {
-                "$ref": "#/definitions/event_element"
-            }
         },
         "security": {
             "type": "array",

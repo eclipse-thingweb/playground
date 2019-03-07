@@ -416,7 +416,7 @@ function checkVocabulary(tdJson) {
             "ID": "td-vocabulary",
             "Status": "pass",
         });
-
+        
         otherAssertions.forEach(function (asser) {
             results.push({
                 "ID": asser,
