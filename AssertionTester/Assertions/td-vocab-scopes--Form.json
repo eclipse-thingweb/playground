@@ -1,0 +1,81 @@
+{
+    "title": "td-vocab-scopes--Form",
+    "description": "scopes: Set of authorization scope identifiers, provided as an array. These are provided in tokens returned by an authorization server and associated with forms in order to identify what resources a client may access and how.",
+    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "is-complex": true,
+    "also": ["td-arrays_scopes"],
+    "type": "object",
+    "properties": {
+        "forms": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "$ref": "#/definitions/form_element"
+            }
+        }
+    },
+    "additionalProperties": true,
+    "definitions": {
+        "form_element": {
+            "type": "object",
+            "if": {
+                "required": ["scopes"],
+                "properties": {
+                    "scopes": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "then": {
+                "const": "td-vocab-scopes--Form=pass"
+            },
+            "else": {
+                "properties": {
+                    "href": {
+                        "$ref": "#/definitions/url"
+                    },
+                    "contentType": {
+                        "type": "string"
+                    },
+                    "security": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "scopes": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "subProtocol": {
+                        "type": "string",
+                        "enum": [
+                            "longpoll"
+                        ]
+                    },
+                    "response": {
+                        "type": "object",
+                        "properties": {
+                            "contentType": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "href"
+                ],
+                "additionalProperties": true
+            }
+        },
+        "url": {
+            "type": "string",
+            "format": "uri-reference"
+        }
+    }
+}

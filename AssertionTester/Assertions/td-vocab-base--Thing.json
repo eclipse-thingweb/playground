@@ -1,0 +1,13 @@
+{
+    "title": "td-vocab-base--Thing",
+    "description": "base: Define the base URI that is valid for all defined local interaction resources. All other URIs in the TD must then be resolved using the algorithm defined in [[!RFC3986]].",
+    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "is-complex": false,
+    "type": "object",
+    "properties": {
+        "base": {
+            "type": "string"
+        }
+    },
+    "required": ["base"]
+}

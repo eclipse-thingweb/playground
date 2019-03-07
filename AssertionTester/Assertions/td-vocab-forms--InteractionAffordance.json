@@ -1,0 +1,131 @@
+{
+    "title": "td-vocab-forms--InteractionAffordance",
+    "description": "forms: Indicates one or more endpoints at which operation(s) on this resource are accessible. MUST be included. Type: array of Form.",
+    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "is-complex": true,
+    "type": "object",
+    "properties": {
+        "properties": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/property_element"
+            }
+        },
+        "actions": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/action_element"
+            }
+        },
+        "events": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/event_element"
+            }
+        }
+
+    },
+    "additionalProperties": true,
+    "definitions": {
+        "property_element": {
+            "type": "object",
+            "if": {
+                "properties": {
+                    "forms": {
+                        "type": "array",
+                        "minItems": 1,
+                        "items": {
+                            "$ref": "#/definitions/form_element"
+                        }
+                    }
+                },
+                "required": ["forms"]
+            },
+            "then": {
+                "const": "td-vocab-forms--InteractionAffordance=pass"
+            }
+        },
+        "action_element": {
+            "type": "object",
+            "if": {
+                "properties": {
+                    "forms": {
+                        "type": "array",
+                        "minItems": 1,
+                        "items": {
+                            "$ref": "#/definitions/form_element"
+                        }
+                    }
+                },
+                "required": ["forms"]
+            },
+            "then": {
+                "const": "td-vocab-forms--InteractionAffordance=pass"
+            }
+        },
+        "event_element": {
+            "type": "object",
+            "if": {
+                "properties": {
+                    "forms": {
+                        "type": "array",
+                        "minItems": 1,
+                        "items": {
+                            "$ref": "#/definitions/form_element"
+                        }
+                    }
+                },
+                "required": ["forms"]
+            },
+            "then": {
+                "const": "td-vocab-forms--InteractionAffordance=pass"
+            }
+        },
+        "form_element": {
+            "type": "object",
+            "properties": {
+                "href": {
+                    "$ref": "#/definitions/url"
+                },
+                "contentType": {
+                    "type": "string"
+                },
+                "security": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "scopes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "subProtocol": {
+                    "type": "string",
+                    "enum": [
+                        "longpoll"
+                    ]
+                },
+                "response": {
+                    "type": "object",
+                    "properties": {
+                        "contentType": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "required": [
+                "href"
+            ],
+            "additionalProperties": true
+
+        },
+        "url": {
+            "type": "string",
+            "format": "uri-reference"
+        }
+    }
+}
