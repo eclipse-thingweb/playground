@@ -1,6 +1,6 @@
 {
     "title": "td-vocab-oneOf--DataSchema",
-    "description": "enum: Restricted set of values provided as an array.",
+    "description": "oneOf: Used to ensure that the data is valid against one of the specified schemas in the array. MAY be included. Type: array of DataSchema.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
     "also": ["td-data-schema-arrays_oneOf", "td-data-schema_oneOf"],
