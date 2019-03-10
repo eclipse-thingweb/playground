@@ -5,7 +5,8 @@
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",
-            "in": "header"
+            "in": "header",
+            "name":"myParameter"
         }
     },
     "security": ["basic_sc"],
@@ -66,19 +67,27 @@
                 "href": "https://mylamp.example.com/status5"
             }]
         },
-                "status6": {
-                    "description":"something",
-                    "type": "object",
-                    "properties":{
-                        "wow": {
-                            "type": "number"
-                        }
-                    },
-                    "required":["wow"],
-                    "forms": [{
-                        "href": "https://mylamp.example.com/status6"
-                    }]
+        "status6": {
+            "description":"something",
+            "type": "object",
+            "properties":{
+                "wow": {
+                    "type": "number"
                 }
+            },
+            "required":["wow"],
+            "forms": [{
+                "href": "https://mylamp.example.com/status6"
+            }]
+        },
+        "status7": {
+            "description": "something",
+            "type": "string",
+            "format":"email",
+            "forms": [{
+                "href": "https://mylamp.example.com/status6"
+            }]
+        }
     },
     "actions": {
         "toggle": {

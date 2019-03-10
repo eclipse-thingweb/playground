@@ -188,7 +188,7 @@
                     "subProtocol": {
                         "type": "string",
                         "enum": [
-                            "longpoll"
+                            "longpoll", "websub", "sse"
                         ]
                     },
                     "response": {

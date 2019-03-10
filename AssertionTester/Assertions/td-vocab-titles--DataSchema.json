@@ -29,20 +29,33 @@
     "definitions": {
         "property_element": {
             "type": "object",
-            "properties": {
+            "if": {
+                "required": ["titles"],
                 "properties": {
-                    "additionalProperties": {
-                        "$ref": "#/definitions/dataSchema"
+                    "titles": {
+                        "$ref": "#/definitions/titles"
                     }
-                },
-                "oneOf": {
-                    "type": "array",
+                }
+            },
+            "then": {
+                "const": "td-vocab-titles--DataSchema=pass"
+            },
+            "else": {
+                "properties": {
+                    "properties": {
+                        "additionalProperties": {
+                            "$ref": "#/definitions/dataSchema"
+                        }
+                    },
+                    "oneOf": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/dataSchema"
+                        }
+                    },
                     "items": {
                         "$ref": "#/definitions/dataSchema"
                     }
-                },
-                "items": {
-                    "$ref": "#/definitions/dataSchema"
                 }
             }
         },

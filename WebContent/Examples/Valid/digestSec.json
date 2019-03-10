@@ -6,7 +6,8 @@
         "digest_sc": {
             "scheme": "digest",
             "qop": "auth",
-            "in":"header"
+            "in": "header",
+            "name": "myParameter"
         }
     },
     "security": ["digest_sc"],

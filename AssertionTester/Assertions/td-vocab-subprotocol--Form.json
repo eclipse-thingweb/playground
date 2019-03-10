@@ -91,53 +91,13 @@
                     "subProtocol": {
                         "type": "string",
                         "enum": [
-                            "longpoll"
+                            "longpoll","websub","sse"
                         ]
                     }
                 }
             },
             "then": {
                 "const": "td-vocab-subprotocol--Form=pass"
-            },
-            "else": {
-                "properties": {
-                    "href": {
-                        "$ref": "#/definitions/url"
-                    },
-                    "contentType": {
-                        "type": "string"
-                    },
-                    "security": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
-                    },
-                    "scopes": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
-                    },
-                    "subProtocol": {
-                        "type": "string",
-                        "enum": [
-                            "longpoll"
-                        ]
-                    },
-                    "response": {
-                        "type": "object",
-                        "properties": {
-                            "contentType": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                },
-                "required": [
-                    "href"
-                ],
-                "additionalProperties": true
             }
         },
         "url": {

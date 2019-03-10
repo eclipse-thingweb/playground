@@ -3,7 +3,7 @@
     "description": "security: Set of security definition names, chosen from those defined in securityDefinitions. These must all be satisfied for access to resources at or below the current level, if not overridden at a lower level. MAY be included. Type: array of string.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
-    "also": ["td-security-overrides_form", "td-arrays_security"],
+    "also": ["td-security-overrides"],
     "type": "object",
     "properties": {
         "forms": {

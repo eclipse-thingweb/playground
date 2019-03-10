@@ -2,7 +2,7 @@
     "title": "td-vocab-descriptions--DataSchema",
     "description": "descriptions: Can be used to support (human-readable) information in different languages. MAY be included. Type: MultiLanguage.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
-    "also": ["td-multi-languages_descriptions"],
+    "also": ["td-multi-languages_descriptions", "td-data-schema_descriptions"],
     "is-complex": true,
     "type": "object",
     "properties": {
@@ -29,45 +29,85 @@
     "definitions": {
         "property_element": {
             "type": "object",
-            "properties": {
+            "if": {
+                "required": ["descriptions"],
                 "properties": {
-                    "additionalProperties": {
-                        "$ref": "#/definitions/dataSchema"
+                    "descriptions": {
+                        "$ref": "#/definitions/descriptions"
                     }
-                },
-                "oneOf": {
-                    "type": "array",
+                }
+            },
+            "then": {
+                "const": "td-vocab-descriptions--DataSchema=pass"
+            },
+            "else": {
+                "properties": {
+                    "properties": {
+                        "additionalProperties": {
+                            "$ref": "#/definitions/dataSchema"
+                        }
+                    },
+                    "oneOf": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/dataSchema"
+                        }
+                    },
                     "items": {
                         "$ref": "#/definitions/dataSchema"
                     }
-                },
-                "items": {
-                    "$ref": "#/definitions/dataSchema"
                 }
             }
         },
         "action_element": {
             "type": "object",
-            "properties": {
-                "input": {
-                    "$ref": "#/definitions/dataSchema"
-                },
-                "output": {
-                    "$ref": "#/definitions/dataSchema"
+            "if": {
+                "required": ["descriptions"],
+                "properties": {
+                    "descriptions": {
+                        "$ref": "#/definitions/descriptions"
+                    }
+                }
+            },
+            "then": {
+                "const": "td-vocab-descriptions--DataSchema=pass"
+            },
+            "else": {
+
+                "properties": {
+                    "input": {
+                        "$ref": "#/definitions/dataSchema"
+                    },
+                    "output": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
                 }
             }
         },
         "event_element": {
             "type": "object",
-            "properties": {
-                "subscription": {
-                    "$ref": "#/definitions/dataSchema"
-                },
-                "data": {
-                    "$ref": "#/definitions/dataSchema"
-                },
-                "cancellation": {
-                    "$ref": "#/definitions/dataSchema"
+            "if": {
+                "required": ["descriptions"],
+                "properties": {
+                    "descriptions": {
+                        "$ref": "#/definitions/descriptions"
+                    }
+                }
+            },
+            "then": {
+                "const": "td-data-schema_descriptions=pass"
+            },
+            "else": {
+                "properties": {
+                    "subscription": {
+                        "$ref": "#/definitions/dataSchema"
+                    },
+                    "data": {
+                        "$ref": "#/definitions/dataSchema"
+                    },
+                    "cancellation": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
                 }
             }
         },
@@ -76,13 +116,13 @@
             "if": {
                 "required": ["descriptions"],
                 "properties": {
-                    "description": {
+                    "descriptions": {
                         "$ref": "#/definitions/descriptions"
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-descriptions--DataSchema=pass"
+                "const": "td-data-schema_descriptions=pass"
             },
             "else": {
                 "properties": {
