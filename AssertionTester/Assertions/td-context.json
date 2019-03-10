@@ -3,7 +3,7 @@
     "description": "The root object of a Thing Description instance MAY include the @context name known from JSON-LD [[!json-ld]] with the value URI of the Thing description context file http://www.w3.org/ns/td.",
     "is-complex": true,
     "$schema ": "http://json-schema.org/draft-06/schema#",
-    "also": ["td-jsonld-keywords_at-context"],
+    "also": ["td-vocab-at-context--Thing"],
     "type": "object",
     "if": {
         "required": ["@context"],

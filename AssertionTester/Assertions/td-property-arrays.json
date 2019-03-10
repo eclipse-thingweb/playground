@@ -1,6 +1,6 @@
 {
-    "title": "td-property-arrays_forms",
-    "description": "forms: Indicates one or more endpoints at which operation(s) on this resource are accessible. MUST be included. Type: array of Form.",
+    "title": "td-property-arrays",
+    "description": "The type of the member forms MUST be serialized as a JSON array.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
     "also": ["td-property-names_forms"],
@@ -31,7 +31,7 @@
                 "required": ["forms"]
             },
             "then": {
-                "const": "td-property-arrays_scopes=pass"
+                "const": "td-property-arrays=pass"
             }
         },
         "form_element": {
@@ -58,7 +58,7 @@
                 "subProtocol": {
                     "type": "string",
                     "enum": [
-                        "longpoll"
+                        "longpoll", "websub", "sse"
                     ]
                 },
                 "response": {

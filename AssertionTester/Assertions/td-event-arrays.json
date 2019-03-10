@@ -1,8 +1,8 @@
 {
-    "title": "td-event-arrays_forms",
-    "description": "The type of the members forms, scopes, and security MUST be serialized as a JSON array.",
+    "title": "td-event-arrays",
+    "description": "The type of the members forms MUST be serialized as a JSON array.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
-    "is-complex":false,
+    "is-complex": false,
     "also": ["td-event-names_forms"],
     "type": "object",
     "properties": {
@@ -84,7 +84,7 @@
                 "subProtocol": {
                     "type": "string",
                     "enum": [
-                        "longpoll"
+                        "longpoll", "websub", "sse"
                     ]
                 },
                 "response": {
