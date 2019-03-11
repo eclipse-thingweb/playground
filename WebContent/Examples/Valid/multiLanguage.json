@@ -20,7 +20,7 @@
             },
             "proxy":"http://myproxy.com/lampProxy",
             "@context": [
-                "http://www.w3.org/ns/wot-security",
+                "https://www.w3.org/ns/wot-security",
                 {
                     "superSecure": "http://example.org/superSecure"
                 }
