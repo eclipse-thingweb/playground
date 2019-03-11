@@ -34,7 +34,10 @@
                 "required": ["uriVariables"],
                 "properties": {
                     "uriVariables": {
-                        "$ref": "#/definitions/dataSchema"
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/definitions/dataSchema"
+                        }
                     }
                 }
             },
@@ -48,7 +51,10 @@
                 "required": ["uriVariables"],
                 "properties": {
                     "uriVariables": {
-                        "$ref": "#/definitions/dataSchema"
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/definitions/dataSchema"
+                        }
                     }
                 }
             },
@@ -62,7 +68,10 @@
                 "required": ["uriVariables"],
                 "properties": {
                     "uriVariables": {
-                        "$ref": "#/definitions/dataSchema"
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/definitions/dataSchema"
+                        }
                     }
                 }
             },

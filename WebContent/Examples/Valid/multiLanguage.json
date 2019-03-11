@@ -12,7 +12,20 @@
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",
-            "in": "header"
+            "in": "header",
+            "description": "some information on this scheme",
+            "descriptions": {
+                "en": "Human readable information.",
+                "de": "Menschenlesbare Informationen."
+            },
+            "proxy":"http://myproxy.com/lampProxy",
+            "@context": [
+                "https://www.w3.org/ns/wot-security",
+                {
+                    "superSecure": "http://example.org/superSecure"
+                }
+            ],
+            "@type":"superSecure:1024bitpassword"
         }
     },
     "security": ["basic_sc"],
