@@ -32,7 +32,7 @@
                 "required": ["scheme"]
             },
             "then": {
-                "const": "td-vocab-scheme--SecurityScheme_nosec"
+                "const": "td-vocab-scheme--SecurityScheme_nosec=pass"
             }
         }
     }

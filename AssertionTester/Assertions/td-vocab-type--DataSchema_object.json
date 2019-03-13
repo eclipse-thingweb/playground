@@ -1,6 +1,6 @@
 {
-    "title": "td-vocab-type--DataSchema",
-    "description": "type: Assignment of JSON-based data types compatible with JSON Schema (one of boolean, integer, number, string, object, array, or null). MAY be included. Type: string (one of object, array, string, number, integer, boolean, or null).",
+    "title": "td-vocab-type--DataSchema_object",
+    "description": "type: Assignment of JSON-based data types compatible with JSON Schema (one of boolean, integer, number, string, object, array, or null). MAY be included. Type: string object).",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "also": ["td-data-schema_type"],
     "is-complex": true,
@@ -35,19 +35,37 @@
                     "type": {
                         "type": "string",
                         "enum": [
-                            "boolean",
-                            "integer",
-                            "number",
-                            "string",
-                            "object",
-                            "array",
-                            "null"
+                            "object"
                         ]
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-type--DataSchema=pass"
+                "const": "td-vocab-type--DataSchema_object=pass"
+            },
+            "else": {
+                "properties": {
+                    "uriVariables": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/definitions/dataSchema"
+                        }
+                    },
+                    "oneOf": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/dataSchema"
+                        }
+                    },
+                    "items": {
+                        "$ref": "#/definitions/dataSchema"
+                    },
+                    "properties": {
+                        "additionalProperties": {
+                            "$ref": "#/definitions/dataSchema"
+                        }
+                    }
+                }
             }
         },
         "action_element": {
@@ -83,19 +101,13 @@
                     "type": {
                         "type": "string",
                         "enum": [
-                            "boolean",
-                            "integer",
-                            "number",
-                            "string",
-                            "object",
-                            "array",
-                            "null"
+                            "object"
                         ]
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-type--DataSchema=pass"
+                "const": "td-vocab-type--DataSchema_object=pass"
             },
             "else": {
                 "properties": {
