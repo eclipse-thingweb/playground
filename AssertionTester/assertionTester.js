@@ -252,6 +252,7 @@ function validate(storedTdAddress, outputLocation) {
 }
 
 function toOutput(tdId) {
+    results = mergeIdenticalResults(results);
     createParents(results);
 
     // Push the non implemented assertions
@@ -314,7 +315,72 @@ function toOutput(tdId) {
             console.log("The result-" + fileName + ".csv is saved!");
         });
     }
+}
 
+function mergeIdenticalResults(resultsJSON) {
+    // first generate a list of results that appear more than once
+    // it should be a JSON object, keys are the assertion ids and the value is an array
+    // while putting these results, remove them from the results FIRST
+    // then for each key, find the resulting result: 
+    //if one fail total fail, if one pass and no fail then pass, otherwise not-impl
+
+    var identicalResults = {};
+    resultsJSON.forEach((curResult, index) => {
+        var curId = curResult.ID;
+        
+        // remove this one, but add it back if there is no duplicate
+        resultsJSON.splice(index, 1);
+        // check if there is a second one
+        const identicalIndex = resultsJSON.findIndex(x => x.ID === curId);
+        
+        if (identicalIndex > 0){ //there is a second one
+
+            // check if it already exists
+            if (identicalResults.hasOwnProperty(curId)){
+                // push if it already exists
+                identicalResults[curId].push(curResult.Status)
+            } else {
+                // create a new array with values if it does not exist
+                identicalResults[curId]=[curResult.Status]
+            }
+            // put it back such that the last identical can find its duplicate that appeared before
+            resultsJSON.unshift(curResult);
+            // process.exit();
+        } else {
+            // if there is no duplicate, put it back into results but at the beginning 
+            resultsJSON.unshift(curResult);
+        }
+    });
+
+    //get the keys to iterate through
+    var identicalKeys = Object.keys(identicalResults)
+
+    // iterate through each duplicate, calculate the new result, set the new result and then remove the duplicates 
+    identicalKeys.forEach((curKey) => {
+        var curResults = identicalResults[curKey];
+        var newResult;
+
+        if(curResults.indexOf("fail")>=0){
+            newResult="fail"
+        } else if (curResults.indexOf("pass") >= 0){
+            newResult = "pass"
+        } else {
+            newResult = "not-impl"
+        }
+        //delete each of the duplicate
+        while(resultsJSON.findIndex(x => x.ID === curKey)>=0){
+            resultsJSON.splice(resultsJSON.findIndex(x => x.ID === curKey), 1);
+        }
+
+        // push back the new result
+        resultsJSON.push({
+            "ID": curKey,
+            "Status": newResult,
+            "Comment": "result of a merge"
+        });
+
+    });
+    return resultsJSON;
 }
 
 function createParents(resultsJSON) {
@@ -409,7 +475,7 @@ function checkVocabulary(tdJson) {
     ajv.addSchema(schema, 'td');
 
     var valid = ajv.validate('td', tdJson);
-    var otherAssertions = ["td-objects_securityDefinitions", "td-arrays_security", "td-vocab-security--Thing", "td-security-mandatory", "td-vocab-securityDefinitions--Thing", "td-vocab-scheme--SecurityScheme", "td-context-toplevel", "td-vocab-name--Thing", "td-vocab-security--Thing", "td-security-schemes_scheme", "td-vocab-id--Thing"];
+    var otherAssertions = ["td-objects_securityDefinitions", "td-arrays_security", "td-vocab-security--Thing", "td-security-mandatory", "td-vocab-securityDefinitions--Thing", "td-context-toplevel", "td-vocab-name--Thing", "td-vocab-security--Thing", "td-security-schemes_scheme", "td-vocab-id--Thing"];
 
     if (valid) {
         results.push({

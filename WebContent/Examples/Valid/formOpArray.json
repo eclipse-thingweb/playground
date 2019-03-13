@@ -29,7 +29,13 @@
                     "href": "http://example.org:9191/api/brightness/observe",
                     "op": ["observeproperty"],
                     "http:methodName": "GET",
-                    "subProtocol": "longpoll"
+                    "subProtocol": "websub"
+                },
+                {
+                    "href": "http://example.org:9191/api/brightness/unobserve",
+                    "op": ["unobserveproperty"],
+                    "http:methodName": "GET",
+                    "subProtocol": "websub"
                 }
             ]
         },

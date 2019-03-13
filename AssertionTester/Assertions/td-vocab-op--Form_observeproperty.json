@@ -1,6 +1,6 @@
 {
-    "title": "td-vocab-subprotocol--Form",
-    "description": "subprotocol: Indicates the exact mechanism by which an interaction will be accomplished for a given protocol when there are multiple options. For example, for HTTP and Events, it indicates which of several available mechanisms should be used for asynchronous notifications. ",
+    "title": "td-vocab-op--Form_observeproperty",
+    "description": "op: Indicates the expected result of performing the operation described by the form. For example, the Property interaction allows get and set operations. The protocol binding may contain a form for the get operation and a different form for the set operation. The op attribute indicates which form is which and allows the client to select the correct form for the operation required. ",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
     "type": "object",
@@ -86,18 +86,70 @@
         "form_element": {
             "type": "object",
             "if": {
-                "required": ["subprotocol"],
+                "required": ["op"],
                 "properties": {
-                    "subProtocol": {
-                        "type": "string",
-                        "enum": [
-                            "longpoll","websub","sse"
+                    "op": {
+                        "anyOf": [{
+                                "type": "string",
+                                "enum": [
+                                    "observeproperty"
+                                ]
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "type": "string",
+                                    "enum": [
+                                        "observeproperty"
+                                    ]
+                                }
+                            }
                         ]
                     }
                 }
             },
             "then": {
-                "const": "td-vocab-subprotocol--Form=pass"
+                "const": "td-vocab-op--Form_observeproperty=pass"
+            },
+            "else": {
+                "properties": {
+                    "href": {
+                        "$ref": "#/definitions/url"
+                    },
+                    "contentType": {
+                        "type": "string"
+                    },
+                    "security": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "scopes": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "subProtocol": {
+                        "type": "string",
+                        "enum": [
+                            "longpoll", "websub", "sse"
+                        ]
+                    },
+                    "response": {
+                        "type": "object",
+                        "properties": {
+                            "contentType": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "href"
+                ],
+                "additionalProperties": true
             }
         },
         "url": {
