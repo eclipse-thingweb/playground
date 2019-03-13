@@ -134,42 +134,6 @@
                     "href": {
                         "$ref": "#/definitions/url"
                     },
-                    "op": {
-                        "anyOf": [{
-                                "type": "string",
-                                "enum": [
-                                    "readproperty",
-                                    "writeproperty",
-                                    "observeproperty",
-                                    "readallproperties",
-                                    "writeallproperties",
-                                    "readmultipleproperties",
-                                    "writemultipleproperties",
-                                    "subscribeevent",
-                                    "unsubscribeevent",
-                                    "invokeaction"
-                                ]
-                            },
-                            {
-                                "type": "array",
-                                "items": {
-                                    "type": "string",
-                                    "enum": [
-                                        "readproperty",
-                                        "writeproperty",
-                                        "observeproperty",
-                                        "readallproperties",
-                                        "writeallproperties",
-                                        "readmultipleproperties",
-                                        "writemultipleproperties",
-                                        "subscribeevent",
-                                        "unsubscribeevent",
-                                        "invokeaction"
-                                    ]
-                                }
-                            }
-                        ]
-                    },
                     "contentType": {
                         "type": "string"
                     },
