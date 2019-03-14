@@ -87,8 +87,7 @@
 		"turn_off": {
 			"forms": [{
 				"href": "/turn_off"
-			}],
-			"required": ["current state"]
+			}]
 		}
 
 	},
@@ -104,8 +103,7 @@
 			},
 			"forms": [{
 				"href": "/notEnoughWater"
-			}],
-			"required": ["water_lvl"]
+			}]
 		},
 		"notEnoughBeans": {
 			"data": {
@@ -113,8 +111,7 @@
 			},
 			"forms": [{
 				"href": "/notEnoughBeans"
-			}],
-			"required": ["bean_lvl"]
+			}]
 		},
 
 
@@ -124,8 +121,7 @@
 			},
 			"forms": [{
 				"href": "/binIsFull"
-			}],
-			"required": ["bin_lvl"]
+			}]
 		}
 
 
