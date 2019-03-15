@@ -1,5 +1,8 @@
 {
-
+	"@context": [
+          "http://www.w3.org/ns/td",
+          {"htv": "http://www.w3.org/2011/http#"}
+        ],
 	"id": "urn:dev:wot:com:example:servient:coffeemachine",
 	"name": "coffeemachineTD",
 	"securityDefinitions": {
