@@ -9,10 +9,7 @@
 		}
 	},
 	"base": "https://coffee.example.com",
-
-
 	"security": ["basic_sc"],
-
 	"properties": {
 		"status": {
 			"type": "string",
@@ -20,7 +17,6 @@
 			"forms": [{
 				"href": "/status",
 				"htv:method": "GET"
-
 			}],
 			"readonly": true
 		},
@@ -37,19 +33,16 @@
 					"type": "string",
 					"enum": ["off"],
 					"writeonly": true
-
 				}
 			},
 			"forms": [{
 				"href": "/state"
-
 			}]
 		},
 		"levels": {
 			"description": "it contains the level of water,beans and bin",
 			"type": "object",
 			"properties": {
-
 				"water_lvl": {
 					"type": "number",
 					"readonly": true
@@ -68,8 +61,6 @@
 			}]
 		}
 	},
-
-
 	"actions": {
 		"brew": {
 			"description": "choose what kind of coffee you want to order",
@@ -89,14 +80,8 @@
 				"href": "/turn_off"
 			}]
 		}
-
 	},
-
-
-
 	"events": {
-
-
 		"notEnoughWater": {
 			"data": {
 				"type": "integer"
@@ -113,8 +98,6 @@
 				"href": "/notEnoughBeans"
 			}]
 		},
-
-
 		"binIsFull": {
 			"data": {
 				"type": "integer"
@@ -123,7 +106,5 @@
 				"href": "/binIsFull"
 			}]
 		}
-
-
 	}
 }
