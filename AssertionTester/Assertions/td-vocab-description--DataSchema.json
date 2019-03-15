@@ -113,7 +113,7 @@
         "dataSchema": {
             "type": "object",
             "if": {
-                "required": ["descriptions"],
+                "required": ["description"],
                 "properties": {
                     "description": {
                         "$ref": "#/definitions/description"
