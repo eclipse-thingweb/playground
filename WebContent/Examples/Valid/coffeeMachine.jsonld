@@ -1,0 +1,113 @@
+{
+	"@context": [
+          "http://www.w3.org/ns/td",
+          {"htv": "http://www.w3.org/2011/http#"}
+        ],
+	"id": "urn:dev:wot:com:example:servient:coffeemachine",
+	"name": "coffeemachineTD",
+	"securityDefinitions": {
+		"basic_sc": {
+			"scheme": "basic",
+			"in": "header"
+		}
+	},
+	"base": "https://coffee.example.com",
+	"security": ["basic_sc"],
+	"properties": {
+		"status": {
+			"type": "string",
+			"enum": ["brewing", "grinding", "error"],
+			"forms": [{
+				"href": "/status",
+				"htv:method": "GET"
+			}],
+			"readonly": true
+		},
+		"state": {
+			"description": "to check if the machine is on or off and turn off if necessary",
+			"type": "object",
+			"properties": {
+				"current state": {
+					"type": "string",
+					"enum": ["on", "off"],
+					"readonly": true
+				},
+				"newstate": {
+					"type": "string",
+					"enum": ["off"],
+					"writeonly": true
+				}
+			},
+			"forms": [{
+				"href": "/state"
+			}]
+		},
+		"levels": {
+			"description": "it contains the level of water,beans and bin",
+			"type": "object",
+			"properties": {
+				"water_lvl": {
+					"type": "number",
+					"readonly": true
+				},
+				"bean_lvl": {
+					"type": "number",
+					"readonly": true
+				},
+				"bin_lvl": {
+					"type": "number",
+					"readonly": true
+				}
+			},
+			"forms": [{
+				"href": "/levels"
+			}]
+		}
+	},
+	"actions": {
+		"brew": {
+			"description": "choose what kind of coffee you want to order",
+			"input": {
+				"type": "string",
+				"enum": ["mocha", "americano", "cappicino"]
+			},
+			"output": {
+				"type": "string"
+			},
+			"forms": [{
+				"href": "/brew"
+			}]
+		},
+		"turn_off": {
+			"forms": [{
+				"href": "/turn_off"
+			}]
+		}
+	},
+	"events": {
+		"notEnoughWater": {
+			"data": {
+				"type": "integer"
+			},
+			"forms": [{
+				"href": "/notEnoughWater"
+			}]
+		},
+		"notEnoughBeans": {
+			"data": {
+				"type": "integer"
+			},
+			"forms": [{
+				"href": "/notEnoughBeans"
+			}]
+		},
+		"binIsFull": {
+			"data": {
+				"type": "integer"
+			},
+			"forms": [{
+				"href": "/binIsFull"
+			}]
+		}
+	}
+}
