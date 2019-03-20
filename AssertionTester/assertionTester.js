@@ -2,6 +2,8 @@ const fs = require('fs');
 var Ajv = require('ajv');
 const Json2csvParser = require('json2csv').Parser;
 var jsonValidator = require('json-dup-key-validator');
+const csvjson = require('csvjson');
+
 var secondArgument;
 
 const draftLocation = "./json-schema-draft-06.json";
@@ -12,7 +14,7 @@ const json2csvParser = new Json2csvParser({
 });
 var results = [];
 
-const nonImplementedAssertions = ["td-form-protocolbindings", "td-security-binding", "td-security-no-extras", "td-data-schema-objects", "td-media-type", "td-readOnly-observable-writeOnly-default", "td-readOnly-observable-default", "td-content-type-default", "client-data-schema", "client-uri-template", "server-data-schema", "server-data-schema-extras", "client-data-schema-accept-extras", "client-data-schema-no-extras", "server-uri-template", "td-default-readOnly", "td-default-writeOnly", "td-default-observable", "td-default-contentType", "td-default-safe", "td-default-idempotent", "td-default-in-1", "td-default-in-2", "td-default-qop", "td-default-alg", "td-default-format", "td-default-flow"];
+var nonImplementedAssertions = fetchManualAssertions();
 // Takes the second argument as the TD to validate
 
 if (process.argv[2]) {
@@ -256,6 +258,7 @@ function toOutput(tdId) {
     createParents(results);
 
     // Push the non implemented assertions
+    nonImplementedAssertions = fetchManualAssertions();
     nonImplementedAssertions.forEach((curNonImpl) => {
         results.push({
             "ID": curNonImpl,
@@ -709,4 +712,18 @@ function checkUniqueness(tdString) {
 
         return JSON.parse(tdString);
     }
+}
+
+function fetchManualAssertions(){
+
+    var manualCsv = fs.readFileSync("./manual.csv").toString();
+
+    var options = {
+        delimiter: ',', // optional
+        quote: '"' // optional
+    };
+
+    var manualJSON = csvjson.toColumnArray(manualCsv, options);
+    var manualIdList = manualJSON.ID;
+    return manualIdList;
 }

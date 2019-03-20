@@ -267,7 +267,16 @@
                     ]
                 },
                 "items": {
-                    "$ref": "#/definitions/dataSchema"
+                    "oneOf": [{
+                            "$ref": "#/definitions/dataSchema"
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dataSchema"
+                            }
+                        }
+                    ]
                 },
                 "maxItems": {
                     "type": "integer",
@@ -729,7 +738,16 @@
                     ]
                 },
                 "items": {
-                    "$ref": "#/definitions/dataSchema"
+                    "oneOf": [{
+                            "$ref": "#/definitions/dataSchema"
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dataSchema"
+                            }
+                        }
+                    ]
                 },
                 "maxItems": {
                     "type": "integer",

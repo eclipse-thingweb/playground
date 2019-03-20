@@ -32,8 +32,6 @@ if (process.argv[2]) {
     process.exit();
 }
 
-var mergedResults = fs.readFileSync(secondArgument);
-// console.log(mergedResults)
     // process one file, tail-recurse if more
     csvtojson().fromFile(secondArgument).then((data) => {
         json_results=data;
