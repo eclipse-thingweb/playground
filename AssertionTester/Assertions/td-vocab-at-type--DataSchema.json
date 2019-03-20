@@ -47,6 +47,12 @@
                             "$ref": "#/definitions/dataSchema"
                         }
                     },
+                    "uriVariables": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/definitions/dataSchema"
+                        }
+                    },
                     "oneOf": {
                         "type": "array",
                         "items": {
@@ -54,7 +60,16 @@
                         }
                     },
                     "items": {
-                        "$ref": "#/definitions/dataSchema"
+                        "oneOf": [{
+                                "$ref": "#/definitions/dataSchema"
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/dataSchema"
+                                }
+                            }
+                        ]
                     }
                 }
             }
@@ -145,7 +160,16 @@
                         ]
                     },
                     "items": {
-                        "$ref": "#/definitions/dataSchema"
+                        "oneOf": [{
+                                "$ref": "#/definitions/dataSchema"
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/dataSchema"
+                                }
+                            }
+                        ]
                     },
                     "maxItems": {
 

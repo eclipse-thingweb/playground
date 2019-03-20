@@ -41,6 +41,39 @@
             },
             "then": {
                 "const": "td-vocab-properties--ObjectSchema=pass"
+            },
+            "else": {
+                "properties": {
+                    "properties": {
+                        "additionalProperties": {
+                            "$ref": "#/definitions/dataSchema"
+                        }
+                    },
+                    "uriVariables": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/definitions/dataSchema"
+                        }
+                    },
+                    "oneOf": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/dataSchema"
+                        }
+                    },
+                    "items": {
+                        "oneOf": [{
+                                "$ref": "#/definitions/dataSchema"
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/dataSchema"
+                                }
+                            }
+                        ]
+                    }
+                }
             }
         },
         "action_element": {
@@ -131,7 +164,16 @@
                         ]
                     },
                     "items": {
-                        "$ref": "#/definitions/dataSchema"
+                        "oneOf": [{
+                                "$ref": "#/definitions/dataSchema"
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/dataSchema"
+                                }
+                            }
+                        ]
                     },
                     "maxItems": {
 
