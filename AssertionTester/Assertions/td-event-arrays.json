@@ -97,8 +97,7 @@
                 }
             },
             "required": [
-                "href",
-                "contentType"
+                "href"
             ],
             "additionalProperties": true
         },
