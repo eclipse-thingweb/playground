@@ -33,14 +33,14 @@
                     "contains": {
                         "type": "string",
                         "enum": [
-                            "http://www.w3.org/ns/td"
+                            "http://www.w3.org/ns/td", "http://w3.org/ns/td"
                         ]
                     }
                 },
                 {
                     "type": "string",
                     "enum": [
-                        "http://www.w3.org/ns/td"
+                        "http://www.w3.org/ns/td", "http://w3.org/ns/td"
                     ]
                 }
             ]
