@@ -215,14 +215,14 @@
                     "contains": {
                         "type": "string",
                         "enum": [
-                            "https://www.w3.org/ns/json-schema"
+                            "https://www.w3.org/ns/json-schema", "https://w3.org/ns/json-schema"
                         ]
                     }
                 },
                 {
                     "type": "string",
                     "enum": [
-                        "https://www.w3.org/ns/json-schema"
+                        "https://www.w3.org/ns/json-schema", "https://w3.org/ns/json-schema"
                     ]
                 }
             ]

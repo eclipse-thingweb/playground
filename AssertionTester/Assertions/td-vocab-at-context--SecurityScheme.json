@@ -46,14 +46,14 @@
                     "contains": {
                         "type": "string",
                         "enum": [
-                            "https://www.w3.org/ns/wot-security"
+                            "https://www.w3.org/ns/wot-security", "https://w3.org/ns/wot-security"
                         ]
                     }
                 },
                 {
                     "type": "string",
                     "enum": [
-                        "https://www.w3.org/ns/wot-security"
+                        "https://www.w3.org/ns/wot-security", "https://w3.org/ns/wot-security"
                     ]
                 }
             ]

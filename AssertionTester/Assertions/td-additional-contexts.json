@@ -54,7 +54,7 @@
             "contains": {
                 "type": "string",
                 "enum": [
-                    "http://www.w3.org/ns/td"
+                    "http://www.w3.org/ns/td", "http://w3.org/ns/td"
                 ]
             }
         },
@@ -73,7 +73,7 @@
                 "contains": {
                     "type": "string",
                     "enum": [
-                        "http://www.w3.org/ns/td"
+                        "http://www.w3.org/ns/td", "http://w3.org/ns/td"
                     ]
                 }           
         },
