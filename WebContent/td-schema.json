@@ -20,16 +20,16 @@
                     "contains": {
                         "type": "string",
                         "enum": [
-                            "http://www.w3.org/ns/td",
-                            "http://w3.org/ns/td"
+                            "https://www.w3.org/2019/td/v1",
+                            "https://w3.org/2019/td/v1"
                         ]
                     }
                 },
                 {
                     "type": "string",
                     "enum": [
-                        "http://www.w3.org/ns/td",
-                        "http://w3.org/ns/td"
+                        "https://www.w3.org/2019/td/v1",
+                        "https://w3.org/2019/td/v1"
                     ]
                 }
             ]
