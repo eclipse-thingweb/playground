@@ -1127,7 +1127,7 @@
         "created": {
             "type": "string"
         },
-        "lastModified": {
+        "modified": {
             "type": "string"
         },
         "security": {
