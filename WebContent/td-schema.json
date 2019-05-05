@@ -4,10 +4,12 @@
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "definitions": {
         "thing-context": {
-            "oneOf": [{
+            "oneOf": [
+                {
                     "type": "array",
                     "items": {
-                        "anyOf": [{
+                        "anyOf": [
+                            {
                                 "$ref": "#/definitions/url"
                             },
                             {
@@ -18,20 +20,23 @@
                     "contains": {
                         "type": "string",
                         "enum": [
-                            "http://www.w3.org/ns/td", "http://w3.org/ns/td"
+                            "http://www.w3.org/ns/td",
+                            "http://w3.org/ns/td"
                         ]
                     }
                 },
                 {
                     "type": "string",
                     "enum": [
-                        "http://www.w3.org/ns/td", "http://w3.org/ns/td"
+                        "http://www.w3.org/ns/td",
+                        "http://w3.org/ns/td"
                     ]
                 }
             ]
         },
         "type_declaration": {
-            "oneOf": [{
+            "oneOf": [
+                {
                     "type": "string"
                 },
                 {
@@ -113,7 +118,8 @@
                     ]
                 },
                 "items": {
-                    "oneOf": [{
+                    "oneOf": [
+                        {
                             "$ref": "#/definitions/dataSchema"
                         },
                         {
@@ -266,7 +272,8 @@
                     "$ref": "#/definitions/url"
                 },
                 "op": {
-                    "oneOf": [{
+                    "oneOf": [
+                        {
                             "type": "string",
                             "enum": [
                                 "readproperty",
@@ -333,7 +340,8 @@
                     "$ref": "#/definitions/url"
                 },
                 "op": {
-                    "oneOf": [{
+                    "oneOf": [
+                        {
                             "type": "string",
                             "enum": [
                                 "invokeaction"
@@ -394,7 +402,8 @@
                     "$ref": "#/definitions/url"
                 },
                 "op": {
-                    "oneOf": [{
+                    "oneOf": [
+                        {
                             "type": "string",
                             "enum": [
                                 "subscribeevent",
@@ -457,7 +466,8 @@
                     "$ref": "#/definitions/url"
                 },
                 "op": {
-                    "oneOf": [{
+                    "oneOf": [
+                        {
                             "type": "string",
                             "enum": [
                                 "readallproperties",
@@ -584,7 +594,8 @@
                     ]
                 },
                 "items": {
-                    "oneOf": [{
+                    "oneOf": [
+                        {
                             "$ref": "#/definitions/dataSchema"
                         },
                         {
@@ -644,7 +655,8 @@
             "additionalProperties": true
         },
         "securityScheme": {
-            "oneOf": [{
+            "oneOf": [
+                {
                     "type": "object",
                     "properties": {
                         "@type": {
@@ -693,7 +705,12 @@
                         },
                         "in": {
                             "type": "string",
-                            "enum": ["header", "query", "body", "cookie"]
+                            "enum": [
+                                "header",
+                                "query",
+                                "body",
+                                "cookie"
+                            ]
                         },
                         "name": {
                             "type": "string"
@@ -755,11 +772,19 @@
                         },
                         "qop": {
                             "type": "string",
-                            "enum": ["auth", "auth-int"]
+                            "enum": [
+                                "auth",
+                                "auth-int"
+                            ]
                         },
                         "in": {
                             "type": "string",
-                            "enum": ["header", "query", "body", "cookie"]
+                            "enum": [
+                                "header",
+                                "query",
+                                "body",
+                                "cookie"
+                            ]
                         },
                         "name": {
                             "type": "string"
@@ -795,15 +820,28 @@
                         },
                         "alg": {
                             "type": "string",
-                            "enum": ["MD5", "ES256", "ES512-256"]
+                            "enum": [
+                                "MD5",
+                                "ES256",
+                                "ES512-256"
+                            ]
                         },
                         "format": {
                             "type": "string",
-                            "enum": ["jwt", "jwe", "jws"]
+                            "enum": [
+                                "jwt",
+                                "jwe",
+                                "jws"
+                            ]
                         },
                         "in": {
                             "type": "string",
-                            "enum": ["header", "query", "body", "cookie"]
+                            "enum": [
+                                "header",
+                                "query",
+                                "body",
+                                "cookie"
+                            ]
                         },
                         "name": {
                             "type": "string"
@@ -909,7 +947,12 @@
                         },
                         "flow": {
                             "type": "string",
-                            "enum": ["implicit", "password", "client", "code"]
+                            "enum": [
+                                "implicit",
+                                "password",
+                                "client",
+                                "code"
+                            ]
                         }
                     },
                     "required": [
@@ -939,7 +982,12 @@
                         },
                         "in": {
                             "type": "string",
-                            "enum": ["header", "query", "body", "cookie"]
+                            "enum": [
+                                "header",
+                                "query",
+                                "body",
+                                "cookie"
+                            ]
                         },
                         "name": {
                             "type": "string"
@@ -975,15 +1023,28 @@
                         },
                         "format": {
                             "type": "string",
-                            "enum": ["jwt", "jwe", "jws"]
+                            "enum": [
+                                "jwt",
+                                "jwe",
+                                "jws"
+                            ]
                         },
                         "alg": {
                             "type": "string",
-                            "enum": ["MD5", "ES256", "ES512-256"]
+                            "enum": [
+                                "MD5",
+                                "ES256",
+                                "ES512-256"
+                            ]
                         },
                         "in": {
                             "type": "string",
-                            "enum": ["header", "query", "body", "cookie"]
+                            "enum": [
+                                "header",
+                                "query",
+                                "body",
+                                "cookie"
+                            ]
                         },
                         "name": {
                             "type": "string"
