@@ -1,5 +1,6 @@
 {
     "id": "urn:rootForms",
+    "@context": "https://www.w3.org/2019/td/v1",
     "name": "MyLampThing",
     "description": "Valid TD demonstrating how to use forms in the root of the TD document",
     "securityDefinitions": {

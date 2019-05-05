@@ -1,6 +1,6 @@
 {
     "@context": [
-        "http://www.w3.org/ns/td",
+        "https://www.w3.org/2019/td/v1",
         {
             "iot": "http://iotschema.org/"
         }

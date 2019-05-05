@@ -1,5 +1,6 @@
 {
     "id": "urn:inputAction",
+    "@context": "https://www.w3.org/2019/td/v1",
     "name": "MyLampThing",
     "description": "Valid TD demonstrating how to use input and output data in actions",
     "securityDefinitions": {

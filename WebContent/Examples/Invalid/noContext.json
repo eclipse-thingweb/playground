@@ -1,7 +1,7 @@
 {
-    "name": "MyLampThing",
-    "@context": "https://www.w3.org/2019/td/v1",
-    "description": "Invalid TD since it has no id",
+    "id": "urn:dev:wot:com:example:servient:lamp",
+    "name":"unknownThing",
+    "description": "Invalid TD since it has no @context key",
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",

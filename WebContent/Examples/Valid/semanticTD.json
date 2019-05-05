@@ -1,6 +1,6 @@
 {
     "@context": [
-        "http://www.w3.org/ns/td",
+        "https://www.w3.org/2019/td/v1",
         {
             "iot": "http://iotschema.org/"
         }
@@ -13,7 +13,6 @@
         "basic_sc": {
             "scheme": "basic",
             "in": "header",
-            "@context": "https://www.w3.org/ns/wot-security",
             "@type":"normal"
         }
     },
@@ -65,8 +64,7 @@
             "@type": "iot:TemperatureAlarm",
             "description": "Lamp reaches a critical temperature (overheating)",
             "data": {
-                "type": "string",
-                "@context": "https://www.w3.org/ns/json-schema"
+                "type": "string"
             },
             "forms": [{
                 "href": "coaps://mylamp.example.com/oh",

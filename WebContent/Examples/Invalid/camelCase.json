@@ -1,5 +1,6 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
+    "@context": "https://www.w3.org/2019/td/v1",
     "name": "MyLampThing",
     "description": "Invalid TD since op in actions uses camelCase",
     "securityDefinitions": {

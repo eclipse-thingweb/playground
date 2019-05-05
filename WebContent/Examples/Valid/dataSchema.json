@@ -1,5 +1,6 @@
 {
     "id": "urn:dataSchema",
+    "@context": "https://www.w3.org/2019/td/v1",
     "name": "MyLampThing",
     "description": "Valid TD copied from the spec's first example",
     "securityDefinitions": {
