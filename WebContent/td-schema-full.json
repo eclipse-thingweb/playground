@@ -4,10 +4,12 @@
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "definitions": {
         "thing-context": {
-            "oneOf": [{
+            "oneOf": [
+                {
                     "type": "array",
                     "items": {
-                        "anyOf": [{
+                        "anyOf": [
+                            {
                                 "$ref": "#/definitions/url"
                             },
                             {
@@ -18,23 +20,27 @@
                     "contains": {
                         "type": "string",
                         "enum": [
-                            "http://www.w3.org/ns/td", "http://w3.org/ns/td"
+                            "https://www.w3.org/2019/td/v1",
+                            "https://w3.org/2019/td/v1"
                         ]
                     }
                 },
                 {
                     "type": "string",
                     "enum": [
-                        "http://www.w3.org/ns/td", "http://w3.org/ns/td"
+                        "https://www.w3.org/2019/td/v1",
+                        "https://w3.org/2019/td/v1"
                     ]
                 }
             ]
         },
         "security-context": {
-            "oneOf": [{
+            "oneOf": [
+                {
                     "type": "array",
                     "items": {
-                        "anyOf": [{
+                        "anyOf": [
+                            {
                                 "$ref": "#/definitions/url"
                             },
                             {
@@ -45,23 +51,27 @@
                     "contains": {
                         "type": "string",
                         "enum": [
-                            "https://www.w3.org/ns/wot-security", "https://w3.org/ns/wot-security"
+                            "https://www.w3.org/ns/wot-security",
+                            "https://w3.org/ns/wot-security"
                         ]
                     }
                 },
                 {
                     "type": "string",
                     "enum": [
-                        "https://www.w3.org/ns/wot-security", "https://w3.org/ns/wot-security"
+                        "https://www.w3.org/ns/wot-security",
+                        "https://w3.org/ns/wot-security"
                     ]
                 }
             ]
         },
         "data-context": {
-            "oneOf": [{
+            "oneOf": [
+                {
                     "type": "array",
                     "items": {
-                        "anyOf": [{
+                        "anyOf": [
+                            {
                                 "$ref": "#/definitions/url"
                             },
                             {
@@ -72,20 +82,23 @@
                     "contains": {
                         "type": "string",
                         "enum": [
-                            "https://www.w3.org/ns/json-schema", "https://w3.org/ns/json-schema"
+                            "https://www.w3.org/ns/json-schema",
+                            "https://w3.org/ns/json-schema"
                         ]
                     }
                 },
                 {
                     "type": "string",
                     "enum": [
-                        "https://www.w3.org/ns/json-schema", "https://w3.org/ns/json-schema"
+                        "https://www.w3.org/ns/json-schema",
+                        "https://w3.org/ns/json-schema"
                     ]
                 }
             ]
         },
         "type_declaration": {
-            "oneOf": [{
+            "oneOf": [
+                {
                     "type": "string"
                 },
                 {
@@ -167,7 +180,8 @@
                     ]
                 },
                 "items": {
-                    "oneOf": [{
+                    "oneOf": [
+                        {
                             "$ref": "#/definitions/dataSchema"
                         },
                         {
@@ -254,7 +268,9 @@
                 }
             },
             "required": [
-                "forms", "safe", "idempotent"
+                "forms",
+                "safe",
+                "idempotent"
             ],
             "additionalProperties": true
         },
@@ -320,7 +336,8 @@
                     "$ref": "#/definitions/url"
                 },
                 "op": {
-                    "oneOf": [{
+                    "oneOf": [
+                        {
                             "type": "string",
                             "enum": [
                                 "readproperty",
@@ -376,7 +393,9 @@
                 }
             },
             "required": [
-                "href", "contentType","op"
+                "href",
+                "contentType",
+                "op"
             ],
             "additionalProperties": true
         },
@@ -387,7 +406,8 @@
                     "$ref": "#/definitions/url"
                 },
                 "op": {
-                    "oneOf": [{
+                    "oneOf": [
+                        {
                             "type": "string",
                             "enum": [
                                 "invokeaction"
@@ -437,7 +457,9 @@
                 }
             },
             "required": [
-                "href", "contentType","op"
+                "href",
+                "contentType",
+                "op"
             ],
             "additionalProperties": true
         },
@@ -448,7 +470,8 @@
                     "$ref": "#/definitions/url"
                 },
                 "op": {
-                    "oneOf": [{
+                    "oneOf": [
+                        {
                             "type": "string",
                             "enum": [
                                 "subscribeevent",
@@ -500,7 +523,9 @@
                 }
             },
             "required": [
-                "href", "contentType","op"
+                "href",
+                "contentType",
+                "op"
             ],
             "additionalProperties": true
         },
@@ -511,7 +536,8 @@
                     "$ref": "#/definitions/url"
                 },
                 "op": {
-                    "oneOf": [{
+                    "oneOf": [
+                        {
                             "type": "string",
                             "enum": [
                                 "readallproperties",
@@ -567,7 +593,9 @@
                 }
             },
             "required": [
-                "href", "contentType","op"
+                "href",
+                "contentType",
+                "op"
             ],
             "additionalProperties": true
         },
@@ -638,7 +666,8 @@
                     ]
                 },
                 "items": {
-                    "oneOf": [{
+                    "oneOf": [
+                        {
                             "$ref": "#/definitions/dataSchema"
                         },
                         {
@@ -698,7 +727,8 @@
             "additionalProperties": true
         },
         "securityScheme": {
-            "oneOf": [{
+            "oneOf": [
+                {
                     "type": "object",
                     "properties": {
                         "@type": {
@@ -747,14 +777,20 @@
                         },
                         "in": {
                             "type": "string",
-                            "enum": ["header", "query", "body", "cookie"]
+                            "enum": [
+                                "header",
+                                "query",
+                                "body",
+                                "cookie"
+                            ]
                         },
                         "name": {
                             "type": "string"
                         }
                     },
                     "required": [
-                        "scheme", "in"
+                        "scheme",
+                        "in"
                     ]
                 },
                 {
@@ -809,18 +845,28 @@
                         },
                         "qop": {
                             "type": "string",
-                            "enum": ["auth", "auth-int"]
+                            "enum": [
+                                "auth",
+                                "auth-int"
+                            ]
                         },
                         "in": {
                             "type": "string",
-                            "enum": ["header", "query", "body", "cookie"]
+                            "enum": [
+                                "header",
+                                "query",
+                                "body",
+                                "cookie"
+                            ]
                         },
                         "name": {
                             "type": "string"
                         }
                     },
                     "required": [
-                        "scheme", "qop", "in"
+                        "scheme",
+                        "qop",
+                        "in"
                     ]
                 },
                 {
@@ -849,22 +895,38 @@
                         },
                         "alg": {
                             "type": "string",
-                            "enum": ["MD5", "ES256", "ES512-256"]
+                            "enum": [
+                                "MD5",
+                                "ES256",
+                                "ES512-256"
+                            ]
                         },
                         "format": {
                             "type": "string",
-                            "enum": ["jwt", "jwe", "jws"]
+                            "enum": [
+                                "jwt",
+                                "jwe",
+                                "jws"
+                            ]
                         },
                         "in": {
                             "type": "string",
-                            "enum": ["header", "query", "body", "cookie"]
+                            "enum": [
+                                "header",
+                                "query",
+                                "body",
+                                "cookie"
+                            ]
                         },
                         "name": {
                             "type": "string"
                         }
                     },
                     "required": [
-                        "scheme", "in", "alg", "format"
+                        "scheme",
+                        "in",
+                        "alg",
+                        "format"
                     ]
                 },
                 {
@@ -963,11 +1025,17 @@
                         },
                         "flow": {
                             "type": "string",
-                            "enum": ["implicit", "password", "client", "code"]
+                            "enum": [
+                                "implicit",
+                                "password",
+                                "client",
+                                "code"
+                            ]
                         }
                     },
                     "required": [
-                        "scheme", "flow"
+                        "scheme",
+                        "flow"
                     ]
                 },
                 {
@@ -993,14 +1061,20 @@
                         },
                         "in": {
                             "type": "string",
-                            "enum": ["header", "query", "body", "cookie"]
+                            "enum": [
+                                "header",
+                                "query",
+                                "body",
+                                "cookie"
+                            ]
                         },
                         "name": {
                             "type": "string"
                         }
                     },
                     "required": [
-                        "scheme", "in"
+                        "scheme",
+                        "in"
                     ]
                 },
                 {
@@ -1029,22 +1103,38 @@
                         },
                         "format": {
                             "type": "string",
-                            "enum": ["jwt", "jwe", "jws"]
+                            "enum": [
+                                "jwt",
+                                "jwe",
+                                "jws"
+                            ]
                         },
                         "alg": {
                             "type": "string",
-                            "enum": ["MD5", "ES256", "ES512-256"]
+                            "enum": [
+                                "MD5",
+                                "ES256",
+                                "ES512-256"
+                            ]
                         },
                         "in": {
                             "type": "string",
-                            "enum": ["header", "query", "body", "cookie"]
+                            "enum": [
+                                "header",
+                                "query",
+                                "body",
+                                "cookie"
+                            ]
                         },
                         "name": {
                             "type": "string"
                         }
                     },
                     "required": [
-                        "scheme","in","alg","format"
+                        "scheme",
+                        "in",
+                        "alg",
+                        "format"
                     ]
                 }
             ]
