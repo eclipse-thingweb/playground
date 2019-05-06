@@ -1,8 +1,7 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
-    "@context": "https://www.w3.org/2019/wot/td/v1",
-    "name": "MyLampThing",
-    "description": "Invalid TD due to duplicate items in enum of data schema",
+    "name":"unknownThing",
+    "description": "Invalid TD since it has no @context key",
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",
@@ -12,7 +11,7 @@
     "security": ["basic_sc"],
     "properties": {
         "status": {
-            "enum": ["valid", "invalid", "valid"],
+            "type": "string",
             "forms": [
                 {
                     "href": "https://mylamp.example.com/status"

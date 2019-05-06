@@ -1,5 +1,6 @@
 {
     "id": "urn:multilanguage",
+    "@context": "https://www.w3.org/2019/wot/td/v1",
     "name": "MyLampThing",
     "description": "Valid TD showing multiple language support",
     "descriptions": {
@@ -19,12 +20,6 @@
                 "de": "Menschenlesbare Informationen."
             },
             "proxy":"http://myproxy.com/lampProxy",
-            "@context": [
-                "https://www.w3.org/ns/wot-security",
-                {
-                    "superSecure": "http://example.org/superSecure"
-                }
-            ],
             "@type":"superSecure:1024bitpassword"
         }
     },

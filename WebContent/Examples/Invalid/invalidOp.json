@@ -1,5 +1,6 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
+    "@context": "https://www.w3.org/2019/wot/td/v1",
     "name": "MyLampThing",
     "description": "Invalid TD since 3rd form of brightness property has an op value reserved for events",
     "securityDefinitions": {
