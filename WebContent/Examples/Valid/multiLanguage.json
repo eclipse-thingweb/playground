@@ -1,5 +1,6 @@
 {
     "id": "urn:multilanguage",
+    "@context": "https://www.w3.org/2019/td/v1",
     "name": "MyLampThing",
     "description": "Valid TD showing multiple language support",
     "descriptions": {

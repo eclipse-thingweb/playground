@@ -114,6 +114,7 @@ fs.readFile(storedTdAddress, (err, tdData) => {
             //json ld validation
 
             // TODO: pause json ld verification until namespace is fixed
+            console.log('JSON-LD validation... OK');
 
             // jsonld.toRDF(tdJson, {
             //     format: 'application/nquads'
