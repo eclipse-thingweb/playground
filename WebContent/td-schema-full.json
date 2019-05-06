@@ -3,6 +3,14 @@
     "description": "JSON Schema representation of the TD serialisation in JSON-LD format. For a TD to validate this schema it must contain all the term defined in section 5.1.1",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "definitions": {
+        "thing-context-w3c-uri": {
+            "type": "string",
+            "format": "uri",
+            "enum": [
+                "https://www.w3.org/2019/wot/td/v1",
+                "https://w3.org/2019/wot/td/v1"
+            ]
+        },
         "thing-context": {
             "oneOf": [
                 {
@@ -18,17 +26,11 @@
                         ]
                     },
                     "contains": {
-                        "type": "string",
-                        "enum": [
-                            "https://www.w3.org/2019/td/v1"
-                        ]
+                        "$ref": "#/definitions/thing-context-w3c-uri"
                     }
                 },
                 {
-                    "type": "string",
-                    "enum": [
-                        "https://www.w3.org/2019/td/v1"
-                    ]
+                    "$ref": "#/definitions/thing-context-w3c-uri"
                 }
             ]
         },
