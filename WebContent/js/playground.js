@@ -182,6 +182,7 @@ $(function () {
                             light('KO', 'spot-json-ld');
                             log('X JSON-LD validation... KO:');
                             log('> ' + err);
+                            trigger('validate-add', triples);
                         }
                     });
                 }, false);
