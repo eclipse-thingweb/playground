@@ -30,34 +30,28 @@
 	</div>
 </header>
 
-
-
-
 <body>
 
 	<div class="pure-g wrap">
 
 		<h1 class="pure-u-1 header">Thing Description Playground</h1>
 		<h3 class="pure-u-1 header">Validation of Thing Descriptions according to the <a href="https://w3c.github.io/wot-thing-description/#"
-			 target="_blank">W3C Editor's Draft 29 March 2019</a></h3>
+			 target="_blank">W3C Editor's Draft 06 May 2019</a></h3>
 		<h3 class="pure-u-1 header"> <i class="fab fa-github"></i> For unexpected validation or rejection, report it <a href="https://github.com/thingweb/thingweb-playground"
 			 target="_blank">
 				here
 			</a>
 		</h3>
 
-		<h4 class="pure-u-1 header">Warning: Browsers other than Chrome and Firefox present issues with the validation of JSON-LD files.</h4>
+		<p class="pure-u-1 header">
+		<b> Warning:</b> Browsers other than Chrome and Firefox present issues with the validation of JSON-LD files.
+		<br>
+		<b> Warning:</b> JSON-LD validation will always fail until the TD namespace in @context becomes online</p>
 
-		<div class="pure-u-1">
-			<pre></pre>
-		</div>
-
-		<!-- <div class="pure-u-1 pure-u-lg-17-24 "> -->
 		<div class="pure-u-17-24">
 			<textarea autofocus id="td-text" name="td-text" rows="32" placeholder="Enter Thing Description here..."></textarea>
 		</div>
 
-		<!-- <div class="pure-u-1 pure-u-lg-7-24 "> -->
 		<div class="pure-u-6-24">
 			<div class="panel">
 
@@ -107,12 +101,10 @@
 					</tbody>
 				</table>
 
-
 				<form class="pure-form">
 					<button type="button" class="pure-button" onclick="javascript:validate()">Validate</button>
 					<button type="button" class="pure-button" onclick="javascript:clearLog()">Clear Log</button>
 				</form>
-
 
 				<table class="pure-table pure-table-bordered">
 					<tbody>
@@ -206,10 +198,9 @@
 			</ul>
 		</div>
 		<div>
-			<p>Copyrights © 2018 Eclipse Thingweb. All Rights Reserved.</p>
+			<p>Copyrights © 2019 Eclipse Thingweb. All Rights Reserved.</p>
 		</div>
 	</footer>
-
 </body>
 
 </html>

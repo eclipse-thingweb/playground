@@ -1,6 +1,6 @@
 {
     "name": "MyLampThing",
-    "@context": "https://www.w3.org/2019/wot/td/v1",
+    "@context": "https://www.w3.org/2019/td/v1",
     "description": "Invalid TD since it has no id",
     "securityDefinitions": {
         "basic_sc": {
