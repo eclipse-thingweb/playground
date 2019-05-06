@@ -1,6 +1,6 @@
 {
     "id": "urn:interactionSecurity",
-    "@context": "https://www.w3.org/2019/td/v1",
+    "@context": "https://www.w3.org/2019/wot/td/v1",
     "name": "MyLampThing",
     "description":"Valid TD demonstrating how to use security in interaction level by overwriting the root level security",
     "securityDefinitions": {

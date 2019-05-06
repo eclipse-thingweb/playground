@@ -1,6 +1,6 @@
 {
     "id": "urn:safeIdempotent",
-    "@context": "https://www.w3.org/2019/td/v1",
+    "@context": "https://www.w3.org/2019/wot/td/v1",
     "name": "MyLampThing",
     "description": "Valid TD showing how to annotate actions with safe and idempotent",
     "securityDefinitions": {
