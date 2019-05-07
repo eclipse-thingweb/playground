@@ -1,6 +1,6 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
-    "name": "MyLampThing",
+    "title": "MyLampThing",
     "@context": "https://www.w3.org/2019/td/v1",
     "description": "Invalid TD since overheating event has a form with no href",
     "securityDefinitions": {

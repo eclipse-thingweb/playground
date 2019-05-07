@@ -1,7 +1,7 @@
 {
     "id": "urn:minimal",
     "@context": "https://www.w3.org/2019/td/v1",
-    "name": "MyLampThing",
+    "title": "MyLampThing",
     "description": "Valid TD with minimum information possible",
     "securityDefinitions": {
         "basic_sc": {

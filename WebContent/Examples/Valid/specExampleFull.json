@@ -2,7 +2,7 @@
     "id": "urn:specExampleFull",
     "@context": "https://www.w3.org/2019/td/v1",
     "description": "TD showing how each interaction can be fully annotated with the default values",
-    "name": "MyLampThing",
+    "title": "MyLampThing",
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",

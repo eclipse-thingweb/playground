@@ -7,7 +7,7 @@
     ],
     "@type": "Thing",
     "id": "urn:uri:variables",
-    "name": "MyLampThing",
+    "title": "MyLampThing",
     "description": "TD Showing Urivariables in all interaction patterns",
     "securityDefinitions": {
         "basic_sc": {

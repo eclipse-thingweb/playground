@@ -1,7 +1,7 @@
 {
     "id": "urn:version",
     "@context": "https://www.w3.org/2019/td/v1",
-    "name": "MyLampThing",
+    "title": "MyLampThing",
     "description": "Valid TD demonstrating how to use version with additional fields",
     "securityDefinitions": {
         "basic_sc": {

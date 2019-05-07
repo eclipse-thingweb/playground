@@ -1,5 +1,5 @@
 {
-    "name": "MyLampThing",
+    "title": "MyLampThing",
     "@context": "https://www.w3.org/2019/td/v1",
     "id": "urn:dev:wot:com:example:servient:lamp",
     "description": "Invalid TD since event has no form in events",

@@ -1,7 +1,7 @@
 {
     "id": "urn:constOneOf",
     "@context": "https://www.w3.org/2019/td/v1",
-    "name": "MyLampThing",
+    "title": "MyLampThing",
     "description": "Valid TD showing how to use unit, oneOf and const",
     "securityDefinitions": {
         "basic_sc": {
