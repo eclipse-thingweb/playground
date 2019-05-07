@@ -1,7 +1,7 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
     "@context": "https://www.w3.org/2019/td/v1",
-    "name": "MyLampThing",
+    "title": "MyLampThing",
     "description": "Error td since LongPoll should be longpoll",
     "securityDefinitions": {
         "basic_sc": {

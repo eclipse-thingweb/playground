@@ -1,7 +1,7 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
     "@context": "https://www.w3.org/2019/td/v1",
-    "description": "Invalid TD since it has no name key",
+    "description": "Invalid TD since it has no title key",
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",

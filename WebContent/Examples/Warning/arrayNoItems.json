@@ -1,7 +1,7 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
     "@context": "https://www.w3.org/2019/td/v1",
-    "name": "MyLampThing",
+    "title": "MyLampThing",
     "description": "Invalid TD due the an empty enum in data schema",
     "securityDefinitions": {
         "basic_sc": {

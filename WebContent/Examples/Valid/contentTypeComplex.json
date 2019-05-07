@@ -1,7 +1,7 @@
 {
     "id": "urn:contentTypeComplex",
     "@context": "https://www.w3.org/2019/td/v1",
-    "name": "MyLampThing",
+    "title": "MyLampThing",
     "description": "Valid TD demonstrating how to use contenttype in forms in a complicated way",
     "securityDefinitions": {
         "basic_sc": {

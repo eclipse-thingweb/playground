@@ -54,11 +54,11 @@
                 "description": {
                     "$ref": "#/definitions/description"
                 },
-                "title": {
-                    "$ref": "#/definitions/title"
-                },
                 "descriptions": {
                     "$ref": "#/definitions/descriptions"
+                },
+                "title": {
+                    "$ref": "#/definitions/title"
                 },
                 "titles": {
                     "$ref": "#/definitions/titles"
@@ -169,7 +169,7 @@
                     "$ref": "#/definitions/descriptions"
                 },
                 "title": {
-                    "type": "string"
+                    "$ref": "#/definitions/title"
                 },
                 "titles": {
                     "$ref": "#/definitions/titles"
@@ -214,11 +214,11 @@
                 "description": {
                     "type": "string"
                 },
-                "title": {
-                    "type": "string"
-                },
                 "descriptions": {
                     "$ref": "#/definitions/descriptions"
+                },
+                "title": {
+                    "$ref": "#/definitions/title"
                 },
                 "titles": {
                     "$ref": "#/definitions/titles"
@@ -1066,8 +1066,11 @@
             "type": "string",
             "format": "uri"
         },
-        "name": {
-            "type": "string"
+        "title": {
+            "$ref": "#/definitions/title"
+        },
+        "titles": {
+            "$ref": "#/definitions/titles"
         },
         "properties": {
             "type": "object",
@@ -1128,7 +1131,7 @@
             }
         },
         "support": {
-            "type": "string"
+            "$ref": "#/definitions/anyUri"
         },
         "created": {
             "type": "string"
@@ -1151,7 +1154,7 @@
         }
     },
     "required": [
-        "name",
+        "title",
         "id",
         "security",
         "securityDefinitions",
