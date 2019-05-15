@@ -1,6 +1,6 @@
 {
     "title": "MyLampThing",
-    "@context": "https://www.w3.org/2019/td/v1",
+    "@context":"https://www.w3.org/2019/wot/td/v1",
     "id": "urn:dev:wot:com:example:servient:lamp",
     "description": "Invalid TD since action has no form in actions",
     "securityDefinitions": {

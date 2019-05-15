@@ -7,7 +7,7 @@
             "type": "string",
             "format": "uri",
             "enum": [
-                "https://www.w3.org/2019/td/v1"
+                "https://www.w3.org/2019/wot/td/v1"
             ]
         },
         "thing-context": {

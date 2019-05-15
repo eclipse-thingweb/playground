@@ -1,6 +1,6 @@
 {
     "id": "urn:cancSubData",
-    "@context": "https://www.w3.org/2019/td/v1",
+    "@context":"https://www.w3.org/2019/wot/td/v1",
     "title": "MyLampThing",
     "description": "Valid TD demonstrating how to use data schema for cancellation and subscription",
     "securityDefinitions": {

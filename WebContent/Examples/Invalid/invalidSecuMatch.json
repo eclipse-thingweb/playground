@@ -1,6 +1,6 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
-    "@context": "https://www.w3.org/2019/td/v1",
+    "@context":"https://www.w3.org/2019/wot/td/v1",
     "title": "MyLampThing",
     "description": "Invalid TD since security in toggle action references to an unknown securityDefinition",
     "securityDefinitions": {
