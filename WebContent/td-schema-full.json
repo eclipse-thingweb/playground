@@ -19,9 +19,42 @@
         "titles": {
             "type": "object"
         },
+        "security": {
+            "oneOf": [
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "scopes": {
+            "oneOf": [
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "subProtocol": {
+            "type": "string",
+            "enum": [
+                "longpoll",
+                "websub",
+                "sse"
+            ]
+        },
         "thing-context-w3c-uri": {
             "type": "string",
-            "format": "uri",
             "enum": [
                 "https://www.w3.org/2019/wot/td/v1"
             ]
@@ -407,36 +440,13 @@
                     "type": "string"
                 },
                 "subProtocol": {
-                    "type": "string",
-                    "enum": [
-                        "longpoll",
-                        "websub",
-                        "sse"
-                    ]
+                    "$ref": "#/definitions/subProtocol"
                 },
                 "security": {
-                    "oneOf": [{
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        {
-                            "type": "string"
-                        }
-                    ]
+                    "$ref": "#/definitions/security"
                 },
                 "scopes": {
-                    "oneOf": [{
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        {
-                            "type": "string"
-                        }
-                    ]
+                    "$ref": "#/definitions/scopes"
                 },
                 "response": {
                     "type": "object",
@@ -486,36 +496,13 @@
                     "type": "string"
                 },
                 "subProtocol": {
-                    "type": "string",
-                    "enum": [
-                        "longpoll",
-                        "websub",
-                        "sse"
-                    ]
+                    "$ref": "#/definitions/subProtocol"
                 },
                 "security": {
-                    "oneOf": [{
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        {
-                            "type": "string"
-                        }
-                    ]
+                    "$ref": "#/definitions/security"
                 },
                 "scopes": {
-                    "oneOf": [{
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        {
-                            "type": "string"
-                        }
-                    ]
+                    "$ref": "#/definitions/scopes"
                 },
                 "response": {
                     "type": "object",
@@ -567,38 +554,13 @@
                     "type": "string"
                 },
                 "subProtocol": {
-                    "type": "string",
-                    "enum": [
-                        "longpoll",
-                        "websub",
-                        "sse"
-                    ]
+                    "$ref": "#/definitions/subProtocol"
                 },
                 "security": {
-                    "oneOf": [
-                        {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        {
-                            "type": "string"
-                        }
-                    ]
+                    "$ref": "#/definitions/security"
                 },
                 "scopes": {
-                    "oneOf": [
-                        {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        {
-                            "type": "string"
-                        }
-                    ]
+                    "$ref": "#/definitions/scopes"
                 },
                 "response": {
                     "type": "object",
@@ -654,36 +616,13 @@
                     "type": "string"
                 },
                 "subProtocol": {
-                    "type": "string",
-                    "enum": [
-                        "longpoll",
-                        "websub",
-                        "sse"
-                    ]
+                    "$ref": "#/definitions/subProtocol"
                 },
                 "security": {
-                    "oneOf": [{
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        {
-                            "type": "string"
-                        }
-                    ]
+                    "$ref": "#/definitions/security"
                 },
                 "scopes": {
-                    "oneOf": [{
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        {
-                            "type": "string"
-                        }
-                    ]
+                    "$ref": "#/definitions/scopes"
                 },
                 "response": {
                     "type": "object",
@@ -807,35 +746,6 @@
                         "scheme": {
                             "type": "string",
                             "enum": [
-                                "cert"
-                            ]
-                        },
-                        "identity": {
-                            "type": "string"
-                        }
-                    },
-                    "required": [
-                        "scheme"
-                    ]
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "@type": {
-                            "$ref": "#/definitions/type_declaration"
-                        },
-                        "description": {
-                            "$ref": "#/definitions/description"
-                        },
-                        "descriptions": {
-                            "$ref": "#/definitions/descriptions"
-                        },
-                        "proxy": {
-                            "$ref": "#/definitions/anyUri"
-                        },
-                        "scheme": {
-                            "type": "string",
-                            "enum": [
                                 "digest"
                             ]
                         },
@@ -883,6 +793,45 @@
                         "scheme": {
                             "type": "string",
                             "enum": [
+                                "apikey"
+                            ]
+                        },
+                        "in": {
+                            "type": "string",
+                            "enum": [
+                                "header",
+                                "query",
+                                "body",
+                                "cookie"
+                            ]
+                        },
+                        "name": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "scheme",
+                        "in"
+                    ]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {
+                            "$ref": "#/definitions/type_declaration"
+                        },
+                        "description": {
+                            "$ref": "#/definitions/description"
+                        },
+                        "descriptions": {
+                            "$ref": "#/definitions/descriptions"
+                        },
+                        "proxy": {
+                            "$ref": "#/definitions/anyUri"
+                        },
+                        "scheme": {
+                            "type": "string",
+                            "enum": [
                                 "bearer"
                             ]
                         },
@@ -901,6 +850,7 @@
                             "type": "string",
                             "enum": [
                                 "jwt",
+                                "cwt",
                                 "jwe",
                                 "jws"
                             ]
@@ -923,6 +873,35 @@
                         "in",
                         "alg",
                         "format"
+                    ]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {
+                            "$ref": "#/definitions/type_declaration"
+                        },
+                        "description": {
+                            "$ref": "#/definitions/description"
+                        },
+                        "descriptions": {
+                            "$ref": "#/definitions/descriptions"
+                        },
+                        "proxy": {
+                            "$ref": "#/definitions/anyUri"
+                        },
+                        "scheme": {
+                            "type": "string",
+                            "enum": [
+                                "cert"
+                            ]
+                        },
+                        "identity": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "scheme"
                     ]
                 },
                 {
@@ -1001,96 +980,6 @@
                         "scheme": {
                             "type": "string",
                             "enum": [
-                                "oauth2"
-                            ]
-                        },
-                        "authorization": {
-                            "$ref": "#/definitions/anyUri"
-                        },
-                        "token": {
-                            "$ref": "#/definitions/anyUri"
-                        },
-                        "refresh": {
-                            "$ref": "#/definitions/anyUri"
-                        },
-                        "scopes": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        "flow": {
-                            "type": "string",
-                            "enum": [
-                                "implicit",
-                                "password",
-                                "client",
-                                "code"
-                            ]
-                        }
-                    },
-                    "required": [
-                        "scheme",
-                        "flow"
-                    ]
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "@type": {
-                            "$ref": "#/definitions/type_declaration"
-                        },
-                        "description": {
-                            "$ref": "#/definitions/description"
-                        },
-                        "descriptions": {
-                            "$ref": "#/definitions/descriptions"
-                        },
-                        "proxy": {
-                            "$ref": "#/definitions/anyUri"
-                        },
-                        "scheme": {
-                            "type": "string",
-                            "enum": [
-                                "apikey"
-                            ]
-                        },
-                        "in": {
-                            "type": "string",
-                            "enum": [
-                                "header",
-                                "query",
-                                "body",
-                                "cookie"
-                            ]
-                        },
-                        "name": {
-                            "type": "string"
-                        }
-                    },
-                    "required": [
-                        "scheme",
-                        "in"
-                    ]
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "@type": {
-                            "$ref": "#/definitions/type_declaration"
-                        },
-                        "description": {
-                            "$ref": "#/definitions/description"
-                        },
-                        "descriptions": {
-                            "$ref": "#/definitions/descriptions"
-                        },
-                        "proxy": {
-                            "$ref": "#/definitions/anyUri"
-                        },
-                        "scheme": {
-                            "type": "string",
-                            "enum": [
                                 "pop"
                             ]
                         },
@@ -1101,6 +990,7 @@
                             "type": "string",
                             "enum": [
                                 "jwt",
+                                "cwt",
                                 "jwe",
                                 "jws"
                             ]
@@ -1131,6 +1021,64 @@
                         "in",
                         "alg",
                         "format"
+                    ]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {
+                            "$ref": "#/definitions/type_declaration"
+                        },
+                        "description": {
+                            "$ref": "#/definitions/description"
+                        },
+                        "descriptions": {
+                            "$ref": "#/definitions/descriptions"
+                        },
+                        "proxy": {
+                            "$ref": "#/definitions/anyUri"
+                        },
+                        "scheme": {
+                            "type": "string",
+                            "enum": [
+                                "oauth2"
+                            ]
+                        },
+                        "authorization": {
+                            "$ref": "#/definitions/anyUri"
+                        },
+                        "token": {
+                            "$ref": "#/definitions/anyUri"
+                        },
+                        "refresh": {
+                            "$ref": "#/definitions/anyUri"
+                        },
+                        "scopes": {
+                            "oneOf": [
+                                {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                {
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "flow": {
+                            "type": "string",
+                            "enum": [
+                                "implicit",
+                                "password",
+                                "client",
+                                "code"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "scheme",
+                        "flow"
                     ]
                 }
             ]

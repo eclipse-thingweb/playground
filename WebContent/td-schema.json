@@ -20,6 +20,40 @@
         "titles": {
             "type": "object"
         },
+        "security": {
+            "oneOf": [
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "scopes": {
+            "oneOf": [
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "subProtocol": {
+            "type": "string",
+            "enum": [
+                "longpoll",
+                "websub",
+                "sse"
+            ]
+        },
         "thing-context-w3c-uri": {
             "type": "string",
             "enum": [
@@ -371,7 +405,7 @@
             "type": "object",
             "properties": {
                 "op": {
-                    "anyOf": [
+                    "oneOf": [
                         {
                             "type": "string",
                             "enum": [
@@ -405,24 +439,13 @@
                     "type": "string"
                 },
                 "subProtocol": {
-                    "type": "string",
-                    "enum": [
-                        "longpoll",
-                        "websub",
-                        "sse"
-                    ]
+                    "$ref": "#/definitions/subProtocol"
                 },
                 "security": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                    "$ref": "#/definitions/security"
                 },
                 "scopes": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                    "$ref": "#/definitions/scopes"
                 },
                 "response": {
                     "type": "object",
@@ -470,38 +493,13 @@
                     "type": "string"
                 },
                 "subProtocol": {
-                    "type": "string",
-                    "enum": [
-                        "longpoll",
-                        "websub",
-                        "sse"
-                    ]
+                    "$ref": "#/definitions/subProtocol"
                 },
                 "security": {
-                    "oneOf": [
-                        {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        {
-                            "type": "string"
-                        }
-                    ]
+                    "$ref": "#/definitions/security"
                 },
                 "scopes": {
-                    "oneOf": [
-                        {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        {
-                            "type": "string"
-                        }
-                    ]
+                    "$ref": "#/definitions/scopes"
                 },
                 "response": {
                     "type": "object",
@@ -541,48 +539,23 @@
                         }
                     ]
                 },
+                "href": {
+                    "$ref": "#/definitions/anyUri"
+                },
                 "contentType": {
                     "type": "string"
                 },
                 "contentCoding": {
                     "type": "string"
                 },
-                "href": {
-                    "$ref": "#/definitions/anyUri"
+                "subProtocol": {
+                    "$ref": "#/definitions/subProtocol"
                 },
                 "security": {
-                    "oneOf": [
-                        {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        {
-                            "type": "string"
-                        }
-                    ]
+                    "$ref": "#/definitions/security"
                 },
                 "scopes": {
-                    "oneOf": [
-                        {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        {
-                            "type": "string"
-                        }
-                    ]
-                },
-                "subProtocol": {
-                    "type": "string",
-                    "enum": [
-                        "longpoll",
-                        "websub",
-                        "sse"
-                    ]
+                    "$ref": "#/definitions/scopes"
                 },
                 "response": {
                     "type": "object",
@@ -636,38 +609,13 @@
                     "type": "string"
                 },
                 "subProtocol": {
-                    "type": "string",
-                    "enum": [
-                        "longpoll",
-                        "websub",
-                        "sse"
-                    ]
+                    "$ref": "#/definitions/subProtocol"
                 },
                 "security": {
-                    "oneOf": [
-                        {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        {
-                            "type": "string"
-                        }
-                    ]
+                    "$ref": "#/definitions/security"
                 },
                 "scopes": {
-                    "oneOf": [
-                        {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        {
-                            "type": "string"
-                        }
-                    ]
+                    "$ref": "#/definitions/scopes"
                 },
                 "response": {
                     "type": "object",
@@ -871,10 +819,39 @@
                         "scheme": {
                             "type": "string",
                             "enum": [
-                                "cert"
+                                "bearer"
                             ]
                         },
-                        "identity": {
+                        "authorization": {
+                            "$ref": "#/definitions/anyUri"
+                        },
+                        "alg": {
+                            "type": "string",
+                            "enum": [
+                                "MD5",
+                                "ES256",
+                                "ES512-256"
+                            ]
+                        },
+                        "format": {
+                            "type": "string",
+                            "enum": [
+                                "jwt",
+                                "cwt",
+                                "jwe",
+                                "jws"
+                            ]
+                        },
+                        "in": {
+                            "type": "string",
+                            "enum": [
+                                "header",
+                                "query",
+                                "body",
+                                "cookie"
+                            ]
+                        },
+                        "name": {
                             "type": "string"
                         }
                     },
@@ -900,38 +877,10 @@
                         "scheme": {
                             "type": "string",
                             "enum": [
-                                "bearer"
+                                "cert"
                             ]
                         },
-                        "authorization": {
-                            "$ref": "#/definitions/anyUri"
-                        },
-                        "alg": {
-                            "type": "string",
-                            "enum": [
-                                "MD5",
-                                "ES256",
-                                "ES512-256"
-                            ]
-                        },
-                        "format": {
-                            "type": "string",
-                            "enum": [
-                                "jwt",
-                                "jwe",
-                                "jws"
-                            ]
-                        },
-                        "in": {
-                            "type": "string",
-                            "enum": [
-                                "header",
-                                "query",
-                                "body",
-                                "cookie"
-                            ]
-                        },
-                        "name": {
+                        "identity": {
                             "type": "string"
                         }
                     },
@@ -1015,32 +964,40 @@
                         "scheme": {
                             "type": "string",
                             "enum": [
-                                "oauth2"
+                                "pop"
                             ]
                         },
                         "authorization": {
                             "$ref": "#/definitions/anyUri"
                         },
-                        "token": {
-                            "$ref": "#/definitions/anyUri"
-                        },
-                        "refresh": {
-                            "$ref": "#/definitions/anyUri"
-                        },
-                        "scopes": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        "flow": {
+                        "format": {
                             "type": "string",
                             "enum": [
-                                "implicit",
-                                "password",
-                                "client",
-                                "code"
+                                "jwt",
+                                "cwt",
+                                "jwe",
+                                "jws"
                             ]
+                        },
+                        "alg": {
+                            "type": "string",
+                            "enum": [
+                                "MD5",
+                                "ES256",
+                                "ES512-256"
+                            ]
+                        },
+                        "in": {
+                            "type": "string",
+                            "enum": [
+                                "header",
+                                "query",
+                                "body",
+                                "cookie"
+                            ]
+                        },
+                        "name": {
+                            "type": "string"
                         }
                     },
                     "required": [
@@ -1065,39 +1022,39 @@
                         "scheme": {
                             "type": "string",
                             "enum": [
-                                "pop"
+                                "oauth2"
                             ]
                         },
                         "authorization": {
                             "$ref": "#/definitions/anyUri"
                         },
-                        "format": {
-                            "type": "string",
-                            "enum": [
-                                "jwt",
-                                "jwe",
-                                "jws"
+                        "token": {
+                            "$ref": "#/definitions/anyUri"
+                        },
+                        "refresh": {
+                            "$ref": "#/definitions/anyUri"
+                        },
+                        "scopes": {
+                            "oneOf": [
+                                {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                {
+                                    "type": "string"
+                                }
                             ]
                         },
-                        "alg": {
+                        "flow": {
                             "type": "string",
                             "enum": [
-                                "MD5",
-                                "ES256",
-                                "ES512-256"
+                                "implicit",
+                                "password",
+                                "client",
+                                "code"
                             ]
-                        },
-                        "in": {
-                            "type": "string",
-                            "enum": [
-                                "header",
-                                "query",
-                                "body",
-                                "cookie"
-                            ]
-                        },
-                        "name": {
-                            "type": "string"
                         }
                     },
                     "required": [
