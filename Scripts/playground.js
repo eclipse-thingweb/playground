@@ -104,21 +104,21 @@ fs.readFile(storedTdAddress, (err, tdData) => {
             //json ld validation
 
             // TODO: pause json ld verification until namespace is fixed
-            console.log('JSON-LD validation... OK');
+            // console.log('JSON-LD validation... OK');
 
-            // jsonld.toRDF(tdJson, {
-            //     format: 'application/nquads'
-            // }, function (err, triples) {
-            //     if (!err) {
+            jsonld.toRDF(tdJson, {
+                format: 'application/nquads'
+            }, function (err, triples) {
+                if (!err) {
 
-            //         console.log('JSON-LD validation... OK');
+                    console.log('JSON-LD validation... OK');
 
-            //     } else {
+                } else {
 
-            //         console.log('X JSON-LD validation... KO:');
-            //         console.log('> ' + err);
-            //     }
-            // });
+                    console.log('X JSON-LD validation... KO:');
+                    console.log('> ' + err);
+                }
+            });
 
         });
 
