@@ -213,7 +213,7 @@
                     "type": "array",
                     "minItems": 1,
                     "items": {
-                        "$ref": "#/definitions/form_element_action"
+                        "$ref": "#/definitions/form_element_property"
                     }
                 },
                 "uriVariables": {
@@ -378,7 +378,7 @@
                     "type": "array",
                     "minItems": 1,
                     "items": {
-                        "$ref": "#/definitions/form_element_action"
+                        "$ref": "#/definitions/form_element_event"
                     }
                 },
                 "uriVariables": {
