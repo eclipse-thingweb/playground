@@ -192,6 +192,232 @@
                 }
             }
         },
+        "form_element_property": {
+            "type": "object",
+            "properties": {
+                "op": {
+                    "oneOf": [{
+                            "type": "string",
+                            "enum": [
+                                "readproperty",
+                                "writeproperty",
+                                "observeproperty",
+                                "unobserveproperty"
+                            ]
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "readproperty",
+                                    "writeproperty",
+                                    "observeproperty",
+                                    "unobserveproperty"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "href": {
+                    "$ref": "#/definitions/anyUri"
+                },
+                "contentType": {
+                    "type": "string"
+                },
+                "contentCoding": {
+                    "type": "string"
+                },
+                "subProtocol": {
+                    "$ref": "#/definitions/subProtocol"
+                },
+                "security": {
+                    "$ref": "#/definitions/security"
+                },
+                "scopes": {
+                    "$ref": "#/definitions/scopes"
+                },
+                "response": {
+                    "type": "object",
+                    "properties": {
+                        "contentType": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "required": [
+                "href"
+            ],
+            "additionalProperties": true
+        },
+        "form_element_action": {
+            "type": "object",
+            "properties": {
+                "op": {
+                    "oneOf": [{
+                            "type": "string",
+                            "enum": [
+                                "invokeaction"
+                            ]
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "invokeaction"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "href": {
+                    "$ref": "#/definitions/anyUri"
+                },
+                "contentType": {
+                    "type": "string"
+                },
+                "contentCoding": {
+                    "type": "string"
+                },
+                "subProtocol": {
+                    "$ref": "#/definitions/subProtocol"
+                },
+                "security": {
+                    "$ref": "#/definitions/security"
+                },
+                "scopes": {
+                    "$ref": "#/definitions/scopes"
+                },
+                "response": {
+                    "type": "object",
+                    "properties": {
+                        "contentType": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "required": [
+                "href"
+            ],
+            "additionalProperties": true
+        },
+        "form_element_event": {
+            "type": "object",
+            "properties": {
+                "op": {
+                    "oneOf": [{
+                            "type": "string",
+                            "enum": [
+                                "subscribeevent",
+                                "unsubscribeevent"
+                            ]
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "subscribeevent",
+                                    "unsubscribeevent"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "href": {
+                    "$ref": "#/definitions/anyUri"
+                },
+                "contentType": {
+                    "type": "string"
+                },
+                "contentCoding": {
+                    "type": "string"
+                },
+                "subProtocol": {
+                    "$ref": "#/definitions/subProtocol"
+                },
+                "security": {
+                    "$ref": "#/definitions/security"
+                },
+                "scopes": {
+                    "$ref": "#/definitions/scopes"
+                },
+                "response": {
+                    "type": "object",
+                    "properties": {
+                        "contentType": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "required": [
+                "href"
+            ],
+            "additionalProperties": true
+        },
+        "form_element_root": {
+            "type": "object",
+            "properties": {
+                "op": {
+                    "oneOf": [{
+                            "type": "string",
+                            "enum": [
+                                "readallproperties",
+                                "writeallproperties",
+                                "readmultipleproperties",
+                                "writemultipleproperties"
+                            ]
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "readallproperties",
+                                    "writeallproperties",
+                                    "readmultipleproperties",
+                                    "writemultipleproperties"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "href": {
+                    "$ref": "#/definitions/anyUri"
+                },
+                "contentType": {
+                    "type": "string"
+                },
+                "contentCoding": {
+                    "type": "string"
+                },
+                "subProtocol": {
+                    "$ref": "#/definitions/subProtocol"
+                },
+                "security": {
+                    "$ref": "#/definitions/security"
+                },
+                "scopes": {
+                    "$ref": "#/definitions/scopes"
+                },
+                "response": {
+                    "type": "object",
+                    "properties": {
+                        "contentType": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "required": [
+                "href"
+            ],
+            "additionalProperties": true
+        },
         "property_element": {
             "type": "object",
             "properties": {
@@ -398,236 +624,6 @@
             },
             "required": [
                 "forms"
-            ],
-            "additionalProperties": true
-        },
-        "form_element_property": {
-            "type": "object",
-            "properties": {
-                "op": {
-                    "oneOf": [
-                        {
-                            "type": "string",
-                            "enum": [
-                                "readproperty",
-                                "writeproperty",
-                                "observeproperty",
-                                "unobserveproperty"
-                            ]
-                        },
-                        {
-                            "type": "array",
-                            "items": {
-                                "type": "string",
-                                "enum": [
-                                    "readproperty",
-                                    "writeproperty",
-                                    "observeproperty",
-                                    "unobserveproperty"
-                                ]
-                            }
-                        }
-                    ]
-                },
-                "href": {
-                    "$ref": "#/definitions/anyUri"
-                },
-                "contentType": {
-                    "type": "string"
-                },
-                "contentCoding": {
-                    "type": "string"
-                },
-                "subProtocol": {
-                    "$ref": "#/definitions/subProtocol"
-                },
-                "security": {
-                    "$ref": "#/definitions/security"
-                },
-                "scopes": {
-                    "$ref": "#/definitions/scopes"
-                },
-                "response": {
-                    "type": "object",
-                    "properties": {
-                        "contentType": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "required": [
-                "href"
-            ],
-            "additionalProperties": true
-        },
-        "form_element_action": {
-            "type": "object",
-            "properties": {
-                "op": {
-                    "oneOf": [
-                        {
-                            "type": "string",
-                            "enum": [
-                                "invokeaction"
-                            ]
-                        },
-                        {
-                            "type": "array",
-                            "items": {
-                                "type": "string",
-                                "enum": [
-                                    "invokeaction"
-                                ]
-                            }
-                        }
-                    ]
-                },
-                "href": {
-                    "$ref": "#/definitions/anyUri"
-                },
-                "contentType": {
-                    "type": "string"
-                },
-                "contentCoding": {
-                    "type": "string"
-                },
-                "subProtocol": {
-                    "$ref": "#/definitions/subProtocol"
-                },
-                "security": {
-                    "$ref": "#/definitions/security"
-                },
-                "scopes": {
-                    "$ref": "#/definitions/scopes"
-                },
-                "response": {
-                    "type": "object",
-                    "properties": {
-                        "contentType": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "required": [
-                "href"
-            ],
-            "additionalProperties": true
-        },
-        "form_element_event": {
-            "type": "object",
-            "properties": {
-                "op": {
-                    "oneOf": [
-                        {
-                            "type": "string",
-                            "enum": [
-                                "subscribeevent",
-                                "unsubscribeevent"
-                            ]
-                        },
-                        {
-                            "type": "array",
-                            "items": {
-                                "type": "string",
-                                "enum": [
-                                    "subscribeevent",
-                                    "unsubscribeevent"
-                                ]
-                            }
-                        }
-                    ]
-                },
-                "href": {
-                    "$ref": "#/definitions/anyUri"
-                },
-                "contentType": {
-                    "type": "string"
-                },
-                "contentCoding": {
-                    "type": "string"
-                },
-                "subProtocol": {
-                    "$ref": "#/definitions/subProtocol"
-                },
-                "security": {
-                    "$ref": "#/definitions/security"
-                },
-                "scopes": {
-                    "$ref": "#/definitions/scopes"
-                },
-                "response": {
-                    "type": "object",
-                    "properties": {
-                        "contentType": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "required": [
-                "href"
-            ],
-            "additionalProperties": true
-        },
-        "form_element_root": {
-            "type": "object",
-            "properties": {
-                "op": {
-                    "oneOf": [
-                        {
-                            "type": "string",
-                            "enum": [
-                                "readallproperties",
-                                "writeallproperties",
-                                "readmultipleproperties",
-                                "writemultipleproperties"
-                            ]
-                        },
-                        {
-                            "type": "array",
-                            "items": {
-                                "type": "string",
-                                "enum": [
-                                    "readallproperties",
-                                    "writeallproperties",
-                                    "readmultipleproperties",
-                                    "writemultipleproperties"
-                                ]
-                            }
-                        }
-                    ]
-                },
-                "href": {
-                    "$ref": "#/definitions/anyUri"
-                },
-                "contentType": {
-                    "type": "string"
-                },
-                "contentCoding": {
-                    "type": "string"
-                },
-                "subProtocol": {
-                    "$ref": "#/definitions/subProtocol"
-                },
-                "security": {
-                    "$ref": "#/definitions/security"
-                },
-                "scopes": {
-                    "$ref": "#/definitions/scopes"
-                },
-                "response": {
-                    "type": "object",
-                    "properties": {
-                        "contentType": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "required": [
-                "href"
             ],
             "additionalProperties": true
         },
