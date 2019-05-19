@@ -3,10 +3,12 @@
     "description": "created: Provides information when the TD instance was created.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": false,
+    "also": ["td-datetime-recommended-type", "td-datetime-type"],
     "type": "object",
     "properties": {
         "created": {
-            "type": "string"
+            "type": "string",
+            "format": "date-time"
         }
     },
     "required": ["created"]

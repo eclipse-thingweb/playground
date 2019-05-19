@@ -3,10 +3,12 @@
     "description": "modified: Provides information when the TD instance was last modified.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": false,
+    "also": ["td-datetime-recommended-type", "td-datetime-type"],
     "type": "object",
     "properties": {
         "modified": {
-            "type": "string"
+            "type": "string",
+            "format": "date-time"
         }
     },
     "required": ["modified"]
