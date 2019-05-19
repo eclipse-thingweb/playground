@@ -1,4 +1,5 @@
 const fs = require('fs');
+const isUtf8 = require('is-utf8');
 var Ajv = require('ajv');
 const Json2csvParser = require('json2csv').Parser;
 var jsonValidator = require('json-dup-key-validator');
@@ -65,6 +66,45 @@ function validate(storedTdAddress, outputLocation) {
     console.log("=================================================================")
     console.log("Taking TD found at ", storedTdAddress, " for validation");
     var tdData = fs.readFileSync(storedTdAddress);
+
+
+    // check whether it is a valid UTF-8 string
+    if(isUtf8(tdData)){
+        results.push({
+            "ID": "td-json-open_utf-8",
+            "Status": "pass"
+        });
+    } else {
+        results.push({
+            "ID": "td-json-open_utf-8",
+            "Status": "fail"
+        });
+        console.log("INVALID TD, SKIPPING TO NEXT TD");
+        toOutput("invalid-td-cant-get-id");
+        results = [];
+        return;
+    }
+    
+
+    //check whether it is a valid JSON
+    try {
+        var tempTd = JSON.parse(tdData);
+        results.push({
+            "ID": "td-json-open",
+            "Status": "pass"
+        });
+    } catch (error) {
+        results.push({
+            "ID": "td-json-open",
+            "Status": "fail"
+        });
+        console.log("INVALID TD, SKIPPING TO NEXT TD");
+        toOutput("invalid-td-cant-get-id");
+        results = [];
+        return;
+
+    }
+
     var tdDataString = tdData.toString();
 
     var tdJson = checkUniqueness(tdDataString);
@@ -478,7 +518,7 @@ function checkVocabulary(tdJson) {
     ajv.addSchema(schema, 'td');
 
     var valid = ajv.validate('td', tdJson);
-    var otherAssertions = ["td-objects_securityDefinitions", "td-arrays_security", "td-vocab-security--Thing", "td-security-mandatory", "td-vocab-securityDefinitions--Thing", "td-context-toplevel", "td-vocab-name--Thing", "td-vocab-security--Thing", "td-security-schemes_scheme", "td-vocab-id--Thing"];
+    var otherAssertions = ["td-objects_securityDefinitions", "td-arrays_security", "td-vocab-security--Thing", "td-security-mandatory", "td-vocab-securityDefinitions--Thing", "td-context-toplevel", "td-vocab-title--Thing", "td-vocab-security--Thing", "td-vocab-id--Thing", "td-security", "td-security-activation", "td-context-ns-thing-mandatory"];
 
     if (valid) {
         results.push({
@@ -578,39 +618,39 @@ function checkUniqueness(tdString) {
             });
         }
 
-        if (tdInteractions.length > 0) {
-            // checking uniqueness between interactions
-            isDuplicate = (new Set(tdInteractions)).size !== tdInteractions.length;
+        // if (tdInteractions.length > 0) {
+        //     // checking uniqueness between interactions
+        //     isDuplicate = (new Set(tdInteractions)).size !== tdInteractions.length;
 
-            if (isDuplicate) {
-                // if all is unique, then interactions are unique
-                results.push({
-                    "ID": "td-unique-identifiers",
-                    "Status": "fail",
-                    "Comment": "duplicate interaction names"
-                });
+        //     if (isDuplicate) {
+        //         // if all is unique, then interactions are unique
+        //         results.push({
+        //             "ID": "td-unique-identifiers",
+        //             "Status": "fail",
+        //             "Comment": "duplicate interaction names"
+        //         });
 
-            } else {
-                results.push({
-                    "ID": "td-unique-identifiers",
-                    "Status": "pass"
-                });
-            }
-        } else {
-            results.push({
-                "ID": "td-unique-identifiers",
-                "Status": "not-impl",
-                "Comment":"There are no interactions"
-            });
-        }
+        //     } else {
+        //         results.push({
+        //             "ID": "td-unique-identifiers",
+        //             "Status": "pass"
+        //         });
+        //     }
+        // } else {
+        //     results.push({
+        //         "ID": "td-unique-identifiers",
+        //         "Status": "not-impl",
+        //         "Comment":"There are no interactions"
+        //     });
+        // }
         return td;
     } catch (error) {
         // there is a duplicate somewhere
-        results.push({
-            "ID": "td-unique-identifiers",
-            "Status": "fail",
-            "Comment": "duplicate interaction names"
-        });
+        // results.push({
+        //     "ID": "td-unique-identifiers",
+        //     "Status": "fail",
+        //     "Comment": "duplicate interaction names"
+        // });
 
         // convert it into string to be able to process it
         // error is of form = Error: Syntax error: duplicated keys "overheating" near ting": {

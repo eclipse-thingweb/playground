@@ -2,7 +2,8 @@
     "@context": [
        "https://www.w3.org/2019/wot/td/v1",
         {
-            "iot": "http://iotschema.org/"
+            "iot": "http://iotschema.org/",
+            "@language":"en"
         }
     ],
     "@type": "Thing",
