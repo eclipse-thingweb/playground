@@ -2,7 +2,7 @@
     "title": "td-vocab-titles--InteractionAffordance",
     "description": "titles: Provides multi-language human-readable titles (e.g., display a text for UI representation in different languages) of the interaction pattern. MAY be included. Type: MultiLanguage.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
-    "also": ["td-multi-languages_titles"],
+    "also": ["td-multi-languages_titles", "td-multilanguage-value"],
     "is-complex": true,
     "type": "object",
     "properties": {
@@ -69,8 +69,17 @@
                 "const": "td-vocab-titles--InteractionAffordance=pass"
             }
         },
+        "descriptions": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "string"
+            }
+        },
         "titles": {
-            "type": "object"
+            "type": "object",
+            "additionalProperties": {
+                "type": "string"
+            }
         }
     }
 }

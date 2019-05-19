@@ -2,7 +2,7 @@
     "title": "td-vocab-descriptions--DataSchema",
     "description": "descriptions: Can be used to support (human-readable) information in different languages. MAY be included. Type: MultiLanguage.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
-    "also": ["td-multi-languages_descriptions", "td-data-schema_descriptions"],
+    "also": ["td-multi-languages_descriptions", "td-data-schema_descriptions", "td-multilanguage-value"],
     "is-complex": true,
     "type": "object",
     "properties": {
@@ -235,10 +235,16 @@
             "type": "string"
         },
         "descriptions": {
-            "type": "object"
+            "type": "object",
+            "additionalProperties":{
+                "type":"string"
+            }
         },
         "titles": {
-            "type": "object"
+            "type": "object",
+            "additionalProperties": {
+                "type": "string"
+            }
         },
         "url": {
             "type": "string",

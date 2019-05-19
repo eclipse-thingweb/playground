@@ -2,6 +2,13 @@
     "id": "urn:multilanguage",
     "@context":"https://www.w3.org/2019/wot/td/v1",
     "title": "MyLampThing",
+    "titles": {
+        "en": "MyLampThing",
+        "de": "MeinLampeDing",
+        "ja": "人間が読むことができる情報",
+        "zh-Hans": "人们可阅读的信息",
+        "zh-Hant": "人們可閱讀的資訊"
+    },
     "description": "Valid TD showing multiple language support",
     "descriptions": {
         "en": "Human readable information.",

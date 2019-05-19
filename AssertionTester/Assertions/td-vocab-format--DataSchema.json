@@ -2,7 +2,7 @@
     "title": "td-vocab-format--DataSchema",
     "description": "format: Defines format pattern validation on certain kinds of string values. It is open to use pattern values that may originate from JSON schema presets (e.g., date/time, email, URL) or other (customer-based) definitions. . MAY be included. Type: string.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
-    "also": ["td-data-schema_format", "td-format-validation-known-values"],
+    "also": ["td-data-schema_format", "td-format-validation-known-values", "td-property-names_format"],
     "is-complex": true,
     "type": "object",
     "properties": {

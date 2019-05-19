@@ -12,13 +12,19 @@
             "type": "string"
         },
         "descriptions": {
-            "type": "object"
+            "type": "object",
+            "additionalProperties": {
+                "type": "string"
+            }
         },
         "title": {
             "type": "string"
         },
         "titles": {
-            "type": "object"
+            "type": "object",
+            "additionalProperties": {
+                "type": "string"
+            }
         },
         "security": {
             "oneOf": [

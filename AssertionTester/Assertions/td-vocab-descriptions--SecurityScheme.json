@@ -3,6 +3,7 @@
     "description": "name: Name for query, header, or cookie parameters. MAY be included. Type: string.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
+    "also": ["td-multilanguage-value"],
     "type": "object",
     "properties": {
         "securityDefinitions": {
@@ -23,7 +24,7 @@
                 "type": "object",
                 "properties": {
                     "descriptions": {
-                        "type": "object"
+                        "$ref": "#/definitions/descriptions"
                     }
                 },
                 "required": [
@@ -32,6 +33,18 @@
             },
             "then": {
                 "const": "td-vocab-descriptions--SecurityScheme=pass"
+            }
+        },
+        "descriptions": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "string"
+            }
+        },
+        "titles": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "string"
             }
         }
     }
