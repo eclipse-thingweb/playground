@@ -3,10 +3,15 @@
     "description": "The root object of a Thing Description instance MAY include the @context name known from JSON-LD [[!json-ld]] with the value URI of the Thing description context file http://www.w3.org/ns/td.",
     "is-complex": true,
     "$schema ": "http://json-schema.org/draft-06/schema#",
-    "also": ["td-vocab-at-context--Thing", "td-jsonld-keywords_at-context"],
+    "also": [
+        "td-vocab-at-context--Thing",
+        "td-jsonld-keywords_at-context"
+    ],
     "type": "object",
     "if": {
-        "required": ["@context"],
+        "required": [
+            "@context"
+        ],
         "properties": {
             "@context": {
                 "$ref": "#/definitions/thing-context"
@@ -18,35 +23,40 @@
     },
     "additionalProperties": true,
     "definitions": {
+        "thing-context-w3c-uri": {
+            "type": "string",
+            "enum": [
+                "https://www.w3.org/2019/wot/td/v1"
+            ]
+        },
         "thing-context": {
-            "oneOf": [{
+            "oneOf": [
+                {
                     "type": "array",
-                    "items": {
-                        "anyOf": [{
-                                "$ref": "#/definitions/url"
+                    "items": [
+                        {
+                            "$ref": "#/definitions/thing-context-w3c-uri"
+                        }
+                    ],
+                    "additionalItems": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/anyUri"
                             },
                             {
                                 "type": "object"
                             }
                         ]
-                    },
-                    "contains": {
-                        "type": "string",
-                        "enum": [
-                            "http://www.w3.org/ns/td", "http://w3.org/ns/td"
-                        ]
                     }
                 },
                 {
-                    "type": "string",
-                    "enum": [
-                        "http://www.w3.org/ns/td", "http://w3.org/ns/td"
-                    ]
+                    "$ref": "#/definitions/thing-context-w3c-uri"
                 }
             ]
         },
-        "url": {
+        "anyUri": {
             "type": "string",
+            "$comment": "Until iri-reference is supported by ajv, it will stay as uri-reference in playground",
             "format": "uri-reference"
         }
     }
