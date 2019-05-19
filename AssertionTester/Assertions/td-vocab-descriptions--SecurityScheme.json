@@ -3,7 +3,6 @@
     "description": "name: Name for query, header, or cookie parameters. MAY be included. Type: string.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
-    "also": ["td-security-schemes_descriptions"],
     "type": "object",
     "properties": {
         "securityDefinitions": {
