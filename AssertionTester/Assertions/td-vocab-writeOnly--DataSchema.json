@@ -2,7 +2,7 @@
     "title": "td-vocab-writeOnly--DataSchema",
     "description": "writeOnly: Boolean value that indicates whether a property interaction / value is write only (=true) or not (=false). MUST be included. Type: boolean.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
-    "also": ["td-data-schema_writeOnly"],
+    "also": ["td-data-schema_writeOnly", "td-boolean-type"],
     "is-complex": true,
     "type": "object",
     "properties": {
