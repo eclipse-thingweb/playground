@@ -69,7 +69,7 @@ function validate(storedTdAddress, outputLocation) {
 
 
     // check whether it is a valid UTF-8 string
-    if(isUtf8(tdData)){
+    if (isUtf8(tdData)) {
         results.push({
             "ID": "td-json-open_utf-8",
             "Status": "pass"
@@ -84,7 +84,7 @@ function validate(storedTdAddress, outputLocation) {
         results = [];
         return;
     }
-    
+
 
     //check whether it is a valid JSON
     try {
@@ -118,6 +118,11 @@ function validate(storedTdAddress, outputLocation) {
         results = [];
         return;
     } else {
+
+        // additional checks
+        checkSecurity(tdJson);
+        checkMultiLangConsistency(tdJson);
+
 
         var draftData = fs.readFileSync(draftLocation);
         var draft = JSON.parse(draftData);
@@ -370,21 +375,21 @@ function mergeIdenticalResults(resultsJSON) {
     var identicalResults = {};
     resultsJSON.forEach((curResult, index) => {
         var curId = curResult.ID;
-        
+
         // remove this one, but add it back if there is no duplicate
         resultsJSON.splice(index, 1);
         // check if there is a second one
         const identicalIndex = resultsJSON.findIndex(x => x.ID === curId);
-        
-        if (identicalIndex > 0){ //there is a second one
+
+        if (identicalIndex > 0) { //there is a second one
 
             // check if it already exists
-            if (identicalResults.hasOwnProperty(curId)){
+            if (identicalResults.hasOwnProperty(curId)) {
                 // push if it already exists
                 identicalResults[curId].push(curResult.Status)
             } else {
                 // create a new array with values if it does not exist
-                identicalResults[curId]=[curResult.Status]
+                identicalResults[curId] = [curResult.Status]
             }
             // put it back such that the last identical can find its duplicate that appeared before
             resultsJSON.unshift(curResult);
@@ -403,15 +408,15 @@ function mergeIdenticalResults(resultsJSON) {
         var curResults = identicalResults[curKey];
         var newResult;
 
-        if(curResults.indexOf("fail")>=0){
-            newResult="fail"
-        } else if (curResults.indexOf("pass") >= 0){
+        if (curResults.indexOf("fail") >= 0) {
+            newResult = "fail"
+        } else if (curResults.indexOf("pass") >= 0) {
             newResult = "pass"
         } else {
             newResult = "not-impl"
         }
         //delete each of the duplicate
-        while(resultsJSON.findIndex(x => x.ID === curKey)>=0){
+        while (resultsJSON.findIndex(x => x.ID === curKey) >= 0) {
             resultsJSON.splice(resultsJSON.findIndex(x => x.ID === curKey), 1);
         }
 
@@ -525,7 +530,7 @@ function checkVocabulary(tdJson) {
             "ID": "td-vocabulary",
             "Status": "pass",
         });
-        
+
         otherAssertions.forEach(function (asser) {
             results.push({
                 "ID": asser,
@@ -754,7 +759,7 @@ function checkUniqueness(tdString) {
     }
 }
 
-function fetchManualAssertions(){
+function fetchManualAssertions() {
 
     var manualCsv = fs.readFileSync("./manual.csv").toString();
 
@@ -766,4 +771,250 @@ function fetchManualAssertions(){
     var manualJSON = csvjson.toColumnArray(manualCsv, options);
     var manualIdList = manualJSON.ID;
     return manualIdList;
+}
+
+function securityContains(parent, child) {
+
+    //security anywhere could be a string or array. Convert string to array
+    if (typeof child == "string") {
+        child = [child];
+    }
+    return child.every(elem => parent.indexOf(elem) > -1);
+}
+
+function checkSecurity(td) {
+    if (td.hasOwnProperty("securityDefinitions")) {
+        var securityDefinitionsObject = td.securityDefinitions;
+        var securityDefinitions = Object.keys(securityDefinitionsObject);
+
+
+        var rootSecurity = td.security;
+
+        if (securityContains(securityDefinitions, rootSecurity)) {
+            // all good
+        } else {
+            results.push({
+                "ID": "td-security-scheme-name",
+                "Status": "fail",
+                "Comment": "used a non defined security scheme in root level"
+            });
+            return;
+        }
+
+        if (td.hasOwnProperty("properties")) {
+            //checking security in property level
+            tdProperties = Object.keys(td.properties);
+            for (var i = 0; i < tdProperties.length; i++) {
+                var curPropertyName = tdProperties[i];
+                var curProperty = td.properties[curPropertyName];
+
+                // checking security in forms level
+                var curForms = curProperty.forms;
+                for (var j = 0; j < curForms.length; j++) {
+                    var curForm = curForms[j];
+                    if (curForm.hasOwnProperty("security")) {
+                        var curSecurity = curForm.security;
+                        if (securityContains(securityDefinitions, curSecurity)) {
+                            // all good
+                        } else {
+                            results.push({
+                                "ID": "td-security-scheme-name",
+                                "Status": "fail",
+                                "Comment": "used a non defined security scheme in a property form"
+                            });
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (td.hasOwnProperty("actions")) {
+            //checking security in action level
+            tdActions = Object.keys(td.actions);
+            for (var i = 0; i < tdActions.length; i++) {
+                var curActionName = tdActions[i];
+                var curAction = td.actions[curActionName];
+
+                // checking security in forms level 
+                var curForms = curAction.forms;
+                for (var j = 0; j < curForms.length; j++) {
+                    var curForm = curForms[j];
+                    if (curForm.hasOwnProperty("security")) {
+                        var curSecurity = curForm.security;
+                        if (securityContains(securityDefinitions, curSecurity)) {
+                            // all good
+                        } else {
+                            results.push({
+                                "ID": "td-security-scheme-name",
+                                "Status": "fail",
+                                "Comment": "used a non defined security scheme in an action form"
+                            });
+                            return;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        if (td.hasOwnProperty("events")) {
+            //checking security in event level
+            tdEvents = Object.keys(td.events);
+            for (var i = 0; i < tdEvents.length; i++) {
+                var curEventName = tdEvents[i];
+                var curEvent = td.events[curEventName];
+
+                // checking security in forms level
+                var curForms = curEvent.forms;
+                for (var j = 0; j < curForms.length; j++) {
+                    var curForm = curForms[j];
+                    if (curForm.hasOwnProperty("security")) {
+                        var curSecurity = curForm.security;
+                        if (securityContains(securityDefinitions, curSecurity)) {
+                            // all good
+                        } else {
+                            results.push({
+                                "ID": "td-security-scheme-name",
+                                "Status": "fail",
+                                "Comment": "used a non defined security scheme in an event form"
+                            });
+                            return;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        //no security used non defined scheme, passed test
+        results.push({
+            "ID": "td-security-scheme-name",
+            "Status": "pass"
+        });
+        return;
+
+    } else {}
+    return;
+}
+
+function checkMultiLangConsistency(td) {
+
+    // this checks whether all titles and descriptions have the same language fields 
+    // so the object keys of a titles and of a descriptions should be the same already, then everywhere else they should also be the same
+
+    // first collect them all, and then compare them
+
+    var multiLang = []; //an array of arrays where each small array has the multilang keys
+
+
+    // checking root
+    if (td.hasOwnProperty("titles")) {
+        var rootTitlesObject = td.titles;
+        var rootTitles = Object.keys(rootTitlesObject);
+        multiLang.push(rootTitles);
+    }
+
+    if (td.hasOwnProperty("descriptions")) {
+        var rootDescriptionsObject = td.descriptions;
+        var rootDescriptions = Object.keys(rootDescriptionsObject);
+        multiLang.push(rootDescriptions);
+    }
+
+
+
+    if (td.hasOwnProperty("properties")) {
+        //checking security in property level
+        tdProperties = Object.keys(td.properties);
+        for (var i = 0; i < tdProperties.length; i++) {
+            var curPropertyName = tdProperties[i];
+            var curProperty = td.properties[curPropertyName];
+
+            if (curProperty.hasOwnProperty("titles")) {
+                var titlesKeys = Object.keys(curProperty.titles);
+                multiLang.push(titlesKeys);
+            }
+
+            if (curProperty.hasOwnProperty("descriptions")) {
+                var descriptionsKeys = Object.keys(curProperty.descriptions);
+                multiLang.push(descriptionsKeys);
+            }
+        }
+    }
+
+    if (td.hasOwnProperty("actions")) {
+        //checking security in action level
+        tdActions = Object.keys(td.actions);
+        for (var i = 0; i < tdActions.length; i++) {
+            var curActionName = tdActions[i];
+            var curAction = td.actions[curActionName];
+
+            if (curAction.hasOwnProperty("titles")) {
+                var titlesKeys = Object.keys(curAction.titles);
+                multiLang.push(titlesKeys);
+            }
+
+            if (curAction.hasOwnProperty("descriptions")) {
+                var descriptionsKeys = Object.keys(curAction.descriptions);
+                multiLang.push(descriptionsKeys);
+            }
+
+        }
+    }
+
+    if (td.hasOwnProperty("events")) {
+        //checking security in event level
+        tdEvents = Object.keys(td.events);
+        for (var i = 0; i < tdEvents.length; i++) {
+            var curEventName = tdEvents[i];
+            var curEvent = td.events[curEventName];
+
+            if (curEvent.hasOwnProperty("titles")) {
+                var titlesKeys = Object.keys(curEvent.titles);
+                multiLang.push(titlesKeys);
+            }
+
+            if (curEvent.hasOwnProperty("descriptions")) {
+                var descriptionsKeys = Object.keys(curEvent.descriptions);
+                multiLang.push(descriptionsKeys);
+            }
+
+        }
+    }
+
+}
+
+function arrayArraysItemsEqual(myArray) {
+    //first stringify each array item
+    for (var i = myArray.length; i--;) {
+        myArray[i] = JSON.stringify(myArray[i])
+    }
+
+    for (var i = myArray.length; i--;) {
+        if (i == 0) {
+            results.push({
+                "ID": "td-multi-languages-consistent",
+                "Status": "pass"
+            });
+            return true;
+        }
+        if (myArray[i] !== myArray[i - 1])
+            results.push({
+                "ID": "td-multi-languages-consistent",
+                "Status": "fail",
+                "Comment": "not all multilang objects have same language tags"
+            });
+        return false;
+    }
+}
+
+function arraysEqual(arr1, arr2) {
+    if (arr1.length !== arr2.length)
+        return false;
+    for (var i = arr1.length; i--;) {
+        if (arr1[i] !== arr2[i])
+            return false;
+    }
+
+    return true;
 }

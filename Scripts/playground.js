@@ -488,8 +488,12 @@ function checkInteractions(td) {
     return;
 }
 
-function arrayContainsOtherArray(parent, child) {
+function securityContains(parent, child) {
 
+    //security anywhere could be a string or array. Convert string to array
+    if (typeof child=="string"){
+        child=[child];
+    }
     return child.every(elem => parent.indexOf(elem) > -1);
 }
 
@@ -501,7 +505,7 @@ function checkSecurity(td) {
 
         var rootSecurity = td.security;
 
-        if (arrayContainsOtherArray(securityDefinitions, rootSecurity)) {
+        if (securityContains(securityDefinitions, rootSecurity)) {
             // all good
         } else {
             console.log('KO Error: Security key in the root of the TD has security schemes not defined by the securityDefinitions');
@@ -513,14 +517,6 @@ function checkSecurity(td) {
             for (var i = 0; i < tdProperties.length; i++) {
                 var curPropertyName = tdProperties[i];
                 var curProperty = td.properties[curPropertyName];
-                if (curProperty.hasOwnProperty("security")) {
-                    var curSecurity = curProperty.security;
-                    if (arrayContainsOtherArray(securityDefinitions, curSecurity)) {
-                        // all good
-                    } else {
-                        console.log('KO Error: Security key in property ' + curPropertyName + '  has security schemes not defined by the securityDefinitions');
-                    }
-                }
 
                 // checking security in forms level
                 var curForms = curProperty.forms;
@@ -528,7 +524,7 @@ function checkSecurity(td) {
                     var curForm = curForms[j];
                     if (curForm.hasOwnProperty("security")) {
                         var curSecurity = curForm.security;
-                        if (arrayContainsOtherArray(securityDefinitions, curSecurity)) {
+                        if (securityContains(securityDefinitions, curSecurity)) {
                             // all good
                         } else {
                             console.log('KO Error: Security key in form ' + j + ' in property ' + curPropertyName + '  has security schemes not defined by the securityDefinitions');
@@ -544,21 +540,14 @@ function checkSecurity(td) {
             for (var i = 0; i < tdActions.length; i++) {
                 var curActionName = tdActions[i];
                 var curAction = td.actions[curActionName];
-                if (curAction.hasOwnProperty("security")) {
-                    var curSecurity = curAction.security;
-                    if (arrayContainsOtherArray(securityDefinitions, curSecurity)) {
-                        // all good
-                    } else {
-                        console.log('KO Error: Security key in action ' + curActionName + '  has security schemes not defined by the securityDefinitions');
-                    }
-                }
+
                 // checking security in forms level 
                 var curForms = curAction.forms;
                 for (var j = 0; j < curForms.length; j++) {
                     var curForm = curForms[j];
                     if (curForm.hasOwnProperty("security")) {
                         var curSecurity = curForm.security;
-                        if (arrayContainsOtherArray(securityDefinitions, curSecurity)) {
+                        if (securityContains(securityDefinitions, curSecurity)) {
                             // all good
                         } else {
                             console.log('KO Error: Security key in form ' + j + ' in action ' + curActionName + '  has security schemes not defined by the securityDefinitions');
@@ -575,21 +564,14 @@ function checkSecurity(td) {
             for (var i = 0; i < tdEvents.length; i++) {
                 var curEventName = tdEvents[i];
                 var curEvent = td.events[curEventName];
-                if (curEvent.hasOwnProperty("security")) {
-                    var curSecurity = curEvent.security;
-                    if (arrayContainsOtherArray(securityDefinitions, curSecurity)) {
-                        // all good
-                    } else {
-                        console.log('KO Error: Security key in event ' + curEventName + '  has security schemes not defined by the securityDefinitions');
-                    }
-                }
+
                 // checking security in forms level
                 var curForms = curEvent.forms;
                 for (var j = 0; j < curForms.length; j++) {
                     var curForm = curForms[j];
                     if (curForm.hasOwnProperty("security")) {
                         var curSecurity = curForm.security;
-                        if (arrayContainsOtherArray(securityDefinitions, curSecurity)) {
+                        if (securityContains(securityDefinitions, curSecurity)) {
                             // all good
                         } else {
                             console.log('KO Error: Security key in form ' + j + ' in event ' + curEventName + '  has security schemes not defined by the securityDefinitions');
@@ -619,9 +601,9 @@ function checkUniqueness(td) {
         tdInteractions = tdInteractions.concat(Object.keys(td.events));
     }
     // checking uniqueness
-    
+
     isDuplicate = (new Set(tdInteractions)).size !== tdInteractions.length;
-    
+
     if (isDuplicate) {
         console.log('KO Error: duplicate interaction names are not allowed');
     }
