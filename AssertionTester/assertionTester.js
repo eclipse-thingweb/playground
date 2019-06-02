@@ -119,6 +119,9 @@ function validate(storedTdAddress, outputLocation) {
         return;
     } else {
 
+        // additional checks
+        checkSecurity(tdJson)
+
         var draftData = fs.readFileSync(draftLocation);
         var draft = JSON.parse(draftData);
 
@@ -766,4 +769,129 @@ function fetchManualAssertions(){
     var manualJSON = csvjson.toColumnArray(manualCsv, options);
     var manualIdList = manualJSON.ID;
     return manualIdList;
+}
+function securityContains(parent, child) {
+
+    //security anywhere could be a string or array. Convert string to array
+    if (typeof child == "string") {
+        child = [child];
+    }
+    return child.every(elem => parent.indexOf(elem) > -1);
+}
+
+function checkSecurity(td) {
+    if (td.hasOwnProperty("securityDefinitions")) {
+        var securityDefinitionsObject = td.securityDefinitions;
+        var securityDefinitions = Object.keys(securityDefinitionsObject);
+
+
+        var rootSecurity = td.security;
+
+        if (securityContains(securityDefinitions, rootSecurity)) {
+            // all good
+        } else {
+            results.push({
+                "ID": "td-security-scheme-name",
+                "Status": "fail",
+                "Comment": "used a non defined security scheme in root level"
+            });
+            return;
+        }
+
+        if (td.hasOwnProperty("properties")) {
+            //checking security in property level
+            tdProperties = Object.keys(td.properties);
+            for (var i = 0; i < tdProperties.length; i++) {
+                var curPropertyName = tdProperties[i];
+                var curProperty = td.properties[curPropertyName];
+
+                // checking security in forms level
+                var curForms = curProperty.forms;
+                for (var j = 0; j < curForms.length; j++) {
+                    var curForm = curForms[j];
+                    if (curForm.hasOwnProperty("security")) {
+                        var curSecurity = curForm.security;
+                        if (securityContains(securityDefinitions, curSecurity)) {
+                            // all good
+                        } else {
+                            results.push({
+                                "ID": "td-security-scheme-name",
+                                "Status": "fail",
+                                "Comment": "used a non defined security scheme in a property form"
+                            });
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (td.hasOwnProperty("actions")) {
+            //checking security in action level
+            tdActions = Object.keys(td.actions);
+            for (var i = 0; i < tdActions.length; i++) {
+                var curActionName = tdActions[i];
+                var curAction = td.actions[curActionName];
+
+                // checking security in forms level 
+                var curForms = curAction.forms;
+                for (var j = 0; j < curForms.length; j++) {
+                    var curForm = curForms[j];
+                    if (curForm.hasOwnProperty("security")) {
+                        var curSecurity = curForm.security;
+                        if (securityContains(securityDefinitions, curSecurity)) {
+                            // all good
+                        } else {
+                            results.push({
+                                "ID": "td-security-scheme-name",
+                                "Status": "fail",
+                                "Comment": "used a non defined security scheme in an action form"
+                            });
+                            return;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        if (td.hasOwnProperty("events")) {
+            //checking security in event level
+            tdEvents = Object.keys(td.events);
+            for (var i = 0; i < tdEvents.length; i++) {
+                var curEventName = tdEvents[i];
+                var curEvent = td.events[curEventName];
+
+                // checking security in forms level
+                var curForms = curEvent.forms;
+                for (var j = 0; j < curForms.length; j++) {
+                    var curForm = curForms[j];
+                    if (curForm.hasOwnProperty("security")) {
+                        var curSecurity = curForm.security;
+                        if (securityContains(securityDefinitions, curSecurity)) {
+                            // all good
+                        } else {
+                            results.push({
+                                "ID": "td-security-scheme-name",
+                                "Status": "fail",
+                                "Comment": "used a non defined security scheme in an event form"
+                            });
+                            return;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        //no security used non defined scheme, passed test
+        results.push({
+            "ID": "td-security-scheme-name",
+            "Status": "pass"
+        });
+        return;
+
+    } else {
+    }
+    return;
 }

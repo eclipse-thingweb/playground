@@ -9,7 +9,7 @@
             "identity": "preshared identity"
         }
     },
-    "security": ["public_sc"],
+    "security": "public_sc",
     "properties": {
         "status": {
             "type": "string",
