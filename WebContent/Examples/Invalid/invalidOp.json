@@ -24,12 +24,12 @@
                 {
                     "href": "http://example.org:9191/api/brightness",
                     "op": ["writeproperty"],
-                    "http:methodName": "POST"
+                    "htv:methodName": "POST"
                 },
                 {
                     "href": "http://example.org:9191/api/brightness/observe",
                     "op": ["subscribeevent"],
-                    "http:methodName": "GET",
+                    "htv:methodName": "GET",
                     "subProtocol": "longpoll"
                 }
             ]

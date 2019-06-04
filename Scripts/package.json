@@ -5,6 +5,7 @@
   "main": "playground.js",
   "dependencies": {
     "ajv": "^6.5.4",
+    "bcp47-validate": "^1.0.0",
     "jsonld": "^1.1.0"
   },
   "devDependencies": {},

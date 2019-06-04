@@ -15,6 +15,8 @@ const json2csvParser = new Json2csvParser({
 });
 var results = [];
 
+const bcp47pattern = /^(?:(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE)|(art-lojban|cel-gaulish|no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))$|^((?:[a-z]{2,3}(?:(?:-[a-z]{3}){1,3})?)|[a-z]{4}|[a-z]{5,8})(?:-([a-z]{4}))?(?:-([a-z]{2}|\d{3}))?((?:-(?:[\da-z]{5,8}|\d[\da-z]{3}))*)?((?:-[\da-wy-z](?:-[\da-z]{2,8})+)*)?(-x(?:-[\da-z]{1,8})+)?$|^(x(?:-[\da-z]{1,8})+)$/i; // eslint-disable-line max-len
+
 var nonImplementedAssertions = fetchManualAssertions();
 // Takes the second argument as the TD to validate
 
@@ -111,7 +113,6 @@ function validate(storedTdAddress, outputLocation) {
 
     var test = checkVocabulary(tdJson);
 
-    console.log("test result is ", test);
     if (!test) {
         console.log("INVALID TD, SKIPPING TO NEXT TD");
         toOutput(tdJson.id);
@@ -136,7 +137,7 @@ function validate(storedTdAddress, outputLocation) {
 
             var schemaData = fs.readFileSync(schemaLocation);
 
-            console.log("Taking Assertion Schema found at ", schemaLocation);
+            // console.log("Taking Assertion Schema found at ", schemaLocation);
             var schema = JSON.parse(schemaData);
 
             // Validation starts here
@@ -180,7 +181,7 @@ function validate(storedTdAddress, outputLocation) {
                     }
 
                 } else {
-                    console.log(ajv.errors);
+                    // console.log(ajv.errors);
                     try {
                         var output = ajv.errors[0].params.allowedValue;
 
@@ -907,7 +908,6 @@ function checkMultiLangConsistency(td) {
 
     var multiLang = []; //an array of arrays where each small array has the multilang keys
 
-
     // checking root
     if (td.hasOwnProperty("titles")) {
         var rootTitlesObject = td.titles;
@@ -921,8 +921,7 @@ function checkMultiLangConsistency(td) {
         multiLang.push(rootDescriptions);
     }
 
-
-
+    // checking inside each interaction
     if (td.hasOwnProperty("properties")) {
         //checking security in property level
         tdProperties = Object.keys(td.properties);
@@ -981,10 +980,46 @@ function checkMultiLangConsistency(td) {
 
         }
     }
+    if(arrayArraysItemsEqual(multiLang)){
+        results.push({
+            "ID": "td-multi-languages-consistent",
+            "Status": "pass"
+        });
+    } else {
+        results.push({
+            "ID": "td-multi-languages-consistent",
+            "Status": "fail",
+            "Comment": "not all multilang objects have same language tags"
+        });
+    }
 
+    var flatArray = []; //this is multiLang but flat, so just a single array. This way we can have scan the whole thing at once and then find the element that is not bcp47
+    for (let index = 0; index < multiLang.length; index++) {
+        var arrayElement = multiLang[index];
+        arrayElement=JSON.parse(arrayElement);
+        for (let index = 0; index < arrayElement.length; index++) {
+            const stringElement = arrayElement[index];
+            flatArray.push(stringElement);
+        }
+    }
+    var isBCP47 = checkBCP47array(flatArray);
+    if(isBCP47=="ok"){
+        results.push({
+            "ID": "td-multilanguage-language-tag",
+            "Status": "pass"
+        });
+    } else {
+        results.push({
+            "ID": "td-multilanguage-language-tag",
+            "Status": "fail",
+            "Comment":isBCP47+" is not a BCP47 tag"
+        });
+    }
 }
 
+// checks if an array that contains only arrays as items is composed of same items
 function arrayArraysItemsEqual(myArray) {
+    if(myArray.length==0) return true;
     //first stringify each array item
     for (var i = myArray.length; i--;) {
         myArray[i] = JSON.stringify(myArray[i])
@@ -992,29 +1027,27 @@ function arrayArraysItemsEqual(myArray) {
 
     for (var i = myArray.length; i--;) {
         if (i == 0) {
-            results.push({
-                "ID": "td-multi-languages-consistent",
-                "Status": "pass"
-            });
             return true;
         }
-        if (myArray[i] !== myArray[i - 1])
-            results.push({
-                "ID": "td-multi-languages-consistent",
-                "Status": "fail",
-                "Comment": "not all multilang objects have same language tags"
-            });
-        return false;
+        if (myArray[i] !== myArray[i - 1]){
+            return false;
+        }
     }
 }
 
-function arraysEqual(arr1, arr2) {
-    if (arr1.length !== arr2.length)
-        return false;
-    for (var i = arr1.length; i--;) {
-        if (arr1[i] !== arr2[i])
-            return false;
-    }
+// checks whether the items of an array, which must be strings, are valid language tags
+function checkBCP47array(myArray){
+    // return tag name if one is not valid during the check
 
-    return true;
+    for (let index = 0; index < myArray.length; index++) {
+        const element = myArray[index];
+        if (bcp47pattern.test(element)) {
+            //keep going
+        } else {
+            return element;
+        }
+    } 
+    
+    // return true if reached the end
+    return "ok";
 }
