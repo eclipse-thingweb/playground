@@ -24,7 +24,10 @@
             "description": "some information on this scheme",
             "descriptions": {
                 "en": "Human readable information.",
-                "de": "Menschenlesbare Informationen."
+                "de": "Menschenlesbare Informationen.",
+                "ja": "人間が読むことができる情報",
+                "zh-Hans": "人们可阅读的信息",
+                "zh-Hant": "人們可閱讀的資訊"
             },
             "proxy":"http://myproxy.com/lampProxy",
             "@type":"superSecure:1024bitpassword"
