@@ -845,21 +845,10 @@
                             "$ref": "#/definitions/anyUri"
                         },
                         "alg": {
-                            "type": "string",
-                            "enum": [
-                                "MD5",
-                                "ES256",
-                                "ES512-256"
-                            ]
+                            "type": "string"
                         },
                         "format": {
-                            "type": "string",
-                            "enum": [
-                                "jwt",
-                                "cwt",
-                                "jwe",
-                                "jws"
-                            ]
+                            "type": "string"
                         },
                         "in": {
                             "type": "string",
@@ -993,21 +982,10 @@
                             "$ref": "#/definitions/anyUri"
                         },
                         "format": {
-                            "type": "string",
-                            "enum": [
-                                "jwt",
-                                "cwt",
-                                "jwe",
-                                "jws"
-                            ]
+                            "type": "string"
                         },
                         "alg": {
-                            "type": "string",
-                            "enum": [
-                                "MD5",
-                                "ES256",
-                                "ES512-256"
-                            ]
+                            "type": "string"
                         },
                         "in": {
                             "type": "string",

@@ -38,12 +38,10 @@
                             "$ref": "#/definitions/url"
                         },
                         "alg": {
-                            "type": "string",
-                            "enum": ["MD5", "ES256", "ES512-256"]
+                            "type": "string"
                         },
                         "format": {
-                            "type": "string",
-                            "enum": ["jwt", "jwe", "jws"]
+                            "type": "string"
                         },
                         "in": {
                             "type": "string",

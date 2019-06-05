@@ -1,5 +1,5 @@
 {
-    "title": "td-vocab-alg--BearerSecurityScheme",
+    "title": "td-security-bearer-format-extensions_format",
     "description": "alg: Encoding, encryption, or digest algorithm (one of MD5, ES256, or ES512-256). MUST be included. Type: string.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
@@ -41,7 +41,10 @@
                         "type": "string"
                     },
                     "format": {
-                        "type": "string"
+                        "type": "string",
+                        "not":{
+                            "enum": ["jwt", "jwe", "jws"]
+                        }
                     },
                     "in": {
                         "type": "string",
@@ -52,11 +55,11 @@
                     }
                 },
                 "required": [
-                    "scheme","alg"
+                    "scheme","format"
                 ]
             },
             "then": {
-                "const": "td-vocab-alg--BearerSecurityScheme=pass"
+                "const": "td-security-bearer-format-extensions_format=pass"
             }
         },
         "url": {

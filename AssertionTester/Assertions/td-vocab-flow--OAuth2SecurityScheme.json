@@ -1,6 +1,6 @@
 {
     "title": "td-vocab-flow--OAuth2SecurityScheme",
-    "description": "flow: Authorization flow (one of implicit, password, client, or code). MUST be included. Type: string.",
+    "description": "For the code flow both authorization and token MUST be included.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
     "type": "object",
@@ -20,45 +20,43 @@
     "definitions": {
         "securityScheme": {
             "if": {
-                "oneOf": [{
-                    "type": "object",
-                    "properties": {
-                        "description": {
+                "type": "object",
+                "properties": {
+                    "description": {
+                        "type": "string"
+                    },
+                    "proxy": {
+                        "$ref": "#/definitions/url"
+                    },
+                    "scheme": {
+                        "type": "string",
+                        "enum": [
+                            "oauth2"
+                        ]
+                    },
+                    "authorization": {
+                        "$ref": "#/definitions/url"
+                    },
+                    "token": {
+                        "$ref": "#/definitions/url"
+                    },
+                    "refresh": {
+                        "$ref": "#/definitions/url"
+                    },
+                    "scopes": {
+                        "type": "array",
+                        "items": {
                             "type": "string"
-                        },
-                        "proxy": {
-                            "$ref": "#/definitions/url"
-                        },
-                        "scheme": {
-                            "type": "string",
-                            "enum": [
-                                "oauth2"
-                            ]
-                        },
-                        "authorization": {
-                            "$ref": "#/definitions/url"
-                        },
-                        "token": {
-                            "$ref": "#/definitions/url"
-                        },
-                        "refresh": {
-                            "$ref": "#/definitions/url"
-                        },
-                        "scopes": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        "flow": {
-                            "type": "string",
-                            "enum": ["implicit", "password", "client", "code"]
                         }
                     },
-                    "required": [
-                        "scheme","flow"
-                    ]
-                }]
+                    "flow": {
+                        "type": "string",
+                        "enum": ["implicit", "password", "client", "code"]
+                    }
+                },
+                "required": [
+                    "scheme", "flow"
+                ]
             },
             "then": {
                 "const": "td-vocab-flow--OAuth2SecurityScheme=pass"
