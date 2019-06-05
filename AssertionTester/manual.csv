@@ -48,8 +48,5 @@
 "td-processor-serialization","null","not testable with Assertion Tester"
 "td-security-binding","null","not testable with Assertion Tester"
 "td-security-no-extras","null","not testable with Assertion Tester"
-"td-security-oauth2-code-flow","null","Test will be added later"
-"td-security-oauth2-implicit-flow","null","Test will be added later"
-"td-security-oauth2-password-client-flow","null","Test will be added later"
 "td-vocabulary-defaults","null","not testable with Assertion Tester"
 "well-known-operation-types-only","null","not testable with Assertion Tester"

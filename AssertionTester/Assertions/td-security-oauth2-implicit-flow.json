@@ -1,6 +1,6 @@
 {
-    "title": "td-vocab-flow--OAuth2SecurityScheme",
-    "description": "For the code flow both authorization and token MUST be included.",
+    "title": "td-security-oauth2-implicit-flow",
+    "description": "For the implicit flow authorization MUST be included.",
     "$schema ": "http://json-schema.org/draft-06/schema#",
     "is-complex": true,
     "type": "object",
@@ -44,22 +44,28 @@
                         "$ref": "#/definitions/url"
                     },
                     "scopes": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
+                        "oneOf": [{
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ]
                     },
                     "flow": {
                         "type": "string",
-                        "enum": ["implicit", "password", "client", "code"]
+                        "const":"implicit"
                     }
                 },
                 "required": [
-                    "scheme", "flow"
+                    "scheme", "flow", "authorization"
                 ]
             },
             "then": {
-                "const": "td-vocab-flow--OAuth2SecurityScheme=pass"
+                "const": "td-security-oauth2-implicit-flow=pass"
             }
         },
         "url": {
