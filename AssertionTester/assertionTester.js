@@ -907,18 +907,23 @@ function checkMultiLangConsistency(td) {
     // first collect them all, and then compare them
 
     var multiLang = []; //an array of arrays where each small array has the multilang keys
+    var is_td_titles_descriptions = []; // an array of boolean values to check td-titles-descriptions assertion
 
     // checking root
     if (td.hasOwnProperty("titles")) {
         var rootTitlesObject = td.titles;
         var rootTitles = Object.keys(rootTitlesObject);
         multiLang.push(rootTitles);
+        //checking for td-titles-descriptions
+        is_td_titles_descriptions.push({["root_title"]: isStringObjectKeyValue(td.title, rootTitlesObject)});
     }
 
     if (td.hasOwnProperty("descriptions")) {
         var rootDescriptionsObject = td.descriptions;
         var rootDescriptions = Object.keys(rootDescriptionsObject);
         multiLang.push(rootDescriptions);
+        // check whether description exists in descriptions
+        if (td.hasOwnProperty("description")) is_td_titles_descriptions.push({["root_description"]: isStringObjectKeyValue(td.description, rootDescriptionsObject)})
     }
 
     // checking inside each interaction
@@ -932,11 +937,16 @@ function checkMultiLangConsistency(td) {
             if (curProperty.hasOwnProperty("titles")) {
                 var titlesKeys = Object.keys(curProperty.titles);
                 multiLang.push(titlesKeys);
+                //checking if title exists in titles
+                if (curProperty.hasOwnProperty("title")) is_td_titles_descriptions.push({["property_"+curPropertyName + "_title"]: isStringObjectKeyValue(curProperty.title, curProperty.titles)})
             }
 
             if (curProperty.hasOwnProperty("descriptions")) {
                 var descriptionsKeys = Object.keys(curProperty.descriptions);
                 multiLang.push(descriptionsKeys);
+                // checking if description exists in descriptions
+                if (curProperty.hasOwnProperty("description")) is_td_titles_descriptions.push({["property_" + curPropertyName + "_desc"]: isStringObjectKeyValue(curProperty.description, curProperty.descriptions)
+                })
             }
         }
     }
@@ -951,11 +961,17 @@ function checkMultiLangConsistency(td) {
             if (curAction.hasOwnProperty("titles")) {
                 var titlesKeys = Object.keys(curAction.titles);
                 multiLang.push(titlesKeys);
+                //checking if title exists in titles
+                if (curAction.hasOwnProperty("title")) is_td_titles_descriptions.push({["action_" + curActionName + "_title"]: isStringObjectKeyValue(curAction.title, curAction.titles)
+                })
             }
 
             if (curAction.hasOwnProperty("descriptions")) {
                 var descriptionsKeys = Object.keys(curAction.descriptions);
                 multiLang.push(descriptionsKeys);
+                // checking if description exists in descriptions
+                if (curAction.hasOwnProperty("description")) is_td_titles_descriptions.push({["action_" + curActionName + "_desc"]: isStringObjectKeyValue(curAction.description, curAction.descriptions)
+                            })
             }
 
         }
@@ -971,11 +987,17 @@ function checkMultiLangConsistency(td) {
             if (curEvent.hasOwnProperty("titles")) {
                 var titlesKeys = Object.keys(curEvent.titles);
                 multiLang.push(titlesKeys);
+                //checking if title exists in titles
+                if (curEvent.hasOwnProperty("title")) is_td_titles_descriptions.push({["event_" + curEventName + "_title"]: isStringObjectKeyValue(curEvent.title, curEvent.titles)
+                            })
             }
 
             if (curEvent.hasOwnProperty("descriptions")) {
                 var descriptionsKeys = Object.keys(curEvent.descriptions);
                 multiLang.push(descriptionsKeys);
+                // checking if description exists in descriptions
+                if (curEvent.hasOwnProperty("description")) is_td_titles_descriptions.push({["event_" + curEventName + "_desc"]: isStringObjectKeyValue(curEvent.description, curEvent.descriptions)
+                })
             }
 
         }
@@ -1015,6 +1037,39 @@ function checkMultiLangConsistency(td) {
             "Comment":isBCP47+" is not a BCP47 tag"
         });
     }
+
+    // if there are no multilang, then it is not impl
+    if(is_td_titles_descriptions.length==0){
+        results.push({
+            "ID": "td-titles-descriptions",
+            "Status": "not-impl",
+            "Comment": "no multilang objects in the td"
+        });
+        return;
+    }
+
+    // if at some point there was a false result, it is a fail
+    for (let index = 0; index < is_td_titles_descriptions.length; index++) {
+        const element = is_td_titles_descriptions[index];
+        var elementName = Object.keys(element);
+
+        if(element[elementName]){
+            // do nothing it is correct
+        } else {
+            results.push({
+                "ID": "td-titles-descriptions",
+                "Status": "fail",
+                "Comment": elementName+" is not on the multilang object at the same level"
+            });
+            return;
+        }
+    }
+    //there was no problem, so just put pass
+    results.push({
+        "ID": "td-titles-descriptions",
+        "Status": "pass"
+    });
+    
 }
 
 // checks if an array that contains only arrays as items is composed of same items
@@ -1050,4 +1105,19 @@ function checkBCP47array(myArray){
     
     // return true if reached the end
     return "ok";
+}
+
+function isStringObjectKeyValue(searchedString, searchedObject){
+    // checks whether a given string exist as the value of key in an object
+    var objKeys = Object.keys(searchedObject);
+    if(objKeys.length==0) return false; // if the object is empty, then the string cannot exist here
+    for (let index = 0; index < objKeys.length; index++) {
+        const element = objKeys[index];
+        if (searchedObject[element] == searchedString) {
+            return true; // found where the string is in the object
+        } else {
+            //nothing keep going, maybe in another key
+        }
+    }
+    return false;
 }
