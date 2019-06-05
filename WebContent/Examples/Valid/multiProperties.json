@@ -1,0 +1,128 @@
+{
+    "id": "urn:dev:wot:org:w3:testthing:lyon2018",
+    "title": "TestThing",
+    "@context": "https://www.w3.org/2019/wot/td/v1",
+    "@type": "Thing",
+    "security": ["nosec_sc"],
+    "properties": {
+        "bool": {
+            "title": "true/false",
+            "type": "boolean",
+            "readOnly": false,
+            "writeOnly": false,
+            "observable": false,
+            "forms": [{
+                "href": "http://plugfest.thingweb.io:8083/TestThing/properties/bool",
+                "contentType": "application/json",
+                "op": ["readproperty", "writeproperty"]
+            }, {
+                "href": "coap://plugfest.thingweb.io:5683/TestThing/pr/bool",
+                "contentType": "application/json",
+                "op": ["readproperty", "writeproperty"]
+            }]
+        },
+        "int": {
+            "title": "Integer number",
+            "type": "integer",
+            "readOnly": false,
+            "writeOnly": false,
+            "observable": false,
+            "forms": [{
+                "href": "http://plugfest.thingweb.io:8083/TestThing/properties/int",
+                "contentType": "application/json",
+                "op": ["readproperty", "writeproperty"]
+            }, {
+                "href": "coap://plugfest.thingweb.io:5683/TestThing/pr/int",
+                "contentType": "application/json",
+                "op": ["readproperty", "writeproperty"]
+            }]
+        },
+        "num": {
+            "title": "Floating point",
+            "type": "number",
+            "readOnly": false,
+            "writeOnly": false,
+            "observable": false,
+            "forms": [{
+                "href": "http://plugfest.thingweb.io:8083/TestThing/properties/num",
+                "contentType": "application/json",
+                "op": ["readproperty", "writeproperty"]
+            }, {
+                "href": "coap://plugfest.thingweb.io:5683/TestThing/pr/num",
+                "contentType": "application/json",
+                "op": ["readproperty", "writeproperty"]
+            }]
+        },
+        "string": {
+            "type": "string",
+            "readOnly": false,
+            "writeOnly": false,
+            "observable": false,
+            "forms": [{
+                "href": "http://plugfest.thingweb.io:8083/TestThing/properties/string",
+                "contentType": "application/json",
+                "op": ["readproperty", "writeproperty"]
+            }, {
+                "href": "coap://plugfest.thingweb.io:5683/TestThing/pr/string",
+                "contentType": "application/json",
+                "op": ["readproperty", "writeproperty"]
+            }]
+        },
+        "array": {
+            "title": "Tuple",
+            "type": "array",
+            "items": {},
+            "readOnly": false,
+            "writeOnly": false,
+            "observable": false,
+            "forms": [{
+                "href": "http://plugfest.thingweb.io:8083/TestThing/properties/array",
+                "contentType": "application/json",
+                "op": ["readproperty", "writeproperty"]
+            }, {
+                "href": "coap://plugfest.thingweb.io:5683/TestThing/pr/array",
+                "contentType": "application/json",
+                "op": ["readproperty", "writeproperty"]
+            }]
+        },
+        "object": {
+            "title": "ID-name",
+            "description": "Object with ID and name",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "title": "ID",
+                    "description": "Internal identifier",
+                    "type": "integer"
+                },
+                "name": {
+                    "title": "Name",
+                    "description": "Public name",
+                    "type": "string"
+                }
+            },
+            "readOnly": false,
+            "writeOnly": false,
+            "observable": false,
+            "forms": [{
+                "href": "http://plugfest.thingweb.io:8083/TestThing/properties/object",
+                "contentType": "application/json",
+                "op": ["readproperty", "writeproperty"]
+            }, {
+                "href": "coap://plugfest.thingweb.io:5683/TestThing/pr/object",
+                "contentType": "application/json",
+                "op": ["readproperty", "writeproperty"]
+            }]
+        }
+    },
+    "forms": [{
+        "href": "http://plugfest.thingweb.io:8083/TestThing/all/properties",
+        "contentType": "application/json",
+        "op": ["readallproperties", "readmultipleproperties", "writeallproperties", "writemultipleproperties"]
+    }],
+    "securityDefinitions": {
+        "nosec_sc": {
+            "scheme": "nosec"
+        }
+    }
+}
