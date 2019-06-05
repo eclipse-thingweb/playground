@@ -11,6 +11,14 @@
             "alg": "ES256",
             "authorization": "https://servient.example.com:8443/",
             "name": "myParameter"
+        },
+        "bearerNew_sc": {
+            "scheme": "bearer",
+            "in": "header",
+            "format": "myFormat",
+            "alg": "myAlg",
+            "authorization": "https://servient.example.com:8443/",
+            "name": "myParameter"
         }
     },
     "security": ["bearer_sc"],
