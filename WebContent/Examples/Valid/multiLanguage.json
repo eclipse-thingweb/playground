@@ -11,7 +11,7 @@
     },
     "description": "Valid TD showing multiple language support",
     "descriptions": {
-        "en": "Human readable information.",
+        "en": "Valid TD showing multiple language support",
         "de": "Menschenlesbare Informationen.",
         "ja": "人間が読むことができる情報",
         "zh-Hans": "人们可阅读的信息",
@@ -23,7 +23,7 @@
             "in": "header",
             "description": "some information on this scheme",
             "descriptions": {
-                "en": "Human readable information.",
+                "en": "some information on this scheme",
                 "de": "Menschenlesbare Informationen.",
                 "ja": "人間が読むことができる情報",
                 "zh-Hans": "人们可阅读的信息",
@@ -44,7 +44,7 @@
                 "zh-Hans": "开关",
                 "zh-Hant": "開關"
             },
-            "description": "This indicates whether it is turned off or on ",
+            "description": "This indicates whether it is turned off or on",
             "descriptions": {
                 "en": "This indicates whether it is turned off or on",
                 "de": "In DE: This indicates whether it is turned off or on",
@@ -67,9 +67,9 @@
         "fade": {
             "title": "Fade in/out",
             "titles": {
-                "en": "On/Off",
-                "de": "An/Aus",
-                "ja": "オンオフ",
+                "en": "Fade in/out",
+                "de": "DE: Fade in/out",
+                "ja": "JA: Fade in/out",
                 "zh-Hans": "开关",
                 "zh-Hant": "開關"
             },
