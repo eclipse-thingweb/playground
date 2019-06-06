@@ -31,9 +31,6 @@ fs.readFile(storedTdAddress, (err, tdData) => {
     };
     try {
         var tdJson = JSON.parse(tdData);
-        var pattern = /^(?:(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE)|(art-lojban|cel-gaulish|no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))$|^((?:[a-z]{2,3}(?:(?:-[a-z]{3}){1,3})?)|[a-z]{4}|[a-z]{5,8})(?:-([a-z]{4}))?(?:-([a-z]{2}|\d{3}))?((?:-(?:[\da-z]{5,8}|\d[\da-z]{3}))*)?((?:-[\da-wy-z](?:-[\da-z]{2,8})+)*)?(-x(?:-[\da-z]{1,8})+)?$|^(x(?:-[\da-z]{1,8})+)$/i; // eslint-disable-line max-len
-        console.log(pattern.test("en_US"))
-        process.exit(0);
         console.log('JSON validation... OK');
     } catch (err) {
         console.error('X JSON validation... KO:');
@@ -93,7 +90,6 @@ fs.readFile(storedTdAddress, (err, tdData) => {
                 checkPropItems(tdJson);
                 checkInteractions(tdJson);
                 checkSecurity(tdJson);
-                checkUniqueness(tdJson);
 
             } else {
 
@@ -105,9 +101,6 @@ fs.readFile(storedTdAddress, (err, tdData) => {
             }
 
             //json ld validation
-
-            // TODO: pause json ld verification until namespace is fixed
-            // console.log('JSON-LD validation... OK');
 
             jsonld.toRDF(tdJson, {
                 format: 'application/nquads'
@@ -122,9 +115,7 @@ fs.readFile(storedTdAddress, (err, tdData) => {
                     console.log('> ' + err);
                 }
             });
-
         });
-
     });
 });
 
@@ -504,8 +495,6 @@ function checkSecurity(td) {
     if (td.hasOwnProperty("securityDefinitions")) {
         var securityDefinitionsObject = td.securityDefinitions;
         var securityDefinitions = Object.keys(securityDefinitionsObject);
-
-
         var rootSecurity = td.security;
 
         if (securityContains(securityDefinitions, rootSecurity)) {
@@ -588,26 +577,4 @@ function checkSecurity(td) {
         console.log('KO Error: securityDefinitions is mandatory');
     }
     return;
-}
-
-function checkUniqueness(td) {
-
-    // building the interaction name array
-    var tdInteractions = [];
-    if (td.hasOwnProperty("properties")) {
-        tdInteractions = tdInteractions.concat(Object.keys(td.properties));
-    }
-    if (td.hasOwnProperty("actions")) {
-        tdInteractions = tdInteractions.concat(Object.keys(td.actions));
-    }
-    if (td.hasOwnProperty("events")) {
-        tdInteractions = tdInteractions.concat(Object.keys(td.events));
-    }
-    // checking uniqueness
-
-    isDuplicate = (new Set(tdInteractions)).size !== tdInteractions.length;
-
-    if (isDuplicate) {
-        console.log('KO Error: duplicate interaction names are not allowed');
-    }
 }

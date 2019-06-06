@@ -15,8 +15,8 @@
 	<script type="text/javascript" src="js/jquery-2.2.3.js"></script>
 	<script type="text/javascript" src="js/jquery-linedtextarea.js"></script>
 	<script type="text/javascript" src="js/playground.js"></script>
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
-	 crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+		integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 	<!--[if lte IE 8]>
     <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-old-ie-min.css">
 <![endif]-->
@@ -35,139 +35,148 @@
 	<div class="pure-g wrap">
 
 		<h1 class="pure-u-1 header">Thing Description Playground</h1>
-		<h3 class="pure-u-1 header">Validation of Thing Descriptions according to the <a href="https://w3c.github.io/wot-thing-description/#"
-			 target="_blank">W3C Editor's Draft 06 May 2019</a></h3>
-		<h3 class="pure-u-1 header"> <i class="fab fa-github"></i> For unexpected validation or rejection, report it <a href="https://github.com/thingweb/thingweb-playground"
-			 target="_blank">
+		<h3 class="pure-u-1 header">Validation of Thing Descriptions according to the <a
+				href="https://w3c.github.io/wot-thing-description/#" target="_blank">W3C Editor's Draft 01 June 2019</a>
+		</h3>
+		<h3 class="pure-u-1 header"> <i class="fab fa-github"></i> For unexpected validation or rejection, report it <a
+				href="https://github.com/thingweb/thingweb-playground" target="_blank">
 				here
 			</a>
 		</h3>
 
 		<p class="pure-u-1 header">
-		<b> Warning:</b> Browsers other than Chrome and Firefox present issues with the validation of JSON-LD files.
-		<br>
-		<b> Warning:</b> JSON-LD validation will always fail until the TD namespace in @context becomes online</p>
+			<b> Warning:</b> Browsers other than Firefox present will not work for offline validation due to CORS
+			policy.
+			<br>
 
-		<div class="pure-u-17-24">
-			<textarea autofocus id="td-text" name="td-text" rows="32" placeholder="Enter Thing Description here..."></textarea>
-		</div>
-
-		<div class="pure-u-6-24">
-			<div class="panel">
-
-				<table class="pure-table pure-table-bordered">
-					<tbody>
-						<tr>
-							<td>
-								<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
-									<circle id="spot-json" cx="10" cy="10" r="9" />
-								</svg>
-							</td>
-							<td>JSON validation</td>
-						</tr>
-						<tr>
-							<td>
-								<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
-									<circle id="spot-simple-json-schema" cx="10" cy="10" r="9" />
-								</svg>
-							</td>
-							<td>Simple JSON Schema validation</td>
-						</tr>
-						<tr>
-							<td>
-								<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
-									<circle id="spot-full-json-schema" cx="10" cy="10" r="9" />
-								</svg>
-							</td>
-							<td>Full JSON Schema validation</td>
-						</tr>
-						<tr>
-						<tr>
-							<td>
-								<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
-									<circle id="spot-json-ld" cx="10" cy="10" r="9" />
-								</svg>
-							</td>
-							<td>JSON-LD validation</td>
-						</tr>
-						<tr>
-							<td>
-								<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
-									<circle id="spot-add" cx="10" cy="10" r="9" />
-								</svg>
-							</td>
-							<td>Additional Checks</td>
-						</tr>
-					</tbody>
-				</table>
-
-				<form class="pure-form">
-					<button type="button" class="pure-button" onclick="javascript:validate()">Validate</button>
-					<button type="button" class="pure-button" onclick="javascript:clearLog()">Clear Log</button>
-				</form>
-
-				<table class="pure-table pure-table-bordered">
-					<tbody>
-						<tr>
-							<td>JSON Error?</td>
-							<td>Details <a href="https://jsonlint.com/" target="_blank">here</a></td>
-						</tr>
-						<tr>
-							<td>JSON Schema Error?</td>
-							<td>Paste <a href="https://raw.githubusercontent.com/thingweb/thingweb-playground/master/WebContent/td-schema.json"
-								 target="_blank">this schema</a>, <a href="https://jsonschemalint.com/#/version/draft-06/markup/json" target="_blank">here</a></td>
-						</tr>
-						<tr>
-							<td>JSON-LD Error?</td>
-							<td>Details <a href="https://json-ld.org/playground-dev/" target="_blank">here</a></td>
-						</tr>
-					</tbody>
-				</table>
-				<pre></pre>
-				<table class="pure-table">
-
-					<tbody>
-						<tr>
-							<td>Examples: </td>
-							<td>
-								<a class="pure-button button-success pure-button-active" href="https://github.com/thingweb/thingweb-playground/tree/master/WebContent/Examples/Valid"
-								 target="_blank">
-									<i class="fas fa-check"></i>
-
-								</a>
-							</td>
-
-							<td>
-								<a class="pure-button button-warning pure-button-active" href="https://github.com/thingweb/thingweb-playground/tree/master/WebContent/Examples/Warning"
-								 target="_blank">
-									<i class="fas fa-exclamation"></i>
-
-								</a>
-							</td>
-
-							<td>
-								<a class="pure-button button-error pure-button-active" href="https://github.com/thingweb/thingweb-playground/tree/master/WebContent/Examples/Invalid"
-								 target="_blank">
-									<i class="fas fa-times"></i>
-
-								</a>
-							</td>
-						</tr>
-
-					</tbody>
-				</table>
+			<div class="pure-u-17-24">
+				<textarea autofocus id="td-text" name="td-text" rows="32"
+					placeholder="Enter Thing Description here..."></textarea>
 			</div>
-		</div>
 
-		<div class="pure-u-1 header">
-			<pre></pre>
-		</div>
+			<div class="pure-u-6-24">
+				<div class="panel">
 
-		<div class="pure-u-1">
-			<pre id="console">Waiting for validation...&#13;&#10;</pre>
-		</div>
+					<table class="pure-table pure-table-bordered">
+						<tbody>
+							<tr>
+								<td>
+									<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+										<circle id="spot-json" cx="10" cy="10" r="9" />
+									</svg>
+								</td>
+								<td title="Is green when TD is a valid JSON">JSON validation</td>
+							</tr>
+							<tr>
+								<td>
+									<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+										<circle id="spot-simple-json-schema" cx="10" cy="10" r="9" />
+									</svg>
+								</td>
+								<td title="Is green when TD is valid according to the JSON Schema of the TD spec">JSON
+									Schema validation</td>
+							</tr>
+							<tr>
+								<td>
+									<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+										<circle id="spot-full-json-schema" cx="10" cy="10" r="9" />
+									</svg>
+								</td>
+								<td
+									title="Is green when TD has no default assumptions and everything is explicitly declared">
+									(With Defaults) JSON Schema validation</td>
+							</tr>
+							<tr>
+							<tr>
+								<td>
+									<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+										<circle id="spot-json-ld" cx="10" cy="10" r="9" />
+									</svg>
+								</td>
+								<td title="Is green when TD can be expanded using the @context value">JSON-LD validation
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+										<circle id="spot-add" cx="10" cy="10" r="9" />
+									</svg>
+								</td>
+								<td title="Is green when all custom checks pass">Additional Checks</td>
+							</tr>
+						</tbody>
+					</table>
 
-	</div>
+					<form class="pure-form">
+						<button type="button" class="pure-button" onclick="javascript:validate()">Validate</button>
+						<button type="button" class="pure-button" onclick="javascript:clearLog()">Clear Log</button>
+					</form>
+
+					<table class="pure-table pure-table-bordered">
+						<tbody>
+							<tr>
+								<td>JSON Error?</td>
+								<td>Details <a href="https://jsonlint.com/" target="_blank">here</a></td>
+							</tr>
+							<tr>
+								<td>JSON Schema Error?</td>
+								<td>Paste <a
+										href="https://raw.githubusercontent.com/thingweb/thingweb-playground/master/WebContent/td-schema.json"
+										target="_blank">this schema</a>, <a
+										href="https://jsonschemalint.com/#/version/draft-06/markup/json"
+										target="_blank">here</a></td>
+							</tr>
+							<tr>
+								<td>JSON-LD Error?</td>
+								<td>Details <a href="https://json-ld.org/playground-dev/" target="_blank">here</a></td>
+							</tr>
+						</tbody>
+					</table>
+					<pre></pre>
+					<table class="pure-table">
+
+						<tbody>
+							<tr>
+								<td>Examples: </td>
+								<td>
+									<a class="pure-button button-success pure-button-active"
+										href="https://github.com/thingweb/thingweb-playground/tree/master/WebContent/Examples/Valid"
+										target="_blank">
+										<i class="fas fa-check"></i>
+
+									</a>
+								</td>
+
+								<td>
+									<a class="pure-button button-warning pure-button-active"
+										href="https://github.com/thingweb/thingweb-playground/tree/master/WebContent/Examples/Warning"
+										target="_blank">
+										<i class="fas fa-exclamation"></i>
+
+									</a>
+								</td>
+
+								<td>
+									<a class="pure-button button-error pure-button-active"
+										href="https://github.com/thingweb/thingweb-playground/tree/master/WebContent/Examples/Invalid"
+										target="_blank">
+										<i class="fas fa-times"></i>
+
+									</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="pure-u-1 header">
+				<pre></pre>
+			</div>
+
+			<div class="pure-u-1">
+				<pre id="console">Waiting for validation...&#13;&#10;</pre>
+			</div>
 	</div>
 
 	<div class="footer-shape">
