@@ -1038,6 +1038,13 @@ function checkMultiLangConsistency(td) {
         });
     }
 
+    //checking td-context-default-language-direction-script assertion
+    results.push({
+        "ID": "td-context-default-language-direction-script",
+        "Status": checkAzeri(flatArray)
+    });
+
+    // checking td-titles-descriptions assertion
     // if there are no multilang, then it is not impl
     if(is_td_titles_descriptions.length==0){
         results.push({
@@ -1070,6 +1077,8 @@ function checkMultiLangConsistency(td) {
         "Status": "pass"
     });
     
+    //nothing after this, there is return above
+
 }
 
 // checks if an array that contains only arrays as items is composed of same items
@@ -1120,4 +1129,19 @@ function isStringObjectKeyValue(searchedString, searchedObject){
         }
     }
     return false;
+}
+
+// checks whether an azeri language tag also specifies the version (Latn or Arab).
+// basically if the language is called "az", it is invalid, if it is az-Latn or az-Arab it is valid.
+function checkAzeri(myMultiLangArray){
+    for (let index = 0; index < myMultiLangArray.length; index++) {
+        const element = myMultiLangArray[index];
+        if (element =="az"){
+            return "fail"
+        } else if ((element == "az-Latn") || (element == "az-Arab")){
+            return "pass"
+        }
+    }
+    // no azeri, so it is not implemented
+    return "not-impl"
 }
