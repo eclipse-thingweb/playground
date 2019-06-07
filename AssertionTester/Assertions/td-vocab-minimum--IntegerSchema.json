@@ -39,7 +39,7 @@
                         ]
                     },
                     "minimum": {
-                        "type": "number"
+                        "type": "integer"
                     }
                 }
             },
@@ -117,7 +117,7 @@
                         ]
                     },
                     "minimum": {
-                        "type": "number"
+                        "type": "integer"
                     }
                 }
             },
