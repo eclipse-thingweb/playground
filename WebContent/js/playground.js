@@ -156,11 +156,11 @@ $(function () {
                     //used to be var valid = ajv.validate('td', e.detail);
                     if (valid) {
                         light('OK', 'spot-full-json-schema');
-                        log('JSON Schema validation... OK');
+                        log('Optional validation... OK');
                         trigger('validate-json-ld', tdJson);
                     } else {
-                        light('KO', 'spot-full-json-schema');
-                        log('X JSON Schema validation... KO:');
+                        light('WARNING', 'spot-full-json-schema');
+                        log('Optional validation... KO:');
                         //console.log(ajv.errors);
                         log('> ' + ajv.errorsText());
                         console.log(JSON.stringify(ajv.errors));
