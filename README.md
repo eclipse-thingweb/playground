@@ -23,7 +23,7 @@ There are different tools that can be found in this repository. They will be spl
 This is a node.js based tool
 
     * Go to Scripts folder and run `npm install`
-    * Run `node Scripts/playground.js "./WebContent/Examples/Bundang/Valid/MyLampThing.jsonld"` to validate a Thing Description found at `./WebContent/Examples/Bundang/Valid/MyLampThing.jsonld'. You can replace this with a TD you want to validate.
+    * Run `node Scripts/playground.js "./WebContent/Examples/Valid/actionReponse.json"` to validate a Thing Description found at `./WebContent/Examples/Valid/actionReponse.json'. You can replace this with a TD you want to validate.
 
 ## Script based Assertion Tester
 
