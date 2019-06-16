@@ -1,13 +1,14 @@
 const fs = require('fs');
 const jsonld = require('jsonld');
 var Ajv = require('ajv');
+var path = require('path');
 
 // Takes the second argument as the TD to validate
 
 
 var storedTdAddress;
-const schemaLocation = "./WebContent/td-schema.json";
-const draftLocation = "./WebContent/json-schema-draft-07.json";
+const schemaLocation = path.join(__dirname, '..', 'WebContent', 'td-schema.json');
+const draftLocation = path.join(__dirname, '..', 'WebContent', 'json-schema-draft-07.json');
 
 //console.log("argv is ", process.argv);
 if (process.argv[2]) {
