@@ -502,7 +502,7 @@ function createParents(resultsJSON) {
 function checkVocabulary(tdJson) {
     /*
     Validates the following assertions:
-    td-vocabulary
+    td - processor
     td-objects:securityDefinitions
     td-arrays:security
     td:security
@@ -528,7 +528,7 @@ function checkVocabulary(tdJson) {
 
     if (valid) {
         results.push({
-            "ID": "td-vocabulary",
+            "ID": "td-processor",
             "Status": "pass",
         });
 
@@ -543,7 +543,7 @@ function checkVocabulary(tdJson) {
     } else {
         console.log("VALIDATION ERROR!!! : ", ajv.errorsText());
         results.push({
-            "ID": "td-vocabulary",
+            "ID": "td-processor",
             "Status": "fail",
             "Comment": "invalid TD"
         });
