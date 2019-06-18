@@ -88,6 +88,7 @@ a.button-others {
 }
 a.button-link {
 	border-radius: 20px;
+	margin-right: 30px;
 	color: white;
 	cursor: pointer;
 	background: #30b8a3;
