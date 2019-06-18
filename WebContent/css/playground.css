@@ -68,6 +68,31 @@ textarea {
 	/* this is an orange */
 }
 
+.pure-button-group{
+	padding:10px;
+}
+a.button-others {
+	border: 10px solid #fff;
+	border-radius: 20px;
+	
+	color: white;
+	cursor: pointer;
+	background: #30b8a3;
+	padding: 6px 12px;
+	/* padding:10px;
+	padding-left:20px;
+	padding-right:20px; */
+	
+	/* margin-left: 10px;
+	margin-right: 50px; */
+}
+a.button-link {
+	border-radius: 20px;
+	color: white;
+	cursor: pointer;
+	background: #30b8a3;
+}
+
 #console {
 	font-family: 'Droid Sans Mono', "Courier New", monospace;
 	background: #333;
