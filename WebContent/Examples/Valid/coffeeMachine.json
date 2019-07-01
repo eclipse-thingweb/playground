@@ -15,7 +15,7 @@
     "properties": {
         "status": {
             "type": "string",
-            "enum": ["brewing","grinding","error"],
+            "enum": ["idle", "brewing","grinding","error"],
             "readonly": true,
             "forms": [{"href": "/status", "op": "readproperty"}]
         },
