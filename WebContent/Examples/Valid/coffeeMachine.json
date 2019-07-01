@@ -1,0 +1,100 @@
+{
+    "@context": "https://www.w3.org/2019/wot/td/v1",
+    "id": "http://example.org/coffee_machine01",
+    "title": "MyCoffeeMachine",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": [
+        "basic_sc"
+    ],
+    "base": "https://exampleCoffeeMachine.com/",
+    "properties": {
+        "status": {
+            "type": "string",
+            "enum": ["brewing","grinding","error"],
+            "readonly": true,
+            "forms": [{"href": "/status", "op": "readproperty"}]
+        },
+        "power": {
+            "type": "boolean",
+            "forms": [{"href": "/power", "op": "readproperty"}]
+        },
+        "levels": {
+            "type": "object",
+            "properties": {
+                "water_level": {
+                    "type": "integer",
+                    "minimum" : 0,
+                    "maximum" : 100
+                },
+                "bean_level": {
+                    "type": "integer",
+                    "minimum" : 0,
+                    "maximum" : 100
+                },
+                "bin_level": {
+                    "type": "integer",
+                    "minimum" : 0,
+                    "maximum" : 100
+                }
+            },
+            "forms": [{"href": "/levels", "op": "readproperty"}]
+        }
+    },
+    "actions": {
+        "brew": {
+            "title": "brew",
+            "description": "Start process of brewing selected coffee.",
+            "input": {
+                "type": "object",
+                "properties": {
+                    "selection": {
+                        "type": "string",
+                        "enum": ["cappucino", "expresso", "americano"]
+                    },
+                    "sugar": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 5
+                    }
+                },
+                "required": ["selection", "sugar"]
+            },
+            "forms": [{"href": "/brew"}]
+        },
+        "stop_brew": {
+            "title": "stop_brew",
+            "description": "Stop process of brewing.",
+            "forms": [{"href": "/stop_brew"}]
+        },
+        "switch_off": {
+            "title": "switch_off",
+            "description": "Switch off coffee machine.",
+            "forms": [{"href": "/power_off"}]
+        }
+    },
+    "events":{
+        "low_water_level": {
+            "data": {
+                "type": "string"
+            },
+            "forms": [{"href": "/low_water_level"}]
+        },
+        "low_bean_level": {
+            "data": {
+                "type": "string"
+            },
+            "forms": [{"href": "/low_bean_level"}]
+        },
+        "bin_is_full": {
+            "data": {
+                "type": "string"
+            },
+            "forms": [{"href": "/bin_is_full"}]
+        }
+    }
+}
