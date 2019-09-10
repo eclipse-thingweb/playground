@@ -5,16 +5,25 @@
 	<meta charset="utf-8">
 	<title>Thing Description Playground - Validate your W3C Thing Description</title>
 	<!-- <link rel="stylesheet" type="text/css" href="css/pure-0.6.0.css" /> -->
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
 	<link rel="stylesheet" type="text/css" href="css/pure-min.css" />
 	<link rel="stylesheet" type="text/css" href="css/grids-responsive-min.css" />
+	
+    
 	<!-- <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css"> -->
 	<link rel="stylesheet" type="text/css" href="css/jquery-linedtextarea.css" />
 	<link rel="stylesheet" type="text/css" href="css/playground.css" />
+	
+
 	<script type="text/javascript" src="js/node_modules/jsonld/dist/jsonld.js"></script>
 	<script type="text/javascript" src="js/ajv.min.js"></script>
+	<script type="text/javascript" src="js/UTILS/helperFunctions.js"></script>
 	<script type="text/javascript" src="js/jquery-2.2.3.js"></script>
 	<script type="text/javascript" src="js/jquery-linedtextarea.js"></script>
 	<script type="text/javascript" src="js/playground.js"></script>
+	
+
+	
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
 		integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 	<!--[if lte IE 8]>
@@ -25,43 +34,60 @@
 	<!--<![endif]-->
 </head>
 <header>
-	<div class="container">
-		<img alt="Thingweb logo" src="logo.png">
-	</div>
+		<div class="container-fluid">
+				<div class="row alert alert-info">
+				  <div class="col-sm">
+						<div>
+								<img alt="Thingweb logo" src="logo.png"  style="float: left; height:50px; widows: 100px;">
+								</div>
+				  </div>
+				  <div class="col-sm">
+						<h1 class="pure-u-1 header" style="display: inline;">Thing Description Playground</h1>
+				  </div>
+				  <div class="col-sm">
+					
+				<div     >
+						<a class="btn btn-success" href="https://github.com/thingweb/thingweb-playground/issues/new" target="_blank"> Create Issue </a>
+			
+						<a class="btn btn-success" href="https://github.com/thingweb/thingweb-playground/tree/master/Scripts" target="_blank"> Script Validation </a>
+			
+						<a class="btn btn-success" href="https://github.com/thingweb/thingweb-playground/tree/master/AssertionTester" target="_blank"> Assertion Tester </a>
+
+					</div>
+				  </div>
+				</div>
+			  </div>
+	
 </header>
 
 <body>
 
-	<div class="pure-g wrap">
-
-		<h1 class="pure-u-1 header">Thing Description Playground</h1>
-		<h3 class="pure-u-1 header">Validation of Thing Descriptions according to the <a
-				href="https://w3c.github.io/wot-thing-description/#" target="_blank">W3C Candidate Recommendation of 18
-				June 2019</a>
-		</h3>
-
-		<div class="pure-u-1">
-			<a class="button-link pure-button" href="https://github.com/thingweb/thingweb-playground/issues/new" target="_blank"> Create Issue </a>
-
-			<a class="button-link pure-button" href="https://github.com/thingweb/thingweb-playground/tree/master/Scripts" target="_blank"> Script-based Validation </a>
-
-			<a class="button-link pure-button" href="https://github.com/thingweb/thingweb-playground/tree/master/AssertionTester" target="_blank"> Assertion Tester </a>
-		</div>
-
-		<p class="pure-u-1 header">
-			<b> Warning:</b> Browsers other than Firefox present will not work for offline validation due to CORS policy.
-			<br>
+		
+	
+		<div id="offline-warning">
+			</div>
+			<div class="pure-g wrap">
 
 			<div class="pure-u-17-24">
-				<textarea autofocus id="td-text" name="td-text" rows="32"
-					placeholder="Enter Thing Description here..."></textarea>
+					
+				<textarea  autofocus id="td-text" name="td-text" rows="32"
+					placeholder="Enter Thing Description here...">
+					
+				</textarea>
+				
 			</div>
 
 			<div class="pure-u-6-24">
 				<div class="panel">
 
-					<table class="pure-table pure-table-bordered">
-						<tbody>
+					<table class="pure-table pure-table-bordered" >
+						
+							<tr  id="validation_table_head" class="btn-info">
+									<th  rowspan="2"></th>
+									
+						<tbody id="validation_table">
+							
+							</tr>
 							<tr>
 								<td>
 									<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
@@ -111,8 +137,12 @@
 					</table>
 
 					<form class="pure-form">
-						<button type="button" class="pure-button" onclick="javascript:validate()">Validate</button>
+						<button type="button" class="pure-button" id="btn_validate">Validate</button>
 						<button type="button" class="pure-button" onclick="javascript:clearLog()">Clear Log</button>
+						<button type="button" class="pure-button" id="btn_gistify">Gistify</button>
+						<button type="button" class="pure-button" id="btn_string">string </button>
+
+
 					</form>
 
 					<table class="pure-table pure-table-bordered">
@@ -136,37 +166,20 @@
 						</tbody>
 					</table>
 					<pre></pre>
-					<table class="pure-table">
+					<table class="pure-table" >
 
 						<tbody>
 							<tr>
 								<td>Examples: </td>
+								
 								<td>
-									<a class="pure-button button-success pure-button-active"
-										href="https://github.com/thingweb/thingweb-playground/tree/master/WebContent/Examples/Valid"
-										target="_blank">
-										<i class="fas fa-check"></i>
-
-									</a>
+								<select  id="load_example" class="btn btn-info dropdown-toggle" >							
+										<option class="btn-info" value="select_none">Select None </option>
+										
+											
+									 </select>
 								</td>
-
-								<td>
-									<a class="pure-button button-warning pure-button-active"
-										href="https://github.com/thingweb/thingweb-playground/tree/master/WebContent/Examples/Warning"
-										target="_blank">
-										<i class="fas fa-exclamation"></i>
-
-									</a>
-								</td>
-
-								<td>
-									<a class="pure-button button-error pure-button-active"
-										href="https://github.com/thingweb/thingweb-playground/tree/master/WebContent/Examples/Invalid"
-										target="_blank">
-										<i class="fas fa-times"></i>
-
-									</a>
-								</td>
+								
 							</tr>
 						</tbody>
 					</table>
@@ -177,14 +190,19 @@
 				<pre></pre>
 			</div>
 
-			<div class="pure-u-1">
+			<div class="pure-u-1" style=" 
+			max-height:250px;
+			overflow-y:scroll;">
 				<pre id="console">Waiting for validation...&#13;&#10;</pre>
 			</div>
 	</div>
 
+
 	<div class="footer-shape">
 		<img src="footer-shape.jpg" width="100%">
 	</div>
+
+
 	<footer>
 		<div class="links">
 			<ul>
@@ -213,6 +231,118 @@
 			<p>Copyrights © 2019 Eclipse Thingweb. All Rights Reserved.</p>
 		</div>
 	</footer>
+	
 </body>
 
 </html>
+
+<script>
+
+
+
+$(document).ready(function(){
+
+
+
+	$("#td-text").keydown(function(e) {
+    if(e.keyCode === 9) { // tab was pressed
+        // get caret position/selection
+        var start = this.selectionStart;
+        var end = this.selectionEnd;
+
+        var $this = $(this);
+        var value = $this.val();
+
+        // set textarea value to: text before caret + tab + text after caret
+        $this.val(value.substring(0, start)
+                    + "\t"
+                    + value.substring(end));
+
+        // put caret at right position again (add one for the tab)
+        this.selectionStart = this.selectionEnd = start + 1;
+
+        // prevent the focus lose
+        e.preventDefault();
+    }
+});
+
+
+	
+	let urlAddrObject= getExamplesList();
+	populateExamples(urlAddrObject);
+	$("#load_example").change({urlAddrObject:urlAddrObject},exampleSelectHandler);
+	$("#validation_table").fadeOut("fast"); 
+
+	$("#validation_table_head").click(function(e){
+		$("#validation_table").fadeToggle("fast"); 
+		
+	});
+	
+
+	
+	$("#td-text").keyup({source:"auto"},validate);
+	
+	$("#btn_validate").click({source:"manual"},validate);
+
+	
+
+
+	
+	if(browserName()!="Firefox")
+	{
+	$( "#offline-warning" ).append("<b> Warning:</b> Browsers other than Firefox present will not work for offline validation due to CORS policy.<br>");
+	}
+   
+
+	$("#btn_gistify").click(submitAsGist);
+
+
+	function submitAsGist(){
+		var name = prompt("Please enter the Name of TD:");
+		
+		var data={
+				"description": "Directly from playground",
+					"public": true,
+					"files": {
+					[name]: {
+					"content": $('#td-text').val()
+							}
+					}
+				};
+
+			var url='https://api.github.com/gists';
+
+			
+			const headers = {
+					"Authorization" : `Token 22495b2b08f021ad08ca6f04bcc79105c18fc988`
+				}
+			
+			$.ajax({
+					type: "POST",
+					url: url,
+					headers:headers,
+					success: success,
+					data:JSON.stringify(data)
+
+			
+				});
+
+				function success(data)
+					{
+						alert("TD has been submitted.");
+						console.log(data);
+
+						}
+				}
+			
+
+				$("#btn_string").click(function(){
+					getLineNumber(44,$("#td-text").val());
+				});
+	
+});
+
+
+
+
+	</script>
