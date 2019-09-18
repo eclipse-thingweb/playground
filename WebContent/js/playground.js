@@ -26,6 +26,7 @@ var ajv; /* JSON Schema validator */
 var tdJson;
 var validationStatus="success";
 var source="";
+var autoValidate=false;
 
 function trigger(name, data) {
     
@@ -59,19 +60,23 @@ function reset(id) {
 }
 
 function validate(e) {
-    var text = $('#td-text').val();
-    e.preventDefault();
-  //  $("#console").empty();
-    reset('spot-json');
-    reset('spot-simple-json-schema');
-    reset('spot-full-json-schema');
-    reset('spot-json-ld');
-    reset('spot-add');
 
-    source=e.data.source;
-   
-   
-    trigger('validate-json', text);
+    if(!(e.data.source=="auto" && autoValidate==false)){
+            var text = $('#td-text').val();
+            
+            e.preventDefault();
+        //  $("#console").empty();
+            reset('spot-json');
+            reset('spot-simple-json-schema');
+            reset('spot-full-json-schema');
+            reset('spot-json-ld');
+            reset('spot-add');
+
+            source=e.data.source;
+        
+        
+            trigger('validate-json', text);
+    }
     
    
 }
@@ -98,6 +103,12 @@ function clearLog() {
     reset('spot-full-json-schema');
     reset('spot-json-ld');
     reset('spot-add');
+    $("#validation_table_head").removeClass();
+    $("#validation_table_head").toggleClass("btn-info");
+    $("#validation_table").fadeOut("fast",function(){
+		$("#table_head_arrow").removeClass();
+        $("#table_head_arrow").toggleClass("down");
+	}); 
 }
 
 $(function () {
@@ -275,9 +286,16 @@ function ValidURL(str) {
 function updateValidationStatusHead()
 {
     if(validationStatus=="danger")
+    {
     $("#validation_table").fadeIn("fast");
+    $("#table_head_arrow").removeClass();
+    $("#table_head_arrow").toggleClass("up");}
+    
     else
+    {
     $("#validation_table").fadeOut("fast");
+    $("#table_head_arrow").removeClass();
+    $("#table_head_arrow").toggleClass("down");}
 
 
     $("#validation_table_head").removeClass();

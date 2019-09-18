@@ -83,7 +83,7 @@
 					<table class="pure-table pure-table-bordered" >
 						
 							<tr  id="validation_table_head" class="btn-info">
-									<th  rowspan="2"></th>
+									<th  rowspan="2"> <i id="table_head_arrow" class="down"></i></th>
 									
 						<tbody id="validation_table">
 							
@@ -137,34 +137,19 @@
 					</table>
 
 					<form class="pure-form">
+						<input type="checkbox"  id="box_auto_validate" value="off"> Auto Validate <br>
 						<button type="button" class="pure-button" id="btn_validate">Validate</button>
 						<button type="button" class="pure-button" onclick="javascript:clearLog()">Clear Log</button>
-						<button type="button" class="pure-button" id="btn_gistify">Gistify</button>
-						<button type="button" class="pure-button" id="btn_string">string </button>
+						
+						<div><button type="button" class="pure-button" id="btn_gistify">Gistify</button>
+						<a href="#" target="_blank">Your Gist</a>
+						</div>
+						
 
 
 					</form>
 
-					<table class="pure-table pure-table-bordered">
-						<tbody>
-							<tr>
-								<td>JSON Error?</td>
-								<td>Details <a href="https://jsonlint.com/" target="_blank">here</a></td>
-							</tr>
-							<tr>
-								<td>JSON Schema Error?</td>
-								<td>Paste <a
-										href="https://raw.githubusercontent.com/thingweb/thingweb-playground/master/WebContent/td-schema.json"
-										target="_blank">this schema</a>, <a
-										href="https://jsonschemalint.com/#/version/draft-06/markup/json"
-										target="_blank">here</a></td>
-							</tr>
-							<tr>
-								<td>JSON-LD Error?</td>
-								<td>Details <a href="https://json-ld.org/playground-dev/" target="_blank">here</a></td>
-							</tr>
-						</tbody>
-					</table>
+					
 					<pre></pre>
 					<table class="pure-table" >
 
@@ -201,6 +186,7 @@
 	<div class="footer-shape">
 		<img src="footer-shape.jpg" width="100%">
 	</div>
+	 
 
 
 	<footer>
@@ -271,18 +257,40 @@ $(document).ready(function(){
 	let urlAddrObject= getExamplesList();
 	populateExamples(urlAddrObject);
 	$("#load_example").change({urlAddrObject:urlAddrObject},exampleSelectHandler);
-	$("#validation_table").fadeOut("fast"); 
+	$("#validation_table").fadeOut("fast",function(){
+		$("#table_head_arrow").removeClass();
+        $("#table_head_arrow").toggleClass("down");
+	}); 
 
 	$("#validation_table_head").click(function(e){
-		$("#validation_table").fadeToggle("fast"); 
+				$("#validation_table").fadeToggle("fast"); 
+				if($("#table_head_arrow").attr('class')=="up"){
+					$("#table_head_arrow").removeClass();
+       				 $("#table_head_arrow").toggleClass("down");
+
+				}
+				else{
+					{
+					$("#table_head_arrow").removeClass();
+       				 $("#table_head_arrow").toggleClass("up");
+
+				}
+
+				}
+
 		
-	});
+				});
 	
 
 	
 	$("#td-text").keyup({source:"auto"},validate);
 	
 	$("#btn_validate").click({source:"manual"},validate);
+	
+	$("#box_auto_validate").change(function(){ 
+		autoValidate=$("#box_auto_validate").prop("checked");
+
+	});
 
 	
 
@@ -314,7 +322,7 @@ $(document).ready(function(){
 
 			
 			const headers = {
-					"Authorization" : `Token 22495b2b08f021ad08ca6f04bcc79105c18fc988`
+					"Authorization" : `Token 31482f2616837f4538681c6736759f717095aa50`
 				}
 			
 			$.ajax({
@@ -330,7 +338,7 @@ $(document).ready(function(){
 				function success(data)
 					{
 						alert("TD has been submitted.");
-						console.log(data);
+						console.log(data.url);
 
 						}
 				}
