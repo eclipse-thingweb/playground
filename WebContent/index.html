@@ -141,9 +141,9 @@
 						<button type="button" class="pure-button" id="btn_validate">Validate</button>
 						<button type="button" class="pure-button" onclick="javascript:clearLog()">Clear Log</button>
 						
-						<div><button type="button" class="pure-button" id="btn_gistify">Gistify</button>
-						<a href="#" target="_blank">Your Gist</a>
-						</div>
+						<button type="button" class="pure-button" id="btn_gistify">Gistify</button>
+						
+						
 						
 
 
@@ -322,7 +322,7 @@ $(document).ready(function(){
 
 			
 			const headers = {
-					"Authorization" : `Token 31482f2616837f4538681c6736759f717095aa50`
+					"Authorization" : `Token 6052787cd2d5c-5a87d3d742857c578cf4620f175`
 				}
 			
 			$.ajax({
@@ -330,23 +330,26 @@ $(document).ready(function(){
 					url: url,
 					headers:headers,
 					success: success,
-					data:JSON.stringify(data)
+					data:JSON.stringify(data),
+					error: function(XMLHttpRequest, textStatus, errorThrown) {
+     					alert(errorThrown);
+ 					 }
 
 			
 				});
 
 				function success(data)
 					{
-						alert("TD has been submitted.");
-						console.log(data.url);
+						alert("TD has been submitted."+'<br> <a id="gistify_link_visibility" href='+data.url +'target="_blank">Your Gist</a>');
+						window.open(data.url, '_blank');
+						
 
 						}
 				}
+   
+		
 			
 
-				$("#btn_string").click(function(){
-					getLineNumber(44,$("#td-text").val());
-				});
 	
 });
 
