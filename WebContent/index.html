@@ -4,6 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>Thing Description Playground - Validate your W3C Thing Description</title>
+	<link rel="shortcut icon" type="image/x-icon" href="favlogo.png" />
 	<!-- <link rel="stylesheet" type="text/css" href="css/pure-0.6.0.css" /> -->
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
 	<link rel="stylesheet" type="text/css" href="css/pure-min.css" />
@@ -36,36 +37,27 @@
 <header>
 		<div class="container-fluid">
 				<div class="row alert alert-info">
-				  <div class="col-sm">
+				  <div class="col-3">
 						<div>
-								<img alt="Thingweb logo" src="logo.png"  style="float: left; height:50px; widows: 100px;">
+								<img alt="Thingweb logo" src="logo.png"  style="float: left; height:40px;">
 								</div>
 				  </div>
-				  <div class="col-sm">
-						<h1 class="pure-u-1 header" style="display: inline;">Thing Description Playground</h1>
-				  </div>
-				  <div class="col-sm">
+				  <div class="col-9">
+						<h1 style="display: inline;">Thing Description Playground</h1><br>
+						
+							 <a href="https://w3c.github.io/wot-thing-description/#" target="_blank">Validation according to</a>
 					
-				<div     >
-						<a class="btn btn-success" href="https://github.com/thingweb/thingweb-playground/issues/new" target="_blank"> Create Issue </a>
-			
-						<a class="btn btn-success" href="https://github.com/thingweb/thingweb-playground/tree/master/Scripts" target="_blank"> Script Validation </a>
-			
-						<a class="btn btn-success" href="https://github.com/thingweb/thingweb-playground/tree/master/AssertionTester" target="_blank"> Assertion Tester </a>
-
-					</div>
 				  </div>
+				  
 				</div>
 			  </div>
 	
 </header>
 
 <body>
-
-		
-	
+ 
 		<div id="offline-warning">
-			</div>
+		</div>
 			<div class="pure-g wrap">
 
 			<div class="pure-u-17-24">
@@ -76,20 +68,21 @@
 				</textarea>
 				
 			</div>
-
+			
 			<div class="pure-u-6-24">
+				<font size="3" face="Arial" >
 				<div class="panel">
+						
 
-					<table class="pure-table pure-table-bordered" >
+					<table class="table">
 						
 							<tr  id="validation_table_head" class="btn-info">
-									<th  rowspan="2"> <i id="table_head_arrow" class="down"></i></th>
+									<th  rowspan="2"> &nbsp<i id="table_head_arrow" class="down"></i>&nbsp</th>
 									
 						<tbody id="validation_table">
 							
-							</tr>
-							<tr>
-								<td>
+							
+								<td >
 									<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
 										<circle id="spot-json" cx="10" cy="10" r="9" />
 									</svg>
@@ -97,7 +90,7 @@
 								<td title="Is green when TD is a valid JSON">JSON validation</td>
 							</tr>
 							<tr>
-								<td>
+								<td >
 									<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
 										<circle id="spot-simple-json-schema" cx="10" cy="10" r="9" />
 									</svg>
@@ -135,23 +128,23 @@
 							</tr>
 						</tbody>
 					</table>
+						
 
 					<form class="pure-form">
-						<input type="checkbox"  id="box_auto_validate" value="off"> Auto Validate <br>
-						<button type="button" class="pure-button" id="btn_validate">Validate</button>
-						<button type="button" class="pure-button" onclick="javascript:clearLog()">Clear Log</button>
+						<input   style="margin-bottom: 0px; margin-top: 0px" type="checkbox"  id="box_auto_validate" value="off"> Auto Validate <br>
+						<button  style="margin-bottom: 0px; margin-top: 0px" type="button" class="pure-button" id="btn_validate">Validate</button>
+						<button  style="margin-bottom: 0px; margin-top: 0px" type="button" class="pure-button" onclick="javascript:clearLog()">Clear Log</button>
 						
 						<button type="button" class="pure-button" id="btn_gistify">Gistify</button>
 						
 						
-						
-
 
 					</form>
 
 					
 					<pre></pre>
-					<table class="pure-table" >
+					<div>
+					<table class="table" >
 
 						<tbody>
 							<tr>
@@ -159,7 +152,7 @@
 								
 								<td>
 								<select  id="load_example" class="btn btn-info dropdown-toggle" >							
-										<option class="btn-info" value="select_none">Select None </option>
+										<option class="btn-info" style="margin:0px" value="select_none">Select None </option>
 										
 											
 									 </select>
@@ -169,7 +162,18 @@
 						</tbody>
 					</table>
 				</div>
+					<div style="margin: 0px; border: solid 3px #188b3b; padding: 0px">
+					<a  class="btn" href="https://github.com/thingweb/thingweb-playground/issues/new" target="_blank"> Create Issue </a>
+			
+					<a class="btn" href="https://github.com/thingweb/thingweb-playground/tree/master/Scripts" target="_blank"> Script Validation </a>
+			
+					<a class="btn" href="https://github.com/thingweb/thingweb-playground/tree/master/AssertionTester" target="_blank"> Assertion Tester </a>
+						</div>
+				
+				
+				</div>
 			</div>
+		</font>
 
 			<div class="pure-u-1 header">
 				<pre></pre>
@@ -183,13 +187,14 @@
 	</div>
 
 
-	<div class="footer-shape">
-		<img src="footer-shape.jpg" width="100%">
-	</div>
+
 	 
 
 
 	<footer>
+			<div class="footer-shape">
+					<img src="footer-shape.jpg" width="100%" height="50">
+				</div>
 		<div class="links">
 			<ul>
 				<li>
@@ -212,10 +217,11 @@
 					<a href="http://www.eclipse.org/legal">Legal</a>
 				</li>
 			</ul>
+			<p>Copyrights © 2019 Eclipse Thingweb. All Rights Reserved.<p>
 		</div>
-		<div>
-			<p>Copyrights © 2019 Eclipse Thingweb. All Rights Reserved.</p>
-		</div>
+		
+			
+		
 	</footer>
 	
 </body>
@@ -227,6 +233,7 @@
 
 
 $(document).ready(function(){
+	var modal = document.getElementById('myModal');
 
 
 
@@ -326,7 +333,7 @@ $(document).ready(function(){
 			////"Authorization" : `Token 60222272d2d5c5a82d2df4a857c528cf4620f175`
 
 			const headers = {
-					"Authorization" : `Token #`
+					"Authorization" : `Token 410c5f3359d13850cf42c7984271903b9812aeb2`
 				}
 			
 			$.ajax({
@@ -343,16 +350,18 @@ $(document).ready(function(){
 				});
 
 				function success(data)
-					{
-						alert("TD has been submitted."+'<br> <a id="gistify_link_visibility" href='+data.url +'target="_blank">Your Gist</a>');
-						window.open(data.url, '_blank');
+					{  
+						let file=data.files[name].raw_url;
+						
+						window.open(file, '_blank');
+						//console.log(file);
 						
 
 						}
 				}
    
 		
-			
+				
 
 	
 });

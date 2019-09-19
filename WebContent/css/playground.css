@@ -7,6 +7,7 @@
 
 body {
 	background-color: white;
+	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .wrap {
@@ -111,7 +112,7 @@ a.button-link {
 }
 
 .footer-shape img {
-	height: 200px;
+	height: 75px;
 	vertical-align: middle;
 	border-style: none;
 }
@@ -129,7 +130,7 @@ footer a {
 	color: white;
 	font-family: 'Open Sans', sans-serif;
 	font-size: 17px;
-	padding: 50px 5px;
+	padding: 5px 5px;
 	text-decoration-line: none;
 	background: #141414;
 	/* margin-top: 10px */
@@ -137,12 +138,12 @@ footer a {
 
 footer p {
 	color: white;
-	font-family: 'Open Sans', sans-serif;
+	font-family: 'calibari', sans-serif;
 	font-size: 14px;
 	/* padding-top: 12px; */
 	background: black;
-	margin-top: -1%;
-	padding-bottom: 100px;
+	margin-top: 0px;
+	padding-bottom: 10px;
 	text-align: center;
 	background: #141414;
 }
@@ -154,10 +155,19 @@ header img {
 
 .links {
 	background: #141414;
+	margin-bottom: 0px;
 }
 
 .container {
 	padding: 20px 0;
+}
+
+.table td{
+	padding: 0px;
+	border-bottom: #333
+}
+.table th{
+	padding: 0px;
 }
 
 i {
