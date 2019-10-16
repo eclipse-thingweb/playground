@@ -1,5 +1,5 @@
 {
-    "title": "WoT TD Schema - 16 May 2019",
+    "title": "WoT TD Schema - 16 October 2019",
     "description": "JSON Schema representation of the TD serialisation in JSON-LD format. For a TD to validate this schema it must contain all the term defined in section 5.1.1",
     "$schema ": "http://json-schema.org/draft-07/schema#",
     "definitions": {
@@ -1172,7 +1172,6 @@
     },
     "required": [
         "title",
-        "id",
         "security",
         "securityDefinitions",
         "@context"
