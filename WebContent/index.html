@@ -22,7 +22,8 @@
 	<script type="text/javascript" src="js/jquery-2.2.3.js"></script>
 	<script type="text/javascript" src="js/jquery-linedtextarea.js"></script>
 	<script type="text/javascript" src="js/playground.js"></script>
-	
+	<script type="text/javascript" src="js/td-schema-full-var.json"></script>	<script type="text/javascript" src="js/td-schema-full-var.json"></script>
+	<script src="js/monaco/min/vs/loader.js"></script>
 
 	
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
@@ -62,11 +63,9 @@
 
 			<div class="pure-u-17-24">
 					
-				<textarea  autofocus id="td-text" name="td-text" rows="32"
-					placeholder="Enter Thing Description here...">
-					
-				</textarea>
 				
+				<div id="monaco" style="height: 100%;">
+				</div>
 			</div>
 			
 			<div class="pure-u-6-24">
@@ -136,6 +135,7 @@
 						<button  style="margin-bottom: 0px; margin-top: 0px" type="button" class="pure-button" onclick="javascript:clearLog()">Clear Log</button>
 						
 						<button type="button" class="pure-button" id="btn_gistify">Gistify</button>
+						<button type="button" class="pure-button" id="btn_assertion">Assertion Test</button>
 						
 						
 
@@ -191,7 +191,7 @@
 	 
 
 
-	<footer>
+	<footer class="foot">
 			<div class="footer-shape">
 					<img src="footer-shape.jpg" width="100%" height="50">
 				</div>
@@ -269,6 +269,31 @@ $(document).ready(function(){
         $("#table_head_arrow").toggleClass("down");
 	}); 
 
+
+	$("#btn_assertion").click(function(e){e.preventDefault()
+	
+	
+			
+			rows=assertionTester(window.editor.getValue());
+
+			let csvContent = "data:text/csv;charset=utf-8,";
+
+			rows.forEach(function(rowArray) {
+				let row = rowArray.join(",");
+				csvContent += row + "\r\n";
+			});
+			
+			var encodedUri = encodeURI(csvContent);
+			var link = document.createElement("a");
+			link.setAttribute("href", encodedUri);
+			link.setAttribute("download", "assertionResult.csv");
+			document.body.appendChild(link);
+
+			link.click();
+	
+	
+	});
+
 	$("#validation_table_head").click(function(e){
 				$("#validation_table").fadeToggle("fast"); 
 				if($("#table_head_arrow").attr('class')=="up"){
@@ -320,7 +345,7 @@ $(document).ready(function(){
 					"public": true,
 					"files": {
 					[name]: {
-					"content": $('#td-text').val()
+					"content": window.editor.getValue()
 							}
 					}
 				};
@@ -333,7 +358,7 @@ $(document).ready(function(){
 			////"Authorization" : `Token 60222272d2d5c5a82d2df4a857c528cf4620f175`
 
 			const headers = {
-					"Authorization" : `Token 410c5f3359d13850cf42c7984271903b9812aeb2`
+					"Authorization" : `Token 5671aca3addfdf7ee2d595d6f38daeb15dd6ecc9 `
 				}
 			
 			$.ajax({
@@ -361,7 +386,66 @@ $(document).ready(function(){
 				}
    
 		
-				
+		
+    require.config({ paths: { 'vs': 'js/monaco/min/vs' }});
+    require(['vs/editor/editor.main'], editor=function() {
+       
+
+		var jsonCode = [
+    '{',
+    '    "p1": "v3",',
+    '    "p2": false',
+    "}"
+].join('\n');
+var modelUri = monaco.Uri.parse("a://b/foo.json"); // a made up unique URI for our model
+var model = monaco.editor.createModel(jsonCode, "json", modelUri);
+
+
+
+// configure the JSON language support with schemas and schema associations
+monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+    validate: true,
+    //schemas: [schema]
+	schemas:[{
+        uri: "http://myserver/foo-schema.json", // id of the first schema
+        fileMatch: [modelUri.toString()], // associate with our model
+        // schema: {
+        //     type: "object",
+        //     properties: {
+        //         p1: {
+        //             enum: ["v1", "v2"]
+        //         },
+        //         p2: {
+        //             $ref: "http://myserver/bar-schema.json" // reference the second schema
+        //         }
+		//     }
+		schema:{
+			$ref: "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/WebContent/td-schema.json"
+		}   
+    }
+    ]
+
+});
+
+window.editor=monaco.editor.create(document.getElementById("monaco"), {
+    model: model,
+	theme:"vs-dark"
+
+});
+
+model.onDidChangeContent((event) => {
+	validate(event,"auto");
+});
+
+
+        });
+  
+
+
+
+
+
+	
 
 	
 });

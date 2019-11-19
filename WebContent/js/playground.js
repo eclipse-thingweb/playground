@@ -25,7 +25,7 @@
 var ajv; /* JSON Schema validator */
 var tdJson;
 var validationStatus="success";
-var source="";
+var source="manual";
 var autoValidate=false;
 
 function trigger(name, data) {
@@ -59,12 +59,30 @@ function reset(id) {
     circle.css('visibility', 'hidden');
 }
 
-function validate(e) {
+function validate(e,source) {
+    console.log(typeof e.type)
+    if(typeof e.type!="undefined")
+    {   var text = window.editor.getValue();
+        source=e.data.source;
+        
+        reset('spot-json');
+            reset('spot-simple-json-schema');
+            reset('spot-full-json-schema');
+            reset('spot-json-ld');
+            reset('spot-add');
+          
+          //  source=e.data.source;
+        
+        
+            trigger('validate-json', text);
+    }
+    else{
+    
 
-    if(!(e.data.source=="auto" && autoValidate==false)){
-            var text = $('#td-text').val();
+    if(!(source=="auto" && autoValidate==false)){
+            var text = window.editor.getValue();
             
-            e.preventDefault();
+           
         //  $("#console").empty();
             reset('spot-json');
             reset('spot-simple-json-schema');
@@ -72,11 +90,11 @@ function validate(e) {
             reset('spot-json-ld');
             reset('spot-add');
 
-            source=e.data.source;
+          //  source=e.data.source;
         
         
             trigger('validate-json', text);
-    }
+    }}
     
    
 }

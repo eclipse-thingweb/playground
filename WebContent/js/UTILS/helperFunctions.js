@@ -72,8 +72,9 @@ function getTD_URL(urlAddr){
     $.getJSON(urlAddr,function(data){
      
    
-   $("#td-text").empty();
-   $("#td-text").append(JSON.stringify(data,null,'\t'));
+  // $("#td-text").empty();
+  // $("#td-text").append(JSON.stringify(data,null,'\t'));
+   window.editor.setValue(JSON.stringify(data,null,'\t'));
  
    
    //console.log(data);
@@ -198,3 +199,12 @@ function getExamplesList(){
 
     }
 
+
+    function assertionTester(td)
+    {
+        const rows = [
+            ["td-context-default-language-direction-heuristic","null","not testable with Assertion Tester"],
+            ["td-context-default-language-direction-inference","null","not testable with Assertion Tester"]
+];
+return rows;
+    }

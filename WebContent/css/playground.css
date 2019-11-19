@@ -111,8 +111,11 @@ a.button-link {
 	visibility: hidden;
 }
 
+
+
 .footer-shape img {
 	height: 75px;
+	
 	vertical-align: middle;
 	border-style: none;
 }
@@ -197,3 +200,7 @@ i {
 	-webkit-transform: rotate(45deg);
   }
 
+  .monaco-editor .squiggly-error {
+    background: none !important;
+    border: 2px solid red;
+}
