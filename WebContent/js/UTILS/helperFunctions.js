@@ -1,7 +1,4 @@
 
-
-
-
 function browserName(){
     let nVer = navigator.appVersion;
     let nAgt = navigator.userAgent;
@@ -70,27 +67,19 @@ function getTD_URL(urlAddr){
 
 
     $.getJSON(urlAddr,function(data){
-     
-   
-  // $("#td-text").empty();
-  // $("#td-text").append(JSON.stringify(data,null,'\t'));
-   window.editor.setValue(JSON.stringify(data,null,'\t'));
  
-   
-   //console.log(data);
+     window.editor.setValue(JSON.stringify(data,null,'\t'));
+    //console.log(data);
 
-}).error(function(){alert("The JSON couldnt be fetched from the address:\n"+urlAddr)});
+    }).error(function(){alert("The JSON couldnt be fetched from the address:\n"+urlAddr)});
 
 
 }
-
+///////////////////////////////////////////////////////////////////
 
 function populateExamples(urlAddrObject){
 
     var examplesHtml="";
-
-	
-
 
 	$.each(urlAddrObject,function(name,data) {
 
@@ -109,8 +98,120 @@ function populateExamples(urlAddrObject){
 
 
 }
+//////////////////////////////////////////////////////////////////////
+function performAssertionTest(e){
+    e.preventDefault()
+    rows=assertionTester(window.editor.getValue());
+
+    let csvContent = "data:text/csv;charset=utf-8,";
+
+    rows.forEach(function(rowArray) {
+        let row = rowArray.join(",");
+        csvContent += row + "\r\n";
+    });
+    
+    var encodedUri = encodeURI(csvContent);
+    var link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "assertionResult.csv");
+    document.body.appendChild(link);
+
+    link.click();
+}
+
+///////////////////////////////////////////////////////////
+function textAreaManipulation(e) {
+    if(e.keyCode === 9) { // tab was pressed
+        // get caret position/selection
+        var start = this.selectionStart;
+        var end = this.selectionEnd;
+
+        var $this = $(this);
+        var value = $this.val();
+
+        // set textarea value to: text before caret + tab + text after caret
+        $this.val(value.substring(0, start)
+                    + "\t"
+                    + value.substring(end));
+
+        // put caret at right position again (add one for the tab)
+        this.selectionStart = this.selectionEnd = start + 1;
+
+        // prevent the focus lose
+        e.preventDefault();
+    }
+}
+
+/////////////////////////////////////////////////////////////////////////
+
+function submitAsGist(){
+    var name = prompt("Please enter the Name of TD:");
+    
+    var data={
+            "description": "Directly from playground",
+                "public": true,
+                "files": {
+                [name]: {
+                "content": window.editor.getValue()
+                        }
+                }
+            };
+
+        var url='https://api.github.com/gists';
+
+        /////please fill in the token after getting the code from github for example:
+        ////"Authorization" : `Token #`
+        ////To
+        ////"Authorization" : `Token 60222272d2d5c5a82d2df4a857c528cf4620f175`
+
+        const headers = {
+                "Authorization" : `Token 5671aca3addfdf7ee2d595d6f38daeb15dd6ecc9 `
+            }
+        
+        $.ajax({
+                type: "POST",
+                url: url,
+                headers:headers,
+                success: success,
+                data:JSON.stringify(data),
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                     alert(errorThrown);
+                  }
+
+        
+            });
+
+            function success(data)
+                {  
+                    let file=data.files[name].raw_url;
+                    
+                    window.open(file, '_blank');
+                    //console.log(file);
+                    
+
+                    }
+            }
+
+////////////////////////////////////////////////////////////////////////////
+function toggleValidationStatusTable(e){
+    $("#validation_table").fadeToggle("fast"); 
+    if($("#table_head_arrow").attr('class')=="up"){
+        $("#table_head_arrow").removeClass();
+            $("#table_head_arrow").toggleClass("down");
+
+    }
+    else{
+        {
+        $("#table_head_arrow").removeClass();
+            $("#table_head_arrow").toggleClass("up");
+
+     }
+
+    }
 
 
+}
+////////////////////////////////////////////////////
 
 function getExamplesList(){
             let examples={
@@ -132,14 +233,14 @@ function getExamplesList(){
     return examples;
 }
 
-
+//////////////////////////////////////////////////////////////////////
 
     function exampleSelectHandler (e){
         
         clearLog();
         e.preventDefault();
         if($("#load_example").val()=="select_none"){
-            $("#td-text").empty();
+            window.editor.setValue("");
     
         }
         else{
@@ -154,7 +255,7 @@ function getExamplesList(){
     }
 
 
-    ////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
     ////////////takes charcter number and gives out the line number//////////////////////////
     function getLineNumber(characterNo,str)
     {
@@ -199,7 +300,7 @@ function getExamplesList(){
 
     }
 
-
+//////////////////////////////////////////////////////////////////////////
     function assertionTester(td)
     {
         const rows = [

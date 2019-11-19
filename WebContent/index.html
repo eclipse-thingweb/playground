@@ -5,17 +5,8 @@
 	<meta charset="utf-8">
 	<title>Thing Description Playground - Validate your W3C Thing Description</title>
 	<link rel="shortcut icon" type="image/x-icon" href="favlogo.png" />
-	<!-- <link rel="stylesheet" type="text/css" href="css/pure-0.6.0.css" /> -->
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
-	<link rel="stylesheet" type="text/css" href="css/pure-min.css" />
-	<link rel="stylesheet" type="text/css" href="css/grids-responsive-min.css" />
-	
-    
-	<!-- <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css"> -->
-	<link rel="stylesheet" type="text/css" href="css/jquery-linedtextarea.css" />
 	<link rel="stylesheet" type="text/css" href="css/playground.css" />
-	
-
 	<script type="text/javascript" src="js/node_modules/jsonld/dist/jsonld.js"></script>
 	<script type="text/javascript" src="js/ajv.min.js"></script>
 	<script type="text/javascript" src="js/UTILS/helperFunctions.js"></script>
@@ -26,164 +17,152 @@
 	<script src="js/monaco/min/vs/loader.js"></script>
 
 	
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
-		integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-	<!--[if lte IE 8]>
-    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-old-ie-min.css">
-<![endif]-->
-	<!--[if gt IE 8]><!-->
-	<!-- <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css"> -->
-	<!--<![endif]-->
-</head>
-<header>
-		<div class="container-fluid">
-				<div class="row alert alert-info">
-				  <div class="col-3">
-						<div>
-								<img alt="Thingweb logo" src="logo.png"  style="float: left; height:40px;">
-								</div>
-				  </div>
-				  <div class="col-9">
-						<h1 style="display: inline;">Thing Description Playground</h1><br>
-						
-							 <a href="https://w3c.github.io/wot-thing-description/#" target="_blank">Validation according to</a>
-					
-				  </div>
-				  
-				</div>
-			  </div>
 	
-</header>
+</head>
+
 
 <body>
  
-		<div id="offline-warning">
-		</div>
-			<div class="pure-g wrap">
+		
+		<div class="container" style="padding-top:0px">
 
-			<div class="pure-u-17-24">
-					
-				
-				<div id="monaco" style="height: 100%;">
-				</div>
-			</div>
-			
-			<div class="pure-u-6-24">
-				<font size="3" face="Arial" >
-				<div class="panel">
-						
-
-					<table class="table">
-						
-							<tr  id="validation_table_head" class="btn-info">
-									<th  rowspan="2"> &nbsp<i id="table_head_arrow" class="down"></i>&nbsp</th>
-									
-						<tbody id="validation_table">
-							
-							
-								<td >
-									<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
-										<circle id="spot-json" cx="10" cy="10" r="9" />
-									</svg>
-								</td>
-								<td title="Is green when TD is a valid JSON">JSON validation</td>
-							</tr>
-							<tr>
-								<td >
-									<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
-										<circle id="spot-simple-json-schema" cx="10" cy="10" r="9" />
-									</svg>
-								</td>
-								<td title="Is green when TD is valid according to the JSON Schema of the TD spec">JSON
-									Schema validation</td>
-							</tr>
-							<tr>
-								<td>
-									<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
-										<circle id="spot-full-json-schema" cx="10" cy="10" r="9" />
-									</svg>
-								</td>
-								<td
-									title="Is green when the validated TD has no default assumptions and everything is explicitly declared">
-									(With Defaults) JSON Schema validation</td>
-							</tr>
-							<tr>
-							<tr>
-								<td>
-									<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
-										<circle id="spot-json-ld" cx="10" cy="10" r="9" />
-									</svg>
-								</td>
-								<td title="Is green when TD can be expanded using the @context value">JSON-LD validation
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
-										<circle id="spot-add" cx="10" cy="10" r="9" />
-									</svg>
-								</td>
-								<td title="Is green when all custom checks pass">Additional Checks</td>
-							</tr>
-						</tbody>
-					</table>
-						
-
-					<form class="pure-form">
-						<input   style="margin-bottom: 0px; margin-top: 0px" type="checkbox"  id="box_auto_validate" value="off"> Auto Validate <br>
-						<button  style="margin-bottom: 0px; margin-top: 0px" type="button" class="pure-button" id="btn_validate">Validate</button>
-						<button  style="margin-bottom: 0px; margin-top: 0px" type="button" class="pure-button" onclick="javascript:clearLog()">Clear Log</button>
-						
-						<button type="button" class="pure-button" id="btn_gistify">Gistify</button>
-						<button type="button" class="pure-button" id="btn_assertion">Assertion Test</button>
-						
-						
-
-					</form>
-
-					
-					<pre></pre>
-					<div>
-					<table class="table" >
-
-						<tbody>
-							<tr>
-								<td>Examples: </td>
-								
-								<td>
-								<select  id="load_example" class="btn btn-info dropdown-toggle" >							
-										<option class="btn-info" style="margin:0px" value="select_none">Select None </option>
-										
-											
-									 </select>
-								</td>
-								
-							</tr>
-						</tbody>
-					</table>
-				</div>
-					<div style="margin: 0px; border: solid 3px #188b3b; padding: 0px">
-					<a  class="btn" href="https://github.com/thingweb/thingweb-playground/issues/new" target="_blank"> Create Issue </a>
-			
-					<a class="btn" href="https://github.com/thingweb/thingweb-playground/tree/master/Scripts" target="_blank"> Script Validation </a>
-			
-					<a class="btn" href="https://github.com/thingweb/thingweb-playground/tree/master/AssertionTester" target="_blank"> Assertion Tester </a>
+				<div class="row alert alert-info" style="padding:0px">
+						<div class="col-3">
+							  <div>
+									  <img alt="Thingweb logo" src="logo.png"  style="float: left; height:40px;">
+									  </div>
 						</div>
-				
-				
+						<div class="col-9">
+							  <h3 style="display: inline;">Thing Description Playground</h3><br>
+							  
+								   <a href="https://w3c.github.io/wot-thing-description/#" target="_blank">Validation according to</a>
+						  
+						</div>
+						
+					  </div>
+			<div class="row">
+				<div class="col-9"> 
+					<div id="monaco" style="min-height: 200px;max-height: 100%;height: 100%; width: auto;">
+					</div>
 				</div>
-			</div>
-		</font>
+				
 
-			<div class="pure-u-1 header">
-				<pre></pre>
+				<div class="col">
+						<font size="3" face="Arial" >
+						<div class="panel">		
+							<table class="table">
+								<tr  id="validation_table_head" class="btn-info">
+									<th  rowspan="2"> &nbsp<i id="table_head_arrow" class="down"></i>&nbsp</th>
+									<tbody id="validation_table">
+										<td >
+											<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+												<circle id="spot-json" cx="10" cy="10" r="9" />
+											</svg>
+										</td>
+										<td title="Is green when TD is a valid JSON">JSON validation</td>
+									</tr>
+									<tr>
+										<td >
+											<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+												<circle id="spot-simple-json-schema" cx="10" cy="10" r="9" />
+											</svg>
+										</td>
+										<td title="Is green when TD is valid according to the JSON Schema of the TD spec">JSON
+											Schema validation</td>
+									</tr>
+									<tr>
+										<td>
+											<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+												<circle id="spot-full-json-schema" cx="10" cy="10" r="9" />
+											</svg>
+										</td>
+										<td
+											title="Is green when the validated TD has no default assumptions and everything is explicitly declared">
+											(With Defaults) JSON Schema validation</td>
+									</tr>
+									<tr>
+									<tr>
+										<td>
+											<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+												<circle id="spot-json-ld" cx="10" cy="10" r="9" />
+											</svg>
+										</td>
+										<td title="Is green when TD can be expanded using the @context value">JSON-LD validation
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+												<circle id="spot-add" cx="10" cy="10" r="9" />
+											</svg>
+										</td>
+										<td title="Is green when all custom checks pass">Additional Checks</td>
+									</tr>
+								</tbody>
+							</table>
+								
+		
+							<form >
+								<div class="form-group">
+									<input   style="margin-bottom: 0px; margin-top: 0px" type="checkbox"  id="box_auto_validate" value="off"> Auto Validate <br>
+									<button  style="margin-bottom: 0px; margin-top: 0px" type="button" class="btn" id="btn_validate">Validate</button>
+									<button  style="margin-bottom: 0px; margin-top: 0px" type="button" class="btn" id="btn_clearLog" >Clear Log</button>
+									
+									<button type="button" class="btn" id="btn_gistify">Gistify</button>
+									<button type="button" class="btn" id="btn_assertion">Assertion Test</button>
+								</div>
+								
+								
+		
+							</form>
+		
+							
+							
+							<div>
+							<table class="table" >
+		
+								<tbody>
+									<tr>
+										<td>Examples: </td>
+										
+										<td>
+										<select  id="load_example" class="btn btn-info dropdown-toggle" >							
+												<option class="btn-info" style="margin:0px" value="select_none">Select None </option>
+												
+													
+											 </select>
+										</td>
+										
+									</tr>
+								</tbody>
+							</table>
+						</div>
+							<div style="margin: 0px; border: solid 3px #188b3b; padding: 0px">
+							<a  class="btn" href="https://github.com/thingweb/thingweb-playground/issues/new" target="_blank"> Create Issue </a>
+					
+							<a class="btn" href="https://github.com/thingweb/thingweb-playground/tree/master/Scripts" target="_blank"> Script Validation </a>
+					
+							<a class="btn" href="https://github.com/thingweb/thingweb-playground/tree/master/AssertionTester" target="_blank"> Assertion Tester </a>
+								</div>
+						
+						
+						</div>
+					</font>
+					
+					</div>
 			</div>
+			
+		
 
-			<div class="pure-u-1" style=" 
-			max-height:250px;
-			overflow-y:scroll;">
-				<pre id="console">Waiting for validation...&#13;&#10;</pre>
+			
+
+			<div class="row" style="max-height:250px;overflow-y:scroll;">
+				<div class="col">
+						<pre id="console" >Waiting for validation...&#13;&#10;</pre>
+				</div>
+				
 			</div>
+			<div id="offline-warning"></div>
 	</div>
 
 
@@ -233,222 +212,105 @@
 
 
 $(document).ready(function(){
-	var modal = document.getElementById('myModal');
 
+	if(browserName()!="Firefox")// Shows warning if the Browser is other than Firefox
+		{
+			$( "#offline-warning" ).append("<b> Warning:</b> Browsers other than Firefox present will not work for offline validation due to CORS policy.<br>");
+		}
 
-
-	$("#td-text").keydown(function(e) {
-    if(e.keyCode === 9) { // tab was pressed
-        // get caret position/selection
-        var start = this.selectionStart;
-        var end = this.selectionEnd;
-
-        var $this = $(this);
-        var value = $this.val();
-
-        // set textarea value to: text before caret + tab + text after caret
-        $this.val(value.substring(0, start)
-                    + "\t"
-                    + value.substring(end));
-
-        // put caret at right position again (add one for the tab)
-        this.selectionStart = this.selectionEnd = start + 1;
-
-        // prevent the focus lose
-        e.preventDefault();
-    }
-});
-
-
-	
-	let urlAddrObject= getExamplesList();
-	populateExamples(urlAddrObject);
-	$("#load_example").change({urlAddrObject:urlAddrObject},exampleSelectHandler);
+  // when table is extracted
 	$("#validation_table").fadeOut("fast",function(){
 		$("#table_head_arrow").removeClass();
         $("#table_head_arrow").toggleClass("down");
 	}); 
 
-
-	$("#btn_assertion").click(function(e){e.preventDefault()
-	
-	
-			
-			rows=assertionTester(window.editor.getValue());
-
-			let csvContent = "data:text/csv;charset=utf-8,";
-
-			rows.forEach(function(rowArray) {
-				let row = rowArray.join(",");
-				csvContent += row + "\r\n";
-			});
-			
-			var encodedUri = encodeURI(csvContent);
-			var link = document.createElement("a");
-			link.setAttribute("href", encodedUri);
-			link.setAttribute("download", "assertionResult.csv");
-			document.body.appendChild(link);
-
-			link.click();
-	
-	
-	});
-
-	$("#validation_table_head").click(function(e){
-				$("#validation_table").fadeToggle("fast"); 
-				if($("#table_head_arrow").attr('class')=="up"){
-					$("#table_head_arrow").removeClass();
-       				 $("#table_head_arrow").toggleClass("down");
-
-				}
-				else{
-					{
-					$("#table_head_arrow").removeClass();
-       				 $("#table_head_arrow").toggleClass("up");
-
-				}
-
-				}
-
-		
-				});
-	
-
-	
-	$("#td-text").keyup({source:"auto"},validate);
-	
-	$("#btn_validate").click({source:"manual"},validate);
-	
-	$("#box_auto_validate").change(function(){ 
+	$("#validation_table_head").click(toggleValidationStatusTable);// Toggles Validation Table view
+	$("#box_auto_validate").change(function(){ // Auto validates only when the box is checked.
 		autoValidate=$("#box_auto_validate").prop("checked");
 
 	});
-
 	
 
 
 	
-	if(browserName()!="Firefox")
-	{
-	$( "#offline-warning" ).append("<b> Warning:</b> Browsers other than Firefox present will not work for offline validation due to CORS policy.<br>");
-	}
+
+	let urlAddrObject= getExamplesList();//Fetching list of examples from the given array(in helperFunctions.js). 
+	populateExamples(urlAddrObject);     // Loaing the examples given in list from their respective URLs
+
+	$("#load_example").change({urlAddrObject:urlAddrObject},exampleSelectHandler);// attaching handler to the drop down menu of the exmaples list.
+  
+	$("#btn_assertion").click(performAssertionTest);// attaching function to the assertion button, the function performs Assertion test
+
+	$("#btn_validate").click({source:"manual"},validate);// attaching Function to the Validate(Manual) Button.
+
+	$("#btn_gistify").click(submitAsGist);// Attaching Function to Gistify Button, The functions handles submitting TD as Gist.
+
+	$("#btn_clearLog").click(clearLog); // Clear logs
+		
+	$("#td-text").keydown(textAreaManipulation);// Text area manipulation
    
-
-	$("#btn_gistify").click(submitAsGist);
-
-
-	function submitAsGist(){
-		var name = prompt("Please enter the Name of TD:");
-		
-		var data={
-				"description": "Directly from playground",
-					"public": true,
-					"files": {
-					[name]: {
-					"content": window.editor.getValue()
-							}
-					}
-				};
-
-			var url='https://api.github.com/gists';
-
-			/////please fill in the token after getting the code from github for example:
-			////"Authorization" : `Token #`
-			////To
-			////"Authorization" : `Token 60222272d2d5c5a82d2df4a857c528cf4620f175`
-
-			const headers = {
-					"Authorization" : `Token 5671aca3addfdf7ee2d595d6f38daeb15dd6ecc9 `
-				}
-			
-			$.ajax({
-					type: "POST",
-					url: url,
-					headers:headers,
-					success: success,
-					data:JSON.stringify(data),
-					error: function(XMLHttpRequest, textStatus, errorThrown) {
-     					alert(errorThrown);
- 					 }
-
-			
-				});
-
-				function success(data)
-					{  
-						let file=data.files[name].raw_url;
-						
-						window.open(file, '_blank');
-						//console.log(file);
-						
-
-						}
-				}
-   
-		
-		
+//**************************Monaco editor code*********************************////		
     require.config({ paths: { 'vs': 'js/monaco/min/vs' }});
     require(['vs/editor/editor.main'], editor=function() {
        
 
-		var jsonCode = [
-    '{',
-    '    "p1": "v3",',
-    '    "p2": false',
-    "}"
-].join('\n');
-var modelUri = monaco.Uri.parse("a://b/foo.json"); // a made up unique URI for our model
-var model = monaco.editor.createModel(jsonCode, "json", modelUri);
+		var jsonCode = [                       //Temporary initial Json
+    					'{',
+   					 '    "p1": "v3",',
+   					 '    "p2": false',
+  							  "}"
+						].join('\n');
+		var modelUri = monaco.Uri.parse("a://b/foo.json"); // a made up unique URI for our model
+		var model = monaco.editor.createModel(jsonCode, "json", modelUri);
 
 
 
-// configure the JSON language support with schemas and schema associations
-monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-    validate: true,
-    //schemas: [schema]
-	schemas:[{
-        uri: "http://myserver/foo-schema.json", // id of the first schema
-        fileMatch: [modelUri.toString()], // associate with our model
-        // schema: {
-        //     type: "object",
-        //     properties: {
-        //         p1: {
-        //             enum: ["v1", "v2"]
-        //         },
-        //         p2: {
-        //             $ref: "http://myserver/bar-schema.json" // reference the second schema
-        //         }
-		//     }
-		schema:{
-			$ref: "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/WebContent/td-schema.json"
-		}   
-    }
-    ]
+	// configure the JSON language support with schemas and schema associations
+	monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+		validate: true,
+		//schemas: [schema] // List of schemas to validate against, It will validate the TD with in the editor area.
+		schemas:[{
+			uri: "http://myserver/foo-schema.json", // id of the first schema
+			fileMatch: [modelUri.toString()], // associate with our model
+			// schema: {
+			//     type: "object",
+			//     properties: {
+			//         p1: {
+			//             enum: ["v1", "v2"]
+			//         },
+			//         p2: {
+			//             $ref: "http://myserver/bar-schema.json" // reference the second schema
+			//         }
+			//     }
+			schema:{
+				$ref: "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/WebContent/td-schema.json"
+			}   
+		}
+		]
+
+				});
+
+	window.editor=monaco.editor.create(document.getElementById("monaco"), {
+    	model: model,
+	
 
 });
 
-window.editor=monaco.editor.create(document.getElementById("monaco"), {
-    model: model,
-	theme:"vs-dark"
-
-});
-
-model.onDidChangeContent((event) => {
-	validate(event,"auto");
-});
+	model.onDidChangeContent((event) => { // When text in the Editor changes
+		validate(event,"auto");
+	});
 
 
         });
   
+//*************************************************************************////
 
-
-
-
-
-	
 
 	
 });
+
+
+
 
 
 
