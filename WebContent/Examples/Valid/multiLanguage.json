@@ -7,7 +7,8 @@
         "de": "MeinLampeDing",
         "ja": "人間が読むことができる情報",
         "zh-Hans": "人们可阅读的信息",
-        "zh-Hant": "人們可閱讀的資訊"
+        "zh-Hant": "人們可閱讀的資訊",
+        "az-Latn": "Lampa Thing"
     },
     "description": "Valid TD showing multiple language support",
     "descriptions": {
@@ -15,7 +16,8 @@
         "de": "Menschenlesbare Informationen.",
         "ja": "人間が読むことができる情報",
         "zh-Hans": "人们可阅读的信息",
-        "zh-Hant": "人們可閱讀的資訊"
+        "zh-Hant": "人們可閱讀的資訊",
+        "az-Latn": "Lampa Thing"
     },
     "securityDefinitions": {
         "basic_sc": {
@@ -27,7 +29,8 @@
                 "de": "Menschenlesbare Informationen.",
                 "ja": "人間が読むことができる情報",
                 "zh-Hans": "人们可阅读的信息",
-                "zh-Hant": "人們可閱讀的資訊"
+                "zh-Hant": "人們可閱讀的資訊",
+                "az-Latn": "Lampa Thing"
             },
             "proxy":"http://myproxy.com/lampProxy",
             "@type":"superSecure:1024bitpassword"
@@ -42,7 +45,8 @@
                 "de": "An/Aus",
                 "ja": "オンオフ",
                 "zh-Hans": "开关",
-                "zh-Hant": "開關"
+                "zh-Hant": "開關",
+                "az-Latn": "Lampa Thing"
             },
             "description": "This indicates whether it is turned off or on",
             "descriptions": {
@@ -50,7 +54,8 @@
                 "de": "In DE: This indicates whether it is turned off or on",
                 "ja": "In JA: This indicates whether it is turned off or on",
                 "zh-Hans": "人们可阅读的信息",
-                "zh-Hant": "人們可閱讀的資訊"
+                "zh-Hant": "人們可閱讀的資訊",
+                "az-Latn": "Lampa Thing"
             },
             "type": "boolean",
             "forms": [{
@@ -71,7 +76,8 @@
                 "de": "DE: Fade in/out",
                 "ja": "JA: Fade in/out",
                 "zh-Hans": "开关",
-                "zh-Hant": "開關"
+                "zh-Hant": "開關",
+                "az-Latn": "Lampa Thing"
             },
             "description": "Smooth fade in and out animation.",
             "descriptions": {
@@ -79,7 +85,8 @@
                 "de": "In DE: Smooth fade in and out animation.",
                 "ja": "In JA: Smooth fade in and out animation.",
                 "zh-Hans": "人们可阅读的信息",
-                "zh-Hant": "人們可閱讀的資訊"
+                "zh-Hant": "人們可閱讀的資訊",
+                "az-Latn": "Lampa Thing"
             },
             "input": {
                 "type": "object",
@@ -125,7 +132,8 @@
                 "de": "An/Aus",
                 "ja": "オンオフ",
                 "zh-Hans": "开关",
-                "zh-Hant": "開關"
+                "zh-Hant": "開關",
+                "az-Latn": "Lampa Thing"
             },
             "description": "Super super super description",
             "descriptions": {
@@ -133,7 +141,8 @@
                 "de": "In DE: Smooth fade in and out animation.",
                 "ja": "In JA: Smooth fade in and out animation.",
                 "zh-Hans": "人们可阅读的信息",
-                "zh-Hant": "人們可閱讀的資訊"
+                "zh-Hant": "人們可閱讀的資訊",
+                "az-Latn": "Lampa Thing"
             },
             "forms": [{
                 "href": "http://mytemp.example.com:5683/fade"

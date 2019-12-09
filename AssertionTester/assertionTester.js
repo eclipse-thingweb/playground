@@ -1,74 +1,150 @@
+// Libraries
+// libraries that can run only on a backend/script
 const fs = require('fs');
+
+// libraries that can also run in browser
+
+// used to check whether the supplied data is utf8
 const isUtf8 = require('is-utf8');
-var Ajv = require('ajv');
-const Json2csvParser = require('json2csv').Parser;
+// A special JSON validator that is used only to check whether the given object has duplicate keys. The standard library doesn't detect duplicate keys and overwrites the first one with the second one.
 var jsonValidator = require('json-dup-key-validator');
+// The usual library used for validation
+var Ajv = require('ajv');
+const draftLocation = "./json-schema-draft-06.json"; // Used by AJV as the JSON Schema draft to rely on
+const tdSchemaLocation = "../WebContent/td-schema.json"
+// JSON to CSV and vice versa libraries
+const Json2csvParser = require('json2csv').Parser;
 const csvjson = require('csvjson');
 
-var secondArgument;
-
-const draftLocation = "./json-schema-draft-06.json";
-
+// Building the CSV and its corresponding JSON structure
 const fields = ['ID', 'Status', 'Comment'];
 const json2csvParser = new Json2csvParser({
     fields
 });
-var results = [];
 
+var outputLocation
+
+// This is used to validate if the multi language JSON keys are valid according to the BCP47 spec
 const bcp47pattern = /^(?:(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE)|(art-lojban|cel-gaulish|no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))$|^((?:[a-z]{2,3}(?:(?:-[a-z]{3}){1,3})?)|[a-z]{4}|[a-z]{5,8})(?:-([a-z]{4}))?(?:-([a-z]{2}|\d{3}))?((?:-(?:[\da-z]{5,8}|\d[\da-z]{3}))*)?((?:-[\da-wy-z](?:-[\da-z]{2,8})+)*)?(-x(?:-[\da-z]{1,8})+)?$|^(x(?:-[\da-z]{1,8})+)$/i; // eslint-disable-line max-len
 
-var nonImplementedAssertions = fetchManualAssertions();
-// Takes the second argument as the TD to validate
+//main logic
 
-if (process.argv[2]) {
-    //console.log("there is second arg");
-    if (typeof process.argv[2] === "string") {
-        console.log("Taking input ", process.argv[2]);
-        secondArgument = process.argv[2];
+// getting the TDs to validate
+var tdsToValidate = processArguments(process.argv);
+
+//filling the assertions array
+var assertionSchemas = collectAssertionSchemas("./Assertions/");
+
+//fetching the manual.csv filled by the user
+var manualAssertionsJSON = fetchManualAssertions("./manual.csv");
+
+//fetching the JSON Schema Draft
+var draftData = fs.readFileSync(draftLocation)
+var draft = JSON.parse(draftData);
+
+//fetching the TD Validation Schema
+var tdSchemaData = fs.readFileSync(tdSchemaLocation);
+var tdSchema = JSON.parse(tdSchemaData);
+
+//validating all the TDs
+tdsToValidate.forEach((tdToValidate)=>{
+    //running the validation for a single TD
+    var curCsvResults = []
+    try {
+        curCsvResults = validate(tdToValidate, assertionSchemas, manualAssertionsJSON, tdSchema, draft);
+        if (!outputLocation) outputLocation = "./Results"
+        toOutput(JSON.parse(tdToValidate).id, outputLocation, curCsvResults)
+        console.log(curCsvResults);
+    } catch (error) {
+        //this needs to go to output
+        console.log({
+            "ID": error,
+            "Status": "fail",
+            "Comment":"Invalid TD"
+        });
+    }
+});
+
+
+// based on the given arguments to the string it returns an array, composed of raw buffer TDs
+// in the meantime it fills the outputLocation global variable
+function processArguments(argumentArray){
+    // Takes the second argument as the TD location to validate
+    var secondArgument;
+    var returnArray =[]; //array of TDs to be returned. They are not parsed before returning
+
+    if (argumentArray[2]) {
+        //console.log("there is second arg");
+        if (typeof argumentArray[2] === "string") {
+            console.log("Taking input ", argumentArray[2]);
+            secondArgument = argumentArray[2];
+        } else {
+            console.error("Second argument should be string");
+            throw "Argument error";
+        }
     } else {
-        console.error("Second argument should be string");
+        console.error("There is NO second argument, put the location of the TD or of the directory with TDs");
         throw "Argument error";
     }
-} else {
-    console.error("There is NO second argument, put the location of the TD or of the directory with TDs");
-    throw "Argument error";
-}
 
-if (process.argv[3]) {
-    //console.log("there is second arg");
-    if (typeof process.argv[3] === "string") {
-        console.log("Taking output ", process.argv[3]);
-        var outputLocation = process.argv[3];
-        console.log("Validating a single TD and outputting result to ", outputLocation)
-        var storedTdAddress = secondArgument;
-        validate(storedTdAddress, outputLocation);
-    } else {
-        console.error("Second argument should be string");
-        throw "Argument error";
-    }
-} else {
+    // in case there is a third argument for the output location of the results, assign it to the global outputLocation variable.
+    if (argumentArray[3]) {
+        if (typeof argumentArray[3] === "string") {
+            console.log("Taking output ", argumentArray[3]);
+            outputLocation = argumentArray[3];
+        } else {
+            console.error("Third argument should be string");
+            throw "Argument error";
+        }
+    } 
 
+    /*
+    This try catch handles the case whether the script is run with a directory as a second argument or with a TD file
+    In case it is a directory, all the TDs inside it will be added to the list of TDs to be validated
+    Otherwise the array will contain only one Thing
+    */
     try {
         // check if it is a directory
         var dirLocation = secondArgument;
-        var tdList = fs.readdirSync(dirLocation);
+        var tdLocationList = fs.readdirSync(dirLocation);
         console.log("Validating an Implementation with Multiple TDs")
-        tdList.forEach((curTD) => {
-            validate(dirLocation + curTD);
+        tdLocationList.forEach((curTDLocation) => {
+            var curTDraw = fs.readFileSync(dirLocation+curTDLocation);
+            returnArray.push(curTDraw)
         });
     } catch (error) {
         // not a directory so take the TD, hopefully
         console.log("Validating a single TD")
         var storedTdAddress = secondArgument;
-        validate(storedTdAddress);
+        var curTDraw = fs.readFileSync(storedTdAddress);
+        returnArray.push(curTDraw)
     }
+    return returnArray;
 }
 
-function validate(storedTdAddress, outputLocation) {
-    console.log("=================================================================")
-    console.log("Taking TD found at ", storedTdAddress, " for validation");
-    var tdData = fs.readFileSync(storedTdAddress);
+// returns a JSON array containing JSON Objects corresponding to assertion JSON Schemas
+function collectAssertionSchemas(assertionsDirectory){
+    var assertionSchemas = [];
+    var assertionsListLocation = fs.readdirSync(assertionsDirectory);
+    assertionsListLocation.forEach((curAssertion, index) => {
 
+        var schemaLocation = assertionsDirectory + curAssertion;
+        var schemaRaw = fs.readFileSync(schemaLocation);
+        var schemaJSON = JSON.parse(schemaRaw);
+        assertionSchemas.push(schemaJSON);
+    });
+    return assertionSchemas;
+}
+
+// validates the TD in the first argument according to the assertions given in the second argument
+// manual assertions given in the third argument are pushed to the end of the array after sorting the results array
+// return is a JSON array of result JSON objects
+
+//if there is a throw, it gives the failed assertion id
+function validate(tdData, assertions, manualAssertions, tdSchema,schemaDraft) {
+    // a JSON file that will be returned containing the result for each assertion as a JSON Object
+    var results = [];
+    console.log("=================================================================");
 
     // check whether it is a valid UTF-8 string
     if (isUtf8(tdData)) {
@@ -77,241 +153,199 @@ function validate(storedTdAddress, outputLocation) {
             "Status": "pass"
         });
     } else {
-        results.push({
-            "ID": "td-json-open_utf-8",
-            "Status": "fail"
-        });
-        console.log("INVALID TD, SKIPPING TO NEXT TD");
-        toOutput("invalid-td-cant-get-id");
-        results = [];
-        return;
+        throw "td-json-open_utf-8";
     }
-
 
     //check whether it is a valid JSON
     try {
-        var tempTd = JSON.parse(tdData);
+        var tdJson = JSON.parse(tdData);
         results.push({
             "ID": "td-json-open",
             "Status": "pass"
         });
     } catch (error) {
-        results.push({
-            "ID": "td-json-open",
-            "Status": "fail"
-        });
-        console.log("INVALID TD, SKIPPING TO NEXT TD");
-        toOutput("invalid-td-cant-get-id");
-        results = [];
-        return;
-
+        throw "td-json-open";
     }
 
+    // checking whether two interactions of the same interaction affordance type have the same names
+    // This requires to use the string version of the TD that will be passed down to the jsonvalidator library
     var tdDataString = tdData.toString();
+    results = checkUniqueness(tdDataString,results);
 
-    var tdJson = checkUniqueness(tdDataString);
+    // Normal TD Schema validation but this allows us to test multiple assertions at once
+    try {
+        results = checkVocabulary(tdJson, results, tdSchema, schemaDraft);
+    } catch (error) {
+        console.log({
+            "ID": error,
+            "Status": "fail"
+        });
+        throw "Invalid TD"
+    }
 
-    var test = checkVocabulary(tdJson);
+    // additional checks
+    results = checkSecurity(tdJson,results);
+    results = checkMultiLangConsistency(tdJson, results);
 
-    if (!test) {
-        console.log("INVALID TD, SKIPPING TO NEXT TD");
-        toOutput(tdJson.id);
-        results = [];
-        return;
-    } else {
+    // Iterating through assertions
 
-        // additional checks
-        checkSecurity(tdJson);
-        checkMultiLangConsistency(tdJson);
+    for (let index = 0; index < assertions.length; index++) {
+        const curAssertion = assertions[index];
+        
+        var schema = curAssertion
 
+        // Validation starts here
 
-        var draftData = fs.readFileSync(draftLocation);
-        var draft = JSON.parse(draftData);
-
-        // Iterating through assertions
-
-        var assertions = fs.readdirSync("./Assertions/");
-        assertions.forEach((curAssertion, index) => {
-
-            var schemaLocation = "./Assertions/" + curAssertion;
-
-            var schemaData = fs.readFileSync(schemaLocation);
-
-            // console.log("Taking Assertion Schema found at ", schemaLocation);
-            var schema = JSON.parse(schemaData);
-
-            // Validation starts here
-
-            const avj_options = {
-                "$comment": function (v) {
-                    console.log("\n!!!! COMMENT", v)
-                },
-                "allErrors": true
-            };
-            var ajv = new Ajv(avj_options);
-            ajv.addMetaSchema(draft);
-            ajv.addSchema(schema, 'td');
+        const avj_options = {
+            "$comment": function (v) {
+                console.log("\n!!!! COMMENT", v)
+            },
+            "allErrors": true
+        };
+        var ajv = new Ajv(avj_options);
+        ajv.addMetaSchema(draft);
+        ajv.addSchema(schema, 'td');
 
 
-            var valid = ajv.validate('td', tdJson);
+        var valid = ajv.validate('td', tdJson);
 
-            /*
-                If valid then it is not implemented
-                if error says not-impl then it is not implemented
-                If somehow error says fail then it is failed
+        /*
+            If valid then it is not implemented
+            if error says not-impl then it is not implemented
+            If somehow error says fail then it is failed
 
-                Output is structured as follows:
-                [main assertion]:[sub assertion if exists]=[result]
-            */
-            if (schema["is-complex"]) {
-                if (valid) {
-                    // console.log('Assertion ' + schema.title + ' not implemented');
-                    results.push({
-                        "ID": schema.title,
-                        "Status": "not-impl"
-                    });
-                    if (schema.hasOwnProperty("also")) {
-                        var otherAssertions = schema.also;
-                        otherAssertions.forEach(function (asser) {
-                            results.push({
-                                "ID": asser,
-                                "Status": "not-impl"
-                            });
-                        });
-                    }
-
-                } else {
-                    // console.log(ajv.errors);
-                    try {
-                        var output = ajv.errors[0].params.allowedValue;
-
-                        var resultStart = output.indexOf("=");
-                        var result = output.slice(resultStart + 1);
-
-                        if (result == "pass") {
-                            results.push({
-                                "ID": schema.title,
-                                "Status": result
-                            });
-                        } else {
-                            results.push({
-                                "ID": schema.title,
-                                "Status": result,
-                                "Comment": ajv.errorsText()
-                            });
-                        }
-                        if (schema.hasOwnProperty("also")) {
-                            var otherAssertions = schema.also;
-                            otherAssertions.forEach(function (asser) {
-                                results.push({
-                                    "ID": asser,
-                                    "Status": result
-                                });
-                            });
-                        }
-                        //there was some other error, so it is fail
-                    } catch (error1) {
+            Output is structured as follows:
+            [main assertion]:[sub assertion if exists]=[result]
+        */
+        if (schema["is-complex"]) {
+            if (valid) {
+                // console.log('Assertion ' + schema.title + ' not implemented');
+                results.push({
+                    "ID": schema.title,
+                    "Status": "not-impl"
+                });
+                if (schema.hasOwnProperty("also")) {
+                    var otherAssertions = schema.also;
+                    otherAssertions.forEach(function (asser) {
                         results.push({
-                            "ID": schema.title,
-                            "Status": "fail",
-                            "Comment": "Make sure you validate your TD before"
+                            "ID": asser,
+                            "Status": "not-impl"
                         });
-
-                        if (schema.hasOwnProperty("also")) {
-                            var otherAssertions = schema.also;
-                            otherAssertions.forEach(function (asser) {
-                                results.push({
-                                    "ID": asser,
-                                    "Status": "fail",
-                                    "Comment": "Make sure you validate your TD before"
-                                });
-                            });
-                        }
-                    }
+                    });
                 }
 
             } else {
-                if (valid) {
-                    // console.log('Assertion ' + schema.title + ' implemented');
+                try {
+                    var output = ajv.errors[0].params.allowedValue;
+
+                    var resultStart = output.indexOf("=");
+                    var result = output.slice(resultStart + 1);
+
+                    if (result == "pass") {
+                        results.push({
+                            "ID": schema.title,
+                            "Status": result
+                        });
+                    } else {
+                        results.push({
+                            "ID": schema.title,
+                            "Status": result,
+                            "Comment": ajv.errorsText()
+                        });
+                    }
+                    if (schema.hasOwnProperty("also")) {
+                        var otherAssertions = schema.also;
+                        otherAssertions.forEach(function (asser) {
+                            results.push({
+                                "ID": asser,
+                                "Status": result
+                            });
+                        });
+                    }
+                    //there was some other error, so it is fail
+                } catch (error1) {
                     results.push({
                         "ID": schema.title,
-                        "Status": "pass"
+                        "Status": "fail",
+                        "Comment": "Make sure you validate your TD before"
+                    });
+
+                    if (schema.hasOwnProperty("also")) {
+                        var otherAssertions = schema.also;
+                        otherAssertions.forEach(function (asser) {
+                            results.push({
+                                "ID": asser,
+                                "Status": "fail",
+                                "Comment": "Make sure you validate your TD before"
+                            });
+                        });
+                    }
+                }
+            }
+
+        } else {
+            if (valid) {
+                // console.log('Assertion ' + schema.title + ' implemented');
+                results.push({
+                    "ID": schema.title,
+                    "Status": "pass"
+                });
+                if (schema.hasOwnProperty("also")) {
+                    var otherAssertions = schema.also;
+                    otherAssertions.forEach(function (asser) {
+                        results.push({
+                            "ID": asser,
+                            "Status": "pass"
+                        });
+                    });
+                }
+            } else {
+                // failed because a required is not implemented
+                // console.log('> ' + ajv.errorsText());
+                if (ajv.errorsText().indexOf("required") > -1) {
+                    //failed because it doesnt have required key which is a non implemented feature
+                    // console.log('Assertion ' + schema.title + ' not implemented');
+                    results.push({
+                        "ID": schema.title,
+                        "Status": "not-impl",
+                        "Comment": ajv.errorsText()
                     });
                     if (schema.hasOwnProperty("also")) {
                         var otherAssertions = schema.also;
                         otherAssertions.forEach(function (asser) {
                             results.push({
                                 "ID": asser,
-                                "Status": "pass"
+                                "Status": "not-impl",
+                                "Comment": ajv.errorsText()
                             });
                         });
                     }
                 } else {
-                    // failed because a required is not implemented
-                    // console.log('> ' + ajv.errorsText());
-                    if (ajv.errorsText().indexOf("required") > -1) {
-                        //failed because it doesnt have required key which is a non implemented feature
-                        // console.log('Assertion ' + schema.title + ' not implemented');
-                        results.push({
-                            "ID": schema.title,
-                            "Status": "not-impl",
-                            "Comment": ajv.errorsText()
-                        });
-                        if (schema.hasOwnProperty("also")) {
-                            var otherAssertions = schema.also;
-                            otherAssertions.forEach(function (asser) {
-                                results.push({
-                                    "ID": asser,
-                                    "Status": "not-impl",
-                                    "Comment": ajv.errorsText()
-                                });
+                    //failed because of some other reason
+                    // console.log('Assertion ' + schema.title + ' failed');
+                    results.push({
+                        "ID": schema.title,
+                        "Status": "fail",
+                        "Comment": ajv.errorsText()
+                    });
+                    if (schema.hasOwnProperty("also")) {
+                        var otherAssertions = schema.also;
+                        otherAssertions.forEach(function (asser) {
+                            results.push({
+                                "ID": asser,
+                                "Status": "fail",
+                                "Comment": ajv.errorsText()
                             });
-                        }
-                    } else {
-                        //failed because of some other reason
-                        // console.log('Assertion ' + schema.title + ' failed');
-                        results.push({
-                            "ID": schema.title,
-                            "Status": "fail",
-                            "Comment": ajv.errorsText()
                         });
-                        if (schema.hasOwnProperty("also")) {
-                            var otherAssertions = schema.also;
-                            otherAssertions.forEach(function (asser) {
-                                results.push({
-                                    "ID": asser,
-                                    "Status": "fail",
-                                    "Comment": ajv.errorsText()
-                                });
-                            });
-                        }
                     }
                 }
             }
-
-
-            // If reached the end
-            if (index == assertions.length - 1) {
-                // create parent assertions
-                toOutput(tdJson.id);
-            }
-        });
+        }
     }
-}
 
-function toOutput(tdId) {
     results = mergeIdenticalResults(results);
-    createParents(results);
+    results = createParents(results);
 
-    // Push the non implemented assertions
-    nonImplementedAssertions = fetchManualAssertions();
-    nonImplementedAssertions.forEach((curNonImpl) => {
-        results.push({
-            "ID": curNonImpl,
-            "Status": "null",
-            "Comment": "not testable with Assertion Tester"
-        });
-    });
 
     // sort according to the ID in each item
     orderedResults = results.sort(function (a, b) {
@@ -328,45 +362,25 @@ function toOutput(tdId) {
         return 0;
     });
 
-    var csvResults = json2csvParser.parse(orderedResults);
-    results = [];
-
-    //if output is specified output there
-    if (outputLocation) {
-
-        fs.writeFile(outputLocation, csvResults, function (err) {
-            if (err) {
-                return console.log(err);
-            }
-
-            console.log("The csv was saved!");
-        });
-
-    } else {
-        //otherwise to console and save to default directories
-        console.log(csvResults);
-
-        var fileName = tdId.replace(/:/g, "_");
-        fs.writeFile("./Results/result-" + fileName + ".json", JSON.stringify(orderedResults),
-            function (err) {
-                if (err) {
-                    return console.log(err);
-                }
-
-                console.log("The result-" + fileName + ".json is saved!");
-            });
-
-        fs.writeFile("./Results/result-" + fileName + ".csv", csvResults, function (err) {
-            if (err) {
-                return console.log(err);
-            }
-
-            console.log("The result-" + fileName + ".csv is saved!");
-        });
-    }
+    results = orderedResults.concat(manualAssertions);
+    var csvResults = json2csvParser.parse(results);
+    return csvResults;
 }
 
-function mergeIdenticalResults(resultsJSON) {
+function toOutput(tdId, outputLocation, csvResults) {
+
+    var fileName = tdId.replace(/:/g, "_");
+
+    fs.writeFile(outputLocation+"/result-" + fileName + ".csv", csvResults, function (err) {
+        if (err) {
+            return console.log(err);
+        }
+        console.log("The result-" + fileName + ".csv is saved!");
+    });
+    
+}
+
+function mergeIdenticalResults(results) {
     // first generate a list of results that appear more than once
     // it should be a JSON object, keys are the assertion ids and the value is an array
     // while putting these results, remove them from the results FIRST
@@ -374,13 +388,13 @@ function mergeIdenticalResults(resultsJSON) {
     //if one fail total fail, if one pass and no fail then pass, otherwise not-impl
 
     var identicalResults = {};
-    resultsJSON.forEach((curResult, index) => {
+    results.forEach((curResult, index) => {
         var curId = curResult.ID;
 
         // remove this one, but add it back if there is no duplicate
-        resultsJSON.splice(index, 1);
+        results.splice(index, 1);
         // check if there is a second one
-        const identicalIndex = resultsJSON.findIndex(x => x.ID === curId);
+        const identicalIndex = results.findIndex(x => x.ID === curId);
 
         if (identicalIndex > 0) { //there is a second one
 
@@ -393,11 +407,11 @@ function mergeIdenticalResults(resultsJSON) {
                 identicalResults[curId] = [curResult.Status]
             }
             // put it back such that the last identical can find its duplicate that appeared before
-            resultsJSON.unshift(curResult);
+            results.unshift(curResult);
             // process.exit();
         } else {
             // if there is no duplicate, put it back into results but at the beginning 
-            resultsJSON.unshift(curResult);
+            results.unshift(curResult);
         }
     });
 
@@ -417,27 +431,27 @@ function mergeIdenticalResults(resultsJSON) {
             newResult = "not-impl"
         }
         //delete each of the duplicate
-        while (resultsJSON.findIndex(x => x.ID === curKey) >= 0) {
-            resultsJSON.splice(resultsJSON.findIndex(x => x.ID === curKey), 1);
+        while (results.findIndex(x => x.ID === curKey) >= 0) {
+            results.splice(results.findIndex(x => x.ID === curKey), 1);
         }
 
         // push back the new result
-        resultsJSON.push({
+        results.push({
             "ID": curKey,
             "Status": newResult,
             "Comment": "result of a merge"
         });
 
     });
-    return resultsJSON;
+    return results;
 }
 
-function createParents(resultsJSON) {
+function createParents(results) {
 
     //create a json object with parent name keys and then each of them an array of children results
 
     var parentsJson = {};
-    resultsJSON.forEach((curResult, index) => {
+    results.forEach((curResult, index) => {
         var curId = curResult.ID;
         var underScoreLoc = curId.indexOf('_');
         if (underScoreLoc === -1) {
@@ -496,73 +510,12 @@ function createParents(resultsJSON) {
             }
         }
     });
-
+    return results;
 }
 
-function checkVocabulary(tdJson) {
-    /*
-    Validates the following assertions:
-    td - processor
-    td-objects:securityDefinitions
-    td-arrays:security
-    td:security
-    td-security-mandatory
-    */
-    var draftData = fs.readFileSync(draftLocation)
+function checkUniqueness(tdString, results) {
 
-    // console.log("Taking Schema Draft found at ", draftLocation);
-    var draft = JSON.parse(draftData);
-
-    var schemaData = fs.readFileSync("../WebContent/td-schema.json");
-
-    // console.log("Taking td-schema")
-
-    var schema = JSON.parse(schemaData);
-
-    var ajv = new Ajv();
-    ajv.addMetaSchema(draft);
-    ajv.addSchema(schema, 'td');
-
-    var valid = ajv.validate('td', tdJson);
-    var otherAssertions = ["td-objects_securityDefinitions", "td-arrays_security", "td-vocab-security--Thing", "td-security-mandatory", "td-vocab-securityDefinitions--Thing", "td-context-toplevel", "td-vocab-title--Thing", "td-vocab-security--Thing", "td-vocab-id--Thing", "td-security", "td-security-activation", "td-context-ns-thing-mandatory", "td-map-type", "td-array-type", "td-class-type", "td-string-type", "td-security-schemes"];
-
-    if (valid) {
-        results.push({
-            "ID": "td-processor",
-            "Status": "pass",
-        });
-
-        otherAssertions.forEach(function (asser) {
-            results.push({
-                "ID": asser,
-                "Status": "pass"
-            });
-        });
-        return true;
-
-    } else {
-        console.log("VALIDATION ERROR!!! : ", ajv.errorsText());
-        results.push({
-            "ID": "td-processor",
-            "Status": "fail",
-            "Comment": "invalid TD"
-        });
-        otherAssertions.forEach(function (asser) {
-            results.push({
-                "ID": asser,
-                "Status": "fail"
-            });
-        });
-        return false;
-    }
-}
-
-function checkUniqueness(tdString) {
-
-    // There are two things being checked here:
-    // Whether in one interaction pattern there are duplicate names, e.g. two properties called temp
-    // And if all interaction patterns combined have duplicates, e.g. a property and action called light
-
+    // Checking whether in one interaction pattern there are duplicate names, e.g. two properties called temp
     // However, if there are no properties then it is not-impl
 
     // jsonvalidator throws an error if there are duplicate names in the interaction level
@@ -592,6 +545,7 @@ function checkUniqueness(tdString) {
             });
         }
 
+        // similar to just before, checking whether there are actions at all, if not uniqueness is not impl
         if (td.hasOwnProperty("actions")) {
             tdInteractions = tdInteractions.concat(Object.keys(td.actions));
             results.push({
@@ -608,6 +562,7 @@ function checkUniqueness(tdString) {
             });
         }
 
+        // similar to just before, checking whether there are events at all, if not uniqueness is not impl
         if (td.hasOwnProperty("events")) {
             tdInteractions = tdInteractions.concat(Object.keys(td.events));
             results.push({
@@ -624,39 +579,10 @@ function checkUniqueness(tdString) {
             });
         }
 
-        // if (tdInteractions.length > 0) {
-        //     // checking uniqueness between interactions
-        //     isDuplicate = (new Set(tdInteractions)).size !== tdInteractions.length;
+        return results;
 
-        //     if (isDuplicate) {
-        //         // if all is unique, then interactions are unique
-        //         results.push({
-        //             "ID": "td-unique-identifiers",
-        //             "Status": "fail",
-        //             "Comment": "duplicate interaction names"
-        //         });
-
-        //     } else {
-        //         results.push({
-        //             "ID": "td-unique-identifiers",
-        //             "Status": "pass"
-        //         });
-        //     }
-        // } else {
-        //     results.push({
-        //         "ID": "td-unique-identifiers",
-        //         "Status": "not-impl",
-        //         "Comment":"There are no interactions"
-        //     });
-        // }
-        return td;
     } catch (error) {
         // there is a duplicate somewhere
-        // results.push({
-        //     "ID": "td-unique-identifiers",
-        //     "Status": "fail",
-        //     "Comment": "duplicate interaction names"
-        // });
 
         // convert it into string to be able to process it
         // error is of form = Error: Syntax error: duplicated keys "overheating" near ting": {
@@ -756,22 +682,69 @@ function checkUniqueness(tdString) {
             });
         }
 
-        return JSON.parse(tdString);
+        return results;
     }
 }
 
-function fetchManualAssertions() {
+function checkVocabulary(tdJson, results, tdSchema, schemaDraft) {
+    /*
+    Validates the following assertions:
+    td - processor
+    td-objects:securityDefinitions
+    td-arrays:security
+    td:security
+    td-security-mandatory
+    */
 
-    var manualCsv = fs.readFileSync("./manual.csv").toString();
+
+    var ajv = new Ajv();
+    ajv.addMetaSchema(draft);
+    ajv.addSchema(tdSchema, 'td');
+
+    var valid = ajv.validate('td', tdJson);
+    var otherAssertions = ["td-objects_securityDefinitions", "td-arrays_security", "td-vocab-security--Thing", "td-security-mandatory", "td-vocab-securityDefinitions--Thing", "td-context-toplevel", "td-vocab-title--Thing", "td-vocab-security--Thing", "td-vocab-id--Thing", "td-security", "td-security-activation", "td-context-ns-thing-mandatory", "td-map-type", "td-array-type", "td-class-type", "td-string-type", "td-security-schemes"];
+
+    if (valid) {
+        results.push({
+            "ID": "td-processor",
+            "Status": "pass",
+        });
+
+        otherAssertions.forEach(function (asser) {
+            results.push({
+                "ID": asser,
+                "Status": "pass"
+            });
+        });
+        return results;
+
+    } else {
+        // console.log("VALIDATION ERROR!!! : ", ajv.errorsText());
+        // results.push({
+        //     "ID": "td-processor",
+        //     "Status": "fail",
+        //     "Comment": "invalid TD"
+        // });
+        // otherAssertions.forEach(function (asser) {
+        //     results.push({
+        //         "ID": asser,
+        //         "Status": "fail"
+        //     });
+        // });
+        throw "invalid TD";
+    }
+}
+
+function fetchManualAssertions(manualCsvLocation) {
+    var manualCsv = fs.readFileSync(manualCsvLocation).toString();
 
     var options = {
         delimiter: ',', // optional
         quote: '"' // optional
     };
 
-    var manualJSON = csvjson.toColumnArray(manualCsv, options);
-    var manualIdList = manualJSON.ID;
-    return manualIdList;
+    var manualJSON = csvjson.toObject(manualCsv, options);
+    return manualJSON;
 }
 
 function securityContains(parent, child) {
@@ -783,7 +756,7 @@ function securityContains(parent, child) {
     return child.every(elem => parent.indexOf(elem) > -1);
 }
 
-function checkSecurity(td) {
+function checkSecurity(td,results) {
     if (td.hasOwnProperty("securityDefinitions")) {
         var securityDefinitionsObject = td.securityDefinitions;
         var securityDefinitions = Object.keys(securityDefinitionsObject);
@@ -799,7 +772,7 @@ function checkSecurity(td) {
                 "Status": "fail",
                 "Comment": "used a non defined security scheme in root level"
             });
-            return;
+            return results;
         }
 
         if (td.hasOwnProperty("properties")) {
@@ -823,7 +796,7 @@ function checkSecurity(td) {
                                 "Status": "fail",
                                 "Comment": "used a non defined security scheme in a property form"
                             });
-                            return;
+                            return results;
                         }
                     }
                 }
@@ -851,7 +824,7 @@ function checkSecurity(td) {
                                 "Status": "fail",
                                 "Comment": "used a non defined security scheme in an action form"
                             });
-                            return;
+                            return results;
                         }
                     }
                 }
@@ -880,7 +853,7 @@ function checkSecurity(td) {
                                 "Status": "fail",
                                 "Comment": "used a non defined security scheme in an event form"
                             });
-                            return;
+                            return results;
                         }
                     }
                 }
@@ -893,13 +866,13 @@ function checkSecurity(td) {
             "ID": "td-security-scheme-name",
             "Status": "pass"
         });
-        return;
+        return results;
 
     } else {}
-    return;
+    return results;
 }
 
-function checkMultiLangConsistency(td) {
+function checkMultiLangConsistency(td, results) {
 
     // this checks whether all titles and descriptions have the same language fields 
     // so the object keys of a titles and of a descriptions should be the same already, then everywhere else they should also be the same
@@ -1052,7 +1025,7 @@ function checkMultiLangConsistency(td) {
             "Status": "not-impl",
             "Comment": "no multilang objects in the td"
         });
-        return;
+        return results;
     }
 
     // if at some point there was a false result, it is a fail
@@ -1068,7 +1041,7 @@ function checkMultiLangConsistency(td) {
                 "Status": "fail",
                 "Comment": elementName+" is not on the multilang object at the same level"
             });
-            return;
+            return results;
         }
     }
     //there was no problem, so just put pass
@@ -1077,8 +1050,8 @@ function checkMultiLangConsistency(td) {
         "Status": "pass"
     });
     
-    //nothing after this, there is return above
-
+    // ? nothing after this, there is return above
+    return results;
 }
 
 // checks if an array that contains only arrays as items is composed of same items

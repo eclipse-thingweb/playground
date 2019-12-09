@@ -6,31 +6,7 @@
     "securityDefinitions": {
         "oauth2_sc": {
             "scheme": "oauth2",
-            "flow": "password",
-            "scopes": ["limited", "special"],
-            "refresh": "https://refreshServer.com/",
-            "token": "https://tokenServer.com/",
-            "authorization": "https://authServer.com/"
-        },
-        "oauth2_sc2": {
-            "scheme": "oauth2",
-            "flow": "implicit",
-            "scopes": ["limited", "special"],
-            "refresh": "https://refreshServer.com/",
-            "token": "https://tokenServer.com/",
-            "authorization": "https://authServer.com/"
-        },
-        "oauth2_sc3": {
-            "scheme": "oauth2",
             "flow": "code",
-            "scopes": ["limited", "special"],
-            "refresh": "https://refreshServer.com/",
-            "token": "https://tokenServer.com/",
-            "authorization": "https://authServer.com/"
-        },
-        "oauth2_sc4": {
-            "scheme": "oauth2",
-            "flow": "client",
             "scopes": ["limited", "special"],
             "refresh": "https://refreshServer.com/",
             "token": "https://tokenServer.com/",
