@@ -16,10 +16,6 @@
                 "type": "string",
                 "forms": [{
                     "href": "https://mylamp.example.com/status"
-                }],
-                "security": [{
-                    "scheme": "basic",
-                    "in": "header"
                 }]
             }
         },
@@ -27,9 +23,6 @@
             "toggle": {
                 "forms": [{
                     "href": "https://mylamp.example.com/toggle"
-                }],
-                "security": [{
-                    "scheme": "nosec"
                 }]
             }
         },
@@ -41,10 +34,6 @@
                 "forms": [{
                     "href": "https://mylamp.example.com/oh",
                     "subProtocol": "longpoll"
-                }],
-                "security": [{
-                    "scheme": "cert",
-                    "identity": "abcd123"
                 }]
             }
         }

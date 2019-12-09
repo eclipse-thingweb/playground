@@ -43,6 +43,7 @@
             "readOnly": true,
             "writeOnly": false,
             "type": "array",
+            "items":{"type":"integer"},
             "maxItems":5,
             "minItems": 2,
             "forms": [

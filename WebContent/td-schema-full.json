@@ -888,35 +888,6 @@
                         "scheme": {
                             "type": "string",
                             "enum": [
-                                "cert"
-                            ]
-                        },
-                        "identity": {
-                            "type": "string"
-                        }
-                    },
-                    "required": [
-                        "scheme"
-                    ]
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "@type": {
-                            "$ref": "#/definitions/type_declaration"
-                        },
-                        "description": {
-                            "$ref": "#/definitions/description"
-                        },
-                        "descriptions": {
-                            "$ref": "#/definitions/descriptions"
-                        },
-                        "proxy": {
-                            "$ref": "#/definitions/anyUri"
-                        },
-                        "scheme": {
-                            "type": "string",
-                            "enum": [
                                 "psk"
                             ]
                         },
@@ -926,85 +897,6 @@
                     },
                     "required": [
                         "scheme"
-                    ]
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "@type": {
-                            "$ref": "#/definitions/type_declaration"
-                        },
-                        "description": {
-                            "$ref": "#/definitions/description"
-                        },
-                        "descriptions": {
-                            "$ref": "#/definitions/descriptions"
-                        },
-                        "proxy": {
-                            "$ref": "#/definitions/anyUri"
-                        },
-                        "scheme": {
-                            "type": "string",
-                            "enum": [
-                                "public"
-                            ]
-                        },
-                        "identity": {
-                            "type": "string"
-                        }
-                    },
-                    "required": [
-                        "scheme"
-                    ]
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "@type": {
-                            "$ref": "#/definitions/type_declaration"
-                        },
-                        "description": {
-                            "$ref": "#/definitions/description"
-                        },
-                        "descriptions": {
-                            "$ref": "#/definitions/descriptions"
-                        },
-                        "proxy": {
-                            "$ref": "#/definitions/anyUri"
-                        },
-                        "scheme": {
-                            "type": "string",
-                            "enum": [
-                                "pop"
-                            ]
-                        },
-                        "authorization": {
-                            "$ref": "#/definitions/anyUri"
-                        },
-                        "format": {
-                            "type": "string"
-                        },
-                        "alg": {
-                            "type": "string"
-                        },
-                        "in": {
-                            "type": "string",
-                            "enum": [
-                                "header",
-                                "query",
-                                "body",
-                                "cookie"
-                            ]
-                        },
-                        "name": {
-                            "type": "string"
-                        }
-                    },
-                    "required": [
-                        "scheme",
-                        "in",
-                        "alg",
-                        "format"
                     ]
                 },
                 {
@@ -1053,9 +945,6 @@
                         "flow": {
                             "type": "string",
                             "enum": [
-                                "implicit",
-                                "password",
-                                "client",
                                 "code"
                             ]
                         }

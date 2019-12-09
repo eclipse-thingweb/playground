@@ -51,7 +51,7 @@
                     },
                     "flow": {
                         "type": "string",
-                        "enum": ["implicit", "password", "client", "code"]
+                        "enum": ["code"]
                     }
                 },
                 "required": [

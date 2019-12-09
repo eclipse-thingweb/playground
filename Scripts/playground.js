@@ -79,6 +79,7 @@ fs.readFile(storedTdAddress, (err, tdData) => {
                 checkPropItems(tdJson);
                 checkInteractions(tdJson);
                 checkSecurity(tdJson);
+                // checkUniqueness(tdJson);
 
             } else {
 
@@ -352,6 +353,29 @@ function checkSecurity(td) {
         }
     } else {
         console.log('KO Error: securityDefinitions is mandatory');
+    }
+    return;
+}
+
+function checkUniqueness(td) {
+
+    // building the interaction name array
+    var tdInteractions = [];
+    if (td.hasOwnProperty("properties")) {
+        tdInteractions = tdInteractions.concat(Object.keys(td.properties));
+    }
+    if (td.hasOwnProperty("actions")) {
+        tdInteractions = tdInteractions.concat(Object.keys(td.actions));
+    }
+    if (td.hasOwnProperty("events")) {
+        tdInteractions = tdInteractions.concat(Object.keys(td.events));
+    }
+    // checking uniqueness
+
+    isDuplicate = (new Set(tdInteractions)).size !== tdInteractions.length;
+    console.log(isDuplicate);
+    if (isDuplicate) {
+        console.log('KO Error: Duplicate names are not allowed in Interactions');
     }
     return;
 }
