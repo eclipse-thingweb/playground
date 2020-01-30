@@ -1,0 +1,67 @@
+{
+    "title": "td-vocab-name--BearerSecurityScheme",
+    "description": "name: Name for query, header, or cookie parameters. MAY be included. Type: string.",
+    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "is-complex": true,
+    "type": "object",
+    "properties": {
+        "securityDefinitions": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+                "$ref": "#/definitions/securityScheme"
+            }
+        }
+    },
+    "required": [
+        "securityDefinitions"
+    ],
+    "additionalProperties": true,
+    "definitions": {
+        "securityScheme": {
+            "if": {
+                "type": "object",
+                "properties": {
+                    "description": {
+                        "type": "string"
+                    },
+                    "proxy": {
+                        "$ref": "#/definitions/url"
+                    },
+                    "scheme": {
+                        "type": "string",
+                        "enum": [
+                            "bearer"
+                        ]
+                    },
+                    "authorization": {
+                        "$ref": "#/definitions/url"
+                    },
+                    "alg": {
+                        "type": "string"
+                    },
+                    "format": {
+                        "type": "string"
+                    },
+                    "in": {
+                        "type": "string",
+                        "enum": ["header", "query", "body", "cookie"]
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "scheme","name"
+                ]
+            },
+            "then": {
+                "const": "td-vocab-name--BearerSecurityScheme=pass"
+            }
+        },
+        "url": {
+            "type": "string",
+            "format": "uri-reference"
+        }
+    }
+}

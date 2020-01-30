@@ -1,0 +1,38 @@
+{
+    "title": "td-vocab-anchor--Link",
+    "description": "anchor: By default, the context of a link is the URL of the representation it is associated with, and is serialised as a URI. When present, the anchor parameter overrides this with another URI, such as a fragment of this resource, or a third resource (i.e., when the anchor value is an absolute URI).",
+    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "is-complex": true,
+    "type": "object",
+    "properties": {
+        "links": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/link_element"
+            }
+        }
+    },
+    "additionalProperties": true,
+    "definitions": {
+        "link_element": {
+            "if": {
+                "type": "object",
+                "properties": {
+                    "anchor": {
+                        "$ref": "#/definitions/url"
+                    }
+                },
+                "required": [
+                    "anchor"
+                ]
+            },
+            "then": {
+                "const": "td-vocab-anchor--Link=pass"
+            }
+        },
+        "url": {
+            "type": "string",
+            "format": "uri-reference"
+        }
+    }
+}

@@ -112,7 +112,7 @@ function performAssertionTest(e){
             // send an AJAX request to each individual JSON file
             // available on the server as returned by the discover endpoint
             $("#curtain-text").html("Loading Assertion Schemas:"+(i*100/tAssertions).toString()+"%")
-            $.getJSON('../AssertionTester/Assertions/'+assertionList[i], function (assertion) {
+            $.getJSON('AssertionTester/Assertions/'+assertionList[i], function (assertion) {
                 
                 assertionSchemas.push(assertion);
                 
@@ -287,27 +287,27 @@ function toggleValidationStatusTable(e){
 
 function getExamplesList(){
             let examples={
-                "Simple TD": {
+                "SimpleTD": {
                     "addr": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/WebContent/Examples/Valid/simple.json",
                     "type": "valid"
                 },
-                "Multiple op":{
+                "MultipleOp":{
                     "addr":"https://raw.githubusercontent.com/thingweb/thingweb-playground/master/WebContent/Examples/Valid/formOpArray.json",
                     "type":"valid"
                 },
-                "Enum-Const Contradiction":{
+                "EnumConstContradiction":{
                     "addr":"https://raw.githubusercontent.com/thingweb/thingweb-playground/master/WebContent/Examples/Warning/enumConst.json",
                     "type":"warning"
                 },
-                "Array with no Items":{
+                "ArrayWithNoItems":{
                     "addr":"https://raw.githubusercontent.com/thingweb/thingweb-playground/master/WebContent/Examples/Warning/arrayNoItems.json",
                     "type":"warning"
                 },
-                "Invalid Operation":{
+                "InvalidOperation":{
                     "addr":"https://raw.githubusercontent.com/thingweb/thingweb-playground/master/WebContent/Examples/Invalid/invalidOp.json",
                     "type":"invalid"
                  },
-                "Empty Security Defs":{
+                "EmptySecurityDefs":{
                     "addr":"https://raw.githubusercontent.com/thingweb/thingweb-playground/master/WebContent/Examples/Invalid/emptySecDef.json",
                     "type":"invalid"
                 }
@@ -359,8 +359,6 @@ function getExamplesList(){
         return lineNo;
 
     }
-
-
 
 /////////////////////////////////////
 

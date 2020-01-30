@@ -1,0 +1,76 @@
+{
+    "title": "td-security-oauth2-code-flow",
+    "description": "For the code flow both authorization and token MUST be included.",
+    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "is-complex": true,
+    "type": "object",
+    "properties": {
+        "securityDefinitions": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+                "$ref": "#/definitions/securityScheme"
+            }
+        }
+    },
+    "required": [
+        "securityDefinitions"
+    ],
+    "additionalProperties": true,
+    "definitions": {
+        "securityScheme": {
+            "if": {
+                "type": "object",
+                "properties": {
+                    "description": {
+                        "type": "string"
+                    },
+                    "proxy": {
+                        "$ref": "#/definitions/url"
+                    },
+                    "scheme": {
+                        "type": "string",
+                        "enum": [
+                            "oauth2"
+                        ]
+                    },
+                    "authorization": {
+                        "$ref": "#/definitions/url"
+                    },
+                    "token": {
+                        "$ref": "#/definitions/url"
+                    },
+                    "refresh": {
+                        "$ref": "#/definitions/url"
+                    },
+                    "scopes": {
+                        "oneOf": [{
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "flow": {
+                        "type": "string",
+                        "const":"code"
+                    }
+                },
+                "required": [
+                    "scheme", "flow", "token", "authorization"
+                ]
+            },
+            "then": {
+                "const": "td-security-oauth2-code-flow=pass"
+            }
+        },
+        "url": {
+            "type": "string",
+            "format": "uri-reference"
+        }
+    }
+}
