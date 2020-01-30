@@ -1,0 +1,18 @@
+{
+    "title": "td-vocab-description--Thing",
+    "description": "description: Provides additional (human-readable) information based on a default language. MAY be included. Type: string.",
+    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "is-complex": false,
+    "type": "object",
+    "properties": {
+        "description": {
+            "$ref": "#/definitions/description"
+        }
+    },
+    "required": ["description"],
+    "definitions": {
+        "description": {
+            "type": "string"
+        }
+    }
+}

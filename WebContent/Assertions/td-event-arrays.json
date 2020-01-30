@@ -1,0 +1,109 @@
+{
+    "title": "td-event-arrays",
+    "description": "The type of the members forms MUST be serialized as a JSON array.",
+    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "is-complex": false,
+    "also": ["td-event-names_forms"],
+    "type": "object",
+    "properties": {
+        "events": {
+            "additionalProperties": {
+                "$ref": "#/definitions/event_element"
+            }
+        }
+    },
+    "required": [
+        "events"
+    ],
+    "additionalProperties": true,
+    "definitions": {
+        "event_element": {
+            "type": "object",
+            "properties": {
+                "forms": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/form_element"
+                    }
+                }
+            },
+            "required": [
+                "forms"
+            ],
+            "additionalProperties": true
+        },
+        "form_element": {
+            "type": "object",
+            "properties": {
+                "href": {
+                    "$ref": "#/definitions/url"
+                },
+                "op": {
+                    "oneOf": [{
+                            "type": "string",
+                            "enum": [
+                                "readproperty",
+                                "writeproperty",
+                                "observeproperty",
+                                "invokeaction",
+                                "subscribeevent",
+                                "unsubscribeevent"
+                            ]
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "readproperty",
+                                    "writeproperty",
+                                    "observeproperty",
+                                    "invokeaction",
+                                    "subscribeevent",
+                                    "unsubscribeevent"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "contentType": {
+                    "type": "string"
+                },
+                "security": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "scopes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "subProtocol": {
+                    "type": "string",
+                    "enum": [
+                        "longpoll", "websub", "sse"
+                    ]
+                },
+                "response": {
+                    "type": "object",
+                    "properties": {
+                        "contentType": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "required": [
+                "href"
+            ],
+            "additionalProperties": true
+        },
+        "url": {
+            "type": "string",
+            "format": "uri-reference"
+        }
+    }
+}

@@ -24,10 +24,15 @@
  */
 var ajv; /* JSON Schema validator */
 var tdJson;
+var validationStatus="success";
+var source="manual";
+var autoValidate=false;
 
 function trigger(name, data) {
+    
     var ev = new CustomEvent(name, {
-        detail: data
+        detail: data,
+        
     });
 
     document.dispatchEvent(ev);
@@ -54,14 +59,52 @@ function reset(id) {
     circle.css('visibility', 'hidden');
 }
 
-function validate() {
-    var text = $('#td-text').val();
+function validate(e,source) {
+    console.log(typeof e.type)
+    if(typeof e.type!="undefined")
+    {   var text = window.editor.getValue();
+        source=e.data.source;
+        
+        reset('spot-json');
+            reset('spot-simple-json-schema');
+            reset('spot-full-json-schema');
+            reset('spot-json-ld');
+            reset('spot-add');
+          
+          //  source=e.data.source;
+        
+        
+            trigger('validate-json', text);
+    }
+    else{
+    
+
+    if(!(source=="auto" && autoValidate==false)){
+            var text = window.editor.getValue();
+            
+           
+        //  $("#console").empty();
+            reset('spot-json');
+            reset('spot-simple-json-schema');
+            reset('spot-full-json-schema');
+            reset('spot-json-ld');
+            reset('spot-add');
+
+          //  source=e.data.source;
+        
+        
+            trigger('validate-json', text);
+    }}
+    
+   
+}
+
+function resetValidationStatus(){
     reset('spot-json');
     reset('spot-simple-json-schema');
     reset('spot-full-json-schema');
     reset('spot-json-ld');
     reset('spot-add');
-    trigger('validate-json', text);
 }
 
 function log(message) {
@@ -78,6 +121,12 @@ function clearLog() {
     reset('spot-full-json-schema');
     reset('spot-json-ld');
     reset('spot-add');
+    $("#validation_table_head").removeClass();
+    $("#validation_table_head").toggleClass("btn-info");
+    $("#validation_table").fadeOut("fast",function(){
+		$("#table_head_arrow").removeClass();
+        $("#table_head_arrow").toggleClass("down");
+	}); 
 }
 
 $(function () {
@@ -96,18 +145,36 @@ $(function () {
                 ajv.addSchema(schemaFull, 'td-full');
 
                 document.addEventListener('validate-json', function (e) {
+                    validationStatus="success";
                     try {
+                        
+                        
+                        if(source=="manual")
                         log('------- New Validation Started -------');
+
                         tdJson = JSON.parse(e.detail);
                         light('OK', 'spot-json');
+                        validationStatus="success";
+                        updateValidationStatusHead(); 
+
+                        if(source=="manual")
                         log('JSON validation... OK');
+
                         trigger('validate-simple-json-schema', tdJson);
                     } catch (err) {
+                        
                         console.log(err);
                         if (err instanceof SyntaxError) {
                             light('KO', 'spot-json');
+                            validationStatus="danger";
+                            updateValidationStatusHead();
+                            if(source=="manual")
+                            {
                             log('X JSON validation... KO:');
-                            log('> ' + err.message);
+                            let charNo=err.message.match(/\d+/g);
+                            console.log("charter ni is "+charNo);
+                            let lineNo=getLineNumber(charNo,$("#td-text").val());
+                            log('> ' + err.message+"  Near Line No:"+ lineNo);}
                         }
                     }
                 }, false);
@@ -116,6 +183,7 @@ $(function () {
                     if (tdJson.hasOwnProperty('properties') || tdJson.hasOwnProperty('actions') || tdJson.hasOwnProperty('events')) {
                         if (!tdJson.hasOwnProperty('base')) {
                             //no need to do something. Each href should be absolute
+                            if(source=="manual")
                             log(':) Tip: Without base, each href should be an absolute URL');
                         }
 
@@ -125,13 +193,20 @@ $(function () {
                     //used to be var valid = ajv.validate('td', e.detail);
                     if (valid) {
                         light('OK', 'spot-simple-json-schema');
+                        if(source=="manual")
                         log('JSON Schema validation... OK');
+
                         trigger('validate-full-json-schema', tdJson);
                     } else {
+
                         light('KO', 'spot-simple-json-schema');
+                        
+                        validationStatus="danger";
+                        updateValidationStatusHead();
+                        if(source=="manual"){
                         log('X JSON Schema validation... KO:');
                         //console.log(ajv.errors);
-                        log('> ' + ajv.errorsText());
+                        log('> ' + ajv.errorsText());}
                         console.log(JSON.stringify(ajv.errors));
                     }
 
@@ -144,12 +219,18 @@ $(function () {
                     //used to be var valid = ajv.validate('td', e.detail);
                     if (valid) {
                         light('OK', 'spot-full-json-schema');
+                        if(source=="manual")
                         log('Optional validation... OK');
                         trigger('validate-json-ld', tdJson);
                     } else {
                         light('WARNING', 'spot-full-json-schema');
+                        if(source=="manual")
                         log('Optional validation... KO:');
+                        if(validationStatus=="success");
+                            {validationStatus="warning";
+                            updateValidationStatusHead(); }
                         //console.log(ajv.errors);
+                        if(source=="manual")
                         log('> ' + ajv.errorsText());
                         console.log(JSON.stringify(ajv.errors));
                         trigger('validate-json-ld', tdJson);
@@ -164,19 +245,23 @@ $(function () {
                     }, function (err, triples) {
                         if (!err) {
                             light('OK', 'spot-json-ld');
+                            if(source=="manual")
                             log('JSON-LD validation... OK');
                             trigger('validate-add', triples);
                         } else {
                             light('KO', 'spot-json-ld');
+                            validationStatus="danger";
+                            updateValidationStatusHead();
+                            if(source=="manual"){
                             log('X JSON-LD validation... KO:');
-                            log('> ' + err);
+                            log('> ' + err);}
                             trigger('validate-add', triples);
                         }
                     });
                 }, false);
 
                 document.addEventListener('validate-add', function (e) {
-
+                    if(source=="manual")
                     log('Additional checks...');
 
                     light('OK', 'spot-add');
@@ -188,10 +273,13 @@ $(function () {
 
                     //can produce error
                     checkSecurity(tdJson);
-                    // checkUniqueness(tdJson);
+                    checkUniqueness(tdJson);
+                    updateValidationStatusHead();
+                    
 
-                    // var pattern = /^(?:(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE)|(art-lojban|cel-gaulish|no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))$|^((?:[a-z]{2,3}(?:(?:-[a-z]{3}){1,3})?)|[a-z]{4}|[a-z]{5,8})(?:-([a-z]{4}))?(?:-([a-z]{2}|\d{3}))?((?:-(?:[\da-z]{5,8}|\d[\da-z]{3}))*)?((?:-[\da-wy-z](?:-[\da-z]{2,8})+)*)?(-x(?:-[\da-z]{1,8})+)?$|^(x(?:-[\da-z]{1,8})+)$/i; // eslint-disable-line max-len
-                    // console.log(pattern.test(tdJson.title))
+                    
+                     var pattern = /^(?:(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE)|(art-lojban|cel-gaulish|no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))$|^((?:[a-z]{2,3}(?:(?:-[a-z]{3}){1,3})?)|[a-z]{4}|[a-z]{5,8})(?:-([a-z]{4}))?(?:-([a-z]{2}|\d{3}))?((?:-(?:[\da-z]{5,8}|\d[\da-z]{3}))*)?((?:-[\da-wy-z](?:-[\da-z]{2,8})+)*)?(-x(?:-[\da-z]{1,8})+)?$|^(x(?:-[\da-z]{1,8})+)$/i; // eslint-disable-line max-len
+                    console.log(pattern.test(tdJson.title))
 
                 }, false);
 
@@ -212,6 +300,27 @@ function ValidURL(str) {
 
 }
 
+
+function updateValidationStatusHead()
+{
+    if(validationStatus=="danger")
+    {
+    $("#validation_table").fadeIn("fast");
+    $("#table_head_arrow").removeClass();
+    $("#table_head_arrow").toggleClass("up");}
+    
+    else
+    {
+    $("#validation_table").fadeOut("fast");
+    $("#table_head_arrow").removeClass();
+    $("#table_head_arrow").toggleClass("down");}
+
+
+    $("#validation_table_head").removeClass();
+    $("#validation_table_head").toggleClass("btn-"+validationStatus);
+}
+
+
 //checking whether a data schema has enum and const at the same and displaying a warning in case there are
 function checkEnumConst(td) {
     if (td.hasOwnProperty("properties")) {
@@ -222,6 +331,9 @@ function checkEnumConst(td) {
             var curProperty = td.properties[curPropertyName];
             if (curProperty.hasOwnProperty("enum") && curProperty.hasOwnProperty("const")) {
                 light('WARNING', 'spot-add');
+                if(validationStatus=="success");
+                            validationStatus="warning";
+
                 log('! In property ' + curPropertyName + ' enum and const are used at the same time, the values in enum can never be valid in the received JSON value');
                 return false;
             }
@@ -279,6 +391,8 @@ function checkPropItems(td) {
                 if ((curProperty.type == "object") && !(curProperty.hasOwnProperty("properties"))) {
                     log('! In property ' + curPropertyName + ', the type is object but its properties are not specified');
                     light('WARNING', 'spot-add');
+                    if(validationStatus=="success");
+                            validationStatus="warning";
                     return false;
                 }
                 if ((curProperty.type == "array") && !(curProperty.hasOwnProperty("items"))) {
@@ -363,6 +477,8 @@ function checkInteractions(td) {
     if (td.hasOwnProperty("interaction")) {
         log('interaction are from the previous TD Specification, please use properties, actions, events instead');
         light('WARNING', 'spot-add');
+        if(validationStatus=="success");
+                            validationStatus="warning";
         return false;
     }
     return;
@@ -386,6 +502,7 @@ function checkSecurity(td) {
         } else {
             log('KO Error: Security key in the root of the TD has security schemes not defined by the securityDefinitions');
             light('KO', 'spot-add');
+              validationStatus="danger";
             return false;
         }
 
@@ -521,6 +638,7 @@ function checkUniqueness(td) {
     if (isDuplicate) {
         log('KO Error: Duplicate names are not allowed in Interactions');
         light('KO', 'spot-add');
+           validationStatus="danger";
         return false;
     }
 }
