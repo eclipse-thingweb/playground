@@ -1,0 +1,23 @@
+{
+  "name": "thingweb-playground-bundle",
+  "version": "1.0.0",
+  "description": "asdf",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adriankast/thingweb-playground.git"
+  },
+  "keywords": [
+    "asdf"
+  ],
+  "author": "asdf",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/adriankast/thingweb-playground/issues"
+  },
+  "homepage": "https://github.com/adriankast/thingweb-playground#readme",
+  "dependencies": {}
+}
