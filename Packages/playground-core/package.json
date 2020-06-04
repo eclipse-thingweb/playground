@@ -1,11 +1,15 @@
 {
   "name": "playground-core",
   "version": "1.0.0",
-  "description": "",
+  "description": "TBD",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "ajv": "^6.12.2",
+    "jsonld": "^3.1.1"
+  }
 }
