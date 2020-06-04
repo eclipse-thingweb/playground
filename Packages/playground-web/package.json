@@ -1,6 +1,7 @@
 {
   "name": "playground-web",
   "version": "1.0.0",
+  "private": true,
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,5 +11,6 @@
   "license": "MIT",
   "dependencies": {
     "monaco-editor": "^0.20.0"
-  }
+  },
+  "devDependencies": {}
 }

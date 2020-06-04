@@ -1,0 +1,80 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true,
+        "node": false
+    },
+    "rules": {
+        "arrow-parens": [
+            "error",
+            "as-needed"
+        ],
+        "camelcase": "error",
+        "comma-dangle": "error",
+        "complexity": "off",
+        "constructor-super": "error",
+        "dot-notation": "error",
+        "eqeqeq": [
+            "error",
+            "smart"
+        ],
+        "guard-for-in": "error",
+        "id-blacklist": [
+            "error",
+            "any",
+            "number",
+            "String",
+            "string",
+            "Boolean",
+            "boolean",
+            "Undefined"
+        ],
+        "id-match": "error",
+        "max-classes-per-file": [
+            "error",
+            1
+        ],
+        "max-len": [
+            "warn",
+            {
+                "code": 135
+            }
+        ],
+        "new-parens": "error",
+        "no-bitwise": "error",
+        "no-caller": "error",
+        "no-cond-assign": "error",
+        "no-console": "off",
+        "no-debugger": "error",
+        "no-empty": "error",
+        "no-eval": "error",
+        "no-fallthrough": "off",
+        "no-invalid-this": "off",
+        "no-multiple-empty-lines": "off",
+        "no-new-wrappers": "error",
+        "no-shadow": [
+            "error",
+            {
+                "hoist": "all"
+            }
+        ],
+        "no-throw-literal": "error",
+        "no-trailing-spaces": "error",
+        "no-undef-init": "error",
+        "no-underscore-dangle": "error",
+        "no-unsafe-finally": "error",
+        "no-unused-expressions": "error",
+        "no-unused-labels": "error",
+        "no-var": "error",
+        "object-shorthand": "error",
+        "one-var": [
+            "error",
+            "never"
+        ],
+        "prefer-const": "warn",
+        "radix": "error",
+        "spaced-comment": "error",
+        "use-isnan": "error",
+        "valid-typeof": "off"
+    }
+}

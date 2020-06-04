@@ -1,8 +1,7 @@
-
-// Load monaco editor
+// Load monaco editor ACM
 require.config({ paths: { 'vs': './node_modules/monaco-editor/min/vs' }});
 require(['vs/editor/editor.main'], function() {
-    var editor = monaco.editor.create(document.getElementById('container'), {
+    const editor = monaco.editor.create(document.getElementById('container'), {
         value: [
             'function x() {',
             '\tconsole.log("Hello world!");',
@@ -12,3 +11,7 @@ require(['vs/editor/editor.main'], function() {
     });
 });
 setTimeout(()=>{monaco.editor.setTheme("vs-dark")},2000)
+
+fetch('./list.json')
+.then(res => res.json())
+.then(data => console.log(data))
