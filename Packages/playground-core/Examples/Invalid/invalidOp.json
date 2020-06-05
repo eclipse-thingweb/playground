@@ -1,0 +1,58 @@
+{
+    "id": "urn:dev:wot:com:example:servient:lamp",
+    "@context":"https://www.w3.org/2019/wot/td/v1",
+    "title": "MyLampThing",
+    "description": "Invalid TD since 3rd form of brightness property has an op value reserved for events",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": ["basic_sc"],
+    "properties": {
+        "brightness": {
+            "description": "The current brightness setting",
+            "type": "integer",
+            "minimum": -64,
+            "maximum": 64,
+            "observable": true,
+            "forms": [{
+                    "href": "http://example.org:9191/api/brightness",
+                    "op": ["readproperty"]
+                },
+                {
+                    "href": "http://example.org:9191/api/brightness",
+                    "op": ["writeproperty"],
+                    "htv:methodName": "POST"
+                },
+                {
+                    "href": "http://example.org:9191/api/brightness/observe",
+                    "op": ["subscribeevent"],
+                    "htv:methodName": "GET",
+                    "subProtocol": "longpoll"
+                }
+            ]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "forms": [{
+                "href": "https://mylamp.example.com/toggle",
+                "op": ["invokeaction"]
+            }]
+        }
+    },
+    "events": {
+        "overheating": {
+            "data": {
+                "type": "string"
+            },
+            "forms": [{
+                "href": "https://mylamp.example.com/oh",
+                "subProtocol": "longpoll",
+                "op": ["subscribeevent"]
+            }]
+        }
+    }
+}

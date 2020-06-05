@@ -1,0 +1,25 @@
+{
+    "id": "urn:dev:wot:com:example:servient:lamp",
+    "@context":"https://www.w3.org/2019/wot/td/v1",
+    "title": "MyLampThing",
+    "description": "Invalid TD since the action contains a type that is not supported",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": ["basic_sc"],
+    "actions": {
+        "status": {
+            "input": {
+                "type": "myAmazingType"
+            },
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status"
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "id": "urn:baseUri",
+    "@context":"https://www.w3.org/2019/wot/td/v1",
+    "title": "MyLampThing",
+    "description": "Valid TD copied from the spec's first example",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": ["basic_sc"],
+    "base": "https://mylamp.example.com",
+    "properties": {
+        "status": {
+            "type": "string",
+            "forms": [{
+                "href": "/status"
+            }]
+        }
+    }
+}

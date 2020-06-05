@@ -1,0 +1,52 @@
+{
+    "id": "urn:scopesFormOauth2",
+    "@context": "https://www.w3.org/2019/wot/td/v1",
+    "title": "MyLampThing",
+    "description": "Valid TD showing how to use scopes and oauth2 security scheme",
+    "securityDefinitions": {
+        "oauth2_sc": {
+            "scheme": "oauth2",
+            "flow": "code",
+            "scopes": ["limited", "special"],
+            "refresh": "https://refreshServer.com/",
+            "token": "https://tokenServer.com/",
+            "authorization": "https://authServer.com/"
+        }
+    },
+    "security": ["oauth2_sc"],
+    "properties": {
+        "status": {
+            "type": "string",
+            "scopes": ["limited"],
+            "security": ["oauth2_sc"],
+            "forms": [{
+                "href": "https://scopes.example.com/status",
+                "contentType": "application/json",
+                "scopes": ["limited"]
+            }]
+        }
+    },
+    "actions": {
+        "mega": {
+            "scopes": ["limited"],
+            "security": ["oauth2_sc"],
+            "forms": [{
+                "href": "https://scopes.example.com/status",
+                "contentType": "application/json",
+                "scopes": ["limited"]
+            }]
+        }
+    },
+    "events": {
+        "eventScope": {
+            "scopes": ["special"],
+            "security": ["oauth2_sc"],
+            "forms": [{
+                "href": "https://scopes.example.com/status",
+                "contentType": "application/json",
+                "scopes": ["special"],
+                "subprotocol": "longpoll"
+            }]
+        }
+    }
+}

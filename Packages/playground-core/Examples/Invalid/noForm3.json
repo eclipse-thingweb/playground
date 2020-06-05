@@ -1,0 +1,20 @@
+{
+    "title": "MyLampThing",
+    "@context":"https://www.w3.org/2019/wot/td/v1",
+    "id": "urn:dev:wot:com:example:servient:lamp",
+    "description": "Invalid TD since event has no form in events",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": ["basic_sc"],
+    "events": {
+        "status": {
+            "data": {
+                "type": "string"
+            }
+        }
+    }
+}

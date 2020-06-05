@@ -1,0 +1,24 @@
+{
+    "id": "urn:dev:wot:com:example:servient:lamp",
+    "@context":"https://www.w3.org/2019/wot/td/v1",
+    "title": "MyLampThing",
+    "description": "Invalid TD since overheating event has an unknown subprotocol",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": ["basic_sc"],
+    "events": {
+        "overheating": {
+            "data":{"type": "string"},
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/oh",
+                    "subProtocol": "subscribe"
+                }
+            ]
+        }
+    }
+}

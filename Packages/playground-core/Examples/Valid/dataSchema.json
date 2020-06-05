@@ -1,0 +1,167 @@
+{
+    "id": "urn:dataSchema",
+    "@context":"https://www.w3.org/2019/wot/td/v1",
+    "title": "MyLampThing",
+    "description": "Valid TD copied from the spec's first example",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header",
+            "name": "myParameter"
+        }
+    },
+    "security": ["basic_sc"],
+    "properties": {
+        "status0": {
+            "type": "null",
+            "forms": [{
+                "href": "https://mylamp.example.com/status0"
+            }]
+        },
+        "status": {
+            "type": "number",
+            "minimum": 5,
+            "maximum": 1212,
+            "unit": "complicatedTemperatureUnit",
+            "readOnly": false,
+            "writeOnly": false,
+            "forms": [{
+                "href": "https://mylamp.example.com/status"
+            }]
+        },
+        "status2": {
+            "type": "number",
+            "enum": [1.2, 3.22],
+            "forms": [{
+                "href": "https://mylamp.example.com/status2"
+            }]
+        },
+        "status3": {
+            "type": "number",
+            "const": 1.2,
+            "forms": [{
+                "href": "https://mylamp.example.com/status3"
+            }]
+        },
+        "status4": {
+            "type": "array",
+            "items": {
+                "type": "number"
+            },
+            "minItems": 1,
+            "maxItems": 5,
+            "forms": [{
+                "href": "https://mylamp.example.com/status4"
+            }]
+        },
+        "status5": {
+            "oneOf": [{
+                "type": "array",
+                "items": {
+                    "type": "number"
+                },
+                "minItems": 1,
+                "maxItems": 5
+            }, {
+                "type": "array",
+                "items": {
+                    "type": "number"
+                },
+                "minItems": 6,
+                "maxItems": 10
+            }],
+            "forms": [{
+                "href": "https://mylamp.example.com/status5"
+            }]
+        },
+        "status6": {
+            "description": "something",
+            "type": "object",
+            "properties": {
+                "wow": {
+                    "type": "number"
+                }
+            },
+            "required": ["wow"],
+            "forms": [{
+                "href": "https://mylamp.example.com/status6"
+            }]
+        },
+        "status7": {
+            "description": "something",
+            "type": "string",
+            "format": "email",
+            "forms": [{
+                "href": "https://mylamp.example.com/status6"
+            }]
+        },
+        "status8": {
+            "type": "array",
+            "items": [{
+                    "type": "number"
+                },
+                {
+                    "type": "string",
+                    "format":"date-time"
+                }
+            ],
+            "forms": [{
+                "href": "https://mylamp.example.com/status5"
+            }]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "input": {
+                "type": "object",
+                "properties": {
+                    "test1": {
+                        "type": "string",
+                        "enum": ["test"]
+                    },
+                    "test2": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 5
+                    },
+                    "test3": {
+                        "type": "number",
+                        "minimum": 1.4,
+                        "maximum": 10.4
+                    }
+                },
+                "required": ["test1"]
+            },
+            "forms": [{
+                "href": "https://mylamp.example.com/toggle"
+            }]
+        },
+        "toggle2": {
+            "forms": [{
+                "href": "https://mylamp.example.com/toggle2"
+            }]
+        }
+    },
+    "events": {
+        "overheating": {
+            "data": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                },
+                "minItems": 4,
+                "maxItems": 6
+            },
+            "forms": [{
+                "href": "https://mylamp.example.com/oh",
+                "subprotocol": "longpoll"
+            }]
+        },
+        "overheating2": {
+            "forms": [{
+                "href": "https://mylamp.example.com/oh2",
+                "subprotocol": "longpoll"
+            }]
+        }
+    }
+}
