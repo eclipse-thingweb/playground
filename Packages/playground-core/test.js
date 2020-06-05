@@ -1,5 +1,4 @@
 // Test utility to test index.js
-
 const tdValidator = require("./index")
 const fs = require("fs")
 
@@ -50,8 +49,15 @@ const simpleTD = JSON.stringify({
 		}
 	}
 })
-
 const tdSchema = fs.readFileSync("./td-schema.json","utf-8")
+const tdSchemaFull = fs.readFileSync("./td-schema-full.json", "utf-8")
 
-const result = tdValidator(simpleTD, tdSchema)
-console.log(JSON.stringify(result))
+tdValidator(simpleTD, tdSchema, tdSchemaFull)
+.then( result => {
+	console.log("OKAY")
+	console.log(result)
+}, err => {
+	console.log("ERROR")
+	console.error(err)
+})
+
