@@ -49,8 +49,8 @@ const simpleTD = JSON.stringify({
 		}
 	}
 })
-const tdSchema = fs.readFileSync("./td-schema.json","utf-8")
-const tdSchemaFull = fs.readFileSync("./td-schema-full.json", "utf-8")
+const tdSchema = fs.readFileSync("td-schema.json","utf-8")
+const tdSchemaFull = fs.readFileSync("td-schema-full.json", "utf-8")
 
 tdValidator(simpleTD, tdSchema, tdSchemaFull)
 .then( result => {

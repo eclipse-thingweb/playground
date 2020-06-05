@@ -11,13 +11,21 @@ const Ajv = require("ajv")
  * @param {string} tdString The Thing Description to check as a string.
  * @param {string} tdSchema The JSON Schema that defines a correct TD.
  */
-function tdValidator(tdString, tdSchema, tdFullSchema, checkJsonLd = true) {
+function tdValidator(tdString, tdSchema, tdFullSchema, { checkDefaults=true, checkJsonLd=true }) {
     return new Promise( (res, rej) => {
 
         // check input
         if (typeof tdString !== "string") {rej("Thing Description input should be a String")}
         if (typeof tdSchema !== "string") {rej("TD Schema input value was no String")}
         if (typeof tdFullSchema !== "string") {rej("TD full Schema should be a string")}
+        if (checkDefaults === undefined) {
+            console.log("changed checkDefaults")
+            checkDefaults = true
+        }
+        if (checkJsonLd === undefined) {
+            console.log("changed check JSonlD")
+            checkJsonLd = true
+        }
 
         // report that is returned by the function, possible values for every property:
         // null -> not tested, "passed", "failed", "warning"
@@ -68,16 +76,18 @@ function tdValidator(tdString, tdSchema, tdFullSchema, checkJsonLd = true) {
             report.schema = "passed"
 
             // check with full schema
-            const fullschema = JSON.parse(tdFullSchema)
-            ajv.addSchema(fullschema, 'fulltd')
-            const fullValid = ajv.validate('fulltd', tdJson)
-            if (fullValid) {
-                report.defaults = "passed"
-            }
-            else {
-                report.defaults = "warning"
-                report.console.push("Optional validation failed:")
-                report.console.push("> " + ajv.errorsText())
+            if (checkDefaults) {
+                const fullschema = JSON.parse(tdFullSchema)
+                ajv.addSchema(fullschema, 'fulltd')
+                const fullValid = ajv.validate('fulltd', tdJson)
+                if (fullValid) {
+                    report.defaults = "passed"
+                }
+                else {
+                    report.defaults = "warning"
+                    report.console.push("Optional validation failed:")
+                    report.console.push("> " + ajv.errorsText())
+                }
             }
 
             // do additional checks
@@ -102,7 +112,7 @@ function tdValidator(tdString, tdSchema, tdFullSchema, checkJsonLd = true) {
         } else {
 
             report.schema = "failed"
-            report.console.push = "X JSON Schema validation failed:"
+            report.console.push("X JSON Schema validation failed:")
             // TODO: Handle long error messages in case of oneOf
             report.console.push('> ' + ajv.errorsText())
         }

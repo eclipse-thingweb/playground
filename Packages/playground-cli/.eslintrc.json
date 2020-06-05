@@ -73,6 +73,7 @@
         ],
         "prefer-const": "warn",
         "radix": "error",
+        "semi": ["warn","never"],
         "spaced-comment": "error",
         "use-isnan": "error",
         "valid-typeof": "off"
