@@ -10,7 +10,10 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "bootstrap-css-only": "4.4.1",
     "monaco-editor": "^0.20.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "jquery": "^3.5.1"
+  }
 }
