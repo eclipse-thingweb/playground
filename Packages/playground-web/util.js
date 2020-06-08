@@ -5,14 +5,14 @@ const tdValidator = require('playground-core')
  * @param {*} urlAddr url of the TD to fetch
  */
 function getTdUrl(urlAddr){
-
-    fetch(urlAddr)
-    .then(res => res.json())
-    .then(data => {
-        console.log(data)
-        window.editor.setValue(JSON.stringify(data,null,'\t'));
-    }, err => {alert("JSON could not be fetched from: " + urlAddr + "\n Error: " + err)})
-
+    return new Promise( resolve => {
+        fetch(urlAddr)
+        .then(res => res.json())
+        .then(data => {
+            console.log(data)
+            resolve(data)
+        }, err => {alert("JSON could not be fetched from: " + urlAddr + "\n Error: " + err)})
+    })
     // $.getJSON(urlAddr,function(data){
     //  window.editor.setValue(JSON.stringify(data,null,'\t'));
     // }).error(function(){alert("The JSON could not be fetched from the address:\n"+urlAddr)});
@@ -287,7 +287,9 @@ function exampleSelectHandler(e) {
     }
     else{
         const urlAddr=e.data.urlAddrObject[document.getElementById("load_example").value].addr;
-        getTdUrl(urlAddr);
+        getTdUrl(urlAddr).then( data => {
+            window.editor.setValue(JSON.stringify(data,null,'\t'))
+        })
     }
 }
 module.export(exampleSelectHandler)
@@ -464,7 +466,7 @@ function validate(e,source) {
         resetValidationStatus()
 
           //  source=e.data.source;
-        realValidator(text);
+        realValidator(text, source);
     }
     else {
         if (!(source === "auto" && autoValidate === false)) {
@@ -473,13 +475,28 @@ function validate(e,source) {
                 resetValidationStatus()
 
                 //  source=e.data.source;
-                realValidator(text);
+                realValidator(text, source);
         }}
 }
 
 // Private helpers
-    function realValidator(td) {
+    function realValidator(td, source) {
         // TODO: add trigger validate-json event chain functionality
+        if (source === "manual") {log("------- New Validation Started -------")}
+
+        const tdSchema = getTdUrl("./node_modules/playground-core/td-schema.json")
+        const tdFullSchema = getTdUrl("./node_modules/playground-core/td-schema-full.json")
+
+        Promise.all([tdSchema, tdFullSchema]).then( () => {
+            tdValidator(td, tdSchema, tdFullSchema).then( report => {
+                log(JSON.stringify(report))
+                console.log(report)
+            })
+        })
+    }
+
+    function log(message) {
+        document.getElementById("console").innerHTML += message + '&#13;&#10;'
     }
 
     function reset(id) {
