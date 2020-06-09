@@ -1,10 +1,10 @@
-const tdValidator = require('playground-core')
-
+ // const tdValidator = require('playground-core')
+// import {tdValidator} from "./node_modules/playground-core/dist/web-bundle.js"
 /**
  * Fetch the TD from the given address and paste it into the editor
  * @param {*} urlAddr url of the TD to fetch
  */
-function getTdUrl(urlAddr){
+export function getTdUrl(urlAddr){
     return new Promise( resolve => {
         fetch(urlAddr)
         .then(res => res.json())
@@ -16,19 +16,19 @@ function getTdUrl(urlAddr){
     // $.getJSON(urlAddr,function(data){
     //  window.editor.setValue(JSON.stringify(data,null,'\t'));
     // }).error(function(){alert("The JSON could not be fetched from the address:\n"+urlAddr)});
-
 }
+// module.exports.getTdUrl = getTdUrl
 
 /**
  * Generate html output from the example information
  * @param {*} urlAddrObject Name, address and type of every example TD
  */
-function populateExamples(urlAddrObject){
+export function populateExamples(urlAddrObject){
 
     let examplesHtml = "";
 
     Object.keys(urlAddrObject).forEach( name => {
-        data = urlAddrObject[name]
+        const data = urlAddrObject[name]
         if (data.type === "valid") {
             examplesHtml+='<option class="btn-success" value='+name+'>'+name +'</option>';
         }
@@ -42,6 +42,7 @@ function populateExamples(urlAddrObject){
 
     document.getElementById("load_example").innerHTML += examplesHtml;
 }
+// module.exports.populateExamples = populateExamples
 
 /**
  * asdf
@@ -152,10 +153,10 @@ function populateExamples(urlAddrObject){
 // }
 
 /**
- * asdf
+ * asdf TODO: remove jQuery
  * @param {*} e asdf
  */
-function textAreaManipulation(e) {
+export function textAreaManipulation(e) {
     if(e.keyCode === 9) { // tab was pressed
         // get caret position/selection
         const start = this.selectionStart;
@@ -176,6 +177,7 @@ function textAreaManipulation(e) {
         e.preventDefault();
     }
 }
+// module.exports.textAreaManipulation = textAreaManipulation
 
 /**
  * asdf
@@ -203,16 +205,17 @@ function submitAsGist(){
             "Authorization" : `Token 5671aca3addfdf7ee2d595d6f38daeb15dd6ecc9 `
         }
 
-    $.ajax({
-        type: "POST",
-        url,
-        headers,
-        success,
-        data:JSON.stringify(data),
-        error(XMLHttpRequest, textStatus, errorThrown) {
-                alert(errorThrown);
-        }
-    });
+        // TODO: remove jquery
+    // $.ajax({
+    //     type: "POST",
+    //     url,
+    //     headers,
+    //     success,
+    //     data:JSON.stringify(data),
+    //     error(XMLHttpRequest, textStatus, errorThrown) {
+    //             alert(errorThrown);
+    //     }
+    // });
 
     function success(dt) {
         const file=dt.files[name].raw_url;
@@ -224,7 +227,7 @@ function submitAsGist(){
 /**
  * Toggles Validation Table view
  */
-function toggleValidationStatusTable(){
+export function toggleValidationStatusTable(){
     // TODO: fade in/out with 200ms duration should be added
     const tableStyle = document.getElementById("validation_table").style.display
     document.getElementById("validation_table").style.display = (tableStyle === "none") ? "initial" : "none"
@@ -236,12 +239,12 @@ function toggleValidationStatusTable(){
         document.getElementById("table_head_arrow").setAttribute("class", "up")
     }
 }
-module.export(toggleValidationStatusTable)
+// module.exports.toggleValidationStatusTable = toggleValidationStatusTable
 
 /**
  * Name, Address and type ("valid", "warning", "invalid") of all example TDs
  */
-function getExamplesList(){
+export function getExamplesList(){
             const examples={
                 "SimpleTD": {
                     "addr": "./node_modules/playground-core/Examples/Valid/simple.json",
@@ -271,13 +274,13 @@ function getExamplesList(){
 
     return examples;
 }
-module.export(getExamplesList)
+// module.exports.getExamplesList = getExamplesList
 
 /**
  * Clear the editor, or paste TD -> according to user selection
  * @param {*} e selected example
  */
-function exampleSelectHandler(e) {
+export function exampleSelectHandler(e, obj) {
 
     clearLog()
     e.preventDefault()
@@ -286,13 +289,13 @@ function exampleSelectHandler(e) {
         window.editor.setValue("")
     }
     else{
-        const urlAddr=e.data.urlAddrObject[document.getElementById("load_example").value].addr;
+        const urlAddr=obj.urlAddrObject[document.getElementById("load_example").value].addr;
         getTdUrl(urlAddr).then( data => {
             window.editor.setValue(JSON.stringify(data,null,'\t'))
         })
     }
 }
-module.export(exampleSelectHandler)
+// module.exports.exampleSelectHandler = exampleSelectHandler
 
 /**
  * takes character number and gives out the line number
@@ -321,7 +324,6 @@ function getLineNumber(characterNo,str)
         lineNo++;
     }
     return lineNo;
-
 }
 
 /**
@@ -401,6 +403,7 @@ function isUtf8(bytes)
     }
     return true;
 }
+
 /**
  * asdf
  * @param {*} objArray asdf
@@ -457,9 +460,9 @@ function exportCSVFile(headers, items, fileTitle) {
     }
 }
 
-function validate(e,source) {
+export function validate(e,source, autoValidate) {
     console.log(typeof e.type)
-    if(typeof e.type!="undefined") {
+    if(typeof e.type !== "undefined") {
         const text = window.editor.getValue();
         source=e.data.source;
 
@@ -484,14 +487,21 @@ function validate(e,source) {
         // TODO: add trigger validate-json event chain functionality
         if (source === "manual") {log("------- New Validation Started -------")}
 
-        const tdSchema = getTdUrl("./node_modules/playground-core/td-schema.json")
-        const tdFullSchema = getTdUrl("./node_modules/playground-core/td-schema-full.json")
+        const tdSchemaProm = getTdUrl("./node_modules/playground-core/td-schema.json")
+        const tdFullSchemaProm = getTdUrl("./node_modules/playground-core/td-schema-full.json")
 
-        Promise.all([tdSchema, tdFullSchema]).then( () => {
-            tdValidator(td, tdSchema, tdFullSchema).then( report => {
+        Promise.all([tdSchemaProm, tdFullSchemaProm]).then( values => {
+            console.log("Validation would happen now!!!")
+            console.log(td)
+            console.log(values[0])
+            console.log(values[1])
+             tdValidator(td, JSON.stringify(values[0]), JSON.stringify(values[1]), {checkDefaults: false, checkJsonLd: true})
+             .then( report => {
                 log(JSON.stringify(report))
-                console.log(report)
-            })
+                // console.log(report)
+
+
+             })
         })
     }
 
@@ -514,16 +524,14 @@ function validate(e,source) {
     function updateValidationStatusHead(validationStatus)
     {
         if (validationStatus === "danger") {
-            // TODO: fade in 200ms
             // $("#validation_table").fadeIn("fast");
-            document.getElementById("table_head_arrow").style.display = "block"
+            document.getElementById("validation_table").setAttribute("class", "custom-fade-in")
             document.getElementById("table_head_arrow").setAttribute("class", "up")
             // $("#table_head_arrow").removeClass();
             // $("#table_head_arrow").toggleClass("up");
         }
         else {
-            // TODO: fade out 200ms
-            document.getElementById("validation_table").style.display = "none"
+            document.getElementById("validation_table").setAttribute("class", "custom-fade-out")
             // $("#validation_table").fadeOut("fast");
             document.getElementById("table_head_arrow").setAttribute("class", "down")
             // $("#table_head_arrow").removeClass();
@@ -534,5 +542,30 @@ function validate(e,source) {
         // $("#validation_table_head").removeClass();
         // $("#validation_table_head").toggleClass("btn-"+validationStatus);
     }
-module.export(validate)
+// module.exports.validate = validate
 
+export function clearLog() {
+    // var pgConsole = $('#console');
+    // pgConsole.empty();
+    // pgConsole.append("Reset! Waiting for validation... " + '&#13;&#10;');
+    document.getElementById("console").innerHTML = "Reset! Waiting for validation... " + "&#13;&#10;"
+    // reset('spot-json');
+    // reset('spot-simple-json-schema');
+    // reset('spot-full-json-schema');
+    // reset('spot-json-ld');
+    // reset('spot-add');
+    resetValidationStatus()
+    // $("#validation_table_head").removeClass();
+    // $("#validation_table_head").toggleClass("btn-info");
+    document.getElementById("validation_table_head").setAttribute("class", "btn-info")
+    // $("#validation_table").fadeOut("fast",function(){
+	// 	$("#table_head_arrow").removeClass();
+    //     $("#table_head_arrow").toggleClass("down");
+    // });
+    document.getElementById("validation_table").setAttribute("class", "custom-fade-out")
+    setTimeout( () => {
+        document.getElementById("table_head_arrow").setAttribute("class", "down")
+    }, 200)
+}
+
+// module.exports.clearLog = clearLog
