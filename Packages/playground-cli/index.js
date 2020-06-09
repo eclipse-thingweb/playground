@@ -27,14 +27,14 @@ if(fs.lstatSync(input).isDirectory()) {
         validNames.forEach( el => {
             if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                 tdToCheck = fs.readFileSync(path.join(validPath, el), "utf-8")
-                const thisProm = tdValidator(tdToCheck, tdSchema, tdSchemaFull, {checkDefaults: false})
+                const thisProm = tdValidator(tdToCheck, tdSchema, tdSchemaFull, console.log, {checkDefaults: false})
                 .then( result => {
-                    if (statResult("failed", result)) {
+                    if (statResult("failed", result.report)) {
                         console.log(el, "was supposed to be valid but gave error")
-                        result.console.forEach( line => {console.log(line)} )
-                    } else if (statResult("warning", result)) {
+                        // result.console.forEach( line => {console.log(line)} )
+                    } else if (statResult("warning", result.report)) {
                         console.log(el, "was supposed to be valid but gave warning")
-                        result.console.forEach( line => {console.log(line)} )
+                        // result.console.forEach( line => {console.log(line)} )
                     } else {
                         validCount++
                     }
@@ -66,9 +66,9 @@ if(fs.lstatSync(input).isDirectory()) {
         invalidNames.forEach( el => {
             if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                 tdToCheck = fs.readFileSync(path.join(invalidPath, el), "utf-8")
-                const thisProm = tdValidator(tdToCheck, tdSchema, tdSchemaFull, {checkDefaults: false})
+                const thisProm = tdValidator(tdToCheck, tdSchema, tdSchemaFull, console.log, {checkDefaults: false})
                 .then( result => {
-                    if (statResult("failed", result)) {
+                    if (statResult("failed", result.report)) {
                         invalidCount++
                     } else {
                         console.log(el, "was supposed to be invalid but was not")
@@ -101,16 +101,16 @@ if(fs.lstatSync(input).isDirectory()) {
         warnNames.forEach( el => {
             if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                 tdToCheck = fs.readFileSync(path.join(warnPath, el), "utf-8")
-                const thisProm = tdValidator(tdToCheck, tdSchema, tdSchemaFull, {checkDefaults: false})
+                const thisProm = tdValidator(tdToCheck, tdSchema, tdSchemaFull, console.log, {checkDefaults: false})
                 .then( result => {
-                    if (statResult("failed", result)) {
+                    if (statResult("failed", result.report)) {
                         console.log(el, "was supposed to give a warning but gave error")
-                        result.console.forEach( line => {console.log(line)} )
-                    } else if (statResult("warning", result)) {
+                        //result.console.forEach( line => {console.log(line)} )
+                    } else if (statResult("warning", result.report)) {
                         warnCount++
                     } else {
                         console.log(el, "was supposed to be valid but passed all the tests")
-                        result.console.forEach( line => {console.log(line)} )
+                        //result.console.forEach( line => {console.log(line)} )
                     }
                 }, err => {
                     console.error("ERROR", err)
@@ -146,14 +146,14 @@ else {
 }
 
 function checkTd(td) {
-    tdValidator(td, tdSchema, tdSchemaFull)
+    tdValidator(td, tdSchema, tdSchemaFull, console.log,{})
     .then( result => {
         console.log("OKAY \n")
-        result.console.forEach(el => {
-            console.log(el)
-        })
+        // result.console.forEach(el => {
+        //    console.log(el)
+        // })
         console.log("\n")
-        delete result.console
+        // delete result.console
         console.log("--- Report ---\n", result, "\n--------------")
     }, err => {
         console.log("ERROR")

@@ -496,9 +496,13 @@ export function validate(e,source, autoValidate) {
             console.log(values[0])
             console.log(values[1])
              tdValidator(td, JSON.stringify(values[0]), JSON.stringify(values[1]), {checkDefaults: false, checkJsonLd: true})
-             .then( report => {
-                log(JSON.stringify(report))
+             .then( result => {
+                log(JSON.stringify(result))
                 // console.log(report)
+                ["json","schema", "defaults", "jsonld", "add"].forEach( el => {
+                    console.log(result.report[el])
+                })
+                // if (report.json ===)
 
 
              })
@@ -514,11 +518,11 @@ export function validate(e,source, autoValidate) {
     }
 
     function resetValidationStatus(){
-        reset('spot-json');
-        reset('spot-simple-json-schema');
-        reset('spot-full-json-schema');
-        reset('spot-json-ld');
-        reset('spot-add');
+        reset('spot-json')
+        reset('spot-schema')
+        reset('spot-defaults')
+        reset('spot-jsonld')
+        reset('spot-additional-state')
     }
 
     function updateValidationStatusHead(validationStatus)

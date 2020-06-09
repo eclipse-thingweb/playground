@@ -1,4 +1,4 @@
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.validateTd = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.tdValidator = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 /**
  * Core functionality of the Thing Description Playground
  */
@@ -11,8 +11,10 @@ const Ajv = require("ajv")
  * A function that provides the core functionality of the TD Playground.
  * @param {string} tdString The Thing Description to check as a string.
  * @param {string} tdSchema The JSON Schema that defines a correct TD.
+ * @param {string} tdFullSchema The JSON Schema that defines a correct TD including default values.
+ * @param {function} logFunc (string) => void; Callback used to log the validation progress.
  */
-function tdValidator(tdString, tdSchema, tdFullSchema, { checkDefaults=true, checkJsonLd=true }) {
+function tdValidator(tdString, tdSchema, tdFullSchema, logFunc, { checkDefaults=true, checkJsonLd=true }) {
     return new Promise( (res, rej) => {
 
         // check input
@@ -20,13 +22,12 @@ function tdValidator(tdString, tdSchema, tdFullSchema, { checkDefaults=true, che
         if (typeof tdSchema !== "string") {rej("TD Schema input value was no String")}
         if (typeof tdFullSchema !== "string") {rej("TD full Schema should be a string")}
         if (checkDefaults === undefined) {
-            console.log("changed checkDefaults")
             checkDefaults = true
         }
         if (checkJsonLd === undefined) {
-            console.log("changed check JSonlD")
             checkJsonLd = true
         }
+        if (typeof logFunc !== "function") {rej("Expected logFunc to be a function")}
 
         // report that is returned by the function, possible values for every property:
         // null -> not tested, "passed", "failed", "warning"
@@ -36,16 +37,13 @@ function tdValidator(tdString, tdSchema, tdFullSchema, { checkDefaults=true, che
             schema: null,
             defaults: null,
             jsonld: null,
-            additional: {
-                state: null,
-                detail: {
-                    enumConst: null,
-                    propItems: null,
-                    interactions: null,
-                    security: null
-                }
-            },
-            console: []
+            add: null
+        }
+        const details = {
+            enumConst: null,
+            propItems: null,
+            interactions: null,
+            security: null
         }
 
         let tdJson
@@ -55,16 +53,16 @@ function tdValidator(tdString, tdSchema, tdFullSchema, { checkDefaults=true, che
         }
         catch (err) {
             report.json = "failed"
-            report.console.push("X JSON validation failed:")
-            report.console.push(err)
-            res(report)
+            logFunc("X JSON validation failed:")
+            logFunc(err)
+            res({report, details})
         }
 
         // JSON Schema check
         if (tdJson.hasOwnProperty('properties') || tdJson.hasOwnProperty('actions') || tdJson.hasOwnProperty('events')) {
             if (!tdJson.hasOwnProperty('base')) {
                 // no need to do something. Each href should be absolute
-                report.console.push(':) Tip: Without base, each href should be an absolute URL')
+                logFunc(':) Tip: Without base, each href should be an absolute URL')
             }
         }
         const schema = JSON.parse(tdSchema)
@@ -86,8 +84,8 @@ function tdValidator(tdString, tdSchema, tdFullSchema, { checkDefaults=true, che
                 }
                 else {
                     report.defaults = "warning"
-                    report.console.push("Optional validation failed:")
-                    report.console.push("> " + ajv.errorsText())
+                    logFunc("Optional validation failed:")
+                    logFunc("> " + ajv.errorsText())
                 }
             }
 
@@ -100,22 +98,22 @@ function tdValidator(tdString, tdSchema, tdFullSchema, { checkDefaults=true, che
             // determine additional check state
             // passed + warning -> warning
             // passed AND OR warning + error -> error
-            report.additional.state = "passed"
-            Object.keys(report.additional.detail).forEach( prop => {
-                if (report.additional.detail[prop] === "warning" && report.additional.state === "passed") {
-                    report.additional.state = "warning"
+            report.add = "passed"
+            Object.keys(details).forEach( prop => {
+                if (details[prop] === "warning" && report.add === "passed") {
+                    report.add = "warning"
                 }
-                else if (report.additional.detail[prop] === "failed" && report.additional.state !== "failed") {
-                    report.additional.state = "failed"
+                else if (details[prop] === "failed" && report.add !== "failed") {
+                    report.add = "failed"
                 }
             })
 
         } else {
 
             report.schema = "failed"
-            report.console.push("X JSON Schema validation failed:")
+            logFunc("X JSON Schema validation failed:")
             // TODO: Handle long error messages in case of oneOf
-            report.console.push('> ' + ajv.errorsText())
+            logFunc('> ' + ajv.errorsText())
         }
 
         // json ld validation
@@ -124,17 +122,17 @@ function tdValidator(tdString, tdSchema, tdFullSchema, { checkDefaults=true, che
                 format: 'application/nquads'
             }).then( nquads => {
                 report.jsonld = "passed"
-                res(report)
+                res({report, details})
             }, err => {
                 report.jsonld =  "failed"
-                report.console.push("X JSON-LD validation failed:")
-                report.console.push("Hint: Make sure you have internet connection available.")
-                report.console.push('> ' + err)
-                res(report)
+                logFunc("X JSON-LD validation failed:")
+                logFunc("Hint: Make sure you have internet connection available.")
+                logFunc('> ' + err)
+                res({report, details})
             })
         }
         else {
-            res(report)
+            res({report, details})
         }
 
 
@@ -142,7 +140,7 @@ function tdValidator(tdString, tdSchema, tdFullSchema, { checkDefaults=true, che
 
         /** checking whether a data schema has enum and const at the same and displaying a warning in case there are */
         function checkEnumConst(td) {
-            report.additional.detail.enumConst = "passed"
+            details.enumConst = "passed"
             if (td.hasOwnProperty("properties")) {
                 // checking properties
                 tdProperties = Object.keys(td.properties)
@@ -150,8 +148,8 @@ function tdValidator(tdString, tdSchema, tdFullSchema, { checkDefaults=true, che
                     const curPropertyName = tdProperties[i]
                     const curProperty = td.properties[curPropertyName]
                     if (curProperty.hasOwnProperty("enum") && curProperty.hasOwnProperty("const")) {
-                        report.additional.detail.enumConst = "warning"
-                        report.console.push('! Warning: In property ' + curPropertyName +
+                        details.enumConst = "warning"
+                        logFunc('! Warning: In property ' + curPropertyName +
                             ' enum and const are used at the same time, the values in enum' +
                             ' can never be valid in the received JSON value')
                     }
@@ -166,8 +164,8 @@ function tdValidator(tdString, tdSchema, tdFullSchema, { checkDefaults=true, che
                     if (curAction.hasOwnProperty("input")) {
                         const curInput = curAction.input
                         if (curInput.hasOwnProperty("enum") && curInput.hasOwnProperty("const")) {
-                            report.additional.detail.enumConst = "warning"
-                            report.console.push('! Warning: In the input of action ' + curActionName +
+                            details.enumConst = "warning"
+                            logFunc('! Warning: In the input of action ' + curActionName +
                                 ' enum and const are used at the same time, the values in enum can' +
                                 ' never be valid in the received JSON value')
                         }
@@ -175,8 +173,8 @@ function tdValidator(tdString, tdSchema, tdFullSchema, { checkDefaults=true, che
                     if (curAction.hasOwnProperty("output")) {
                         const curOutput = curAction.output
                         if (curOutput.hasOwnProperty("enum") && curOutput.hasOwnProperty("const")) {
-                            report.additional.detail.enumConst = "warning"
-                            report.console.push('! Warning: In the output of action ' + curActionName +
+                            details.enumConst = "warning"
+                            logFunc('! Warning: In the output of action ' + curActionName +
                                 ' enum and const are used at the same time, the values in enum can' +
                                 ' never be valid in the received JSON value')
 
@@ -191,8 +189,8 @@ function tdValidator(tdString, tdSchema, tdFullSchema, { checkDefaults=true, che
                     const curEventName = tdEvents[i]
                     const curEvent = td.events[curEventName]
                     if (curEvent.hasOwnProperty("enum") && curEvent.hasOwnProperty("const")) {
-                        report.additional.detail.enumConst = "warning"
-                        report.console.push('! Warning: In event ' + curEventName +
+                        details.enumConst = "warning"
+                        logFunc('! Warning: In event ' + curEventName +
                             ' enum and const are used at the same time, the' +
                             ' values in enum can never be valid in the received JSON value')
                     }
@@ -203,7 +201,7 @@ function tdValidator(tdString, tdSchema, tdFullSchema, { checkDefaults=true, che
 
         /** checking whether a data schema has object but not properties, array but no items */
         function checkPropItems(td) {
-            report.additional.detail.propItems = "passed"
+            details.propItems = "passed"
 
             if (td.hasOwnProperty("properties")) {
                 // checking properties
@@ -214,13 +212,13 @@ function tdValidator(tdString, tdSchema, tdFullSchema, { checkDefaults=true, che
 
                     if (curProperty.hasOwnProperty("type")) {
                         if ((curProperty.type === "object") && !(curProperty.hasOwnProperty("properties"))) {
-                            report.additional.detail.propItems = "warning"
-                            report.console.push('! Warning: In property ' + curPropertyName +
+                            details.propItems = "warning"
+                            logFunc('! Warning: In property ' + curPropertyName +
                                 ', the type is object but its properties are not specified')
                         }
                         if ((curProperty.type === "array") && !(curProperty.hasOwnProperty("items"))) {
-                            report.additional.detail.propItems = "warning"
-                            report.console.push('! Warning: In property ' + curPropertyName +
+                            details.propItems = "warning"
+                            logFunc('! Warning: In property ' + curPropertyName +
                                 ', the type is array but its items are not specified')
                         }
                     }
@@ -237,13 +235,13 @@ function tdValidator(tdString, tdSchema, tdFullSchema, { checkDefaults=true, che
                         const curInput = curAction.input
                         if (curInput.hasOwnProperty("type")) {
                             if ((curInput.type === "object") && !(curInput.hasOwnProperty("properties"))) {
-                                report.additional.detail.propItems = "warning"
-                                report.console.push('! Warning: In the input of action ' + curActionName +
+                                details.propItems = "warning"
+                                logFunc('! Warning: In the input of action ' + curActionName +
                                     ', the type is object but its properties are not specified')
                             }
                             if ((curInput.type === "array") && !(curInput.hasOwnProperty("items"))) {
-                                report.additional.detail.propItems = "warning"
-                                report.console.push('! Warning: In the output of action ' + curActionName +
+                                details.propItems = "warning"
+                                logFunc('! Warning: In the output of action ' + curActionName +
                                     ', the type is array but its items are not specified')
                             }
                         }
@@ -252,13 +250,13 @@ function tdValidator(tdString, tdSchema, tdFullSchema, { checkDefaults=true, che
                         const curOutput = curAction.output
                         if (curOutput.hasOwnProperty("type")) {
                             if ((curOutput.type === "object") && !(curOutput.hasOwnProperty("properties"))) {
-                                report.additional.detail.propItems = "warning"
-                                report.console.push('! Warning: In the output of action ' + curActionName +
+                                details.propItems = "warning"
+                                logFunc('! Warning: In the output of action ' + curActionName +
                                     ', the type is object but its properties are not specified')
                             }
                             if ((curOutput.type === "array") && !(curOutput.hasOwnProperty("items"))) {
-                                report.additional.detail.propItems = "warning"
-                                report.console.push('! Warning: In the output of action ' + curActionName +
+                                details.propItems = "warning"
+                                logFunc('! Warning: In the output of action ' + curActionName +
                                     ', the type is array but its items are not specified')
                             }
                         }
@@ -274,13 +272,13 @@ function tdValidator(tdString, tdSchema, tdFullSchema, { checkDefaults=true, che
 
                     if (curEvent.hasOwnProperty("type")) {
                         if ((curEvent.type === "object") && !(curEvent.hasOwnProperty("properties"))) {
-                            report.additional.detail.propItems = "warning"
-                            report.console.push('! Warning: In event ' + curEventName +
+                            details.propItems = "warning"
+                            logFunc('! Warning: In event ' + curEventName +
                                 ', the type is object but its properties are not specified')
                         }
                         if ((curEvent.type === "array") && !(curEvent.hasOwnProperty("items"))) {
-                            report.additional.detail.propItems = "warning"
-                            report.console.push('! Warning: In event ' + curEventName +
+                            details.propItems = "warning"
+                            logFunc('! Warning: In event ' + curEventName +
                                 ', the type is array but its items are not specified')
 
                         }
@@ -293,15 +291,15 @@ function tdValidator(tdString, tdSchema, tdFullSchema, { checkDefaults=true, che
 
         /** checking whether the td contains interactions field that is remaining from the previous spec */
         function checkInteractions(td) {
-            report.additional.detail.interactions = "passed"
+            details.interactions = "passed"
             if (td.hasOwnProperty("interactions")) {
-                report.additional.detail.interactions = "warning"
-                report.console.push('! Warning: interactions are from the previous TD Specification, ' +
+                details.interactions = "warning"
+                logFunc('! Warning: interactions are from the previous TD Specification, ' +
                     'please use properties, actions, events instead')
             }
             if (td.hasOwnProperty("interaction")) {
-                report.additional.detail.interactions = "warning"
-                report.console.push('! Warning: interaction are from the previous TD Specification, ' +
+                details.interactions = "warning"
+                logFunc('! Warning: interaction are from the previous TD Specification, ' +
                     'please use properties, actions, events instead')
             }
             return
@@ -319,7 +317,7 @@ function tdValidator(tdString, tdSchema, tdFullSchema, { checkDefaults=true, che
 
         /** check security function */
         function checkSecurity(td) {
-            report.additional.detail.security = "passed"
+            details.security = "passed"
 
             if (td.hasOwnProperty("securityDefinitions")) {
                 const securityDefinitionsObject = td.securityDefinitions
@@ -329,8 +327,8 @@ function tdValidator(tdString, tdSchema, tdFullSchema, { checkDefaults=true, che
                 if (securityContains(securityDefinitions, rootSecurity)) {
                     // all good
                 } else {
-                    report.additional.detail.security = "failed"
-                    report.console.push('KO Error: Security key in the root of the TD' +
+                    details.security = "failed"
+                    logFunc('KO Error: Security key in the root of the TD' +
                         'has security schemes not defined by the securityDefinitions')
                 }
 
@@ -350,8 +348,8 @@ function tdValidator(tdString, tdSchema, tdFullSchema, { checkDefaults=true, che
                                 if (securityContains(securityDefinitions, curSecurity)) {
                                     // all good
                                 } else {
-                                    report.additional.detail.security = "failed"
-                                    report.console.push('KO Error: Security key in form ' + j +
+                                    details.security = "failed"
+                                    logFunc('KO Error: Security key in form ' + j +
                                         ' in property ' + curPropertyName +
                                         '  has security schemes not defined by the securityDefinitions')
                                 }
@@ -376,8 +374,8 @@ function tdValidator(tdString, tdSchema, tdFullSchema, { checkDefaults=true, che
                                 if (securityContains(securityDefinitions, curSecurity)) {
                                     // all good
                                 } else {
-                                    report.additional.detail.security = "failed"
-                                    report.console.push('KO Error: Security key in form ' + j +
+                                    details.security = "failed"
+                                    logFunc('KO Error: Security key in form ' + j +
                                         ' in action ' + curActionName +
                                         '  has security schemes not defined by the securityDefinitions')
                                 }
@@ -403,8 +401,8 @@ function tdValidator(tdString, tdSchema, tdFullSchema, { checkDefaults=true, che
                                 if (securityContains(securityDefinitions, curSecurity)) {
                                     // all good
                                 } else {
-                                    report.additional.detail.security = "failed"
-                                    report.console.push('KO Error: Security key in form ' + j +
+                                    details.security = "failed"
+                                    logFunc('KO Error: Security key in form ' + j +
                                         ' in event ' + curEventName +
                                         '  has security schemes not defined by the securityDefinitions')
                                 }
@@ -414,8 +412,8 @@ function tdValidator(tdString, tdSchema, tdFullSchema, { checkDefaults=true, che
                     }
                 }
             } else {
-                report.additional.detail.security = "failed"
-                report.console.push('KO Error: securityDefinitions is mandatory')
+                details.security = "failed"
+                logFunc('KO Error: securityDefinitions is mandatory')
             }
             return
         }
