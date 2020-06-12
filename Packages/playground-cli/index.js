@@ -105,12 +105,12 @@ if(fs.lstatSync(input).isDirectory()) {
                 .then( result => {
                     if (statResult("failed", result.report)) {
                         console.log(el, "was supposed to give a warning but gave error")
-                        //result.console.forEach( line => {console.log(line)} )
+                        // result.console.forEach( line => {console.log(line)} )
                     } else if (statResult("warning", result.report)) {
                         warnCount++
                     } else {
                         console.log(el, "was supposed to be valid but passed all the tests")
-                        //result.console.forEach( line => {console.log(line)} )
+                        // result.console.forEach( line => {console.log(line)} )
                     }
                 }, err => {
                     console.error("ERROR", err)
