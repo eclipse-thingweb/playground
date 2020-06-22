@@ -1,5 +1,4 @@
- // const tdValidator = require('playground-core')
-// import {tdValidator} from "./node_modules/playground-core/dist/web-bundle.js"
+
 /**
  * Fetch the TD from the given address and paste it into the editor
  * @param {*} urlAddr url of the TD to fetch
@@ -13,9 +12,7 @@ export function getTdUrl(urlAddr){
             resolve(data)
         }, err => {alert("JSON could not be fetched from: " + urlAddr + "\n Error: " + err)})
     })
-
 }
-// module.exports.getTdUrl = getTdUrl
 
 /**
  * Generate html output from the example information
@@ -40,7 +37,6 @@ export function populateExamples(urlAddrObject){
 
     document.getElementById("load_example").innerHTML += examplesHtml;
 }
-// module.exports.populateExamples = populateExamples
 
 /**
  * asdf
@@ -157,7 +153,7 @@ export function populateExamples(urlAddrObject){
 // }
 
 /**
- * asdf TODO: remove jQuery
+ * asdf TODO: remove jQuery, check if function is further required
  * @param {*} e asdf
  */
 // export function textAreaManipulation(e) {
@@ -232,7 +228,6 @@ function submitAsGist(){
  * Toggles Validation Table view
  */
 export function toggleValidationStatusTable(){
-    // TODO: fade in/out with 200ms duration should be added
     if (document.getElementById("validation_table").style.display === "") {
         showValidationStatusTable()
     }
@@ -254,7 +249,6 @@ function hideValidationStatusTable() {
     }, true)
     document.getElementById("table_head_arrow").setAttribute("class", "or-down")
 }
-// module.exports.toggleValidationStatusTable = toggleValidationStatusTable
 
 /**
  * Name, Address and type ("valid", "warning", "invalid") of all example TDs
@@ -289,7 +283,6 @@ export function getExamplesList(){
 
     return examples;
 }
-// module.exports.getExamplesList = getExamplesList
 
 /**
  * Clear the editor, or paste TD -> according to user selection
@@ -310,7 +303,6 @@ export function exampleSelectHandler(e, obj) {
         })
     }
 }
-// module.exports.exampleSelectHandler = exampleSelectHandler
 
 /**
  * takes character number and gives out the line number
@@ -342,141 +334,147 @@ function getLineNumber(characterNo,str)
 }
 
 /**
- * asdf
+ * asdf TODO: needed? (assertions?)
  * @param {} bytes asdf
  */
-function isUtf8(bytes)
-{
-    let i = 0;
-    while(i < bytes.length)
-    {
-        if(     (// ASCII
-                    bytes[i] === 0x09 ||
-                    bytes[i] === 0x0A ||
-                    bytes[i] === 0x0D ||
-                    (0x20 <= bytes[i] && bytes[i] <= 0x7E)
-                )
-          ) {
-              i += 1;
-              continue;
-          }
+// function isUtf8(bytes)
+// {
+//     let i = 0;
+//     while(i < bytes.length)
+//     {
+//         if(     (// ASCII
+//                     bytes[i] === 0x09 ||
+//                     bytes[i] === 0x0A ||
+//                     bytes[i] === 0x0D ||
+//                     (0x20 <= bytes[i] && bytes[i] <= 0x7E)
+//                 )
+//           ) {
+//               i += 1;
+//               continue;
+//           }
 
-        if(     (// non-overlong 2-byte
-                    (0xC2 <= bytes[i] && bytes[i] <= 0xDF) &&
-                    (0x80 <= bytes[i+1] && bytes[i+1] <= 0xBF)
-                )
-          ) {
-              i += 2;
-              continue;
-          }
+//         if(     (// non-overlong 2-byte
+//                     (0xC2 <= bytes[i] && bytes[i] <= 0xDF) &&
+//                     (0x80 <= bytes[i+1] && bytes[i+1] <= 0xBF)
+//                 )
+//           ) {
+//               i += 2;
+//               continue;
+//           }
 
-        if(     (// excluding overlongs
-                    bytes[i] === 0xE0 &&
-                    (0xA0 <= bytes[i + 1] && bytes[i + 1] <= 0xBF) &&
-                    (0x80 <= bytes[i + 2] && bytes[i + 2] <= 0xBF)
-                ) ||
-                (// straight 3-byte
-                 ((0xE1 <= bytes[i] && bytes[i] <= 0xEC) ||
-                  bytes[i] === 0xEE ||
-                  bytes[i] === 0xEF) &&
-                 (0x80 <= bytes[i + 1] && bytes[i+1] <= 0xBF) &&
-                 (0x80 <= bytes[i+2] && bytes[i+2] <= 0xBF)
-                ) ||
-                (// excluding surrogates
-                 bytes[i] === 0xED &&
-                 (0x80 <= bytes[i+1] && bytes[i+1] <= 0x9F) &&
-                 (0x80 <= bytes[i+2] && bytes[i+2] <= 0xBF)
-                )
-          ) {
-              i += 3;
-              continue;
-          }
+//         if(     (// excluding overlongs
+//                     bytes[i] === 0xE0 &&
+//                     (0xA0 <= bytes[i + 1] && bytes[i + 1] <= 0xBF) &&
+//                     (0x80 <= bytes[i + 2] && bytes[i + 2] <= 0xBF)
+//                 ) ||
+//                 (// straight 3-byte
+//                  ((0xE1 <= bytes[i] && bytes[i] <= 0xEC) ||
+//                   bytes[i] === 0xEE ||
+//                   bytes[i] === 0xEF) &&
+//                  (0x80 <= bytes[i + 1] && bytes[i+1] <= 0xBF) &&
+//                  (0x80 <= bytes[i+2] && bytes[i+2] <= 0xBF)
+//                 ) ||
+//                 (// excluding surrogates
+//                  bytes[i] === 0xED &&
+//                  (0x80 <= bytes[i+1] && bytes[i+1] <= 0x9F) &&
+//                  (0x80 <= bytes[i+2] && bytes[i+2] <= 0xBF)
+//                 )
+//           ) {
+//               i += 3;
+//               continue;
+//           }
 
-        if(     (// planes 1-3
-                    bytes[i] === 0xF0 &&
-                    (0x90 <= bytes[i + 1] && bytes[i + 1] <= 0xBF) &&
-                    (0x80 <= bytes[i + 2] && bytes[i + 2] <= 0xBF) &&
-                    (0x80 <= bytes[i + 3] && bytes[i + 3] <= 0xBF)
-                ) ||
-                (// planes 4-15
-                 (0xF1 <= bytes[i] && bytes[i] <= 0xF3) &&
-                 (0x80 <= bytes[i + 1] && bytes[i + 1] <= 0xBF) &&
-                 (0x80 <= bytes[i + 2] && bytes[i + 2] <= 0xBF) &&
-                 (0x80 <= bytes[i + 3] && bytes[i + 3] <= 0xBF)
-                ) ||
-                (// plane 16
-                 bytes[i] === 0xF4 &&
-                 (0x80 <= bytes[i + 1] && bytes[i + 1] <= 0x8F) &&
-                 (0x80 <= bytes[i + 2] && bytes[i + 2] <= 0xBF) &&
-                 (0x80 <= bytes[i + 3] && bytes[i + 3] <= 0xBF)
-                )
-          ) {
-              i += 4;
-              continue;
-          }
-        return true;
-    }
-    return true;
-}
+//         if(     (// planes 1-3
+//                     bytes[i] === 0xF0 &&
+//                     (0x90 <= bytes[i + 1] && bytes[i + 1] <= 0xBF) &&
+//                     (0x80 <= bytes[i + 2] && bytes[i + 2] <= 0xBF) &&
+//                     (0x80 <= bytes[i + 3] && bytes[i + 3] <= 0xBF)
+//                 ) ||
+//                 (// planes 4-15
+//                  (0xF1 <= bytes[i] && bytes[i] <= 0xF3) &&
+//                  (0x80 <= bytes[i + 1] && bytes[i + 1] <= 0xBF) &&
+//                  (0x80 <= bytes[i + 2] && bytes[i + 2] <= 0xBF) &&
+//                  (0x80 <= bytes[i + 3] && bytes[i + 3] <= 0xBF)
+//                 ) ||
+//                 (// plane 16
+//                  bytes[i] === 0xF4 &&
+//                  (0x80 <= bytes[i + 1] && bytes[i + 1] <= 0x8F) &&
+//                  (0x80 <= bytes[i + 2] && bytes[i + 2] <= 0xBF) &&
+//                  (0x80 <= bytes[i + 3] && bytes[i + 3] <= 0xBF)
+//                 )
+//           ) {
+//               i += 4;
+//               continue;
+//           }
+//         return true;
+//     }
+//     return true;
+// }
 
 /**
- * asdf
+ * asdf TODO: needed? (assertions?)
  * @param {*} objArray asdf
  */
-function convertToCSV(objArray) {
-    const array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-    let str = '';
+// function convertToCSV(objArray) {
+//     const array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+//     let str = '';
 
-    for (let i = 0; i < array.length; i++) {
-        let line = '';
-        for (const index in array[i]) {
-            if (Object.prototype.hasOwnProperty.call(array[i], index)) {
-                if (line !== '') line += ','
+//     for (let i = 0; i < array.length; i++) {
+//         let line = '';
+//         for (const index in array[i]) {
+//             if (Object.prototype.hasOwnProperty.call(array[i], index)) {
+//                 if (line !== '') line += ','
 
-                line += array[i][index];
-            }
-        }
-        str += line + '\r\n';
-    }
-    return str;
-}
+//                 line += array[i][index];
+//             }
+//         }
+//         str += line + '\r\n';
+//     }
+//     return str;
+// }
 
 /**
- * asdf
+ * asdf TODO: needed? (assertions?)
  * @param {*} headers sda
  * @param {*} items sdf
  * @param {*} fileTitle sdf
  */
-function exportCSVFile(headers, items, fileTitle) {
-    if (headers) {
-        items.unshift(headers);
-    }
+// function exportCSVFile(headers, items, fileTitle) {
+//     if (headers) {
+//         items.unshift(headers);
+//     }
 
-    // Convert Object to JSON
-    const jsonObject = JSON.stringify(items);
+//     // Convert Object to JSON
+//     const jsonObject = JSON.stringify(items);
 
-    const csv = this.convertToCSV(jsonObject);
+//     const csv = this.convertToCSV(jsonObject);
 
-    const exportedFilename = fileTitle + '.csv' || 'export.csv';
+//     const exportedFilename = fileTitle + '.csv' || 'export.csv';
 
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    if (navigator.msSaveBlob) { // IE 10+
-        navigator.msSaveBlob(blob, exportedFilename);
-    } else {
-        const link = document.createElement("a");
-        if (link.download !== undefined) { // feature detection
-            // Browsers that support HTML5 download attribute
-            const url = URL.createObjectURL(blob);
-            link.setAttribute("href", url);
-            link.setAttribute("download", exportedFilename);
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-    }
-}
+//     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+//     if (navigator.msSaveBlob) { // IE 10+
+//         navigator.msSaveBlob(blob, exportedFilename);
+//     } else {
+//         const link = document.createElement("a");
+//         if (link.download !== undefined) { // feature detection
+//             // Browsers that support HTML5 download attribute
+//             const url = URL.createObjectURL(blob);
+//             link.setAttribute("href", url);
+//             link.setAttribute("download", exportedFilename);
+//             link.style.visibility = 'hidden';
+//             document.body.appendChild(link);
+//             link.click();
+//             document.body.removeChild(link);
+//         }
+//     }
+// }
 
+/**
+ * Calls the validation function if intended
+ * @param {Event} e Event that triggered the function call
+ * @param {string} source "auto" or "manual"
+ * @param {boolean} autoValidate is autovalidation active?
+ */
 export function validate(e,source, autoValidate) {
 //    console.log(typeof e.type)
     if(typeof e.type !== "undefined") {
@@ -499,94 +497,113 @@ export function validate(e,source, autoValidate) {
         }}
 }
 
-// Private helpers
-    function realValidator(td, source) {
-        document.getElementById("btn_validate").setAttribute("disabled", "true")
-        // TODO: add trigger validate-json event chain functionality
-        if (document.getElementById("box_reset_logging").checked) {
-            document.getElementById("console").innerHTML = ""
-        }
-
-        if (source === "manual") {log("------- New Validation Started -------")}
-
-        const tdSchemaProm = getTdUrl("./node_modules/playground-core/td-schema.json")
-        const tdFullSchemaProm = getTdUrl("./node_modules/playground-core/td-schema-full.json")
-
-        Promise.all([tdSchemaProm, tdFullSchemaProm]).then( values => {
-            // console.log("Validation would happen now!!!")
-            // console.log(td)
-            // console.log(values[0])
-            // console.log(values[1])
-            const checkJsonLd = document.getElementById("box_jsonld_validate").checked
-
-             tdValidator(td, JSON.stringify(values[0]), JSON.stringify(values[1]), log, {checkDefaults: true, checkJsonLd})
-             .then( result => {
-                 let resultStatus = "success"
-                log(JSON.stringify(result));
-                // console.log(result);
-                ["json","schema", "defaults", "jsonld", "add"].forEach( el => {
-                    console.log(el,result.report[el])
-                    const spotName = "spot-" + el
-                    if (result.report[el] === "passed") {
-                        document.getElementById(spotName).style.visibility = "visible"
-                        document.getElementById(spotName).setAttribute("fill", "green")
-                        if(source === "manual") {log(el + "validation... OK")}
-                    }
-                    else if (result.report[el] === "warning") {
-                        document.getElementById(spotName).style.visibility = "visible"
-                        document.getElementById(spotName).setAttribute("fill", "orange")
-                        resultStatus = (resultStatus !== "danger") ? "warning" : "danger"
-                        if(source === "manual") {log(el + "optional validation... KO")}
-
-                    }
-                    else if (result.report[el] === "failed") {
-                        document.getElementById(spotName).style.visibility = "visible"
-                        document.getElementById(spotName).setAttribute("fill", "red")
-                        resultStatus = "danger"
-                        if(source === "manual") {log("X" + el + "validation... KO")}
-                    }
-                    else if (result.report[el] === null) {
-                        // do nothing
-                    }
-                    else {
-                        console.error("unknown report feedback value")
-                    }
-                })
-                updateValidationStatusHead(resultStatus);
-                document.getElementById("btn_validate").removeAttribute("disabled")
-             })
-        })
+/* ----------------- Private Helpers ----------------------- */
+/**
+ * Calls the Validator of the playground-core package
+ * @param {string} td Thing Description to validate
+ * @param {*} source "manual" or "auto"
+ */
+function realValidator(td, source) {
+    document.getElementById("btn_validate").setAttribute("disabled", "true")
+    if (document.getElementById("box_reset_logging").checked) {
+        document.getElementById("console").innerHTML = ""
     }
 
-    function log(message) {
-        document.getElementById("console").innerHTML += message + '&#13;&#10;'
+    if (source === "manual") {log("------- New Validation Started -------")}
+
+    const tdSchemaProm = getTdUrl("./node_modules/playground-core/td-schema.json")
+    const tdFullSchemaProm = getTdUrl("./node_modules/playground-core/td-schema-full.json")
+
+    Promise.all([tdSchemaProm, tdFullSchemaProm]).then( values => {
+
+        const checkJsonLd = document.getElementById("box_jsonld_validate").checked
+
+            tdValidator(td, JSON.stringify(values[0]), JSON.stringify(values[1]), log, {checkDefaults: true, checkJsonLd})
+            .then( result => {
+                let resultStatus = "success"
+            log(JSON.stringify(result));
+            // console.log(result);
+            ["json","schema", "defaults", "jsonld", "add"].forEach( el => {
+                console.log(el,result.report[el])
+                const spotName = "spot-" + el
+                if (result.report[el] === "passed") {
+                    document.getElementById(spotName).style.visibility = "visible"
+                    document.getElementById(spotName).setAttribute("fill", "green")
+                    if(source === "manual") {log(el + "validation... OK")}
+                }
+                else if (result.report[el] === "warning") {
+                    document.getElementById(spotName).style.visibility = "visible"
+                    document.getElementById(spotName).setAttribute("fill", "orange")
+                    resultStatus = (resultStatus !== "danger") ? "warning" : "danger"
+                    if(source === "manual") {log(el + "optional validation... KO")}
+
+                }
+                else if (result.report[el] === "failed") {
+                    document.getElementById(spotName).style.visibility = "visible"
+                    document.getElementById(spotName).setAttribute("fill", "red")
+                    resultStatus = "danger"
+                    if(source === "manual") {log("X" + el + "validation... KO")}
+                }
+                else if (result.report[el] === null) {
+                    // do nothing
+                }
+                else {
+                    console.error("unknown report feedback value")
+                }
+            })
+            updateValidationStatusHead(resultStatus);
+            document.getElementById("btn_validate").removeAttribute("disabled")
+            })
+    })
+}
+
+/**
+ * Prints a message in a container
+ * @param {string} message
+ */
+function log(message) {
+    document.getElementById("console").innerHTML += message + '&#13;&#10;'
+}
+
+/**
+ * Hides an element with visibility = "hidden"
+ * @param {string} id Id of the element to hide
+ */
+function reset(id) {
+    document.getElementById(id).style.visibility = "hidden"
+}
+
+/**
+ * Resets all spot lights
+ */
+function resetValidationStatus(){
+    reset('spot-json')
+    reset('spot-schema')
+    reset('spot-defaults')
+    reset('spot-jsonld')
+    reset('spot-add')
+}
+
+/**
+ * Shows/Hides the validation table and sets the header color
+ * @param {string} validationStatus "success", "warning" or "danger"
+ */
+function updateValidationStatusHead(validationStatus)
+{
+    if (validationStatus === "danger") {
+        showValidationStatusTable()
+    }
+    else {
+        hideValidationStatusTable()
     }
 
-    function reset(id) {
-        document.getElementById(id).style.visibility = "hidden"
-    }
+    document.getElementById("validation_table_head").setAttribute("class", "btn-" + validationStatus)
+}
+/* ------------------------------------------------------ */
 
-    function resetValidationStatus(){
-        reset('spot-json')
-        reset('spot-schema')
-        reset('spot-defaults')
-        reset('spot-jsonld')
-        reset('spot-add')
-    }
-
-    function updateValidationStatusHead(validationStatus)
-    {
-        if (validationStatus === "danger") {
-            showValidationStatusTable()
-        }
-        else {
-            hideValidationStatusTable()
-        }
-
-        document.getElementById("validation_table_head").setAttribute("class", "btn-" + validationStatus)
-    }
-// module.exports.validate = validate
-
+/**
+ * Delete the content of the logging container and reset the validation lights
+ */
 export function clearLog() {
 
     document.getElementById("console").innerHTML = "Reset! Waiting for validation... " + "&#13;&#10;"
@@ -597,5 +614,3 @@ export function clearLog() {
 
     hideValidationStatusTable()
 }
-
-// module.exports.clearLog = clearLog
