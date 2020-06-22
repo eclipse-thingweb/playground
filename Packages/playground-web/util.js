@@ -236,7 +236,17 @@ function submitAsGist(){
 export function toggleValidationStatusTable(){
     // TODO: fade in/out with 200ms duration should be added
     const tableStyle = document.getElementById("validation_table").style.display
-    document.getElementById("validation_table").style.display = (tableStyle === "none") ? "initial" : "none"
+    if (tableStyle === "") {
+        document.getElementById("validation_table").style.display = "table-row-group"
+        document.getElementById("validation_table").style.opacity = 1
+
+    }
+    else {
+        document.getElementById("validation_table").style.opacity = 0
+        document.getElementById("validation_table").addEventListener("transitionend", () => {
+            document.getElementById("validation_table").style.display = ""
+        }, true)
+    }
 //    $("#validation_table").fadeToggle("fast");
     if(document.getElementById("table_head_arrow").getAttribute("class") === "up") {
         document.getElementById("table_head_arrow").setAttribute("class", "down")

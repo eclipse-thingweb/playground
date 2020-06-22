@@ -34,6 +34,7 @@ body {
 .svg-circle {
 	width: 20px;
 	height: 20px;
+	visibility: hidden;
 }
 
 .wrap {
@@ -53,6 +54,7 @@ body {
 .push {
 	height: 200px;
 	/* .push must be the same height as .footer */
+	/* TODO: .footer seems to be useless since no class footer exists? OR should be element footer?*/
 }
 
 footer {
@@ -212,7 +214,8 @@ header img {
 
 .table td{
 	padding: 0px;
-	border-bottom: #333
+	border-bottom: #333;
+	font-size: 0.8em;
 }
 .table th{
 	padding: 0px;
@@ -298,4 +301,15 @@ left: 100%;
 	transition: opacity 0.2s, display 0s 0.2s;
 	opacity: 0;
 	display: block;
+}
+
+#copynotice {
+	margin-bottom: 0;
+}
+
+#validation_table{
+	border-top: none;
+	display: none;
+	opacity: 0;
+	transition: opacity 0.2s;
 }
