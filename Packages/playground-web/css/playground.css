@@ -236,22 +236,22 @@ i {
 	padding: 3px;
 }
   
-.right {
+.or-right {
 	transform: rotate(-45deg);
 	-webkit-transform: rotate(-45deg);
 }
 
-.left {
+.or-left {
 	transform: rotate(135deg);
 	-webkit-transform: rotate(135deg);
 }
 
-.up {
+.or-up {
 	transform: rotate(-135deg);
 	-webkit-transform: rotate(-135deg);
 }
 
-.down {
+.or-down {
 	transform: rotate(45deg);
 	-webkit-transform: rotate(45deg);
 }
@@ -320,4 +320,8 @@ left: 100%;
 	display: none;
 	opacity: 0;
 	transition: opacity 0.2s;
+}
+
+label[for="box_reset_logging"] {
+	text-decoration: underline dotted gray;
 }
