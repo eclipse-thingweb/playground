@@ -256,27 +256,27 @@ function hideValidationStatusTable() {
 export function getExamplesList(){
             const examples={
                 "SimpleTD": {
-                    "addr": "./node_modules/playground-core/Examples/Valid/simple.json",
+                    "addr": "./node_modules/playground-core/examples/valid/simple.json",
                     "type": "valid"
                 },
                 "MultipleOp":{
-                    "addr":"./node_modules/playground-core/Examples/Valid/formOpArray.json",
+                    "addr":"./node_modules/playground-core/examples/valid/formOpArray.json",
                     "type":"valid"
                 },
                 "EnumConstContradiction":{
-                    "addr":"./node_modules/playground-core/Examples/Warning/enumConst.json",
+                    "addr":"./node_modules/playground-core/examples/warning/enumConst.json",
                     "type":"warning"
                 },
                 "ArrayWithNoItems":{
-                    "addr":"./node_modules/playground-core/Examples/Warning/arrayNoItems.json",
+                    "addr":"./node_modules/playground-core/examples/warning/arrayNoItems.json",
                     "type":"warning"
                 },
                 "InvalidOperation":{
-                    "addr":"./node_modules/playground-core/Examples/Invalid/invalidOp.json",
+                    "addr":"./node_modules/playground-core/examples/invalid/invalidOp.json",
                     "type":"invalid"
                  },
                 "EmptySecurityDefs":{
-                    "addr":"./node_modules/playground-core/Examples/Invalid/emptySecDef.json",
+                    "addr":"./node_modules/playground-core/examples/invalid/emptySecDef.json",
                     "type":"invalid"
                 }
             };

@@ -14,11 +14,11 @@ const tdSchemaFull = fs.readFileSync(tdFullSchemaPath, "utf-8")
 
 // handle input argument
 let input = process.argv[2]
-if (!input) {input = path.join("node_modules", "playground-core", "Examples")}
+if (!input) {input = path.join("node_modules", "playground-core", "examples")}
 if(fs.lstatSync(input).isDirectory()) {
 
     // check Valid, Invalid and Warning Subfolders
-    const validPath = path.join(input, "Valid")
+    const validPath = path.join(input, "valid")
     if (fs.existsSync(validPath) && fs.lstatSync(validPath).isDirectory()) {
         console.log("Starting Valid folder test")
         const validNames = fs.readdirSync(validPath)
@@ -57,7 +57,7 @@ if(fs.lstatSync(input).isDirectory()) {
         }, err => {console.error("Valid TD Check broken!")})
     }
 
-    const invalidPath = path.join(input, "Invalid")
+    const invalidPath = path.join(input, "invalid")
     if (fs.existsSync(invalidPath) && fs.lstatSync(invalidPath).isDirectory()) {
         console.log("Starting invalid folder test")
         const invalidNames = fs.readdirSync(invalidPath)
@@ -92,7 +92,7 @@ if(fs.lstatSync(input).isDirectory()) {
         }, err => {console.error("Invalid TD Check broken!")})
     }
 
-    const warnPath = path.join(input, "Warning")
+    const warnPath = path.join(input, "warning")
     if (fs.existsSync(warnPath) && fs.lstatSync(warnPath).isDirectory()) {
         console.log("Starting Warning folder test")
         const warnNames = fs.readdirSync(warnPath)
