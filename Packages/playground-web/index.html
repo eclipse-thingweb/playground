@@ -52,7 +52,7 @@
 								<div class="row">
 									<table class="table">
 										<tr  id="validation_table_head" class="btn-info">
-											<th  rowspan="2"> &nbsp<i id="table_head_arrow" class="down"></i>&nbsp</th>
+											<th  rowspan="2"> &nbsp<i id="table_head_arrow" class="or-down"></i>&nbsp</th>
 											<tbody id="validation_table">
 												<td >
 													<svg class="svg-circle" xmlns="http://www.w3.org/2000/svg">
@@ -111,9 +111,13 @@
 												<option class="btn-info" value="hc-black">Contrast </option>
 											</select>
 											<br><br>
-											<input type="checkbox" id="box_auto_validate" value="boxautoval"> <label for="box_auto_validate">Auto Validate</label>  
-											<input type="checkbox" id="box_jsonld_validate" value="boxjsonld"> Validate JSON-LD
-											<input type="checkbox" id="box_reset_logging" value="boxreslog"> <span title="Reset Logging for every new Validation">Reset Logging</span>
+
+											<input type="checkbox" id="box_auto_validate" value="boxautoval"> 
+											<label for="box_auto_validate">Auto Validate</label>  
+											<input type="checkbox" id="box_jsonld_validate" value="boxjsonld"> 
+											<label for="box_jsonld_validate">Validate JSON-LD</label> 
+											<input type="checkbox" id="box_reset_logging" value="boxreslog"> 
+											<label for="box_reset_logging" title="Reset Logging for every new Validation">Reset Logging</label>
 												
 											<br>
 											<div class="btn-group" role="group">
@@ -189,7 +193,7 @@
         </footer>
 		
 		<script src="./node_modules/playground-core/dist/web-bundle.min.js"></script>
-		<script src="../../WebContent/js/jquery-2.2.3.js"></script>
+		<!--<script src="../../WebContent/js/jquery-2.2.3.js"></script>-->
 		<script src="./node_modules/monaco-editor/min/vs/loader.js"></script>
 		<script type="module" src="./script.js"></script>
 

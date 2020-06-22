@@ -9,13 +9,11 @@ export function getTdUrl(urlAddr){
         fetch(urlAddr)
         .then(res => res.json())
         .then(data => {
-            console.log(data)
+            // console.log(data)
             resolve(data)
         }, err => {alert("JSON could not be fetched from: " + urlAddr + "\n Error: " + err)})
     })
-    // $.getJSON(urlAddr,function(data){
-    //  window.editor.setValue(JSON.stringify(data,null,'\t'));
-    // }).error(function(){alert("The JSON could not be fetched from the address:\n"+urlAddr)});
+
 }
 // module.exports.getTdUrl = getTdUrl
 
@@ -162,27 +160,27 @@ export function populateExamples(urlAddrObject){
  * asdf TODO: remove jQuery
  * @param {*} e asdf
  */
-export function textAreaManipulation(e) {
-    if(e.keyCode === 9) { // tab was pressed
-        // get caret position/selection
-        const start = this.selectionStart;
-        const end = this.selectionEnd;
+// export function textAreaManipulation(e) {
+//     if(e.keyCode === 9) { // tab was pressed
+//         // get caret position/selection
+//         const start = this.selectionStart;
+//         const end = this.selectionEnd;
 
-        const $this = $(this);
-        const value = $this.val();
+//         const $this = $(this);
+//         const value = $this.val();
 
-        // set textarea value to: text before caret + tab + text after caret
-        $this.val(value.substring(0, start)
-                    + "\t"
-                    + value.substring(end));
+//         // set textarea value to: text before caret + tab + text after caret
+//         $this.val(value.substring(0, start)
+//                     + "\t"
+//                     + value.substring(end));
 
-        // put caret at right position again (add one for the tab)
-        this.selectionStart = this.selectionEnd = start + 1;
+//         // put caret at right position again (add one for the tab)
+//         this.selectionStart = this.selectionEnd = start + 1;
 
-        // prevent the focus lose
-        e.preventDefault();
-    }
-}
+//         // prevent the focus lose
+//         e.preventDefault();
+//     }
+// }
 // module.exports.textAreaManipulation = textAreaManipulation
 
 /**
@@ -246,7 +244,7 @@ export function toggleValidationStatusTable(){
 function showValidationStatusTable() {
     document.getElementById("validation_table").style.display = "table-row-group"
     document.getElementById("validation_table").style.opacity = 1
-    document.getElementById("table_head_arrow").setAttribute("class", "up")
+    document.getElementById("table_head_arrow").setAttribute("class", "or-up")
 }
 
 function hideValidationStatusTable() {
@@ -254,7 +252,7 @@ function hideValidationStatusTable() {
     document.getElementById("validation_table").addEventListener("transitionend", () => {
         document.getElementById("validation_table").style.display = ""
     }, true)
-    document.getElementById("table_head_arrow").setAttribute("class", "down")
+    document.getElementById("table_head_arrow").setAttribute("class", "or-down")
 }
 // module.exports.toggleValidationStatusTable = toggleValidationStatusTable
 
@@ -480,7 +478,7 @@ function exportCSVFile(headers, items, fileTitle) {
 }
 
 export function validate(e,source, autoValidate) {
-    console.log(typeof e.type)
+//    console.log(typeof e.type)
     if(typeof e.type !== "undefined") {
         const text = window.editor.getValue();
         source=e.data.source;
@@ -503,6 +501,7 @@ export function validate(e,source, autoValidate) {
 
 // Private helpers
     function realValidator(td, source) {
+        document.getElementById("btn_validate").setAttribute("disabled", "true")
         // TODO: add trigger validate-json event chain functionality
         if (document.getElementById("box_reset_logging").checked) {
             document.getElementById("console").innerHTML = ""
@@ -523,24 +522,28 @@ export function validate(e,source, autoValidate) {
              tdValidator(td, JSON.stringify(values[0]), JSON.stringify(values[1]), log, {checkDefaults: true, checkJsonLd})
              .then( result => {
                  let resultStatus = "success"
-                log(JSON.stringify(result))
-                console.log(result);
+                log(JSON.stringify(result));
+                // console.log(result);
                 ["json","schema", "defaults", "jsonld", "add"].forEach( el => {
                     console.log(el,result.report[el])
                     const spotName = "spot-" + el
                     if (result.report[el] === "passed") {
                         document.getElementById(spotName).style.visibility = "visible"
                         document.getElementById(spotName).setAttribute("fill", "green")
+                        if(source === "manual") {log(el + "validation... OK")}
                     }
                     else if (result.report[el] === "warning") {
                         document.getElementById(spotName).style.visibility = "visible"
                         document.getElementById(spotName).setAttribute("fill", "orange")
                         resultStatus = (resultStatus !== "danger") ? "warning" : "danger"
+                        if(source === "manual") {log(el + "optional validation... KO")}
+
                     }
                     else if (result.report[el] === "failed") {
                         document.getElementById(spotName).style.visibility = "visible"
                         document.getElementById(spotName).setAttribute("fill", "red")
                         resultStatus = "danger"
+                        if(source === "manual") {log("X" + el + "validation... KO")}
                     }
                     else if (result.report[el] === null) {
                         // do nothing
@@ -549,8 +552,8 @@ export function validate(e,source, autoValidate) {
                         console.error("unknown report feedback value")
                     }
                 })
-                updateValidationStatusHead(resultStatus)
-
+                updateValidationStatusHead(resultStatus);
+                document.getElementById("btn_validate").removeAttribute("disabled")
              })
         })
     }
@@ -585,23 +588,13 @@ export function validate(e,source, autoValidate) {
 // module.exports.validate = validate
 
 export function clearLog() {
-    // var pgConsole = $('#console');
-    // pgConsole.empty();
-    // pgConsole.append("Reset! Waiting for validation... " + '&#13;&#10;');
+
     document.getElementById("console").innerHTML = "Reset! Waiting for validation... " + "&#13;&#10;"
-    // reset('spot-json');
-    // reset('spot-simple-json-schema');
-    // reset('spot-full-json-schema');
-    // reset('spot-json-ld');
-    // reset('spot-add');
+
     resetValidationStatus()
-    // $("#validation_table_head").removeClass();
-    // $("#validation_table_head").toggleClass("btn-info");
+
     document.getElementById("validation_table_head").setAttribute("class", "btn-info")
-    // $("#validation_table").fadeOut("fast",function(){
-	// 	$("#table_head_arrow").removeClass();
-    //     $("#table_head_arrow").toggleClass("down");
-    // });
+
     hideValidationStatusTable()
 }
 

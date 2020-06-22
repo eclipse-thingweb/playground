@@ -155,7 +155,7 @@ require(['vs/editor/editor.main'], editor=function() {
 			model,
 			contextmenu: false,
 			theme:"vs"
-		});
+		})
 
 		document.getElementById("curtain").style.display = "none"
 		// $("#curtain").css("display","none")
