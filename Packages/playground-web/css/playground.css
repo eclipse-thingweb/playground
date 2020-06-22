@@ -28,7 +28,7 @@ body {
 
 .font-div {
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 1rem;
+	font-size: 0.8rem;
 }
 
 .svg-circle {
@@ -143,6 +143,10 @@ a.button-link {
 	background: #30b8a3;
 }
 
+.custom-btn {
+	background-color: #a8a8a882;
+}
+
 #console {
 	font-family: 'Droid Sans Mono', "Courier New", monospace;
 	background: #333;
@@ -206,6 +210,10 @@ header img {
 .links {
 	background: #141414;
 	margin-bottom: 0px;
+}
+
+input {
+	margin-left: 20px;
 }
 
 .container {

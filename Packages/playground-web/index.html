@@ -92,7 +92,7 @@
 											<tr>
 												<td>
 													<svg class="svg-circle" xmlns="http://www.w3.org/2000/svg">
-														<circle id="spot-additional-state" cx="10" cy="10" r="9" />
+														<circle id="spot-add" cx="10" cy="10" r="9" />
 													</svg>
 												</td>
 												<td title="Is green when all custom checks pass">Additional Checks</td>
@@ -110,18 +110,20 @@
 												<option class="btn-info" value="vs-dark">Dark </option>
 												<option class="btn-info" value="hc-black">Contrast </option>
 											</select>
-											&nbsp;&nbsp;
-											<input   type="checkbox"  id="box_auto_validate" value="off"> Auto Validate
+											<br><br>
+											<input type="checkbox" id="box_auto_validate" value="boxautoval"> <label for="box_auto_validate">Auto Validate</label>  
+											<input type="checkbox" id="box_jsonld_validate" value="boxjsonld"> Validate JSON-LD
+											<input type="checkbox" id="box_reset_logging" value="boxreslog"> <span title="Reset Logging for every new Validation">Reset Logging</span>
 												
 											<br>
 											<div class="btn-group" role="group">
-												<button   type="button" class="btn" id="btn_validate">Validate</button>
-												<button   type="button" class="btn" id="btn_clearLog" >Clear Log</button>
+												<button   type="button" class="btn custom-btn" id="btn_validate">Validate</button>
+												<button   type="button" class="btn custom-btn" id="btn_clearLog" >Clear Log</button>
 											</div>
 											<br>
 											<div class="btn-group" role="group">
 												<!-- <button type="button" class="btn" id="btn_gistify" title="Stores the current TD as a gist at Thingweb">Gistify</button> -->
-												<button type="button" class="btn" id="btn_assertion_popup">Assertion Test</button>
+												<button type="button" class="btn custom-btn" id="btn_assertion_popup">Assertion Test</button>
 											</div>
 											
 										</div>

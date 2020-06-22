@@ -12,6 +12,8 @@ const manualAssertions = [];
 const results = [];
 // const $ = require("jquery")
 let autoValidate = false
+
+document.getElementById("box_jsonld_validate").checked = true
 // $(document).ready(function(){ shouldn't be necessary since script tag is at the bottom of html
 
   	// when table is extracted
@@ -27,7 +29,8 @@ let autoValidate = false
     document.getElementById("box_auto_validate").addEventListener("change", () => {
         autoValidate = document.getElementById("box_auto_validate").checked
         console.log("autoValidate = " + autoValidate)
-    })
+	})
+
 	// $("#box_auto_validate").change(function(){ // Auto validates only when the box is checked.
 	// 	autoValidate=$("#box_auto_validate").prop("checked");
 	// });

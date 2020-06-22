@@ -235,25 +235,26 @@ function submitAsGist(){
  */
 export function toggleValidationStatusTable(){
     // TODO: fade in/out with 200ms duration should be added
-    const tableStyle = document.getElementById("validation_table").style.display
-    if (tableStyle === "") {
-        document.getElementById("validation_table").style.display = "table-row-group"
-        document.getElementById("validation_table").style.opacity = 1
-
+    if (document.getElementById("validation_table").style.display === "") {
+        showValidationStatusTable()
     }
     else {
-        document.getElementById("validation_table").style.opacity = 0
-        document.getElementById("validation_table").addEventListener("transitionend", () => {
-            document.getElementById("validation_table").style.display = ""
-        }, true)
+        hideValidationStatusTable()
     }
-//    $("#validation_table").fadeToggle("fast");
-    if(document.getElementById("table_head_arrow").getAttribute("class") === "up") {
-        document.getElementById("table_head_arrow").setAttribute("class", "down")
-    }
-    else{
-        document.getElementById("table_head_arrow").setAttribute("class", "up")
-    }
+}
+
+function showValidationStatusTable() {
+    document.getElementById("validation_table").style.display = "table-row-group"
+    document.getElementById("validation_table").style.opacity = 1
+    document.getElementById("table_head_arrow").setAttribute("class", "up")
+}
+
+function hideValidationStatusTable() {
+    document.getElementById("validation_table").style.opacity = 0
+    document.getElementById("validation_table").addEventListener("transitionend", () => {
+        document.getElementById("validation_table").style.display = ""
+    }, true)
+    document.getElementById("table_head_arrow").setAttribute("class", "down")
 }
 // module.exports.toggleValidationStatusTable = toggleValidationStatusTable
 
@@ -503,25 +504,52 @@ export function validate(e,source, autoValidate) {
 // Private helpers
     function realValidator(td, source) {
         // TODO: add trigger validate-json event chain functionality
+        if (document.getElementById("box_reset_logging").checked) {
+            document.getElementById("console").innerHTML = ""
+        }
+
         if (source === "manual") {log("------- New Validation Started -------")}
 
         const tdSchemaProm = getTdUrl("./node_modules/playground-core/td-schema.json")
         const tdFullSchemaProm = getTdUrl("./node_modules/playground-core/td-schema-full.json")
 
         Promise.all([tdSchemaProm, tdFullSchemaProm]).then( values => {
-            console.log("Validation would happen now!!!")
-            console.log(td)
-            console.log(values[0])
-            console.log(values[1])
-             tdValidator(td, JSON.stringify(values[0]), JSON.stringify(values[1]), {checkDefaults: false, checkJsonLd: true})
-             .then( result => {
-                log(JSON.stringify(result))
-                // console.log(report)
-                ["json","schema", "defaults", "jsonld", "add"].forEach( el => {
-                    console.log(result.report[el])
-                })
-                // if (report.json ===)
+            // console.log("Validation would happen now!!!")
+            // console.log(td)
+            // console.log(values[0])
+            // console.log(values[1])
+            const checkJsonLd = document.getElementById("box_jsonld_validate").checked
 
+             tdValidator(td, JSON.stringify(values[0]), JSON.stringify(values[1]), log, {checkDefaults: true, checkJsonLd})
+             .then( result => {
+                 let resultStatus = "success"
+                log(JSON.stringify(result))
+                console.log(result);
+                ["json","schema", "defaults", "jsonld", "add"].forEach( el => {
+                    console.log(el,result.report[el])
+                    const spotName = "spot-" + el
+                    if (result.report[el] === "passed") {
+                        document.getElementById(spotName).style.visibility = "visible"
+                        document.getElementById(spotName).setAttribute("fill", "green")
+                    }
+                    else if (result.report[el] === "warning") {
+                        document.getElementById(spotName).style.visibility = "visible"
+                        document.getElementById(spotName).setAttribute("fill", "orange")
+                        resultStatus = (resultStatus !== "danger") ? "warning" : "danger"
+                    }
+                    else if (result.report[el] === "failed") {
+                        document.getElementById(spotName).style.visibility = "visible"
+                        document.getElementById(spotName).setAttribute("fill", "red")
+                        resultStatus = "danger"
+                    }
+                    else if (result.report[el] === null) {
+                        // do nothing
+                    }
+                    else {
+                        console.error("unknown report feedback value")
+                    }
+                })
+                updateValidationStatusHead(resultStatus)
 
              })
         })
@@ -540,29 +568,19 @@ export function validate(e,source, autoValidate) {
         reset('spot-schema')
         reset('spot-defaults')
         reset('spot-jsonld')
-        reset('spot-additional-state')
+        reset('spot-add')
     }
 
     function updateValidationStatusHead(validationStatus)
     {
         if (validationStatus === "danger") {
-            // $("#validation_table").fadeIn("fast");
-            document.getElementById("validation_table").setAttribute("class", "custom-fade-in")
-            document.getElementById("table_head_arrow").setAttribute("class", "up")
-            // $("#table_head_arrow").removeClass();
-            // $("#table_head_arrow").toggleClass("up");
+            showValidationStatusTable()
         }
         else {
-            document.getElementById("validation_table").setAttribute("class", "custom-fade-out")
-            // $("#validation_table").fadeOut("fast");
-            document.getElementById("table_head_arrow").setAttribute("class", "down")
-            // $("#table_head_arrow").removeClass();
-            // $("#table_head_arrow").toggleClass("down");
+            hideValidationStatusTable()
         }
 
         document.getElementById("validation_table_head").setAttribute("class", "btn-" + validationStatus)
-        // $("#validation_table_head").removeClass();
-        // $("#validation_table_head").toggleClass("btn-"+validationStatus);
     }
 // module.exports.validate = validate
 
@@ -584,10 +602,7 @@ export function clearLog() {
 	// 	$("#table_head_arrow").removeClass();
     //     $("#table_head_arrow").toggleClass("down");
     // });
-    document.getElementById("validation_table").setAttribute("class", "custom-fade-out")
-    setTimeout( () => {
-        document.getElementById("table_head_arrow").setAttribute("class", "down")
-    }, 200)
+    hideValidationStatusTable()
 }
 
 // module.exports.clearLog = clearLog
