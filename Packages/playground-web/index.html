@@ -20,30 +20,28 @@
         <link rel="shortcut icon" type="image/x-icon" href="./media/favlogo.png" />
         <link rel="stylesheet" type="text/css" href="node_modules/bootstrap-css-only/css/bootstrap.min.css" />
 		<link rel="stylesheet" type="text/css" href="./css/playground.css" />
+	</head>
 
-    </head>
     <body>
 
         <div id="curtain" class="curtain">
             <div id="curtain-text">Loading Environment. Please wait....</div>
             <img src="./media/loading.svg" class="loading-spinner" alt="Loading..." />
         </div>
-
-        <!--<div id="container" style="width:500px;height:100px;border:1px solid grey"></div>-->
     
-        <div class="container-fluid" style="padding-top:0px; padding-bottom: 200px;">
+        <div class="container-fluid main">
 			
-			<div class="row alert alert-info" style="padding:0px">
+			<div class="row alert alert-info header">
 				<div class="col-2">
 					<div>
-						<img alt="Thingweb Logo" src="./media/logo.png"  style="float: left; height:3em; padding-top:1em">
+						<img id="logo" alt="Thingweb Logo" src="./media/logo.png">
 					</div>
 				</div>
 
 				<div class="col-6">
-						<h3 style="display: inline;">Thing Description Playground</h3><br>
-						
-							<a href="https://w3c.github.io/wot-thing-description/#" target="_blank">TD Validation According to the W3C Thing Description Recommendation</a>
+						<h3>Thing Description Playground</h3>
+						<br>						
+						<a href="https://w3c.github.io/wot-thing-description/#" target="_blank">TD Validation According to the W3C Thing Description Recommendation</a>
 				</div>
 
 				<div class="col-4">
@@ -55,7 +53,7 @@
 			</div>
 
 			<div class="wrapper">
-				<div class="row" style="min-height: 500px;">
+				<div class="row">
 					<div class="col-8"> 
 						<div id="monaco">
 						</div>
@@ -67,7 +65,9 @@
 								<div class="row">
 									<table class="table">
 										<tr  id="validation_table_head" class="btn-info">
-											<th  rowspan="2"> &nbsp<i id="table_head_arrow" class="or-down"></i>&nbsp</th>
+											<th  rowspan="2">
+												<i id="table_head_arrow" class="or-down"></i>
+											</th>
 											<tbody id="validation_table">
 												<td >
 													<svg class="svg-circle" xmlns="http://www.w3.org/2000/svg">
@@ -119,8 +119,8 @@
 								<div class="row">
 									<form >
 										<div class="form-group">
-											<label for="editor_theme">Editor Theme  </label>
-											<select  id="editor_theme" class="btn btn-info dropdown-toggle btn-sm" style="height: 1qem;">							
+											<label for="editor_theme">Editor Theme</label>
+											<select  id="editor_theme" class="btn btn-info dropdown-toggle btn-sm">							
 												<option class="btn-info" value="vs">White </option>
 												<option class="btn-info" value="vs-dark">Dark </option>
 												<option class="btn-info" value="hc-black">Contrast </option>
@@ -128,9 +128,11 @@
 											<br><br>
 
 											<input type="checkbox" id="box_auto_validate" value="boxautoval"> 
-											<label for="box_auto_validate">Auto Validate</label>  
+											<label for="box_auto_validate">Auto Validate</label>
+
 											<input type="checkbox" id="box_jsonld_validate" value="boxjsonld"> 
 											<label for="box_jsonld_validate">Validate JSON-LD</label> 
+
 											<input type="checkbox" id="box_reset_logging" value="boxreslog"> 
 											<label for="box_reset_logging" title="Reset Logging for every new Validation">Reset Logging</label>
 												
@@ -139,6 +141,7 @@
 												<button   type="button" class="btn custom-btn" id="btn_validate">Validate</button>
 												<button   type="button" class="btn custom-btn" id="btn_clearLog" >Clear Log</button>
 											</div>
+
 											<br>
 											<div class="btn-group" role="group">
 												<!-- <button type="button" class="btn" id="btn_gistify" title="Stores the current TD as a gist at Thingweb">Gistify</button> -->
@@ -155,7 +158,7 @@
 										<div class="form-group">
 											<label>Examples:</label>					
 											<select id="load_example" class="btn btn-info btn-sm dropdown-toggle">
-												<option class="btn-info" value="select_none">Select None </option>
+												<option class="btn-info" value="select_none">Select None</option>
 											</select>
 										</div>
 									</form>
@@ -166,7 +169,7 @@
 					</div>
 				</div>
 
-				<div class="row" style="max-height:250px;overflow-y:scroll;">
+				<div class="row conrow">
 					<div class="col">
 							<pre id="console" >Waiting for validation...&#13;&#10;</pre>
 					</div>
@@ -179,7 +182,7 @@
 
 		<footer>
 			<div class="footer-shape">
-				<img src="./media/footer-shape.jpg" width="100%" height="50px">
+				<img src="./media/footer-shape.jpg">
 			</div>
 			<div class="links">
 				<ul>
@@ -208,7 +211,6 @@
         </footer>
 		
 		<script src="./node_modules/playground-core/dist/web-bundle.min.js"></script>
-		<!--<script src="../../WebContent/js/jquery-2.2.3.js"></script>-->
 		<script src="./node_modules/monaco-editor/min/vs/loader.js"></script>
 		<script type="module" src="./script.js"></script>
 
