@@ -75,7 +75,15 @@ body {
 
 .conrow {
 	max-height: 250px;
+	/*overflow-y: scroll;*/
+}
+
+#console {
+	overflow-wrap: break-word;
+	overflow-x: hidden;
 	overflow-y: scroll;
+	white-space: pre-wrap;
+	max-height: 250px;
 }
 
 footer {
