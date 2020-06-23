@@ -19,6 +19,56 @@
 const fs = require('fs')
 const path = require('path')
 const tdValidator = require('playground-core')
+const argParser = require('argly')
+    .createParser({
+        '--help': {
+            type: 'string',
+            description: 'You can call the playground validation with no input (example folder will be taken), \n'+
+                        'a Thing Description (.json file), a folder with multiple Thing Descriptions, \n' +
+                        'or a Folder with "valid", "invalid" and "warning" subfolder, where all included TDs \n' +
+                        'will be checked whether they produce the expected validation result.'
+        },
+        '--input -i *': {
+            type: 'string',
+            description: 'The file or the folder containing the files, which will be validated.'
+        },
+        '--nojsonld -j': {
+            type: 'boolean',
+            description: 'Turn off the JSON-LD validation (for example because internet connection is not available).'
+        },
+        '--nodefaults -d': {
+            type: 'boolean',
+            description: 'Turn off the Full JSON Schema validation, which checks e.g. for default values being explicitly set.'
+        }
+    })
+    .usage('Usage: $0 [input] [options]')
+    .example(
+        'Try with Example TDs',
+        '$0')
+    .example(
+        'Validate file',
+        '$0 TD.json'
+    )
+    .example(
+        'Validate folder content',
+        '$0 myFolder'
+    )
+    .example(
+        'Turn off JSON-LD validation',
+        '$0 TD.json -j'
+    )
+    .validate(function(result) {
+        if (result.help) {
+            this.printUsage()
+            process.exit(0)
+        }
+    })
+    .onError(function(err) {
+        this.printUsage()
+        console.error(err)
+        process.exit(1)
+    })
+const myArguments = argParser.parse()
 let tdToCheck = ""
 
 const tdSchemaPath = path.join("node_modules", "playground-core", "td-schema.json")
@@ -28,7 +78,7 @@ const tdSchema = fs.readFileSync(tdSchemaPath,"utf-8")
 const tdSchemaFull = fs.readFileSync(tdFullSchemaPath, "utf-8")
 
 // handle input argument
-let input = process.argv[2]
+let input = myArguments.input
 if (!input) {input = path.join("node_modules", "playground-core", "examples")}
 if(fs.lstatSync(input).isDirectory()) {
 
@@ -161,7 +211,8 @@ else {
 }
 
 function checkTd(td) {
-    tdValidator(td, tdSchema, tdSchemaFull, console.log,{})
+
+    tdValidator(td, tdSchema, tdSchemaFull, console.log,{checkDefaults: !myArguments.nodefaults,checkJsonLd: !myArguments.nojsonld})
     .then( result => {
         console.log("OKAY \n")
         // result.console.forEach(el => {
