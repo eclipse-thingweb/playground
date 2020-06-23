@@ -119,7 +119,7 @@ if(fs.lstatSync(input).isDirectory()) {
             else {
                 console.log("Validity test NOT successful, ", validCount, "/", validNames.length, "passed the validity test")
             }
-        }, err => {console.error("Valid TD Check broken!")})
+        }, err => {console.error("Valid TD Check broken! " + err)})
     }
 
     const invalidPath = path.join(input, "invalid")
@@ -154,7 +154,7 @@ if(fs.lstatSync(input).isDirectory()) {
             else {
                 console.log("Invalidity test NOT successful, ", invalidCount, "/", invalidNames.length, "passed the invalidity test")
             }
-        }, err => {console.error("Invalid TD Check broken!")})
+        }, err => {console.error("Invalid TD Check broken!" + err)})
     }
 
     const warnPath = path.join(input, "warning")
@@ -193,7 +193,7 @@ if(fs.lstatSync(input).isDirectory()) {
             else {
                 console.log("Warning test NOT successful, ", warnCount, "/", warnNames.length, "passed the validity test")
             }
-        }, err => {console.error("Warning TD Check broken!")})
+        }, err => {console.error("Warning TD Check broken!" + err)})
     }
 
     // check TDs contained in the directory
@@ -232,5 +232,5 @@ function statResult(keyword, report) {
     || report.schema === keyword
     || report.defaults === keyword
     || report.jsonld === keyword
-    || report.additional.state === keyword)
+    || report.add === keyword)
 }
