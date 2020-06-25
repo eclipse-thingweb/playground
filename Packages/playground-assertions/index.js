@@ -23,7 +23,7 @@ const jsonValidator = require('json-dup-key-validator')
 // The usual library used for validation
 // const draftLocation = "./json-schema-draft-06.json" // Used by AJV as the JSON Schema draft to rely on
 const Ajv = require('ajv')
-ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'))
+const draft = JSON.parse(require('ajv/lib/refs/json-schema-draft-06.json'))
 
 // %%const tdSchemaLocation = "../WebContent/td-schema.json"
 // JSON to CSV and vice versa libraries
@@ -58,12 +58,34 @@ function tdAssertions(tdStrings, fileLoader, logFunc) {
         if(typeof fileLoader !== "function") {throw new Error("jsonLoader has to be a function")}
         if(logFunc === undefined) {logFunc = console.log}
 
-        // getting an array of assertion objects
-        collectAssertionSchemas("./assertions", "./list.json", fileLoader)
-        .then( obj =>{
+        // loading files
+        const loadProm = []
+        loadProm.push(collectAssertionSchemas("./assertions", "./list.json", fileLoader))
+        loadProm.push(fileLoader(path.join("./node_modules", "playground-core", "td-schema.json")))
+        loadProm.push(fileLoader("./manual.csv"))
+
+        Promise.all(loadProm).then( promResults => {
             logFunc("!!!-_-!!!")
+
+            const assertionSchemas = promResults.shift()
+            const tdSchema = promResults.shift()
+            const manual = promResults.shift().toString()
+
+            const options = {
+                delimiter: ',', // optional
+                quote: '"' // optional
+            }
+            const manualAssertionsJSON = csvjson.toObject(manual, options)
+
+            const jsonResults = []
+            tdStrings.forEach( tdToValidate => {
+                jsonResults.push(validate(tdToValidate, assertionSchemas, manualAssertionsJSON, tdSchema, draft))
+            })
+
+            res(jsonResults)
+
         }, err => {
-            console.error("collectAssertionSchemas function problem: "+ err)
+            rej("collectAssertionSchemas function problem: "+ err)
         })
     })
 }
@@ -115,7 +137,7 @@ function collectAssertionSchemas(assertionsDirectory, assertionsList, loadFuncti
  * @param {*} tdSchema
  * @param {*} schemaDraft
  */
-function validate(tdData, assertions, manualAssertions, tdSchema,schemaDraft) {
+function validate(tdData, assertions, manualAssertions, tdSchema, schemaDraft) {
     // a JSON file that will be returned containing the result for each assertion as a JSON Object
     let results = []
     console.log("=================================================================")
@@ -158,7 +180,7 @@ function validate(tdData, assertions, manualAssertions, tdSchema,schemaDraft) {
     }
 
     // additional checks
-    results = checkSecurity(tdJson,results)
+    results = checkSecurity(tdJson, results)
     results = checkMultiLangConsistency(tdJson, results)
 
     // Iterating through assertions
@@ -340,6 +362,761 @@ function validate(tdData, assertions, manualAssertions, tdSchema,schemaDraft) {
     return results
     // const csvResults = json2csvParser.parse(results)
     // return csvResults
+}
+
+function checkUniqueness(tdString, results) {
+
+    // Checking whether in one interaction pattern there are duplicate names, e.g. two properties called temp
+    // However, if there are no properties then it is not-impl
+
+    // jsonvalidator throws an error if there are duplicate names in the interaction level
+    try {
+        jsonValidator.parse(tdString, false)
+
+        const td = JSON.parse(tdString)
+
+        // no problem in interaction level
+        let tdInteractions = []
+
+        // checking whether there are properties at all, if not uniqueness is not impl
+        if (td.hasOwnProperty("properties")) {
+            tdInteractions = tdInteractions.concat(Object.keys(td.properties))
+            // then we can add unique properties pass
+            results.push({
+                "ID": "td-properties_uniqueness",
+                "Status": "pass",
+                "Comment": ""
+            })
+        } else {
+            // then we add unique properties as not impl
+            results.push({
+                "ID": "td-properties_uniqueness",
+                "Status": "not-impl",
+                "Comment": "no properties"
+            })
+        }
+
+        // similar to just before, checking whether there are actions at all, if not uniqueness is not impl
+        if (td.hasOwnProperty("actions")) {
+            tdInteractions = tdInteractions.concat(Object.keys(td.actions))
+            results.push({
+                "ID": "td-actions_uniqueness",
+                "Status": "pass",
+                "Comment": ""
+            })
+        } else {
+            // then we add unique actions as not impl
+            results.push({
+                "ID": "td-actions_uniqueness",
+                "Status": "not-impl",
+                "Comment": "no actions"
+            })
+        }
+
+        // similar to just before, checking whether there are events at all, if not uniqueness is not impl
+        if (td.hasOwnProperty("events")) {
+            tdInteractions = tdInteractions.concat(Object.keys(td.events))
+            results.push({
+                "ID": "td-events_uniqueness",
+                "Status": "pass",
+                "Comment": ""
+            })
+        } else {
+            // then we add unique events as not impl
+            results.push({
+                "ID": "td-events_uniqueness",
+                "Status": "not-impl",
+                "Comment": "no events"
+            })
+        }
+
+        return results
+
+    } catch (error) {
+        // there is a duplicate somewhere
+
+        // convert it into string to be able to process it
+        // error is of form = Error: Syntax error: duplicated keys "overheating" near ting": {
+        const errorString = error.toString()
+        // to get the name, we need to remove the quotes around it
+        const startQuote = errorString.indexOf('"')
+        // slice to remove the part before the quote
+        const restString = errorString.slice(startQuote + 1)
+        // find where the interaction name ends
+        const endQuote = restString.indexOf('"')
+        // finally get the interaction name
+        const interactionName = restString.slice(0, endQuote)
+
+        // trying to find where this interaction is and put results accordingly
+        const td = JSON.parse(tdString)
+
+        if (td.hasOwnProperty("properties")) {
+            const tdProperties = td.properties
+            if (tdProperties.hasOwnProperty(interactionName)) {
+                // duplicate was at properties but that fails the td-unique identifiers as well
+                // console.log("at property");
+                results.push({
+                    "ID": "td-properties_uniqueness",
+                    "Status": "fail",
+                    "Comment": "duplicate property names"
+                })
+                // since JSON.parse removes duplicates, we replace the duplicate name with duplicateName
+                tdString = tdString.replace(interactionName, "duplicateName")
+
+            } else {
+                // there is duplicate but not here, so pass
+                results.push({
+                    "ID": "td-properties_uniqueness",
+                    "Status": "pass",
+                    "Comment": ""
+                })
+            }
+        } else {
+            results.push({
+                "ID": "td-properties_uniqueness",
+                "Status": "not-impl",
+                "Comment": "no properties"
+            })
+        }
+
+        if (td.hasOwnProperty("actions")) {
+            const tdActions = td.actions
+            if (tdActions.hasOwnProperty(interactionName)) {
+                // duplicate was at actions but that fails the td-unique identifiers as well
+                // console.log("at action");
+                results.push({
+                    "ID": "td-actions_uniqueness",
+                    "Status": "fail",
+                    "Comment": "duplicate action names"
+                })
+                // since JSON.parse removes duplicates, we replace the duplicate name with duplicateName
+                tdString = tdString.replace(interactionName, "duplicateName")
+            } else {
+                results.push({
+                    "ID": "td-actions_uniqueness",
+                    "Status": "pass",
+                    "Comment": ""
+                })
+            }
+        } else {
+            results.push({
+                "ID": "td-actions_uniqueness",
+                "Status": "not-impl",
+                "Comment": "no actions"
+            })
+        }
+
+        if (td.hasOwnProperty("events")) {
+            const tdEvents = td.events
+            if (tdEvents.hasOwnProperty(interactionName)) {
+                // duplicate was at events but that fails the td-unique identifiers as well
+                // console.log("at event");
+                results.push({
+                    "ID": "td-events_uniqueness",
+                    "Status": "fail",
+                    "Comment": "duplicate event names"
+                })
+                // since JSON.parse removes duplicates, we replace the duplicate name with duplicateName
+                tdString = tdString.replace(interactionName, "duplicateName")
+            } else {
+                results.push({
+                    "ID": "td-events_uniqueness",
+                    "Status": "pass",
+                    "Comment": ""
+                })
+            }
+        } else {
+            results.push({
+                "ID": "td-events_uniqueness",
+                "Status": "not-impl",
+                "Comment": "no events"
+            })
+        }
+
+        return results
+    }
+}
+
+function checkVocabulary(tdJson, results, tdSchema, schemaDraft) {
+    /*
+    Validates the following assertions:
+    td - processor
+    td-objects:securityDefinitions
+    td-arrays:security
+    td:security
+    td-security-mandatory
+    */
+
+
+    const ajv = new Ajv()
+    ajv.addMetaSchema(draft)
+    ajv.addSchema(tdSchema, 'td')
+
+    const valid = ajv.validate('td', tdJson)
+    const otherAssertions = ["td-objects_securityDefinitions", "td-arrays_security", "td-vocab-security--Thing",
+                             "td-security-mandatory", "td-vocab-securityDefinitions--Thing", "td-context-toplevel",
+                             "td-vocab-title--Thing", "td-vocab-security--Thing", "td-vocab-id--Thing",
+                             "td-security", "td-security-activation", "td-context-ns-thing-mandatory",
+                             "td-map-type", "td-array-type", "td-class-type", "td-string-type", "td-security-schemes"]
+
+    if (valid) {
+        results.push({
+            "ID": "td-processor",
+            "Status": "pass"
+        })
+
+        otherAssertions.forEach(function (asser) {
+            results.push({
+                "ID": asser,
+                "Status": "pass"
+            })
+        })
+        return results
+
+    } else {
+        // console.log("VALIDATION ERROR!!! : ", ajv.errorsText());
+        // results.push({
+        //     "ID": "td-processor",
+        //     "Status": "fail",
+        //     "Comment": "invalid TD"
+        // });
+        // otherAssertions.forEach(function (asser) {
+        //     results.push({
+        //         "ID": asser,
+        //         "Status": "fail"
+        //     });
+        // });
+        throw new Error("invalid TD")
+    }
+}
+
+function securityContains(parent, child) {
+
+    // security anywhere could be a string or array. Convert string to array
+    if (typeof child == "string") {
+        child = [child]
+    }
+    return child.every(elem => parent.indexOf(elem) > -1)
+}
+
+function checkSecurity(td,results) {
+    if (td.hasOwnProperty("securityDefinitions")) {
+        const securityDefinitionsObject = td.securityDefinitions
+        const securityDefinitions = Object.keys(securityDefinitionsObject)
+
+
+        const rootSecurity = td.security
+
+        if (securityContains(securityDefinitions, rootSecurity)) {
+            // all good
+        } else {
+            results.push({
+                "ID": "td-security-scheme-name",
+                "Status": "fail",
+                "Comment": "used a non defined security scheme in root level"
+            })
+            return results
+        }
+
+        if (td.hasOwnProperty("properties")) {
+            // checking security in property level
+            tdProperties = Object.keys(td.properties)
+            for (let i = 0; i < tdProperties.length; i++) {
+                const curPropertyName = tdProperties[i]
+                const curProperty = td.properties[curPropertyName]
+
+                // checking security in forms level
+                const curForms = curProperty.forms
+                for (let j = 0; j < curForms.length; j++) {
+                    const curForm = curForms[j]
+                    if (curForm.hasOwnProperty("security")) {
+                        const curSecurity = curForm.security
+                        if (securityContains(securityDefinitions, curSecurity)) {
+                            // all good
+                        } else {
+                            results.push({
+                                "ID": "td-security-scheme-name",
+                                "Status": "fail",
+                                "Comment": "used a non defined security scheme in a property form"
+                            })
+                            return results
+                        }
+                    }
+                }
+            }
+        }
+
+        if (td.hasOwnProperty("actions")) {
+            // checking security in action level
+            tdActions = Object.keys(td.actions)
+            for (let i = 0; i < tdActions.length; i++) {
+                const curActionName = tdActions[i]
+                const curAction = td.actions[curActionName]
+
+                // checking security in forms level
+                const curForms = curAction.forms
+                for (let j = 0; j < curForms.length; j++) {
+                    const curForm = curForms[j]
+                    if (curForm.hasOwnProperty("security")) {
+                        const curSecurity = curForm.security
+                        if (securityContains(securityDefinitions, curSecurity)) {
+                            // all good
+                        } else {
+                            results.push({
+                                "ID": "td-security-scheme-name",
+                                "Status": "fail",
+                                "Comment": "used a non defined security scheme in an action form"
+                            })
+                            return results
+                        }
+                    }
+                }
+
+            }
+        }
+
+        if (td.hasOwnProperty("events")) {
+            // checking security in event level
+            tdEvents = Object.keys(td.events)
+            for (let i = 0; i < tdEvents.length; i++) {
+                const curEventName = tdEvents[i]
+                const curEvent = td.events[curEventName]
+
+                // checking security in forms level
+                const curForms = curEvent.forms
+                for (let j = 0; j < curForms.length; j++) {
+                    const curForm = curForms[j]
+                    if (curForm.hasOwnProperty("security")) {
+                        const curSecurity = curForm.security
+                        if (securityContains(securityDefinitions, curSecurity)) {
+                            // all good
+                        } else {
+                            results.push({
+                                "ID": "td-security-scheme-name",
+                                "Status": "fail",
+                                "Comment": "used a non defined security scheme in an event form"
+                            })
+                            return results
+                        }
+                    }
+                }
+
+            }
+        }
+
+        // no security used non defined scheme, passed test
+        results.push({
+            "ID": "td-security-scheme-name",
+            "Status": "pass"
+        })
+        return results
+
+    }
+    return results
+}
+
+function checkMultiLangConsistency(td, results) {
+
+    // this checks whether all titles and descriptions have the same language fields
+    // so the object keys of a titles and of a descriptions should be the same already,
+    // then everywhere else they should also be the same
+
+    // first collect them all, and then compare them
+
+    const multiLang = [] // an array of arrays where each small array has the multilang keys
+    const isTdTitlesDescriptions = [] // an array of boolean values to check td-titles-descriptions assertion
+
+    // checking root
+    if (td.hasOwnProperty("titles")) {
+        const rootTitlesObject = td.titles
+        const rootTitles = Object.keys(rootTitlesObject)
+        multiLang.push(rootTitles)
+        // checking for td-titles-descriptions
+        isTdTitlesDescriptions.push({["root_title"]: isStringObjectKeyValue(td.title, rootTitlesObject)})
+    }
+
+    if (td.hasOwnProperty("descriptions")) {
+        const rootDescriptionsObject = td.descriptions
+        const rootDescriptions = Object.keys(rootDescriptionsObject)
+        multiLang.push(rootDescriptions)
+        // check whether description exists in descriptions
+        if (td.hasOwnProperty("description")) {
+            isTdTitlesDescriptions.push({["root_description"]: isStringObjectKeyValue(td.description, rootDescriptionsObject)})
+        }
+    }
+
+    // checking inside each interaction
+    if (td.hasOwnProperty("properties")) {
+        // checking security in property level
+        tdProperties = Object.keys(td.properties)
+        for (let i = 0; i < tdProperties.length; i++) {
+            const curPropertyName = tdProperties[i]
+            const curProperty = td.properties[curPropertyName]
+
+            if (curProperty.hasOwnProperty("titles")) {
+                const titlesKeys = Object.keys(curProperty.titles)
+                multiLang.push(titlesKeys)
+                // checking if title exists in titles
+                if (curProperty.hasOwnProperty("title")) {
+                    isTdTitlesDescriptions.push({
+                        ["property_"+curPropertyName + "_title"]: isStringObjectKeyValue(curProperty.title, curProperty.titles)
+                    })
+                }
+            }
+
+            if (curProperty.hasOwnProperty("descriptions")) {
+                const descriptionsKeys = Object.keys(curProperty.descriptions)
+                multiLang.push(descriptionsKeys)
+                // checking if description exists in descriptions
+                if (curProperty.hasOwnProperty("description")) {
+                    isTdTitlesDescriptions.push({
+                    ["property_" + curPropertyName + "_desc"]: isStringObjectKeyValue(curProperty.description,curProperty.descriptions)
+                    })
+                }
+            }
+        }
+    }
+
+    if (td.hasOwnProperty("actions")) {
+        // checking security in action level
+        tdActions = Object.keys(td.actions)
+        for (let i = 0; i < tdActions.length; i++) {
+            const curActionName = tdActions[i]
+            const curAction = td.actions[curActionName]
+
+            if (curAction.hasOwnProperty("titles")) {
+                const titlesKeys = Object.keys(curAction.titles)
+                multiLang.push(titlesKeys)
+                // checking if title exists in titles
+                if (curAction.hasOwnProperty("title")) {
+                    isTdTitlesDescriptions.push({
+                        ["action_" + curActionName + "_title"]: isStringObjectKeyValue(curAction.title, curAction.titles)
+                    })
+                }
+            }
+
+            if (curAction.hasOwnProperty("descriptions")) {
+                const descriptionsKeys = Object.keys(curAction.descriptions)
+                multiLang.push(descriptionsKeys)
+                // checking if description exists in descriptions
+                if (curAction.hasOwnProperty("description")) {
+                    isTdTitlesDescriptions.push({
+                         ["action_" + curActionName + "_desc"]: isStringObjectKeyValue(curAction.description, curAction.descriptions)
+                    })
+                }
+            }
+
+        }
+    }
+
+    if (td.hasOwnProperty("events")) {
+        // checking security in event level
+        tdEvents = Object.keys(td.events)
+        for (let i = 0; i < tdEvents.length; i++) {
+            const curEventName = tdEvents[i]
+            const curEvent = td.events[curEventName]
+
+            if (curEvent.hasOwnProperty("titles")) {
+                const titlesKeys = Object.keys(curEvent.titles)
+                multiLang.push(titlesKeys)
+                // checking if title exists in titles
+                if (curEvent.hasOwnProperty("title")) {
+                    isTdTitlesDescriptions.push({
+                        ["event_" + curEventName + "_title"]: isStringObjectKeyValue(curEvent.title, curEvent.titles)
+                    })
+                }
+            }
+
+            if (curEvent.hasOwnProperty("descriptions")) {
+                const descriptionsKeys = Object.keys(curEvent.descriptions)
+                multiLang.push(descriptionsKeys)
+                // checking if description exists in descriptions
+                if (curEvent.hasOwnProperty("description")) {
+                    isTdTitlesDescriptions.push({
+                        ["event_" + curEventName + "_desc"]: isStringObjectKeyValue(curEvent.description, curEvent.descriptions)
+                    })
+                }
+            }
+
+        }
+    }
+    if(arrayArraysItemsEqual(multiLang)){
+        results.push({
+            "ID": "td-multi-languages-consistent",
+            "Status": "pass"
+        })
+    } else {
+        results.push({
+            "ID": "td-multi-languages-consistent",
+            "Status": "fail",
+            "Comment": "not all multilang objects have same language tags"
+        })
+    }
+
+    const flatArray = [] // this is multiLang but flat, so just a single array.
+    // This way we can have scan the whole thing at once and then find the element that is not bcp47
+
+    for (let index = 0; index < multiLang.length; index++) {
+        let arrayElement = multiLang[index]
+        arrayElement=JSON.parse(arrayElement)
+        for (let e = 0; e < arrayElement.length; e++) {
+            const stringElement = arrayElement[e]
+            flatArray.push(stringElement)
+        }
+    }
+    const isBCP47 = checkBCP47array(flatArray)
+    if(isBCP47 === "ok"){
+        results.push({
+            "ID": "td-multilanguage-language-tag",
+            "Status": "pass"
+        })
+    } else {
+        results.push({
+            "ID": "td-multilanguage-language-tag",
+            "Status": "fail",
+            "Comment":isBCP47+" is not a BCP47 tag"
+        })
+    }
+
+    // checking td-context-default-language-direction-script assertion
+    results.push({
+        "ID": "td-context-default-language-direction-script",
+        "Status": checkAzeri(flatArray)
+    })
+
+    // checking td-titles-descriptions assertion
+    // if there are no multilang, then it is not impl
+    if(isTdTitlesDescriptions.length === 0){
+        results.push({
+            "ID": "td-titles-descriptions",
+            "Status": "not-impl",
+            "Comment": "no multilang objects in the td"
+        })
+        return results
+    }
+
+    // if at some point there was a false result, it is a fail
+    for (let index = 0; index < isTdTitlesDescriptions.length; index++) {
+        const element = isTdTitlesDescriptions[index]
+        const elementName = Object.keys(element)
+
+        if(element[elementName]){
+            // do nothing it is correct
+        } else {
+            results.push({
+                "ID": "td-titles-descriptions",
+                "Status": "fail",
+                "Comment": elementName+" is not on the multilang object at the same level"
+            })
+            return results
+        }
+    }
+    // there was no problem, so just put pass
+    results.push({
+        "ID": "td-titles-descriptions",
+        "Status": "pass"
+    })
+
+    // ? nothing after this, there is return above
+    return results
+}
+
+// checks if an array that contains only arrays as items is composed of same items
+function arrayArraysItemsEqual(myArray) {
+    if(myArray.length === 0) return true
+    // first stringify each array item
+    for (let i = myArray.length; i--;) {
+        myArray[i] = JSON.stringify(myArray[i])
+    }
+
+    for (let i = myArray.length; i--;) {
+        if (i === 0) {
+            return true
+        }
+        if (myArray[i] !== myArray[i - 1]){
+            return false
+        }
+    }
+}
+
+// checks whether the items of an array, which must be strings, are valid language tags
+function checkBCP47array(myArray){
+    // return tag name if one is not valid during the check
+
+    for (let index = 0; index < myArray.length; index++) {
+        const element = myArray[index]
+        if (bcp47pattern.test(element)) {
+            // keep going
+        } else {
+            return element
+        }
+    }
+
+    // return true if reached the end
+    return "ok"
+}
+
+function isStringObjectKeyValue(searchedString, searchedObject){
+    // checks whether a given string exist as the value of key in an object
+    const objKeys = Object.keys(searchedObject)
+    if(objKeys.length === 0) return false // if the object is empty, then the string cannot exist here
+    for (let index = 0; index < objKeys.length; index++) {
+        const element = objKeys[index]
+        if (searchedObject[element] === searchedString) {
+            return true // found where the string is in the object
+        } else {
+            // nothing keep going, maybe in another key
+        }
+    }
+    return false
+}
+
+// checks whether an azeri language tag also specifies the version (Latn or Arab).
+// basically if the language is called "az", it is invalid, if it is az-Latn or az-Arab it is valid.
+function checkAzeri(myMultiLangArray){
+    for (let index = 0; index < myMultiLangArray.length; index++) {
+        const element = myMultiLangArray[index]
+        if (element ==="az"){
+            return "fail"
+        } else if ((element === "az-Latn") || (element === "az-Arab")){
+            return "pass"
+        }
+    }
+    // no azeri, so it is not implemented
+    return "not-impl"
+}
+
+function mergeIdenticalResults(results) {
+    // first generate a list of results that appear more than once
+    // it should be a JSON object, keys are the assertion ids and the value is an array
+    // while putting these results, remove them from the results FIRST
+    // then for each key, find the resulting result:
+    // if one fail total fail, if one pass and no fail then pass, otherwise not-impl
+
+    const identicalResults = {}
+    results.forEach((curResult, index) => {
+        const curId = curResult.ID
+
+        // remove this one, but add it back if there is no duplicate
+        results.splice(index, 1)
+        // check if there is a second one
+        const identicalIndex = results.findIndex(x => x.ID === curId)
+
+        if (identicalIndex > 0) { // there is a second one
+
+            // check if it already exists
+            if (identicalResults.hasOwnProperty(curId)) {
+                // push if it already exists
+                identicalResults[curId].push(curResult.Status)
+            } else {
+                // create a new array with values if it does not exist
+                identicalResults[curId] = [curResult.Status]
+            }
+            // put it back such that the last identical can find its duplicate that appeared before
+            results.unshift(curResult)
+            // process.exit();
+        } else {
+            // if there is no duplicate, put it back into results but at the beginning
+            results.unshift(curResult)
+        }
+    })
+
+    // get the keys to iterate through
+    const identicalKeys = Object.keys(identicalResults)
+
+    // iterate through each duplicate, calculate the new result, set the new result and then remove the duplicates
+    identicalKeys.forEach(curKey => {
+        const curResults = identicalResults[curKey]
+        let newResult
+
+        if (curResults.indexOf("fail") >= 0) {
+            newResult = "fail"
+        } else if (curResults.indexOf("pass") >= 0) {
+            newResult = "pass"
+        } else {
+            newResult = "not-impl"
+        }
+        // delete each of the duplicate
+        while (results.findIndex(x => x.ID === curKey) >= 0) {
+            results.splice(results.findIndex(x => x.ID === curKey), 1)
+        }
+
+        // push back the new result
+        results.push({
+            "ID": curKey,
+            "Status": newResult,
+            "Comment": "result of a merge"
+        })
+
+    })
+    return results
+}
+
+function createParents(results) {
+
+    // create a json object with parent name keys and then each of them an array of children results
+
+    const parentsJson = {}
+    results.forEach((curResult, index) => {
+        const curId = curResult.ID
+        const underScoreLoc = curId.indexOf('_')
+        if (underScoreLoc === -1) {
+            // this assertion is not a child assertion
+        } else {
+            const parentResultID = curId.slice(0, underScoreLoc)
+            // if it already exists push otherwise create an array and push
+            if (parentsJson.hasOwnProperty(parentResultID)) {
+                parentsJson[parentResultID].push(curResult)
+            } else {
+                parentsJson[parentResultID] = []
+                parentsJson[parentResultID].push(curResult)
+            }
+            // console.log(parentsJson);
+        }
+    })
+
+    // Go through the object and push a result that is an OR of each children
+    // if one children is fail, result is fail
+    // if one children is not-impl, result is not-impl
+    // if none of these happen, then it implies it is pass, so result is pass
+    // "ID": schema.title,
+    // "Status": "not-impl"
+
+    parentsJsonArray = Object.getOwnPropertyNames(parentsJson)
+    parentsJsonArray.forEach((curParentName, indexParent) => {
+
+        const curParent = parentsJson[curParentName]
+
+        for (let index = 0; index < curParent.length; index++) {
+            const curChild = curParent[index]
+            if (curChild.Status === "fail") {
+                // push fail and break, i.e stop going through children, we are done here!
+                results.push({
+                    "ID": curParentName,
+                    "Status": "fail",
+                    "Comment": "Error message can be seen in the children assertions"
+                })
+                break
+            } else if (curChild.Status === "not-impl") {
+                // push not-impl and break, i.e stop going through children, we are done here!
+                results.push({
+                    "ID": curParentName,
+                    "Status": "not-impl",
+                    "Comment": "Error message can be seen in the children assertions"
+                })
+                break
+            } else {
+                // if reached the end without break, push pass
+                if (index === curParent.length - 1) {
+                    results.push({
+                        "ID": curParentName,
+                        "Status": "pass"
+                    })
+                }
+            }
+        }
+    })
+    return results
 }
 
 module.exports = tdAssertions
