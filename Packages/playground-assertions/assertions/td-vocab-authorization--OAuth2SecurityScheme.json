@@ -1,0 +1,70 @@
+{
+    "title": "td-vocab-authorization--OAuth2SecurityScheme",
+    "description": "authorization: URI of the authorization server. MAY be included. Type: anyURI.",
+    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "is-complex": true,
+    "type": "object",
+    "properties": {
+        "securityDefinitions": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+                "$ref": "#/definitions/securityScheme"
+            }
+        }
+    },
+    "required": [
+        "securityDefinitions"
+    ],
+    "additionalProperties": true,
+    "definitions": {
+        "securityScheme": {
+            "if": {
+                    "type": "object",
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "proxy": {
+                            "$ref": "#/definitions/url"
+                        },
+                        "scheme": {
+                            "type": "string",
+                            "enum": [
+                                "oauth2"
+                            ]
+                        },
+                        "authorization": {
+                            "$ref": "#/definitions/url"
+                        },
+                        "token": {
+                            "$ref": "#/definitions/url"
+                        },
+                        "refresh": {
+                            "$ref": "#/definitions/url"
+                        },
+                        "scopes": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "flow": {
+                            "type": "string",
+                            "enum": ["code"]
+                        }
+                    },
+                    "required": [
+                        "scheme", "authorization"
+                    ]
+            },
+            "then": {
+                "const": "td-vocab-authorization--OAuth2SecurityScheme=pass"
+            }
+        },
+        "url": {
+            "type": "string",
+            "format": "uri-reference"
+        }
+    }
+}

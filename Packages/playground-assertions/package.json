@@ -1,0 +1,24 @@
+{
+  "name": "playground-assertions",
+  "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
+  "license": "EPL-2.0 OR W3C-20150513",
+  "version": "1.0.0",
+  "description": "TBD",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js",
+    "bundle": "npx browserify ./index.js -s tdAssertions -o ./dist/web-bundle.js & npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
+    "newlist": "node update-list.js"
+  },
+  "dependencies": {
+    "ajv": "^6.12.2",
+    "csvjson": "^5.1.0",
+    "is-utf8": "^0.2.1",
+    "json-dup-key-validator": "^1.0.2"
+  },
+  "devDependencies": {
+    "browserify": "^16.5.1",
+    "terser": "^4.7.0"
+  }
+}

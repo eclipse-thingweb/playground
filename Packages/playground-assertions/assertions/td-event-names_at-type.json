@@ -1,0 +1,28 @@
+{
+    "title": "td-event-names_at-type",
+    "description": "Each optional vocabulary term as defined in the class Event, as well as its two superclasses InteractionPattern and DataSchema, MUST be serialized as a JSON name within an Event object. ",
+    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "is-complex": true,
+    "type": "object",
+    "properties": {
+        "events": {
+            "additionalProperties": {
+                "$ref": "#/definitions/event_element"
+            }
+        }
+    },
+    "additionalProperties": true,
+    "definitions": {
+        "event_element": {
+            "type": "object",
+            "if": {
+                "required": [
+                    "@type"
+                ]
+            },
+            "then": {
+                "const": "td-event-names_at-type=pass"
+            }
+        }
+    }
+}
