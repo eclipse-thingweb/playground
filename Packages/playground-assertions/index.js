@@ -127,18 +127,18 @@ function validate(tdData, assertions, manualAssertions, tdSchema,schemaDraft) {
             "Status": "pass"
         })
     } else {
-        throw "td-json-open_utf-8"
+        throw new Error("td-json-open_utf-8")
     }
 
     // check whether it is a valid JSON
     try {
-        var tdJson = JSON.parse(tdData)
+        const tdJson = JSON.parse(tdData)
         results.push({
             "ID": "td-json-open",
             "Status": "pass"
         })
     } catch (error) {
-        throw "td-json-open"
+        throw new Error("td-json-open")
     }
 
     // checking whether two interactions of the same interaction affordance type have the same names
@@ -154,7 +154,7 @@ function validate(tdData, assertions, manualAssertions, tdSchema,schemaDraft) {
             "ID": error,
             "Status": "fail"
         })
-        throw "Invalid TD"
+        throw new Error("Invalid TD")
     }
 
     // additional checks
@@ -170,13 +170,13 @@ function validate(tdData, assertions, manualAssertions, tdSchema,schemaDraft) {
 
         // Validation starts here
 
-        const avj_options = {
+        const avjOptions = {
             "$comment" (v) {
                 console.log("\n!!!! COMMENT", v)
             },
             "allErrors": true
         }
-        var ajv = new Ajv(avj_options)
+        const ajv = new Ajv(avjOptions)
         ajv.addMetaSchema(draft)
         ajv.addSchema(schema, 'td')
 
@@ -199,7 +199,7 @@ function validate(tdData, assertions, manualAssertions, tdSchema,schemaDraft) {
                     "Status": "not-impl"
                 })
                 if (schema.hasOwnProperty("also")) {
-                    var otherAssertions = schema.also
+                    const otherAssertions = schema.also
                     otherAssertions.forEach(function (asser) {
                         results.push({
                             "ID": asser,
@@ -213,9 +213,9 @@ function validate(tdData, assertions, manualAssertions, tdSchema,schemaDraft) {
                     const output = ajv.errors[0].params.allowedValue
 
                     const resultStart = output.indexOf("=")
-                    var result = output.slice(resultStart + 1)
+                    const result = output.slice(resultStart + 1)
 
-                    if (result == "pass") {
+                    if (result === "pass") {
                         results.push({
                             "ID": schema.title,
                             "Status": result
@@ -228,7 +228,7 @@ function validate(tdData, assertions, manualAssertions, tdSchema,schemaDraft) {
                         })
                     }
                     if (schema.hasOwnProperty("also")) {
-                        var otherAssertions = schema.also
+                        const otherAssertions = schema.also
                         otherAssertions.forEach(function (asser) {
                             results.push({
                                 "ID": asser,
@@ -245,7 +245,7 @@ function validate(tdData, assertions, manualAssertions, tdSchema,schemaDraft) {
                     })
 
                     if (schema.hasOwnProperty("also")) {
-                        var otherAssertions = schema.also
+                        const otherAssertions = schema.also
                         otherAssertions.forEach(function (asser) {
                             results.push({
                                 "ID": asser,
@@ -265,7 +265,7 @@ function validate(tdData, assertions, manualAssertions, tdSchema,schemaDraft) {
                     "Status": "pass"
                 })
                 if (schema.hasOwnProperty("also")) {
-                    var otherAssertions = schema.also
+                    const otherAssertions = schema.also
                     otherAssertions.forEach(function (asser) {
                         results.push({
                             "ID": asser,
@@ -285,7 +285,7 @@ function validate(tdData, assertions, manualAssertions, tdSchema,schemaDraft) {
                         "Comment": ajv.errorsText()
                     })
                     if (schema.hasOwnProperty("also")) {
-                        var otherAssertions = schema.also
+                        const otherAssertions = schema.also
                         otherAssertions.forEach(function (asser) {
                             results.push({
                                 "ID": asser,
@@ -303,7 +303,7 @@ function validate(tdData, assertions, manualAssertions, tdSchema,schemaDraft) {
                         "Comment": ajv.errorsText()
                     })
                     if (schema.hasOwnProperty("also")) {
-                        var otherAssertions = schema.also
+                        const otherAssertions = schema.also
                         otherAssertions.forEach(function (asser) {
                             results.push({
                                 "ID": asser,
@@ -337,8 +337,9 @@ function validate(tdData, assertions, manualAssertions, tdSchema,schemaDraft) {
     })
 
     results = orderedResults.concat(manualAssertions)
-    const csvResults = json2csvParser.parse(results)
-    return csvResults
+    return results
+    // const csvResults = json2csvParser.parse(results)
+    // return csvResults
 }
 
 module.exports = tdAssertions
