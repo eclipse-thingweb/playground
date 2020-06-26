@@ -15,6 +15,7 @@
 
 // Test utility to test index.js
 const tdAsserter = require("./index")
+const myTest = require("./index").test
 const fs = require("fs")
 
 let simpleTD = JSON.stringify({
@@ -81,7 +82,7 @@ function fileLoad(loc) {
 tdAsserter([simpleTD], fileLoad)
 .then( result => {
 	console.log("OKAY")
-	console.log(result.urn_simple.length)
+	console.log(result.length)
 }, err => {
 	console.log("ERROR")
 	console.error(err)
