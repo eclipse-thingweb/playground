@@ -50,7 +50,6 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual) {
 
         Promise.all(loadProm).then( promResults => {
 
-            let merged
             const options = {
                 delimiter: ',', // optional
                 quote: '"' // optional
@@ -66,17 +65,26 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual) {
                 const tdId = JSON.parse(tdToValidate).id
                 const tdName = tdId.replace(/:/g, "_")
 
+                if (jsonResults[tdName] !== undefined) {throw new Error("TDs have same Ids: " + tdName)}
                 jsonResults[tdName] = validate(tdToValidate, assertionSchemas, manualAssertionsJSON, tdSchema, logFunc)
             })
 
             const tdNames = Object.keys(jsonResults)
+            console.log(tdNames)
             if (tdNames.length > 1) {
-                merged = mergeResults(jsonResults)
-                checkCoverage(merged)
-                res({jsonResults, merged})
+                console.log(">1 td")
+                const resultAr = []
+                Object.keys(jsonResults).forEach( id => {
+                    resultAr.push(jsonResults[id])
+                })
+                mergeResults(resultAr).then( merged => {
+                    // console.log(merged)
+                    checkCoverage(merged)
+                    res({jsonResults, merged})
+                }, err => {rej("merging failed: " + err)})
             }
             else {
-                merged = jsonResults[tdNames[0]]
+                const merged = jsonResults[tdNames[0]]
                 checkCoverage(merged)
                 res(merged)
             }

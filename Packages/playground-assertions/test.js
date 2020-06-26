@@ -15,7 +15,6 @@
 
 // Test utility to test index.js
 const tdAsserter = require("./index")
-const myTest = require("./index").test
 const fs = require("fs")
 
 let simpleTD = JSON.stringify({
@@ -65,7 +64,56 @@ let simpleTD = JSON.stringify({
 		}
 	}
 })
+let simpleTD2 = JSON.stringify({
+	"id": "urn:simplep",
+	"@context": "https://www.w3.org/2019/wot/td/v1",
+	"title": "MyLampThing",
+	"description": "Valid TD copied from the specs first example",
+	"securityDefinitions": {
+		"basic_sc": {
+			"scheme": "basic",
+			"in": "header"
+		}
+	},
+	"security": [
+		"basic_sc"
+	],
+	"properties": {
+		"status": {
+			"type": "string",
+			"forms": [
+				{
+					"href": "https://mylamp.example.com/status"
+				}
+			]
+		}
+	},
+	"actions": {
+		"toggle": {
+			"forms": [
+				{
+					"href": "https://mylamp.example.com/toggle"
+				}
+			]
+		}
+	},
+	"events": {
+		"overheating": {
+			"data": {
+				"type": "string"
+			},
+			"forms": [
+				{
+					"href": "https://mylamp.example.com/oh",
+					"subprotocol": "longpoll"
+				}
+			]
+		}
+	}
+})
 simpleTD = Buffer.from(simpleTD, 'utf8')
+simpleTD2 = Buffer.from(simpleTD2, 'utf8')
+
 // fs.writeFileSync("./simpleTD.json",simpleTD,"utf8")
 // simpleTD = fs.readFileSync("./simpleTD.json")
 // const tdSchema = fs.readFileSync("td-schema.json","utf-8")
@@ -79,10 +127,23 @@ function fileLoad(loc) {
 	})
 }
 
-tdAsserter([simpleTD], fileLoad)
+
+tdAsserter([simpleTD, simpleTD2], fileLoad)
 .then( result => {
 	console.log("OKAY")
-	console.log(result.length)
+	// console.log(result.merged)
+
+	// const checkAR = []
+	// result.jsonResults.urn_simple.forEach( el => {
+	// 	if (checkAR.some( al => al === el.ID)) {
+	// 		console.log("DOBU: " + el.ID)
+	// 	}
+	// 	else {
+	// 		checkAR.push(el.ID)
+	// 	}
+	// })
+
+	// console.log(result)
 }, err => {
 	console.log("ERROR")
 	console.error(err)
