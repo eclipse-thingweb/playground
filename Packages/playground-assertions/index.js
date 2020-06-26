@@ -23,7 +23,7 @@ const jsonValidator = require('json-dup-key-validator')
 // The usual library used for validation
 // const draftLocation = "./json-schema-draft-06.json" // Used by AJV as the JSON Schema draft to rely on
 const Ajv = require('ajv')
-const draft = JSON.parse(require('ajv/lib/refs/json-schema-draft-06.json'))
+const draft = require('ajv/lib/refs/json-schema-draft-06.json')
 
 // %%const tdSchemaLocation = "../WebContent/td-schema.json"
 // JSON to CSV and vice versa libraries
@@ -53,8 +53,7 @@ function tdAssertions(tdStrings, fileLoader, logFunc) {
     return new Promise( (res, rej) => {
 
         // parameter handling
-        if(typeof tdStrings === "string") {tdStrings = [tdStrings]}
-        if(typeof tdStrings !== "object") {throw new Error("tdStrings has to a String or Array of Strings")}
+        if(typeof tdStrings !== "object") {throw new Error("tdStrings has to be an Array of Strings")}
         if(typeof fileLoader !== "function") {throw new Error("jsonLoader has to be a function")}
         if(logFunc === undefined) {logFunc = console.log}
 
@@ -138,11 +137,15 @@ function collectAssertionSchemas(assertionsDirectory, assertionsList, loadFuncti
  * @param {*} schemaDraft
  */
 function validate(tdData, assertions, manualAssertions, tdSchema, schemaDraft) {
+
+    tdSchema = JSON.parse(tdSchema)
     // a JSON file that will be returned containing the result for each assertion as a JSON Object
     let results = []
     console.log("=================================================================")
 
     // check whether it is a valid UTF-8 string
+    // tdData = JSON.stringify(JSON.parse(tdData))
+    console.log(isUtf8(tdData))
     if (isUtf8(tdData)) {
         results.push({
             "ID": "td-json-open_utf-8",
@@ -153,8 +156,9 @@ function validate(tdData, assertions, manualAssertions, tdSchema, schemaDraft) {
     }
 
     // check whether it is a valid JSON
+    let tdJson
     try {
-        const tdJson = JSON.parse(tdData)
+        tdJson = JSON.parse(tdData)
         results.push({
             "ID": "td-json-open",
             "Status": "pass"

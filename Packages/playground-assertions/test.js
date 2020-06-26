@@ -17,11 +17,11 @@
 const tdAsserter = require("./index")
 const fs = require("fs")
 
-const simpleTD = JSON.stringify({
+let simpleTD = JSON.stringify({
 	"id": "urn:simple",
 	"@context": "https://www.w3.org/2019/wot/td/v1",
 	"title": "MyLampThing",
-	"description": "Valid TD copied from the spec's first example",
+	"description": "Valid TD copied from the specs first example",
 	"securityDefinitions": {
 		"basic_sc": {
 			"scheme": "basic",
@@ -64,6 +64,9 @@ const simpleTD = JSON.stringify({
 		}
 	}
 })
+simpleTD = Buffer.from(simpleTD, 'utf8');
+// fs.writeFileSync("./simpleTD.json",simpleTD,"utf8")
+// simpleTD = fs.readFileSync("./simpleTD.json")
 // const tdSchema = fs.readFileSync("td-schema.json","utf-8")
 // const tdSchemaFull = fs.readFileSync("td-schema-full.json", "utf-8")
 function fileLoad(loc) {
@@ -75,10 +78,10 @@ function fileLoad(loc) {
 	})
 }
 
-tdAsserter(simpleTD, fileLoad)
+tdAsserter([simpleTD], fileLoad)
 .then( result => {
 	console.log("OKAY")
-	console.log(result)
+	console.log(result[0].length)
 }, err => {
 	console.log("ERROR")
 	console.error(err)
