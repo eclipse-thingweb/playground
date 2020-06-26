@@ -42,12 +42,11 @@ const fields = ['ID', 'Status', 'Comment']
 // This is used to validate if the multi language JSON keys are valid according to the BCP47 spec
 const bcp47pattern = /^(?:(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE)|(art-lojban|cel-gaulish|no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))$|^((?:[a-z]{2,3}(?:(?:-[a-z]{3}){1,3})?)|[a-z]{4}|[a-z]{5,8})(?:-([a-z]{4}))?(?:-([a-z]{2}|\d{3}))?((?:-(?:[\da-z]{5,8}|\d[\da-z]{3}))*)?((?:-[\da-wy-z](?:-[\da-z]{2,8})+)*)?(-x(?:-[\da-z]{1,8})+)?$|^(x(?:-[\da-z]{1,8})+)$/i // eslint-disable-line max-len
 
-
 /**
  * asdf
  * @param {string | string[]} tdStrings The Thing Description(s) to check as a string.
- * @param {function} fileLoader (string) => string Path to a file as input, should return file content
- * @param {function} logFunc OPT (string) => void; Callback used to log the validation progress.
+ * @param {Function} fileLoader (string) => string Path to a file as input, should return file content
+ * @param {Function} logFunc OPT (string) => void; Callback used to log the validation progress.
  */
 function tdAssertions(tdStrings, fileLoader, logFunc) {
     return new Promise( (res, rej) => {
@@ -64,7 +63,6 @@ function tdAssertions(tdStrings, fileLoader, logFunc) {
         loadProm.push(fileLoader("./manual.csv"))
 
         Promise.all(loadProm).then( promResults => {
-            logFunc("!!!-_-!!!")
 
             const assertionSchemas = promResults.shift()
             const tdSchema = promResults.shift()
@@ -76,9 +74,12 @@ function tdAssertions(tdStrings, fileLoader, logFunc) {
             }
             const manualAssertionsJSON = csvjson.toObject(manual, options)
 
-            const jsonResults = []
+            const jsonResults = {}
             tdStrings.forEach( tdToValidate => {
-                jsonResults.push(validate(tdToValidate, assertionSchemas, manualAssertionsJSON, tdSchema, draft))
+                const tdId = JSON.parse(tdToValidate).id
+                const tdName = tdId.replace(/:/g, "_")
+
+                jsonResults[tdName] = validate(tdToValidate, assertionSchemas, manualAssertionsJSON, tdSchema, draft, logFunc)
             })
 
             res(jsonResults)
@@ -95,7 +96,7 @@ function tdAssertions(tdStrings, fileLoader, logFunc) {
  * @param {string} assertionsDirectory path to the directory, which contains the assertions
  * @param {string} assertionsList path to the assertion filenames list
  * @param {function} loadFunction (string) => string path string as input should return file content as string
- * @returns {Array} An array containing all assertion objects (already parsed)
+ * @returns {Array<object>} An array containing all assertion objects (already parsed)
  */
 function collectAssertionSchemas(assertionsDirectory, assertionsList, loadFunction){
     return new Promise( (res, rej) => {
@@ -121,7 +122,7 @@ function collectAssertionSchemas(assertionsDirectory, assertionsList, loadFuncti
             Promise.all(assertionProms).then( () => {
                 res(assertionSchemas)
             })
-        }, err => {console.log("Could not load assertion list" + err)})
+        }, err => {rej("Could not load assertion list" + err)})
     })
 }
 
@@ -130,22 +131,21 @@ function collectAssertionSchemas(assertionsDirectory, assertionsList, loadFuncti
  * manual assertions given in the third argument are pushed to the end of the array after sorting the results array
  * return is a JSON array of result JSON objects
  * if there is a throw, it gives the failed assertion id
- * @param {*} tdData
- * @param {*} assertions
- * @param {*} manualAssertions
- * @param {*} tdSchema
- * @param {*} schemaDraft
+ * @param {Buffer} tdData Buffer of the Td data, has to be utf8 encoded (e.g. by fs.readFileSync(file.json) )
+ * @param {Array<object>} assertions An array containing all assertion objects (already parsed)
+ * @param {Array<object>} manualAssertions An array containing all manual assertions
+ * @param {string} tdSchema The JSON Schema used to eval if a Td is valid
+ * @param {object} schemaDraft The JSON Schema draft to use
+ * @param {Function} logFunc Logging function
  */
-function validate(tdData, assertions, manualAssertions, tdSchema, schemaDraft) {
+function validate(tdData, assertions, manualAssertions, tdSchema, schemaDraft, logFunc) {
 
     tdSchema = JSON.parse(tdSchema)
     // a JSON file that will be returned containing the result for each assertion as a JSON Object
     let results = []
-    console.log("=================================================================")
+    logFunc("=================================================================")
 
-    // check whether it is a valid UTF-8 string
-    // tdData = JSON.stringify(JSON.parse(tdData))
-    console.log(isUtf8(tdData))
+    // check whether it is a valid UTF-8
     if (isUtf8(tdData)) {
         results.push({
             "ID": "td-json-open_utf-8",
@@ -170,13 +170,13 @@ function validate(tdData, assertions, manualAssertions, tdSchema, schemaDraft) {
     // checking whether two interactions of the same interaction affordance type have the same names
     // This requires to use the string version of the TD that will be passed down to the jsonvalidator library
     const tdDataString = tdData.toString()
-    results = checkUniqueness(tdDataString,results)
+    results.push(...checkUniqueness(tdDataString))
 
     // Normal TD Schema validation but this allows us to test multiple assertions at once
     try {
-        results = checkVocabulary(tdJson, results, tdSchema, schemaDraft)
+        results.push(...checkVocabulary(tdJson, tdSchema, schemaDraft))
     } catch (error) {
-        console.log({
+        logFunc({
             "ID": error,
             "Status": "fail"
         })
@@ -184,11 +184,10 @@ function validate(tdData, assertions, manualAssertions, tdSchema, schemaDraft) {
     }
 
     // additional checks
-    results = checkSecurity(tdJson, results)
-    results = checkMultiLangConsistency(tdJson, results)
+    results.push(...checkSecurity(tdJson))
+    results.push(...checkMultiLangConsistency(tdJson))
 
     // Iterating through assertions
-
     for (let index = 0; index < assertions.length; index++) {
         const curAssertion = assertions[index]
 
@@ -198,7 +197,7 @@ function validate(tdData, assertions, manualAssertions, tdSchema, schemaDraft) {
 
         const avjOptions = {
             "$comment" (v) {
-                console.log("\n!!!! COMMENT", v)
+                logFunc("\n!!!! COMMENT", v)
             },
             "allErrors": true
         }
@@ -210,6 +209,7 @@ function validate(tdData, assertions, manualAssertions, tdSchema, schemaDraft) {
         const valid = ajv.validate('td', tdJson)
 
         /*
+            TODO: when is implemented?
             If valid then it is not implemented
             if error says not-impl then it is not implemented
             If somehow error says fail then it is failed
@@ -368,11 +368,17 @@ function validate(tdData, assertions, manualAssertions, tdSchema, schemaDraft) {
     // return csvResults
 }
 
-function checkUniqueness(tdString, results) {
+/**
+ *  Checking whether in one interaction pattern there are duplicate names, e.g. two properties called temp
+ *  However, if there are no properties then it is not-impl
+ *
+ * @param {string} tdString The Td under test as string
+ */
+function checkUniqueness(tdString) {
 
-    // Checking whether in one interaction pattern there are duplicate names, e.g. two properties called temp
-    // However, if there are no properties then it is not-impl
 
+
+    const results = []
     // jsonvalidator throws an error if there are duplicate names in the interaction level
     try {
         jsonValidator.parse(tdString, false)
@@ -541,17 +547,20 @@ function checkUniqueness(tdString, results) {
     }
 }
 
-function checkVocabulary(tdJson, results, tdSchema, schemaDraft) {
-    /*
-    Validates the following assertions:
-    td - processor
-    td-objects:securityDefinitions
-    td-arrays:security
-    td:security
-    td-security-mandatory
-    */
+/**
+ *  Validates the following assertions:
+ *    td - processor
+ *    td-objects:securityDefinitions
+ *    td-arrays:security
+ *    td:security
+ *    td-security-mandatory
+ * @param {object} tdJson The td to validate
+ * @param {*} tdSchema The JSON Schema used for td validation
+ * @param {*} schemaDraft The JSON Schema draft to be used
+ */
+function checkVocabulary(tdJson, tdSchema, schemaDraft) {
 
-
+    const results = []
     const ajv = new Ajv()
     ajv.addMetaSchema(draft)
     ajv.addSchema(tdSchema, 'td')
@@ -594,16 +603,27 @@ function checkVocabulary(tdJson, results, tdSchema, schemaDraft) {
     }
 }
 
+/**
+ * security anywhere could be a string or array. Convert string to array
+ *
+ * @param {*} parent
+ * @param {string|Array<string>} child
+ */
 function securityContains(parent, child) {
 
-    // security anywhere could be a string or array. Convert string to array
-    if (typeof child == "string") {
+    if (typeof child === "string") {
         child = [child]
     }
     return child.every(elem => parent.indexOf(elem) > -1)
 }
 
-function checkSecurity(td,results) {
+/**
+ * check Security and security Definitions
+ * @param {object} td The Td to do assertion tests
+ */
+function checkSecurity(td) {
+
+    const results = []
     if (td.hasOwnProperty("securityDefinitions")) {
         const securityDefinitionsObject = td.securityDefinitions
         const securityDefinitions = Object.keys(securityDefinitionsObject)
@@ -719,14 +739,18 @@ function checkSecurity(td,results) {
     return results
 }
 
-function checkMultiLangConsistency(td, results) {
+/**
+ *  this checks whether all titles and descriptions have the same language fields
+ *  so the object keys of a titles and of a descriptions should be the same already,
+ *  then everywhere else they should also be the same
+ *
+ *  first collect them all, and then compare them
+ *
+ * @param {object} td The Td to do assertion tests
+ */
+function checkMultiLangConsistency(td) {
 
-    // this checks whether all titles and descriptions have the same language fields
-    // so the object keys of a titles and of a descriptions should be the same already,
-    // then everywhere else they should also be the same
-
-    // first collect them all, and then compare them
-
+    const results = []
     const multiLang = [] // an array of arrays where each small array has the multilang keys
     const isTdTitlesDescriptions = [] // an array of boolean values to check td-titles-descriptions assertion
 
@@ -925,7 +949,11 @@ function checkMultiLangConsistency(td, results) {
     return results
 }
 
-// checks if an array that contains only arrays as items is composed of same items
+/**
+ * checks if an array that contains only arrays as items is composed of same items
+ *
+ * @param {Array<object>} myArray The array to check
+ */
 function arrayArraysItemsEqual(myArray) {
     if(myArray.length === 0) return true
     // first stringify each array item
@@ -943,7 +971,11 @@ function arrayArraysItemsEqual(myArray) {
     }
 }
 
-// checks whether the items of an array, which must be strings, are valid language tags
+/**
+ * checks whether the items of an array, which must be strings, are valid language tags
+ *
+ * @param {Array<string>} myArray The array, which items are to be checked
+ */
 function checkBCP47array(myArray){
     // return tag name if one is not valid during the check
 
@@ -960,8 +992,13 @@ function checkBCP47array(myArray){
     return "ok"
 }
 
+/**
+ * checks whether a given string exist as the value of key in an object
+ *
+ * @param {string} searchedString
+ * @param {object} searchedObject
+ */
 function isStringObjectKeyValue(searchedString, searchedObject){
-    // checks whether a given string exist as the value of key in an object
     const objKeys = Object.keys(searchedObject)
     if(objKeys.length === 0) return false // if the object is empty, then the string cannot exist here
     for (let index = 0; index < objKeys.length; index++) {
@@ -975,8 +1012,13 @@ function isStringObjectKeyValue(searchedString, searchedObject){
     return false
 }
 
-// checks whether an azeri language tag also specifies the version (Latn or Arab).
-// basically if the language is called "az", it is invalid, if it is az-Latn or az-Arab it is valid.
+
+/**
+ * checks whether an azeri language tag also specifies the version (Latn or Arab).
+ * basically if the language is called "az", it is invalid, if it is az-Latn or az-Arab it is valid.
+ *
+ * @param {Array<string>} myMultiLangArray The language array to check
+ */
 function checkAzeri(myMultiLangArray){
     for (let index = 0; index < myMultiLangArray.length; index++) {
         const element = myMultiLangArray[index]
@@ -990,12 +1032,17 @@ function checkAzeri(myMultiLangArray){
     return "not-impl"
 }
 
+/**
+ * first generate a list of results that appear more than once
+ * it should be a JSON object, keys are the assertion ids and the value is an array
+ * while putting these results, remove them from the results FIRST
+ * then for each key, find the resulting result:
+ * if one fail total fail, if one pass and no fail then pass, otherwise not-impl
+ *
+ * @param {Array<object>} results Current results array
+ */
 function mergeIdenticalResults(results) {
-    // first generate a list of results that appear more than once
-    // it should be a JSON object, keys are the assertion ids and the value is an array
-    // while putting these results, remove them from the results FIRST
-    // then for each key, find the resulting result:
-    // if one fail total fail, if one pass and no fail then pass, otherwise not-impl
+
 
     const identicalResults = {}
     results.forEach((curResult, index) => {
@@ -1056,9 +1103,12 @@ function mergeIdenticalResults(results) {
     return results
 }
 
+/**
+ * create a json object with parent name keys and then each of them an array of children results
+ *
+ * @param {Array<object>} results Current results array
+ */
 function createParents(results) {
-
-    // create a json object with parent name keys and then each of them an array of children results
 
     const parentsJson = {}
     results.forEach((curResult, index) => {
@@ -1075,16 +1125,17 @@ function createParents(results) {
                 parentsJson[parentResultID] = []
                 parentsJson[parentResultID].push(curResult)
             }
-            // console.log(parentsJson);
         }
     })
 
-    // Go through the object and push a result that is an OR of each children
-    // if one children is fail, result is fail
-    // if one children is not-impl, result is not-impl
-    // if none of these happen, then it implies it is pass, so result is pass
-    // "ID": schema.title,
-    // "Status": "not-impl"
+    /*
+        Go through the object and push a result that is an OR of each children
+        if one children is fail, result is fail
+        if one children is not-impl, result is not-impl
+        if none of these happen, then it implies it is pass, so result is pass
+        "ID": schema.title,
+        "Status": "not-impl"
+    */
 
     parentsJsonArray = Object.getOwnPropertyNames(parentsJson)
     parentsJsonArray.forEach((curParentName, indexParent) => {

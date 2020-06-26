@@ -64,7 +64,7 @@ let simpleTD = JSON.stringify({
 		}
 	}
 })
-simpleTD = Buffer.from(simpleTD, 'utf8');
+simpleTD = Buffer.from(simpleTD, 'utf8')
 // fs.writeFileSync("./simpleTD.json",simpleTD,"utf8")
 // simpleTD = fs.readFileSync("./simpleTD.json")
 // const tdSchema = fs.readFileSync("td-schema.json","utf-8")
@@ -81,7 +81,7 @@ function fileLoad(loc) {
 tdAsserter([simpleTD], fileLoad)
 .then( result => {
 	console.log("OKAY")
-	console.log(result[0].length)
+	console.log(result.urn_simple.length)
 }, err => {
 	console.log("ERROR")
 	console.error(err)
