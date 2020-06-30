@@ -47,16 +47,6 @@ function validate(tdData, assertions, manualAssertions, tdSchema, logFunc) {
     let results = []
     logFunc("=================================================================")
 
-    // check whether it is a valid UTF-8
-    if (isUtf8(tdData)) {
-        results.push({
-            "ID": "td-json-open_utf-8",
-            "Status": "pass"
-        })
-    } else {
-        throw new Error("td-json-open_utf-8")
-    }
-
     // check whether it is a valid JSON
     let tdJson
     try {
@@ -67,6 +57,16 @@ function validate(tdData, assertions, manualAssertions, tdSchema, logFunc) {
         })
     } catch (error) {
         throw new Error("td-json-open")
+    }
+
+    // check whether it is a valid UTF-8
+    if (isUtf8(tdData)) {
+        results.push({
+            "ID": "td-json-open_utf-8",
+            "Status": "pass"
+        })
+    } else {
+        throw new Error("td-json-open_utf-8")
     }
 
     // checking whether two interactions of the same interaction affordance type have the same names
@@ -523,7 +523,7 @@ function securityContains(parent, child) {
 }
 
 /**
- * check Security and security Definitions
+ * check if used Security definitions are properly defined previously
  * @param {object} td The Td to do assertion tests
  */
 function checkSecurity(td) {
