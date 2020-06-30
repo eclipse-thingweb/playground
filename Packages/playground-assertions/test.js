@@ -128,7 +128,7 @@ function fileLoad(loc) {
 }
 
 
-tdAsserter([simpleTD, simpleTD2], fileLoad)
+tdAsserter([simpleTD], fileLoad)
 .then( result => {
 	console.log("OKAY")
 	// console.log(result.merged)
