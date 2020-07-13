@@ -106,9 +106,6 @@ document.getElementById("btn_validate").addEventListener("click", () => {util.va
 
 document.getElementById("btn_clearLog").addEventListener("click", util.clearLog)
 
-// document.getElementById("td-text").addEventListener("keydown", util.textAreaManipulation)
-// $("#td-text").keydown(textAreaManipulation);// Text area manipulation
-
 
 
 //* *************************Monaco editor code*********************************////

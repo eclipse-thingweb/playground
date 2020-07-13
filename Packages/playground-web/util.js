@@ -166,32 +166,6 @@ export function populateExamples(urlAddrObject){
 //     });
 // }
 
-/**
- * asdf TODO: remove jQuery, check if function is further required
- * @param {*} e asdf
- */
-// export function textAreaManipulation(e) {
-//     if(e.keyCode === 9) { // tab was pressed
-//         // get caret position/selection
-//         const start = this.selectionStart;
-//         const end = this.selectionEnd;
-
-//         const $this = $(this);
-//         const value = $this.val();
-
-//         // set textarea value to: text before caret + tab + text after caret
-//         $this.val(value.substring(0, start)
-//                     + "\t"
-//                     + value.substring(end));
-
-//         // put caret at right position again (add one for the tab)
-//         this.selectionStart = this.selectionEnd = start + 1;
-
-//         // prevent the focus lose
-//         e.preventDefault();
-//     }
-// }
-// module.exports.textAreaManipulation = textAreaManipulation
 
 /**
  * asdf
