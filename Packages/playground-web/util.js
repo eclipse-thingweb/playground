@@ -293,35 +293,6 @@ export function exampleSelectHandler(e, obj) {
 }
 
 /**
- * takes character number and gives out the line number
- * @param {*} characterNo asdf
- * @param {*} str asdf
- */
-function getLineNumber(characterNo,str)
-{
-    const charsPerLine=[];
-    const str2lines=str.split("\n");
-
-
-    // calculate number of characters in each line
-    $.each(str2lines,function(index,value){
-        const strVal = String(value);
-        charsPerLine.push(strVal.length);
-        characterNo++;
-    });
-
-    // find the line containing that characterNo
-    let count=0;
-    let lineNo=0;
-    while(characterNo>count)
-    {
-        count+=charsPerLine[lineNo];
-        lineNo++;
-    }
-    return lineNo;
-}
-
-/**
  * asdf TODO: needed? (assertions?)
  * @param {} bytes asdf
  */

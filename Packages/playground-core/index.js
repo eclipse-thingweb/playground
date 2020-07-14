@@ -65,6 +65,14 @@ function tdValidator(tdString, tdSchema, tdFullSchema, logFunc, { checkDefaults=
             report.json = "failed"
             logFunc("X JSON validation failed:")
             logFunc(err)
+
+            // if (err instanceof SyntaxError) {
+            //     const charNo=err.message.match(/\d+/g)
+            //     // console.log("charter ni is "+charNo);
+            //     const lineNo=getLineNumber(charNo,$("#td-text").val())
+            //     logFunc('> ' + err.message+"  Near Line No:"+ lineNo)
+            // }
+
             res({report, details})
         }
 
@@ -426,6 +434,40 @@ function tdValidator(tdString, tdSchema, tdFullSchema, logFunc, { checkDefaults=
                 logFunc('KO Error: securityDefinitions is mandatory')
             }
             return
+        }
+
+        /**
+         * takes character number and gives out the line number
+         * @param {number} characterNo character Number (can be )
+         * @param {string} str whole String
+         */
+        function getLineNumber(characterNo,str)
+        {
+            const charsPerLine=[]
+            const str2lines=str.split("\n")
+
+            // calculate number of characters in each line
+            str2lines.forEach( (value, index) => {
+                const strVal = String(value)
+                charsPerLine.push(strVal.length)
+                characterNo++
+            })
+
+            // $.each(str2lines,function(index,value){
+            //     const strVal = String(value)
+            //     charsPerLine.push(strVal.length)
+            //     characterNo++
+            // })
+
+            // find the line containing that characterNo
+            let count=0
+            let lineNo=0
+            while(characterNo>count)
+            {
+                count+=charsPerLine[lineNo]
+                lineNo++
+            }
+            return lineNo
         }
     })
 }
