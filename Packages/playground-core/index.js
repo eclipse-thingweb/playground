@@ -130,8 +130,10 @@ function tdValidator(tdString, tdSchema, tdFullSchema, logFunc, { checkDefaults=
 
             report.schema = "failed"
             logFunc("X JSON Schema validation failed:")
-            // TODO: Handle long error messages in case of oneOf
+
             logFunc('> ' + ajv.errorsText())
+
+            res({report, details})
         }
 
         // json ld validation

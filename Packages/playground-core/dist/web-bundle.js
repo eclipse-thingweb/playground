@@ -1,7 +1,18 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.tdValidator = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-/**
- * Core functionality of the Thing Description Playground
- */
+/* *******************************************************************************
+ * Copyright (c) 2020 Contributors to the Eclipse Foundation
+ *
+ * See the NOTICE file(s) distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0, or the W3C Software Notice and
+ * Document License (2015-05-13) which is available at
+ * https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document.
+ *
+ * SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
+ ********************************************************************************/
 
 const jsonld = require("jsonld")
 const Ajv = require("ajv")
@@ -55,6 +66,14 @@ function tdValidator(tdString, tdSchema, tdFullSchema, logFunc, { checkDefaults=
             report.json = "failed"
             logFunc("X JSON validation failed:")
             logFunc(err)
+
+            // if (err instanceof SyntaxError) {
+            //     const charNo=err.message.match(/\d+/g)
+            //     // console.log("charter ni is "+charNo);
+            //     const lineNo=getLineNumber(charNo,$("#td-text").val())
+            //     logFunc('> ' + err.message+"  Near Line No:"+ lineNo)
+            // }
+
             res({report, details})
         }
 
@@ -112,8 +131,10 @@ function tdValidator(tdString, tdSchema, tdFullSchema, logFunc, { checkDefaults=
 
             report.schema = "failed"
             logFunc("X JSON Schema validation failed:")
-            // TODO: Handle long error messages in case of oneOf
+
             logFunc('> ' + ajv.errorsText())
+
+            res({report, details})
         }
 
         // json ld validation
@@ -416,6 +437,40 @@ function tdValidator(tdString, tdSchema, tdFullSchema, logFunc, { checkDefaults=
                 logFunc('KO Error: securityDefinitions is mandatory')
             }
             return
+        }
+
+        /**
+         * takes character number and gives out the line number
+         * @param {number} characterNo character Number (can be )
+         * @param {string} str whole String
+         */
+        function getLineNumber(characterNo,str)
+        {
+            const charsPerLine=[]
+            const str2lines=str.split("\n")
+
+            // calculate number of characters in each line
+            str2lines.forEach( (value, index) => {
+                const strVal = String(value)
+                charsPerLine.push(strVal.length)
+                characterNo++
+            })
+
+            // $.each(str2lines,function(index,value){
+            //     const strVal = String(value)
+            //     charsPerLine.push(strVal.length)
+            //     characterNo++
+            // })
+
+            // find the line containing that characterNo
+            let count=0
+            let lineNo=0
+            while(characterNo>count)
+            {
+                count+=charsPerLine[lineNo]
+                lineNo++
+            }
+            return lineNo
         }
     })
 }
