@@ -16,10 +16,12 @@
 const jsonld = require("jsonld")
 const Ajv = require("ajv")
 
-// A special JSON validator that is used only to check whether the given object has duplicate keys.
-// The standard library doesn't detect duplicate keys and overwrites the first one with the second one.
-// TODO: replace with jsonlint ??
-const jsonValidator = require('json-dup-key-validator')
+const coreAssertions = require("./core-assertions")
+
+module.exports = tdValidator
+module.exports.propUniqueness = coreAssertions.checkPropUniqueness
+module.exports.multiLangConsistency = coreAssertions.checkMultiLangConsistency
+module.exports.security = coreAssertions.checkSecurity
 
 
 /**
@@ -60,7 +62,8 @@ function tdValidator(tdString, tdSchema, tdFullSchema, logFunc, { checkDefaults=
             interactions: null,
             security: null,
             uniqueness: null,
-            propUniqueness: null
+            propUniqueness: null,
+            multiLangConsistency: null
         }
 
         let tdJson
@@ -118,13 +121,10 @@ function tdValidator(tdString, tdSchema, tdFullSchema, logFunc, { checkDefaults=
             checkEnumConst(tdJson)
             checkPropItems(tdJson)
             checkInteractions(tdJson)
-            checkSecurity(tdJson)
             checkInteractionUniqueness(tdJson)
-            if(checkPropUniqueness(tdString, true, logFunc)) {
-                details.propUniqueness = "passed"
-            } else {
-                details.propUniqueness = "failed"
-            }
+            details.security = evalAssertion(coreAssertions.checkSecurity(tdJson))
+            details.propUniqueness = evalAssertion(coreAssertions.checkPropUniqueness(tdString))
+            details.multiLangConsistency = evalAssertion(coreAssertions.checkMultiLangConsistency(tdJson))
 
             // determine additional check state
             // passed + warning -> warning
@@ -338,119 +338,6 @@ function tdValidator(tdString, tdSchema, tdFullSchema, logFunc, { checkDefaults=
             return
         }
 
-        /** helper for checkSecurity */
-        function securityContains(parent, child) {
-
-            // security anywhere could be a string or array. Convert string to array
-            if (typeof child=="string"){
-                child=[child]
-            }
-            return child.every(elem => parent.indexOf(elem) > -1)
-        }
-
-        /** check security function */
-        function checkSecurity(td) {
-            details.security = "passed"
-
-            if (td.hasOwnProperty("securityDefinitions")) {
-                const securityDefinitionsObject = td.securityDefinitions
-                const securityDefinitions = Object.keys(securityDefinitionsObject)
-                const rootSecurity = td.security
-
-                if (securityContains(securityDefinitions, rootSecurity)) {
-                    // all good
-                } else {
-                    details.security = "failed"
-                    logFunc('KO Error: Security key in the root of the TD' +
-                        'has security schemes not defined by the securityDefinitions')
-                }
-
-                if (td.hasOwnProperty("properties")) {
-                    // checking security in property level
-                    tdProperties = Object.keys(td.properties)
-                    for (let i = 0; i < tdProperties.length; i++) {
-                        const curPropertyName = tdProperties[i]
-                        const curProperty = td.properties[curPropertyName]
-
-                        // checking security in forms level
-                        const curForms = curProperty.forms
-                        for (let j = 0; j < curForms.length; j++) {
-                            const curForm = curForms[j]
-                            if (curForm.hasOwnProperty("security")) {
-                                const curSecurity = curForm.security
-                                if (securityContains(securityDefinitions, curSecurity)) {
-                                    // all good
-                                } else {
-                                    details.security = "failed"
-                                    logFunc('KO Error: Security key in form ' + j +
-                                        ' in property ' + curPropertyName +
-                                        '  has security schemes not defined by the securityDefinitions')
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (td.hasOwnProperty("actions")) {
-                    // checking security in action level
-                    tdActions = Object.keys(td.actions)
-                    for (let i = 0; i < tdActions.length; i++) {
-                        const curActionName = tdActions[i]
-                        const curAction = td.actions[curActionName]
-
-                        // checking security in forms level
-                        const curForms = curAction.forms
-                        for (let j = 0; j < curForms.length; j++) {
-                            const curForm = curForms[j]
-                            if (curForm.hasOwnProperty("security")) {
-                                const curSecurity = curForm.security
-                                if (securityContains(securityDefinitions, curSecurity)) {
-                                    // all good
-                                } else {
-                                    details.security = "failed"
-                                    logFunc('KO Error: Security key in form ' + j +
-                                        ' in action ' + curActionName +
-                                        '  has security schemes not defined by the securityDefinitions')
-                                }
-                            }
-                        }
-
-                    }
-                }
-
-                if (td.hasOwnProperty("events")) {
-                    // checking security in event level
-                    tdEvents = Object.keys(td.events)
-                    for (let i = 0; i < tdEvents.length; i++) {
-                        const curEventName = tdEvents[i]
-                        const curEvent = td.events[curEventName]
-
-                        // checking security in forms level
-                        const curForms = curEvent.forms
-                        for (let j = 0; j < curForms.length; j++) {
-                            const curForm = curForms[j]
-                            if (curForm.hasOwnProperty("security")) {
-                                const curSecurity = curForm.security
-                                if (securityContains(securityDefinitions, curSecurity)) {
-                                    // all good
-                                } else {
-                                    details.security = "failed"
-                                    logFunc('KO Error: Security key in form ' + j +
-                                        ' in event ' + curEventName +
-                                        '  has security schemes not defined by the securityDefinitions')
-                                }
-                            }
-                        }
-
-                    }
-                }
-            } else {
-                details.security = "failed"
-                logFunc('KO Error: securityDefinitions is mandatory')
-            }
-            return
-        }
-
         /**
          *  Checks whether two interactions have the same name,
          *  e.g., an action named "status" and a property named "status"
@@ -481,231 +368,60 @@ function tdValidator(tdString, tdSchema, tdFullSchema, logFunc, { checkDefaults=
         }
 
         /**
+         * TODO: check whether still needed, since
          * takes character number and gives out the line number
          * @param {number} characterNo character Number (can be )
          * @param {string} str whole String
          */
-        function getLineNumber(characterNo,str)
-        {
-            const charsPerLine=[]
-            const str2lines=str.split("\n")
+        // function getLineNumber(characterNo,str)
+        // {
+        //     const charsPerLine=[]
+        //     const str2lines=str.split("\n")
 
-            // calculate number of characters in each line
-            str2lines.forEach( (value, index) => {
-                const strVal = String(value)
-                charsPerLine.push(strVal.length)
-                characterNo++
+        //     // calculate number of characters in each line
+        //     str2lines.forEach( (value, index) => {
+        //         const strVal = String(value)
+        //         charsPerLine.push(strVal.length)
+        //         characterNo++
+        //     })
+
+        //     // $.each(str2lines,function(index,value){
+        //     //     const strVal = String(value)
+        //     //     charsPerLine.push(strVal.length)
+        //     //     characterNo++
+        //     // })
+
+        //     // find the line containing that characterNo
+        //     let count=0
+        //     let lineNo=0
+        //     while(characterNo>count)
+        //     {
+        //         count+=charsPerLine[lineNo]
+        //         lineNo++
+        //     }
+        //     return lineNo
+        // }
+
+        /**
+         * Evaluates whether an assertion function contains a failed check
+         * Whether assertions are not-implemented or passed does not matter
+         * Logs the comment
+         * @param {Array} results Array of objects with props "ID", "Status" and optionally "Comment"
+         * @returns "passed" if no check failed, "failed" if one or more checks failed
+         */
+        function evalAssertion(results) {
+            let eval = "passed"
+            results.forEach( resultobj => {
+                if (resultobj.Status === "failed") {
+                    eval = "failed"
+                    logFunc("KO Error: Assertion: " + resultobj.ID)
+                    logFunc(resultobj.Comment)
+                }
             })
-
-            // $.each(str2lines,function(index,value){
-            //     const strVal = String(value)
-            //     charsPerLine.push(strVal.length)
-            //     characterNo++
-            // })
-
-            // find the line containing that characterNo
-            let count=0
-            let lineNo=0
-            while(characterNo>count)
-            {
-                count+=charsPerLine[lineNo]
-                lineNo++
-            }
-            return lineNo
+            return eval
         }
     })
 }
 
-module.exports = tdValidator
 
 
-
-/**
- *  Checking whether in one interaction pattern there are duplicate names, e.g. two properties called temp
- *  However, if there are no properties then it is not-impl
- *
- * @param {string} tdString The Td under test as string
- */
-function checkPropUniqueness(tdString, noAssertions=false, logFunc) {
-
-    const results = []
-    if (noAssertions && logFunc === undefined) {
-        logFunc = console.log
-    }
-    // jsonvalidator throws an error if there are duplicate names in the interaction level
-    try {
-        jsonValidator.parse(tdString, false)
-
-        if (noAssertions) {
-            return true
-        }
-
-        const td = JSON.parse(tdString)
-
-        // no problem in interaction level
-        let tdInteractions = []
-
-        // checking whether there are properties at all, if not uniqueness is not impl
-        if (td.hasOwnProperty("properties")) {
-            tdInteractions = tdInteractions.concat(Object.keys(td.properties))
-            // then we can add unique properties pass
-            results.push({
-                "ID": "td-properties_uniqueness",
-                "Status": "pass",
-                "Comment": ""
-            })
-        } else {
-            // then we add unique properties as not impl
-            results.push({
-                "ID": "td-properties_uniqueness",
-                "Status": "not-impl",
-                "Comment": "no properties"
-            })
-        }
-
-        // similar to just before, checking whether there are actions at all, if not uniqueness is not impl
-        if (td.hasOwnProperty("actions")) {
-            tdInteractions = tdInteractions.concat(Object.keys(td.actions))
-            results.push({
-                "ID": "td-actions_uniqueness",
-                "Status": "pass",
-                "Comment": ""
-            })
-        } else {
-            // then we add unique actions as not impl
-            results.push({
-                "ID": "td-actions_uniqueness",
-                "Status": "not-impl",
-                "Comment": "no actions"
-            })
-        }
-
-        // similar to just before, checking whether there are events at all, if not uniqueness is not impl
-        if (td.hasOwnProperty("events")) {
-            tdInteractions = tdInteractions.concat(Object.keys(td.events))
-            results.push({
-                "ID": "td-events_uniqueness",
-                "Status": "pass",
-                "Comment": ""
-            })
-        } else {
-            // then we add unique events as not impl
-            results.push({
-                "ID": "td-events_uniqueness",
-                "Status": "not-impl",
-                "Comment": "no events"
-            })
-        }
-
-        return results
-
-    } catch (error) {
-        // there is a duplicate somewhere
-        if (noAssertions) {
-            logFunc("KO Error: Duplicate object properties are not allowed")
-            logFunc(error)
-            return false
-        }
-        // convert it into string to be able to process it
-        // error is of form = Error: Syntax error: duplicated keys "overheating" near ting": {
-        const errorString = error.toString()
-        // to get the name, we need to remove the quotes around it
-        const startQuote = errorString.indexOf('"')
-        // slice to remove the part before the quote
-        const restString = errorString.slice(startQuote + 1)
-        // find where the interaction name ends
-        const endQuote = restString.indexOf('"')
-        // finally get the interaction name
-        const interactionName = restString.slice(0, endQuote)
-
-        // trying to find where this interaction is and put results accordingly
-        const td = JSON.parse(tdString)
-
-        if (td.hasOwnProperty("properties")) {
-            const tdProperties = td.properties
-            if (tdProperties.hasOwnProperty(interactionName)) {
-                // duplicate was at properties but that fails the td-unique identifiers as well
-                // console.log("at property");
-                results.push({
-                    "ID": "td-properties_uniqueness",
-                    "Status": "fail",
-                    "Comment": "duplicate property names"
-                })
-                // since JSON.parse removes duplicates, we replace the duplicate name with duplicateName
-                tdString = tdString.replace(interactionName, "duplicateName")
-
-            } else {
-                // there is duplicate but not here, so pass
-                results.push({
-                    "ID": "td-properties_uniqueness",
-                    "Status": "pass",
-                    "Comment": ""
-                })
-            }
-        } else {
-            results.push({
-                "ID": "td-properties_uniqueness",
-                "Status": "not-impl",
-                "Comment": "no properties"
-            })
-        }
-
-        if (td.hasOwnProperty("actions")) {
-            const tdActions = td.actions
-            if (tdActions.hasOwnProperty(interactionName)) {
-                // duplicate was at actions but that fails the td-unique identifiers as well
-                // console.log("at action");
-                results.push({
-                    "ID": "td-actions_uniqueness",
-                    "Status": "fail",
-                    "Comment": "duplicate action names"
-                })
-                // since JSON.parse removes duplicates, we replace the duplicate name with duplicateName
-                tdString = tdString.replace(interactionName, "duplicateName")
-            } else {
-                results.push({
-                    "ID": "td-actions_uniqueness",
-                    "Status": "pass",
-                    "Comment": ""
-                })
-            }
-        } else {
-            results.push({
-                "ID": "td-actions_uniqueness",
-                "Status": "not-impl",
-                "Comment": "no actions"
-            })
-        }
-
-        if (td.hasOwnProperty("events")) {
-            const tdEvents = td.events
-            if (tdEvents.hasOwnProperty(interactionName)) {
-                // duplicate was at events but that fails the td-unique identifiers as well
-                // console.log("at event");
-                results.push({
-                    "ID": "td-events_uniqueness",
-                    "Status": "fail",
-                    "Comment": "duplicate event names"
-                })
-                // since JSON.parse removes duplicates, we replace the duplicate name with duplicateName
-                tdString = tdString.replace(interactionName, "duplicateName")
-            } else {
-                results.push({
-                    "ID": "td-events_uniqueness",
-                    "Status": "pass",
-                    "Comment": ""
-                })
-            }
-        } else {
-            results.push({
-                "ID": "td-events_uniqueness",
-                "Status": "not-impl",
-                "Comment": "no events"
-            })
-        }
-
-        return results
-    }
-}
-
-module.exports.propUniqueness = checkPropUniqueness
