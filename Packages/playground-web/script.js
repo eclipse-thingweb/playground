@@ -15,9 +15,9 @@
 
 import * as util from "./util.js"
 
-
-const manualAssertions = [];
-const results = [];
+const manualAssertions = []
+let manualAssertionsLoaded = false
+const results = []
 let autoValidate = false
 
 document.getElementById("box_jsonld_validate").checked = true
@@ -25,66 +25,83 @@ document.getElementById("box_jsonld_validate").checked = true
 document.getElementById("validation_table_head").addEventListener("click", ()=>{
 	util.toggleValidationStatusTable()
 })
+
+// Auto validates only when the box is checked.
 document.getElementById("box_auto_validate").addEventListener("change", () => {
 	autoValidate = document.getElementById("box_auto_validate").checked
 	console.log("autoValidate = " + autoValidate)
 })
 
-// $("#box_auto_validate").change(function(){ // Auto validates only when the box is checked.
-// 	autoValidate=$("#box_auto_validate").prop("checked");
-// });
 
-//	$("#btn_assertion_popup").click(function(event){ // show assertion test popup
-//		event.preventDefault();
+document.getElementById("btn_assertion_popup").addEventListener("click", () => {
+	if (!manualAssertionsLoaded) {
+		fetch("./node_modules/playground-assertions/manual.csv")
+		.then( res => {
+			if (res.ok) {
+				return res.text()
+			} else {
+				throw new Error("Could not fetch manual assertions: \n Status:" +
+								res.status + " " + res.statusText + "\n Text: " + res.text())
+			}
+		})
+		.then( text => {
+			fetchManualAssertions(text)
+			manualAssertionsLoaded = true
+			document.getElementById("assertion_test_popup").style.display = "block"
+		})
+	} else {
+		document.getElementById("assertion_test_popup").style.display = "block"
+	}
 
-//		$.ajax({
-//			type: "GET",
-//			url: "manual.csv",
-//			dataType: "text",
-//			success(data) {fetchManualAssertions(data);}
-//		});
+	/*
+		For the given CSV data of assertions, it parses them uses Papa library
+		and pushes them as JSON objects in an array
+	*/
+	function fetchManualAssertions(allText) {
+		const assertionData = Papa.parse(allText).data;
+		for (let index = 1; index < assertionData.length; index++) { // 1 and not 0 since the 0th is the header
+			const element = assertionData[index]
+			const singleAssertionJSON = {"ID":element[0],"Status":element[1],"Comment":element[2],"Description":element[3]}
+			manualAssertions.push(singleAssertionJSON)
+		}
 
-		/*
-			For the given CSV data of assertions, it parses them uses Papa library
-			and pushes them as JSON objects in an array
-		*/
-		// function fetchManualAssertions(allText) {
-		// 	manualAssertions=[]
-		// 	var assertionData = Papa.parse(allText).data;
-		// 	for (let index = 1; index < assertionData.length; index++) { //1 and not 0 since the 0th is the header
-		// 		var element = assertionData[index];
-		// 		var singleAssertionJSON = {"ID":element[0],"Status":element[1],"Comment":element[2],"Description":element[3]};
-		// 		manualAssertions.push(singleAssertionJSON);
-		// 	}
+		manualAssertions.forEach( (assertion, i) => {
+			const htmlrow =
+				"<td style=\"padding-left: 1em;\">" + i + "</td>" +
+				"<input type='hidden' value="+i+">"+
+				"<td style=\"padding-left: 1em;\">" + assertion.ID + "</td>" +
+				"<td>"+
+				"<input type='radio' value='null' name='status"+i+"'class='indefault' checked/>null"+
+				"<input type='radio' value='not-impl' name='status"+i+"'/>not-impl"+
+				"<input type='radio' value='impl' name='status"+i+"'/>impl"+
+				"<td style=\"padding-left: 1em;\">" + assertion.Description + "</td>"
+			document.getElementById("manual_assertion_table_body").innerHTML += htmlrow
+		})
 
-		// 	$.each( manualAssertions, function( i, assertion ) {
-		// 		var htmlrow =
-		// 			"<td style=\"padding-left: 1em;\">" + i + "</td>" +
-		// 			"<input type='hidden' value="+i+">"+
-		// 			"<td style=\"padding-left: 1em;\">" + assertion.ID + "</td>" +
-		// 			"<td>"+
-		// 			"<input type='radio' value='null' name='status"+i+"'/>null"+
-		// 			"<input type='radio' value='not-impl' name='status"+i+"'/>not-impl"+
-		// 			"<input type='radio' value='impl' name='status"+i+"'/>impl"+
-		// 			"<td style=\"padding-left: 1em;\">" + assertion.Description + "</td>" ;
-		// 		$("<tr/> </table>").html(htmlrow).appendTo("#manual_assertion_table_body");
-		// 		$('input:radio[name=status'+i+"]")[0].checked = true;
+		// $('input[type="radio"]').on('change', function() {
+		// 	indexnum= $(this).parent().parent().find("input[type=hidden]").first().val()
+		// 	manualAssertions[indexnum].Status = $(this).val()
+		// })
+		for (const inputEl of document.getElementsByTagName("input")) {
+			if (inputEl.type === "radio") {
+				console.log("asdf")
 
-		// 	});
+				inputEl.addEventListener("change", thisel => {
+					// console.log(thisel)
+					const indexnum = thisel.srcElement.parentElement.parentElement.getElementsByTagName("input")[0].value
+					// console.log(indexnum)
+					manualAssertions[indexnum].Status = thisel.srcElement.value
+					 console.log(manualAssertions)
+				})
+			}
+		}
+	}
 
-		// 	$('input[type="radio"]').on('change', function() {
-		// 		indexnum= $(this).parent().parent().find("input[type=hidden]").first().val()
-		// 		manualAssertions[indexnum]["Status"]=$(this).val()
-		// 	});
-		// }
+})
 
-//		$("#assertion_test_popup").css("display","block");
-//	});
-
-//	$("#close_assertion_test_popup").click(function(event){// close assertion test popup
-//		event.preventDefault();
-//		$("#assertion_test_popup").css("display","none");
-//	})
+document.getElementById("close_assertion_test_popup").addEventListener("click", () => {
+	document.getElementById("assertion_test_popup").style.display = "none"
+})
 
 const urlAddrObject= util.getExamplesList(); // Fetching list of examples from the given array(in helperFunctions.js).
 util.populateExamples(urlAddrObject);     // Loading the examples given in list from their respective URLs

@@ -11,7 +11,8 @@
   "license": "EPL-2.0 OR W3C-20150513",
   "dependencies": {
     "bootstrap-css-only": "4.4.1",
-    "monaco-editor": "^0.20.0"
+    "monaco-editor": "^0.20.0",
+    "papaparse": "^5.2.0"
   },
   "devDependencies": {
     "browserify": "^16.5.1",

@@ -24,6 +24,32 @@
 
     <body>
 
+		<div  id="assertion_test_popup" class="curtain" style="display: none; background-color: rgba(0, 0, 0, 0.8) ;" >
+			<div class="assertion-test-popup">
+				<button class="btn top-right" id="close_assertion_test_popup">X</button>
+				<div >Please Select the manual assertions options.</div>
+					
+				<table class="table table-striped" style="display:block; height : 80%;overflow-y : scroll;" >
+					
+					<thead class="thead-dark">
+						<tr>
+						<th scope="col">#</th>
+						<th scope="col">Assertion ID</th>
+						<th scope="col" class="statcol">Status</th>
+						<th scope="col">Description</th>
+						</tr>
+					</thead>
+					
+					<tbody id="manual_assertion_table_body"  >
+						<!--Manual assertions will be appended here dynamically-->
+					</tbody>
+						
+				</table>
+				
+				<button type="button" class="btn" id="btn_assertion">Assertion Test</button>
+			</div>
+		</div>
+
         <div id="curtain" class="curtain">
             <div id="curtain-text">Loading Environment. Please wait....</div>
             <img src="./media/loading.svg" class="loading-spinner" alt="Loading..." />
@@ -209,7 +235,7 @@
 				<p id="copynotice">Copyrights © 2020 Eclipse Thingweb. All Rights Reserved.</p>
 			</div>
         </footer>
-		
+		<script src="./node_modules/papaparse/papaparse.js"></script>
 		<script src="./node_modules/playground-core/dist/web-bundle.min.js"></script>
 		<script src="./node_modules/monaco-editor/min/vs/loader.js"></script>
 		<script type="module" src="./script.js"></script>

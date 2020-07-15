@@ -330,6 +330,18 @@ height: 80%;
 background-color: rgba(255, 255, 255, 1) ;
 }
 
+.thead-dark > tr > th {
+	padding-left: 1em;
+}
+
+.thead-dark > tr > th.statcol {
+	padding-right: 10em;
+}
+
+#close_assertion_test_popup{
+	background-color: rgba(255, 255, 255, 1) ;
+}
+
 .top-right{
 margin-top: 1px;
 margin-right: 2px;
