@@ -8,8 +8,7 @@
   "main": "index.js",
   "scripts": {
     "test": "node test.js",
-    "bundle": "npx browserify ./index.js -s tdValidator -o ./dist/web-bundle.js & npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
-    "deploy": "del ../playground-cli/node_modules/playground-core & cp ./ ../playground-cli/node_modules/playground-core"
+    "bundle": "npx browserify ./index.js -s tdValidator -o ./dist/web-bundle.js & npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js"
   },
   "dependencies": {
     "ajv": "^6.12.2",
