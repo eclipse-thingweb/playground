@@ -191,30 +191,31 @@ function assertionReport() {
  */
 function assertTd(tds, type) {
     return new Promise( (res, rej) => {
-        if (tds.length === 0) {res() }
-        tdAssertions(tds, fileLoader, logFunc, manualAssertions).then( results => {
-            if (type === "file") {
-                outReport(results, "assertionsTest_", input)
-                res()
-            }
-            else if (type === "list" || type === "dir") {
-                if (myArguments.assertionNomerge) {
-                    Object.keys(results.jsonResults).forEach( id => {
-                        outReport(results.jsonResults[id], "assertionsTest_", id)
-                    })
+        if (tds.length > 0) {
+            tdAssertions(tds, fileLoader, logFunc, manualAssertions).then( results => {
+                if (type === "file") {
+                    outReport(results, "assertionsTest_", input)
+                    res()
+                }
+                else if (type === "list" || type === "dir") {
+                    if (myArguments.assertionNomerge) {
+                        Object.keys(results.jsonResults).forEach( id => {
+                            outReport(results.jsonResults[id], "assertionsTest_", id)
+                        })
+                    }
+                    else {
+                        outReport(results.merged, ".assertionsTest")
+                        if (tdsToMerge.length > 0) {
+                            tdsToMerge.push(results.merged)
+                        }
+                    }
+                    res()
                 }
                 else {
-                    outReport(results.merged, ".assertionsTest")
-                    if (tdsToMerge.length > 0) {
-                        tdsToMerge.push(results.merged)
-                    }
+                    rej("unknown assertion type")
                 }
-                res()
-            }
-            else {
-                rej("unknown assertion type")
-            }
-        })
+            })
+        }
     })
 }
 
@@ -227,7 +228,6 @@ function assertTd(tds, type) {
 function mergeReports(reports) {
     return new Promise( (res, rej) => {
         if (reports.length > 0) {
-            console.log(reports)
             console.log(reports.length)
             assertMergeResults(reports).then( merged => {
                 assertCheckCoverage(merged, logFunc)
