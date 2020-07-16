@@ -10,7 +10,6 @@
   "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
   "license": "EPL-2.0 OR W3C-20150513",
   "dependencies": {
-    "argly": "^1.2.0",
-    "eslint": "^7.1.0"
+    "argly": "^1.2.0"
   }
 }

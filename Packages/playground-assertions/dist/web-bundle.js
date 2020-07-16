@@ -540,6 +540,12 @@ const csvjson = require('csvjson')
 
 const path = require("path")
 
+module.exports = tdAssertions
+module.exports.resultsToCsv = resultsToCsv
+module.exports.assertionTests = validate
+module.exports.checkCoverage = checkCoverage
+module.exports.mergeResults = mergeResults
+
 
 /**
  * asdf
@@ -664,12 +670,6 @@ function resultsToCsv(results) {
     return json2csvParser.parse(results)
 }
 
-
-module.exports = tdAssertions
-module.exports.resultsToCsv = resultsToCsv
-module.exports.assertionTests = validate
-module.exports.checkCoverage = checkCoverage
-module.exports.mergeResults = mergeResults
 }).call(this,require("buffer").Buffer)
 },{"./assertionTests":1,"./checkCoverage":2,"./mergeResults":4,"buffer":49,"csvjson":51,"json2csv":64,"path":65}],4:[function(require,module,exports){
 (function (process){

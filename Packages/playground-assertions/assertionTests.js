@@ -41,7 +41,7 @@ function validate(tdData, assertions, manualAssertions, tdSchema, logFunc) {
     tdSchema = JSON.parse(tdSchema)
     // a JSON file that will be returned containing the result for each assertion as a JSON Object
     let results = []
-    logFunc("=================================================================")
+    // logFunc("=================================================================")
 
     // check whether it is a valid JSON
     let tdJson

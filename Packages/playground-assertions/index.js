@@ -23,6 +23,14 @@ const csvjson = require('csvjson')
 
 const path = require("path")
 
+module.exports = tdAssertions
+module.exports.resultsToCsv = resultsToCsv
+module.exports.assertionTests = validate
+module.exports.checkCoverage = checkCoverage
+module.exports.mergeResults = mergeResults
+module.exports.manualToJson = manualToJson
+module.exports.collectAssertionSchemas = collectAssertionSchemas
+
 
 /**
  * asdf
@@ -41,7 +49,7 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, locally=false
         if(typeof fileLoader !== "function") {throw new Error("jsonLoader has to be a function")}
         if(logFunc === undefined) {logFunc = console.log}
         if(givenManual !== undefined && typeof givenManual !== "object") {
-            throw new Error("givenManual have to be a JSON object if given.")
+            throw new Error("givenManual has to be a JSON object if given.")
         }
         const pathOffset = locally ? "" : path.join("./node_modules", "playground-assertions")
         // loading files
@@ -52,14 +60,11 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, locally=false
 
         Promise.all(loadProm).then( promResults => {
 
-            const options = {
-                delimiter: ',', // optional
-                quote: '"' // optional
-            }
+
             const assertionSchemas = promResults.shift()
             const tdSchema = promResults.shift()
             const manualAssertionsJSON = (givenManual === undefined) ?
-                                        csvjson.toObject(promResults.shift().toString(), options) :
+                                        manualToJson(promResults.shift().toString()) :
                                         givenManual
 
             const jsonResults = {}
@@ -73,22 +78,20 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, locally=false
             })
 
             const tdNames = Object.keys(jsonResults)
-            console.log(tdNames)
+
             if (tdNames.length > 1) {
-                console.log(">1 td")
                 const resultAr = []
                 Object.keys(jsonResults).forEach( id => {
                     resultAr.push(jsonResults[id])
                 })
                 mergeResults(resultAr).then( merged => {
-                    // console.log(merged)
-                    checkCoverage(merged)
+                    checkCoverage(merged, logFunc)
                     res({jsonResults, merged})
                 }, err => {rej("merging failed: " + err)})
             }
             else {
                 const merged = jsonResults[tdNames[0]]
-                checkCoverage(merged)
+                checkCoverage(merged, logFunc)
                 res(merged)
             }
 
@@ -100,7 +103,7 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, locally=false
 }
 
 /**
- * Private helper: Loads and generates an Array containing all assertion objects
+ * Helper: Loads and generates an Array containing all assertion objects
  * @param {string} assertionsDirectory path to the directory, which contains the assertions
  * @param {string} assertionsList path to the assertion filenames list
  * @param {function} loadFunction (string) => string path string as input should return file content as string
@@ -147,9 +150,10 @@ function resultsToCsv(results) {
     return json2csvParser.parse(results)
 }
 
-
-module.exports = tdAssertions
-module.exports.resultsToCsv = resultsToCsv
-module.exports.assertionTests = validate
-module.exports.checkCoverage = checkCoverage
-module.exports.mergeResults = mergeResults
+function manualToJson(csv) {
+    const options = {
+        delimiter: ',', // optional
+        quote: '"' // optional
+    }
+    return csvjson.toObject(csv, options)
+}

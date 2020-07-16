@@ -37,3 +37,6 @@ AssertionTester/Results/*.csv
 AssertionTester/Results/*.json
 AssertionTester/.~lock.implementationReport.ods#
 AssertionTester/Results/mergedResults.csv
+
+# CLI output
+**/out/
