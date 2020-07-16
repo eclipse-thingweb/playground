@@ -23,9 +23,9 @@ export function getTdUrl(urlAddr){
         fetch(urlAddr)
         .then(res => res.json())
         .then(data => {
-            console.log(data)
             resolve(data)
         }, err => {alert("JSON could not be fetched from: " + urlAddr + "\n Error: " + err)})
+
     })
 }
 
@@ -89,108 +89,67 @@ export function performAssertionTest(e, manualAssertions){
         return
     }
 
-
-    let tdSchema=[];
-    let draft=[];
-
     const logging = input => {
         document.getElementById("curtain-text").innerHTML = input
     }
 
     tdAssertions([tdToValidate], getTextUrl, logging, manualAssertions)
-    .then( result => console.log(result))
+    .then( result => {
+        // remove commas to avoid errors
+        const cleanResults = []
+        result.forEach( el => {
+            cleanResults.push({
+                ID: el.ID.replace(/,/g, ''),
+                Status: el.Status.replace(/,/g, ''),
+                Comment: el.Comment ? el.Comment.replace(/,/g, '') : "no Comment"
+            })
+        })
 
+        const csv = Papa.unparse(cleanResults)
 
-    // $.getJSON('list.json', function (assertionList) {
+        exportCSVFile("assertionTest", csv)
+        document.getElementById("curtain").style.display = "none"
 
-    //     const tAssertions=assertionList.length
+    }, err => {
+        alert("Assertion Error: " + err)
+        document.getElementById("curtain").style.display = "none"
+    })
 
-    //     for (let i = 0; i < tAssertions; i++) {
-    //         // send an AJAX request to each individual JSON file
-    //         // available on the server as returned by the discover endpoint
-    //         $("#curtain-text").html("Loading Assertion Schemas:"+(i*100/tAssertions).toString()+"%")
-    //         $.getJSON('AssertionTester/Assertions/'+assertionList[i], function (assertion) {
-
-    //             assertionSchemas.push(assertion);
-
-    //         });
-    //     }
-    //     console.log(assertionSchemas)
-    //     $("#curtain-text").html("Loading JSON Schema Darft 06");
-    //     $.getJSON('json-schema-draft-06.json', function (json) {
-
-    //         draft=json;
-    //         $("#curtain-text").html("Loading TD Schema. ");
-    //         $.getJSON('td-schema.json', function (schemajson) {
-    //             tdSchema=schemajson;
-    //             let curCsvResults = []
-
-    //             try {
-    //                 curCsvResults = assertionValidate(tdToValidate, assertionSchemas, manualAssertions, tdSchema, draft);
-
-    //                 // toOutput(JSON.parse(tdToValidate).id, outputLocation, curCsvResults)
-    //                 console.log(curCsvResults);
-    //             } catch (error) {
-    //                 // this needs to go to output
-    //                 console.log({
-    //                     "ID": error,
-    //                     "Status": "fail",
-    //                     "Comment":"Invalid TD"
-    //                 });
-    //                 results.push({
-    //                     "ID": error,
-    //                     "Status": "fail",
-    //                     "Comment":"Invalid TD"
-    //                 });
-    //                 curCsvResults=results
-    //             }
-    //             // console.log(schemajson)
-
-    //             $("#curtain-text").html("Creating outputfile.");
-    //             assertionTestResult=curCsvResults;
-    //              const assertionTestResultFormatted=[];
-    //             const csvContent = "data:text/csv;charset=utf-8,";
-
-
-
-    //             const headers = {
-    //                 ID: "ID",
-    //                 Status: "Status",
-    //                 Comment:"Comment"
-    //             };
-
-
-    //             assertionTestResult.forEach(item => {
-    //                 if(item.Comment){
-    //                 assertionTestResultFormatted.push({
-    //                     ID: item.ID.replace(/,/g, ''), // remove commas to avoid errors,
-    //                     Status: item.Status.replace(/,/g, ''),
-    //                     Comment: item.Comment.replace(/,/g, '')    })}
-    //                 else{
-    //                     assertionTestResultFormatted.push({
-    //                         ID: item.ID.replace(/,/g, ''), // remove commas to avoid errors,
-    //                         Status: item.Status.replace(/,/g, ''),
-    //                         Comment: "no Comment"})
-    //                     }
-
-    //                 });
-
-    //             const fileTitle="assertionTest";
-
-    //             exportCSVFile(headers, assertionTestResultFormatted, fileTitle);
-
-
-    //             $("#curtain").css("display","none")// remove curtain
-
-    //     })
-
-    // })
-    // })
 }
 
 
 /**
- * asdf
+ *  Offers a given content for download as a csv file.
+ * @param {string} fileTitle The title of the csv file
+ * @param {string} csv The content of the csv file
+ */
+function exportCSVFile(fileTitle, csv) {
+
+    const exportedFilename = fileTitle + ".csv"
+
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    if (navigator.msSaveBlob) { // IE 10+
+        navigator.msSaveBlob(blob, exportedFilename);
+    } else {
+        const link = document.createElement("a");
+        if (link.download !== undefined) { // feature detection
+            // Browsers that support HTML5 download attribute
+            const url = URL.createObjectURL(blob)
+            link.setAttribute("href", url)
+            link.setAttribute("download", exportedFilename)
+            link.setAttribute("src", url.slice(5))
+            link.style.visibility = "hidden";
+            document.body.appendChild(link)
+            link.click();
+            document.body.removeChild(link)
+            URL.revokeObjectURL(url)
+        }
+    }
+}
+
+
+/**
+ * TODO: make it work
  */
 function submitAsGist(){
     const name = prompt("Please enter the Name of TD:");
@@ -289,9 +248,9 @@ export function getExamplesList(){
                     "addr":"./node_modules/playground-core/examples/invalid/emptySecDef.json",
                     "type":"invalid"
                 }
-            };
+            }
 
-    return examples;
+    return examples
 }
 
 /**
@@ -314,90 +273,20 @@ export function exampleSelectHandler(e, obj) {
     }
 }
 
-/**
- * asdf
- * @param {*} objArray asdf
- */
-function convertToCSV(objArray) {
-    const array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-    let str = '';
-
-    for (let i = 0; i < array.length; i++) {
-        let line = '';
-        for (const index in array[i]) {
-            if (Object.prototype.hasOwnProperty.call(array[i], index)) {
-                if (line !== '') line += ','
-
-                line += array[i][index];
-            }
-        }
-        str += line + '\r\n';
-    }
-    return str;
-}
-
-/**
- *
- * @param {*} headers sda
- * @param {*} items sdf
- * @param {*} fileTitle sdf
- */
-function exportCSVFile(headers, items, fileTitle) {
-    if (headers) {
-        items.unshift(headers);
-    }
-
-    // Convert Object to JSON
-    const jsonObject = JSON.stringify(items);
-
-    const csv = this.convertToCSV(jsonObject);
-
-    const exportedFilename = fileTitle + '.csv' || 'export.csv';
-
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    if (navigator.msSaveBlob) { // IE 10+
-        navigator.msSaveBlob(blob, exportedFilename);
-    } else {
-        const link = document.createElement("a");
-        if (link.download !== undefined) { // feature detection
-            // Browsers that support HTML5 download attribute
-            const url = URL.createObjectURL(blob);
-            link.setAttribute("href", url);
-            link.setAttribute("download", exportedFilename);
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-    }
-}
 
 /**
  * Calls the validation function if intended
- * @param {Event} e Event that triggered the function call
  * @param {string} source "auto" or "manual"
  * @param {boolean} autoValidate is autovalidation active?
  */
-export function validate(e,source, autoValidate) {
-//    console.log(typeof e.type)
-    if(typeof e.type !== "undefined") {
+export function validate(source, autoValidate) {
+    if(source === "manual" || (source === "auto" && autoValidate)) {
         const text = window.editor.getValue();
-        source=e.data.source;
 
         resetValidationStatus()
 
-          //  source=e.data.source;
         realValidator(text, source);
     }
-    else {
-        if (!(source === "auto" && autoValidate === false)) {
-                const text = window.editor.getValue();
-
-                resetValidationStatus()
-
-                //  source=e.data.source;
-                realValidator(text, source);
-        }}
 }
 
 /* ----------------- Private Helpers ----------------------- */
@@ -424,38 +313,42 @@ function realValidator(td, source) {
             tdValidator(td, JSON.stringify(values[0]), JSON.stringify(values[1]), log, {checkDefaults: true, checkJsonLd})
             .then( result => {
                 let resultStatus = "success"
-            log(JSON.stringify(result));
-            // console.log(result);
-            ["json","schema", "defaults", "jsonld", "add"].forEach( el => {
-                console.log(el,result.report[el])
-                const spotName = "spot-" + el
-                if (result.report[el] === "passed") {
-                    document.getElementById(spotName).style.visibility = "visible"
-                    document.getElementById(spotName).setAttribute("fill", "green")
-                    if(source === "manual") {log(el + "validation... OK")}
-                }
-                else if (result.report[el] === "warning") {
-                    document.getElementById(spotName).style.visibility = "visible"
-                    document.getElementById(spotName).setAttribute("fill", "orange")
-                    resultStatus = (resultStatus !== "danger") ? "warning" : "danger"
-                    if(source === "manual") {log(el + "optional validation... KO")}
 
+                Object.keys(result.report).forEach( el => {
+                    const spotName = "spot-" + el
+                    if (result.report[el] === "passed") {
+                        document.getElementById(spotName).style.visibility = "visible"
+                        document.getElementById(spotName).setAttribute("fill", "green")
+                        if(source === "manual") {log(el + " validation... OK")}
+                    }
+                    else if (result.report[el] === "warning") {
+                        document.getElementById(spotName).style.visibility = "visible"
+                        document.getElementById(spotName).setAttribute("fill", "orange")
+                        resultStatus = (resultStatus !== "danger") ? "warning" : "danger"
+                        if(source === "manual") {log(el + " optional validation... KO")}
+
+                    }
+                    else if (result.report[el] === "failed") {
+                        document.getElementById(spotName).style.visibility = "visible"
+                        document.getElementById(spotName).setAttribute("fill", "red")
+                        resultStatus = "danger"
+                        if(source === "manual") {log("X " + el + " validation... KO")}
+                    }
+                    else if (result.report[el] === null) {
+                        // do nothing
+                    }
+                    else {
+                        console.error("unknown report feedback value")
+                    }
+                })
+
+                if (source === "manual") {
+                    log("Details: ")
+                    Object.keys(result.details).forEach(el => {log("    " + el + " " + result.details[el])})
                 }
-                else if (result.report[el] === "failed") {
-                    document.getElementById(spotName).style.visibility = "visible"
-                    document.getElementById(spotName).setAttribute("fill", "red")
-                    resultStatus = "danger"
-                    if(source === "manual") {log("X" + el + "validation... KO")}
-                }
-                else if (result.report[el] === null) {
-                    // do nothing
-                }
-                else {
-                    console.error("unknown report feedback value")
-                }
-            })
-            updateValidationStatusHead(resultStatus);
-            document.getElementById("btn_validate").removeAttribute("disabled")
+
+                updateValidationStatusHead(resultStatus);
+                document.getElementById("btn_validate").removeAttribute("disabled")
             })
     })
 }

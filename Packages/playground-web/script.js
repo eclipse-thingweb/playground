@@ -29,7 +29,6 @@ document.getElementById("validation_table_head").addEventListener("click", ()=>{
 // Auto validates only when the box is checked.
 document.getElementById("box_auto_validate").addEventListener("change", () => {
 	autoValidate = document.getElementById("box_auto_validate").checked
-	console.log("autoValidate = " + autoValidate)
 })
 
 
@@ -107,7 +106,9 @@ document.getElementById("btn_assertion").addEventListener("click", e => {
 	util.performAssertionTest(e, manualAssertions)
 })
 
-document.getElementById("btn_validate").addEventListener("click", () => {util.validate({source:"manual"})})
+document.getElementById("btn_validate").addEventListener("click", () => {
+	util.validate("manual")
+})
 
 // document.getElementById("btn_gistify").addEventListener("click", submitAsGist)
 // $("#btn_gistify").click(submitAsGist);// Attaching Function to Gistify Button, The functions handles submitting TD as Gist.
@@ -151,7 +152,7 @@ require(['vs/editor/editor.main'], editor=function() {
 		document.getElementById("curtain").style.display = "none"
 
 		model.onDidChangeContent(event => { // When text in the Editor changes
-			util.validate(event, "auto", autoValidate)
+			util.validate("auto", autoValidate)
 		})
 	}, err => {
 		console.error("loading TD schema for editor failed" + err)
