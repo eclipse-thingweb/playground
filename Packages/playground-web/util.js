@@ -14,17 +14,33 @@
  ********************************************************************************/
 
 /**
- * Fetch the TD from the given address and paste it into the editor
- * @param {*} urlAddr url of the TD to fetch
+ * Fetch the TD from the given address and return the JSON object
+ * @param {string} urlAddr url of the TD to fetch
  */
 export function getTdUrl(urlAddr){
     return new Promise( resolve => {
+
         fetch(urlAddr)
         .then(res => res.json())
         .then(data => {
-            // console.log(data)
+            console.log(data)
             resolve(data)
         }, err => {alert("JSON could not be fetched from: " + urlAddr + "\n Error: " + err)})
+    })
+}
+
+/**
+ * Fetch the File from the given address and return the content as string
+ * @param {string} urlAddr url of the TD to fetch
+ */
+function getTextUrl(urlAddr){
+    return new Promise( resolve => {
+
+        fetch(urlAddr)
+        .then(res => res.text())
+        .then(data => {
+            resolve(data)
+        }, err => {alert("Text could not be fetched from: " + urlAddr + "\n Error: " + err)})
     })
 }
 
@@ -56,115 +72,121 @@ export function populateExamples(urlAddrObject){
  * asdf
  * @param {*} e sadf
  */
-// function performAssertionTest(e){
+export function performAssertionTest(e, manualAssertions){
 
-//     e.preventDefault()
-//     $("#curtain").css("display","block")// drop curtian while  assertions test going on
-//     $("#curtain-text").html("Assertion test is going to be loaded.")
-//     const assertionSchemas=[]
-//     const manualAssertionsJSON=[]
-//     const tdToValidate=window.editor.getValue()
+    // e.preventDefault()
+    document.getElementById("curtain").style.display = "block"
+    document.getElementById("curtain-text").innerHTML = "Assertion test ongoing..."
+    // $("#curtain").css("display","block")// drop curtian while  assertions test going on
+    // $("#curtain-text").html("Assertion test is going to be loaded.")
+    const assertionSchemas=[]
+    const manualAssertionsJSON=[]
+    const tdToValidate=window.editor.getValue()
 
-
-//     let tdSchema=[];
-//     let draft=[];
-//     const bcp47pattern = /^(?:(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|
-//                                          i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE)|(art-lojban|cel-gaulish|
-//                                          no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))$|
-//                                          ^((?:[a-z]{2,3}(?:(?:-[a-z]{3}){1,3})?)|[a-z]{4}|[a-z]{5,8})
-//                                          (?:-([a-z]{4}))?(?:-([a-z]{2}|\d{3}))?((?:-(?:[\da-z]{5,8}|\d[\da-z]{3}))*)?
-//                                          ((?:-[\da-wy-z](?:-[\da-z]{2,8})+)*)?(-x(?:-[\da-z]{1,8})+)?$|
-//                                          ^(x(?:-[\da-z]{1,8})+)$/i; // eslint-disable-line max-len
+    if (tdToValidate === "") {
+        alert("No TD given")
+        document.getElementById("curtain").style.display = "none"
+        return
+    }
 
 
+    let tdSchema=[];
+    let draft=[];
+
+    const logging = input => {
+        document.getElementById("curtain-text").innerHTML = input
+    }
+
+    tdAssertions([tdToValidate], getTextUrl, logging, manualAssertions)
+    .then( result => console.log(result))
 
 
-//     $.getJSON('list.json', function (assertionList) {
+    // $.getJSON('list.json', function (assertionList) {
 
-//         const tAssertions=assertionList.length
+    //     const tAssertions=assertionList.length
 
-//         for (let i = 0; i < tAssertions; i++) {
-//             // send an AJAX request to each individual JSON file
-//             // available on the server as returned by the discover endpoint
-//             $("#curtain-text").html("Loading Assertion Schemas:"+(i*100/tAssertions).toString()+"%")
-//             $.getJSON('AssertionTester/Assertions/'+assertionList[i], function (assertion) {
+    //     for (let i = 0; i < tAssertions; i++) {
+    //         // send an AJAX request to each individual JSON file
+    //         // available on the server as returned by the discover endpoint
+    //         $("#curtain-text").html("Loading Assertion Schemas:"+(i*100/tAssertions).toString()+"%")
+    //         $.getJSON('AssertionTester/Assertions/'+assertionList[i], function (assertion) {
 
-//                 assertionSchemas.push(assertion);
+    //             assertionSchemas.push(assertion);
 
-//             });
-//         }
-//         console.log(assertionSchemas)
-//         $("#curtain-text").html("Loading JSON Schema Darft 06");
-//         $.getJSON('json-schema-draft-06.json', function (json) {
+    //         });
+    //     }
+    //     console.log(assertionSchemas)
+    //     $("#curtain-text").html("Loading JSON Schema Darft 06");
+    //     $.getJSON('json-schema-draft-06.json', function (json) {
 
-//             draft=json;
-//             $("#curtain-text").html("Loading TD Schema. ");
-//             $.getJSON('td-schema.json', function (schemajson) {
-//                 tdSchema=schemajson;
-//                 let curCsvResults = []
+    //         draft=json;
+    //         $("#curtain-text").html("Loading TD Schema. ");
+    //         $.getJSON('td-schema.json', function (schemajson) {
+    //             tdSchema=schemajson;
+    //             let curCsvResults = []
 
-//                 try {
-//                     curCsvResults = assertionValidate(tdToValidate, assertionSchemas, manualAssertions, tdSchema, draft);
+    //             try {
+    //                 curCsvResults = assertionValidate(tdToValidate, assertionSchemas, manualAssertions, tdSchema, draft);
 
-//                     // toOutput(JSON.parse(tdToValidate).id, outputLocation, curCsvResults)
-//                     console.log(curCsvResults);
-//                 } catch (error) {
-//                     // this needs to go to output
-//                     console.log({
-//                         "ID": error,
-//                         "Status": "fail",
-//                         "Comment":"Invalid TD"
-//                     });
-//                     results.push({
-//                         "ID": error,
-//                         "Status": "fail",
-//                         "Comment":"Invalid TD"
-//                     });
-//                     curCsvResults=results
-//                 }
-//                 // console.log(schemajson)
+    //                 // toOutput(JSON.parse(tdToValidate).id, outputLocation, curCsvResults)
+    //                 console.log(curCsvResults);
+    //             } catch (error) {
+    //                 // this needs to go to output
+    //                 console.log({
+    //                     "ID": error,
+    //                     "Status": "fail",
+    //                     "Comment":"Invalid TD"
+    //                 });
+    //                 results.push({
+    //                     "ID": error,
+    //                     "Status": "fail",
+    //                     "Comment":"Invalid TD"
+    //                 });
+    //                 curCsvResults=results
+    //             }
+    //             // console.log(schemajson)
 
-//                 $("#curtain-text").html("Creating outputfile.");
-//                 assertionTestResult=curCsvResults;
-//                  const assertionTestResultFormatted=[];
-//                 const csvContent = "data:text/csv;charset=utf-8,";
-
-
-
-//                 const headers = {
-//                     ID: "ID",
-//                     Status: "Status",
-//                     Comment:"Comment"
-//                 };
+    //             $("#curtain-text").html("Creating outputfile.");
+    //             assertionTestResult=curCsvResults;
+    //              const assertionTestResultFormatted=[];
+    //             const csvContent = "data:text/csv;charset=utf-8,";
 
 
-//                 assertionTestResult.forEach(item => {
-//                     if(item.Comment){
-//                     assertionTestResultFormatted.push({
-//                         ID: item.ID.replace(/,/g, ''), // remove commas to avoid errors,
-//                         Status: item.Status.replace(/,/g, ''),
-//                         Comment: item.Comment.replace(/,/g, '')    })}
-//                     else{
-//                         assertionTestResultFormatted.push({
-//                             ID: item.ID.replace(/,/g, ''), // remove commas to avoid errors,
-//                             Status: item.Status.replace(/,/g, ''),
-//                             Comment: "no Comment"})
-//                         }
 
-//                     });
-
-//                 const fileTitle="assertionTest";
-
-//                 exportCSVFile(headers, assertionTestResultFormatted, fileTitle);
+    //             const headers = {
+    //                 ID: "ID",
+    //                 Status: "Status",
+    //                 Comment:"Comment"
+    //             };
 
 
-//                 $("#curtain").css("display","none")// remove curtain
+    //             assertionTestResult.forEach(item => {
+    //                 if(item.Comment){
+    //                 assertionTestResultFormatted.push({
+    //                     ID: item.ID.replace(/,/g, ''), // remove commas to avoid errors,
+    //                     Status: item.Status.replace(/,/g, ''),
+    //                     Comment: item.Comment.replace(/,/g, '')    })}
+    //                 else{
+    //                     assertionTestResultFormatted.push({
+    //                         ID: item.ID.replace(/,/g, ''), // remove commas to avoid errors,
+    //                         Status: item.Status.replace(/,/g, ''),
+    //                         Comment: "no Comment"})
+    //                     }
 
-//         });
+    //                 });
 
-//     });
-//     });
-// }
+    //             const fileTitle="assertionTest";
+
+    //             exportCSVFile(headers, assertionTestResultFormatted, fileTitle);
+
+
+    //             $("#curtain").css("display","none")// remove curtain
+
+    //     })
+
+    // })
+    // })
+}
 
 
 /**
@@ -293,140 +315,62 @@ export function exampleSelectHandler(e, obj) {
 }
 
 /**
- * asdf TODO: needed? (assertions?)
- * @param {} bytes asdf
- */
-// function isUtf8(bytes)
-// {
-//     let i = 0;
-//     while(i < bytes.length)
-//     {
-//         if(     (// ASCII
-//                     bytes[i] === 0x09 ||
-//                     bytes[i] === 0x0A ||
-//                     bytes[i] === 0x0D ||
-//                     (0x20 <= bytes[i] && bytes[i] <= 0x7E)
-//                 )
-//           ) {
-//               i += 1;
-//               continue;
-//           }
-
-//         if(     (// non-overlong 2-byte
-//                     (0xC2 <= bytes[i] && bytes[i] <= 0xDF) &&
-//                     (0x80 <= bytes[i+1] && bytes[i+1] <= 0xBF)
-//                 )
-//           ) {
-//               i += 2;
-//               continue;
-//           }
-
-//         if(     (// excluding overlongs
-//                     bytes[i] === 0xE0 &&
-//                     (0xA0 <= bytes[i + 1] && bytes[i + 1] <= 0xBF) &&
-//                     (0x80 <= bytes[i + 2] && bytes[i + 2] <= 0xBF)
-//                 ) ||
-//                 (// straight 3-byte
-//                  ((0xE1 <= bytes[i] && bytes[i] <= 0xEC) ||
-//                   bytes[i] === 0xEE ||
-//                   bytes[i] === 0xEF) &&
-//                  (0x80 <= bytes[i + 1] && bytes[i+1] <= 0xBF) &&
-//                  (0x80 <= bytes[i+2] && bytes[i+2] <= 0xBF)
-//                 ) ||
-//                 (// excluding surrogates
-//                  bytes[i] === 0xED &&
-//                  (0x80 <= bytes[i+1] && bytes[i+1] <= 0x9F) &&
-//                  (0x80 <= bytes[i+2] && bytes[i+2] <= 0xBF)
-//                 )
-//           ) {
-//               i += 3;
-//               continue;
-//           }
-
-//         if(     (// planes 1-3
-//                     bytes[i] === 0xF0 &&
-//                     (0x90 <= bytes[i + 1] && bytes[i + 1] <= 0xBF) &&
-//                     (0x80 <= bytes[i + 2] && bytes[i + 2] <= 0xBF) &&
-//                     (0x80 <= bytes[i + 3] && bytes[i + 3] <= 0xBF)
-//                 ) ||
-//                 (// planes 4-15
-//                  (0xF1 <= bytes[i] && bytes[i] <= 0xF3) &&
-//                  (0x80 <= bytes[i + 1] && bytes[i + 1] <= 0xBF) &&
-//                  (0x80 <= bytes[i + 2] && bytes[i + 2] <= 0xBF) &&
-//                  (0x80 <= bytes[i + 3] && bytes[i + 3] <= 0xBF)
-//                 ) ||
-//                 (// plane 16
-//                  bytes[i] === 0xF4 &&
-//                  (0x80 <= bytes[i + 1] && bytes[i + 1] <= 0x8F) &&
-//                  (0x80 <= bytes[i + 2] && bytes[i + 2] <= 0xBF) &&
-//                  (0x80 <= bytes[i + 3] && bytes[i + 3] <= 0xBF)
-//                 )
-//           ) {
-//               i += 4;
-//               continue;
-//           }
-//         return true;
-//     }
-//     return true;
-// }
-
-/**
- * asdf TODO: needed? (assertions?)
+ * asdf
  * @param {*} objArray asdf
  */
-// function convertToCSV(objArray) {
-//     const array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-//     let str = '';
+function convertToCSV(objArray) {
+    const array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    let str = '';
 
-//     for (let i = 0; i < array.length; i++) {
-//         let line = '';
-//         for (const index in array[i]) {
-//             if (Object.prototype.hasOwnProperty.call(array[i], index)) {
-//                 if (line !== '') line += ','
+    for (let i = 0; i < array.length; i++) {
+        let line = '';
+        for (const index in array[i]) {
+            if (Object.prototype.hasOwnProperty.call(array[i], index)) {
+                if (line !== '') line += ','
 
-//                 line += array[i][index];
-//             }
-//         }
-//         str += line + '\r\n';
-//     }
-//     return str;
-// }
+                line += array[i][index];
+            }
+        }
+        str += line + '\r\n';
+    }
+    return str;
+}
 
 /**
- * asdf TODO: needed? (assertions?)
+ *
  * @param {*} headers sda
  * @param {*} items sdf
  * @param {*} fileTitle sdf
  */
-// function exportCSVFile(headers, items, fileTitle) {
-//     if (headers) {
-//         items.unshift(headers);
-//     }
+function exportCSVFile(headers, items, fileTitle) {
+    if (headers) {
+        items.unshift(headers);
+    }
 
-//     // Convert Object to JSON
-//     const jsonObject = JSON.stringify(items);
+    // Convert Object to JSON
+    const jsonObject = JSON.stringify(items);
 
-//     const csv = this.convertToCSV(jsonObject);
+    const csv = this.convertToCSV(jsonObject);
 
-//     const exportedFilename = fileTitle + '.csv' || 'export.csv';
+    const exportedFilename = fileTitle + '.csv' || 'export.csv';
 
-//     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-//     if (navigator.msSaveBlob) { // IE 10+
-//         navigator.msSaveBlob(blob, exportedFilename);
-//     } else {
-//         const link = document.createElement("a");
-//         if (link.download !== undefined) { // feature detection
-//             // Browsers that support HTML5 download attribute
-//             const url = URL.createObjectURL(blob);
-//             link.setAttribute("href", url);
-//             link.setAttribute("download", exportedFilename);
-//             link.style.visibility = 'hidden';
-//             document.body.appendChild(link);
-//             link.click();
-//             document.body.removeChild(link);
-//         }
-//     }
-// }
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    if (navigator.msSaveBlob) { // IE 10+
+        navigator.msSaveBlob(blob, exportedFilename);
+    } else {
+        const link = document.createElement("a");
+        if (link.download !== undefined) { // feature detection
+            // Browsers that support HTML5 download attribute
+            const url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", exportedFilename);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    }
+}
 
 /**
  * Calls the validation function if intended

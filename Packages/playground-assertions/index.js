@@ -26,27 +26,29 @@ const path = require("path")
 
 /**
  * asdf
- * @param {string | string[]} tdStrings The Thing Description(s) to check as a string.
+ * @param {string[]|Buffer[]} tdStrings The Thing Description(s) to check as an array of strings or Buffers.
  * @param {Function} fileLoader (string) => string Path to a file as input, should return file content
  * @param {Function} logFunc OPT (string) => void; Callback used to log the validation progress.
  * @param {object} givenManual OPT JSON object of the manual assertions
+ * @param {boolean} locally OPT set to true if you don't call the function as a module
+ *                          (-> prefixes ./node_modules/playground-assertions)
  */
-function tdAssertions(tdStrings, fileLoader, logFunc, givenManual) {
+function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, locally=false) {
     return new Promise( (res, rej) => {
 
         // parameter handling
-        if(typeof tdStrings !== "object") {throw new Error("tdStrings has to be an Array of Strings")}
+        if(typeof tdStrings !== "object") {throw new Error("tdStrings has to be an Array of Strings or Buffers")}
         if(typeof fileLoader !== "function") {throw new Error("jsonLoader has to be a function")}
         if(logFunc === undefined) {logFunc = console.log}
         if(givenManual !== undefined && typeof givenManual !== "object") {
             throw new Error("givenManual have to be a JSON object if given.")
         }
-
+        const pathOffset = locally ? "" : path.join("./node_modules", "playground-assertions")
         // loading files
         const loadProm = []
-        loadProm.push(collectAssertionSchemas("./assertions", "./list.json", fileLoader))
-        loadProm.push(fileLoader(path.join("./node_modules", "playground-core", "td-schema.json")))
-        if (givenManual === undefined) {loadProm.push(fileLoader("./manual.csv"))}
+        loadProm.push(collectAssertionSchemas(path.join(pathOffset, "./assertions"), path.join(pathOffset, "./list.json"), fileLoader))
+        loadProm.push(fileLoader(path.join(pathOffset, "./node_modules", "playground-core", "td-schema.json")))
+        if (givenManual === undefined) {loadProm.push(fileLoader(path.join(pathOffset, "./manual.csv")))}
 
         Promise.all(loadProm).then( promResults => {
 
@@ -64,6 +66,7 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual) {
             tdStrings.forEach( tdToValidate => {
                 const tdId = JSON.parse(tdToValidate).id
                 const tdName = tdId.replace(/:/g, "_")
+                if (typeof tdToValidate === "string") {tdToValidate = Buffer.from(tdToValidate, "utf8")}
 
                 if (jsonResults[tdName] !== undefined) {throw new Error("TDs have same Ids: " + tdName)}
                 jsonResults[tdName] = validate(tdToValidate, assertionSchemas, manualAssertionsJSON, tdSchema, logFunc)
@@ -108,7 +111,6 @@ function collectAssertionSchemas(assertionsDirectory, assertionsList, loadFuncti
 
         const assertionSchemas = []
         const assertionProms = []
-
         loadFunction(assertionsList).then( assertionNames => {
 
             assertionsListLocation = JSON.parse(assertionNames)

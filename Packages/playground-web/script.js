@@ -78,20 +78,11 @@ document.getElementById("btn_assertion_popup").addEventListener("click", () => {
 			document.getElementById("manual_assertion_table_body").innerHTML += htmlrow
 		})
 
-		// $('input[type="radio"]').on('change', function() {
-		// 	indexnum= $(this).parent().parent().find("input[type=hidden]").first().val()
-		// 	manualAssertions[indexnum].Status = $(this).val()
-		// })
 		for (const inputEl of document.getElementsByTagName("input")) {
 			if (inputEl.type === "radio") {
-				console.log("asdf")
-
 				inputEl.addEventListener("change", thisel => {
-					// console.log(thisel)
 					const indexnum = thisel.srcElement.parentElement.parentElement.getElementsByTagName("input")[0].value
-					// console.log(indexnum)
 					manualAssertions[indexnum].Status = thisel.srcElement.value
-					 console.log(manualAssertions)
 				})
 			}
 		}
@@ -112,9 +103,9 @@ document.getElementById("editor_theme").addEventListener("change", () => {
 	window.monaco.editor.setTheme(document.getElementById("editor_theme").value);
 })
 
-// document.addEventListener("click", performAssertionTest)
-// $("#btn_assertion").click(performAssertionTest);// attaching function to the assertion button,
-// the function performs Assertion test
+document.getElementById("btn_assertion").addEventListener("click", e => {
+	util.performAssertionTest(e, manualAssertions)
+})
 
 document.getElementById("btn_validate").addEventListener("click", () => {util.validate({source:"manual"})})
 
@@ -161,10 +152,9 @@ require(['vs/editor/editor.main'], editor=function() {
 
 		model.onDidChangeContent(event => { // When text in the Editor changes
 			util.validate(event, "auto", autoValidate)
-			console.log("text changed")
-		});
+		})
 	}, err => {
 		console.error("loading TD schema for editor failed" + err)
 	})
-});
+})
 

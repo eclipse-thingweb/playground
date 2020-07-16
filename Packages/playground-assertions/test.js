@@ -17,7 +17,7 @@
 const tdAsserter = require("./index")
 const fs = require("fs")
 
-let simpleTD = JSON.stringify({
+const simpleTD = JSON.stringify({
 	"id": "urn:simple",
 	"@context": "https://www.w3.org/2019/wot/td/v1",
 	"title": "MyLampThing",
@@ -64,7 +64,7 @@ let simpleTD = JSON.stringify({
 		}
 	}
 })
-let simpleTD2 = JSON.stringify({
+const simpleTD2 = JSON.stringify({
 	"id": "urn:simplep",
 	"@context": "https://www.w3.org/2019/wot/td/v1",
 	"title": "MyLampThing",
@@ -111,8 +111,6 @@ let simpleTD2 = JSON.stringify({
 		}
 	}
 })
-simpleTD = Buffer.from(simpleTD, 'utf8')
-simpleTD2 = Buffer.from(simpleTD2, 'utf8')
 
 // fs.writeFileSync("./simpleTD.json",simpleTD,"utf8")
 // simpleTD = fs.readFileSync("./simpleTD.json")
@@ -128,7 +126,7 @@ function fileLoad(loc) {
 }
 
 
-tdAsserter([simpleTD], fileLoad)
+tdAsserter([simpleTD], fileLoad, undefined, undefined, true)
 .then( result => {
 	console.log("OKAY")
 	// console.log(result.merged)
