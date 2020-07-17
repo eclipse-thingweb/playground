@@ -23,9 +23,7 @@ const tdAssertions = require('playground-assertions')
 const assertManualToJson = require('playground-assertions').manualToJson
 const assertMergeResults = require('playground-assertions').mergeResults
 const assertCheckCoverage = require('playground-assertions').checkCoverage
-const assertAssertionTests = require('playground-assertions').assertionTests
 const assertResultsToCsv = require('playground-assertions').resultsToCsv
-const assertCollectAssertionSchemas = require('playground-assertions').collectAssertionSchemas
 const argParser = require('argly')
     .createParser({
         '--help': {
@@ -107,12 +105,12 @@ const tdsToMerge = []
 let manualAssertions
 const logFunc = myArguments.assertionTostd ? () => {} : console.log
 
-
 const tdSchemaPath = path.join("node_modules", "playground-core", "td-schema.json")
 const tdFullSchemaPath = path.join("node_modules", "playground-core", "td-schema-full.json")
 
 const tdSchema = fs.readFileSync(tdSchemaPath,"utf-8")
 const tdSchemaFull = fs.readFileSync(tdFullSchemaPath, "utf-8")
+console.log(tdSchema)
 
 // handle input argument
 let input = myArguments.input
@@ -306,7 +304,7 @@ function coreValidation() {
             validNames.forEach( el => {
                 if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                     tdToCheck = fs.readFileSync(path.join(validPath, el), "utf-8")
-                    const thisProm = tdValidator(tdToCheck, tdSchema, tdSchemaFull, console.log, {checkDefaults: false})
+                    const thisProm = tdValidator(tdToCheck, console.log, {checkDefaults: false})
                     .then( result => {
                         if (statResult("failed", result.report)) {
                             console.log(el, "was supposed to be valid but gave error")
@@ -345,7 +343,7 @@ function coreValidation() {
             invalidNames.forEach( el => {
                 if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                     tdToCheck = fs.readFileSync(path.join(invalidPath, el), "utf-8")
-                    const thisProm = tdValidator(tdToCheck, tdSchema, tdSchemaFull, console.log, {checkDefaults: false})
+                    const thisProm = tdValidator(tdToCheck, console.log, {checkDefaults: false})
                     .then( result => {
                         if (statResult("failed", result.report)) {
                             invalidCount++
@@ -382,7 +380,7 @@ function coreValidation() {
             warnNames.forEach( el => {
                 if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                     tdToCheck = fs.readFileSync(path.join(warnPath, el), "utf-8")
-                    const thisProm = tdValidator(tdToCheck, tdSchema, tdSchemaFull, console.log, {checkDefaults: false})
+                    const thisProm = tdValidator(tdToCheck, console.log, {checkDefaults: false})
                     .then( result => {
                         if (statResult("failed", result.report)) {
                             console.log(el, "was supposed to give a warning but gave error")
@@ -433,7 +431,7 @@ function coreValidation() {
  */
 function checkTd(td) {
 
-    tdValidator(td, tdSchema, tdSchemaFull, console.log,{checkDefaults: !myArguments.nodefaults,checkJsonLd: !myArguments.nojsonld})
+    tdValidator(td, console.log,{checkDefaults: !myArguments.nodefaults,checkJsonLd: !myArguments.nojsonld})
     .then( result => {
         console.log("OKAY \n")
         // result.console.forEach(el => {

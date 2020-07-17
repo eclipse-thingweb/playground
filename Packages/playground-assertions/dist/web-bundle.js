@@ -24,7 +24,7 @@ const Ajv = require('ajv')
 const checkUniqueness = require('playground-core').propUniqueness
 const checkMultiLangConsistency = require("playground-core").multiLangConsistency
 const checkSecurity = require("playground-core").security
-
+const tdSchema = require("playground-core/td-schema.json")
 
 /**
  * validates the TD in the first argument according to the assertions given in the second argument
@@ -37,12 +37,11 @@ const checkSecurity = require("playground-core").security
  * @param {string} tdSchema The JSON Schema used to eval if a Td is valid
  * @param {Function} logFunc Logging function
  */
-function validate(tdData, assertions, manualAssertions, tdSchema, logFunc) {
+function validate(tdData, assertions, manualAssertions, logFunc) {
 
-    tdSchema = JSON.parse(tdSchema)
     // a JSON file that will be returned containing the result for each assertion as a JSON Object
     let results = []
-    logFunc("=================================================================")
+    // logFunc("=================================================================")
 
     // check whether it is a valid JSON
     let tdJson
@@ -73,7 +72,7 @@ function validate(tdData, assertions, manualAssertions, tdSchema, logFunc) {
 
     // Normal TD Schema validation but this allows us to test multiple assertions at once
     try {
-        results.push(...checkVocabulary(tdJson, tdSchema))
+        results.push(...checkVocabulary(tdJson))
     } catch (error) {
         logFunc({
             "ID": error,
@@ -279,7 +278,7 @@ module.exports = validate
  * @param {object} tdJson The td to validate
  * @param {*} tdSchema The JSON Schema used for td validation
  */
-function checkVocabulary(tdJson, tdSchema) {
+function checkVocabulary(tdJson) {
 
     const results = []
     const ajv = new Ajv()
@@ -465,7 +464,7 @@ function createParents(results) {
     })
     return results
 }
-},{"ajv":5,"is-utf8":61,"playground-core":67}],2:[function(require,module,exports){
+},{"ajv":5,"is-utf8":61,"playground-core":67,"playground-core/td-schema.json":160}],2:[function(require,module,exports){
 /* *******************************************************************************
  * Copyright (c) 2020 Contributors to the Eclipse Foundation
  *
@@ -481,7 +480,14 @@ function createParents(results) {
  * SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
  ********************************************************************************/
 
- function checkCoverage(jsonResults) {
+ /**
+  * Outputs statistics about a given assertion report
+  * @param {object} jsonResults assertion reports
+  * @param {Function} logFunc function to log the stats
+  */
+ function checkCoverage(jsonResults, logFunc) {
+
+    if (logFunc === undefined) {logFunc = console.log}
 
     let passCount = 0
     let failCount = 0
@@ -505,11 +511,11 @@ function createParents(results) {
         totalCount++
     })
 
-    console.log("Failed Assertions:", failCount)
-    console.log("Not-Implemented Assertions:", notImplCount)
-    console.log("Not Tested Assertions:",nullCount)
-    console.log("Passed Assertions:",passCount)
-    console.log("Total Assertions",totalCount)
+    logFunc("Failed Assertions:", failCount)
+    logFunc("Not-Implemented Assertions:", notImplCount)
+    logFunc("Not Tested Assertions:",nullCount)
+    logFunc("Passed Assertions:",passCount)
+    logFunc("Total Assertions",totalCount)
  }
 
  module.exports = checkCoverage
@@ -545,6 +551,8 @@ module.exports.resultsToCsv = resultsToCsv
 module.exports.assertionTests = validate
 module.exports.checkCoverage = checkCoverage
 module.exports.mergeResults = mergeResults
+module.exports.manualToJson = manualToJson
+module.exports.collectAssertionSchemas = collectAssertionSchemas
 
 
 /**
@@ -564,7 +572,7 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, locally=false
         if(typeof fileLoader !== "function") {throw new Error("jsonLoader has to be a function")}
         if(logFunc === undefined) {logFunc = console.log}
         if(givenManual !== undefined && typeof givenManual !== "object") {
-            throw new Error("givenManual have to be a JSON object if given.")
+            throw new Error("givenManual has to be a JSON object if given.")
         }
         const pathOffset = locally ? "" : path.join("./node_modules", "playground-assertions")
         // loading files
@@ -575,14 +583,11 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, locally=false
 
         Promise.all(loadProm).then( promResults => {
 
-            const options = {
-                delimiter: ',', // optional
-                quote: '"' // optional
-            }
+
             const assertionSchemas = promResults.shift()
             const tdSchema = promResults.shift()
             const manualAssertionsJSON = (givenManual === undefined) ?
-                                        csvjson.toObject(promResults.shift().toString(), options) :
+                                        manualToJson(promResults.shift().toString()) :
                                         givenManual
 
             const jsonResults = {}
@@ -596,22 +601,20 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, locally=false
             })
 
             const tdNames = Object.keys(jsonResults)
-            console.log(tdNames)
+
             if (tdNames.length > 1) {
-                console.log(">1 td")
                 const resultAr = []
                 Object.keys(jsonResults).forEach( id => {
                     resultAr.push(jsonResults[id])
                 })
                 mergeResults(resultAr).then( merged => {
-                    // console.log(merged)
-                    checkCoverage(merged)
+                    checkCoverage(merged, logFunc)
                     res({jsonResults, merged})
                 }, err => {rej("merging failed: " + err)})
             }
             else {
                 const merged = jsonResults[tdNames[0]]
-                checkCoverage(merged)
+                checkCoverage(merged, logFunc)
                 res(merged)
             }
 
@@ -623,7 +626,7 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, locally=false
 }
 
 /**
- * Private helper: Loads and generates an Array containing all assertion objects
+ * Helper: Loads and generates an Array containing all assertion objects
  * @param {string} assertionsDirectory path to the directory, which contains the assertions
  * @param {string} assertionsList path to the assertion filenames list
  * @param {function} loadFunction (string) => string path string as input should return file content as string
@@ -668,6 +671,14 @@ function resultsToCsv(results) {
         fields
     })
     return json2csvParser.parse(results)
+}
+
+function manualToJson(csv) {
+    const options = {
+        delimiter: ',', // optional
+        quote: '"' // optional
+    }
+    return csvjson.toObject(csv, options)
 }
 
 }).call(this,require("buffer").Buffer)
@@ -948,7 +959,7 @@ module.exports = resultMerger
 //     process.exit(1)
 // }
 }).call(this,require('_process'))
-},{"_process":161}],5:[function(require,module,exports){
+},{"_process":162}],5:[function(require,module,exports){
 'use strict';
 
 var compileSchema = require('./compile')
@@ -2417,7 +2428,7 @@ function resolveIds(schema) {
   return localRefs;
 }
 
-},{"./schema_obj":13,"./util":15,"fast-deep-equal":56,"json-schema-traverse":63,"uri-js":180}],12:[function(require,module,exports){
+},{"./schema_obj":13,"./util":15,"fast-deep-equal":56,"json-schema-traverse":63,"uri-js":181}],12:[function(require,module,exports){
 'use strict';
 
 var ruleModules = require('../dotjs')
@@ -9143,7 +9154,7 @@ function toArray(opts) {
 	trans._opts = opts;
 	return trans;
 }
-},{"./app.js":52,"stream":178}],55:[function(require,module,exports){
+},{"./app.js":52,"stream":179}],55:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -17782,7 +17793,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":161}],66:[function(require,module,exports){
+},{"_process":162}],66:[function(require,module,exports){
 /* *******************************************************************************
  * Copyright (c) 2020 Contributors to the Eclipse Foundation
  *
@@ -19180,7 +19191,7 @@ module.exports.parseUntil = function parseUntil(str, pos, stopChar) {
   return process(str, pos, stopChar);
 };
 
-},{"punycode":162}],111:[function(require,module,exports){
+},{"punycode":163}],111:[function(require,module,exports){
 /* jshint esversion: 6 */
 /* jslint node: true */
 'use strict';
@@ -26763,7 +26774,7 @@ wrapper(factory);
 module.exports = factory;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./ContextResolver":116,"./JsonLdError":117,"./JsonLdProcessor":118,"./NQuads":119,"./Rdfa":120,"./RequestQueue":121,"./compact":123,"./context":125,"./documentLoaders/node":126,"./documentLoaders/xhr":127,"./expand":128,"./flatten":129,"./frame":130,"./fromRdf":131,"./graphTypes":132,"./nodeMap":134,"./toRdf":135,"./types":136,"./url":137,"./util":138,"_process":161,"lru-cache":139,"rdf-canonize":155}],134:[function(require,module,exports){
+},{"./ContextResolver":116,"./JsonLdError":117,"./JsonLdProcessor":118,"./NQuads":119,"./Rdfa":120,"./RequestQueue":121,"./compact":123,"./context":125,"./documentLoaders/node":126,"./documentLoaders/xhr":127,"./expand":128,"./flatten":129,"./frame":130,"./fromRdf":131,"./graphTypes":132,"./nodeMap":134,"./toRdf":135,"./types":136,"./url":137,"./util":138,"_process":162,"lru-cache":139,"rdf-canonize":155}],134:[function(require,module,exports){
 /*
  * Copyright (c) 2017 Digital Bazaar, Inc. All rights reserved.
  */
@@ -32395,7 +32406,7 @@ util.estimateCores = function(options, callback) {
 };
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],require("timers").setImmediate)
-},{"./baseN":140,"./forge":141,"_process":161,"buffer":48,"timers":179}],146:[function(require,module,exports){
+},{"./baseN":140,"./forge":141,"_process":162,"buffer":48,"timers":180}],146:[function(require,module,exports){
 /**
  * Copyright (c) 2016-2017 Digital Bazaar, Inc. All rights reserved.
  */
@@ -34607,7 +34618,7 @@ function _invokeCallback(callback, err, result) {
 }
 
 }).call(this,require('_process'),require("timers").setImmediate)
-},{"_process":161,"timers":179}],157:[function(require,module,exports){
+},{"_process":162,"timers":180}],157:[function(require,module,exports){
 /** @license URI.js v4.2.1 (c) 2011 Gary Court. License: http://github.com/garycourt/uri-js */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -36437,6 +36448,1055 @@ try {
 } catch (er) {}
 
 },{"./iterator.js":158}],160:[function(require,module,exports){
+module.exports={
+    "title": "WoT TD Schema - 30 January 2020",
+    "description": "JSON Schema for validating TD instances against the TD model. TD instances can be with or without terms that have default values",
+    "$schema ": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "anyUri": {
+            "type": "string",
+            "$comment": "Until iri-reference is supported by ajv, it will stay as uri-reference in playground",
+            "format": "uri-reference"
+        },
+        "description": {
+            "type": "string"
+        },
+        "descriptions": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "string"
+            }
+        },
+        "title": {
+            "type": "string"
+        },
+        "titles": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "string"
+            }
+        },
+        "security": {
+            "oneOf": [
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "scopes": {
+            "oneOf": [
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "subProtocol": {
+            "type": "string",
+            "enum": [
+                "longpoll",
+                "websub",
+                "sse"
+            ]
+        },
+        "thing-context-w3c-uri": {
+            "type": "string",
+            "enum": [
+                "https://www.w3.org/2019/wot/td/v1"
+            ]
+        },
+        "thing-context": {
+            "oneOf": [
+                {
+                    "type": "array",
+                    "items": [
+                        {
+                            "$ref": "#/definitions/thing-context-w3c-uri"
+                        }
+                    ],
+                    "additionalItems": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/anyUri"
+                            },
+                            {
+                                "type": "object"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "$ref": "#/definitions/thing-context-w3c-uri"
+                }
+            ]
+        },
+        "type_declaration": {
+            "oneOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            ]
+        },
+        "dataSchema": {
+            "type": "object",
+            "properties": {
+                "@type": {
+                    "$ref": "#/definitions/type_declaration"
+                },
+                "description": {
+                    "$ref": "#/definitions/description"
+                },
+                "title": {
+                    "$ref": "#/definitions/title"
+                },
+                "descriptions": {
+                    "$ref": "#/definitions/descriptions"
+                },
+                "titles": {
+                    "$ref": "#/definitions/titles"
+                },
+                "writeOnly": {
+                    "type": "boolean"
+                },
+                "readOnly": {
+                    "type": "boolean"
+                },
+                "oneOf": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
+                },
+                "unit": {
+                    "type": "string"
+                },
+                "enum": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true
+                },
+                "format": {
+                    "type": "string"
+                },
+                "const": {},
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "boolean",
+                        "integer",
+                        "number",
+                        "string",
+                        "object",
+                        "array",
+                        "null"
+                    ]
+                },
+                "items": {
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/dataSchema"
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dataSchema"
+                            }
+                        }
+                    ]
+                },
+                "maxItems": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "minItems": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "minimum": {
+                    "type": "number"
+                },
+                "maximum": {
+                    "type": "number"
+                },
+                "properties": {
+                    "additionalProperties": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
+                },
+                "required": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "form_element_property": {
+            "type": "object",
+            "properties": {
+                "op": {
+                    "oneOf": [{
+                            "type": "string",
+                            "enum": [
+                                "readproperty",
+                                "writeproperty",
+                                "observeproperty",
+                                "unobserveproperty"
+                            ]
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "readproperty",
+                                    "writeproperty",
+                                    "observeproperty",
+                                    "unobserveproperty"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "href": {
+                    "$ref": "#/definitions/anyUri"
+                },
+                "contentType": {
+                    "type": "string"
+                },
+                "contentCoding": {
+                    "type": "string"
+                },
+                "subProtocol": {
+                    "$ref": "#/definitions/subProtocol"
+                },
+                "security": {
+                    "$ref": "#/definitions/security"
+                },
+                "scopes": {
+                    "$ref": "#/definitions/scopes"
+                },
+                "response": {
+                    "type": "object",
+                    "properties": {
+                        "contentType": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "required": [
+                "href"
+            ],
+            "additionalProperties": true
+        },
+        "form_element_action": {
+            "type": "object",
+            "properties": {
+                "op": {
+                    "oneOf": [{
+                            "type": "string",
+                            "enum": [
+                                "invokeaction"
+                            ]
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "invokeaction"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "href": {
+                    "$ref": "#/definitions/anyUri"
+                },
+                "contentType": {
+                    "type": "string"
+                },
+                "contentCoding": {
+                    "type": "string"
+                },
+                "subProtocol": {
+                    "$ref": "#/definitions/subProtocol"
+                },
+                "security": {
+                    "$ref": "#/definitions/security"
+                },
+                "scopes": {
+                    "$ref": "#/definitions/scopes"
+                },
+                "response": {
+                    "type": "object",
+                    "properties": {
+                        "contentType": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "required": [
+                "href"
+            ],
+            "additionalProperties": true
+        },
+        "form_element_event": {
+            "type": "object",
+            "properties": {
+                "op": {
+                    "oneOf": [{
+                            "type": "string",
+                            "enum": [
+                                "subscribeevent",
+                                "unsubscribeevent"
+                            ]
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "subscribeevent",
+                                    "unsubscribeevent"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "href": {
+                    "$ref": "#/definitions/anyUri"
+                },
+                "contentType": {
+                    "type": "string"
+                },
+                "contentCoding": {
+                    "type": "string"
+                },
+                "subProtocol": {
+                    "$ref": "#/definitions/subProtocol"
+                },
+                "security": {
+                    "$ref": "#/definitions/security"
+                },
+                "scopes": {
+                    "$ref": "#/definitions/scopes"
+                },
+                "response": {
+                    "type": "object",
+                    "properties": {
+                        "contentType": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "required": [
+                "href"
+            ],
+            "additionalProperties": true
+        },
+        "form_element_root": {
+            "type": "object",
+            "properties": {
+                "op": {
+                    "oneOf": [{
+                            "type": "string",
+                            "enum": [
+                                "readallproperties",
+                                "writeallproperties",
+                                "readmultipleproperties",
+                                "writemultipleproperties"
+                            ]
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "readallproperties",
+                                    "writeallproperties",
+                                    "readmultipleproperties",
+                                    "writemultipleproperties"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "href": {
+                    "$ref": "#/definitions/anyUri"
+                },
+                "contentType": {
+                    "type": "string"
+                },
+                "contentCoding": {
+                    "type": "string"
+                },
+                "subProtocol": {
+                    "$ref": "#/definitions/subProtocol"
+                },
+                "security": {
+                    "$ref": "#/definitions/security"
+                },
+                "scopes": {
+                    "$ref": "#/definitions/scopes"
+                },
+                "response": {
+                    "type": "object",
+                    "properties": {
+                        "contentType": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "required": [
+                "href"
+            ],
+            "additionalProperties": true
+        },
+        "property_element": {
+            "type": "object",
+            "properties": {
+                "@type": {
+                    "$ref": "#/definitions/type_declaration"
+                },
+                "description": {
+                    "$ref": "#/definitions/description"
+                },
+                "descriptions": {
+                    "$ref": "#/definitions/descriptions"
+                },
+                "title": {
+                    "$ref": "#/definitions/title"
+                },
+                "titles": {
+                    "$ref": "#/definitions/titles"
+                },
+                "forms": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "$ref": "#/definitions/form_element_property"
+                    }
+                },
+                "uriVariables": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
+                },
+                "observable": {
+                    "type": "boolean"
+                },
+                "writeOnly": {
+                    "type": "boolean"
+                },
+                "readOnly": {
+                    "type": "boolean"
+                },
+                "oneOf": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
+                },
+                "unit": {
+                    "type": "string"
+                },
+                "enum": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true
+                },
+                "format": {
+                    "type": "string"
+                },
+                "const": {},
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "boolean",
+                        "integer",
+                        "number",
+                        "string",
+                        "object",
+                        "array",
+                        "null"
+                    ]
+                },
+                "items": {
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/dataSchema"
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dataSchema"
+                            }
+                        }
+                    ]
+                },
+                "maxItems": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "minItems": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "minimum": {
+                    "type": "number"
+                },
+                "maximum": {
+                    "type": "number"
+                },
+                "properties": {
+                    "additionalProperties": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
+                },
+                "required": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "forms"
+            ],
+            "additionalProperties": true
+        },
+        "action_element": {
+            "type": "object",
+            "properties": {
+                "@type": {
+                    "$ref": "#/definitions/type_declaration"
+                },
+                "description": {
+                    "$ref": "#/definitions/description"
+                },
+                "descriptions": {
+                    "$ref": "#/definitions/descriptions"
+                },
+                "title": {
+                    "$ref": "#/definitions/title"
+                },
+                "titles": {
+                    "$ref": "#/definitions/titles"
+                },
+                "forms": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "$ref": "#/definitions/form_element_action"
+                    }
+                },
+                "uriVariables": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
+                },
+                "input": {
+                    "$ref": "#/definitions/dataSchema"
+                },
+                "output": {
+                    "$ref": "#/definitions/dataSchema"
+                },
+                "safe": {
+                    "type": "boolean"
+                },
+                "idempotent": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "forms"
+            ],
+            "additionalProperties": true
+        },
+        "event_element": {
+            "type": "object",
+            "properties": {
+                "@type": {
+                    "$ref": "#/definitions/type_declaration"
+                },
+                "description": {
+                    "$ref": "#/definitions/description"
+                },
+                "descriptions": {
+                    "$ref": "#/definitions/descriptions"
+                },
+                "title": {
+                    "$ref": "#/definitions/title"
+                },
+                "titles": {
+                    "$ref": "#/definitions/titles"
+                },
+                "forms": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "$ref": "#/definitions/form_element_event"
+                    }
+                },
+                "uriVariables": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/dataSchema"
+                    }
+                },
+                "subscription": {
+                    "$ref": "#/definitions/dataSchema"
+                },
+                "data": {
+                    "$ref": "#/definitions/dataSchema"
+                },
+                "cancellation": {
+                    "$ref": "#/definitions/dataSchema"
+                }
+            },
+            "required": [
+                "forms"
+            ],
+            "additionalProperties": true
+        },
+        "link_element": {
+            "type": "object",
+            "properties": {
+                "href": {
+                    "$ref": "#/definitions/anyUri"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "rel": {
+                    "type": "string"
+                },
+                "anchor": {
+                    "$ref": "#/definitions/anyUri"
+                }
+            },
+            "required": [
+                "href"
+            ],
+            "additionalProperties": true
+        },
+        "securityScheme": {
+            "oneOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {
+                            "$ref": "#/definitions/type_declaration"
+                        },
+                        "description": {
+                            "$ref": "#/definitions/description"
+                        },
+                        "descriptions": {
+                            "$ref": "#/definitions/descriptions"
+                        },
+                        "proxy": {
+                            "$ref": "#/definitions/anyUri"
+                        },
+                        "scheme": {
+                            "type": "string",
+                            "enum": [
+                                "nosec"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "scheme"
+                    ]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {
+                            "$ref": "#/definitions/type_declaration"
+                        },
+                        "description": {
+                            "$ref": "#/definitions/description"
+                        },
+                        "descriptions": {
+                            "$ref": "#/definitions/descriptions"
+                        },
+                        "proxy": {
+                            "$ref": "#/definitions/anyUri"
+                        },
+                        "scheme": {
+                            "type": "string",
+                            "enum": [
+                                "basic"
+                            ]
+                        },
+                        "in": {
+                            "type": "string",
+                            "enum": [
+                                "header",
+                                "query",
+                                "body",
+                                "cookie"
+                            ]
+                        },
+                        "name": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "scheme"
+                    ]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {
+                            "$ref": "#/definitions/type_declaration"
+                        },
+                        "description": {
+                            "$ref": "#/definitions/description"
+                        },
+                        "descriptions": {
+                            "$ref": "#/definitions/descriptions"
+                        },
+                        "proxy": {
+                            "$ref": "#/definitions/anyUri"
+                        },
+                        "scheme": {
+                            "type": "string",
+                            "enum": [
+                                "digest"
+                            ]
+                        },
+                        "qop": {
+                            "type": "string",
+                            "enum": [
+                                "auth",
+                                "auth-int"
+                            ]
+                        },
+                        "in": {
+                            "type": "string",
+                            "enum": [
+                                "header",
+                                "query",
+                                "body",
+                                "cookie"
+                            ]
+                        },
+                        "name": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "scheme"
+                    ]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {
+                            "$ref": "#/definitions/type_declaration"
+                        },
+                        "description": {
+                            "$ref": "#/definitions/description"
+                        },
+                        "descriptions": {
+                            "$ref": "#/definitions/descriptions"
+                        },
+                        "proxy": {
+                            "$ref": "#/definitions/anyUri"
+                        },
+                        "scheme": {
+                            "type": "string",
+                            "enum": [
+                                "apikey"
+                            ]
+                        },
+                        "in": {
+                            "type": "string",
+                            "enum": [
+                                "header",
+                                "query",
+                                "body",
+                                "cookie"
+                            ]
+                        },
+                        "name": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "scheme"
+                    ]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {
+                            "$ref": "#/definitions/type_declaration"
+                        },
+                        "description": {
+                            "$ref": "#/definitions/description"
+                        },
+                        "descriptions": {
+                            "$ref": "#/definitions/descriptions"
+                        },
+                        "proxy": {
+                            "$ref": "#/definitions/anyUri"
+                        },
+                        "scheme": {
+                            "type": "string",
+                            "enum": [
+                                "bearer"
+                            ]
+                        },
+                        "authorization": {
+                            "$ref": "#/definitions/anyUri"
+                        },
+                        "alg": {
+                            "type": "string"
+                        },
+                        "format": {
+                            "type": "string"
+                        },
+                        "in": {
+                            "type": "string",
+                            "enum": [
+                                "header",
+                                "query",
+                                "body",
+                                "cookie"
+                            ]
+                        },
+                        "name": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "scheme"
+                    ]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {
+                            "$ref": "#/definitions/type_declaration"
+                        },
+                        "description": {
+                            "$ref": "#/definitions/description"
+                        },
+                        "descriptions": {
+                            "$ref": "#/definitions/descriptions"
+                        },
+                        "proxy": {
+                            "$ref": "#/definitions/anyUri"
+                        },
+                        "scheme": {
+                            "type": "string",
+                            "enum": [
+                                "psk"
+                            ]
+                        },
+                        "identity": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "scheme"
+                    ]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "@type": {
+                            "$ref": "#/definitions/type_declaration"
+                        },
+                        "description": {
+                            "$ref": "#/definitions/description"
+                        },
+                        "descriptions": {
+                            "$ref": "#/definitions/descriptions"
+                        },
+                        "proxy": {
+                            "$ref": "#/definitions/anyUri"
+                        },
+                        "scheme": {
+                            "type": "string",
+                            "enum": [
+                                "oauth2"
+                            ]
+                        },
+                        "authorization": {
+                            "$ref": "#/definitions/anyUri"
+                        },
+                        "token": {
+                            "$ref": "#/definitions/anyUri"
+                        },
+                        "refresh": {
+                            "$ref": "#/definitions/anyUri"
+                        },
+                        "scopes": {
+                            "oneOf": [
+                                {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                {
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "flow": {
+                            "type": "string",
+                            "enum": [
+                                "code"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "scheme"
+                    ]
+                }
+            ]
+        }
+    },
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "string",
+            "format": "uri"
+        },
+        "title": {
+            "$ref": "#/definitions/title"
+        },
+        "titles": {
+            "$ref": "#/definitions/titles"
+        },
+        "properties": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/property_element"
+            }
+        },
+        "actions": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/action_element"
+            }
+        },
+        "events": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/event_element"
+            }
+        },
+        "description": {
+            "$ref": "#/definitions/description"
+        },
+        "descriptions": {
+            "$ref": "#/definitions/descriptions"
+        },
+        "version": {
+            "type": "object",
+            "properties": {
+                "instance": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "instance"
+            ]
+        },
+        "links": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/link_element"
+            }
+        },
+        "forms": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "$ref": "#/definitions/form_element_root"
+            }
+        },
+        "base": {
+            "$ref": "#/definitions/anyUri"
+        },
+        "securityDefinitions": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+                "$ref": "#/definitions/securityScheme"
+            }
+        },
+        "support": {
+            "$ref": "#/definitions/anyUri"
+        },
+        "created": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "modified": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "security": {
+            "oneOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            ]
+        },
+        "@type": {
+            "$ref": "#/definitions/type_declaration"
+        },
+        "@context": {
+            "$ref": "#/definitions/thing-context"
+        }
+    },
+    "required": [
+        "title",
+        "security",
+        "securityDefinitions",
+        "@context"
+    ],
+    "additionalProperties": true
+}
+},{}],161:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -36485,7 +37545,7 @@ function nextTick(fn, arg1, arg2, arg3) {
 
 
 }).call(this,require('_process'))
-},{"_process":161}],161:[function(require,module,exports){
+},{"_process":162}],162:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -36671,7 +37731,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],162:[function(require,module,exports){
+},{}],163:[function(require,module,exports){
 (function (global){
 /*! https://mths.be/punycode v1.4.1 by @mathias */
 ;(function(root) {
@@ -37208,10 +38268,10 @@ process.umask = function() { return 0; };
 }(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],163:[function(require,module,exports){
+},{}],164:[function(require,module,exports){
 module.exports = require('./lib/_stream_duplex.js');
 
-},{"./lib/_stream_duplex.js":164}],164:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":165}],165:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -37343,7 +38403,7 @@ Duplex.prototype._destroy = function (err, cb) {
 
   pna.nextTick(cb, err);
 };
-},{"./_stream_readable":166,"./_stream_writable":168,"core-util-is":50,"inherits":59,"process-nextick-args":160}],165:[function(require,module,exports){
+},{"./_stream_readable":167,"./_stream_writable":169,"core-util-is":50,"inherits":59,"process-nextick-args":161}],166:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -37391,7 +38451,7 @@ function PassThrough(options) {
 PassThrough.prototype._transform = function (chunk, encoding, cb) {
   cb(null, chunk);
 };
-},{"./_stream_transform":167,"core-util-is":50,"inherits":59}],166:[function(require,module,exports){
+},{"./_stream_transform":168,"core-util-is":50,"inherits":59}],167:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -38413,7 +39473,7 @@ function indexOf(xs, x) {
   return -1;
 }
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./_stream_duplex":164,"./internal/streams/BufferList":169,"./internal/streams/destroy":170,"./internal/streams/stream":171,"_process":161,"core-util-is":50,"events":55,"inherits":59,"isarray":62,"process-nextick-args":160,"safe-buffer":172,"string_decoder/":173,"util":48}],167:[function(require,module,exports){
+},{"./_stream_duplex":165,"./internal/streams/BufferList":170,"./internal/streams/destroy":171,"./internal/streams/stream":172,"_process":162,"core-util-is":50,"events":55,"inherits":59,"isarray":62,"process-nextick-args":161,"safe-buffer":173,"string_decoder/":174,"util":48}],168:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -38628,7 +39688,7 @@ function done(stream, er, data) {
 
   return stream.push(null);
 }
-},{"./_stream_duplex":164,"core-util-is":50,"inherits":59}],168:[function(require,module,exports){
+},{"./_stream_duplex":165,"core-util-is":50,"inherits":59}],169:[function(require,module,exports){
 (function (process,global,setImmediate){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -39318,7 +40378,7 @@ Writable.prototype._destroy = function (err, cb) {
   cb(err);
 };
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("timers").setImmediate)
-},{"./_stream_duplex":164,"./internal/streams/destroy":170,"./internal/streams/stream":171,"_process":161,"core-util-is":50,"inherits":59,"process-nextick-args":160,"safe-buffer":172,"timers":179,"util-deprecate":181}],169:[function(require,module,exports){
+},{"./_stream_duplex":165,"./internal/streams/destroy":171,"./internal/streams/stream":172,"_process":162,"core-util-is":50,"inherits":59,"process-nextick-args":161,"safe-buffer":173,"timers":180,"util-deprecate":182}],170:[function(require,module,exports){
 'use strict';
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -39398,7 +40458,7 @@ if (util && util.inspect && util.inspect.custom) {
     return this.constructor.name + ' ' + obj;
   };
 }
-},{"safe-buffer":172,"util":48}],170:[function(require,module,exports){
+},{"safe-buffer":173,"util":48}],171:[function(require,module,exports){
 'use strict';
 
 /*<replacement>*/
@@ -39473,10 +40533,10 @@ module.exports = {
   destroy: destroy,
   undestroy: undestroy
 };
-},{"process-nextick-args":160}],171:[function(require,module,exports){
+},{"process-nextick-args":161}],172:[function(require,module,exports){
 module.exports = require('events').EventEmitter;
 
-},{"events":55}],172:[function(require,module,exports){
+},{"events":55}],173:[function(require,module,exports){
 /* eslint-disable node/no-deprecated-api */
 var buffer = require('buffer')
 var Buffer = buffer.Buffer
@@ -39540,7 +40600,7 @@ SafeBuffer.allocUnsafeSlow = function (size) {
   return buffer.SlowBuffer(size)
 }
 
-},{"buffer":49}],173:[function(require,module,exports){
+},{"buffer":49}],174:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -39837,10 +40897,10 @@ function simpleWrite(buf) {
 function simpleEnd(buf) {
   return buf && buf.length ? this.write(buf) : '';
 }
-},{"safe-buffer":172}],174:[function(require,module,exports){
+},{"safe-buffer":173}],175:[function(require,module,exports){
 module.exports = require('./readable').PassThrough
 
-},{"./readable":175}],175:[function(require,module,exports){
+},{"./readable":176}],176:[function(require,module,exports){
 exports = module.exports = require('./lib/_stream_readable.js');
 exports.Stream = exports;
 exports.Readable = exports;
@@ -39849,13 +40909,13 @@ exports.Duplex = require('./lib/_stream_duplex.js');
 exports.Transform = require('./lib/_stream_transform.js');
 exports.PassThrough = require('./lib/_stream_passthrough.js');
 
-},{"./lib/_stream_duplex.js":164,"./lib/_stream_passthrough.js":165,"./lib/_stream_readable.js":166,"./lib/_stream_transform.js":167,"./lib/_stream_writable.js":168}],176:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":165,"./lib/_stream_passthrough.js":166,"./lib/_stream_readable.js":167,"./lib/_stream_transform.js":168,"./lib/_stream_writable.js":169}],177:[function(require,module,exports){
 module.exports = require('./readable').Transform
 
-},{"./readable":175}],177:[function(require,module,exports){
+},{"./readable":176}],178:[function(require,module,exports){
 module.exports = require('./lib/_stream_writable.js');
 
-},{"./lib/_stream_writable.js":168}],178:[function(require,module,exports){
+},{"./lib/_stream_writable.js":169}],179:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -39984,7 +41044,7 @@ Stream.prototype.pipe = function(dest, options) {
   return dest;
 };
 
-},{"events":55,"inherits":59,"readable-stream/duplex.js":163,"readable-stream/passthrough.js":174,"readable-stream/readable.js":175,"readable-stream/transform.js":176,"readable-stream/writable.js":177}],179:[function(require,module,exports){
+},{"events":55,"inherits":59,"readable-stream/duplex.js":164,"readable-stream/passthrough.js":175,"readable-stream/readable.js":176,"readable-stream/transform.js":177,"readable-stream/writable.js":178}],180:[function(require,module,exports){
 (function (setImmediate,clearImmediate){
 var nextTick = require('process/browser.js').nextTick;
 var apply = Function.prototype.apply;
@@ -40063,9 +41123,9 @@ exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate :
   delete immediateIds[id];
 };
 }).call(this,require("timers").setImmediate,require("timers").clearImmediate)
-},{"process/browser.js":161,"timers":179}],180:[function(require,module,exports){
+},{"process/browser.js":162,"timers":180}],181:[function(require,module,exports){
 arguments[4][157][0].apply(exports,arguments)
-},{"dup":157}],181:[function(require,module,exports){
+},{"dup":157}],182:[function(require,module,exports){
 (function (global){
 
 /**

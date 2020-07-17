@@ -23,7 +23,7 @@ const Ajv = require('ajv')
 const checkUniqueness = require('playground-core').propUniqueness
 const checkMultiLangConsistency = require("playground-core").multiLangConsistency
 const checkSecurity = require("playground-core").security
-
+const tdSchema = require("playground-core/td-schema.json")
 
 /**
  * validates the TD in the first argument according to the assertions given in the second argument
@@ -36,9 +36,8 @@ const checkSecurity = require("playground-core").security
  * @param {string} tdSchema The JSON Schema used to eval if a Td is valid
  * @param {Function} logFunc Logging function
  */
-function validate(tdData, assertions, manualAssertions, tdSchema, logFunc) {
+function validate(tdData, assertions, manualAssertions, logFunc) {
 
-    tdSchema = JSON.parse(tdSchema)
     // a JSON file that will be returned containing the result for each assertion as a JSON Object
     let results = []
     // logFunc("=================================================================")
@@ -72,7 +71,7 @@ function validate(tdData, assertions, manualAssertions, tdSchema, logFunc) {
 
     // Normal TD Schema validation but this allows us to test multiple assertions at once
     try {
-        results.push(...checkVocabulary(tdJson, tdSchema))
+        results.push(...checkVocabulary(tdJson))
     } catch (error) {
         logFunc({
             "ID": error,
@@ -278,7 +277,7 @@ module.exports = validate
  * @param {object} tdJson The td to validate
  * @param {*} tdSchema The JSON Schema used for td validation
  */
-function checkVocabulary(tdJson, tdSchema) {
+function checkVocabulary(tdJson) {
 
     const results = []
     const ajv = new Ajv()

@@ -303,53 +303,47 @@ function realValidator(td, source) {
 
     if (source === "manual") {log("------- New Validation Started -------")}
 
-    const tdSchemaProm = getTdUrl("./node_modules/playground-core/td-schema.json")
-    const tdFullSchemaProm = getTdUrl("./node_modules/playground-core/td-schema-full.json")
+    const checkJsonLd = document.getElementById("box_jsonld_validate").checked
 
-    Promise.all([tdSchemaProm, tdFullSchemaProm]).then( values => {
+    tdValidator(td, log, {checkDefaults: true, checkJsonLd})
+    .then( result => {
+        let resultStatus = "success"
 
-        const checkJsonLd = document.getElementById("box_jsonld_validate").checked
+        Object.keys(result.report).forEach( el => {
+            const spotName = "spot-" + el
+            if (result.report[el] === "passed") {
+                document.getElementById(spotName).style.visibility = "visible"
+                document.getElementById(spotName).setAttribute("fill", "green")
+                if(source === "manual") {log(el + " validation... OK")}
+            }
+            else if (result.report[el] === "warning") {
+                document.getElementById(spotName).style.visibility = "visible"
+                document.getElementById(spotName).setAttribute("fill", "orange")
+                resultStatus = (resultStatus !== "danger") ? "warning" : "danger"
+                if(source === "manual") {log(el + " optional validation... KO")}
 
-            tdValidator(td, JSON.stringify(values[0]), JSON.stringify(values[1]), log, {checkDefaults: true, checkJsonLd})
-            .then( result => {
-                let resultStatus = "success"
+            }
+            else if (result.report[el] === "failed") {
+                document.getElementById(spotName).style.visibility = "visible"
+                document.getElementById(spotName).setAttribute("fill", "red")
+                resultStatus = "danger"
+                if(source === "manual") {log("X " + el + " validation... KO")}
+            }
+            else if (result.report[el] === null) {
+                // do nothing
+            }
+            else {
+                console.error("unknown report feedback value")
+            }
+        })
 
-                Object.keys(result.report).forEach( el => {
-                    const spotName = "spot-" + el
-                    if (result.report[el] === "passed") {
-                        document.getElementById(spotName).style.visibility = "visible"
-                        document.getElementById(spotName).setAttribute("fill", "green")
-                        if(source === "manual") {log(el + " validation... OK")}
-                    }
-                    else if (result.report[el] === "warning") {
-                        document.getElementById(spotName).style.visibility = "visible"
-                        document.getElementById(spotName).setAttribute("fill", "orange")
-                        resultStatus = (resultStatus !== "danger") ? "warning" : "danger"
-                        if(source === "manual") {log(el + " optional validation... KO")}
+        if (source === "manual") {
+            log("Details: ")
+            Object.keys(result.details).forEach(el => {log("    " + el + " " + result.details[el])})
+        }
 
-                    }
-                    else if (result.report[el] === "failed") {
-                        document.getElementById(spotName).style.visibility = "visible"
-                        document.getElementById(spotName).setAttribute("fill", "red")
-                        resultStatus = "danger"
-                        if(source === "manual") {log("X " + el + " validation... KO")}
-                    }
-                    else if (result.report[el] === null) {
-                        // do nothing
-                    }
-                    else {
-                        console.error("unknown report feedback value")
-                    }
-                })
-
-                if (source === "manual") {
-                    log("Details: ")
-                    Object.keys(result.details).forEach(el => {log("    " + el + " " + result.details[el])})
-                }
-
-                updateValidationStatusHead(resultStatus);
-                document.getElementById("btn_validate").removeAttribute("disabled")
-            })
+        updateValidationStatusHead(resultStatus);
+        document.getElementById("btn_validate").removeAttribute("disabled")
     })
 }
 

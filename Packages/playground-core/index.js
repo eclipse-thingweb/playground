@@ -17,6 +17,8 @@ const jsonld = require("jsonld")
 const Ajv = require("ajv")
 
 const coreAssertions = require("./core-assertions")
+const schema = require("./td-schema.json")
+const fullschema = require("./td-schema-full.json")
 
 module.exports = tdValidator
 module.exports.propUniqueness = coreAssertions.checkPropUniqueness
@@ -31,7 +33,7 @@ module.exports.security = coreAssertions.checkSecurity
  * @param {string} tdFullSchema The JSON Schema that defines a correct TD including default values.
  * @param {function} logFunc (string) => void; Callback used to log the validation progress.
  */
-function tdValidator(tdString, tdSchema, tdFullSchema, logFunc, { checkDefaults=true, checkJsonLd=true }) {
+function tdValidator(tdString, tdFullSchema, logFunc, { checkDefaults=true, checkJsonLd=true }) {
     return new Promise( (res, rej) => {
 
         // check input
@@ -93,7 +95,7 @@ function tdValidator(tdString, tdSchema, tdFullSchema, logFunc, { checkDefaults=
                 logFunc(':) Tip: Without base, each href should be an absolute URL')
             }
         }
-        const schema = JSON.parse(tdSchema)
+
         const ajv = new Ajv() // options can be passed, e.g. {allErrors: true}
         ajv.addSchema(schema, 'td')
         const valid = ajv.validate('td', tdJson)
@@ -104,7 +106,6 @@ function tdValidator(tdString, tdSchema, tdFullSchema, logFunc, { checkDefaults=
 
             // check with full schema
             if (checkDefaults) {
-                const fullschema = JSON.parse(tdFullSchema)
                 ajv.addSchema(fullschema, 'fulltd')
                 const fullValid = ajv.validate('fulltd', tdJson)
                 if (fullValid) {
