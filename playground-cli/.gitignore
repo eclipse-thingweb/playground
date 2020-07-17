@@ -1,0 +1,5 @@
+# CLI output
+**/out/
+
+# Node modules
+node_modules/
