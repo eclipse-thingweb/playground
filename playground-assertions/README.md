@@ -81,26 +81,11 @@ You can contribute by providing new JSON Schemas for assertions or by correcting
   This way, the validation will surely fail at the const keyword and display that the JSON data has to be `"td-data-schema_description=pass"` string. This will be then detected by the assertion testing tool which will look for the `=` sign to find the result. If the schema doesn't fail, it implies that this if was false, which in turn implies that the assertion you wanted to test was not implemented in the given TD.
 
 ## Examples
-
-* Some example Thing Descriptions are provided in the Examples folder at directory ./Examples. There are :
-  * valid: Minimum 4 lights are lit green, no warning message is displayed. They may or may not pass Full Schema Validation
-  * warning: At least one light is orange
-  * invalid: At least one of the lights is lit red.
-
-These examples cover all the features of the TD spec. If you think that there is a missing feature not represented, write an issue.
+Examples are included in the `playground-core` package.
 
 ## Batch Testing
-TODO: update
-For Linux:
-* Open a bash console in terminal
-* From the root directory of the playground, run `./batchTest.sh`
-    * This tests all the TDs in `WebContent/Examples/`
-        * A TD in `valid` directory should be valid
-        * A TD in `invalid` directory should be invalid, giving an error in at least one check
-        * A TD in `warning` directory should give at least one warning in a check but should be valid at the same time
-* In order to test batch TDs, put them in the `WebContent/Examples/Valid` directory.
-* You can change the folder where the valid, invalid and warning TDs should be located.
+Please take a look at the `playground-cli` Package. 
 
-## To-Do
+## Known Bugs
 
-* Putting different tools in different levels under one folder and remove redundancy of code
+* td-json-open assertion exists multiple times, [see issue 124](https://github.com/thingweb/thingweb-playground/issues/124)

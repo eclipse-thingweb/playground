@@ -1,9 +1,11 @@
 # Thingweb-Playground
 
 This package provides the web interface of the Web of Things Playground. 
-It uses the functionality of the `playground-core` package to validate Thing Descriptions.
+It uses the functionality of the `playground-core` package to validate Thing Descriptions and `playground-assertions` to generate an assertion Test report.
 
 The core package can be found here TODO:.
+The assertions package can be found here: TODO:
+An CLI for the playground can be found here: TODO:
 
 Validation tool for W3C WoT Thing Descriptions. Your Thing Descriptions should be written according to the W3C standard found [here](https://w3c.github.io/wot-thing-description/#).
 

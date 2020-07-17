@@ -1,9 +1,15 @@
 # Thingweb-Playground
 
 This package provides a Command Line Interface (CLI) for the Web of Things Playground.
+You can validate whether one, or several given TDs are valid. 
+Furthermore you can generate an assertion test report (`-a`) to see which assertions are implemented in your TD.
+For more information on the usage of the CLI, please use `--help` parameter. Most parameters can be mixed (e.g. 
+`-a -c -n`) will output an **Assertion report**, in json and **not csv** and seperately for every given TD **not merged**.
+But keep in mind, that assertion parameters won't have any effect on the normal validation.
 
 The core package can be found here: TODO:
 The web interface can be found here: TODO: or running hosted [here](http://plugfest.thingweb.io/playground/)   
+The assertions package can be found here: TODO:
 
 Validation tool for W3C WoT Thing Descriptions. Your Thing Descriptions should be written according to the W3C standard found [here](https://w3c.github.io/wot-thing-description/#).
 
@@ -31,9 +37,9 @@ This is a node.js based tool
 
 297 out of 349 assertions of the TD specification can be tested with this tool.
 
-This tool checks which assertions are satisfied by a given Thing Description(s). The assertions are modeled as JSON Schema or as scripts. 'AssertionTester/Assertions' has the JSON Schema assertions. To use this tool from the root directory of the repository:
+This tool checks which assertions are satisfied by a given Thing Description(s). The assertions are modeled as JSON Schema or as scripts. 'playground-assertions/assertions' has the JSON Schema assertions. To use this tool from the root directory of the repository:
 
-* Change to AssertionTester directory
+* Change to playground directory
 * Run npm install
 * For single TD: Run 'npm run-script testTD an_example_TD_location'. E.g. 'npm run-script testTD ../WebContent/Examples/Valid/JsonLdThing.json' 
   * You can specify the output location and filename in an argument that comes after the input, e.g. npm run-script testTD inputTD.json outputResult.csv
@@ -54,15 +60,16 @@ This tool checks which assertions are satisfied by a given Thing Description(s).
 
 ## Examples
 Examples are included in the `playground-core` package and can be accessed via the CLI.
+If you don't provide an input file, these examples will be tested/asserted. 
 
 ## Batch Testing
-TODO: update
-For Linux:
-* Open a bash console in terminal
-* From the root directory of the playground, run `./batchTest.sh`
-    * This tests all the TDs in `WebContent/Examples/`
+* Call the CLI e.g. with `node index.js` and give a folder as input, e.g., `./myDir`
+    * This tests all the TDs in the following subfolders: 
         * A TD in `valid` directory should be valid
         * A TD in `invalid` directory should be invalid, giving an error in at least one check
         * A TD in `warning` directory should give at least one warning in a check but should be valid at the same time
-* In order to test batch TDs, put them in the `WebContent/Examples/Valid` directory.
-* You can change the folder where the valid, invalid and warning TDs should be located.
+    * And all TDs located directly in the `./myDir` folder
+
+## Known Bugs
+* td-json-open assertion exists multiple times, [see issue 124](https://github.com/thingweb/thingweb-playground/issues/124)
+

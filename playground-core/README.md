@@ -100,7 +100,3 @@ For Linux:
         * A TD in `warning` directory should give at least one warning in a check but should be valid at the same time
 * In order to test batch TDs, put them in the `WebContent/Examples/Valid` directory.
 * You can change the folder where the valid, invalid and warning TDs should be located.
-
-## Known Bugs
-
-* td-json-open assertion exists multiple times, [see issue 124](https://github.com/thingweb/thingweb-playground/issues/124)
