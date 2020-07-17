@@ -52,7 +52,7 @@ const argParser = require('argly')
         },
         '--assertion-out -o': {
             type: 'string',
-            description: 'path and filename of the generated assertions report (defaults to ./out/[$input_][.]assertionsTest)'
+            description: 'path and filename of the generated assertions report (defaults to ./out/[.]assertionsTest[_$input])'
         },
         '--assertion-nomerge -n': {
             type: 'boolean',
@@ -104,13 +104,6 @@ const tdsToCheck = []
 const tdsToMerge = []
 let manualAssertions
 const logFunc = myArguments.assertionTostd ? () => {} : console.log
-
-const tdSchemaPath = path.join("node_modules", "playground-core", "td-schema.json")
-const tdFullSchemaPath = path.join("node_modules", "playground-core", "td-schema-full.json")
-
-const tdSchema = fs.readFileSync(tdSchemaPath,"utf-8")
-const tdSchemaFull = fs.readFileSync(tdFullSchemaPath, "utf-8")
-console.log(tdSchema)
 
 // handle input argument
 let input = myArguments.input
@@ -226,7 +219,6 @@ function assertTd(tds, type) {
 function mergeReports(reports) {
     return new Promise( (res, rej) => {
         if (reports.length > 0) {
-            console.log(reports.length)
             assertMergeResults(reports).then( merged => {
                 assertCheckCoverage(merged, logFunc)
                 outReport(merged, ".assertionsMerged")
@@ -246,17 +238,25 @@ function mergeReports(reports) {
  */
 function outReport(data, pathFragment, id) {
 
-    if (id === undefined) {id = ""}
-    else {
-        id = id.split(path.sep)
-                .pop()
-                .split(".")
-                .slice(0,-1)
-                .join(".")
+    if (id === undefined) {
+        id = ""
     }
-
+    else {
+        // remove path if existing
+        // id = id.replace(/\/|\\/g, "_")
+        if (id.indexOf(path.sep) !== -1) {
+            id = id.split(path.sep)
+                    .pop()
+        }
+        // remove file ending if existing
+        if (id.indexOf(".") !== -1) {
+            id = id.split(".")
+                    .slice(0,-1)
+                    .join(".")
+        }
+    }
     if (myArguments.assertionNocsv) {
-        data = JSON.stringify(data)
+        data = JSON.stringify(data, undefined, 4)
     }
     else {
         data = assertResultsToCsv(data)

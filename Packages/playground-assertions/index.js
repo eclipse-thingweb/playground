@@ -74,7 +74,7 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, locally=false
                 if (typeof tdToValidate === "string") {tdToValidate = Buffer.from(tdToValidate, "utf8")}
 
                 if (jsonResults[tdName] !== undefined) {throw new Error("TDs have same Ids: " + tdName)}
-                jsonResults[tdName] = validate(tdToValidate, assertionSchemas, manualAssertionsJSON, tdSchema, logFunc)
+                jsonResults[tdName] = validate(tdToValidate, assertionSchemas, manualAssertionsJSON, logFunc)
             })
 
             const tdNames = Object.keys(jsonResults)

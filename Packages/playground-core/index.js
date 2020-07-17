@@ -29,17 +29,15 @@ module.exports.security = coreAssertions.checkSecurity
 /**
  * A function that provides the core functionality of the TD Playground.
  * @param {string} tdString The Thing Description to check as a string.
- * @param {string} tdSchema The JSON Schema that defines a correct TD.
- * @param {string} tdFullSchema The JSON Schema that defines a correct TD including default values.
  * @param {function} logFunc (string) => void; Callback used to log the validation progress.
+ * @param {object} options additional options, which checks should be executed
  */
-function tdValidator(tdString, tdFullSchema, logFunc, { checkDefaults=true, checkJsonLd=true }) {
+function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }) {
     return new Promise( (res, rej) => {
 
         // check input
         if (typeof tdString !== "string") {rej("Thing Description input should be a String")}
-        if (typeof tdSchema !== "string") {rej("TD Schema input value was no String")}
-        if (typeof tdFullSchema !== "string") {rej("TD full Schema should be a string")}
+
         if (checkDefaults === undefined) {
             checkDefaults = true
         }
@@ -413,7 +411,7 @@ function tdValidator(tdString, tdFullSchema, logFunc, { checkDefaults=true, chec
         function evalAssertion(results) {
             let eval = "passed"
             results.forEach( resultobj => {
-                if (resultobj.Status === "failed") {
+                if (resultobj.Status === "fail") {
                     eval = "failed"
                     logFunc("KO Error: Assertion: " + resultobj.ID)
                     logFunc(resultobj.Comment)
