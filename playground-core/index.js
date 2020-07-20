@@ -31,6 +31,7 @@ module.exports.security = coreAssertions.checkSecurity
  * @param {string} tdString The Thing Description to check as a string.
  * @param {function} logFunc (string) => void; Callback used to log the validation progress.
  * @param {object} options additional options, which checks should be executed
+ * @returns {object} Results of the validation as {report, details} object
  */
 function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }) {
     return new Promise( (res, rej) => {
@@ -48,7 +49,6 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
 
         // report that is returned by the function, possible values for every property:
         // null -> not tested, "passed", "failed", "warning"
-        // console is an array of strings
         const report = {
             json: null,
             schema: null,
@@ -231,7 +231,10 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             return
         }
 
-        /** checking whether a data schema has object but not properties, array but no items */
+        /**
+         * checking whether a data schema has object but not properties, array but no items
+         * @param {object} td The TD under test
+         */
         function checkPropItems(td) {
             details.propItems = "passed"
 
@@ -321,7 +324,10 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             return
         }
 
-        /** checking whether the td contains interactions field that is remaining from the previous spec */
+        /**
+         * checking whether the td contains interactions field that is remaining from the previous spec
+         * @param {object} td The TD under test
+         */
         function checkInteractions(td) {
             details.interactions = "passed"
             if (td.hasOwnProperty("interactions")) {
@@ -357,7 +363,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             // checking uniqueness
 
             isDuplicate = (new Set(tdInteractions)).size !== tdInteractions.length
-            // console.log(isDuplicate)
+
             if (isDuplicate) {
                 details.uniqueness = "failed"
                 logFunc('KO Error: Duplicate names are not allowed in Interactions')

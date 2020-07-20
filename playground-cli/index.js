@@ -163,6 +163,9 @@ function assertionReport() {
         if(input.endsWith(".json") || input.endsWith(".jsonld")) {
             tdsToCheck.push(fs.readFileSync(input))
         }
+        else if (input.endsWith(".csv")) {
+            tdsToMerge.push(assertManualToJson(fs.readFileSync(input,"utf-8")))
+        }
         else {
             console.log("CANNOT HANDLE file: ", el)
             return
@@ -218,7 +221,7 @@ function assertTd(tds, type) {
  */
 function mergeReports(reports) {
     return new Promise( (res, rej) => {
-        if (reports.length > 0) {
+        if (reports.length > 1) {
             assertMergeResults(reports).then( merged => {
                 assertCheckCoverage(merged, logFunc)
                 outReport(merged, ".assertionsMerged")
@@ -226,6 +229,13 @@ function mergeReports(reports) {
             }, err => {
                 rej(err)
             })
+        }
+        else if (reports.length === 1) {
+            assertCheckCoverage(reports[0], logFunc)
+            res()
+        }
+        else {
+            res()
         }
     })
 }

@@ -3,6 +3,8 @@
 This package provides the web interface of the Web of Things Playground. 
 It uses the functionality of the `playground-core` package to validate Thing Descriptions and `playground-assertions` to generate an assertion Test report.
 
+The structure of all WoT Playground packages is shown here: ![packageStructure](https://i.imgur.com/cbleWss.png)
+
 The core package can be found here TODO:.
 The assertions package can be found here: TODO:
 An CLI for the playground can be found here: TODO:
@@ -25,8 +27,7 @@ Please also see the additional [notices](NOTICE.md) and [how to contribute](CONT
   * Safari browser has unexpected behavior with JSON-LD documents
   * I you loose your internet connection when validating JSON-LD validation will fail since it tries to access the documents under `@context` (can be turned off)
 
-* Offline/OnPremise: by hosting the `playground-web` yourself.
-
+* Offline/OnPremise: by hosting the `playground-web` yourself. You can use the `playground-web` package to host/adapt your own browser version of the WoT playground. Remember you need to deliver its files by a web server (also locally possible via localhost), simply opening the `index.html` with a browser won't do the job.
 
 ## Examples
 Examples are included in the `playground-core` and can be used in the web interface by a dropdown menu.
