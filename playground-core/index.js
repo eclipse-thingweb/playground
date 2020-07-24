@@ -59,9 +59,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
         const details = {
             enumConst: null,
             propItems: null,
-            interactions: null,
             security: null,
-            uniqueness: null,
             propUniqueness: null,
             multiLangConsistency: null
         }
@@ -75,13 +73,6 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             report.json = "failed"
             logFunc("X JSON validation failed:")
             logFunc(err)
-
-            // if (err instanceof SyntaxError) {
-            //     const charNo=err.message.match(/\d+/g)
-            //     // console.log("charter ni is "+charNo);
-            //     const lineNo=getLineNumber(charNo,$("#td-text").val())
-            //     logFunc('> ' + err.message+"  Near Line No:"+ lineNo)
-            // }
 
             res({report, details})
         }
@@ -112,8 +103,6 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             // do additional checks
             checkEnumConst(tdJson)
             checkPropItems(tdJson)
-            checkInteractions(tdJson)
-            checkInteractionUniqueness(tdJson)
             details.security = evalAssertion(coreAssertions.checkSecurity(tdJson))
             details.propUniqueness = evalAssertion(coreAssertions.checkPropUniqueness(tdString))
             details.multiLangConsistency = evalAssertion(coreAssertions.checkMultiLangConsistency(tdJson))
@@ -317,88 +306,6 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             return
         }
 
-        /**
-         * checking whether the td contains interactions field that is remaining from the previous spec
-         * @param {object} td The TD under test
-         */
-        function checkInteractions(td) {
-            details.interactions = "passed"
-            if (td.hasOwnProperty("interactions")) {
-                details.interactions = "warning"
-                logFunc('! Warning: interactions are from the previous TD Specification, ' +
-                    'please use properties, actions, events instead')
-            }
-            if (td.hasOwnProperty("interaction")) {
-                details.interactions = "warning"
-                logFunc('! Warning: interaction are from the previous TD Specification, ' +
-                    'please use properties, actions, events instead')
-            }
-            return
-        }
-
-        /**
-         *  Checks whether two interactions have the same name,
-         *  e.g., an action named "status" and a property named "status"
-         * @param {object} td The Td under test as object
-         */
-        function checkInteractionUniqueness(td) {
-            // building the interaction name array
-            let tdInteractions = []
-            if (td.hasOwnProperty("properties")) {
-                tdInteractions = tdInteractions.concat(Object.keys(td.properties))
-            }
-            if (td.hasOwnProperty("actions")) {
-                tdInteractions = tdInteractions.concat(Object.keys(td.actions))
-            }
-            if (td.hasOwnProperty("events")) {
-                tdInteractions = tdInteractions.concat(Object.keys(td.events))
-            }
-            // checking uniqueness
-
-            isDuplicate = (new Set(tdInteractions)).size !== tdInteractions.length
-
-            if (isDuplicate) {
-                details.uniqueness = "failed"
-                logFunc('KO Error: Duplicate names are not allowed in Interactions')
-            } else {
-                details.uniqueness = "passed"
-            }
-        }
-
-        /**
-         * TODO: check whether still needed, since
-         * takes character number and gives out the line number
-         * @param {number} characterNo character Number (can be )
-         * @param {string} str whole String
-         */
-        // function getLineNumber(characterNo,str)
-        // {
-        //     const charsPerLine=[]
-        //     const str2lines=str.split("\n")
-
-        //     // calculate number of characters in each line
-        //     str2lines.forEach( (value, index) => {
-        //         const strVal = String(value)
-        //         charsPerLine.push(strVal.length)
-        //         characterNo++
-        //     })
-
-        //     // $.each(str2lines,function(index,value){
-        //     //     const strVal = String(value)
-        //     //     charsPerLine.push(strVal.length)
-        //     //     characterNo++
-        //     // })
-
-        //     // find the line containing that characterNo
-        //     let count=0
-        //     let lineNo=0
-        //     while(characterNo>count)
-        //     {
-        //         count+=charsPerLine[lineNo]
-        //         lineNo++
-        //     }
-        //     return lineNo
-        // }
 
         /**
          * Evaluates whether an assertion function contains a failed check
