@@ -338,7 +338,7 @@ function realValidator(td, source) {
         })
 
         if (source === "manual") {
-            log("Details: ")
+            log("Details of the \"additional\" checks: ")
             Object.keys(result.details).forEach(el => {log("    " + el + " " + result.details[el])})
         }
 

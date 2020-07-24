@@ -379,6 +379,6 @@ left: 100%;
 	transition: opacity 0.2s;
 }
 
-label[for="box_reset_logging"] {
+.tooltipline {
 	text-decoration: underline dotted gray;
 }

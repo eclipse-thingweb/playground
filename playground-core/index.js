@@ -54,7 +54,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             schema: null,
             defaults: null,
             jsonld: null,
-            add: null
+            additional: null
         }
         const details = {
             enumConst: null,
@@ -110,13 +110,13 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             // determine additional check state
             // passed + warning -> warning
             // passed AND OR warning + error -> error
-            report.add = "passed"
+            report.additional = "passed"
             Object.keys(details).forEach( prop => {
-                if (details[prop] === "warning" && report.add === "passed") {
-                    report.add = "warning"
+                if (details[prop] === "warning" && report.additional === "passed") {
+                    report.additional = "warning"
                 }
-                else if (details[prop] === "failed" && report.add !== "failed") {
-                    report.add = "failed"
+                else if (details[prop] === "failed" && report.additional !== "failed") {
+                    report.additional = "failed"
                 }
             })
 
