@@ -21,6 +21,7 @@ const results = []
 let autoValidate = false
 
 document.getElementById("box_jsonld_validate").checked = true
+document.getElementById("box_reset_logging").checked = true
 
 document.getElementById("validation_table_head").addEventListener("click", ()=>{
 	util.toggleValidationStatusTable()
