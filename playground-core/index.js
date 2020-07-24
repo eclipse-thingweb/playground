@@ -86,13 +86,6 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             res({report, details})
         }
 
-        // JSON Schema check
-        if (tdJson.hasOwnProperty('properties') || tdJson.hasOwnProperty('actions') || tdJson.hasOwnProperty('events')) {
-            if (!tdJson.hasOwnProperty('base')) {
-                // no need to do something. Each href should be absolute
-                logFunc(':) Tip: Without base, each href should be an absolute URL')
-            }
-        }
 
         const ajv = new Ajv() // options can be passed, e.g. {allErrors: true}
         ajv.addSchema(schema, 'td')
