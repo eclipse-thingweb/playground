@@ -333,15 +333,15 @@ function coreValidation() {
             })
             Promise.all(checkPromises).then( () => {
                 if (validNames.length === 0) {
-                    console.log("No valid TD to check has been found")
+                    console.log("\nNo valid TD to check has been found")
                 }
                 else if (validNames.length === validCount) {
-                    console.log("Validity test succesful. All TDs that are supposed to be valid are indeed valid")
+                    console.log("\nValidity test succesful. All TDs that are supposed to be valid are indeed valid")
                 }
                 else {
-                    console.log("Validity test NOT successful, ", validCount, "/", validNames.length, "passed the validity test")
+                    console.log("\nValidity test NOT successful, ", validCount, "/", validNames.length, "passed the validity test")
                 }
-            }, err => {console.error("Valid TD Check broken! " + err)})
+            }, err => {console.error("\nValid TD Check broken! " + err)})
         }
 
         const invalidPath = path.join(input, "invalid")
@@ -368,17 +368,17 @@ function coreValidation() {
             })
             Promise.all(checkPromises).then( () => {
                 if (invalidNames.length === 0) {
-                    console.log("No invalid TD to check has been found")
+                    console.log("\nNo invalid TD to check has been found")
                 }
                 else if (invalidNames.length === invalidCount) {
-                    console.log("Invalidity test succesful. All TDs that are supposed to be invalid are indeed valid")
+                    console.log("\nInvalidity test succesful. All TDs that are supposed to be invalid are indeed valid")
                 }
                 else {
                     console.log(
-                        "Invalidity test NOT successful, ", invalidCount, "/", invalidNames.length, "passed the invalidity test"
+                        "\nInvalidity test NOT successful, ", invalidCount, "/", invalidNames.length, "passed the invalidity test"
                         )
                 }
-            }, err => {console.error("Invalid TD Check broken!" + err)})
+            }, err => {console.error("\nInvalid TD Check broken!" + err)})
         }
 
         const warnPath = path.join(input, "warning")
@@ -398,7 +398,7 @@ function coreValidation() {
                         } else if (statResult("warning", result.report)) {
                             warnCount++
                         } else {
-                            console.log(el, "was supposed to be valid but passed all the tests")
+                            console.log(el, "was supposed to give a warning but passed all the tests")
                             // result.console.forEach( line => {console.log(line)} )
                         }
                     }, err => {
@@ -409,15 +409,15 @@ function coreValidation() {
             })
             Promise.all(checkPromises).then( () => {
                 if (warnNames.length === 0) {
-                    console.log("No warning TD to check has been found")
+                    console.log("\nNo warning TD to check has been found")
                 }
                 else if (warnNames.length === warnCount) {
-                    console.log("Warning test succesful. All TDs that are supposed to give a warning gave a warning")
+                    console.log("\nWarning test succesful. All TDs that are supposed to give a warning gave a warning")
                 }
                 else {
-                    console.log("Warning test NOT successful, ", warnCount, "/", warnNames.length, "passed the validity test")
+                    console.log("\nWarning test NOT successful, ", warnCount, "/", warnNames.length, "passed the warning test")
                 }
-            }, err => {console.error("Warning TD Check broken!" + err)})
+            }, err => {console.error("\nWarning TD Check broken!" + err)})
         }
 
         // check TDs contained in the directory
@@ -444,11 +444,7 @@ function checkTd(td) {
     tdValidator(td, console.log,{checkDefaults: !myArguments.nodefaults,checkJsonLd: !myArguments.nojsonld})
     .then( result => {
         console.log("OKAY \n")
-        // result.console.forEach(el => {
-        //    console.log(el)
-        // })
         console.log("\n")
-        // delete result.console
         console.log("--- Report ---\n", result, "\n--------------")
     }, err => {
         console.log("ERROR")
@@ -462,9 +458,5 @@ function checkTd(td) {
  * @param {object} report Report object that will be inspected
  */
 function statResult(keyword, report) {
-    return (report.json === keyword
-    || report.schema === keyword
-    || report.defaults === keyword
-    || report.jsonld === keyword
-    || report.add === keyword)
+    return Object.keys(report).some( el => (report[el] === keyword))
 }
