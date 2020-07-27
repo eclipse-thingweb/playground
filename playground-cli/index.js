@@ -103,7 +103,10 @@ let tdToCheck = ""
 const tdsToCheck = []
 const tdsToMerge = []
 let manualAssertions
+
+// assign / overwrite logging functions used
 const logFunc = myArguments.assertionTostd ? () => {} : console.log
+if (!myArguments.assertionTostd) {console.info = () => {}}
 
 // handle input argument
 let input = myArguments.input
