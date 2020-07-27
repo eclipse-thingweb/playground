@@ -210,6 +210,9 @@ function assertTd(tds, type) {
                 }
             })
         }
+        else {
+            res()
+        }
     })
 }
 
