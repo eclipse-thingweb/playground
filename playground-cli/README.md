@@ -1,19 +1,12 @@
-# Thingweb-Playground
-
+# Thingweb-Playground CLI
 This package provides a Command Line Interface (CLI) for the Web of Things Playground.
+You can find more information about the Thingweb-Playground [here](https://github.com/thingweb/thingweb-playground).
+
 You can validate whether one, or several given TDs are valid. 
 Furthermore you can generate an assertion test report (`-a`) to see which assertions are implemented in your TD.
 For more information on the usage of the CLI, please use `--help` parameter or look at the last section of this readme. Most parameters can be mixed (e.g. 
 `-a -c -n`) will output an **Assertion report**, in json and **not csv** and seperately for every given TD **not merged**.
 But keep in mind, that assertion parameters won't have any effect on the normal validation.
-
-The structure of all WoT Playground packages is shown here: ![packageStructure](https://i.imgur.com/cbleWss.png)
-
-* The core package can be found here: TODO:
-* The web interface can be found here: TODO: or running hosted [here](http://plugfest.thingweb.io/playground/)   
-* The assertions package can be found here: TODO:
-
-Validation tool for W3C WoT Thing Descriptions. Your Thing Descriptions should be written according to the W3C standard found [here](https://w3c.github.io/wot-thing-description/#).
 
 ## License
 Dual-licensed under both
@@ -26,8 +19,7 @@ Please also see the additional [notices](NOTICE.md) and [how to contribute](CONT
 
 
 ## Script based Thing Description Validation
-
-This is a node.js based tool
+This is a node.js based tool.
 
 * You can use the `playground-core` package as an API to validate TDs in your own packages.
 * You can use the `playground-assertion` package to integrate assertion testing via an API in your own packages.
@@ -36,7 +28,6 @@ This is a node.js based tool
 * Run `node index.js "./node_modules/playground-core/examples/valid/actionReponse.json"` to validate a Thing Description found at './node_modules/playground-core/examples/valid/actionReponse.json'. You can replace this with a TD you want to validate.
 
 ## Script based Assertion Tester (-a parameter)
-
 297 out of 349 assertions of the TD specification can be tested with this tool.
 
 This tool checks which assertions are satisfied by a given Thing Description(s). The assertions are modeled as JSON Schema or as scripts. 'playground-assertions/assertions' has the JSON Schema assertions. To use this tool (`node index.js` can be replaced by `npm start`):
@@ -58,10 +49,6 @@ This tool checks which assertions are satisfied by a given Thing Description(s).
 * You can check the coverage of tge results.csv file with `node index.js results.csv -a` which will output a list to the std output indicating how many assertions passed, failed or not implemented
   
 **WARNING**: If you see an error like `ajv.errors[0].params.allowedValue` this very probably means that your TD is not valid at a specific point. Scroll up to see the precise error message
-
-## Examples
-Examples are included in the `playground-core` package and can be accessed via the CLI.
-If you don't provide an input file, these examples will be tested/asserted. 
 
 ## Batch Testing
 * Call the CLI e.g. with `node index.js` and give a folder as input, e.g., `./myDir`
