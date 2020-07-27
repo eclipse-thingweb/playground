@@ -695,6 +695,7 @@ module.exports.security = coreAssertions.checkSecurity
  * @param {string} tdString The Thing Description to check as a string.
  * @param {function} logFunc (string) => void; Callback used to log the validation progress.
  * @param {object} options additional options, which checks should be executed
+ * @returns {object} Results of the validation as {report, details} object
  */
 function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }) {
     return new Promise( (res, rej) => {
@@ -712,22 +713,27 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
 
         // report that is returned by the function, possible values for every property:
         // null -> not tested, "passed", "failed", "warning"
-        // console is an array of strings
         const report = {
             json: null,
             schema: null,
             defaults: null,
             jsonld: null,
-            add: null
+            additional: null
         }
         const details = {
             enumConst: null,
             propItems: null,
-            interactions: null,
             security: null,
-            uniqueness: null,
             propUniqueness: null,
             multiLangConsistency: null
+        }
+
+        const detailComments = {
+            enumConst: "Checking whether a data schema has enum and const at the same time.",
+            propItems: "Checking whether a data schema has an object but not properties or array but no items.",
+            security: "Check if used Security definitions are properly defined previously.",
+            propUniqueness: "Checking whether in one interaction pattern there are duplicate names, e.g. two properties called temp.",
+            multiLangConsistency: "Checks whether all titles and descriptions have the same language fields."
         }
 
         let tdJson
@@ -740,23 +746,9 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             logFunc("X JSON validation failed:")
             logFunc(err)
 
-            // if (err instanceof SyntaxError) {
-            //     const charNo=err.message.match(/\d+/g)
-            //     // console.log("charter ni is "+charNo);
-            //     const lineNo=getLineNumber(charNo,$("#td-text").val())
-            //     logFunc('> ' + err.message+"  Near Line No:"+ lineNo)
-            // }
-
-            res({report, details})
+            res({report, details, detailComments})
         }
 
-        // JSON Schema check
-        if (tdJson.hasOwnProperty('properties') || tdJson.hasOwnProperty('actions') || tdJson.hasOwnProperty('events')) {
-            if (!tdJson.hasOwnProperty('base')) {
-                // no need to do something. Each href should be absolute
-                logFunc(':) Tip: Without base, each href should be an absolute URL')
-            }
-        }
 
         const ajv = new Ajv() // options can be passed, e.g. {allErrors: true}
         ajv.addSchema(schema, 'td')
@@ -783,8 +775,6 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             // do additional checks
             checkEnumConst(tdJson)
             checkPropItems(tdJson)
-            checkInteractions(tdJson)
-            checkInteractionUniqueness(tdJson)
             details.security = evalAssertion(coreAssertions.checkSecurity(tdJson))
             details.propUniqueness = evalAssertion(coreAssertions.checkPropUniqueness(tdString))
             details.multiLangConsistency = evalAssertion(coreAssertions.checkMultiLangConsistency(tdJson))
@@ -792,13 +782,13 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             // determine additional check state
             // passed + warning -> warning
             // passed AND OR warning + error -> error
-            report.add = "passed"
+            report.additional = "passed"
             Object.keys(details).forEach( prop => {
-                if (details[prop] === "warning" && report.add === "passed") {
-                    report.add = "warning"
+                if (details[prop] === "warning" && report.additional === "passed") {
+                    report.additional = "warning"
                 }
-                else if (details[prop] === "failed" && report.add !== "failed") {
-                    report.add = "failed"
+                else if (details[prop] === "failed" && report.additional !== "failed") {
+                    report.additional = "failed"
                 }
             })
 
@@ -809,7 +799,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
 
             logFunc('> ' + ajv.errorsText())
 
-            res({report, details})
+            res({report, details, detailComments})
         }
 
         // json ld validation
@@ -818,17 +808,17 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
                 format: 'application/nquads'
             }).then( nquads => {
                 report.jsonld = "passed"
-                res({report, details})
+                res({report, details, detailComments})
             }, err => {
                 report.jsonld =  "failed"
                 logFunc("X JSON-LD validation failed:")
                 logFunc("Hint: Make sure you have internet connection available.")
                 logFunc('> ' + err)
-                res({report, details})
+                res({report, details, detailComments})
             })
         }
         else {
-            res({report, details})
+            res({report, details, detailComments})
         }
 
 
@@ -895,7 +885,10 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             return
         }
 
-        /** checking whether a data schema has object but not properties, array but no items */
+        /**
+         * checking whether a data schema has object but not properties, array but no items
+         * @param {object} td The TD under test
+         */
         function checkPropItems(td) {
             details.propItems = "passed"
 
@@ -985,85 +978,6 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             return
         }
 
-        /** checking whether the td contains interactions field that is remaining from the previous spec */
-        function checkInteractions(td) {
-            details.interactions = "passed"
-            if (td.hasOwnProperty("interactions")) {
-                details.interactions = "warning"
-                logFunc('! Warning: interactions are from the previous TD Specification, ' +
-                    'please use properties, actions, events instead')
-            }
-            if (td.hasOwnProperty("interaction")) {
-                details.interactions = "warning"
-                logFunc('! Warning: interaction are from the previous TD Specification, ' +
-                    'please use properties, actions, events instead')
-            }
-            return
-        }
-
-        /**
-         *  Checks whether two interactions have the same name,
-         *  e.g., an action named "status" and a property named "status"
-         * @param {object} td The Td under test as object
-         */
-        function checkInteractionUniqueness(td) {
-            // building the interaction name array
-            let tdInteractions = []
-            if (td.hasOwnProperty("properties")) {
-                tdInteractions = tdInteractions.concat(Object.keys(td.properties))
-            }
-            if (td.hasOwnProperty("actions")) {
-                tdInteractions = tdInteractions.concat(Object.keys(td.actions))
-            }
-            if (td.hasOwnProperty("events")) {
-                tdInteractions = tdInteractions.concat(Object.keys(td.events))
-            }
-            // checking uniqueness
-
-            isDuplicate = (new Set(tdInteractions)).size !== tdInteractions.length
-            // console.log(isDuplicate)
-            if (isDuplicate) {
-                details.uniqueness = "failed"
-                logFunc('KO Error: Duplicate names are not allowed in Interactions')
-            } else {
-                details.uniqueness = "passed"
-            }
-        }
-
-        /**
-         * TODO: check whether still needed, since
-         * takes character number and gives out the line number
-         * @param {number} characterNo character Number (can be )
-         * @param {string} str whole String
-         */
-        // function getLineNumber(characterNo,str)
-        // {
-        //     const charsPerLine=[]
-        //     const str2lines=str.split("\n")
-
-        //     // calculate number of characters in each line
-        //     str2lines.forEach( (value, index) => {
-        //         const strVal = String(value)
-        //         charsPerLine.push(strVal.length)
-        //         characterNo++
-        //     })
-
-        //     // $.each(str2lines,function(index,value){
-        //     //     const strVal = String(value)
-        //     //     charsPerLine.push(strVal.length)
-        //     //     characterNo++
-        //     // })
-
-        //     // find the line containing that characterNo
-        //     let count=0
-        //     let lineNo=0
-        //     while(characterNo>count)
-        //     {
-        //         count+=charsPerLine[lineNo]
-        //         lineNo++
-        //     }
-        //     return lineNo
-        // }
 
         /**
          * Evaluates whether an assertion function contains a failed check
@@ -1075,7 +989,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
         function evalAssertion(results) {
             let eval = "passed"
             results.forEach( resultobj => {
-                if (resultobj.Status === "failed") {
+                if (resultobj.Status === "fail") {
                     eval = "failed"
                     logFunc("KO Error: Assertion: " + resultobj.ID)
                     logFunc(resultobj.Comment)

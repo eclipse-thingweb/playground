@@ -339,7 +339,9 @@ function realValidator(td, source) {
 
         if (source === "manual") {
             log("Details of the \"additional\" checks: ")
-            Object.keys(result.details).forEach(el => {log("    " + el + " " + result.details[el])})
+            Object.keys(result.details).forEach(el => {
+                log("    " + el + " " + result.details[el] + " (" + result.detailComments[el] + ")")
+            })
         }
 
         updateValidationStatusHead(resultStatus);
@@ -371,7 +373,7 @@ function resetValidationStatus(){
     reset('spot-schema')
     reset('spot-defaults')
     reset('spot-jsonld')
-    reset('spot-add')
+    reset('spot-additional')
 }
 
 /**

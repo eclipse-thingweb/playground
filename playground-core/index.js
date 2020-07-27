@@ -64,6 +64,14 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             multiLangConsistency: null
         }
 
+        const detailComments = {
+            enumConst: "Checking whether a data schema has enum and const at the same time.",
+            propItems: "Checking whether a data schema has an object but not properties or array but no items.",
+            security: "Check if used Security definitions are properly defined previously.",
+            propUniqueness: "Checking whether in one interaction pattern there are duplicate names, e.g. two properties called temp.",
+            multiLangConsistency: "Checks whether all titles and descriptions have the same language fields."
+        }
+
         let tdJson
         try {
             tdJson = JSON.parse(tdString)
@@ -74,7 +82,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             logFunc("X JSON validation failed:")
             logFunc(err)
 
-            res({report, details})
+            res({report, details, detailComments})
         }
 
 
@@ -127,7 +135,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
 
             logFunc('> ' + ajv.errorsText())
 
-            res({report, details})
+            res({report, details, detailComments})
         }
 
         // json ld validation
@@ -136,17 +144,17 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
                 format: 'application/nquads'
             }).then( nquads => {
                 report.jsonld = "passed"
-                res({report, details})
+                res({report, details, detailComments})
             }, err => {
                 report.jsonld =  "failed"
                 logFunc("X JSON-LD validation failed:")
                 logFunc("Hint: Make sure you have internet connection available.")
                 logFunc('> ' + err)
-                res({report, details})
+                res({report, details, detailComments})
             })
         }
         else {
-            res({report, details})
+            res({report, details, detailComments})
         }
 
 
