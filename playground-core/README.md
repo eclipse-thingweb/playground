@@ -17,7 +17,7 @@ Please also see the additional [notices](NOTICE.md) and [how to contribute](CONT
 
 
 ## Script based Thing Description Validation
-This is a node.js based tool.
+This is a Node.js based tool.
 
 **WARNING**: If you see an error like `ajv.errors[0].params.allowedValue` this very probably means that your TD is not valid at a specific point. Scroll up to see the precise error message.
 
@@ -28,4 +28,3 @@ This is a node.js based tool.
   * invalid: At least one of the lights is lit red.
 
 These examples cover all the features of the TD spec. If you think that there is a missing feature not represented, write an issue.
-

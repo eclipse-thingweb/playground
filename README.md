@@ -29,7 +29,7 @@ Examples are included in the `playground-core` and can be used in the web interf
 Please have a look at the `playground-cli` package for batch testing of Thing Descriptions.
 
 ## Script based Assertion Tester
-Please have a look at the `playground-cli` package for script based assertion testing, or at the `playground-assertions` package, if you're planning to integrate the assertion testing as a dependency in own NPM modules. 
+Please have a look at the `playground-cli` package for script based assertion testing, or at the `playground-assertions` package, if you're planning to integrate the assertion testing as a dependency in your own NPM modules.
 
 ## Script based Thing Description Validation
-Please have look at the `playground-cli` package for script based td validation, or at the `playground-core` package, if you're planning to integrate the td validation as a dependency in own NPM modules. 
+Please have look at the `playground-cli` package for script based TD validation, or at the `playground-core` package, if you're planning to integrate the td validation as a dependency in your own NPM modules.

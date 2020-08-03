@@ -19,7 +19,7 @@ Please also see the additional [notices](NOTICE.md) and [how to contribute](CONT
 
 
 ## Script based Thing Description Validation
-This is a node.js based tool.
+This is a Node.js based tool.
 
 * You can use `playground-core` package as an API to validate TDs in your own packages.
 * You can use the `playground-cli` package to test one/multiple TDs via the command line.
