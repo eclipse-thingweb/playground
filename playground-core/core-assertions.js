@@ -50,10 +50,6 @@ function checkPropUniqueness(tdString) {
     try {
         jsonValidator.parse(tdString, false)
 
-        if (noAssertions) {
-            return true
-        }
-
         const td = JSON.parse(tdString)
 
         // no problem in interaction level
