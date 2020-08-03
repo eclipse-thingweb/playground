@@ -21,6 +21,22 @@ This is a Node.js based tool.
 
 **WARNING**: If you see an error like `ajv.errors[0].params.allowedValue` this very probably means that your TD is not valid at a specific point. Scroll up to see the precise error message.
 
+You can use the functionality of this package by:
+* Install the package with npm `npm install playground-core` (or clone repo and install the package with `npm install`)
+* Node.js or Browser
+  * Node.js: Require the package and use the validation function 
+  ```javascript
+  const tdValidator = require("playground-core")
+  ```
+  * Browser: Import the `tdValidator` function as a global by adding a script tag to your html.
+  ```html
+  <script src="./node_modules/playground-core/dist/web-bundle.min.js"></script>
+  ```
+
+### Structure
+The [index.js](./index.js) file contains the main validation functionality and exports the modules functionalities.  
+The [shared.js](./shared.js) file contains additional check functions, which are shared between the core package and the assertions package.
+
 ## Examples
 * Some example Thing Descriptions are provided in the [examples folder](./examples/tds/). There are :
   * valid: Minimum 4 lights are lit green, no warning message is displayed. They may or may not pass Full Schema Validation
@@ -30,3 +46,23 @@ This is a Node.js based tool.
 These examples cover all the features of the TD spec. If you think that there is a missing feature not represented, write an issue.
 
 * Additionally there are also example scripts provided (in the [example-script folder](./examples/scripts/)) to demonstrate the usage of this package. 
+
+* Small example for using this package in a Node.js script, to validate an example TD:
+```javascript
+const tdValidator = require("playground-core")
+const fs = require("fs")
+
+const simpleTD = fs.readFileSync("./node_modules/playground-core/examples/tds/valid/simple.json", "utf8")
+
+/**
+ * Use console for logging, no options
+ */
+tdValidator(simpleTD, console.log, {})
+.then( result => {
+	console.log("OKAY")
+	console.log(result)
+}, err => {
+	console.log("ERROR")
+	console.error(err)
+})
+```
