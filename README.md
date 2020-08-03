@@ -1,5 +1,10 @@
 # WoT (W3C) Thingweb-Playground
-The structure of all WoT Playground packages is shown here: ![packageStructure](https://i.imgur.com/cbleWss.png)
+
+The structure of all Web of Things (WoT) Playground packages is shown here: ![packageStructure](https://i.imgur.com/cbleWss.png)  
+The core package provides a function to check whether a Thing Description (TD) is valid according to the W3C standard. 
+Its functionality can be imported, as well as the assertion checks of the assertion package. 
+They create a report stating how much standard assertions a fullfilled by a single TD or WoT Implementation. 
+Both packages are used by the Web and CLI packages to provide their functionalities plus IO functionalities through an UI.
 
 ## Packages:  
 * You can use the `playground-core` package as an API to validate TDs in your own packages. The core package can be found [here](./playground-core/).
@@ -18,7 +23,7 @@ Examples are included in the `playground-core` and can be used in the web interf
   * Safari browser has unexpected behavior with JSON-LD documents
   * If you loose your internet connection when validating JSON-LD validation will fail since it tries to access the documents under `@context` (can be turned off)
 
-* Offline/OnPremise: by hosting the `playground-web` yourself. Therefore please deliver the "index.html" file with a web-server.
+* Offline/OnPremise: by hosting the `playground-web` yourself. Therefore, please deliver the "index.html" file with a web-server.
 
 ## Batch Testing
 Please have a look at the `playground-cli` package for batch testing of Thing Descriptions.
