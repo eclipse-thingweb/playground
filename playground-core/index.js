@@ -16,7 +16,7 @@
 const jsonld = require("jsonld")
 const Ajv = require("ajv")
 
-const coreAssertions = require("./core-assertions")
+const coreAssertions = require("./shared")
 const schema = require("./td-schema.json")
 const fullschema = require("./td-schema-full.json")
 
