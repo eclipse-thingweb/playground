@@ -1,4 +1,5 @@
 # Thingweb-Playground Core
+
 This package provides the main functionality of the Web of Things Playground, i.e., validating given Thing Descriptions.
 You can find more information about the Thingweb-Playground [here](https://github.com/thingweb/thingweb-playground).
 
@@ -17,7 +18,7 @@ Please also see the additional [notices](NOTICE.md) and [how to contribute](CONT
 
 ## Script based Thing Description Validation
 This is a node.js based tool.
-  
+
 **WARNING**: If you see an error like `ajv.errors[0].params.allowedValue` this very probably means that your TD is not valid at a specific point. Scroll up to see the precise error message.
 
 ## Examples

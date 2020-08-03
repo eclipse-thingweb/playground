@@ -1,4 +1,5 @@
 # Thingweb-Playground Web
+
 This package provides the web interface of the Web of Things Playground. 
 It uses the functionality of the `playground-core` package to validate Thing Descriptions and `playground-assertions` to generate an assertion Test report.
 You can find more information about the Thingweb-Playground [here](https://github.com/thingweb/thingweb-playground).

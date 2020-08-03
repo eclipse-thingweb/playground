@@ -1,4 +1,5 @@
 # Thingweb-Playground Assertions
+
 This package provides the assertion testing functionality for the Web of Things Playground.
 You can find more information about the Thingweb-Playground [here](https://github.com/thingweb/thingweb-playground).
 
@@ -31,7 +32,7 @@ This is a node.js based tool.
 This tool checks which assertions are satisfied by a given Thing Description(s). The assertions are modeled as JSON Schema or as scripts. 'AssertionTester/Assertions' has the JSON Schema assertions.
 
 To use the assertion testing via the command line please use the `playground-cli` package.
-  
+
 **WARNING**: If you see an error like `ajv.errors[0].params.allowedValue` this very probably means that your TD is not valid at a specific point. Scroll up to see the precise error message
 
 ### Contributing
