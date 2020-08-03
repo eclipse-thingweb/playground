@@ -128,7 +128,7 @@ function assertionReport() {
         manualAssertions = assertManualToJson(fs.readFileSync(myArguments.assertionManual, "utf-8"))
     }
 
-    if (input === undefined) {input = path.join("node_modules", "playground-core", "examples", "valid")}
+    if (input === undefined) {input = path.join("node_modules", "playground-core", "examples", "tds", "valid")}
 
     if (typeof input === "object") {
         assertType = "list"
@@ -307,7 +307,7 @@ function fileLoader(loc) {
  * and write outputs accordingly
  */
 function coreValidation() {
-    if (!input) {input = path.join("node_modules", "playground-core", "examples")}
+    if (!input) {input = path.join("node_modules", "playground-core", "examples", "tds")}
     if(fs.lstatSync(input).isDirectory()) {
 
         // check Valid, Invalid and Warning Subfolders

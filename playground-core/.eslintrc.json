@@ -4,6 +4,7 @@
         "es6": true,
         "node": true
     },
+    "ignorePatterns": "dist/**",
     "rules": {
         "arrow-parens": [
             "error",

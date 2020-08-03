@@ -225,27 +225,27 @@ function hideValidationStatusTable() {
 export function getExamplesList(){
             const examples={
                 "SimpleTD": {
-                    "addr": "./node_modules/playground-core/examples/valid/simple.json",
+                    "addr": "./node_modules/playground-core/examples/tds/valid/simple.json",
                     "type": "valid"
                 },
                 "MultipleOp":{
-                    "addr":"./node_modules/playground-core/examples/valid/formOpArray.json",
+                    "addr":"./node_modules/playground-core/examples/tds/valid/formOpArray.json",
                     "type":"valid"
                 },
                 "EnumConstContradiction":{
-                    "addr":"./node_modules/playground-core/examples/warning/enumConst.json",
+                    "addr":"./node_modules/playground-core/examples/tds/warning/enumConst.json",
                     "type":"warning"
                 },
                 "ArrayWithNoItems":{
-                    "addr":"./node_modules/playground-core/examples/warning/arrayNoItems.json",
+                    "addr":"./node_modules/playground-core/examples/tds/warning/arrayNoItems.json",
                     "type":"warning"
                 },
                 "InvalidOperation":{
-                    "addr":"./node_modules/playground-core/examples/invalid/invalidOp.json",
+                    "addr":"./node_modules/playground-core/examples/tds/invalid/invalidOp.json",
                     "type":"invalid"
                  },
                 "EmptySecurityDefs":{
-                    "addr":"./node_modules/playground-core/examples/invalid/emptySecDef.json",
+                    "addr":"./node_modules/playground-core/examples/tds/invalid/emptySecDef.json",
                     "type":"invalid"
                 }
             }

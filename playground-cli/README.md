@@ -26,7 +26,7 @@ This is a Node.js based tool.
 * You can use the `playground-assertion` package to integrate assertion testing via an API in your own packages.
 * You can use the `playground-web` package to host/adapt your own browser version of the WoT playground.
 * You can use this package to test one/multiple TDs via the command line.
-* Run `node index.js "./node_modules/playground-core/examples/valid/actionReponse.json"` to validate a Thing Description found at './node_modules/playground-core/examples/valid/actionReponse.json'. You can replace this with a TD you want to validate.
+* Run `node index.js "./node_modules/playground-core/examples/tds/valid/actionReponse.json"` to validate a Thing Description found at './node_modules/playground-core/examples/tds/valid/actionReponse.json'. You can replace this with a TD you want to validate.
 
 ## Script based Assertion Tester (-a parameter)
 297 out of 349 assertions of the TD specification can be tested with this tool.
@@ -35,9 +35,9 @@ This tool checks which assertions are satisfied by a given Thing Description(s).
 
 * Change to `playground-cli` directory
 * Run npm install
-* For single TD: Run 'node index.js an_example_TD_location -a'. E.g. `node index.js ./node_modules/playground-core/examples/valid/JsonLdThing.json -a`
+* For single TD: Run 'node index.js an_example_TD_location -a'. E.g. `node index.js ./node_modules/playground-core/examples/tds/valid/JsonLdThing.json -a`
   * You can specify the output location and filename with the -o argument, e.g. `node index.js inputTD.json -o outputResult -a`
-* For a directory with **only** TDs: Run 'node index.js a_directory_location'. E.g. `node index.js ./node_modules/playground-core/examples/valid/`
+* For a directory with **only** TDs: Run 'node index.js a_directory_location'. E.g. `node index.js ./node_modules/playground-core/examples/tds/valid/`
 * The result(s) are found in the './out' merged into one report (unless the --assertion-nomerge parameter -n is set, then a report for every Td is created)
   * By default there will be a .csv file, with the --assertions-nocsv parameter -c there will be a .json file. The .csv version has the format required by the implementation report and the .json version is provided for using the results in other tools, such as merging the results.
   * The result can be pass, fail or not-impl 
