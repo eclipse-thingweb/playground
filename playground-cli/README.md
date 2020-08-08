@@ -70,7 +70,7 @@ Even though it is not recommended, mixing TDs locate directly in the directory a
 ## Parameters
 
 ```javascript
-'--help': {
+'--help -h': { /* Display the output specified by this object */
     type: 'string',
     description: 'You can call the playground validation with no input (example folder will be taken), \n'+
                 'a Thing Description (.json file), a folder with multiple Thing Descriptions, \n' +

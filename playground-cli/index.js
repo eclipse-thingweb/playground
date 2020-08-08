@@ -26,7 +26,7 @@ const assertCheckCoverage = require('playground-assertions').checkCoverage
 const assertResultsToCsv = require('playground-assertions').resultsToCsv
 const argParser = require('argly')
     .createParser({
-        '--help': {
+        '--help -h': { /* Displays the output specified by this object */
             type: 'string',
             description: 'You can call the playground validation with no input (example folder will be taken), \n'+
                         'a Thing Description (.json file), a folder with multiple Thing Descriptions, \n' +
