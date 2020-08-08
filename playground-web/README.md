@@ -1,10 +1,11 @@
 # Thingweb-Playground Web
 
-This package provides the web interface of the Web of Things Playground. 
+This package provides the web interface of the Web of Things Playground.
 It uses the functionality of the `playground-core` package to validate Thing Descriptions and `playground-assertions` to generate an assertion Test report.
 You can find more information about the Thingweb-Playground [here](https://github.com/thingweb/thingweb-playground).
 
 ## License
+
 Dual-licensed under both
 
 * [Eclipse Public License v. 2.0](http://www.eclipse.org/legal/epl-2.0)
@@ -14,6 +15,7 @@ Pick one of these two licenses that fits your needs.
 Please also see the additional [notices](NOTICE.md) and [how to contribute](CONTRIBUTING.md).
 
 ## Browser based Thing Description Validation
+
 * Online: It is hosted [here](http://plugfest.thingweb.io/playground/)
   * Simply paste a TD in the text field and click validate
   * Safari browser has unexpected behavior with JSON-LD documents
