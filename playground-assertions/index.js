@@ -33,7 +33,8 @@ module.exports.collectAssertionSchemas = collectAssertionSchemas
 
 
 /**
- * asdf
+ * Assertion testing function, does assertion testing with one/several TDs and
+ * returns either a single report or one merged report and all single reports.
  * @param {string[]|Buffer[]} tdStrings The Thing Description(s) to check as an array of strings or Buffers.
  * @param {Function} fileLoader (string) => string Path to a file as input, should return file content
  * @param {Function} logFunc OPT (string) => void; Callback used to log the validation progress.
