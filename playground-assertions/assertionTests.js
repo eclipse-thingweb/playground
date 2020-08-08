@@ -30,10 +30,10 @@ const tdSchema = require("playground-core/td-schema.json")
  * manual assertions given in the third argument are pushed to the end of the array after sorting the results array
  * return is a JSON array of result JSON objects
  * if there is a throw, it gives the failed assertion id
- * @param {Buffer} tdData Buffer of the Td data, has to be utf8 encoded (e.g. by fs.readFileSync(file.json) )
+ * @param {Buffer} tdData Buffer of the TD data, has to be utf8 encoded (e.g. by fs.readFileSync(file.json) )
  * @param {Array<object>} assertions An array containing all assertion objects (already parsed)
  * @param {Array<object>} manualAssertions An array containing all manual assertions
- * @param {string} tdSchema The JSON Schema used to eval if a Td is valid
+ * @param {string} tdSchema The JSON Schema used to eval if a TD is valid
  * @param {Function} logFunc Logging function
  */
 function validate(tdData, assertions, manualAssertions, logFunc) {
