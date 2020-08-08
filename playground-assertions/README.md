@@ -5,6 +5,50 @@ You can find more information about the Thingweb-Playground [here](https://githu
 
 Validation tool for W3C WoT Thing Descriptions. Your Thing Descriptions should be written according to the W3C standard found [here](https://w3c.github.io/wot-thing-description/#).
 
+Limitations:  
+
+* There is limited nested validation. This is due to the JSON Schema specification which doesn't allow infinite references with $ref keywords. Because of this, an enum key in a e.g. #/actions/input/properties/enum will not be necessarily checked. More information can be found [here](http://json-schema.org/draft/2019-09/json-schema-core.html#rfc.section.8.2.4.3).
+
+## Usage
+
+You can use this package to integrate TD assertion testing in your own Browser/NPM application.
+
+* Install this package via NPM (`npm install playground-assertions`) (or clone repo and install the package with `npm install`)
+* Node.js or Browser import:
+  * Node.js: Require the package and use the assertion Testing function
+
+  ```javascript
+  const tdAsserter = require("playground-assertions")
+  ```
+
+  * Browser: Import the `XYZ` function as a global by adding a script tag to your html.
+
+  ```html
+  XYZ
+  ```
+
+* Now you can call the assertion testing function and handle the result.
+
+```javascript
+tdAsserter([simpleTD], fileLoad, /*log Function*/, /*manual report*/, /*local call*/)
+.then( result => {
+  console.log("OKAY")
+  console.log(result)
+}, err => {
+  console.log("ERROR")
+  console.error(err)
+})
+```
+
+## Structure
+
+* [index.js](./index.js) contains the package import/export structure, application flow (assertion testing, merging, print stats), and handles loading of the assertion schemas
+* [assertionTests.js](./assertionTests.js) contains the actual assertion testing functionalities
+* [checkCoverage.js](./checkCoverage.js) can output stats about a given assertion testing report
+* [list.json](./list.json) a list of all filenames in the [assertions](./assertions) folder. Required, for browser usage of the package (since no access to ddirectory content exists there).
+* [manual.csv](./manual.csv) example of a manual report part. Used if no other file is specified as manual assertion report.
+* [mergeResults.js](./mergeResults.js) can merge several assertion testing reports to one single report, representing the assertions results of an whole implementation instead of single TDs.
+* [update-list.js](./update-list.js) Has to be executed after applying changes of files in the [assertions](./assertions) directory. Updates the [list.json](./list.json) with the current filenames.
 
 ## License
 
