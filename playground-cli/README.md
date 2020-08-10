@@ -35,8 +35,8 @@ This is a Node.js based tool.
 
 This tool checks which assertions are satisfied by a given Thing Description(s). The assertions are modeled as JSON Schema or as scripts. 'playground-assertions/assertions' has the JSON Schema assertions. To use this tool (`node index.js` can be replaced by `npm start`):
 
+* Install the package with npm `npm install playground-cli` (or clone repo and install the package with `npm install`)
 * Change to `playground-cli` directory
-* Run npm install
 * For single TD: Run 'node index.js an_example_TD_location -a'. E.g. `node index.js ./node_modules/playground-core/examples/tds/valid/JsonLdThing.json -a`
   * You can specify the output location and filename with the -o argument, e.g. `node index.js inputTD.json -o outputResult -a`
 * For a directory with **only** TDs: Run 'node index.js a_directory_location'. E.g. `node index.js ./node_modules/playground-core/examples/tds/valid/`
