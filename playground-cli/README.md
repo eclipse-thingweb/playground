@@ -63,6 +63,45 @@ This tool checks which assertions are satisfied by a given Thing Description(s).
 * And all TDs located directly in the `./myDir` folder
 Even though it is not recommended, mixing TDs locate directly in the directory and subdirectories of the above structure, is possible.
 
+## Validation Report
+
+The core validation report is an object, which contains three objects (as you can see in the example report):
+
+```javascript
+{
+    report: {
+        json: "passed",
+        schema: "passed",
+        defaults: "warning",
+        jsonld: null,
+        additional: "failed"
+    },
+    details: {
+        enumConst: "passed",
+        propItems: "warning",
+        security: "passed",
+        propUniqueness: "passed",
+        multiLangConsistency: "failed"
+    },
+    detailComments: {
+        enumConst: "Checking whether a data schema has enum and const at the same time.",
+        propItems: "Checking whether a data schema has an object but not properties or array but no items.",
+        security: "Check if used Security definitions are properly defined previously.",
+        propUniqueness: "Checking whether in one interaction pattern there are duplicate names, e.g. two properties called temp.",
+        multiLangConsistency: "Checks whether all titles and descriptions have the same language fields."
+    }
+}
+```
+
+* The `report` object contains the results of the default validation. It is structure with a keyword and the value null, "passed", "warning" or "failed". Where null is used if the test was not executed, which can happen either because it was opted out or a previous check failed. The keywords are:
+  * json: Checks if the TD is a valid JSON instance.
+  * schema: Checks if the TD is valid according to the JSON Schema constructed from the TD specification.
+  * defaults: As schema, but this JSON Schema additionally checks if default behavior is explicitly stated (recommended). The check can be opted out.
+  * jsonld: Checks if the TD is a valid JSON-LD instance. This will only work with internet connection (because the @context tags have to be loaded) and can be opted out.
+  * additional: Combined indicator of the results of the additional checks that are listed in details.
+* The `details` object contains the results of the additional checks. The keywords can have the same values as in report.
+* The `detailComments` explains the meaning of every additional check.
+
 ## Known Bugs
 
 * td-json-open assertion exists multiple times, [see issue 124](https://github.com/thingweb/thingweb-playground/issues/124)
