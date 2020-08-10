@@ -65,53 +65,6 @@ const simpleTD = JSON.stringify({
 		}
 	}
 })
-const simpleTD2 = JSON.stringify({
-	"id": "urn:simplep",
-	"@context": "https://www.w3.org/2019/wot/td/v1",
-	"title": "MyLampThing",
-	"description": "Valid TD copied from the specs first example",
-	"securityDefinitions": {
-		"basic_sc": {
-			"scheme": "basic",
-			"in": "header"
-		}
-	},
-	"security": [
-		"basic_sc"
-	],
-	"properties": {
-		"status": {
-			"type": "string",
-			"forms": [
-				{
-					"href": "https://mylamp.example.com/status"
-				}
-			]
-		}
-	},
-	"actions": {
-		"toggle": {
-			"forms": [
-				{
-					"href": "https://mylamp.example.com/toggle"
-				}
-			]
-		}
-	},
-	"events": {
-		"overheating": {
-			"data": {
-				"type": "string"
-			},
-			"forms": [
-				{
-					"href": "https://mylamp.example.com/oh",
-					"subprotocol": "longpoll"
-				}
-			]
-		}
-	}
-})
 
 function fileLoad(loc) {
 	return new Promise( (res, rej) => {
@@ -122,8 +75,11 @@ function fileLoad(loc) {
 	})
 }
 
+const manualPath = path.join(__dirname, "../manual.csv")
+const manualContent = fs.readFileSync(manualPath, "utf-8")
+const myManual = tdAsserter.manualToJson(manualContent)
 
-tdAsserter([simpleTD], fileLoad, /* no logging*/ ()=>{}, path.join(__dirname, "../manual.csv"))
+tdAsserter([simpleTD], fileLoad, /* no logging*/ ()=>{}, myManual)
 .then( result => {
 	console.log("OKAY")
 }, err => {
