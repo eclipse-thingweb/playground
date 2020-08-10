@@ -1,0 +1,23 @@
+{
+  "name": "playground-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
+  "license": "EPL-2.0 OR W3C-20150513",
+  "dependencies": {
+    "bootstrap-css-only": "4.4.1",
+    "monaco-editor": "^0.20.0",
+    "papaparse": "^5.2.0"
+  },
+  "devDependencies": {
+    "browserify": "^16.5.1",
+    "jquery": "^3.5.1",
+    "minify": "^5.1.1",
+    "watchify": "^3.11.1"
+  }
+}
