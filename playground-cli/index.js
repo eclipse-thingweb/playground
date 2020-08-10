@@ -54,7 +54,8 @@ const argParser = require('argly')
         },
         '--assertion-out -o': {
             type: 'string',
-            description: 'path and filename of the generated assertions report (defaults to ./out/[.]assertionsTest[_$input])'
+            description: 'Path and filename of the generated assertions report (defaults to ./out/[.]assertionsTest[_$input]). \n' +
+                         'Please notice that the folders you specify as target already have to exist.'
         },
         '--assertion-nomerge -n': {
             type: 'boolean',
@@ -286,6 +287,10 @@ function outReport(data, pathFragment, id) {
         const fileEnd = myArguments.assertionNocsv ? ".json" : ".csv"
         const outpath = myArguments.assertionOut ? myArguments.assertionOut : ("./out/" + pathFragment)
         const wholepath = outpath + id + fileEnd
+
+        if(!myArguments.assertionOut && !fs.existsSync("./out")) {
+            fs.mkdirSync("./out")
+        }
 
         fs.writeFileSync(wholepath, data)
     }
