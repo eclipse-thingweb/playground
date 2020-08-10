@@ -52,4 +52,4 @@
 "td-security-binding","null","not testable with Assertion Tester","If a Thing requires a specific access mechanism for an interaction, that mechanism MUST be specified in the security configuration of the Thing Description."
 "td-security-no-extras","null","not testable with Assertion Tester","If a Thing does not require a specific access mechanism for an interaction, that mechanism MUST NOT be specified in the security configuration of the Thing Description."
 "td-vocabulary-defaults","null","not testable with Assertion Tester","When assignments in a TD are missing, a TD Processor MUST follow the Default Value assignments expressed in the table of."
-"well-known-operation-types-only","null","not testable with Assertion Tester","operations types SHOULD NOT be arbitrarily set by servients."
+"well-known-operation-types-only","null","not testable with Assertion Tester","operations types SHOULD NOT be arbitrarily set by servients.
