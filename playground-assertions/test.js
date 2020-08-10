@@ -130,17 +130,6 @@ tdAsserter([simpleTD], fileLoad, undefined, undefined, true)
 .then( result => {
 	console.log("OKAY")
 	// console.log(result.merged)
-
-	// const checkAR = []
-	// result.jsonResults.urn_simple.forEach( el => {
-	// 	if (checkAR.some( al => al === el.ID)) {
-	// 		console.log("DOBU: " + el.ID)
-	// 	}
-	// 	else {
-	// 		checkAR.push(el.ID)
-	// 	}
-	// })
-
 	// console.log(result)
 }, err => {
 	console.log("ERROR")
