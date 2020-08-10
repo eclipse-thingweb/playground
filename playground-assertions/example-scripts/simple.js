@@ -13,8 +13,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
  ********************************************************************************/
 
-// Test utility to test index.js
-const tdAsserter = require("./index")
+const tdAsserter = require("../index")
 const fs = require("fs")
 
 const simpleTD = JSON.stringify({
@@ -65,7 +64,6 @@ const simpleTD = JSON.stringify({
 	}
 })
 
-
 function fileLoad(loc) {
 	return new Promise( (res, rej) => {
 		fs.readFile(loc, "utf8", (err, data) => {
@@ -79,10 +77,8 @@ function fileLoad(loc) {
 tdAsserter([simpleTD], fileLoad)
 .then( result => {
 	console.log("OKAY")
-	// console.log(result.merged)
-	// console.log(result)
+	console.log(result)
 }, err => {
 	console.log("ERROR")
 	console.error(err)
 })
-

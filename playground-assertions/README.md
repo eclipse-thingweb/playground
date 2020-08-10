@@ -18,19 +18,19 @@ You can use this package to integrate TD assertion testing in your own Browser/N
   * Node.js: Require the package and use the assertion Testing function
 
   ```javascript
-  const tdAsserter = require("playground-assertions")
+  const tdAssertions = require("playground-assertions")
   ```
 
-  * Browser: Import the `XYZ` function as a global by adding a script tag to your html.
+  * Browser: Import the `tdAssertions` function as a global by adding a script tag to your html.
 
   ```html
-  XYZ
+  <script src="./node_modules/playground-assertions/dist/web-bundle.min.js"></script>
   ```
 
 * Now you can call the assertion testing function and handle the result.
 
 ```javascript
-tdAsserter([simpleTD], fileLoad, /*log Function*/, /*manual report*/, /*local call*/)
+tdAssertions([simpleTD], fileLoad, /*OPT: log Function*/, /*OPT: manual report*/)
 .then( result => {
   console.log("OKAY")
   console.log(result)

@@ -14,8 +14,9 @@
  ********************************************************************************/
 
 // Test utility to test index.js
-const tdAsserter = require("./index")
+const tdAsserter = require("../index")
 const fs = require("fs")
+const path = require("path")
 
 const simpleTD = JSON.stringify({
 	"id": "urn:simple",
@@ -64,7 +65,53 @@ const simpleTD = JSON.stringify({
 		}
 	}
 })
-
+const simpleTD2 = JSON.stringify({
+	"id": "urn:simplep",
+	"@context": "https://www.w3.org/2019/wot/td/v1",
+	"title": "MyLampThing",
+	"description": "Valid TD copied from the specs first example",
+	"securityDefinitions": {
+		"basic_sc": {
+			"scheme": "basic",
+			"in": "header"
+		}
+	},
+	"security": [
+		"basic_sc"
+	],
+	"properties": {
+		"status": {
+			"type": "string",
+			"forms": [
+				{
+					"href": "https://mylamp.example.com/status"
+				}
+			]
+		}
+	},
+	"actions": {
+		"toggle": {
+			"forms": [
+				{
+					"href": "https://mylamp.example.com/toggle"
+				}
+			]
+		}
+	},
+	"events": {
+		"overheating": {
+			"data": {
+				"type": "string"
+			},
+			"forms": [
+				{
+					"href": "https://mylamp.example.com/oh",
+					"subprotocol": "longpoll"
+				}
+			]
+		}
+	}
+})
 
 function fileLoad(loc) {
 	return new Promise( (res, rej) => {
@@ -76,13 +123,10 @@ function fileLoad(loc) {
 }
 
 
-tdAsserter([simpleTD], fileLoad)
+tdAsserter([simpleTD], fileLoad, /* no logging*/ ()=>{}, path.join(__dirname, "../manual.csv"))
 .then( result => {
 	console.log("OKAY")
-	// console.log(result.merged)
-	// console.log(result)
 }, err => {
 	console.log("ERROR")
 	console.error(err)
 })
-
