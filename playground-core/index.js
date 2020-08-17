@@ -61,7 +61,8 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             propItems: null,
             security: null,
             propUniqueness: null,
-            multiLangConsistency: null
+            multiLangConsistency: null,
+            readWriteOnly: null
         }
 
         const detailComments = {
@@ -69,7 +70,8 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             propItems: "Checking whether a data schema has an object but not properties or array but no items.",
             security: "Check if used Security definitions are properly defined previously.",
             propUniqueness: "Checking whether in one interaction pattern there are duplicate names, e.g. two properties called temp.",
-            multiLangConsistency: "Checks whether all titles and descriptions have the same language fields."
+            multiLangConsistency: "Checks whether all titles and descriptions have the same language fields.",
+            readWriteOnly: "Warns if a property has readOnly and writeOnly set to true."
         }
 
         let tdJson
@@ -111,6 +113,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             // do additional checks
             checkEnumConst(tdJson)
             checkPropItems(tdJson)
+            checkReadWriteOnly(tdJson)
             details.security = evalAssertion(coreAssertions.checkSecurity(tdJson))
             details.propUniqueness = evalAssertion(coreAssertions.checkPropUniqueness(tdString))
             details.multiLangConsistency = evalAssertion(coreAssertions.checkMultiLangConsistency(tdJson))
@@ -314,6 +317,30 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             return
         }
 
+        /**
+         * Warns if a property has readOnly and writeOnly set to true.
+         * @param {object} td The TD under test
+         */
+        function checkReadWriteOnly(td) {
+            details.readWriteOnly = "passed"
+
+            if (td.hasOwnProperty("properties")) {
+                // checking properties
+                tdProperties = Object.keys(td.properties)
+                for (let i = 0; i < tdProperties.length; i++) {
+                    const curPropertyName = tdProperties[i]
+                    const curProperty = td.properties[curPropertyName]
+
+                    if (curProperty.hasOwnProperty("readOnly") && curProperty.readOnly === true) {
+                        if (curProperty.hasOwnProperty("writeOnly") && curProperty.writeOnly === true) {
+                            details.readWriteOnly = "warning"
+                            logFunc('! Warning: In property ' + curPropertyName +
+                                ', both readOnly and writeOnly are set true!')
+                        }
+                    }
+                }
+            }
+        }
 
         /**
          * Evaluates whether an assertion function contains a failed check
