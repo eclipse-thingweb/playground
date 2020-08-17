@@ -71,7 +71,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             security: "Check if used Security definitions are properly defined previously.",
             propUniqueness: "Checking whether in one interaction pattern there are duplicate names, e.g. two properties called temp.",
             multiLangConsistency: "Checks whether all titles and descriptions have the same language fields.",
-            readWriteOnly: "Warns if a property has readOnly and writeOnly set to true."
+            readWriteOnly: "Warns if a property has readOnly or writeOnly set to true conflicting with another property."
         }
 
         let tdJson
@@ -318,7 +318,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
         }
 
         /**
-         * Warns if a property has readOnly and writeOnly set to true.
+         * Warns if a property has readOnly or writeOnly set to true conflicting with another property.
          * @param {object} td The TD under test
          */
         function checkReadWriteOnly(td) {
@@ -331,11 +331,63 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
                     const curPropertyName = tdProperties[i]
                     const curProperty = td.properties[curPropertyName]
 
+                    // if readOnly is set
                     if (curProperty.hasOwnProperty("readOnly") && curProperty.readOnly === true) {
+                        // check if both readOnly and writeOnly are true
                         if (curProperty.hasOwnProperty("writeOnly") && curProperty.writeOnly === true) {
                             details.readWriteOnly = "warning"
                             logFunc('! Warning: In property ' + curPropertyName +
                                 ', both readOnly and writeOnly are set true!')
+                        }
+
+                        // check forms if op writeProperty is set
+                        if (curProperty.hasOwnProperty("forms")) {
+                            for(const formElIndex in curProperty.forms) {
+                                if (curProperty.forms.hasOwnProperty(formElIndex)) {
+                                    const formEl = curProperty.forms[formElIndex]
+                                    if(formEl.hasOwnProperty("op")) {
+                                        if ((typeof formEl.op === "string" && formEl.op === "writeproperty") ||
+                                            (typeof formEl.op === "object" && formEl.op.some( el => (el === "writeproperty"))))
+                                        {
+                                            details.readWriteOnly = "warning"
+                                            logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
+                                            '], readOnly is set but the op property contains "writeproperty"')
+                                        }
+                                    }
+                                    else {
+                                        details.readWriteOnly = "warning"
+                                        logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
+                                        '], readOnly is set but a form op property defaults to ["writeproperty", "readproperty"]')
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // if writeOnly is set
+                    if (curProperty.hasOwnProperty("writeOnly") && curProperty.writeOnly === true) {
+
+                        // check forms if op readProperty is set
+                        if (curProperty.hasOwnProperty("forms")) {
+                            for(const formElIndex in curProperty.forms) {
+                                if (curProperty.forms.hasOwnProperty(formElIndex)) {
+                                    const formEl = curProperty.forms[formElIndex]
+                                    if(formEl.hasOwnProperty("op")) {
+                                        if ((typeof formEl.op === "string" && formEl.op === "readproperty") ||
+                                            (typeof formEl.op === "object" && formEl.op.some( el => (el === "readproperty"))))
+                                        {
+                                            details.readWriteOnly = "warning"
+                                            logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
+                                            '], writeOnly is set but the op property contains "readproperty"')
+                                        }
+                                    }
+                                    else {
+                                        details.readWriteOnly = "warning"
+                                        logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
+                                        '], writeOnly is set but a form op property defaults to ["writeproperty", "readproperty"]')
+                                    }
+                                }
+                            }
                         }
                     }
                 }
