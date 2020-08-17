@@ -380,6 +380,13 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
                                             logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
                                             '], writeOnly is set but the op property contains "readproperty"')
                                         }
+                                        else if ((typeof formEl.op === "string" && formEl.op === "observeproperty") ||
+                                                 (typeof formEl.op === "object" && formEl.op.some( el => (el === "observeproperty"))))
+                                                 {
+                                                    details.readWriteOnly = "warning"
+                                                    logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
+                                                    '], writeOnly is set but the op property contains "observeproperty"')
+                                                 }
                                     }
                                     else {
                                         details.readWriteOnly = "warning"
@@ -388,6 +395,13 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
                                     }
                                 }
                             }
+                        }
+
+                        // check if observable is also set
+                        if (curProperty.hasOwnProperty("observable") && curProperty.observable === true) {
+                            details.readWriteOnly = "warning"
+                            logFunc('! Warning: In property ' + curPropertyName +
+                                ', both writeOnly and observable are set true!')
                         }
                     }
                 }
