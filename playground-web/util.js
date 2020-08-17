@@ -224,13 +224,21 @@ function hideValidationStatusTable() {
  */
 export function getExamplesList(){
             const examples={
+                "SimpleTDWithDefaults": {
+                    "addr": "./node_modules/playground-core/examples/tds/valid/simpleWithDefaults.json",
+                    "type": "valid"
+                },
+                "MultipleOpWithDefaults":{
+                    "addr":"./node_modules/playground-core/examples/tds/valid/formOpArrayWithDefaults.json",
+                    "type":"valid"
+                },
                 "SimpleTD": {
                     "addr": "./node_modules/playground-core/examples/tds/valid/simple.json",
-                    "type": "valid"
+                    "type": "warning"
                 },
                 "MultipleOp":{
                     "addr":"./node_modules/playground-core/examples/tds/valid/formOpArray.json",
-                    "type":"valid"
+                    "type":"warning"
                 },
                 "EnumConstContradiction":{
                     "addr":"./node_modules/playground-core/examples/tds/warning/enumConst.json",
