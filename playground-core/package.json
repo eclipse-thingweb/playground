@@ -4,7 +4,6 @@
   "license": "EPL-2.0 OR W3C-20150513",
   "version": "1.0.0",
   "description": "TBD",
-  "private": true,
   "main": "index.js",
   "scripts": {
     "test": "node test.js",

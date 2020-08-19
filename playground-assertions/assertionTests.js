@@ -30,10 +30,10 @@ const tdSchema = require("playground-core/td-schema.json")
  * manual assertions given in the third argument are pushed to the end of the array after sorting the results array
  * return is a JSON array of result JSON objects
  * if there is a throw, it gives the failed assertion id
- * @param {Buffer} tdData Buffer of the Td data, has to be utf8 encoded (e.g. by fs.readFileSync(file.json) )
+ * @param {Buffer} tdData Buffer of the TD data, has to be utf8 encoded (e.g. by fs.readFileSync(file.json) )
  * @param {Array<object>} assertions An array containing all assertion objects (already parsed)
  * @param {Array<object>} manualAssertions An array containing all manual assertions
- * @param {string} tdSchema The JSON Schema used to eval if a Td is valid
+ * @param {string} tdSchema The JSON Schema used to eval if a TD is valid
  * @param {Function} logFunc Logging function
  */
 function validate(tdData, assertions, manualAssertions, logFunc) {
@@ -93,13 +93,13 @@ function validate(tdData, assertions, manualAssertions, logFunc) {
 
         // Validation starts here
 
-        const avjOptions = {
+        const ajvOptions = {
             "$comment" (v) {
                 logFunc("\n!!!! COMMENT", v)
             },
             "allErrors": true
         }
-        const ajv = new Ajv(avjOptions)
+        const ajv = new Ajv(ajvOptions)
         ajv.addSchema(schema, 'td')
 
 
@@ -116,7 +116,6 @@ function validate(tdData, assertions, manualAssertions, logFunc) {
         */
         if (schema["is-complex"]) {
             if (valid) {
-                // console.log('Assertion ' + schema.title + ' not implemented');
                 results.push({
                     "ID": schema.title,
                     "Status": "not-impl"
@@ -182,7 +181,6 @@ function validate(tdData, assertions, manualAssertions, logFunc) {
 
         } else {
             if (valid) {
-                // console.log('Assertion ' + schema.title + ' implemented');
                 results.push({
                     "ID": schema.title,
                     "Status": "pass"
@@ -198,10 +196,8 @@ function validate(tdData, assertions, manualAssertions, logFunc) {
                 }
             } else {
                 // failed because a required is not implemented
-                // console.log('> ' + ajv.errorsText());
                 if (ajv.errorsText().indexOf("required") > -1) {
                     // failed because it doesnt have required key which is a non implemented feature
-                    // console.log('Assertion ' + schema.title + ' not implemented');
                     results.push({
                         "ID": schema.title,
                         "Status": "not-impl",
@@ -219,7 +215,6 @@ function validate(tdData, assertions, manualAssertions, logFunc) {
                     }
                 } else {
                     // failed because of some other reason
-                    // console.log('Assertion ' + schema.title + ' failed');
                     results.push({
                         "ID": schema.title,
                         "Status": "fail",
@@ -261,8 +256,6 @@ function validate(tdData, assertions, manualAssertions, logFunc) {
 
     results = orderedResults.concat(manualAssertions)
     return results
-    // const csvResults = json2csvParser.parse(results)
-    // return csvResults
 }
 
 module.exports = validate
@@ -306,18 +299,6 @@ function checkVocabulary(tdJson) {
         return results
 
     } else {
-        // console.log("VALIDATION ERROR!!! : ", ajv.errorsText());
-        // results.push({
-        //     "ID": "td-processor",
-        //     "Status": "fail",
-        //     "Comment": "invalid TD"
-        // });
-        // otherAssertions.forEach(function (asser) {
-        //     results.push({
-        //         "ID": asser,
-        //         "Status": "fail"
-        //     });
-        // });
         throw new Error("invalid TD")
     }
 }
@@ -356,7 +337,6 @@ function mergeIdenticalResults(results) {
             }
             // put it back such that the last identical can find its duplicate that appeared before
             results.unshift(curResult)
-            // process.exit();
         } else {
             // if there is no duplicate, put it back into results but at the beginning
             results.unshift(curResult)

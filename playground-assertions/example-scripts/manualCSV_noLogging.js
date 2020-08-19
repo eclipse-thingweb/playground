@@ -14,8 +14,9 @@
  ********************************************************************************/
 
 // Test utility to test index.js
-const tdAsserter = require("./index")
+const tdAsserter = require("../index")
 const fs = require("fs")
+const path = require("path")
 
 const simpleTD = JSON.stringify({
 	"id": "urn:simple",
@@ -65,7 +66,6 @@ const simpleTD = JSON.stringify({
 	}
 })
 
-
 function fileLoad(loc) {
 	return new Promise( (res, rej) => {
 		fs.readFile(loc, "utf8", (err, data) => {
@@ -75,14 +75,14 @@ function fileLoad(loc) {
 	})
 }
 
+const manualPath = path.join(__dirname, "../manual.csv")
+const manualContent = fs.readFileSync(manualPath, "utf-8")
+const myManual = tdAsserter.manualToJson(manualContent)
 
-tdAsserter([simpleTD], fileLoad)
+tdAsserter([simpleTD], fileLoad, /* no logging*/ ()=>{}, myManual)
 .then( result => {
 	console.log("OKAY")
-	// console.log(result.merged)
-	// console.log(result)
 }, err => {
 	console.log("ERROR")
 	console.error(err)
 })
-

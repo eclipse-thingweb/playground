@@ -26,12 +26,14 @@ const assertCheckCoverage = require('playground-assertions').checkCoverage
 const assertResultsToCsv = require('playground-assertions').resultsToCsv
 const argParser = require('argly')
     .createParser({
-        '--help': {
+        '--help -h': { /* Displays the output specified by this object */
             type: 'string',
-            description: 'You can call the playground validation with no input (example folder will be taken), \n'+
+            description: 'For TD playground-core validation you can call the playground \n' +
+                        'validation with no input (example folder will be taken), \n'+
                         'a Thing Description (.json file), a folder with multiple Thing Descriptions, \n' +
                         'or a Folder with "valid", "invalid" and "warning" subfolder, where all included TDs \n' +
-                        'will be checked whether they produce the expected validation result.'
+                        'will be checked whether they produce the expected validation result. \n' +
+                        'Use the -a parameter for playground-assertions testing.'
         },
         '--input -i *': {
             type: 'string',
@@ -52,7 +54,8 @@ const argParser = require('argly')
         },
         '--assertion-out -o': {
             type: 'string',
-            description: 'path and filename of the generated assertions report (defaults to ./out/[.]assertionsTest[_$input])'
+            description: 'Path and filename of the generated assertions report (defaults to ./out/[.]assertionsTest[_$input]). \n' +
+                         'Please notice that the folders you specify as target already have to exist.'
         },
         '--assertion-nomerge -n': {
             type: 'boolean',
@@ -284,6 +287,10 @@ function outReport(data, pathFragment, id) {
         const fileEnd = myArguments.assertionNocsv ? ".json" : ".csv"
         const outpath = myArguments.assertionOut ? myArguments.assertionOut : ("./out/" + pathFragment)
         const wholepath = outpath + id + fileEnd
+
+        if(!myArguments.assertionOut && !fs.existsSync("./out")) {
+            fs.mkdirSync("./out")
+        }
 
         fs.writeFileSync(wholepath, data)
     }

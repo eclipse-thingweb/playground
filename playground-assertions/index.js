@@ -33,15 +33,14 @@ module.exports.collectAssertionSchemas = collectAssertionSchemas
 
 
 /**
- * asdf
+ * Assertion testing function, does assertion testing with one/several TDs and
+ * returns either a single report or one merged report and all single reports.
  * @param {string[]|Buffer[]} tdStrings The Thing Description(s) to check as an array of strings or Buffers.
  * @param {Function} fileLoader (string) => string Path to a file as input, should return file content
  * @param {Function} logFunc OPT (string) => void; Callback used to log the validation progress.
  * @param {object} givenManual OPT JSON object of the manual assertions
- * @param {boolean} locally OPT set to true if you don't call the function as a module
- *                          (-> prefixes ./node_modules/playground-assertions)
  */
-function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, locally=false) {
+function tdAssertions(tdStrings, fileLoader, logFunc, givenManual) {
     return new Promise( (res, rej) => {
 
         // parameter handling
@@ -51,7 +50,14 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, locally=false
         if(givenManual !== undefined && typeof givenManual !== "object") {
             throw new Error("givenManual has to be a JSON object if given.")
         }
-        const pathOffset = locally ? "" : path.join("./node_modules", "playground-assertions")
+
+        // set directory for node.js and browser environment
+        if (process !== undefined && process.release !== undefined && process.release.name === "node") {
+            pathOffset = __dirname
+        } else {
+            pathOffset = path.join("./node_modules", "playground-assertions")
+        }
+
         // loading files
         const loadProm = []
         loadProm.push(collectAssertionSchemas(path.join(pathOffset, "./assertions"), path.join(pathOffset, "./list.json"), fileLoader))
