@@ -32,6 +32,43 @@ document.getElementById("box_auto_validate").addEventListener("change", () => {
 	autoValidate = document.getElementById("box_auto_validate").checked
 })
 
+document.getElementById("btn_gistify").addEventListener("click", () => {
+	document.getElementById("gist_popup").style.display = "block"
+})
+
+document.getElementById("btn_gist").addEventListener("click", () => {
+	let name = document.getElementById("textName").value
+	const description = document.getElementById("textDescription").value
+	const td = window.editor.getValue()
+	if (name === "") {
+		name = "WoT Playground Gist"
+	}
+	if (td === "") {
+		alert("Please paste a TD before submission")
+		document.getElementById("gist_popup").style.display = "none"
+		return
+	}
+	// TODO: submit gist
+	console.log("submitGist(" + name + ", " + description + ", " + td + ")")
+	const gistLink = "https://example.de"
+	// ---
+	// fail
+	// document.getElementById("gistSuccess").style.color = "rgb(202, 60, 60)"
+	// document.getElementById("gistSuccess").innerText = "Gist could not be submitted!"
+
+	document.getElementById("gistSuccess").innerText = "Submission successful!"
+	document.getElementById("gistSuccess").style.color = "rgb(28, 184, 65)"
+	document.getElementById("gistSuccess").style.display = "inline"
+	document.getElementById("gistLink").href = gistLink
+	document.getElementById("gistLink").innerText = gistLink
+	document.getElementById("gistLink").style.display = "inline"
+})
+
+document.getElementById("close_gist_popup").addEventListener("click", () => {
+	document.getElementById("gist_popup").style.display = "none"
+	document.getElementById("gistSuccess").style.display = "none"
+	document.getElementById("gistLink").style.display = "none"
+})
 
 document.getElementById("btn_assertion_popup").addEventListener("click", () => {
 	if (!manualAssertionsLoaded) {
@@ -93,6 +130,8 @@ document.getElementById("btn_assertion_popup").addEventListener("click", () => {
 document.getElementById("close_assertion_test_popup").addEventListener("click", () => {
 	document.getElementById("assertion_test_popup").style.display = "none"
 })
+
+
 
 const urlAddrObject= util.getExamplesList(); // Fetching list of examples from the given array(in helperFunctions.js).
 util.populateExamples(urlAddrObject);     // Loading the examples given in list from their respective URLs
