@@ -16,13 +16,17 @@
 // Test utility to test index.js
 const tdValidator = require("./index")
 
-const simpleTD = JSON.stringify({
+const simpleTD = `{
 	"id": "urn:simple",
 	"@context": "https://www.w3.org/2019/wot/td/v1",
 	"title": "MyLampThing",
 	"description": "Valid TD copied from the spec's first example",
 	"securityDefinitions": {
 		"basic_sc": {
+			"scheme": "basic",
+			"in": "header"
+		},
+		"basic_scd": {
 			"scheme": "basic",
 			"in": "header"
 		}
@@ -47,6 +51,13 @@ const simpleTD = JSON.stringify({
 					"href": "https://mylamp.example.com/toggle"
 				}
 			]
+		},
+		"toggled": {
+			"forms": [
+				{
+					"href": "https://mylamp.example.com/toggle"
+				}
+			]
 		}
 	},
 	"events": {
@@ -62,7 +73,7 @@ const simpleTD = JSON.stringify({
 			]
 		}
 	}
-})
+}`
 
 
 tdValidator(simpleTD, console.log, {})
