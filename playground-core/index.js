@@ -106,7 +106,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
                 else {
                     report.defaults = "warning"
                     logFunc("Optional validation failed:")
-                    logFunc("> " + ajv.errorsText())
+                    logFunc("> " + ajv.errorsText(filterErrorMessages(ajv.errors)))
                 }
             }
 
@@ -136,7 +136,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             report.schema = "failed"
             logFunc("X JSON Schema validation failed:")
 
-            logFunc('> ' + ajv.errorsText())
+            logFunc('> ' + ajv.errorsText(filterErrorMessages(ajv.errors)))
 
             res({report, details, detailComments})
         }
@@ -425,6 +425,22 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
                 }
             })
             return eval
+        }
+
+        /**
+         * Removes duplicate error messages, as these are produced
+         * otherwise, especially for "oneOf" schemes
+         * @param {ajv.ErrorObject[]} errors
+         */
+        function filterErrorMessages(errors) {
+
+            const output = []
+            errors.forEach( el => {
+                if(!output.some(ce => (ce.dataPath === el.dataPath && ce.message === el.message))) {
+                  output.push(el)
+                }
+            })
+            return output
         }
     })
 }
