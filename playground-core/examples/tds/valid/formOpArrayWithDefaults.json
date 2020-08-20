@@ -1,0 +1,157 @@
+{
+    "id": "urn:formOpArray",
+    "@context":"https://www.w3.org/2019/wot/td/v1",
+    "title": "MyLampThing",
+    "description": "Valid TD demonstrating how to use multiple forms with different op",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": ["basic_sc"],
+    "properties": {
+        "brightness": {
+            "description": "The current brightness setting",
+            "type": "integer",
+            "minimum": -64,
+            "maximum": 64,
+            "observable": true,
+            "forms": [{
+                    "href": "http://example.org:9191/api/brightness",
+                    "op": ["readproperty"],
+                    "contentType": "application/json"
+                },
+                {
+                    "href": "http://example.org:9191/api/brightness",
+                    "op": ["writeproperty"],
+                    "http:methodName": "POST",
+                    "contentType": "application/json"
+                },
+                {
+                    "href": "http://example.org:9191/api/brightness/observe",
+                    "op": ["observeproperty"],
+                    "http:methodName": "GET",
+                    "subProtocol": "websub",
+                    "contentType": "application/json"
+                },
+                {
+                    "href": "http://example.org:9191/api/brightness/unobserve",
+                    "op": ["unobserveproperty"],
+                    "http:methodName": "GET",
+                    "subProtocol": "websub",
+                    "contentType": "application/json"
+                }
+            ]
+        },
+        "simple": {
+            "forms": [{
+                "href": "http://example.org:9191/api/simple1",
+                "contentType": "application/json",
+                "op": "readproperty"
+            }]
+        },
+        "simple2": {
+            "forms": [{
+                    "href": "http://example.org:9191/api/simple2",
+                    "op": ["readproperty"],
+                    "contentType": "application/json"
+                },
+                {
+                    "href": "http://example.org:9191/api/simple2",
+                    "http:methodName": "POST",
+                    "contentType": "application/json",
+                    "op": "writeproperty"
+                },
+                {
+                    "href": "http://example.org:9191/api/simple2/observe",
+                    "op": ["observeproperty"],
+                    "http:methodName": "GET",
+                    "subProtocol": "longpoll",
+                    "contentType": "application/json"
+                }
+            ]
+        }
+
+    },
+    "actions": {
+        "toggle": {
+            "safe": false,
+            "idempotent": false,
+            "forms": [{
+                "href": "https://mylamp.example.com/toggle",
+                "op": ["invokeaction"],
+                "contentType": "application/json"
+            }]
+        },
+        "simple3": {
+            "safe": false,
+            "idempotent": false,
+            "forms": [{
+                "href": "https://mylamp.example.com/toggle",
+                "contentType": "application/json",
+                "op": "invokeaction"
+            }]
+        },
+        "simple4": {
+            "safe": false,
+            "idempotent": false,
+            "forms": [{
+                    "href": "https://mylamp.example.com/toggle",
+                    "op": ["invokeaction"],
+                    "contentType": "application/json"
+                },
+                {
+                    "href": "https://mylamp.example.com/toggle",
+                    "contentType": "application/json",
+                    "op": "invokeaction"
+                }
+            ]
+        }
+    },
+    "events": {
+        "overheating": {
+            "data": {
+                "type": "string"
+            },
+            "forms": [{
+                "href": "https://mylamp.example.com/oh",
+                "subProtocol": "longpoll",
+                "op": ["subscribeevent"],
+                "contentType": "application/json"
+            }]
+        },
+        "simple5": {
+            "forms": [{
+                "href": "https://mylamp.example.com/oh",
+                "subProtocol": "longpoll",
+                "contentType": "application/json",
+                "op": "subscribeevent"
+            }]
+        },
+        "simple6": {
+            "data": {
+                "type": "string"
+            },
+            "forms": [{
+                    "href": "https://mylamp.example.com/oh",
+                    "subProtocol": "longpoll",
+                    "op": ["subscribeevent"],
+                    "contentType": "application/json"
+                },
+                {
+                    "href": "https://mylamp.example.com/oh",
+                    "subProtocol": "longpoll",
+                    "op": ["unsubscribeevent"],
+                    "contentType": "application/json"
+                },
+                {
+                    "href": "https://mylamp.example.com/oh",
+                    "subProtocol": "longpoll",
+                    "contentType": "application/json",
+                    "op": "subscribeevent"
+                }
+            ]
+        }
+    }
+}
