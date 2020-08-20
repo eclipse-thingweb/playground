@@ -337,7 +337,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
                         if (curProperty.hasOwnProperty("writeOnly") && curProperty.writeOnly === true) {
                             details.readWriteOnly = "warning"
                             logFunc('! Warning: In property ' + curPropertyName +
-                                ', both readOnly and writeOnly are set true!')
+                                ', both readOnly and writeOnly are set to true!')
                         }
 
                         // check forms if op writeProperty is set
@@ -401,7 +401,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
                         if (curProperty.hasOwnProperty("observable") && curProperty.observable === true) {
                             details.readWriteOnly = "warning"
                             logFunc('! Warning: In property ' + curPropertyName +
-                                ', both writeOnly and observable are set true!')
+                                ', both writeOnly and observable are set to true!')
                         }
                     }
                 }
