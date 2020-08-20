@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test.js"
   },
   "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
   "license": "EPL-2.0 OR W3C-20150513",
@@ -17,6 +17,7 @@
     "browserify": "^16.5.1",
     "jquery": "^3.5.1",
     "minify": "^5.1.1",
+    "playwright": "^1.3.0",
     "watchify": "^3.11.1"
   }
 }
