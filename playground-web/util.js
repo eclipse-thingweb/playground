@@ -55,13 +55,13 @@ export function populateExamples(urlAddrObject){
     Object.keys(urlAddrObject).forEach( name => {
         const data = urlAddrObject[name]
         if (data.type === "valid") {
-            examplesHtml+='<option class="btn-success" value='+name+'>'+name +'</option>';
+            examplesHtml+='<option class="btn-success" value=' + name + '>' + name + ' &check;</option>';
         }
 		if (data.type === "warning") {
-            examplesHtml+='<option class="btn-warning" value='+name+'>'+name +'</option>';
+            examplesHtml+='<option class="btn-warning" value=' + name + '>' + name + ' !</option>';
         }
 		if (data.type === "invalid"){
-			examplesHtml+='<option class="btn-danger" value='+name+'>'+name +'</option>';
+			examplesHtml+='<option class="btn-danger" value=' +name + '>' + name + ' &cross;</option>';
         }
     })
 
