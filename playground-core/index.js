@@ -439,9 +439,9 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
                 // find where the interaction name ends
                 const endQuote = restString.indexOf('"')
                 // finally get the interaction name
-                const interactionName = restString.slice(0, endQuote)
+                const securitySchemeName = restString.slice(0, endQuote)
 
-                if (td.securityDefinitions.hasOwnProperty(interactionName)) {
+                if (td.securityDefinitions.hasOwnProperty(securitySchemeName)) {
                     result = "failed"
                     logFunc("KO Error: The securityDefinitions contain a duplicate")
                 }
