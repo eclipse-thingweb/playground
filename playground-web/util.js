@@ -149,48 +149,43 @@ function exportCSVFile(fileTitle, csv) {
 
 
 /**
- * TODO: make it work
+ * Post the gist to the backend
+ * @param {string} name The name of the gist to submit
+ * @param {string} description The description of the gist to submit
+ * @param {string} content The TD to submit as gist
  */
-function submitAsGist(){
-    const name = prompt("Please enter the Name of TD:");
-    const data={
-            "description": "Directly from playground",
-                "public": true,
-                "files": {
-                [name]: {
-                "content": window.editor.getValue()
-                        }
-                }
-            };
+export function submitAsGist(name, description, content){
+    return new Promise( (res, rej) => {
 
-    const url='https://api.github.com/gists';
+        const url='http://localhost:3030'
+        console.log(JSON.stringify({name, description, content}))
 
-    // ///please fill in the token after getting the code from github for example:
-    // //"Authorization" : `Token #`
-    // //To
-    // //"Authorization" : `Token 60222272d2d5c5a82d2df4a857c528cf4620f175`
-
-    const headers = {
-            "Authorization" : `Token 5671aca3addfdf7ee2d595d6f38daeb15dd6ecc9 `
-        }
-
-        // TODO: remove jquery
-    // $.ajax({
-    //     type: "POST",
-    //     url,
-    //     headers,
-    //     success,
-    //     data:JSON.stringify(data),
-    //     error(XMLHttpRequest, textStatus, errorThrown) {
-    //             alert(errorThrown);
-    //     }
-    // });
-
-    function success(dt) {
-        const file=dt.files[name].raw_url;
-        window.open(file, '_blank');
-        // console.log(file);
-    }
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({name, description, content})
+        }).then( reply => {
+            // check if gist creation was successful
+            if(reply.status === 201) {
+                reply.json().then( jsonReply => {
+                    // to get other resources of the created gist use jsonReply.location and fetch it from GitHub directly
+                    console.log(jsonReply.location)
+                    res(jsonReply.htmlUrl)
+                }, err => {rej("Request successful, but cannot json() reply: " + err)})
+            }
+            else {
+                reply.json().then( jsonReply => {
+                    rej("Problem reported by backend (Status:"+ reply.status + " " + reply.statusText + "): " + jsonReply.errors)
+                }, err => {
+                    rej("Cannot json() reply and problem reported by backend, status: " + reply.status + " " + reply.statusText)
+                })
+            }
+        }, err => {
+            rej("Problem fetching from backend: " + err)
+        })
+    })
 }
 
 /**

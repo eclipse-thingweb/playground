@@ -340,6 +340,7 @@ i {
 	top: 10%;
 	width: 50%;
 	height: 80%;
+	min-height: 540px;
 	background-color: rgba(255, 255, 255, 1) ;
 }
 

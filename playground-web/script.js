@@ -39,7 +39,7 @@ document.getElementById("btn_gistify").addEventListener("click", () => {
 document.getElementById("btn_gist").addEventListener("click", () => {
 	let name = document.getElementById("textName").value
 	const description = document.getElementById("textDescription").value
-	const td = window.editor.getValue()
+	const td = window.editor.getValue().replace(/\t/g, "    ") /* replace tabs with spaces */
 	if (name === "") {
 		name = "WoT Playground Gist"
 	}
@@ -48,20 +48,20 @@ document.getElementById("btn_gist").addEventListener("click", () => {
 		document.getElementById("gist_popup").style.display = "none"
 		return
 	}
-	// TODO: submit gist
-	console.log("submitGist(" + name + ", " + description + ", " + td + ")")
-	const gistLink = "https://example.de"
-	// ---
-	// fail
-	// document.getElementById("gistSuccess").style.color = "rgb(202, 60, 60)"
-	// document.getElementById("gistSuccess").innerText = "Gist could not be submitted!"
 
-	document.getElementById("gistSuccess").innerText = "Submission successful!"
-	document.getElementById("gistSuccess").style.color = "rgb(28, 184, 65)"
-	document.getElementById("gistSuccess").style.display = "inline"
-	document.getElementById("gistLink").href = gistLink
-	document.getElementById("gistLink").innerText = gistLink
-	document.getElementById("gistLink").style.display = "inline"
+	util.submitAsGist(name, description, td).then( gistLink => {
+		document.getElementById("gistSuccess").innerText = "Submission successful!"
+		document.getElementById("gistSuccess").style.color = "rgb(28, 184, 65)"
+		document.getElementById("gistSuccess").style.display = "inline"
+		document.getElementById("gistLink").href = gistLink
+		document.getElementById("gistLink").innerText = gistLink
+		document.getElementById("gistLink").style.display = "inline"
+	}, err => {
+		console.error(err)
+		document.getElementById("gistSuccess").style.color = "rgb(202, 60, 60)"
+		document.getElementById("gistSuccess").innerText = "Gist could not be submitted!"
+		document.getElementById("gistSuccess").style.display = "inline"
+	})
 })
 
 document.getElementById("close_gist_popup").addEventListener("click", () => {
