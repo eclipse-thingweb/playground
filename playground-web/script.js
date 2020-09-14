@@ -14,6 +14,7 @@
  ********************************************************************************/
 
 import * as util from "./util.js"
+import * as config from "./config.js"
 
 const manualAssertions = []
 let manualAssertionsLoaded = false
@@ -32,6 +33,43 @@ document.getElementById("box_auto_validate").addEventListener("change", () => {
 	autoValidate = document.getElementById("box_auto_validate").checked
 })
 
+document.getElementById("btn_gistify").addEventListener("click", () => {
+	document.getElementById("gist_popup").style.display = "block"
+})
+
+document.getElementById("btn_gist").addEventListener("click", () => {
+	let name = document.getElementById("textName").value
+	const description = document.getElementById("textDescription").value
+	const td = window.editor.getValue().replace(/\t/g, "    ") /* replace tabs with spaces */
+	if (name === "") {
+		name = "WoT Playground Gist"
+	}
+	if (td === "") {
+		alert("Please paste a TD before submission")
+		document.getElementById("gist_popup").style.display = "none"
+		return
+	}
+
+	util.submitAsGist(name, description, td, config.gistBackendUrl).then( gistLink => {
+		document.getElementById("gistSuccess").innerText = "Submission successful!"
+		document.getElementById("gistSuccess").style.color = "rgb(28, 184, 65)"
+		document.getElementById("gistSuccess").style.display = "inline"
+		document.getElementById("gistLink").href = gistLink
+		document.getElementById("gistLink").innerText = gistLink
+		document.getElementById("gistLink").style.display = "inline"
+	}, err => {
+		console.error(err)
+		document.getElementById("gistSuccess").style.color = "rgb(202, 60, 60)"
+		document.getElementById("gistSuccess").innerText = "Gist could not be submitted!"
+		document.getElementById("gistSuccess").style.display = "inline"
+	})
+})
+
+document.getElementById("close_gist_popup").addEventListener("click", () => {
+	document.getElementById("gist_popup").style.display = "none"
+	document.getElementById("gistSuccess").style.display = "none"
+	document.getElementById("gistLink").style.display = "none"
+})
 
 document.getElementById("btn_assertion_popup").addEventListener("click", () => {
 	if (!manualAssertionsLoaded) {
@@ -110,9 +148,6 @@ document.getElementById("btn_assertion").addEventListener("click", e => {
 document.getElementById("btn_validate").addEventListener("click", () => {
 	util.validate("manual")
 })
-
-// document.getElementById("btn_gistify").addEventListener("click", submitAsGist)
-// $("#btn_gistify").click(submitAsGist);// Attaching Function to Gistify Button, The functions handles submitting TD as Gist.
 
 document.getElementById("btn_clearLog").addEventListener("click", util.clearLog)
 
