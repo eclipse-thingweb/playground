@@ -25,6 +25,7 @@ module.exports.propUniqueness = coreAssertions.checkPropUniqueness
 module.exports.multiLangConsistency = coreAssertions.checkMultiLangConsistency
 module.exports.security = coreAssertions.checkSecurity
 
+const jsonValidator = require('json-dup-key-validator')
 
 /**
  * A function that provides the core functionality of the TD Playground.
@@ -116,6 +117,12 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             checkReadWriteOnly(tdJson)
             details.security = evalAssertion(coreAssertions.checkSecurity(tdJson))
             details.propUniqueness = evalAssertion(coreAssertions.checkPropUniqueness(tdString))
+            if (details.propUniqueness === "passed") {
+                details.propUniqueness = checkSecPropUniqueness(tdString, tdJson)
+            }
+            else {
+                checkSecPropUniqueness(tdString, tdJson)
+            }
             details.multiLangConsistency = evalAssertion(coreAssertions.checkMultiLangConsistency(tdJson))
 
             // determine additional check state
@@ -406,6 +413,41 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
                     }
                 }
             }
+        }
+
+        /**
+         * Warns if security Definitions has no unique keys
+         * @param {object} tdStr The TD under test as string
+         */
+        function checkSecPropUniqueness(tdStr, td) {
+
+            let result = "passed"
+            try {
+                // checking whether there are securityDefinitions at all
+                jsonValidator.parse(tdStr, false)
+            }
+            catch (error) {
+                // there is a duplicate somewhere
+
+                // convert it into string to be able to process it
+                // error is of form = Error: Syntax error: duplicated keys "overheating" near ting": {
+                const errorString = error.toString()
+                // to get the name, we need to remove the quotes around it
+                const startQuote = errorString.indexOf('"')
+                // slice to remove the part before the quote
+                const restString = errorString.slice(startQuote + 1)
+                // find where the interaction name ends
+                const endQuote = restString.indexOf('"')
+                // finally get the interaction name
+                const securitySchemeName = restString.slice(0, endQuote)
+
+                if (td.securityDefinitions.hasOwnProperty(securitySchemeName)) {
+                    result = "failed"
+                    logFunc("KO Error: The securityDefinitions contain a duplicate")
+                }
+            }
+
+            return result
         }
 
         /**
