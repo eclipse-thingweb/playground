@@ -94,6 +94,7 @@ async function testViewport(browser, width, height) {
 
   await customPage.goto(fullHost)
   await customPage.screenshot({ path: path.join(testDir, "viewport_" + width +"_x_" + height + ".png")})
+  await customPage.close()
 }
 
 /**
@@ -164,6 +165,7 @@ async function testVisualFirefox(page) {
 async function testVisualWebkit(page) {
   page.on("console", msg => console.log(msg.text())) // print page console output to node.js console
   await page.goto(fullHost, {waitUntil: "networkidle"})
+  await myWait(9000)
   await page.screenshot({ path: path.join(testDir, "webkit_index.png")})
 }
 
