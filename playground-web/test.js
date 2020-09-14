@@ -17,9 +17,15 @@ const playwright = require('playwright')
 const fs = require("fs")
 const handler = require("serve-handler")
 const http = require("http")
+const path = require("path")
 
 const arg = process.argv[2]
 const options = (arg === "-d" || arg === "--debug") ? {headless: false, slowMo: 200} : {}
+
+const port = 3000
+const host = "http://localhost"
+const fullHost = host + ":" + port
+const testDir = "./test_results"
 
 const server = http.createServer((request, response) => {
   // You pass two more arguments for config and middleware
@@ -27,14 +33,20 @@ const server = http.createServer((request, response) => {
   return handler(request, response);
 })
 
-server.listen(3000, () => {
-  console.log('Running siteTest at http://localhost:3000');
+/* ################### */
+/*      MAIN           */
+server.listen(port, () => {
+  console.log("Running siteTest at " + fullHost);
 });
-
 testVisual()
+/* ################### */
 
+
+/**
+ * main function to execute visual test using playwright
+ */
 async function testVisual() {
-  if (!fs.existsSync("./test_results")) {fs.mkdirSync("./test_results")}
+  if (!fs.existsSync(testDir)) {fs.mkdirSync(testDir)}
 
 
   const BrowserList = []
@@ -49,6 +61,11 @@ async function testVisual() {
 
     if (browserType === "chromium") {
       await testVisualChromium(page)
+
+      await testViewport(browser, 1920, 1080)
+      await testViewport(browser, 2560, 1440)
+      await testViewport(browser, 3840, 2160)
+      await testViewport(browser, 4096, 2160)
     }
     else if (browserType === "firefox") {
       await testVisualFirefox(page)
@@ -64,26 +81,50 @@ async function testVisual() {
   server.close()
 }
 
+/**
+ * Render the testing target with given viewport dimensions and take screenshots
+ * @param {object} browser a playwright browser
+ * @param {*} width viewport width in px
+ * @param {*} height viewport height in px
+ */
+async function testViewport(browser, width, height) {
+  const customPage = await browser.newPage({
+    viewport: { width, height }
+  })
+
+  await customPage.goto(fullHost)
+  await customPage.screenshot({ path: path.join(testDir, "viewport_" + width +"_x_" + height + ".png")})
+}
+
+/**
+ * execute tests and take screenshots with chromium
+ * works better than other browser engines
+ * @param {object} page a playwright page
+ */
 async function testVisualChromium(page) {
-  const browserType = "chromium"
-  await page.goto('http://localhost:3000')
-  await page.screenshot({ path: `./test_results/index-of-${browserType}.png` })
+
+  /** a shortcut function for taking screenshots of chromium pages */
+  const customShot = async postfix => {await page.screenshot({path: path.join(testDir, "chromium_" + postfix + ".png")})}
+  await page.goto(fullHost)
+  await customShot("index")
 
   await page.click('#load_example', {waitUntil: "networkidle"})
-  await page.screenshot({ path: `./test_results/chromium_dropdown-examples.png` })
+  await customShot("dropdown-examples")
 
   await page.selectOption('#load_example', "SimpleTD")
+  await customShot("td")
   await page.screenshot({ path: `./test_results/chromium_td.png` })
 
   await page.click("#btn_validate")
   await myWait(1000)
-  await page.screenshot({ path: `./test_results/chromium_validation.png`, fullPage: true })
+  await page.screenshot({ path: path.join(testDir, "chromium_validation.png"),fullPage: true })
 
   await page.click("#validation_table_head")
   await page.screenshot({ path: `./test_results/chromium_lights.png` })
+  await customShot("lights")
 
   await page.click("#btn_assertion_popup")
-  await page.screenshot({ path: `./test_results/chromium_assertion-popup.png` })
+  await customShot("assertion-popup")
   const [assertionDownload] = await Promise.all([
     page.waitForEvent("download"),
     page.click("#btn_assertion")
@@ -93,36 +134,37 @@ async function testVisualChromium(page) {
 
   await page.click("#btn_clearLog")
   const consoleField = await page.$("#console")
-  await consoleField.screenshot({ path: `./test_results/chromium_cleared-log.png` })
+  await consoleField.screenshot({ path: path.join(testDir, "chromium_cleared-log.png")})
 
   await page.click("#editor_theme")
-  await page.screenshot({ path: `./test_results/chromium_dropdown-editor-color.png` })
+  await customShot("dropdown-editor-color")
 
   await page.selectOption('#editor_theme', "vs-dark")
-  await page.screenshot({ path: `./test_results/chromium_dark-editor.png` })
+  await customShot("dark-editor")
 }
 
+/**
+ * execute tests and take screenshots with firefox
+ * the page renders correctly but e.g. dropdowns are not shown in screenshots
+ * -> use chrome for advanced testing
+ * @param {object} page a playwright page
+ */
 async function testVisualFirefox(page) {
   const browserType = "firefox"
-  await page.goto('http://localhost:3000', {waitUntil: "networkidle"})
+  await page.goto(fullHost, {waitUntil: "networkidle"})
   await myWait(1000)
-  await page.screenshot({ path: `./test_results/index-of-${browserType}.png` })
-
-  // await page.click('#load_example', {waitUntil: "networkidle"})
-  // await myWait()
-  // const elementHandle = await page.$('.loadExampleForm');
-  // await elementHandle.screenshot({path: "./test_results/only-dropdown.png"});
-  // await page.screenshot({ path: `./test_results/dropdown-of-${browserType}.png`, fullPage: true })
-
-  // await page.selectOption('#load_example', "SimpleTD")
-  // await page.screenshot({ path: `./test_results/td-of-${browserType}.png` })
+  await page.screenshot({ path: path.join(testDir, "firefox_index.png")})
 }
 
+/**
+ * execute tests and take screenshots with webkit
+ * TODO: not working
+ * @param {object} page a playwright page
+ */
 async function testVisualWebkit(page) {
-  const browserType = "webkit"
-  page.on("console", msg => console.log(msg.text()))
-  await page.goto('http://localhost:3000', {waitUntil: "networkidle"})
-  await page.screenshot({ path: `./test_results/index-of-${browserType}.png` })
+  page.on("console", msg => console.log(msg.text())) // print page console output to node.js console
+  await page.goto(fullHost, {waitUntil: "networkidle"})
+  await page.screenshot({ path: path.join(testDir, "webkit_index.png")})
 }
 
 /**
