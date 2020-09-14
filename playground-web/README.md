@@ -25,3 +25,11 @@ Please also see the additional [notices](NOTICE.md) and [how to contribute](CONT
   To host it yourself:
   * Install the package with npm `npm install playground-web` (or clone repo and install the package with `npm install`)
   * Deliver its files by a web server (also locally possible via localhost), simply opening the `index.html` with a browser won't do the job.  
+
+## (Playwright) Testing
+
+You can check if the website created by this package is visually okay and functionally working correctly by running `npm test` and inspecting the results in the [test-results](./test_results) folder.
+
+To debug the playwright test (and see what actions it triggers) use `npm start debug`.
+
+To host the website for test purposes use `npm run serve`.

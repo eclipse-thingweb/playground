@@ -18,6 +18,9 @@ const fs = require("fs")
 const handler = require("serve-handler")
 const http = require("http")
 
+const arg = process.argv[2]
+const options = (arg === "-d" || arg === "--debug") ? {headless: false, slowMo: 200} : {}
+
 const server = http.createServer((request, response) => {
   // You pass two more arguments for config and middleware
   // More details here: https://github.com/vercel/serve-handler#options
@@ -40,8 +43,7 @@ async function testVisual() {
   // BrowserList.push("webkit")
 
   for (const browserType of BrowserList) {
-    // use {headless: false, slowMo: 200} options in launch() for debugging
-    const browser = await playwright[browserType].launch()
+    const browser = await playwright[browserType].launch(options)
     const context = await browser.newContext({acceptDownloads: true})
     const page = await context.newPage()
 
