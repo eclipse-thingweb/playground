@@ -154,11 +154,8 @@ function exportCSVFile(fileTitle, csv) {
  * @param {string} description The description of the gist to submit
  * @param {string} content The TD to submit as gist
  */
-export function submitAsGist(name, description, content){
+export function submitAsGist(name, description, content, url){
     return new Promise( (res, rej) => {
-
-        const url='http://localhost:3030'
-        console.log(JSON.stringify({name, description, content}))
 
         fetch(url, {
             method: "POST",

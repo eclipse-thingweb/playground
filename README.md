@@ -12,6 +12,7 @@ Both packages are used by the Web and CLI packages to provide their functionalit
 * You can use the `playground-cli` package to test one/multiple TDs via the command line or execute assertion testing with it. The cli for the playground can be found [here](./playground-cli/).
 * You can use the `playground-assertion` package to integrate assertion testing via an API in your own packages. The assertions package can be found [here](./playground-assertions/).
 * You can use the `playground-web` package to host/adapt your own browser version of the WoT playground. The web package can be found [here](./playground-web/).
+* You can use the `playground-gist_backend` package to host a backend for the gist-submission functionality of the browser version of the playground. The package can be found [here](./playground-gist_backend).
 
 Validation tool for W3C WoT Thing Descriptions. Your Thing Descriptions should be written according to the W3C standard found [here](https://w3c.github.io/wot-thing-description/#).
 

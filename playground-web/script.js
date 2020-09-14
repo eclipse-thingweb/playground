@@ -14,6 +14,7 @@
  ********************************************************************************/
 
 import * as util from "./util.js"
+import * as config from "./config.js"
 
 const manualAssertions = []
 let manualAssertionsLoaded = false
@@ -49,7 +50,7 @@ document.getElementById("btn_gist").addEventListener("click", () => {
 		return
 	}
 
-	util.submitAsGist(name, description, td).then( gistLink => {
+	util.submitAsGist(name, description, td, config.gistBackendUrl).then( gistLink => {
 		document.getElementById("gistSuccess").innerText = "Submission successful!"
 		document.getElementById("gistSuccess").style.color = "rgb(28, 184, 65)"
 		document.getElementById("gistSuccess").style.display = "inline"
@@ -131,8 +132,6 @@ document.getElementById("close_assertion_test_popup").addEventListener("click", 
 	document.getElementById("assertion_test_popup").style.display = "none"
 })
 
-
-
 const urlAddrObject= util.getExamplesList(); // Fetching list of examples from the given array(in helperFunctions.js).
 util.populateExamples(urlAddrObject);     // Loading the examples given in list from their respective URLs
 
@@ -149,9 +148,6 @@ document.getElementById("btn_assertion").addEventListener("click", e => {
 document.getElementById("btn_validate").addEventListener("click", () => {
 	util.validate("manual")
 })
-
-// document.getElementById("btn_gistify").addEventListener("click", submitAsGist)
-// $("#btn_gistify").click(submitAsGist);// Attaching Function to Gistify Button, The functions handles submitting TD as Gist.
 
 document.getElementById("btn_clearLog").addEventListener("click", util.clearLog)
 
