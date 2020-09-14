@@ -1,15 +1,24 @@
 {
-  "name": "playground-cli",
+  "name": "@thing-description-playground/cli",
+  "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
+  "license": "EPL-2.0 OR W3C-20150513",
   "version": "1.0.0",
-  "description": "",
+  "description": "Provides a Command Line Interface for the Web of Things - Thing Description Playground.",
+  "homepage": "https://github.com/thingweb/thingweb-playground#readme",
+  "bugs": {"url": "https://github.com/thingweb/thingweb-playground/issues"},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thingweb/thingweb-playground.git",
+    "directory": "playground-cli"
+  },
   "main": "index.js",
   "scripts": {
     "test": "node ./index.js",
     "start": "node ./index.js"
   },
-  "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
-  "license": "EPL-2.0 OR W3C-20150513",
   "dependencies": {
-    "argly": "^1.2.0"
+    "argly": "^1.2.0",
+    "@thing-description-playground/core": "^1.0.0",
+    "@thing-description-playground/assertions": "^1.0.0"
   }
 }
