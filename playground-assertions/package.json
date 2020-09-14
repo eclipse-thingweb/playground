@@ -1,9 +1,16 @@
 {
-  "name": "playground-assertions",
+  "name": "@thing-description-playground/assertions",
   "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
   "license": "EPL-2.0 OR W3C-20150513",
   "version": "1.0.0",
-  "description": "TBD",
+  "description": "Provides the assertion testing functionality for the Web of Things - Thing Description Playground.",
+  "homepage": "https://github.com/thingweb/thingweb-playground#readme",
+  "bugs": {"url": "https://github.com/thingweb/thingweb-playground/issues"},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thingweb/thingweb-playground.git",
+    "directory": "playground-assertions"
+  },
   "main": "index.js",
   "scripts": {
     "test": "node test.js",
@@ -14,7 +21,8 @@
     "ajv": "^6.12.2",
     "csvjson": "^5.1.0",
     "is-utf8": "^0.2.1",
-    "json2csv": "^5.0.1"
+    "json2csv": "^5.0.1",
+    "@thing-description-playground/core": "^1.0.0"
   },
   "devDependencies": {
     "browserify": "^16.5.1",
