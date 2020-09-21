@@ -18,11 +18,11 @@ const fetch = require("node-fetch")
 const fs = require("fs")
 
 
-const port = 3030
+const port = 8082
 const login = process.env.TD_PLAYGROUND_LOGIN
 const token = process.env.TD_PLAYGROUND_TOKEN
 const keepLogMessages = 100
-const allowHosts = ["http://127.0.0.1:5500", "http://localhost:5500", "http://plugfest.thingweb.io/playground/"]
+const allowHosts = ["http://127.0.0.1:5500", "http://localhost:5500", "http://plugfest.thingweb.io"]
 const app = express()
 const logs = fs.existsSync("./logs.json") ? JSON.parse(fs.readFileSync("./logs.json", "utf-8")) : []
 
