@@ -34,7 +34,12 @@ document.getElementById("box_auto_validate").addEventListener("change", () => {
 })
 
 document.getElementById("btn_gistify").addEventListener("click", () => {
-	document.getElementById("gist_popup").style.display = "block"
+	if (window.editor.getValue() === "") {
+		alert("Please paste a TD before submission")
+	}
+	else {
+		document.getElementById("gist_popup").style.display = "block"
+	}
 })
 
 document.getElementById("btn_gist").addEventListener("click", () => {
@@ -44,11 +49,7 @@ document.getElementById("btn_gist").addEventListener("click", () => {
 	if (name === "") {
 		name = "WoT Playground Gist"
 	}
-	if (td === "") {
-		alert("Please paste a TD before submission")
-		document.getElementById("gist_popup").style.display = "none"
-		return
-	}
+
 
 	util.submitAsGist(name, description, td, config.gistBackendUrl).then( gistLink => {
 		document.getElementById("gistSuccess").innerText = "Submission successful!"
