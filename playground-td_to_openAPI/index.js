@@ -14,7 +14,7 @@ function toOpenAPI(td) {
         const servers = crawlServers(td.base)
         const components = {}
         const security = {}
-        const tags = addTags(td) // TODO: add tags for properties, actions, events
+        const tags = addTags(td)
         const externalDocs = new ExternalDocs(
             "http://plugfest.thingweb.io/playground/",
             "This OAP specification was generated from a Web of Things (WoT) - Thing Description by the WoT Playground"
@@ -80,69 +80,110 @@ function createInfo(td) {
 function crawlPaths(td) {
     const cPaths = {}
     const interactions = ["properties", "actions"]
-    const httpBase = td.base && td.base.startsWith("http://") ? true : false 
+    const httpBase = td.base && (td.base.startsWith("http://") || td.base.startsWith("https://")) ? true : false 
 
+    // crawl Interaction Affordances forms
     interactions.forEach( interaction => {
         if (td[interaction] !== undefined) {
             Object.keys(td[interaction]).forEach( interactionName => {
                 td[interaction][interactionName].forms.forEach( form => {
-                    if (form.href.startsWith("http://") || httpBase) {
-                        // add the operation
-                        let path, server
-                        if(form.href.startsWith("http://")) {
-                            [server, path] = form.href.slice(7).split("/", 2)
-                            server = "http://" + server
-                            path = "/" + path
-                        }
-                        else {
-                            path = form.href
-                        }
 
-                        if (!cPaths[path]) {cPaths[path] = {}}
-
-                        // define type
-                        const mapDefaults = {
-                            properties: ["readproperty", "writeproperty"],
-                            actions: "invokeaction"
-                        }
-                        const myOp = form.op ? form.op : mapDefaults[interaction]
-                        
-                        // define content type of response
-                        let contentType
-                        if (form.response && form.response.contentType) {
-                            contentType = form.response.contentType
-                        }
-                        else { // if response is not defined explicitly use general interaction content Type
-                            if (form.contentType) {
-                                contentType = form.contentType
-                            }
-                            else {
-                                contentType = "application/json"
-                            }
-                        }
-
-                        // define content type of request
-                        let requestType
-                        if (form.contentType) {
-                            requestType = form.contentType
-                        }
-                        else {
-                            requestType = "application/json"
-                        }
-
-                        recognizeMethod(myOp, path, server, contentType, requestType)
+                    // generate interactions tag
+                    const mapToSingular = {
+                        properties: "property",
+                        actions: "action"
                     }
+                    const tags = [mapToSingular[interaction]]
+
+                    // define type
+                    const mapDefaults = {
+                        properties: ["readproperty", "writeproperty"],
+                        actions: "invokeaction"
+                    }
+                    const myOp = form.op ? form.op : mapDefaults[interaction]
+
+                    addForm(form, tags, myOp)
                 })
             })
         }
     })
 
-    function recognizeMethod(ops, path, server, contentType, requestType) {
+    // crawl multiple Interaction forms
+    if (td.forms) {
+        td.forms.forEach( form => {
+
+            // generate interactions tag
+            const tags = ["property"]
+
+            // require op
+            if (form.op) {
+                addForm(form, tags, form.op)
+            }
+        })
+    }
+
+    function addForm(form, tags, myOp) {
+        if (form.href.startsWith("http://") || form.href.startsWith("https://") || httpBase) {
+            // add the operation
+            const {path, server} = extractPath(form.href)
+
+            if (!cPaths[path]) {cPaths[path] = {}}
+
+            // define content type of response
+            let contentType
+            if (form.response && form.response.contentType) {
+                contentType = form.response.contentType
+            }
+            else { // if response is not defined explicitly use general interaction content Type
+                if (form.contentType) {
+                    contentType = form.contentType
+                }
+                else {
+                    contentType = "application/json"
+                }
+            }
+
+            // define content type of request
+            let requestType
+            if (form.contentType) {
+                requestType = form.contentType
+            }
+            else {
+                requestType = "application/json"
+            }
+
+            recognizeMethod(myOp, path, server, contentType, requestType, tags)
+        }
+    }
+
+    function extractPath(link) {
+        let server, path
+        if (link.startsWith("http://")) {
+            server = "http://" + link.slice(7).split("/").shift()
+            path = "/" + link.slice(7).split("/").slice(1).join("/")
+        }
+        else if (link.startsWith("https://")) {
+            server = "http://" + link.slice(7).split("/").shift()
+            path = "/" + link.slice(7).split("/").slice(1).join("/")
+        }
+        else {
+            path = link
+            if (!path.startsWith("/")) {path = "/" + path}
+        }
+        return {path, server}
+    }
+
+    function recognizeMethod(ops, path, server, contentType, requestType, tags) {
         const mapping = {
             readproperty: "get",
             writeproperty: "put",
-            invokeaction: "post"
+            invokeaction: "post",
+            readallproperties: "get",
+            writeallproperties: "put",
+            readmultipleproperties: "get",
+            writemultipleproperties: "put"
         }
+
         const methods = []
         if (typeof ops === "string") {ops = [ops]}
         ops.forEach( op => {
@@ -152,36 +193,36 @@ function crawlPaths(td) {
         })
 
         methods.forEach( method => {
-            cPaths[path][method] = {
-                responses: {
-                    default: {
-                        description: "the default Thing response",
+            // check if same method is already there (e.g. as http instead of https version)
+            if (cPaths[path][method]) {
+                cPaths[path][method].servers.push(new Server(server))
+            }
+            else {
+                cPaths[path][method] = {
+                    tags,
+                    responses: {
+                        default: {
+                            description: "the default Thing response",
+                            content: {
+                                [contentType]: {}
+                            }
+                        }
+                    },
+                    requestBody: {
                         content: {
-                            [contentType]: {}
+                            [requestType]: {}
                         }
                     }
-                },
-                requestBody: {
-                    content: {
-                        [requestType]: {}
-                    }
+                }
+                // check if server is given (ain't the case for "base" url fragments) and add
+                if (server) {
+                    cPaths[path][method].servers = [new Server(server)]
                 }
             }
-            if (server) {
-                cPaths[path][method].servers = [new Server(server)]
-            }
         })
-        return methods
     }
 
     return cPaths
-}
-
-const allMappings = {
-    readallproperties: "GET",
-    writeallproperties: "PUT",
-    readmultipleproperties: "GET",
-    writemultipleproperties: "PUT"
 }
 
 function crawlServers(base) {
