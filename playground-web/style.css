@@ -65,31 +65,22 @@ body {
 }
 
 .wrapper>.row:first-child {
-	height: 500px;
+	height: 700px;
 }
 
 
 #monaco {
-	height: 500px; 
+	height: 700px; 
 	width: auto;
 }
 
-@media(min-height: 1100px) {
-	.wrapper > .row:first-child {
-		height: calc(600px + calc(90vh - 1000px));
-	}
-	#monaco {
-		height: calc(600px + calc(90vh - 1000px));
-	}
-}
-
-.push {
+/*.push {
 	height: 200px;
-	/* .push must be the same height as .footer */
-}
+}*/ /*must be same height as footer ? */
 
 .conrow {
 	max-height: 250px;
+	height: fit-content;
 	/*overflow-y: scroll;*/
 }
 
@@ -99,6 +90,22 @@ body {
 	overflow-y: scroll;
 	white-space: pre-wrap;
 	max-height: 250px;
+	height: fit-content;
+}
+
+@media(min-height: 1100px) {
+	.wrapper > .row:first-child {
+		height: calc(800px + calc(91vh - 1000px));
+	}
+	#monaco {
+		height: calc(800px + calc(91vh - 1000px));
+	}
+	.conrow {
+		max-height: calc(450px + calc(91vh - 1000px));
+	}
+	#console {
+		max-height: calc(450px + calc(91vh - 1000px));
+	}
 }
 
 footer {
