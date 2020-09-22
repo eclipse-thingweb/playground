@@ -272,7 +272,7 @@ footer p {
 	margin-bottom: 0px;
 }
 
-input {
+input, textarea {
 	margin-left: 20px;
 }
 
