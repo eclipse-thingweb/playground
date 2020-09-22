@@ -1,172 +1,46 @@
 const SwaggerParser = require("swagger-parser")
+const YAML = require("json-to-pretty-yaml")
 
-const td = {
-        "@context": [
-            "https://www.w3.org/2019/wot/td/v1",
-            { "cov" : "http://www.example.org/coap-binding#" },
-            { "@language" : "en" }
-        ],
-        "id":"urn:dev:home:coff:type123-SNR123456",
-        "name": "MyCoffeeMaker",
-        "@type": "Thing",
-        "title": "MyCoffeeMaker-Home",
-        "description": "Order your coffee remotely!",
-        "securityDefinitions": {
-            "basic_sc": {"scheme": "basic", "in":"header" },
-            "psk_sc" : { "scheme":"psk" },
-            "nosec_sc" : { "scheme":"nosec" }
-        },
-        "security": ["nosec_sc"],
-        "properties": {
-            "status" : {
-                "type" : "string",
-                "enum" : ["Standby", "Grinding", "Brewing", "Filling","Error"],
-                "readOnly" : true,
-                "forms" : [{
-                    "href" : "http://mycoffeemaker.example.com/status",
-                    "op" : "readproperty",
-                    "contentType" : "application/json"
-                    }]
-            },
-            "fillstates" : {
-                "type" : "object",
-                "properties" : {
-                    "water" : {
-                        "type":"number",
-                        "minimum": 0,
-                        "maximum": 100
-                        },
-                    "coffeebeans" : {
-                        "type":"number",
-                        "minimum": 0,
-                        "maximum": 100
-                        },
-                    "bin" : {
-                        "type":"number",
-                        "minimum": 0,
-                        "maximum": 100
-                        }
-                },
-                "readOnly" : true,
-                "forms" : [{
-                    "href" : "http://mycoffeemaker.example.com/fillstates",
-                    "op" : "readproperty",
-                    "contentType" : "application/json"
-                    }]
-            }
-        },
-        "actions": {
-            "brewCoffee" : {
-                "input" : {
-                    "type" : "string",
-                    "enum" : ["Espresso", "EspressoDoppio", "Coffee","HotWater"]
-                },
-                "forms" : [{
-                    "href" : "http://mycoffeemaker.example.com/brewcoffee",
-                    "op" : "invokeaction",
-                    "contentType" : "application/json"
-                    }],
-                "safe" : false,
-                "idempotent" : false
-            },
-            "stopBrewing" : {
-                "forms" : [{
-                    "href" : "coap://mycoffeemaker.example.com/stopbrewing",
-                    "cov:methodName" : "GET",
-                    "op" : "invokeaction",
-                    "contentType" : "application/json"
-                    }],
-                "safe" : false,
-                "idempotent" : false
-            },
-            "switchOff" : {
-                "forms" : [{
-                    "href" : "http://mycoffeemaker.example.com/switchoff",
-                    "op" : "invokeaction",
-                    "contentType" : "application/json"
-                    }],
-                "safe" : false,
-                "idempotent" : false
-            }
-        },
-        "events": {
-            "waterEmpty" : {
-                "description" : "The water fillstate is below a certain level!",
-                "data" : {
-                    "type":"number",
-                    "minimum": 0,
-                    "maximum": 100
-                    },
-                "forms" : [{
-                    "href" : "http://mycoffeemaker.example.com/waterempty",
-                    "op" : "subscribeevent",
-                    "contentType" : "application/json",
-                    "subprotocol": "longpoll"
-                }]
-            },
-            "coffeeEmpty" : {
-                "description" : "The coffee bean fillstate is below a certain amount!",
-                "data" : {
-                    "type":"number",
-                    "minimum": 0,
-                    "maximum": 100
-                    },
-                "forms" : [{
-                    "href" : "http://mycoffeemaker.example.com/coffeeempty",
-                    "op" : "subscribeevent",
-                    "contentType" : "application/json",
-                    "subprotocol": "longpoll"
-                }]
-            },
-            "binFull" : {
-                "description" : "The bin  fillstate is above a certain level!",
-                "data" : {
-                    "type":"number",
-                    "minimum": 0,
-                    "maximum": 100
-                    },
-                "forms" : [{
-                    "href" : "http://mycoffeemaker.example.com/binfull",
-                    "op" : "subscribeevent",
-                    "contentType" : "application/json",
-                    "subprotocol": "longpoll"
-                }]
-            }
+module.exports = toOpenAPI
+
+function toOpenAPI(td) {
+    return new Promise( (res, rej) => {
+        /* required */
+        const openapi = "3.0.3"
+        const info = createInfo(td)
+        const paths = crawlPaths(td)
+
+        /* optional */
+        const servers = crawlServers(td.base)
+        const components = {}
+        const security = {}
+        const tags = addTags(td) // TODO: add tags for properties, actions, events
+        const externalDocs = new ExternalDocs(
+            "http://plugfest.thingweb.io/playground/",
+            "This OAP specification was generated from a Web of Things (WoT) - Thing Description by the WoT Playground"
+        )
+
+        const API = {
+            openapi,
+            info,
+            paths
         }
-    }
+        if (servers.length > 0) {API.servers = servers}
+        if (tags.length > 0) {API.tags = tags}
 
 
-/* required */
-const openapi = "3.0.0"
-const info = createInfo()
-const paths = crawlPaths()
-
-/* optional */
-const servers = crawlServers()
-const components = {}
-const security = {}
-const tags = [] // TODO: add tags for properties, actions, events
-const externalDocs = {}
-
-const API = {
-    openapi,
-    info,
-    paths
+        SwaggerParser.validate(API).then( () => {
+            res({json: API, yaml: YAML.stringify(API)})
+        }, err => {
+            console.log(JSON.stringify(API, undefined, 4))
+            rej(err)
+        })
+    })
 }
-if (servers.length > 0) {API.servers = servers}
-
-console.log(JSON.stringify(API, undefined, 4))
-
-SwaggerParser.validate(API).then( () => {
-    console.log("VALID")
-}, err => {
-    console.error(err)
-})
-
 
 /* ####### FUNCTIONS #############*/
 
-function createInfo() {
+function createInfo(td) {
     const cInfo = {}
     // add title
     /* is required for valid TDs but not to constrain testing
@@ -203,13 +77,13 @@ function createInfo() {
     return cInfo
 }
 
-function crawlPaths() {
+function crawlPaths(td) {
     const cPaths = {}
     const interactions = ["properties", "actions"]
     const httpBase = td.base && td.base.startsWith("http://") ? true : false 
 
     interactions.forEach( interaction => {
-        if (td.interaction) {
+        if (td[interaction] !== undefined) {
             Object.keys(td[interaction]).forEach( interactionName => {
                 td[interaction][interactionName].forms.forEach( form => {
                     if (form.href.startsWith("http://") || httpBase) {
@@ -217,27 +91,53 @@ function crawlPaths() {
                         let path, server
                         if(form.href.startsWith("http://")) {
                             [server, path] = form.href.slice(7).split("/", 2)
-                            server = "http" + server
+                            server = "http://" + server
+                            path = "/" + path
                         }
                         else {
                             path = form.href
                         }
+
                         if (!cPaths[path]) {cPaths[path] = {}}
-    
+
                         // define type
                         const mapDefaults = {
                             properties: ["readproperty", "writeproperty"],
                             actions: "invokeaction"
                         }
-                        const myOp = form.op ? form.op : mapDefaults[interaction]                        
-                        recognizeMethod(myOp, path, server)
+                        const myOp = form.op ? form.op : mapDefaults[interaction]
+                        
+                        // define content type of response
+                        let contentType
+                        if (form.response && form.response.contentType) {
+                            contentType = form.response.contentType
+                        }
+                        else { // if response is not defined explicitly use general interaction content Type
+                            if (form.contentType) {
+                                contentType = form.contentType
+                            }
+                            else {
+                                contentType = "application/json"
+                            }
+                        }
+
+                        // define content type of request
+                        let requestType
+                        if (form.contentType) {
+                            requestType = form.contentType
+                        }
+                        else {
+                            requestType = "application/json"
+                        }
+
+                        recognizeMethod(myOp, path, server, contentType, requestType)
                     }
                 })
             })
         }
     })
 
-    function recognizeMethod(ops, path, server) {
+    function recognizeMethod(ops, path, server, contentType, requestType) {
         const mapping = {
             readproperty: "get",
             writeproperty: "put",
@@ -246,22 +146,29 @@ function crawlPaths() {
         const methods = []
         if (typeof ops === "string") {ops = [ops]}
         ops.forEach( op => {
-            methods.push(mapping[op])
+            if(Object.keys(mapping).some( prop => prop === op)) {
+                methods.push(mapping[op])
+            }
         })
 
         methods.forEach( method => {
             cPaths[path][method] = {
                 responses: {
                     default: {
-                        description: "the normal Thing response",
+                        description: "the default Thing response",
                         content: {
-                            "application/json": {}
+                            [contentType]: {}
                         }
+                    }
+                },
+                requestBody: {
+                    content: {
+                        [requestType]: {}
                     }
                 }
             }
             if (server) {
-                cPaths[path][method].servers = new Server(server)
+                cPaths[path][method].servers = [new Server(server)]
             }
         })
         return methods
@@ -277,13 +184,40 @@ const allMappings = {
     writemultipleproperties: "PUT"
 }
 
-function crawlServers() {
+function crawlServers(base) {
     let cServers = []
 
-    if (td.base !== undefined) {
-        cServers.push(new Server(td.base, "TD base url"))
+    if (base !== undefined) {
+        cServers.push(new Server(base, "TD base url"))
     }
     return cServers
+}
+
+function addTags(td) {
+    const tags = []
+    const interactions = {
+        properties: {
+            name: "property",
+            description: "A property can expose a variable of a Thing, this variable might be readable, writable and/or observable.",
+            externalDocs: new ExternalDocs("https://www.w3.org/TR/wot-thing-description/#propertyaffordance", "Find out more about Property Affordances.")
+        },
+        actions: {
+            name: "action",
+            description: "An action can expose something to be executed by a Thing, an action can be invoked.",
+            externalDocs: new ExternalDocs("https://www.w3.org/TR/wot-thing-description/#actionaffordance", "Find out more about Action Affordances.")
+        },
+        events: {
+            name: "event",
+            description: "An event can expose a notification by a Thing, this notification can be subscribed and/or unsubscribed.",
+            externalDocs: new ExternalDocs("https://www.w3.org/TR/wot-thing-description/#eventaffordance", "Find out more about Event Affordances.")
+        }
+    }
+    Object.keys(interactions).forEach( interactionType => {
+        if (td[interactionType] !== undefined) {
+            tags.push(interactions[interactionType])
+        }
+    })
+    return tags
 }
 
 
@@ -293,4 +227,10 @@ function Server(url, description, variables) {
     this.url = url
     if (description) {this.description = description}
     if (variables) {this.variables = variables}
+}
+
+function ExternalDocs(url, description) {
+    if (url === undefined) {throw new Error("url for external docs object missing")}
+    this.url = url
+    if (description) {this.description = description}
 }

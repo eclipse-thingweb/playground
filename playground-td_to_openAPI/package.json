@@ -15,10 +15,12 @@
     "directory": "playground-td_to_openAPI"
   },
   "scripts": {
-    "test": "node index.js",
+    "test": "node test.js",
+    "testAll": "node testAll.js",
     "bundle": "npx browserify ./index.js -s tdValidator -o ./dist/web-bundle.js & npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js"
   },
   "dependencies": {
+    "json-to-pretty-yaml": "^1.2.2",
     "swagger-parser": "^10.0.2"
   },
   "devDependencies": {
