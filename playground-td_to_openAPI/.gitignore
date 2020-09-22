@@ -3,3 +3,4 @@ node_modules
 
 # dist directory should be included only in the Package but not Repository
 dist
+out
