@@ -111,7 +111,7 @@ body {
 		max-height: calc(450px + calc(91vh - 1000px));
 	}
 	.wrapper {
-		margin: 0 calc(4vw - 60px) -200px 4vw;
+		margin: 0 calc(4vw - 60px) -200px 6vw;
 	}
 }
 
