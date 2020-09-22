@@ -163,8 +163,8 @@ function crawlPaths(td) {
             path = "/" + link.slice(7).split("/").slice(1).join("/")
         }
         else if (link.startsWith("https://")) {
-            server = "http://" + link.slice(7).split("/").shift()
-            path = "/" + link.slice(7).split("/").slice(1).join("/")
+            server = "https://" + link.slice(8).split("/").shift()
+            path = "/" + link.slice(8).split("/").slice(1).join("/")
         }
         else {
             path = link
