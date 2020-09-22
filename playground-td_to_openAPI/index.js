@@ -65,8 +65,21 @@ function createInfo(td) {
     if (td.description !== undefined) {
         cInfo.description = td.description
     }
+
+    // add support contact
+    if (td.support) {
+        if (td.support.startsWith("mailto:")) {
+            cInfo.contact = {email: td.support.slice(7)}
+        }
+        else if (td.support.startsWith("http://") || td.support.startsWith("https://")) {
+            cInfo.contact = {url: td.support}
+        }
+        else {
+            cInfo.contact = {"x-uri": td.support}
+        }
+    }
+
     // add optional custom fields
-    // TODO: parse descriptions and titles -> description title ???
     const tdOpts = ["@context", "@type", "created", "descriptions", "id", "links", "modified", "name", "titles"]
     tdOpts.forEach( prop => {
         if (td[prop] !== undefined) {
