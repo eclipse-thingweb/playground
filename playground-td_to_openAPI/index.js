@@ -195,7 +195,14 @@ function crawlPaths(td) {
         methods.forEach( method => {
             // check if same method is already there (e.g. as http instead of https version)
             if (cPaths[path][method]) {
-                cPaths[path][method].servers.push(new Server(server))
+                if (server) {
+                    if (cPaths[path][method].servers) {
+                        cPaths[path][method].servers.push(new Server(server))
+                    }
+                    else {
+                        cPaths[path][method].servers = [new Server(server)]
+                    }
+                }
             }
             else {
                 cPaths[path][method] = {
