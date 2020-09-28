@@ -130,7 +130,7 @@ function crawlPaths(td) {
         }
     })
 
-    // crawl multiple Interaction forms
+    // crawl multiple Interaction forms at the root-level of the TD
     if (td.forms) {
         td.forms.forEach( form => {
 
@@ -145,13 +145,15 @@ function crawlPaths(td) {
     }
 
     function addForm(form, tags, myOp) {
-        if (form.href.startsWith("http://") || form.href.startsWith("https://") || httpBase) {
+        if (form.href.startsWith("http://") ||
+            form.href.startsWith("https://") ||
+            (httpBase && form.href.indexOf("://") === -1) ) {
             // add the operation
             const {path, server} = extractPath(form.href)
 
             if (!cPaths[path]) {cPaths[path] = {}}
 
-            // define content type of response
+            // define the content type of the response
             let contentType
             if (form.response && form.response.contentType) {
                 contentType = form.response.contentType
@@ -174,10 +176,18 @@ function crawlPaths(td) {
                 requestType = "application/json"
             }
 
-            recognizeMethod(myOp, path, server, contentType, requestType, tags)
+            const methods = recognizeMethod(myOp)
+            addPaths(methods, path, server, contentType, requestType, tags)
         }
     }
 
+    /**
+     * Detect type of link and separate into server and path, e.g.:  
+     * * Link `http://example.com/asdf/1`
+     * * Server `http://example.com`
+     * * Path `/asdf/1`
+     * @param {string} link The whole or partial URL
+     */
     function extractPath(link) {
         let server, path
         if (link.startsWith("http://")) {
@@ -195,7 +205,7 @@ function crawlPaths(td) {
         return {path, server}
     }
 
-    function recognizeMethod(ops, path, server, contentType, requestType, tags) {
+    function recognizeMethod(ops) {
         const mapping = {
             readproperty: "get",
             writeproperty: "put",
@@ -214,6 +224,11 @@ function crawlPaths(td) {
             }
         })
 
+        return methods
+    }
+
+    function addPaths(methods, path, server, contentType, requestType, tags) {
+        
         methods.forEach( method => {
             // check if same method is already there (e.g. as http instead of https version)
             if (cPaths[path][method]) {
