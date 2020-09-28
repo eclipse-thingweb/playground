@@ -15,7 +15,7 @@
             "type": "string",
             "forms": [{
                 "href": "https://mylamp.example.com/status",
-                "http:methodName": "GET",
+                "htv:methodName": "GET",
                 "contentType": "application/json"
             }]
         }
@@ -24,7 +24,7 @@
         "toggle": {
             "forms": [{
                 "href": "https://mylamp.example.com/toggle",
-                "http:methodName": "POST",
+                "htv:methodName": "POST",
                 "contentType": "application/json"
             }]
         }
