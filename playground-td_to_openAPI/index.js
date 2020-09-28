@@ -3,6 +3,11 @@ const YAML = require("json-to-pretty-yaml")
 
 module.exports = toOpenAPI
 
+/**
+ * Create an OpenAPI document from a Web of Things Thing Description
+ * @param {object} td A Thing Description object as input
+ * @returns {Promise<{json:object, yaml:String}|Error>} Resolves as object containing the OAP document or rejects
+ */
 function toOpenAPI(td) {
     return new Promise( (res, rej) => {
         /* required */
@@ -40,10 +45,14 @@ function toOpenAPI(td) {
 
 /* ####### FUNCTIONS #############*/
 
+/**
+ * Generate the root level openAPI general information
+ * @param {object} td The input TD
+ */
 function createInfo(td) {
     const cInfo = {}
     // add title
-    /* is required for valid TDs but not to constrain testing
+    /* is required for valid TDs but in order to avoid testing constraints,
        TDs are not necessarily validated before OpenAPI generation
        e.g. test upcoming TD spec features */
     if (td.title !== undefined) {
@@ -245,6 +254,10 @@ function crawlPaths(td) {
     return cPaths
 }
 
+/**
+ * Adds the base-server of the Thing if it exists
+ * @param {String} base The base-url of the TD
+ */
 function crawlServers(base) {
     let cServers = []
 
@@ -254,6 +267,11 @@ function crawlServers(base) {
     return cServers
 }
 
+/**
+ * Generate OAP-tags for the TD Properties, Actions and Events
+ * if the respective type of interaction is present in the input TD
+ * @param {object} td The input TD
+ */
 function addTags(td) {
     const tags = []
     const interactions = {
