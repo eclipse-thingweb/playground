@@ -104,19 +104,24 @@ function crawlPaths(td) {
     const interactions = ["properties", "actions", "events"]
     const httpBase = td.base && (td.base.startsWith("http://") || td.base.startsWith("https://")) ? true : false 
 
+
     // crawl Interaction Affordances forms
     interactions.forEach( interaction => {
         if (td[interaction] !== undefined) {
-            Object.keys(td[interaction]).forEach( interactionName => {
-                td[interaction][interactionName].forms.forEach( form => {
 
-                    // generate interactions tag
-                    const mapToSingular = {
-                        properties: "property",
-                        actions: "action",
-                        events: "event"
-                    }
-                    const tags = [mapToSingular[interaction]]
+            // generate interactions tag
+            const mapToSingular = {
+                properties: "property",
+                actions: "action",
+                events: "event"
+            }
+            const tags = [mapToSingular[interaction]]            
+
+            Object.keys(td[interaction]).forEach( interactionName => {
+
+                const interactionInfo = genInteractionInfo(interaction, interactionName, td[interaction][interactionName], tags)
+
+                td[interaction][interactionName].forms.forEach( form => {
 
                     // define type
                     const mapDefaults = {
@@ -124,9 +129,9 @@ function crawlPaths(td) {
                         actions: "invokeaction",
                         events: []
                     }
-                    const myOp = form.op ? form.op : mapDefaults[interaction]
+                    const op = form.op ? form.op : mapDefaults[interaction]
 
-                    addForm(form, tags, myOp)
+                    addForm(form, interactionInfo, op)
                 })
             })
         }
@@ -138,15 +143,43 @@ function crawlPaths(td) {
 
             // generate interactions tag
             const tags = ["property"]
-
             // require op
             if (form.op) {
-                addForm(form, tags, form.op)
+                const summary = (typeof form.op === "string") ? form.op : form.op.join(" ")
+                const interactionInfo = {tags, summary}
+                addForm(form, interactionInfo, form.op)
             }
         })
     }
 
-    function addForm(form, tags, myOp) {
+    function genInteractionInfo(interaction, interactionName, tdInteraction, tags) {
+        const interactionInfo = {tags, description: ""}
+        const headline = "TD Interaction: " + interaction + interactionName
+
+        // add title/headline
+        if (tdInteraction.title) {
+            interactionInfo.summary = tdInteraction.title
+            interactionInfo.description += headline + "\n"
+        }
+        else {
+            interactionInfo.summary = headline
+        }
+
+        // add description
+        if (tdInteraction.description) {interactionInfo.description += tdInteraction.description}
+
+        // add custom fields
+        const tdOpts = ["descriptions", "titles"]
+        tdOpts.forEach( prop => {
+            if (tdInteraction[prop] !== undefined) {
+                interactionInfo["x-" + prop] = tdInteraction[prop]
+            }
+        })
+
+        return interactionInfo
+    }
+
+    function addForm(form, interactionInfo, myOp) {
         if (form.href.startsWith("http://") ||
             form.href.startsWith("https://") ||
             (httpBase && form.href.indexOf("://") === -1) ) {
@@ -188,7 +221,7 @@ function crawlPaths(td) {
 
             if (!cPaths[path] && methods.length > 0) {cPaths[path] = {}}
 
-            addPaths(methods, path, server, contentType, requestType, tags)
+            addPaths(methods, path, server, contentType, requestType, interactionInfo)
         }
     }
 
@@ -249,9 +282,9 @@ function crawlPaths(td) {
      * @param {string} server The server (e.g. http://example.com)
      * @param {string} contentType The content type of the response (e.g. application/json)
      * @param {string} requestType The content type of the request (e.g. application/json)
-     * @param {array} tags The tags associated to the form (one/some of Property, Action, Event)
+     * @param {array} interactionInfo The interactionInfo associated to the form (one/some of Property, Action, Event)
      */
-    function addPaths(methods, path, server, contentType, requestType, tags) {
+    function addPaths(methods, path, server, contentType, requestType, interactionInfo) {
         
         methods.forEach( method => {
             // check if same method is already there (e.g. as http instead of https version)
@@ -267,7 +300,6 @@ function crawlPaths(td) {
             }
             else {
                 cPaths[path][method] = {
-                    tags,
                     responses: {
                         default: {
                             description: "the default Thing response",
@@ -282,6 +314,8 @@ function crawlPaths(td) {
                         }
                     }
                 }
+                Object.assign(cPaths[path][method], interactionInfo)
+
                 // check if server is given (ain't the case for "base" url fragments) and add
                 if (server) {
                     cPaths[path][method].servers = [new Server(server)]
