@@ -101,7 +101,7 @@ function createInfo(td) {
 
 function crawlPaths(td) {
     const cPaths = {}
-    const interactions = ["properties", "actions"]
+    const interactions = ["properties", "actions", "events"]
     const httpBase = td.base && (td.base.startsWith("http://") || td.base.startsWith("https://")) ? true : false 
 
     // crawl Interaction Affordances forms
@@ -113,14 +113,16 @@ function crawlPaths(td) {
                     // generate interactions tag
                     const mapToSingular = {
                         properties: "property",
-                        actions: "action"
+                        actions: "action",
+                        events: "event"
                     }
                     const tags = [mapToSingular[interaction]]
 
                     // define type
                     const mapDefaults = {
                         properties: ["readproperty", "writeproperty"],
-                        actions: "invokeaction"
+                        actions: "invokeaction",
+                        events: []
                     }
                     const myOp = form.op ? form.op : mapDefaults[interaction]
 
@@ -151,8 +153,6 @@ function crawlPaths(td) {
             // add the operation
             const {path, server} = extractPath(form.href)
 
-            if (!cPaths[path]) {cPaths[path] = {}}
-
             // define the content type of the response
             let contentType
             if (form.response && form.response.contentType) {
@@ -176,7 +176,18 @@ function crawlPaths(td) {
                 requestType = "application/json"
             }
 
-            const methods = recognizeMethod(myOp)
+            // define methods by htv-property or op-property
+            let methods
+            const htvMethods = ["GET", "PUT", "POST", "DELETE", "PATCH"]
+            if (form["htv:methodName"] && htvMethods.some(htv => (htv === form["htv:methodName"]))) {
+                methods = [form["htv:methodName"].toLowerCase()]
+            }
+            else {
+                methods = recognizeMethod(myOp)
+            }
+
+            if (!cPaths[path] && methods.length > 0) {cPaths[path] = {}}
+
             addPaths(methods, path, server, contentType, requestType, tags)
         }
     }
@@ -205,6 +216,10 @@ function crawlPaths(td) {
         return {path, server}
     }
 
+    /**
+     * Returns an array of http methods to describe e.g.: ["get", "put"]
+     * @param {array} ops the op values e.g.: ["readproperty", "writeproperty"]
+     */
     function recognizeMethod(ops) {
         const mapping = {
             readproperty: "get",
@@ -227,6 +242,15 @@ function crawlPaths(td) {
         return methods
     }
 
+    /**
+     * Create/Adapt the OAP Paths with the found path+server+methods combinations
+     * @param {array} methods The methods found for this server&path combination
+     * @param {string} path The path (e.g. /asdf/1)
+     * @param {string} server The server (e.g. http://example.com)
+     * @param {string} contentType The content type of the response (e.g. application/json)
+     * @param {string} requestType The content type of the request (e.g. application/json)
+     * @param {array} tags The tags associated to the form (one/some of Property, Action, Event)
+     */
     function addPaths(methods, path, server, contentType, requestType, tags) {
         
         methods.forEach( method => {
