@@ -69,16 +69,13 @@ export function populateExamples(urlAddrObject){
 }
 
 /**
- * asdf
+ * TODO:
  * @param {*} e sadf
  */
 export function performAssertionTest(e, manualAssertions){
 
-    // e.preventDefault()
     document.getElementById("curtain").style.display = "block"
     document.getElementById("curtain-text").innerHTML = "Assertion test ongoing..."
-    // $("#curtain").css("display","block")// drop curtian while  assertions test going on
-    // $("#curtain-text").html("Assertion test is going to be loaded.")
     const assertionSchemas=[]
     const manualAssertionsJSON=[]
     const tdToValidate=window.editor.getValue()
@@ -107,7 +104,7 @@ export function performAssertionTest(e, manualAssertions){
 
         const csv = Papa.unparse(cleanResults)
 
-        exportCSVFile("assertionTest", csv)
+        offerFileDownload("assertionTest.csv", csv, "text/csv;charset=utf-8;")
         document.getElementById("curtain").style.display = "none"
 
     }, err => {
@@ -119,24 +116,23 @@ export function performAssertionTest(e, manualAssertions){
 
 
 /**
- *  Offers a given content for download as a csv file.
- * @param {string} fileTitle The title of the csv file
- * @param {string} csv The content of the csv file
+ *  Offers a given content for download as a file.
+ * @param {string} fileName The title of the csv file
+ * @param {string} content The content of the csv file
+ * @param {string} type The content-type to output, e.g., text/csv;charset=utf-8;
  */
-function exportCSVFile(fileTitle, csv) {
+function offerFileDownload(fileName, content, type) {
 
-    const exportedFilename = fileTitle + ".csv"
-
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const blob = new Blob([content], { type });
     if (navigator.msSaveBlob) { // IE 10+
-        navigator.msSaveBlob(blob, exportedFilename);
+        navigator.msSaveBlob(blob, fileName);
     } else {
         const link = document.createElement("a");
         if (link.download !== undefined) { // feature detection
             // Browsers that support HTML5 download attribute
             const url = URL.createObjectURL(blob)
             link.setAttribute("href", url)
-            link.setAttribute("download", exportedFilename)
+            link.setAttribute("download", fileName)
             link.setAttribute("src", url.slice(5))
             link.style.visibility = "hidden";
             document.body.appendChild(link)
@@ -145,6 +141,28 @@ function exportCSVFile(fileTitle, csv) {
             URL.revokeObjectURL(url)
         }
     }
+
+}
+
+export function generateOAP(fileType){
+    return new Promise( (res, rej) => {
+        const tdToValidate=window.editor.getValue()
+
+        if (tdToValidate === "") {
+            rej("No TD given to generate Open API instance")
+        }
+        else if (fileType !== "json" && fileType !== "yaml") {
+            rej("Wrong content type required: " + fileType)
+        }
+        else {
+            tdToOpenAPI(JSON.parse(tdToValidate)).then( openAPI => {
+                // console.log(openAPI[fileType])
+                const contentType = (fileType === "json" ? "application/json;" : "application/yaml;") + "charset=utf-8;"
+                const content = fileType === "json" ? JSON.stringify(openAPI[fileType], undefined, 4) : openAPI[fileType]
+                offerFileDownload("openapi." + fileType, content, contentType)
+            }, err => {rej("OpenAPI generation problem: " + err)})
+        }
+    })
 }
 
 
