@@ -18,7 +18,7 @@ const {Server} = require("./definitions")
 module.exports = crawlPaths
 
 function crawlPaths(td) {
-    const cPaths = {}
+    let cPaths = {}
     const interactions = ["properties", "actions", "events"]
     const httpBase = td.base && (td.base.startsWith("http://") || td.base.startsWith("https://")) ? true : false
 
@@ -46,7 +46,7 @@ function crawlPaths(td) {
 
                     interactionInfo.description += "op:" + ((typeof op === "string") ? op : op.join(", "))
 
-                    addForm(form, interactionInfo, op)
+                    cPaths = addForm(form, interactionInfo, op, httpBase, cPaths)
                 })
             })
         }
@@ -62,7 +62,7 @@ function crawlPaths(td) {
             if (form.op) {
                 const summary = ((typeof form.op === "string") ? form.op : form.op.join(", "))
                 const interactionInfo = {tags, summary}
-                addForm(form, interactionInfo, form.op)
+                cPaths = addForm(form, interactionInfo, form.op, httpBase, cPaths)
             }
         })
     }
@@ -80,7 +80,7 @@ function crawlPaths(td) {
  * @param {string|string[]} myOp The op property (or default value) of the form
  * @param {boolean} httpBase Is there a httpBase
  */
-function addForm(form, interactionInfo, myOp, httpBase) {
+function addForm(form, interactionInfo, myOp, httpBase, cPaths) {
     if (form.href.startsWith("http://") ||
         form.href.startsWith("https://") ||
         (httpBase && form.href.indexOf("://") === -1) ) {
@@ -120,8 +120,9 @@ function addForm(form, interactionInfo, myOp, httpBase) {
             methods = recognizeMethod(myOp)
         }
 
-        cPaths = addPaths(methods, path, server, contentType, requestType, interactionInfo)
+        cPaths = addPaths(methods, path, server, contentType, requestType, interactionInfo, cPaths)
     }
+    return cPaths
 }
 
 /**
