@@ -1,3 +1,18 @@
+/* *******************************************************************************
+ * Copyright (c) 2020 Contributors to the Eclipse Foundation
+ *
+ * See the NOTICE file(s) distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0, or the W3C Software Notice and
+ * Document License (2015-05-13) which is available at
+ * https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document.
+ *
+ * SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
+ ********************************************************************************/
+
 const SwaggerParser = require("swagger-parser")
 const YAML = require("json-to-pretty-yaml")
 
@@ -10,6 +25,8 @@ module.exports = toOpenAPI
  */
 function toOpenAPI(td) {
     return new Promise( (res, rej) => {
+
+        if (typeof td !== "object") {rej("TD has wrong type")}
         /* required */
         const openapi = "3.0.3"
         const info = createInfo(td)
@@ -102,7 +119,7 @@ function createInfo(td) {
 function crawlPaths(td) {
     const cPaths = {}
     const interactions = ["properties", "actions", "events"]
-    const httpBase = td.base && (td.base.startsWith("http://") || td.base.startsWith("https://")) ? true : false 
+    const httpBase = td.base && (td.base.startsWith("http://") || td.base.startsWith("https://")) ? true : false
 
 
     // crawl Interaction Affordances forms
@@ -110,12 +127,7 @@ function crawlPaths(td) {
         if (td[interaction] !== undefined) {
 
             // generate interactions tag
-            const mapToSingular = {
-                properties: "property",
-                actions: "action",
-                events: "event"
-            }
-            const tags = [mapToSingular[interaction]]            
+            const tags = [interaction]
 
             Object.keys(td[interaction]).forEach( interactionName => {
 
@@ -131,6 +143,8 @@ function crawlPaths(td) {
                     }
                     const op = form.op ? form.op : mapDefaults[interaction]
 
+                    interactionInfo.description += "op:" + ((typeof op === "string") ? op : op.join(", "))
+
                     addForm(form, interactionInfo, op)
                 })
             })
@@ -142,10 +156,10 @@ function crawlPaths(td) {
         td.forms.forEach( form => {
 
             // generate interactions tag
-            const tags = ["property"]
+            const tags = ["rootInteractions"]
             // require op
             if (form.op) {
-                const summary = (typeof form.op === "string") ? form.op : form.op.join(" ")
+                const summary = ((typeof form.op === "string") ? form.op : form.op.join(", "))
                 const interactionInfo = {tags, summary}
                 addForm(form, interactionInfo, form.op)
             }
@@ -154,19 +168,18 @@ function crawlPaths(td) {
 
     function genInteractionInfo(interaction, interactionName, tdInteraction, tags) {
         const interactionInfo = {tags, description: ""}
-        const headline = "TD Interaction: " + interaction + interactionName
 
         // add title/headline
         if (tdInteraction.title) {
             interactionInfo.summary = tdInteraction.title
-            interactionInfo.description += headline + "\n"
+            interactionInfo.description += interactionName + "\n"
         }
         else {
-            interactionInfo.summary = headline
+            interactionInfo.summary = interactionName
         }
 
         // add description
-        if (tdInteraction.description) {interactionInfo.description += tdInteraction.description}
+        if (tdInteraction.description) {interactionInfo.description += tdInteraction.description + "\n"}
 
         // add custom fields
         const tdOpts = ["descriptions", "titles"]
@@ -226,14 +239,14 @@ function crawlPaths(td) {
     }
 
     /**
-     * Detect type of link and separate into server and path, e.g.:  
+     * Detect type of link and separate into server and path, e.g.:
      * * Link `http://example.com/asdf/1`
      * * Server `http://example.com`
      * * Path `/asdf/1`
      * @param {string} link The whole or partial URL
      */
     function extractPath(link) {
-        let server, path
+        let server; let path
         if (link.startsWith("http://")) {
             server = "http://" + link.slice(7).split("/").shift()
             path = "/" + link.slice(7).split("/").slice(1).join("/")
@@ -285,7 +298,7 @@ function crawlPaths(td) {
      * @param {array} interactionInfo The interactionInfo associated to the form (one/some of Property, Action, Event)
      */
     function addPaths(methods, path, server, contentType, requestType, interactionInfo) {
-        
+
         methods.forEach( method => {
             // check if same method is already there (e.g. as http instead of https version)
             if (cPaths[path][method]) {
@@ -332,7 +345,7 @@ function crawlPaths(td) {
  * @param {String} base The base-url of the TD
  */
 function crawlServers(base) {
-    let cServers = []
+    const cServers = []
 
     if (base !== undefined) {
         cServers.push(new Server(base, "TD base url"))
@@ -347,21 +360,26 @@ function crawlServers(base) {
  */
 function addTags(td) {
     const tags = []
+
+    // add normal interactions
     const interactions = {
         properties: {
-            name: "property",
+            name: "properties",
             description: "A property can expose a variable of a Thing, this variable might be readable, writable and/or observable.",
-            externalDocs: new ExternalDocs("https://www.w3.org/TR/wot-thing-description/#propertyaffordance", "Find out more about Property Affordances.")
+            externalDocs: new ExternalDocs("https://www.w3.org/TR/wot-thing-description/#propertyaffordance",
+                                            "Find out more about Property Affordances.")
         },
         actions: {
-            name: "action",
+            name: "actions",
             description: "An action can expose something to be executed by a Thing, an action can be invoked.",
-            externalDocs: new ExternalDocs("https://www.w3.org/TR/wot-thing-description/#actionaffordance", "Find out more about Action Affordances.")
+            externalDocs: new ExternalDocs("https://www.w3.org/TR/wot-thing-description/#actionaffordance",
+                                            "Find out more about Action Affordances.")
         },
         events: {
-            name: "event",
+            name: "events",
             description: "An event can expose a notification by a Thing, this notification can be subscribed and/or unsubscribed.",
-            externalDocs: new ExternalDocs("https://www.w3.org/TR/wot-thing-description/#eventaffordance", "Find out more about Event Affordances.")
+            externalDocs: new ExternalDocs("https://www.w3.org/TR/wot-thing-description/#eventaffordance",
+                                            "Find out more about Event Affordances.")
         }
     }
     Object.keys(interactions).forEach( interactionType => {
@@ -369,6 +387,18 @@ function addTags(td) {
             tags.push(interactions[interactionType])
         }
     })
+
+    // add root level interactions, e.g., readAllProperties
+    const rootInteractions = {
+        name: "rootInteractions",
+        description: "An interaction that allows interacting with several properties in one request.",
+        externalDocs: new ExternalDocs("https://www.w3.org/TR/wot-thing-description/#thing",
+                                        "Read about the property 'forms' of a Thing to find out more.")
+    }
+    if (td.forms) {
+        tags.push(rootInteractions)
+    }
+
     return tags
 }
 
