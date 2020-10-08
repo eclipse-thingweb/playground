@@ -32,7 +32,7 @@ toOAP(td).then( apiSpec => {
         console.log("VALID")
     }
     else {
-        console.error("Valid openAPI, but doesn't equal the comparison strings")
+        throw new Error("Valid openAPI, but doesn't equal the comparison strings")
         console.log("json: " + (jsonString === oapJson))
         console.log("yaml: " + (apiSpec.yaml === oapYaml))
     }
