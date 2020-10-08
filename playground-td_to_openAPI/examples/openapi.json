@@ -21,16 +21,58 @@
     "/status": {
       "get": {
         "responses": {
-          "default": {
-            "description": "the default Thing response",
+          "200": {
+            "description": "assume status for default success",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "Standby",
+                    "Grinding",
+                    "Brewing",
+                    "Filling",
+                    "Error"
+                  ],
+                  "readOnly": true
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "some error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "Standby",
+                    "Grinding",
+                    "Brewing",
+                    "Filling",
+                    "Error"
+                  ],
+                  "readOnly": true
+                }
+              }
             }
           }
         },
         "requestBody": {
           "content": {
-            "application/json": {}
+            "application/json": {
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "Standby",
+                  "Grinding",
+                  "Brewing",
+                  "Filling",
+                  "Error"
+                ],
+                "readOnly": true
+              }
+            }
           }
         },
         "tags": [
@@ -48,16 +90,88 @@
     "/fillstates": {
       "get": {
         "responses": {
-          "default": {
-            "description": "the default Thing response",
+          "200": {
+            "description": "assume status for default success",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "readOnly": true,
+                  "properties": {
+                    "water": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 100
+                    },
+                    "coffeebeans": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 100
+                    },
+                    "bin": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 100
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "some error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "readOnly": true,
+                  "properties": {
+                    "water": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 100
+                    },
+                    "coffeebeans": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 100
+                    },
+                    "bin": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 100
+                    }
+                  }
+                }
+              }
             }
           }
         },
         "requestBody": {
           "content": {
-            "application/json": {}
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "readOnly": true,
+                "properties": {
+                  "water": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "coffeebeans": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "bin": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -75,8 +189,14 @@
     "/brewcoffee": {
       "post": {
         "responses": {
+          "200": {
+            "description": "assume status for default success",
+            "content": {
+              "application/json": {}
+            }
+          },
           "default": {
-            "description": "the default Thing response",
+            "description": "some error",
             "content": {
               "application/json": {}
             }
@@ -84,7 +204,17 @@
         },
         "requestBody": {
           "content": {
-            "application/json": {}
+            "application/json": {
+              "schema": {
+                "type": "string",
+                "enum": [
+                  "Espresso",
+                  "EspressoDoppio",
+                  "Coffee",
+                  "HotWater"
+                ]
+              }
+            }
           }
         },
         "tags": [
@@ -102,8 +232,14 @@
     "/switchoff": {
       "post": {
         "responses": {
+          "200": {
+            "description": "assume status for default success",
+            "content": {
+              "application/json": {}
+            }
+          },
           "default": {
-            "description": "the default Thing response",
+            "description": "some error",
             "content": {
               "application/json": {}
             }

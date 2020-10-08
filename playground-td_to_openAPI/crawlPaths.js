@@ -12,7 +12,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
  ********************************************************************************/
-
+const genInteraction = require("./genInteraction")
 const {Server} = require("./definitions")
 
 module.exports = crawlPaths
@@ -32,7 +32,8 @@ function crawlPaths(td) {
 
             Object.keys(td[interaction]).forEach( interactionName => {
 
-                const interactionInfo = genInteractionInfo(interaction, interactionName, td[interaction][interactionName], tags)
+                const tdInteraction = td[interaction][interactionName]
+                const {interactionInfo, interactionSchemas} = genInteraction(interactionName, tdInteraction, tags)
 
                 td[interaction][interactionName].forms.forEach( form => {
 
@@ -46,7 +47,7 @@ function crawlPaths(td) {
 
                     interactionInfo.description += "op:" + ((typeof op === "string") ? op : op.join(", "))
 
-                    cPaths = addForm(form, interactionInfo, op, httpBase, cPaths)
+                    cPaths = addForm(form, interactionInfo, interactionSchemas, op, httpBase, cPaths)
                 })
             })
         }
@@ -62,7 +63,8 @@ function crawlPaths(td) {
             if (form.op) {
                 const summary = ((typeof form.op === "string") ? form.op : form.op.join(", "))
                 const interactionInfo = {tags, summary}
-                cPaths = addForm(form, interactionInfo, form.op, httpBase, cPaths)
+                const interactionSchemas = {requestSchema: {}, responseSchema: {}}
+                cPaths = addForm(form, interactionInfo, interactionSchemas, form.op, httpBase, cPaths)
             }
         })
     }
@@ -77,10 +79,11 @@ function crawlPaths(td) {
  * Call next function for further processing
  * @param {object} form The element of the interactions forms array
  * @param {object} interactionInfo The common interaction info
+ * @param {object} interactionSchemas The common request & response schemas
  * @param {string|string[]} myOp The op property (or default value) of the form
  * @param {boolean} httpBase Is there a httpBase
  */
-function addForm(form, interactionInfo, myOp, httpBase, cPaths) {
+function addForm(form, interactionInfo, interactionSchemas, myOp, httpBase, cPaths) {
     if (form.href.startsWith("http://") ||
         form.href.startsWith("https://") ||
         (httpBase && form.href.indexOf("://") === -1) ) {
@@ -120,44 +123,11 @@ function addForm(form, interactionInfo, myOp, httpBase, cPaths) {
             methods = recognizeMethod(myOp)
         }
 
-        cPaths = addPaths(methods, path, server, contentType, requestType, interactionInfo, cPaths)
+        cPaths = addPaths(methods, path, server, contentType, requestType, interactionInfo, interactionSchemas, cPaths)
     }
     return cPaths
 }
 
-/**
- * Generates the general information from the TD interaction,
- * to add it to each method call
- * @param {string} interaction
- * @param {string} interactionName
- * @param {object} tdInteraction
- * @param {string[]} tags The tags list
- */
-function genInteractionInfo(interaction, interactionName, tdInteraction, tags) {
-    const interactionInfo = {tags, description: ""}
-
-    // add title/headline
-    if (tdInteraction.title) {
-        interactionInfo.summary = tdInteraction.title
-        interactionInfo.description += interactionName + "\n"
-    }
-    else {
-        interactionInfo.summary = interactionName
-    }
-
-    // add description
-    if (tdInteraction.description) {interactionInfo.description += tdInteraction.description + "\n"}
-
-    // add custom fields
-    const tdOpts = ["descriptions", "titles"]
-    tdOpts.forEach( prop => {
-        if (tdInteraction[prop] !== undefined) {
-            interactionInfo["x-" + prop] = tdInteraction[prop]
-        }
-    })
-
-    return interactionInfo
-}
 
 /**
  * Detect type of link and separate into server and path, e.g.:
@@ -217,10 +187,26 @@ function recognizeMethod(ops) {
  * @param {string} contentType The content type of the response (e.g. application/json)
  * @param {string} requestType The content type of the request (e.g. application/json)
  * @param {array} interactionInfo The interactionInfo associated to the form (one/some of Property, Action, Event)
+ * @param {object} interactionSchemas The common request & response schemas
+ * @param {object} cPaths The paths object to extend
  */
-function addPaths(methods, path, server, contentType, requestType, interactionInfo, cPaths) {
+function addPaths(methods, path, server, contentType, requestType, interactionInfo, interactionSchemas, cPaths) {
 
     if (!cPaths[path] && methods.length > 0) {cPaths[path] = {}}
+
+    let responseContent = {}
+    if (Object.keys(interactionSchemas.responseSchema).length > 0) {
+        responseContent = {
+            schema: interactionSchemas.responseSchema
+        }
+    }
+
+    let requestContent = {}
+    if (Object.keys(interactionSchemas.requestSchema).length > 0) {
+        requestContent = {
+            schema: interactionSchemas.requestSchema
+        }
+    }
 
     methods.forEach( method => {
         // check if same method is already there (e.g. as http instead of https version)
@@ -239,16 +225,22 @@ function addPaths(methods, path, server, contentType, requestType, interactionIn
         else {
             cPaths[path][method] = {
                 responses: {
-                    default: {
-                        description: "the default Thing response",
+                    200: {
+                        description: "assume status for default success",
                         content: {
-                            [contentType]: {}
+                            [contentType]: responseContent
+                        }
+                    },
+                    default: {
+                        description: "some error",
+                        content: {
+                            [contentType]: responseContent
                         }
                     }
                 },
                 requestBody: {
                     content: {
-                        [requestType]: {}
+                        [requestType]: requestContent
                     }
                 }
             }
