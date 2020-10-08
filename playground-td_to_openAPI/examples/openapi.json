@@ -1,0 +1,156 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "MyCoffeeMaker-Home",
+    "version": "unknown",
+    "description": "Order your coffee remotely!",
+    "x-@context": [
+      "https://www.w3.org/2019/wot/td/v1",
+      {
+        "cov": "http://www.example.org/coap-binding#"
+      },
+      {
+        "@language": "en"
+      }
+    ],
+    "x-@type": "Thing",
+    "x-id": "urn:dev:home:coff:type123-SNR123456",
+    "x-name": "MyCoffeeMaker"
+  },
+  "paths": {
+    "/status": {
+      "get": {
+        "responses": {
+          "default": {
+            "description": "the default Thing response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {}
+          }
+        },
+        "tags": [
+          "properties"
+        ],
+        "description": "op:readproperty",
+        "summary": "status",
+        "servers": [
+          {
+            "url": "http://mycoffeemaker.example.com"
+          }
+        ]
+      }
+    },
+    "/fillstates": {
+      "get": {
+        "responses": {
+          "default": {
+            "description": "the default Thing response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {}
+          }
+        },
+        "tags": [
+          "properties"
+        ],
+        "description": "op:readproperty",
+        "summary": "fillstates",
+        "servers": [
+          {
+            "url": "http://mycoffeemaker.example.com"
+          }
+        ]
+      }
+    },
+    "/brewcoffee": {
+      "post": {
+        "responses": {
+          "default": {
+            "description": "the default Thing response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {}
+          }
+        },
+        "tags": [
+          "actions"
+        ],
+        "description": "op:invokeaction",
+        "summary": "brewCoffee",
+        "servers": [
+          {
+            "url": "http://mycoffeemaker.example.com"
+          }
+        ]
+      }
+    },
+    "/switchoff": {
+      "post": {
+        "responses": {
+          "default": {
+            "description": "the default Thing response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {}
+          }
+        },
+        "tags": [
+          "actions"
+        ],
+        "description": "op:invokeaction",
+        "summary": "switchOff",
+        "servers": [
+          {
+            "url": "http://mycoffeemaker.example.com"
+          }
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "properties",
+      "description": "A property can expose a variable of a Thing, this variable might be readable, writable and/or observable.",
+      "externalDocs": {
+        "url": "https://www.w3.org/TR/wot-thing-description/#propertyaffordance",
+        "description": "Find out more about Property Affordances."
+      }
+    },
+    {
+      "name": "actions",
+      "description": "An action can expose something to be executed by a Thing, an action can be invoked.",
+      "externalDocs": {
+        "url": "https://www.w3.org/TR/wot-thing-description/#actionaffordance",
+        "description": "Find out more about Action Affordances."
+      }
+    },
+    {
+      "name": "events",
+      "description": "An event can expose a notification by a Thing, this notification can be subscribed and/or unsubscribed.",
+      "externalDocs": {
+        "url": "https://www.w3.org/TR/wot-thing-description/#eventaffordance",
+        "description": "Find out more about Event Affordances."
+      }
+    }
+  ]
+}

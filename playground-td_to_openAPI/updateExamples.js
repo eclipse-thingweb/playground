@@ -17,27 +17,11 @@ const fs = require("fs")
 const toOAP = require("./index.js")
 const td = require("./examples/td.json")
 
-if (!fs.existsSync("./out")) {fs.mkdirSync("./out")}
-const oapJson = fs.readFileSync("./examples/openapi.json", "utf-8")
-const oapYaml = fs.readFileSync("./examples/openapi.yaml", "utf-8")
-
 toOAP(td).then( apiSpec => {
-    const filename = td.title === undefined ? "untitled" : td.title
-    const jsonString = JSON.stringify(apiSpec.json, undefined, 2)
-    fs.writeFileSync("./out/1.json", jsonString)
-    fs.writeFileSync("./out/1.yaml", apiSpec.yaml)
-    console.log(JSON.stringify(apiSpec.json, undefined, 4))
+    fs.writeFileSync("./examples/openapi.json", JSON.stringify(apiSpec.json, undefined, 2))
+    fs.writeFileSync("./examples/openapi.yaml", apiSpec.yaml)
 
-    if (jsonString === oapJson && apiSpec.yaml === oapYaml) {
-        console.log("VALID")
-    }
-    else {
-        console.error("Valid openAPI, but doesn't equal the comparison strings")
-        console.log("json: " + (jsonString === oapJson))
-        console.log("yaml: " + (apiSpec.yaml === oapYaml))
-    }
-
-
+    console.log("updated examples")
 }, err => {
     console.error(err)
 })
