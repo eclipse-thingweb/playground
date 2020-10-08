@@ -15,7 +15,7 @@
     "directory": "playground-td_to_openAPI"
   },
   "scripts": {
-    "test": "node test.js",
+    "test": "jest",
     "testAll": "node testAll.js",
     "bundle": "npx browserify ./index.js -s tdToOpenAPI -o ./dist/web-bundle.js & npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
     "updateExamples": "node updateExamples.js"
@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "browserify": "^16.5.1",
-    "terser": "^4.7.0"
+    "terser": "^4.7.0",
+    "jest": "^26.4.2"
   }
 }

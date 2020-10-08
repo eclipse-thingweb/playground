@@ -21,23 +21,19 @@ if (!fs.existsSync("./out")) {fs.mkdirSync("./out")}
 const oapJson = fs.readFileSync("./examples/openapi.json", "utf-8")
 const oapYaml = fs.readFileSync("./examples/openapi.yaml", "utf-8")
 
-toOAP(td).then( apiSpec => {
-    const filename = td.title === undefined ? "untitled" : td.title
-    const jsonString = JSON.stringify(apiSpec.json, undefined, 2)
-    fs.writeFileSync("./out/1.json", jsonString)
-    fs.writeFileSync("./out/1.yaml", apiSpec.yaml)
-    console.log(JSON.stringify(apiSpec.json, undefined, 4))
+test("test the whole openAPI convertion", () => {
+    expect.assertions(2) /* openAPI validation also promisfied */
+    return toOAP(td).then( apiSpec => {
+        const filename = td.title === undefined ? "untitled" : td.title
+        const jsonString = JSON.stringify(apiSpec.json, undefined, 2)
+        fs.writeFileSync("./out/1.json", jsonString)
+        fs.writeFileSync("./out/1.yaml", apiSpec.yaml)
+        console.log(JSON.stringify(apiSpec.json, undefined, 4))
 
-    if (jsonString === oapJson && apiSpec.yaml === oapYaml) {
-        console.log("VALID")
-    }
-    else {
-        throw new Error("Valid openAPI, but doesn't equal the comparison strings")
-        console.log("json: " + (jsonString === oapJson))
-        console.log("yaml: " + (apiSpec.yaml === oapYaml))
-    }
-
-
-}, err => {
-    console.error(err)
+        expect(jsonString).toBe(oapJson)
+        expect(apiSpec.yaml).toBe(oapYaml)
+    }, err => {
+        console.error(err)
+    })
 })
+
