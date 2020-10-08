@@ -36,4 +36,3 @@ test("test the whole openAPI convertion", () => {
         console.error(err)
     })
 })
-
