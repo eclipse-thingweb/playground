@@ -24,18 +24,18 @@
                 {
                     "href": "http://example.org:9191/api/brightness",
                     "op": ["writeproperty"],
-                    "http:methodName": "POST"
+                    "htv:methodName": "POST"
                 },
                 {
                     "href": "http://example.org:9191/api/brightness/observe",
                     "op": ["observeproperty"],
-                    "http:methodName": "GET",
+                    "htv:methodName": "GET",
                     "subProtocol": "websub"
                 },
                 {
                     "href": "http://example.org:9191/api/brightness/unobserve",
                     "op": ["unobserveproperty"],
-                    "http:methodName": "GET",
+                    "htv:methodName": "GET",
                     "subProtocol": "websub"
                 }
             ]
@@ -52,12 +52,12 @@
                 },
                 {
                     "href": "http://example.org:9191/api/simple2",
-                    "http:methodName": "POST"
+                    "htv:methodName": "POST"
                 },
                 {
                     "href": "http://example.org:9191/api/simple2/observe",
                     "op": ["observeproperty"],
-                    "http:methodName": "GET",
+                    "htv:methodName": "GET",
                     "subProtocol": "longpoll"
                 }
             ]

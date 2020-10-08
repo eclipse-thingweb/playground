@@ -152,6 +152,14 @@ document.getElementById("btn_validate").addEventListener("click", () => {
 
 document.getElementById("btn_clearLog").addEventListener("click", util.clearLog)
 
+document.getElementById("btn_oap_json").addEventListener("click", () => {
+	util.generateOAP("json").catch(err => {alert(err)})
+})
+
+document.getElementById("btn_oap_yaml").addEventListener("click", () => {
+	util.generateOAP("yaml").catch(err => {alert(err)})
+})
+
 
 
 //* *************************Monaco editor code*********************************////

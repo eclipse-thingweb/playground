@@ -14,13 +14,13 @@
         "href": "https://mylamp.example.com/allproperties",
         "contentType": "application/json",
         "op": ["readallproperties"],
-        "http:methodName": "GET"
+        "htv:methodName": "GET"
     },
     {
         "href": "https://mylamp.example.com/allproperties",
         "contentType": "application/json",
         "op": ["writeallproperties"],
-        "http:methodName": "PUT"
+        "htv:methodName": "PUT"
     }],
     "properties": {
         "status": {
