@@ -13,7 +13,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
  ********************************************************************************/
 
-const genInteraction = require("./genInteraction")
+const genInteraction = require("../genInteraction")
 
 const interactionName = "status"
 const tags = ["properties"]
@@ -51,6 +51,5 @@ const correctResult = {
 
 test("test the generateInteraction function", () => {
     const results = genInteraction(interactionName, interaction, tags)
-    console.log(JSON.stringify(results, undefined, 2))
     expect(results).toEqual(correctResult)
 })

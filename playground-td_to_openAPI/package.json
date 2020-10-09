@@ -18,7 +18,7 @@
     "test": "jest",
     "testAll": "node testAll.js",
     "bundle": "npx browserify ./index.js -s tdToOpenAPI -o ./dist/web-bundle.js & npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
-    "updateExamples": "node updateExamples.js"
+    "updateExamples": "node ./examples/updateExamples.js"
   },
   "dependencies": {
     "json-to-pretty-yaml": "^1.2.2",

@@ -14,28 +14,25 @@
  ********************************************************************************/
 
 const fs = require("fs")
-const toOAP = require("./index.js")
+const toOAP = require("../index.js")
+const td = require("../examples/td.json")
 
 if (!fs.existsSync("./out")) {fs.mkdirSync("./out")}
+const oapJson = fs.readFileSync("./examples/openapi.json", "utf-8")
+const oapYaml = fs.readFileSync("./examples/openapi.yaml", "utf-8")
 
-const directory = "../playground-core/examples/tds/valid/"
-const filenames = fs.readdirSync(directory)
-const all = filenames.length
-let valid = 0
-let fail = 0
+test("test the whole openAPI convertion", () => {
+    expect.assertions(2)
 
-filenames.forEach( filename => {
-    const td = JSON.parse(fs.readFileSync(directory + filename, "utf-8"))
+    return toOAP(td).then( apiSpec => {
+        const filename = td.title === undefined ? "untitled" : td.title
+        const jsonString = JSON.stringify(apiSpec.json, undefined, 2)
+        fs.writeFileSync("./out/1.json", jsonString)
+        fs.writeFileSync("./out/1.yaml", apiSpec.yaml)
 
-    toOAP(td).then( apiSpec => {
-        fs.writeFileSync("./out/" + filename.slice(0, -5) + "_openapi.json", JSON.stringify(apiSpec.json, undefined, 2))
-        // console.log(JSON.stringify(apiSpec, undefined, 4))
-        // console.log("VALID")
-        valid++
-        console.log("valid: " + valid + "/" + (fail + valid) + " (total: " + all + ")")
+        expect(jsonString).toBe(oapJson)
+        expect(apiSpec.yaml).toBe(oapYaml)
     }, err => {
-        fail++
-        console.error("Problem in " + filename)
-        console.error(err.message)
+        console.error(err)
     })
 })
