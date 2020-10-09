@@ -194,20 +194,6 @@ function addPaths(methods, path, server, contentType, requestType, interactionIn
 
     if (!cPaths[path] && methods.length > 0) {cPaths[path] = {}}
 
-    let responseContent = {}
-    if (Object.keys(interactionSchemas.responseSchema).length > 0) {
-        responseContent = {
-            schema: interactionSchemas.responseSchema
-        }
-    }
-
-    let requestContent = {}
-    if (Object.keys(interactionSchemas.requestSchema).length > 0) {
-        requestContent = {
-            schema: interactionSchemas.requestSchema
-        }
-    }
-
     methods.forEach( method => {
         // check if same method is already there (e.g. as http instead of https version)
         if (cPaths[path][method]) {
@@ -228,19 +214,19 @@ function addPaths(methods, path, server, contentType, requestType, interactionIn
                     200: {
                         description: "assume status for default success",
                         content: {
-                            [contentType]: responseContent
+                            [contentType]: interactionSchemas.responseSchema
                         }
                     },
                     default: {
                         description: "some error",
                         content: {
-                            [contentType]: responseContent
+                            [contentType]: interactionSchemas.responseSchema
                         }
                     }
                 },
                 requestBody: {
                     content: {
-                        [requestType]: requestContent
+                        [requestType]: interactionSchemas.requestSchema
                     }
                 }
             }

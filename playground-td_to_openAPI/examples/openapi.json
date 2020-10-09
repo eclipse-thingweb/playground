@@ -35,7 +35,8 @@
                   ],
                   "readOnly": true,
                   "type": "string"
-                }
+                },
+                "example": "Standby"
               }
             }
           },
@@ -53,7 +54,8 @@
                   ],
                   "readOnly": true,
                   "type": "string"
-                }
+                },
+                "example": "Standby"
               }
             }
           }
@@ -71,7 +73,8 @@
                 ],
                 "readOnly": true,
                 "type": "string"
-              }
+              },
+              "example": "Error"
             }
           }
         },
@@ -114,6 +117,11 @@
                     }
                   },
                   "type": "object"
+                },
+                "example": {
+                  "water": 32.297323861617166,
+                  "coffeebeans": 84.30323514162569,
+                  "bin": 69.71384543162524
                 }
               }
             }
@@ -142,6 +150,11 @@
                     }
                   },
                   "type": "object"
+                },
+                "example": {
+                  "water": 32.297323861617166,
+                  "coffeebeans": 84.30323514162569,
+                  "bin": 69.71384543162524
                 }
               }
             }
@@ -170,6 +183,11 @@
                   }
                 },
                 "type": "object"
+              },
+              "example": {
+                "water": 80.52376862778362,
+                "coffeebeans": 92.34690727565842,
+                "bin": 4.545261428336134
               }
             }
           }
@@ -213,7 +231,8 @@
                   "HotWater"
                 ],
                 "type": "string"
-              }
+              },
+              "example": "EspressoDoppio"
             }
           }
         },

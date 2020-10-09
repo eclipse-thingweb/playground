@@ -27,6 +27,7 @@ paths:
                   - "Error"
                 readOnly: true
                 type: "string"
+              example: "Standby"
         default:
           description: "some error"
           content:
@@ -40,6 +41,7 @@ paths:
                   - "Error"
                 readOnly: true
                 type: "string"
+              example: "Standby"
       requestBody:
         content:
           application/json:
@@ -52,6 +54,7 @@ paths:
                 - "Error"
               readOnly: true
               type: "string"
+            example: "Error"
       tags:
         - "properties"
       description: "op:readproperty"
@@ -81,6 +84,10 @@ paths:
                     minimum: 0
                     maximum: 100
                 type: "object"
+              example:
+                water: 32.297323861617166
+                coffeebeans: 84.30323514162569
+                bin: 69.71384543162524
         default:
           description: "some error"
           content:
@@ -101,6 +108,10 @@ paths:
                     minimum: 0
                     maximum: 100
                 type: "object"
+              example:
+                water: 32.297323861617166
+                coffeebeans: 84.30323514162569
+                bin: 69.71384543162524
       requestBody:
         content:
           application/json:
@@ -120,6 +131,10 @@ paths:
                   minimum: 0
                   maximum: 100
               type: "object"
+            example:
+              water: 80.52376862778362
+              coffeebeans: 92.34690727565842
+              bin: 4.545261428336134
       tags:
         - "properties"
       description: "op:readproperty"
@@ -147,6 +162,7 @@ paths:
                 - "Coffee"
                 - "HotWater"
               type: "string"
+            example: "EspressoDoppio"
       tags:
         - "actions"
       description: "op:invokeaction"

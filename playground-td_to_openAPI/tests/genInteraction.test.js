@@ -28,28 +28,34 @@ const interaction = {
 }]}
 
 const correctResult = {
-    "interactionInfo": {
-      "tags": [
+    interactionInfo: {
+      tags: [
         "properties"
       ],
-      "description": "",
-      "summary": "status"
+      description: "",
+      summary: "status"
     },
-    "interactionSchemas": {
-      "requestSchema": {
-        "type": "string",
-        "enum": ["Standby","Grinding","Brewing","Filling","Error"],
-        "readOnly": true
-      },
-      "responseSchema": {
-        "type": "string",
-        "enum": ["Standby","Grinding","Brewing","Filling","Error"],
-        "readOnly": true
+    interactionSchemas: {
+        requestSchema: {
+          schema: {
+            type: "string",
+            enum: ["Standby","Grinding","Brewing","Filling","Error"],
+            readOnly: true
+          },
+          example: expect.stringMatching(/Standby|Grinding|Brewing|Filling|Error/)
+        },
+      responseSchema: {
+        schema: {
+          type: "string",
+          enum: ["Standby","Grinding","Brewing","Filling","Error"],
+          readOnly: true
+        },
+        example: expect.stringMatching(/Standby|Grinding|Brewing|Filling|Error/)
       }
     }
   }
 
 test("test the generateInteraction function", () => {
     const results = genInteraction(interactionName, interaction, tags)
-    expect(results).toEqual(correctResult)
+    expect(results).toMatchObject(correctResult)
 })

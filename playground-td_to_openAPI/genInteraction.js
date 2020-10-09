@@ -12,6 +12,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
  ********************************************************************************/
+const jsf = require("json-schema-faker")
 
 module.exports = genInteraction
 
@@ -22,7 +23,8 @@ module.exports = genInteraction
  * @param {string[]} tags The tags list
  */
 function genInteraction(interactionName, tdInteraction, tags) {
-    const interactionSchemas = genInteractionSchemas(tdInteraction)
+    let interactionSchemas = genInteractionSchemas(tdInteraction)
+    interactionSchemas = addInteractionExamples(interactionSchemas)
 
     if (interactionName !== undefined && tags !== undefined) {
         const interactionInfo = genInteractionInfo(interactionName, tdInteraction, tags)
@@ -95,7 +97,7 @@ function genInteractionSchemas(tdInteraction) {
  * Extract the relevant keywords from one single object
  * @param {object} schemaParent The object that has the schema keywords as properties
  */
-function extractDataSchema(schemaParent) {
+function extractDataSchema(schemaParent, noWrap) {
     const schema = {}
     const dataSchemaKeywords = ["enum", "readOnly", "writeOnly", "format"]
     const extendedSchemaKeywords = ["items", "minItems", "maxItems", "minimum", "maximum", "properties", "required"]
@@ -126,11 +128,32 @@ function extractDataSchema(schemaParent) {
     if (schemaParent.oneOf !== undefined) {
         schema.oneOf = []
         schemaParent.oneOf.forEach(element => {
-            schema.oneOf.push(extractDataSchema(element))
+            schema.oneOf.push(extractDataSchema(element, true))
         })
     }
 
+    // TODO: unit ??
 
-    // unit ??
-    return schema
+    // empty schema should not contain the "schema" keyword
+    let out
+    if (Object.keys(schema).length > 0 && noWrap !== true) {
+        out = {schema}
+    }
+    else {
+        out = schema
+    }
+
+    return out
+}
+
+function addInteractionExamples(interactionSchemas) {
+
+    if (interactionSchemas.requestSchema.schema) {
+        interactionSchemas.requestSchema.example = jsf.generate(interactionSchemas.requestSchema.schema)
+    }
+    if (interactionSchemas.responseSchema.schema) {
+        interactionSchemas.responseSchema.example = jsf.generate(interactionSchemas.responseSchema.schema)
+    }
+
+    return interactionSchemas
 }

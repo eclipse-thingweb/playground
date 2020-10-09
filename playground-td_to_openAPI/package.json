@@ -21,6 +21,7 @@
     "updateExamples": "node ./examples/updateExamples.js"
   },
   "dependencies": {
+    "json-schema-faker": "^0.5.0-rcv.29",
     "json-to-pretty-yaml": "^1.2.2",
     "swagger-parser": "^10.0.2"
   },
