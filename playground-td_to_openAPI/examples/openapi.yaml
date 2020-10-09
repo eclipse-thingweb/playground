@@ -19,7 +19,6 @@ paths:
           content:
             application/json:
               schema:
-                type: "string"
                 enum:
                   - "Standby"
                   - "Grinding"
@@ -27,12 +26,12 @@ paths:
                   - "Filling"
                   - "Error"
                 readOnly: true
+                type: "string"
         default:
           description: "some error"
           content:
             application/json:
               schema:
-                type: "string"
                 enum:
                   - "Standby"
                   - "Grinding"
@@ -40,11 +39,11 @@ paths:
                   - "Filling"
                   - "Error"
                 readOnly: true
+                type: "string"
       requestBody:
         content:
           application/json:
             schema:
-              type: "string"
               enum:
                 - "Standby"
                 - "Grinding"
@@ -52,6 +51,7 @@ paths:
                 - "Filling"
                 - "Error"
               readOnly: true
+              type: "string"
       tags:
         - "properties"
       description: "op:readproperty"
@@ -66,7 +66,6 @@ paths:
           content:
             application/json:
               schema:
-                type: "object"
                 readOnly: true
                 properties:
                   water:
@@ -81,12 +80,12 @@ paths:
                     type: "number"
                     minimum: 0
                     maximum: 100
+                type: "object"
         default:
           description: "some error"
           content:
             application/json:
               schema:
-                type: "object"
                 readOnly: true
                 properties:
                   water:
@@ -101,11 +100,11 @@ paths:
                     type: "number"
                     minimum: 0
                     maximum: 100
+                type: "object"
       requestBody:
         content:
           application/json:
             schema:
-              type: "object"
               readOnly: true
               properties:
                 water:
@@ -120,6 +119,7 @@ paths:
                   type: "number"
                   minimum: 0
                   maximum: 100
+              type: "object"
       tags:
         - "properties"
       description: "op:readproperty"
@@ -141,12 +141,12 @@ paths:
         content:
           application/json:
             schema:
-              type: "string"
               enum:
                 - "Espresso"
                 - "EspressoDoppio"
                 - "Coffee"
                 - "HotWater"
+              type: "string"
       tags:
         - "actions"
       description: "op:invokeaction"

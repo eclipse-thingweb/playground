@@ -97,7 +97,7 @@ function genInteractionSchemas(tdInteraction) {
  */
 function extractDataSchema(schemaParent) {
     const schema = {}
-    const dataSchemaKeywords = ["type", "enum", "readOnly", "writeOnly", "format"]
+    const dataSchemaKeywords = ["enum", "readOnly", "writeOnly", "format"]
     const extendedSchemaKeywords = ["items", "minItems", "maxItems", "minimum", "maximum", "properties", "required"]
     const keywords = dataSchemaKeywords.concat(extendedSchemaKeywords)
 
@@ -107,12 +107,22 @@ function extractDataSchema(schemaParent) {
         }
     })
 
+    // type null does not exist in openAPI spec, instead nullable:true is used
+    if (schemaParent.type !== undefined) {
+        if (schemaParent.type !== "null") {
+            schema.type = schemaParent.type
+        }
+        else {
+            schema.nullable = true
+        }
+    }
+
     // const is not allowed in openAPI schema
     if (schemaParent.const !== undefined) {
         schema.enum = [schemaParent.const]
     }
 
-    // oneOf is used differently in openAPI
+    // get oneOf child schemas
     if (schemaParent.oneOf !== undefined) {
         schema.oneOf = []
         schemaParent.oneOf.forEach(element => {
