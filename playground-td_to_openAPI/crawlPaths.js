@@ -212,7 +212,7 @@ function addPaths(methods, path, server, contentType, requestType, interactionIn
             cPaths[path][method] = {
                 responses: {
                     200: {
-                        description: "assume status for default success",
+                        description: "default success response",
                         content: {
                             [contentType]: interactionSchemas.responseSchema
                         }
@@ -220,7 +220,7 @@ function addPaths(methods, path, server, contentType, requestType, interactionIn
                     default: {
                         description: "some error",
                         content: {
-                            [contentType]: interactionSchemas.responseSchema
+                            [contentType]: {} // assumption that an error message won't follow the general response schema
                         }
                     }
                 },
