@@ -24,6 +24,7 @@ const assertManualToJson = require('playground-assertions').manualToJson
 const assertMergeResults = require('playground-assertions').mergeResults
 const assertCheckCoverage = require('playground-assertions').checkCoverage
 const assertResultsToCsv = require('playground-assertions').resultsToCsv
+const tdToOAP = require('playground-td_to_openAPI')
 const argParser = require('argly')
     .createParser({
         '--help -h': { /* Displays the output specified by this object */
@@ -72,6 +73,14 @@ const argParser = require('argly')
         '--assertion-manual -m': {
             type: 'string',
             description: 'path and filename to manual.csv file'
+        },
+        '--open-api -p': {
+            type: 'boolean',
+            description: 'Call the openAPI instance generation instead of validation/assertions.'
+        },
+        '--oap-yaml -y': {
+            type: 'string',
+            description: 'Whether openAPI should be written as YAML instead of json.'
         }
     })
     .usage('Usage: $0 [input] [options]')
@@ -116,7 +125,11 @@ let input = myArguments.input
 
 if (myArguments.assertions === true) {
     assertionReport()
-} else {
+}
+else if (myArguments.openApi === true) {
+    openApiGeneration()
+}
+else {
     coreValidation()
 }
 
@@ -261,19 +274,9 @@ function outReport(data, pathFragment, id) {
         id = ""
     }
     else {
-        // remove path if existing
-        // id = id.replace(/\/|\\/g, "_")
-        if (id.indexOf(path.sep) !== -1) {
-            id = id.split(path.sep)
-                    .pop()
-        }
-        // remove file ending if existing
-        if (id.indexOf(".") !== -1) {
-            id = id.split(".")
-                    .slice(0,-1)
-                    .join(".")
-        }
+        id = extractName(id)
     }
+
     if (myArguments.assertionNocsv) {
         data = JSON.stringify(data, undefined, 4)
     }
@@ -331,10 +334,8 @@ function coreValidation() {
                     .then( result => {
                         if (statResult("failed", result.report)) {
                             console.log(el, "was supposed to be valid but gave error")
-                            // result.console.forEach( line => {console.log(line)} )
                         } else if (statResult("warning", result.report)) {
                             console.log(el, "was supposed to be valid but gave warning")
-                            // result.console.forEach( line => {console.log(line)} )
                         } else {
                             validCount++
                         }
@@ -472,4 +473,47 @@ function checkTd(td) {
  */
 function statResult(keyword, report) {
     return Object.keys(report).some( el => (report[el] === keyword))
+}
+
+/**
+ * generate an openAPI instance from a TD provided as input
+ */
+function openApiGeneration() {
+    // input checks
+    if (!input) {input = path.join("node_modules", "playground-core", "examples", "tds", "valid", "simple.json")}
+    if (!fs.lstatSync(input).isFile()) {
+        throw new Error("please provide one File as input for the open API instance generation")
+    }
+
+    // actual function call
+    const tdToConvert = JSON.parse(fs.readFileSync(input, "utf-8"))
+    tdToOAP(tdToConvert).then( openApiInstance => {
+        const name = extractName(input)
+        const outpath = path.join("./out", name + "_openapi")
+        if (myArguments.oapYaml) {
+            fs.writeFileSync(outpath + ".yaml", openApiInstance.yaml)
+        }
+        else {
+            fs.writeFileSync(outpath + ".json", JSON.stringify(openApiInstance.json, undefined, 4))
+        }
+    })
+}
+
+/**
+ * Extracts the filename from a path like string
+ * @param {string} pathLike The path/filename(+fileending) of a file
+ */
+function extractName(pathLike) {
+    // remove path if existing
+    if (pathLike.indexOf(path.sep) !== -1) {
+        pathLike = pathLike.split(path.sep)
+                            .pop()
+    }
+    // remove file ending if existing
+    if (pathLike.indexOf(".") !== -1) {
+        pathLike = pathLike.split(".")
+                            .slice(0,-1)
+                            .join(".")
+    }
+    return pathLike
 }

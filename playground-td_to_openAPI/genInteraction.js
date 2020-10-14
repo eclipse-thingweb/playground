@@ -88,7 +88,6 @@ function genInteractionSchemas(tdInteraction) {
     if (tdInteraction.subscription !== undefined) {
         requestSchema = extractDataSchema(tdInteraction.subscription)
     }
-    // TODO: add interaction.data (callback?) and interaction.cancellation
 
     return {requestSchema, responseSchema}
 }
@@ -131,8 +130,6 @@ function extractDataSchema(schemaParent, noWrap) {
             schema.oneOf.push(extractDataSchema(element, true))
         })
     }
-
-    // TODO: unit ??
 
     // empty schema should not contain the "schema" keyword
     let out
