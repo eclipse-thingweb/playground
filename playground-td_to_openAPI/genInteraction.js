@@ -143,6 +143,10 @@ function extractDataSchema(schemaParent, noWrap) {
     return out
 }
 
+/**
+ * If schemas exist call json-schema-faker to generate examples for them
+ * @param {object} interactionSchemas The input schemas
+ */
 function addInteractionExamples(interactionSchemas) {
 
     if (interactionSchemas.requestSchema.schema) {
