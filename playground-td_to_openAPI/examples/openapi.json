@@ -22,7 +22,7 @@
       "get": {
         "responses": {
           "200": {
-            "description": "assume status for default success",
+            "description": "default success response",
             "content": {
               "application/json": {
                 "schema": {
@@ -43,20 +43,7 @@
           "default": {
             "description": "some error",
             "content": {
-              "application/json": {
-                "schema": {
-                  "enum": [
-                    "Standby",
-                    "Grinding",
-                    "Brewing",
-                    "Filling",
-                    "Error"
-                  ],
-                  "readOnly": true,
-                  "type": "string"
-                },
-                "example": "Standby"
-              }
+              "application/json": {}
             }
           }
         },
@@ -74,7 +61,7 @@
                 "readOnly": true,
                 "type": "string"
               },
-              "example": "Error"
+              "example": "Brewing"
             }
           }
         },
@@ -94,7 +81,7 @@
       "get": {
         "responses": {
           "200": {
-            "description": "assume status for default success",
+            "description": "default success response",
             "content": {
               "application/json": {
                 "schema": {
@@ -118,45 +105,14 @@
                   },
                   "type": "object"
                 },
-                "example": {
-                  "water": 32.297323861617166,
-                  "coffeebeans": 84.30323514162569,
-                  "bin": 69.71384543162524
-                }
+                "example": {}
               }
             }
           },
           "default": {
             "description": "some error",
             "content": {
-              "application/json": {
-                "schema": {
-                  "readOnly": true,
-                  "properties": {
-                    "water": {
-                      "type": "number",
-                      "minimum": 0,
-                      "maximum": 100
-                    },
-                    "coffeebeans": {
-                      "type": "number",
-                      "minimum": 0,
-                      "maximum": 100
-                    },
-                    "bin": {
-                      "type": "number",
-                      "minimum": 0,
-                      "maximum": 100
-                    }
-                  },
-                  "type": "object"
-                },
-                "example": {
-                  "water": 32.297323861617166,
-                  "coffeebeans": 84.30323514162569,
-                  "bin": 69.71384543162524
-                }
-              }
+              "application/json": {}
             }
           }
         },
@@ -185,9 +141,9 @@
                 "type": "object"
               },
               "example": {
-                "water": 80.52376862778362,
-                "coffeebeans": 92.34690727565842,
-                "bin": 4.545261428336134
+                "water": 61.37080132414321,
+                "coffeebeans": 10.721874542935605,
+                "bin": 45.675789682548796
               }
             }
           }
@@ -208,7 +164,7 @@
       "post": {
         "responses": {
           "200": {
-            "description": "assume status for default success",
+            "description": "default success response",
             "content": {
               "application/json": {}
             }
@@ -252,7 +208,7 @@
       "post": {
         "responses": {
           "200": {
-            "description": "assume status for default success",
+            "description": "default success response",
             "content": {
               "application/json": {}
             }

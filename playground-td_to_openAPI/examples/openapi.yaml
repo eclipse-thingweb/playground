@@ -15,7 +15,7 @@ paths:
     get:
       responses:
         200:
-          description: "assume status for default success"
+          description: "default success response"
           content:
             application/json:
               schema:
@@ -31,17 +31,7 @@ paths:
         default:
           description: "some error"
           content:
-            application/json:
-              schema:
-                enum:
-                  - "Standby"
-                  - "Grinding"
-                  - "Brewing"
-                  - "Filling"
-                  - "Error"
-                readOnly: true
-                type: "string"
-              example: "Standby"
+            application/json: {}
       requestBody:
         content:
           application/json:
@@ -54,7 +44,7 @@ paths:
                 - "Error"
               readOnly: true
               type: "string"
-            example: "Error"
+            example: "Brewing"
       tags:
         - "properties"
       description: "op:readproperty"
@@ -65,7 +55,7 @@ paths:
     get:
       responses:
         200:
-          description: "assume status for default success"
+          description: "default success response"
           content:
             application/json:
               schema:
@@ -84,34 +74,11 @@ paths:
                     minimum: 0
                     maximum: 100
                 type: "object"
-              example:
-                water: 32.297323861617166
-                coffeebeans: 84.30323514162569
-                bin: 69.71384543162524
+              example: {}
         default:
           description: "some error"
           content:
-            application/json:
-              schema:
-                readOnly: true
-                properties:
-                  water:
-                    type: "number"
-                    minimum: 0
-                    maximum: 100
-                  coffeebeans:
-                    type: "number"
-                    minimum: 0
-                    maximum: 100
-                  bin:
-                    type: "number"
-                    minimum: 0
-                    maximum: 100
-                type: "object"
-              example:
-                water: 32.297323861617166
-                coffeebeans: 84.30323514162569
-                bin: 69.71384543162524
+            application/json: {}
       requestBody:
         content:
           application/json:
@@ -132,9 +99,9 @@ paths:
                   maximum: 100
               type: "object"
             example:
-              water: 80.52376862778362
-              coffeebeans: 92.34690727565842
-              bin: 4.545261428336134
+              water: 61.37080132414321
+              coffeebeans: 10.721874542935605
+              bin: 45.675789682548796
       tags:
         - "properties"
       description: "op:readproperty"
@@ -145,7 +112,7 @@ paths:
     post:
       responses:
         200:
-          description: "assume status for default success"
+          description: "default success response"
           content:
             application/json: {}
         default:
@@ -173,7 +140,7 @@ paths:
     post:
       responses:
         200:
-          description: "assume status for default success"
+          description: "default success response"
           content:
             application/json: {}
         default:
