@@ -14,6 +14,7 @@
  ********************************************************************************/
 const genInteraction = require("./genInteraction")
 const {Server} = require("./definitions")
+const {mapSecurityString} = require("./mapSecurity")
 
 module.exports = crawlPaths
 
@@ -56,14 +57,17 @@ function crawlPaths(td) {
     // crawl multiple Interaction forms at the root-level of the TD
     if (td.forms) {
         td.forms.forEach( form => {
-
-            // generate interactions tag
-            const tags = ["rootInteractions"]
             // require op
             if (form.op) {
+                // generate interactionInfo
+                const tags = ["rootInteractions"]
                 const summary = ((typeof form.op === "string") ? form.op : form.op.join(", "))
                 const interactionInfo = {tags, summary}
+                const security = mapSecurityString(form.security, form.scopes)
+                if (security.length > 0) {interactionInfo.security = security}
+
                 const interactionSchemas = {requestSchema: {}, responseSchema: {}}
+
                 cPaths = addForm(form, interactionInfo, interactionSchemas, form.op, httpBase, cPaths)
             }
         })

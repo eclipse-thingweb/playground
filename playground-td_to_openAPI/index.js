@@ -18,40 +18,44 @@ const YAML = require("json-to-pretty-yaml")
 const {Server, ExternalDocs} = require("./definitions")
 const crawlPaths = require("./crawlPaths")
 const createInfo = require("./createInfo")
+const {mapSecurityString, mapSecurityDefinitions} = require("./mapSecurity")
 
 module.exports = toOpenAPI
 
 /**
  * Create an OpenAPI document from a Web of Things Thing Description
  * @param {object} td A Thing Description object as input
- * @returns {Promise<{json:object, yaml:String}|Error>} Resolves as object containing the OAP document or rejects
+ * @returns {Promise<{json:object, yaml:String}>} Resolves as object containing the OAP document or rejects
  */
 function toOpenAPI(td) {
     return new Promise( (res, rej) => {
 
-        if (typeof td !== "object") {rej("TD has wrong type")}
+        if (typeof td !== "object") {rej("TD has wrong type, should be an object")}
+
         /* required */
-        const openapi = "3.0.3"
-        const info = createInfo(td)
-        const paths = crawlPaths(td)
+        const API = {
+            openapi: "3.0.3",
+            info: createInfo(td),
+            paths: crawlPaths(td)
+        }
 
         /* optional */
         const servers = crawlServers(td.base)
-        const components = {}
-        const security = {}
+        const components = {
+            securitySchemes: mapSecurityDefinitions(td.securityDefinitions)
+        }
+        const security = mapSecurityString(td.security)
         const tags = addTags(td)
         const externalDocs = new ExternalDocs(
             "http://plugfest.thingweb.io/playground/",
             "This OAP specification was generated from a Web of Things (WoT) - Thing Description by the WoT Playground"
         )
 
-        const API = {
-            openapi,
-            info,
-            paths
-        }
+        // add optional fields if they are filled
         if (servers.length > 0) {API.servers = servers}
         if (tags.length > 0) {API.tags = tags}
+        if (security.length > 0) {API.security = security}
+        if (Object.keys(components.securitySchemes).length > 0) {API.components = components}
 
 
         SwaggerParser.validate(API).then( () => {

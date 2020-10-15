@@ -27,7 +27,7 @@ paths:
                   - "Error"
                 readOnly: true
                 type: "string"
-              example: "Standby"
+              example: "Filling"
         default:
           description: "some error"
           content:
@@ -74,7 +74,10 @@ paths:
                     minimum: 0
                     maximum: 100
                 type: "object"
-              example: {}
+              example:
+                water: 10.049569936429625
+                coffeebeans: 65.39304694180899
+                bin: 98.49919392542819
         default:
           description: "some error"
           content:
@@ -99,9 +102,9 @@ paths:
                   maximum: 100
               type: "object"
             example:
-              water: 61.37080132414321
-              coffeebeans: 10.721874542935605
-              bin: 45.675789682548796
+              water: 46.01086229386193
+              coffeebeans: 97.3216516389137
+              bin: 22.6154650110582
       tags:
         - "properties"
       description: "op:readproperty"
@@ -129,7 +132,7 @@ paths:
                 - "Coffee"
                 - "HotWater"
               type: "string"
-            example: "EspressoDoppio"
+            example: "Coffee"
       tags:
         - "actions"
       description: "op:invokeaction"
@@ -172,3 +175,10 @@ tags:
     externalDocs:
       url: "https://www.w3.org/TR/wot-thing-description/#eventaffordance"
       description: "Find out more about Event Affordances."
+security:
+  - nosec_sc: []
+components:
+  securitySchemes:
+    basic_sc:
+      type: "http"
+      scheme: "Basic"
