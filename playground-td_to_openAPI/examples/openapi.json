@@ -36,7 +36,7 @@
                   "readOnly": true,
                   "type": "string"
                 },
-                "example": "Filling"
+                "example": "Error"
               }
             }
           },
@@ -106,9 +106,9 @@
                   "type": "object"
                 },
                 "example": {
-                  "water": 10.049569936429625,
-                  "coffeebeans": 65.39304694180899,
-                  "bin": 98.49919392542819
+                  "water": 72.82392695165214,
+                  "coffeebeans": 7.9783956924928345,
+                  "bin": 99.05726106792837
                 }
               }
             }
@@ -145,9 +145,9 @@
                 "type": "object"
               },
               "example": {
-                "water": 46.01086229386193,
-                "coffeebeans": 97.3216516389137,
-                "bin": 22.6154650110582
+                "water": 18.52836383225551,
+                "coffeebeans": 26.584893232311636,
+                "bin": 3.7920521028454113
               }
             }
           }
@@ -192,7 +192,7 @@
                 ],
                 "type": "string"
               },
-              "example": "Coffee"
+              "example": "EspressoDoppio"
             }
           }
         },
@@ -277,7 +277,7 @@
     "securitySchemes": {
       "basic_sc": {
         "type": "http",
-        "scheme": "Basic"
+        "scheme": "basic"
       }
     }
   }
