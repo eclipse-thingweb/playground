@@ -13,6 +13,11 @@ function mapSecurity(tdDefinitions, tdSecurity) {
     return {securitySchemes, security}
 }
 
+/**
+ * Mapping the TD security object to openAPI
+ * @param {object} tdSecurity the TD security options to apply
+ * @param {object} tdScopes the found scopes as map {string: string[]}
+ */
 function mapSecurityString(tdSecurity, tdScopes) {
     const oapSecurity = {}
     const oapSecurityContainer = []
