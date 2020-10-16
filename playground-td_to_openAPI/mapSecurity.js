@@ -3,7 +3,15 @@
  * thus they are just not converted if not given/other format
  */
 
-module.exports = {mapSecurityString, mapSecurityDefinitions}
+module.exports = {mapSecurity, mapSecurityString, mapSecurityDefinitions}
+
+function mapSecurity(tdDefinitions, tdSecurity) {
+
+    const {securitySchemes, scopes} = mapSecurityDefinitions(tdDefinitions)
+    const security = mapSecurityString(tdSecurity, scopes)
+
+    return {securitySchemes, security}
+}
 
 function mapSecurityString(tdSecurity, tdScopes) {
     const oapSecurity = {}
@@ -12,7 +20,9 @@ function mapSecurityString(tdSecurity, tdScopes) {
 
     if (typeof tdSecurity === "object") {
         tdSecurity.forEach( tdSecurityKey => {
-            oapSecurity[tdSecurityKey] = [] // TODO: get scopes for oauth2 or openIdConnect ?
+            let thisScopes = []
+            if (tdScopes[tdSecurityKey] !== undefined) {thisScopes = tdScopes[tdSecurityKey]}
+            oapSecurity[tdSecurityKey] = thisScopes
         })
     }
 
@@ -24,27 +34,36 @@ function mapSecurityString(tdSecurity, tdScopes) {
 }
 
 function mapSecurityDefinitions(tdDefinitions) {
-    const oapDefinitions = {}
+    const securitySchemes = {}
+    const scopes = {}
 
     if (typeof tdDefinitions === "object") {
         Object.keys(tdDefinitions).forEach( key => {
             if (typeof tdDefinitions[key].scheme === "string") {
-                const newDefinition = genOapDefinition(tdDefinitions[key])
-                if(Object.keys(newDefinition).length > 0) {
-                    oapDefinitions[key] = newDefinition
+                const {oapDefinition, scope} = genOapDefinition(tdDefinitions[key])
+                if(Object.keys(oapDefinition).length > 0) {
+                    securitySchemes[key] = oapDefinition
+                    if (typeof scope === "object") {
+                        scopes[key] = scope
+                    }
                 }
             }
         })
     }
 
-    return oapDefinitions
+    return {securitySchemes, scopes}
 }
 
+/**
+ * Generate an openAPI securityScheme part from a given TD security definiton part
+ * @param {object} tdDefinition one security definition object
+ */
 function genOapDefinition(tdDefinition) {
     const oapDefinition = {}
     const tdScheme = tdDefinition.scheme.toLowerCase()
     let addOptionals = true
     const httpSchemes = ["basic", "digest", "bearer"]
+    let scope
 
     if (httpSchemes.some( httpScheme => (httpScheme === tdScheme))) {
         oapDefinition.type = "http"
@@ -84,6 +103,13 @@ function genOapDefinition(tdDefinition) {
         break
 
         case "oauth2":
+            if (typeof tdDefinition.scopes === "string") {
+                scope = [tdDefinition.scopes]
+            }
+            else if (typeof tdDefinition.scopes === "object") {
+                scope = tdDefinition.scopes
+            }
+
             oapDefinition.type = "oauth2"
             oapDefinition.flows = genOAuthFlows(tdDefinition)
         break
@@ -102,7 +128,7 @@ function genOapDefinition(tdDefinition) {
         if (tdDefinition.proxy) {oapDefinition["x-proxy"] = tdDefinition.proxy}
     }
 
-    return oapDefinition
+    return {oapDefinition, scope}
 }
 
 /**

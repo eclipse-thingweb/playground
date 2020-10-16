@@ -18,7 +18,7 @@ const YAML = require("json-to-pretty-yaml")
 const {Server, ExternalDocs} = require("./definitions")
 const crawlPaths = require("./crawlPaths")
 const createInfo = require("./createInfo")
-const {mapSecurityString, mapSecurityDefinitions} = require("./mapSecurity")
+const {mapSecurity} = require("./mapSecurity")
 
 module.exports = toOpenAPI
 
@@ -41,10 +41,11 @@ function toOpenAPI(td) {
 
         /* optional */
         const servers = crawlServers(td.base)
+        const {securitySchemes, security} = mapSecurity(td.securityDefinitions, td.security)
         const components = {
-            securitySchemes: mapSecurityDefinitions(td.securityDefinitions)
+            securitySchemes /* : mapSecurityDefinitions(td.securityDefinitions) */
         }
-        const security = mapSecurityString(td.security)
+        /* const security = mapSecurityString(td.security) */
         const tags = addTags(td)
         const externalDocs = new ExternalDocs(
             "http://plugfest.thingweb.io/playground/",
