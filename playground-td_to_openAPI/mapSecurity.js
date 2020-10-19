@@ -5,6 +5,12 @@
 
 module.exports = {mapSecurity, mapSecurityString, mapSecurityDefinitions, hasNoSec}
 
+/**
+ * Convert the TD security Definitions and Security to
+ * openAPI components->securitySchemes and security fields
+ * @param {object} tdDefinitions the definitions for all security schemes of the TD
+ * @param {string|string[]} tdSecurity security scheme names that apply to this TD part
+ */
 function mapSecurity(tdDefinitions, tdSecurity) {
 
     const {securitySchemes, scopes} = mapSecurityDefinitions(tdDefinitions)
@@ -195,7 +201,7 @@ function genOAuthFlows(tdDefinition) {
 
 /**
  * Check if all applying security schemes are of type nosec
- * @param {object} tdDefinitions the definitions for all security schemes
+ * @param {object} tdDefinitions the definitions for all security schemes of the TD
  * @param {string|string[]} tdSecurity security scheme names that apply to this TD part
  */
 function hasNoSec(tdDefinitions, tdSecurity) {
