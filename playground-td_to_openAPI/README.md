@@ -17,6 +17,7 @@ The package providing support for openAPI instance generation (output as `json` 
   * The TD specification does not support openIdConnect authentification
   * Information that is not required to describe an oauth flow in a TD is required for an openAPI instance (e.g. token url)
   * OAP supports alternative (only one has to be fullfilled) security objects, which can contain more than one security scheme (per object all security schemes have to be fullfilled). A TD also supports one security object with multiple schemes, but not alternative objects.
+  * The `psk` (pre shared key) security scheme of a TD can not be represented by an openAPI instance.
 * Async Operations
   * Events of a TD, which are by nature asynchronous, can only be represented in OAP using the http-longpoll subprotocol.
   * For the future the support of [asyncAPI](https://asyncapi.com) instance generation is planned.

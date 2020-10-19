@@ -3,7 +3,7 @@
  * thus they are just not converted if not given/other format
  */
 
-module.exports = {mapSecurity, mapSecurityString, mapSecurityDefinitions, hasNoSec}
+module.exports = {mapSecurity, mapSecurityString, mapSecurityDefinitions, hasNoSec, mapFormSecurity}
 
 /**
  * Convert the TD security Definitions and Security to
@@ -16,12 +16,62 @@ function mapSecurity(tdDefinitions, tdSecurity) {
     const {securitySchemes, scopes} = mapSecurityDefinitions(tdDefinitions)
     const security = mapSecurityString(tdSecurity, securitySchemes, scopes)
 
+    if (security.length === 0 && hasNoSec(tdDefinitions, tdSecurity)) {
+        security.push({})
+    }
+
     return {securitySchemes, security}
+}
+
+function mapFormSecurity(tdDefinitions, tdSecurity, tdFormScopes) {
+
+    const {securitySchemes, scopes} = mapSecurityDefinitions(tdDefinitions)
+    let oapScopes = scopes
+    if (typeof tdFormScopes === "string") {tdFormScopes = [tdFormScopes]}
+
+    if (typeof tdFormScopes === "object") {
+
+        const scopeSecurities = []
+        // filter TD scopes that are not supported by the conversion
+        oapScopes = {}
+
+        Object.keys(scopes).forEach( supportedSecurity => {
+            scopeSecurities.push(supportedSecurity)
+            const addScope = tdFormScopes.find( tdFormScope => (
+                scopes[supportedSecurity].some( supportedScope => (supportedScope === tdFormScope))
+            ))
+            if (addScope !== undefined) {
+                if (oapScopes[supportedSecurity] === undefined) {
+                    oapScopes[supportedSecurity] = [addScope]
+                }
+                else {
+                    oapScopes[supportedSecurity].push(addScope)
+                }
+            }
+        })
+
+        // add security scheme names if only a scope was given in the TD
+        scopeSecurities.forEach( scopeSecurity => {
+            if (typeof tdSecurity === "string") {tdSecurity = [tdSecurity]}
+            if (typeof tdSecurity === "object") {
+                if (!tdSecurity.some(tdSecString => (tdSecString === scopeSecurity))) {
+                    tdSecurity.push(scopeSecurity)
+                }
+            }
+            else if (tdSecurity === undefined) {
+                tdSecurity = scopeSecurities
+            }
+        })
+    }
+    const security = mapSecurityString(tdSecurity, securitySchemes, oapScopes)
+
+    return {security}
 }
 
 /**
  * Mapping the TD security object to openAPI
  * @param {object} tdSecurity the TD security options to apply
+ * @param {object} oapSecuritySchemes the already mapped security schemes
  * @param {object} tdScopes the found scopes as map {string: string[]}
  */
 function mapSecurityString(tdSecurity, oapSecuritySchemes, tdScopes) {
@@ -115,7 +165,7 @@ function genOapDefinition(tdDefinition) {
         break
 
         case "psk":
-            console.warn("PSK security is not supported")
+            // console.warn("PSK security is not supported")
         break
 
         case "oauth2":

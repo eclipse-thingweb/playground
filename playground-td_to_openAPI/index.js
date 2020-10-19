@@ -18,7 +18,7 @@ const YAML = require("json-to-pretty-yaml")
 const {Server, ExternalDocs} = require("./definitions")
 const crawlPaths = require("./crawlPaths")
 const createInfo = require("./createInfo")
-const {mapSecurity, hasNoSec} = require("./mapSecurity")
+const {mapSecurity} = require("./mapSecurity")
 
 module.exports = toOpenAPI
 
@@ -59,9 +59,6 @@ function toOpenAPI(td) {
 
         if (security.length > 0) {
             API.security = security
-        }
-        else if (hasNoSec(td.securityDefinitions, td.security)) {
-            API.security = [{}] // no security is represented as empty object in openAPI
         }
 
 

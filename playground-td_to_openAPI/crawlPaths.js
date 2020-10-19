@@ -14,7 +14,7 @@
  ********************************************************************************/
 const genInteraction = require("./genInteraction")
 const {Server} = require("./definitions")
-const {mapSecurityString} = require("./mapSecurity")
+const {mapFormSecurity} = require("./mapSecurity")
 
 module.exports = crawlPaths
 
@@ -48,7 +48,7 @@ function crawlPaths(td) {
 
                     interactionInfo.description += "op:" + ((typeof op === "string") ? op : op.join(", "))
 
-                    cPaths = addForm(form, interactionInfo, interactionSchemas, op, httpBase, cPaths)
+                    cPaths = addForm(form, interactionInfo, interactionSchemas, op, httpBase, cPaths, td.securityDefinitions)
                 })
             })
         }
@@ -63,8 +63,6 @@ function crawlPaths(td) {
                 const tags = ["rootInteractions"]
                 const summary = ((typeof form.op === "string") ? form.op : form.op.join(", "))
                 const interactionInfo = {tags, summary}
-                const security = mapSecurityString(form.security, form.scopes)
-                if (security.length > 0) {interactionInfo.security = security}
 
                 const interactionSchemas = {requestSchema: {}, responseSchema: {}}
 
@@ -87,7 +85,7 @@ function crawlPaths(td) {
  * @param {string|string[]} myOp The op property (or default value) of the form
  * @param {boolean} httpBase Is there a httpBase
  */
-function addForm(form, interactionInfo, interactionSchemas, myOp, httpBase, cPaths) {
+function addForm(form, interactionInfo, interactionSchemas, myOp, httpBase, cPaths, tdSecurityDefinitions) {
     if (form.href.startsWith("http://") ||
         form.href.startsWith("https://") ||
         (httpBase && form.href.indexOf("://") === -1) ) {
@@ -125,6 +123,12 @@ function addForm(form, interactionInfo, interactionSchemas, myOp, httpBase, cPat
         }
         else {
             methods = recognizeMethod(myOp)
+        }
+
+        // get security stuff
+        const formInfo = mapFormSecurity(tdSecurityDefinitions, form.security, form.scopes)
+        if (formInfo.security.length > 0){
+            Object.assign(interactionInfo, formInfo)
         }
 
         cPaths = addPaths(methods, path, server, contentType, requestType, interactionInfo, interactionSchemas, cPaths)
