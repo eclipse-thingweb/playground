@@ -20,23 +20,23 @@ module.exports = crawlPaths
 
 function crawlPaths(td) {
     let cPaths = {}
-    const interactions = ["properties", "actions", "events"]
+    const interactionTypes = ["properties", "actions", "events"]
     const httpBase = td.base && (td.base.startsWith("http://") || td.base.startsWith("https://")) ? true : false
 
 
     // crawl Interaction Affordances forms
-    interactions.forEach( interaction => {
-        if (td[interaction] !== undefined) {
+    interactionTypes.forEach( interactionType => {
+        if (td[interactionType] !== undefined) {
 
             // generate interactions tag
-            const tags = [interaction]
+            const tags = [interactionType]
 
-            Object.keys(td[interaction]).forEach( interactionName => {
+            Object.keys(td[interactionType]).forEach( interactionName => {
 
-                const tdInteraction = td[interaction][interactionName]
+                const tdInteraction = td[interactionType][interactionName]
                 const {interactionInfo, interactionSchemas} = genInteraction(interactionName, tdInteraction, tags)
 
-                td[interaction][interactionName].forms.forEach( form => {
+                td[interactionType][interactionName].forms.forEach( form => {
 
                     // define type
                     const mapDefaults = {
@@ -44,7 +44,7 @@ function crawlPaths(td) {
                         actions: "invokeaction",
                         events: []
                     }
-                    const op = form.op ? form.op : mapDefaults[interaction]
+                    const op = form.op ? form.op : mapDefaults[interactionType]
 
                     interactionInfo.description += "op:" + ((typeof op === "string") ? op : op.join(", "))
 
