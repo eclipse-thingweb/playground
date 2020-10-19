@@ -3,12 +3,12 @@
  * thus they are just not converted if not given/other format
  */
 
-module.exports = {mapSecurity, mapSecurityString, mapSecurityDefinitions}
+module.exports = {mapSecurity, mapSecurityString, mapSecurityDefinitions, hasNoSec}
 
 function mapSecurity(tdDefinitions, tdSecurity) {
 
     const {securitySchemes, scopes} = mapSecurityDefinitions(tdDefinitions)
-    const security = mapSecurityString(tdSecurity, scopes)
+    const security = mapSecurityString(tdSecurity, securitySchemes, scopes)
 
     return {securitySchemes, security}
 }
@@ -18,16 +18,21 @@ function mapSecurity(tdDefinitions, tdSecurity) {
  * @param {object} tdSecurity the TD security options to apply
  * @param {object} tdScopes the found scopes as map {string: string[]}
  */
-function mapSecurityString(tdSecurity, tdScopes) {
+function mapSecurityString(tdSecurity, oapSecuritySchemes, tdScopes) {
     const oapSecurity = {}
     const oapSecurityContainer = []
     if (typeof tdSecurity === "string") {tdSecurity = [tdSecurity]}
 
     if (typeof tdSecurity === "object") {
         tdSecurity.forEach( tdSecurityKey => {
+            // get scopes
             let thisScopes = []
             if (tdScopes[tdSecurityKey] !== undefined) {thisScopes = tdScopes[tdSecurityKey]}
-            oapSecurity[tdSecurityKey] = thisScopes
+
+            const supportedSchemes = Object.keys(oapSecuritySchemes)
+            if (supportedSchemes.some( supportedScheme => (supportedScheme === tdSecurityKey))) {
+                oapSecurity[tdSecurityKey] = thisScopes
+            }
         })
     }
 
@@ -186,4 +191,39 @@ function genOAuthFlows(tdDefinition) {
         }
     })
     return oapFlow
+}
+
+/**
+ * Check if all applying security schemes are of type nosec
+ * @param {object} tdDefinitions the definitions for all security schemes
+ * @param {string|string[]} tdSecurity security scheme names that apply to this TD part
+ */
+function hasNoSec(tdDefinitions, tdSecurity) {
+
+    let foundNoSec = false
+
+    // find all noSec names
+    const noSecNames = []
+    if (typeof tdDefinitions === "object") {
+        Object.keys(tdDefinitions).forEach( key => {
+            const tdScheme = tdDefinitions[key].scheme
+            if (typeof tdScheme === "string" && tdScheme.toLowerCase() === "nosec") {
+                noSecNames.push(key)
+            }
+        })
+    }
+
+    if (typeof tdSecurity === "string") {tdSecurity = [tdSecurity]}
+    if (typeof tdSecurity === "undefined") {tdSecurity = []}
+
+    // check if all security Schemes are of type noSec
+    if (tdSecurity.length > 0) {
+        foundNoSec = tdSecurity.every( securityString => (
+                        noSecNames.some( noSecName => (
+                            noSecName === securityString
+                        ))
+                    ))
+    }
+
+    return foundNoSec
 }

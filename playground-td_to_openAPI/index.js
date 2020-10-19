@@ -18,7 +18,7 @@ const YAML = require("json-to-pretty-yaml")
 const {Server, ExternalDocs} = require("./definitions")
 const crawlPaths = require("./crawlPaths")
 const createInfo = require("./createInfo")
-const {mapSecurity} = require("./mapSecurity")
+const {mapSecurity, hasNoSec} = require("./mapSecurity")
 
 module.exports = toOpenAPI
 
@@ -55,8 +55,15 @@ function toOpenAPI(td) {
         // add optional fields if they are filled
         if (servers.length > 0) {API.servers = servers}
         if (tags.length > 0) {API.tags = tags}
-        if (security.length > 0) {API.security = security}
         if (Object.keys(components.securitySchemes).length > 0) {API.components = components}
+
+        if (security.length > 0) {
+            API.security = security
+        }
+        else if (hasNoSec(td.securityDefinitions, td.security)) {
+            API.security = [{}] // no security is represented as empty object in openAPI
+        }
+
 
 
         SwaggerParser.validate(API).then( () => {
