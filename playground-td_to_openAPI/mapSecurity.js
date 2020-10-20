@@ -7,9 +7,9 @@ module.exports = {mapSecurity, mapSecurityString, mapSecurityDefinitions, hasNoS
 
 /**
  * Convert the TD security Definitions and Security to
- * openAPI components->securitySchemes and security fields
+ * openAPI components->securitySchemes and security objects
  * @param {object} tdDefinitions the definitions for all security schemes of the TD
- * @param {string|string[]} tdSecurity security scheme names that apply to this TD part
+ * @param {string|string[]} tdSecurity security scheme names that apply per default
  */
 function mapSecurity(tdDefinitions, tdSecurity) {
 
@@ -23,6 +23,13 @@ function mapSecurity(tdDefinitions, tdSecurity) {
     return {securitySchemes, security}
 }
 
+/**
+ * Convert the TD security and scopes information of a single form
+ * to an openAPI security object
+ * @param {object} tdDefinitions the definitions for all security schemes of the TD
+ * @param {string|string[]|undefined} tdSecurity security scheme names that apply to this form
+ * @param {string|string[]|undefined} tdFormScopes oauth2 scopes that apply to this form
+ */
 function mapFormSecurity(tdDefinitions, tdSecurity, tdFormScopes) {
 
     const {securitySchemes, scopes} = mapSecurityDefinitions(tdDefinitions)
@@ -64,6 +71,10 @@ function mapFormSecurity(tdDefinitions, tdSecurity, tdFormScopes) {
         })
     }
     const security = mapSecurityString(tdSecurity, securitySchemes, oapScopes)
+
+    if (security.length === 0 && hasNoSec(tdDefinitions, tdSecurity)) {
+        security.push({})
+    }
 
     return {security}
 }
