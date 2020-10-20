@@ -1,18 +1,3 @@
-<!--
- * Copyright (c) 2020 Contributors to the Eclipse Foundation
- * 
- * See the NOTICE file(s) distributed with this work for additional
- * information regarding copyright ownership.
- * 
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License v. 2.0 which is available at
- * http://www.eclipse.org/legal/epl-2.0, or the W3C Software Notice and
- * Document License (2015-05-13) which is available at
- * https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document.
- * 
- * SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
---> 
-
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -29,7 +14,7 @@
 				<button class="btn top-right btn-close" id="close_assertion_test_popup">X</button>
 				<div >Please Select the manual assertions options.</div>
 					
-				<table class="table table-striped" style="display:block; height : 80%;overflow-y : scroll;" >
+				<table class="table table-striped assertion-table">
 					
 					<thead class="thead-dark">
 						<tr>
@@ -40,7 +25,7 @@
 						</tr>
 					</thead>
 					
-					<tbody id="manual_assertion_table_body"  >
+					<tbody id="manual_assertion_table_body">
 						<!--Manual assertions will be appended here dynamically-->
 					</tbody>
 						
@@ -184,8 +169,8 @@
 												
 											<br>
 											<div class="btn-group" role="group">
-												<button   type="button" class="btn custom-btn" id="btn_validate" disabled>Validate</button>
-												<button   type="button" class="btn custom-btn" id="btn_clearLog" >Clear Log</button>
+												<button   type="button" class="btn custom-btn" id="btn_validate">Validate</button>
+												<button   type="button" class="btn custom-btn" id="btn_clearLog">Clear Log</button>
 											</div>
 
 											<br>
@@ -196,7 +181,7 @@
 
 											<br>
 											<div class="btn-group" role="group">
-												<button style="color: #17a2b8; cursor: default;" type="button" class="btn custom-btn" title="Download an OpenAPI instance of the Thing Description" disabled>OpenAPI</button>
+												<button type="button" class="btn custom-btn oap-btn" title="Download an OpenAPI instance of the Thing Description" disabled>OpenAPI</button>
 												<button type="button" class="btn custom-btn" id="btn_oap_json" title="Download an OpenAPI instance of the TD as .json file">JSON</button>
 												<button type="button" class="btn custom-btn" id="btn_oap_yaml" title="Download an OpenAPI instance of the TD as .yaml file">YAML</button>
 											</div>
@@ -237,28 +222,7 @@
 				<img src="./media/footer-shape.jpg">
 			</div>
 			<div class="links">
-				<ul>
-					<li>
-						<a href="http://www.eclipse.org/">Eclipse Foundation</a>
-					</li>
-					<li>|</li>
-					<li>
-						<a href="http://www.eclipse.org/legal/privacy.php">Privacy policy</a>
-					</li>
-					<li>|</li>
-					<li>
-						<a href="http://www.eclipse.org/legal/termsofuse.php">Terms of use</a>
-					</li>
-					<li>|</li>
-					<li>
-						<a href="http://www.eclipse.org/legal/copyright.php">Copyright</a>
-					</li>
-					<li>|</li>
-					<li>
-						<a href="http://www.eclipse.org/legal">Legal</a>
-					</li>
-				</ul>
-				<p id="copynotice">Copyrights © 2020 Eclipse Thingweb. All Rights Reserved.</p>
+				<p id="copynotice">Copyrights © 2020 Part of the Thingweb project.</p>
 			</div>
         </footer>
 		<script src="./node_modules/papaparse/papaparse.js"></script>

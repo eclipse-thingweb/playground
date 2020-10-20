@@ -11,8 +11,9 @@ Both packages are used by the Web and CLI packages to provide their functionalit
 * You can use the `playground-core` package as an API to validate TDs in your own packages. The core package can be found [here](./playground-core/).
 * You can use the `playground-cli` package to test one/multiple TDs via the command line or execute assertion testing with it. The cli for the playground can be found [here](./playground-cli/).
 * You can use the `playground-assertion` package to integrate assertion testing via an API in your own packages. The assertions package can be found [here](./playground-assertions/).
-* You can use the `playground-web` package to host/adapt your own browser version of the WoT playground. The web package can be found [here](./playground-web/).
 * You can use the `playground-gist_backend` package to host a backend for the gist-submission functionality of the browser version of the playground. The package can be found [here](./playground-gist_backend).
+* You can use the `playground-td_to_openAPI` package to create an openAPI instance from a Thing Description
+* You can use the `playground-web` package to host/adapt your own browser version of the WoT playground. The web package can be found [here](./playground-web/).
 
 Validation tool for W3C WoT Thing Descriptions. Your Thing Descriptions should be written according to the W3C standard found [here](https://w3c.github.io/wot-thing-description/#).
 
@@ -40,3 +41,7 @@ Please have a look at the `playground-cli` package for script based assertion te
 ## Script based Thing Description Validation
 
 Please have look at the `playground-cli` package for script based TD validation, or at the `playground-core` package, if you're planning to integrate the td validation as a dependency in your own NPM modules.
+
+## License
+
+All packages are licensed under the MIT license.

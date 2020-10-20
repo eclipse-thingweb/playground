@@ -19,14 +19,18 @@
     "properties": {
         "status" : {
             "type": "string",
-            "forms": [{"href": "https://mylamp.example.com/status"}],
-            "security": ["psk_sc"]
+            "forms": [{
+                "href": "https://mylamp.example.com/status",
+                "security": ["psk_sc"]
+            }]
         }
     },
     "actions": {
         "toggle" : {
-            "forms": [{"href": "https://mylamp.example.com/toggle"}],
-            "security": ["basic_sc"]
+            "forms": [{
+                "href": "https://mylamp.example.com/toggle",
+                "security": ["basic_sc"]
+            }]
         }
     },
     "events":{
@@ -34,9 +38,9 @@
             "data":{"type": "string"},
             "forms": [{
                 "href": "https://mylamp.example.com/oh",
-                "subProtocol": "longpoll"
-            }],
-            "security": ["nosec_sc"]
+                "subProtocol": "longpoll",
+                "security": ["nosec_sc"]
+            }]
         }
     }
 }

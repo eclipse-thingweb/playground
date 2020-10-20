@@ -21,8 +21,27 @@
     "/status": {
       "get": {
         "responses": {
+          "200": {
+            "description": "default success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "enum": [
+                    "Standby",
+                    "Grinding",
+                    "Brewing",
+                    "Filling",
+                    "Error"
+                  ],
+                  "readOnly": true,
+                  "type": "string"
+                },
+                "example": "Brewing"
+              }
+            }
+          },
           "default": {
-            "description": "the default Thing response",
+            "description": "some error",
             "content": {
               "application/json": {}
             }
@@ -30,7 +49,20 @@
         },
         "requestBody": {
           "content": {
-            "application/json": {}
+            "application/json": {
+              "schema": {
+                "enum": [
+                  "Standby",
+                  "Grinding",
+                  "Brewing",
+                  "Filling",
+                  "Error"
+                ],
+                "readOnly": true,
+                "type": "string"
+              },
+              "example": "Standby"
+            }
           }
         },
         "tags": [
@@ -48,8 +80,41 @@
     "/fillstates": {
       "get": {
         "responses": {
+          "200": {
+            "description": "default success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "readOnly": true,
+                  "properties": {
+                    "water": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 100
+                    },
+                    "coffeebeans": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 100
+                    },
+                    "bin": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 100
+                    }
+                  },
+                  "type": "object"
+                },
+                "example": {
+                  "water": 16.68114145467461,
+                  "coffeebeans": 53.83715638648221,
+                  "bin": 78.29843066127067
+                }
+              }
+            }
+          },
           "default": {
-            "description": "the default Thing response",
+            "description": "some error",
             "content": {
               "application/json": {}
             }
@@ -57,7 +122,34 @@
         },
         "requestBody": {
           "content": {
-            "application/json": {}
+            "application/json": {
+              "schema": {
+                "readOnly": true,
+                "properties": {
+                  "water": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "coffeebeans": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "bin": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  }
+                },
+                "type": "object"
+              },
+              "example": {
+                "water": 42.376509703184425,
+                "coffeebeans": 38.274819280854835,
+                "bin": 32.98942269537113
+              }
+            }
           }
         },
         "tags": [
@@ -75,8 +167,14 @@
     "/brewcoffee": {
       "post": {
         "responses": {
+          "200": {
+            "description": "default success response",
+            "content": {
+              "application/json": {}
+            }
+          },
           "default": {
-            "description": "the default Thing response",
+            "description": "some error",
             "content": {
               "application/json": {}
             }
@@ -84,7 +182,18 @@
         },
         "requestBody": {
           "content": {
-            "application/json": {}
+            "application/json": {
+              "schema": {
+                "enum": [
+                  "Espresso",
+                  "EspressoDoppio",
+                  "Coffee",
+                  "HotWater"
+                ],
+                "type": "string"
+              },
+              "example": "Coffee"
+            }
           }
         },
         "tags": [
@@ -102,8 +211,14 @@
     "/switchoff": {
       "post": {
         "responses": {
+          "200": {
+            "description": "default success response",
+            "content": {
+              "application/json": {}
+            }
+          },
           "default": {
-            "description": "the default Thing response",
+            "description": "some error",
             "content": {
               "application/json": {}
             }
@@ -119,6 +234,105 @@
         ],
         "description": "op:invokeaction",
         "summary": "switchOff",
+        "servers": [
+          {
+            "url": "http://mycoffeemaker.example.com"
+          }
+        ]
+      }
+    },
+    "/waterempty": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "default success response",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "default": {
+            "description": "some error",
+            "content": {
+              "application/json": {}
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {}
+          }
+        },
+        "tags": [
+          "events"
+        ],
+        "description": "The water fillstate is below a certain level!\nop:subscribeevent",
+        "summary": "waterEmpty",
+        "servers": [
+          {
+            "url": "http://mycoffeemaker.example.com"
+          }
+        ]
+      }
+    },
+    "/coffeeempty": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "default success response",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "default": {
+            "description": "some error",
+            "content": {
+              "application/json": {}
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {}
+          }
+        },
+        "tags": [
+          "events"
+        ],
+        "description": "The coffee bean fillstate is below a certain amount!\nop:subscribeevent",
+        "summary": "coffeeEmpty",
+        "servers": [
+          {
+            "url": "http://mycoffeemaker.example.com"
+          }
+        ]
+      }
+    },
+    "/binfull": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "default success response",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "default": {
+            "description": "some error",
+            "content": {
+              "application/json": {}
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {}
+          }
+        },
+        "tags": [
+          "events"
+        ],
+        "description": "The bin  fillstate is above a certain level!\nop:subscribeevent",
+        "summary": "binFull",
         "servers": [
           {
             "url": "http://mycoffeemaker.example.com"
@@ -152,5 +366,16 @@
         "description": "Find out more about Event Affordances."
       }
     }
+  ],
+  "components": {
+    "securitySchemes": {
+      "basic_sc": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {}
   ]
 }

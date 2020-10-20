@@ -43,20 +43,20 @@
             }]
         },
         "unsecure": {
-            "security": "useless",
             "type": "string",
             "readOnly": true,
             "forms": [{
+                "security": "useless",
                 "op": "readproperty",
                 "href": "/properties/unsecure",
                 "contentType": "text/plain; charset=UTF-8"
             }]
         },
         "secure": {
-            "security": "useful",
             "type": "string",
             "readOnly": true,
             "forms": [{
+                "security": "useful",
                 "op": "readproperty",
                 "href": "/properties/secure",
                 "contentType": "text/plain; charset=UTF-8"

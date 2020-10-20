@@ -1,7 +1,7 @@
 {
   "name": "@thing-description-playground/td_to_openapi",
   "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
-  "license": "EPL-2.0 OR W3C-20150513",
+  "license": "MIT",
   "version": "1.0.0",
   "description": "Provides openAPI instance generation for Thing Descriptions in the Web of Things - Thing Description Playground.",
   "homepage": "https://github.com/thingweb/thingweb-playground#readme",
@@ -18,9 +18,10 @@
     "test": "jest",
     "testAll": "node testAll.js",
     "bundle": "npx browserify ./index.js -s tdToOpenAPI -o ./dist/web-bundle.js & npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
-    "updateExamples": "node updateExamples.js"
+    "updateExamples": "node ./examples/updateExamples.js"
   },
   "dependencies": {
+    "json-schema-faker": "^0.5.0-rcv.29",
     "json-to-pretty-yaml": "^1.2.2",
     "swagger-parser": "^10.0.2"
   },

@@ -17,8 +17,6 @@
     "properties": {
         "status": {
             "type": "string",
-            "scopes": ["limited"],
-            "security": ["oauth2_sc"],
             "forms": [{
                 "href": "https://scopes.example.com/status",
                 "contentType": "application/json",
@@ -28,8 +26,6 @@
     },
     "actions": {
         "mega": {
-            "scopes": ["limited"],
-            "security": ["oauth2_sc"],
             "forms": [{
                 "href": "https://scopes.example.com/status",
                 "contentType": "application/json",
@@ -39,8 +35,6 @@
     },
     "events": {
         "eventScope": {
-            "scopes": ["special"],
-            "security": ["oauth2_sc"],
             "forms": [{
                 "href": "https://scopes.example.com/status",
                 "contentType": "application/json",

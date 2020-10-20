@@ -4,6 +4,10 @@
         "es6": true,
         "node": true
     },
+    "parserOptions": {
+        "ecmaVersion": 8,
+        "sourceType": "module"
+    },
     "ignorePatterns": "dist/**",
     "rules": {
         "arrow-parens": [
