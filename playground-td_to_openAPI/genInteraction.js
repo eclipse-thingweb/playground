@@ -1,6 +1,7 @@
 const jsf = require("json-schema-faker")
 
 module.exports = genInteraction
+module.exports.test = {genParameters}
 
 /**
  * Generates the general information and extracts the JSON-Schemas from one interaction
@@ -12,13 +13,10 @@ function genInteraction(interactionName, tdInteraction, tags) {
     let interactionSchemas = genInteractionSchemas(tdInteraction)
     interactionSchemas = addInteractionExamples(interactionSchemas)
 
-    if (interactionName !== undefined && tags !== undefined) {
-        const interactionInfo = genInteractionInfo(interactionName, tdInteraction, tags)
-        return {interactionInfo, interactionSchemas}
-    }
-    else {
-        return {interactionSchemas}
-    }
+    const interactionInfo = genInteractionInfo(interactionName, tdInteraction, tags)
+    Object.assign(interactionInfo, genParameters(tdInteraction.uriVariables))
+
+    return {interactionInfo, interactionSchemas}
 }
 
 /**
@@ -143,4 +141,43 @@ function addInteractionExamples(interactionSchemas) {
     }
 
     return interactionSchemas
+}
+
+/**
+ * Generate an openAPI parameters object (or an empty object) from
+ * @param {object} tdParameters the td uriVariables property of an Interaction Affordance
+ */
+function genParameters(tdParameters) {
+    const parameters = []
+
+    if (typeof tdParameters === "object") {
+        Object.keys(tdParameters).forEach( tdParaKey => {
+            const tdParameter = tdParameters[tdParaKey]
+            const parameter = {}
+
+            // add description / titles
+            let description = ""
+            if (typeof tdParameter.description === "string") {description = tdParameter.description}
+            if (typeof tdParameter.title === "string") {description = tdParameter.title + "\n" + description}
+            if (description !== "") {parameter.description = description}
+
+            // add schema and example
+            Object.assign(parameter, extractDataSchema(tdParameter))
+            if (parameter.schema !== undefined) {
+                parameter.example = jsf.generate(parameter.schema)
+            }
+
+            if (Object.keys(parameter).length > 0) {
+                parameter.name = tdParaKey
+                parameter.in = "query"
+                parameters.push(parameter)
+            }
+        })
+    }
+
+    let oapParameters = {}
+    if (parameters.length > 0) {
+        oapParameters = {parameters}
+    }
+    return oapParameters
 }
