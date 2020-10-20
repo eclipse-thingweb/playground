@@ -41,3 +41,7 @@ Please have a look at the `playground-cli` package for script based assertion te
 ## Script based Thing Description Validation
 
 Please have look at the `playground-cli` package for script based TD validation, or at the `playground-core` package, if you're planning to integrate the td validation as a dependency in your own NPM modules.
+
+## License
+
+All packages are licensed under the MIT license.

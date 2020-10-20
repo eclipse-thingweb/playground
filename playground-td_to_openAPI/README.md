@@ -25,3 +25,7 @@ The package providing support for openAPI instance generation (output as `json` 
 ## Comments
 
 * A TD hasn't necessarily to be valid in order to be converted to an openAPI instance. This converter will only throw an Error if the invalid part has a strong effect on the conversion result, but tries to ignore the most cases. This is by purpose, since there is the possibility to validate a TD using, e.g., the playground core package and the conversion of experimental TDs for example to create new TD features, should be supported.
+
+## License
+
+Licensed under the MIT license, see [License](./LICENSE.md).
