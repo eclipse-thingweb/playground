@@ -12,7 +12,7 @@ const oauth2Definitions = {
     }
 }
 
-const oauth2OapSchemes = {
+const oauth2Oap = {
     securitySchemes: {
         "oauth2_sc": {
             type: "oauth2",
@@ -34,13 +34,36 @@ const oauth2OapSchemes = {
     }
 }
 
+const basicDefinitions = {
+    "basic_sc": {
+        scheme: "basic",
+        in: "header"
+    }
+}
+const basicOap = {
+    securitySchemes: {
+        "basic_sc": {
+            type: "http",
+            scheme: "basic"
+        }
+    },
+    scopes: {}
+}
+
+const noSecDefinitions = {
+    "nosec_sc": {
+        scheme: "nosec"
+    }
+}
+
+
 describe("mapSecurity unit tests", () => {
 
     describe("mapSecurityString", () => {
         test("oauth2", () => {
             const result = [{"oauth2_sc": ["limited"]}]
-            const computed = mapSecurityString(["oauth2_sc"], oauth2OapSchemes.securitySchemes, {"oauth2_sc":["limited"]})
-            const computed2 = mapSecurityString("oauth2_sc", oauth2OapSchemes.securitySchemes, {"oauth2_sc":["limited"]})
+            const computed = mapSecurityString(["oauth2_sc"], oauth2Oap.securitySchemes, {"oauth2_sc":["limited"]})
+            const computed2 = mapSecurityString("oauth2_sc", oauth2Oap.securitySchemes, {"oauth2_sc":["limited"]})
             expect(computed).toEqual(result)
             expect(computed2).toEqual(result)
         })
@@ -49,28 +72,11 @@ describe("mapSecurity unit tests", () => {
     describe("mapSecurityDefinitions", () => {
 
         test("basic", () => {
-            const basicDefinitions = {
-                securitySchemes: {
-                    "basic_sc": {
-                        type: "http",
-                        scheme: "basic"
-                    }
-                }
-            }
-            const basicResult = {
-                securitySchemes: {
-                    "basic_sc": {
-                        type: "http",
-                        scheme: "basic"
-                    }
-                },
-                scopes: []
-            }
+            expect(mapSecurityDefinitions(basicDefinitions)).toEqual(basicOap)
         })
 
         test("oauth2", () => {
-
-            expect(mapSecurityDefinitions(oauth2Definitions)).toEqual(oauth2OapSchemes)
+            expect(mapSecurityDefinitions(oauth2Definitions)).toEqual(oauth2Oap)
         })
 
     })
@@ -89,6 +95,46 @@ describe("mapSecurity integration tests", () => {
 
             expect(mapFormSecurity(oauth2Definitions, security, ["limited"])).toEqual(result)
             expect(mapFormSecurity(oauth2Definitions, security, "limited")).toEqual(result)
+        })
+    })
+
+    describe("mapSecurity", () => {
+
+        test("oauth2", () => {
+            const result = {
+                securitySchemes: oauth2Oap.securitySchemes,
+                security: [{
+                    "oauth2_sc": ["limited", "special"]
+                }]
+            }
+            expect(mapSecurity(oauth2Definitions, "oauth2_sc")).toEqual(result)
+        })
+
+        test("basic", () => {
+            const result = {
+                securitySchemes: basicOap.securitySchemes,
+                security: [{
+                    "basic_sc": []
+                }]
+            }
+            expect(mapSecurity(basicDefinitions, "basic_sc")).toEqual(result)
+            expect(mapSecurity(basicDefinitions, ["basic_sc"])).toEqual(result)
+        })
+
+        test("nosec", () => {
+            const result = {
+                securitySchemes: {},
+                security: [{}]
+            }
+            expect(mapSecurity(noSecDefinitions, "nosec_sc")).toEqual(result)
+        })
+
+        test("empty", () => {
+            const result = {
+                securitySchemes: {},
+                security: []
+            }
+            expect(mapSecurity(noSecDefinitions, undefined)).toEqual(result)
         })
     })
 })
