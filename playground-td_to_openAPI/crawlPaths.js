@@ -100,15 +100,21 @@ function addForm(form, interactionInfo, interactionSchemas, myOp, httpBase, cPat
         else {
             requestType = "application/json"
         }
+        const types = {contentType, requestType}
 
         // define methods by htv-property or op-property
         let methods
         const htvMethods = ["GET", "PUT", "POST", "DELETE", "PATCH"]
-        if (form["htv:methodName"] && htvMethods.some(htv => (htv === form["htv:methodName"]))) {
+        if (form["htv:methodName"] && htvMethods.some(htvMethod => (htvMethod === form["htv:methodName"]))) {
             methods = [form["htv:methodName"].toLowerCase()]
         }
         else {
             methods = recognizeMethod(myOp)
+        }
+
+        // assume get as default method for longpoll eventing
+        if (methods.length === 0 && form.subprotocol && form.subprotocol === "longpoll") {
+            methods.push("get")
         }
 
         // get security stuff
@@ -117,7 +123,7 @@ function addForm(form, interactionInfo, interactionSchemas, myOp, httpBase, cPat
             Object.assign(interactionInfo, formInfo)
         }
 
-        cPaths = addPaths(methods, path, server, contentType, requestType, interactionInfo, interactionSchemas, cPaths)
+        cPaths = addPaths(methods, path, server, types, interactionInfo, interactionSchemas, cPaths)
     }
     return cPaths
 }
@@ -178,13 +184,12 @@ function recognizeMethod(ops) {
  * @param {array} methods The methods found for this server&path combination
  * @param {string} path The path (e.g. /asdf/1)
  * @param {string} server The server (e.g. http://example.com)
- * @param {string} contentType The content type of the response (e.g. application/json)
- * @param {string} requestType The content type of the request (e.g. application/json)
+ * @param {{contentType: string, requestType: string}} types The content type of the response/request (e.g. application/json)
  * @param {array} interactionInfo The interactionInfo associated to the form (one/some of Property, Action, Event)
  * @param {object} interactionSchemas The common request & response schemas
  * @param {object} cPaths The paths object to extend
  */
-function addPaths(methods, path, server, contentType, requestType, interactionInfo, interactionSchemas, cPaths) {
+function addPaths(methods, path, server, types, interactionInfo, interactionSchemas, cPaths) {
 
     if (!cPaths[path] && methods.length > 0) {cPaths[path] = {}}
 
@@ -208,19 +213,19 @@ function addPaths(methods, path, server, contentType, requestType, interactionIn
                     200: {
                         description: "default success response",
                         content: {
-                            [contentType]: interactionSchemas.responseSchema
+                            [types.contentType]: interactionSchemas.responseSchema
                         }
                     },
                     default: {
                         description: "some error",
                         content: {
-                            [contentType]: {} // assumption that an error message won't follow the general response schema
+                            [types.contentType]: {} // assumption that an error message won't follow the general response schema
                         }
                     }
                 },
                 requestBody: {
                     content: {
-                        [requestType]: interactionSchemas.requestSchema
+                        [types.requestType]: interactionSchemas.requestSchema
                     }
                 }
             }

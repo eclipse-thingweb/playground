@@ -75,8 +75,9 @@ paths:
                     maximum: 100
                 type: "object"
               example:
-                water: 25.794614374083057
-                coffeebeans: 61.656795608073644
+                water: 16.68114145467461
+                coffeebeans: 53.83715638648221
+                bin: 78.29843066127067
         default:
           description: "some error"
           content:
@@ -101,9 +102,9 @@ paths:
                   maximum: 100
               type: "object"
             example:
-              water: 6.877243047063297
-              coffeebeans: 74.58535276175755
-              bin: 69.17790316282004
+              water: 42.376509703184425
+              coffeebeans: 38.274819280854835
+              bin: 32.98942269537113
       tags:
         - "properties"
       description: "op:readproperty"
@@ -131,7 +132,7 @@ paths:
                 - "Coffee"
                 - "HotWater"
               type: "string"
-            example: "HotWater"
+            example: "Coffee"
       tags:
         - "actions"
       description: "op:invokeaction"
@@ -156,6 +157,66 @@ paths:
         - "actions"
       description: "op:invokeaction"
       summary: "switchOff"
+      servers:
+        - url: "http://mycoffeemaker.example.com"
+  /waterempty:
+    get:
+      responses:
+        200:
+          description: "default success response"
+          content:
+            application/json: {}
+        default:
+          description: "some error"
+          content:
+            application/json: {}
+      requestBody:
+        content:
+          application/json: {}
+      tags:
+        - "events"
+      description: "The water fillstate is below a certain level!\nop:subscribeevent"
+      summary: "waterEmpty"
+      servers:
+        - url: "http://mycoffeemaker.example.com"
+  /coffeeempty:
+    get:
+      responses:
+        200:
+          description: "default success response"
+          content:
+            application/json: {}
+        default:
+          description: "some error"
+          content:
+            application/json: {}
+      requestBody:
+        content:
+          application/json: {}
+      tags:
+        - "events"
+      description: "The coffee bean fillstate is below a certain amount!\nop:subscribeevent"
+      summary: "coffeeEmpty"
+      servers:
+        - url: "http://mycoffeemaker.example.com"
+  /binfull:
+    get:
+      responses:
+        200:
+          description: "default success response"
+          content:
+            application/json: {}
+        default:
+          description: "some error"
+          content:
+            application/json: {}
+      requestBody:
+        content:
+          application/json: {}
+      tags:
+        - "events"
+      description: "The bin  fillstate is above a certain level!\nop:subscribeevent"
+      summary: "binFull"
       servers:
         - url: "http://mycoffeemaker.example.com"
 tags:
