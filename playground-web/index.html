@@ -14,7 +14,7 @@
 				<button class="btn top-right btn-close" id="close_assertion_test_popup">X</button>
 				<div >Please Select the manual assertions options.</div>
 					
-				<table class="table table-striped" style="display:block; height : 80%;overflow-y : scroll;" >
+				<table class="table table-striped assertion-table">
 					
 					<thead class="thead-dark">
 						<tr>
@@ -25,7 +25,7 @@
 						</tr>
 					</thead>
 					
-					<tbody id="manual_assertion_table_body"  >
+					<tbody id="manual_assertion_table_body">
 						<!--Manual assertions will be appended here dynamically-->
 					</tbody>
 						
@@ -181,7 +181,7 @@
 
 											<br>
 											<div class="btn-group" role="group">
-												<button style="color: #17a2b8; cursor: default;" type="button" class="btn custom-btn" title="Download an OpenAPI instance of the Thing Description" disabled>OpenAPI</button>
+												<button type="button" class="btn custom-btn oap-btn" title="Download an OpenAPI instance of the Thing Description" disabled>OpenAPI</button>
 												<button type="button" class="btn custom-btn" id="btn_oap_json" title="Download an OpenAPI instance of the TD as .json file">JSON</button>
 												<button type="button" class="btn custom-btn" id="btn_oap_yaml" title="Download an OpenAPI instance of the TD as .yaml file">YAML</button>
 											</div>

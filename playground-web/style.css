@@ -116,6 +116,12 @@ footer {
 	width: 90%;
 }
 
+.assertion-table {
+	display: block; 
+	height : 80%;
+	overflow-y : scroll;
+}
+
 #table_head_arrow{
 	margin-top: 5px;
 }
@@ -184,6 +190,11 @@ a.button-link {
 
 .custom-btn {
 	background-color: #a8a8a882;
+}
+
+.oap-btn {
+	color: #17a2b8;
+	cursor: default;
 }
 
 #console {
