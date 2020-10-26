@@ -1,10 +1,14 @@
 # WoT (W3C) Thingweb-Playground
 
+Try it online at http://plugfest.thingweb.io/playground/
+
+## Structure
+
 The structure of all Web of Things (WoT) Playground packages is shown here: ![packageStructure](https://i.imgur.com/cbleWss.png)  
-The core package provides a function to check whether a Thing Description (TD) is valid according to the W3C standard.
+The core package provides a function to check whether a Thing Description (TD) is valid according to the W3C WoT [standard](https://w3c.github.io/wot-thing-description/#).
 Its functionality can be imported, as well as the assertion checks of the assertion package.
 They create a report stating how much standard assertions a fullfilled by a single TD or WoT Implementation.
-Both packages are used by the Web and CLI packages to provide their functionalities plus IO functionalities through an UI.
+Both packages are used by the Web and CLI packages to provide their functionalities, plus IO functionalities through an UI.
 
 ## Packages
 
@@ -14,8 +18,6 @@ Both packages are used by the Web and CLI packages to provide their functionalit
 * You can use the `playground-gist_backend` package to host a backend for the gist-submission functionality of the browser version of the playground. The package can be found [here](./playground-gist_backend).
 * You can use the `playground-td_to_openAPI` package to create an openAPI instance from a Thing Description
 * You can use the `playground-web` package to host/adapt your own browser version of the WoT playground. The web package can be found [here](./playground-web/).
-
-Validation tool for W3C WoT Thing Descriptions. Your Thing Descriptions should be written according to the W3C standard found [here](https://w3c.github.io/wot-thing-description/#).
 
 ## Examples
 
@@ -32,15 +34,15 @@ Examples are included in the `playground-core` and can be used in the web interf
 
 ## Batch Testing
 
-Please have a look at the `playground-cli` package for batch testing of Thing Descriptions.
+Please have a look at the `playground-cli` [package](https://github.com/thingweb/thingweb-playground/tree/master/playground-cli#batch-testing) for batch testing of Thing Descriptions.
 
 ## Script based Assertion Tester
 
-Please have a look at the `playground-cli` package for script based assertion testing, or at the `playground-assertions` package, if you're planning to integrate the assertion testing as a dependency in your own NPM modules.
+Please have a look at the `playground-cli` [package](https://github.com/thingweb/thingweb-playground/tree/master/playground-cli#script-based-assertion-tester--a-parameter) for script based assertion testing, or at the `playground-assertions` package, if you're planning to integrate the assertion testing as a dependency in your own NPM modules.
 
 ## Script based Thing Description Validation
 
-Please have look at the `playground-cli` package for script based TD validation, or at the `playground-core` package, if you're planning to integrate the td validation as a dependency in your own NPM modules.
+Please have look at the `playground-cli` [package](https://github.com/thingweb/thingweb-playground/tree/master/playground-cli#script-based-thing-description-validation) for script based TD validation, or at the `playground-core` package, if you're planning to integrate the TD validation as a dependency in your own NPM modules.
 
 ## License
 
