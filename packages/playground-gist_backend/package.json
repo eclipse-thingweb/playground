@@ -2,7 +2,7 @@
   "name": "@thing-description-playground/gist_backend",
   "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
   "license": "MIT",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Provides a gist submission backend for the @thing-description-playground/web package.",
   "homepage": "https://github.com/thingweb/thingweb-playground#readme",
   "bugs": {
