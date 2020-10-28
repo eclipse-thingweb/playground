@@ -28,8 +28,8 @@
   },
   "devDependencies": {
     "browserify": "^16.5.1",
-    "terser": "^4.7.0",
-    "jest": "^26.4.2"
+    "jest": "^26.4.2",
+    "terser": "^4.7.0"
   },
   "publishConfig": {
     "access": "public"
