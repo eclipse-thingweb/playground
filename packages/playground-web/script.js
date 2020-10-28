@@ -59,7 +59,7 @@ document.getElementById("close_gist_popup").addEventListener("click", () => {
 
 document.getElementById("btn_assertion_popup").addEventListener("click", () => {
 	if (!manualAssertionsLoaded) {
-		fetch("./node_modules/playground-assertions/manual.csv")
+		fetch("./node_modules/@thing-description-playground/assertions/manual.csv")
 		.then( res => {
 			if (res.ok) {
 				return res.text()
@@ -157,7 +157,7 @@ require(['vs/editor/editor.main'], editor=function() {
 	const modelUri = monaco.Uri.parse("a://b/foo.json"); // a made up unique URI for our model
 	const model = monaco.editor.createModel(jsonCode, "json", modelUri);
 
-	fetch("./node_modules/playground-core/td-schema.json")
+	fetch("./node_modules/@thing-description-playground/core/td-schema.json")
 	.then(res => res.json())
 	.then( json => {
 		const tdSchema=json;

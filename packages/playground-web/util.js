@@ -220,35 +220,35 @@ function hideValidationStatusTable() {
 export function getExamplesList(){
             const examples={
                 "SimpleTDWithDefaults": {
-                    "addr": "./node_modules/playground-core/examples/tds/valid/simpleWithDefaults.json",
+                    "addr": "./node_modules/@thing-description-playground/core/examples/tds/valid/simpleWithDefaults.json",
                     "type": "valid"
                 },
                 "MultipleOpWithDefaults":{
-                    "addr":"./node_modules/playground-core/examples/tds/valid/formOpArrayWithDefaults.json",
+                    "addr":"./node_modules/@thing-description-playground/core/examples/tds/valid/formOpArrayWithDefaults.json",
                     "type":"valid"
                 },
                 "SimpleTD": {
-                    "addr": "./node_modules/playground-core/examples/tds/valid/simple.json",
+                    "addr": "./node_modules/@thing-description-playground/core/examples/tds/valid/simple.json",
                     "type": "warning"
                 },
                 "MultipleOp":{
-                    "addr":"./node_modules/playground-core/examples/tds/valid/formOpArray.json",
+                    "addr":"./node_modules/@thing-description-playground/core/examples/tds/valid/formOpArray.json",
                     "type":"warning"
                 },
                 "EnumConstContradiction":{
-                    "addr":"./node_modules/playground-core/examples/tds/warning/enumConst.json",
+                    "addr":"./node_modules/@thing-description-playground/core/examples/tds/warning/enumConst.json",
                     "type":"warning"
                 },
                 "ArrayWithNoItems":{
-                    "addr":"./node_modules/playground-core/examples/tds/warning/arrayNoItems.json",
+                    "addr":"./node_modules/@thing-description-playground/core/examples/tds/warning/arrayNoItems.json",
                     "type":"warning"
                 },
                 "InvalidOperation":{
-                    "addr":"./node_modules/playground-core/examples/tds/invalid/invalidOp.json",
+                    "addr":"./node_modules/@thing-description-playground/core/examples/tds/invalid/invalidOp.json",
                     "type":"invalid"
                  },
                 "EmptySecurityDefs":{
-                    "addr":"./node_modules/playground-core/examples/tds/invalid/emptySecDef.json",
+                    "addr":"./node_modules/@thing-description-playground/core/examples/tds/invalid/emptySecDef.json",
                     "type":"invalid"
                 }
             }

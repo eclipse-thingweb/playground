@@ -4,7 +4,7 @@ const fs = require("fs")
 const path = require("path")
 
 // Reads file in as Buffer
-simpleTD = fs.readFileSync(path.join(__dirname, "../", "node_modules", "playground-core", "examples", "tds", "valid", "simple.json"))
+simpleTD = fs.readFileSync(path.join(__dirname, "../", "node_modules", "@thing-description-playground", "core", "examples", "tds", "valid", "simple.json"))
 
 function fileLoad(loc) {
 	return new Promise( (res, rej) => {

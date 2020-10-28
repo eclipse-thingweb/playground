@@ -37,16 +37,17 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual) {
         }
 
         // set directory for node.js and browser environment
+        let pathOffset
         if (process !== undefined && process.release !== undefined && process.release.name === "node") {
             pathOffset = __dirname
         } else {
-            pathOffset = path.join("./node_modules", "playground-assertions")
+            pathOffset = path.join("./node_modules", "@thing-description-playground", "assertions")
         }
 
         // loading files
         const loadProm = []
         loadProm.push(collectAssertionSchemas(path.join(pathOffset, "./assertions"), path.join(pathOffset, "./list.json"), fileLoader))
-        loadProm.push(fileLoader(path.join(pathOffset, "./node_modules", "playground-core", "td-schema.json")))
+        loadProm.push(fileLoader(path.join(pathOffset, "./node_modules", "@thing-description-playground", "core", "td-schema.json")))
         if (givenManual === undefined) {loadProm.push(fileLoader(path.join(pathOffset, "./manual.csv")))}
 
         Promise.all(loadProm).then( promResults => {

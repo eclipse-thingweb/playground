@@ -3,13 +3,13 @@
  */
 const fs = require('fs')
 const path = require('path')
-const tdValidator = require('playground-core')
-const tdAssertions = require('playground-assertions')
-const assertManualToJson = require('playground-assertions').manualToJson
-const assertMergeResults = require('playground-assertions').mergeResults
-const assertCheckCoverage = require('playground-assertions').checkCoverage
-const assertResultsToCsv = require('playground-assertions').resultsToCsv
-const tdToOAP = require('playground-td_to_openAPI')
+const tdValidator = require('@thing-description-playground/core')
+const tdAssertions = require('@thing-description-playground/assertions')
+const assertManualToJson = require('@thing-description-playground/assertions').manualToJson
+const assertMergeResults = require('@thing-description-playground/assertions').mergeResults
+const assertCheckCoverage = require('@thing-description-playground/assertions').checkCoverage
+const assertResultsToCsv = require('@thing-description-playground/assertions').resultsToCsv
+const tdToOAP = require('@thing-description-playground/td_to_openAPI')
 const argParser = require('argly')
     .createParser({
         '--help -h': { /* Displays the output specified by this object */
@@ -129,7 +129,7 @@ function assertionReport() {
         manualAssertions = assertManualToJson(fs.readFileSync(myArguments.assertionManual, "utf-8"))
     }
 
-    if (input === undefined) {input = path.join("node_modules", "playground-core", "examples", "tds", "valid")}
+    if (input === undefined) {input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid")}
 
     if (typeof input === "object") {
         assertType = "list"
@@ -302,7 +302,7 @@ function fileLoader(loc) {
  * and write outputs accordingly
  */
 function coreValidation() {
-    if (!input) {input = path.join("node_modules", "playground-core", "examples", "tds")}
+    if (!input) {input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds")}
     if(fs.lstatSync(input).isDirectory()) {
 
         // check Valid, Invalid and Warning Subfolders
@@ -465,7 +465,7 @@ function statResult(keyword, report) {
  */
 function openApiGeneration() {
     // input checks
-    if (!input) {input = path.join("node_modules", "playground-core", "examples", "tds", "valid", "simple.json")}
+    if (!input) {input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid", "simple.json")}
     if (!fs.lstatSync(input).isFile()) {
         throw new Error("please provide one File as input for the open API instance generation")
     }

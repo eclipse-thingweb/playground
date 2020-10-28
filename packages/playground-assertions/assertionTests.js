@@ -5,10 +5,10 @@ const isUtf8 = require('is-utf8')
 const Ajv = require('ajv')
 
 // Imports from playground core
-const checkUniqueness = require('playground-core').propUniqueness
-const checkMultiLangConsistency = require("playground-core").multiLangConsistency
-const checkSecurity = require("playground-core").security
-const tdSchema = require("playground-core/td-schema.json")
+const checkUniqueness = require('@thing-description-playground/core').propUniqueness
+const checkMultiLangConsistency = require("@thing-description-playground/core").multiLangConsistency
+const checkSecurity = require("@thing-description-playground/core").security
+const tdSchema = require("@thing-description-playground/core/td-schema.json")
 
 /**
  * validates the TD in the first argument according to the assertions given in the second argument
