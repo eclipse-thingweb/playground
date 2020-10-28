@@ -2,10 +2,12 @@
   "name": "@thing-description-playground/core",
   "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
   "license": "MIT",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Provides the validation functionality for the Web of Things - Thing Description Playground.",
   "homepage": "https://github.com/thingweb/thingweb-playground#readme",
-  "bugs": {"url": "https://github.com/thingweb/thingweb-playground/issues"},
+  "bugs": {
+    "url": "https://github.com/thingweb/thingweb-playground/issues"
+  },
   "main": "index.js",
   "repository": {
     "type": "git",

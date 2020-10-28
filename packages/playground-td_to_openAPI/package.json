@@ -2,7 +2,7 @@
   "name": "@thing-description-playground/td_to_openapi",
   "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
   "license": "MIT",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Provides openAPI instance generation for Thing Descriptions in the Web of Things - Thing Description Playground.",
   "homepage": "https://github.com/thingweb/thingweb-playground#readme",
   "bugs": {
@@ -28,8 +28,8 @@
   },
   "devDependencies": {
     "browserify": "^16.5.1",
-    "terser": "^4.7.0",
-    "jest": "^26.4.2"
+    "jest": "^26.4.2",
+    "terser": "^4.7.0"
   },
   "publishConfig": {
     "access": "public"
