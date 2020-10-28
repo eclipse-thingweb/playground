@@ -14,7 +14,8 @@
   },
   "scripts": {
     "test": "node test.js",
-    "bundle": "npx browserify ./index.js -s tdValidator -o ./dist/web-bundle.js & npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js"
+    "bundle": "npx browserify ./index.js -s tdValidator -o ./dist/web-bundle.js & npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
+    "prepare": "npm run bundle"
   },
   "dependencies": {
     "ajv": "^6.12.2",

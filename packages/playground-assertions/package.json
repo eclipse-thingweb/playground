@@ -15,7 +15,8 @@
   "scripts": {
     "test": "node test.js",
     "bundle": "npx browserify ./index.js -s tdAssertions -o ./dist/web-bundle.js & npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
-    "newlist": "node update-list.js"
+    "newlist": "node update-list.js",
+    "prepare": "npm run bundle"
   },
   "dependencies": {
     "ajv": "^6.12.2",
