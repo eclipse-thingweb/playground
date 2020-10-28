@@ -2,7 +2,7 @@
   "name": "@thing-description-playground/cli",
   "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
   "license": "MIT",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Provides a Command Line Interface for the Web of Things - Thing Description Playground.",
   "homepage": "https://github.com/thingweb/thingweb-playground#readme",
   "bugs": {
@@ -19,10 +19,10 @@
     "start": "node ./index.js"
   },
   "dependencies": {
-    "argly": "^1.2.0",
-    "@thing-description-playground/core": "^1.0.0",
     "@thing-description-playground/assertions": "^1.0.0",
-    "@thing-description-playground/td_to_openAPI": "^1.0.0"
+    "@thing-description-playground/core": "^1.0.0",
+    "@thing-description-playground/td_to_openAPI": "^1.0.0",
+    "argly": "^1.2.0"
   },
   "publishConfig": {
     "access": "public"
