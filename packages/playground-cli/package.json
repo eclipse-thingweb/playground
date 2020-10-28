@@ -2,7 +2,7 @@
   "name": "@thing-description-playground/cli",
   "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
   "license": "MIT",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Provides a Command Line Interface for the Web of Things - Thing Description Playground.",
   "homepage": "https://github.com/thingweb/thingweb-playground#readme",
   "bugs": {"url": "https://github.com/thingweb/thingweb-playground/issues"},
