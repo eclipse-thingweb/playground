@@ -25,5 +25,8 @@
   "devDependencies": {
     "browserify": "^16.5.1",
     "terser": "^4.7.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

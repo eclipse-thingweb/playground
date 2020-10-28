@@ -21,5 +21,8 @@
     "@thing-description-playground/core": "^1.0.0",
     "@thing-description-playground/assertions": "^1.0.0",
     "@thing-description-playground/td_to_openAPI": "^1.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

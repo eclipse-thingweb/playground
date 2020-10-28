@@ -30,5 +30,8 @@
     "browserify": "^16.5.1",
     "terser": "^4.7.0",
     "jest": "^26.4.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
