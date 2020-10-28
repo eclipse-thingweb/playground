@@ -2,7 +2,7 @@
   "name": "@thing-description-playground/web",
   "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
   "license": "MIT",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Provides a browser GUI for the Web of Things - Thing Description Playground.",
   "homepage": "https://github.com/thingweb/thingweb-playground#readme",
   "bugs": {
