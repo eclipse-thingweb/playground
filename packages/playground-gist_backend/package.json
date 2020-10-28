@@ -12,7 +12,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/thingweb/thingweb-playground.git",
-    "directory": "playground-gist_backend"
+    "directory": "packages/playground-gist_backend"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

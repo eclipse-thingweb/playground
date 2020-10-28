@@ -10,7 +10,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/thingweb/thingweb-playground.git",
-    "directory": "playground-web"
+    "directory": "packages/playground-web"
   },
   "scripts": {
     "test": "node test.js",
