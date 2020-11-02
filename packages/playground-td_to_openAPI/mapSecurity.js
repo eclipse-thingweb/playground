@@ -110,6 +110,12 @@ function mapSecurityString(tdSecurity, oapSecuritySchemes, tdScopes) {
     return oapSecurityContainer
 }
 
+/**
+ * Map the TD security definitions to
+ * openAPI security Schemes in components
+ * and return all used scopes in addition
+ * @param {object|undefined} tdDefinitions if no object is given, empty securitySchemes and scopes are returned
+ */
 function mapSecurityDefinitions(tdDefinitions) {
     const securitySchemes = {}
     const scopes = {}
@@ -154,6 +160,7 @@ function genOapDefinition(tdDefinition) {
 
         case "nosec":
         case "basic":
+        case "psk":
             // do nothing?
         break
 
@@ -173,10 +180,6 @@ function genOapDefinition(tdDefinition) {
             if (oapDefinition.in === "body") {
                 throw new Error("Cannot represent ApiKey in `body` with openAPI")
             }
-        break
-
-        case "psk":
-            // console.warn("PSK security is not supported")
         break
 
         case "oauth2":
