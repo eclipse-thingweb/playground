@@ -235,7 +235,12 @@ function addPaths(methods, path, server, types, interactionInfo, interactionSche
                     }
                 }
             }
+
             Object.assign(cPaths[path][method], interactionInfo)
+
+            if (method === "get") {
+                delete cPaths[path][method].requestBody
+            }
 
             // check if server is given (ain't the case for "base" url fragments) and add
             if (server) {
