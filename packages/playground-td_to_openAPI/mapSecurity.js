@@ -223,7 +223,7 @@ function genOAuthFlows(tdDefinition) {
     const mapTdToOap = {
         implicit: ["implicit"],
         password: ["password", "ropc"],
-        clientCredentials: ["application", "clientcredentials", "clientcredential"],
+        clientCredentials: ["application", "client", "clientcredentials", "clientcredential"],
         authorizationCode: ["accesscode", "code", "authorizationcode"]
     }
 
