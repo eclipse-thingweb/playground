@@ -224,13 +224,14 @@ function genOAuthFlows(tdDefinition) {
         implicit: ["implicit"],
         password: ["password", "ropc"],
         clientCredentials: ["application", "client", "clientcredentials", "clientcredential"],
-        authorizationCode: ["accesscode", "code", "authorizationcode"]
+        authorizationCode: ["accesscode", "code", "authorizationcode"],
+        "x-device": ["device"]
     }
 
     Object.keys(mapTdToOap).forEach( key => {
         if (mapTdToOap[key].some( arrayElement => (arrayElement === tdFlow))) {
             const protoFlow = {}
-            if (key === "implicit" || key === "authorizationCode") {
+            if (key === "implicit" || key === "authorizationCode" || key === "x-device") {
                 if (tdDefinition.authorization === undefined) {
                     throw new Error("the authorization URI is required for oauth2 flow: " + key)
                 }
@@ -238,7 +239,7 @@ function genOAuthFlows(tdDefinition) {
                     protoFlow.authorizationUrl = tdDefinition.authorization
                 }
             }
-            if (key === "password" || key === "clientCredentials" || key === "authorizationCode") {
+            if (key === "password" || key === "clientCredentials" || key === "authorizationCode" || key === "x-device") {
                 if (tdDefinition.token === undefined) {
                     throw new Error("the token URI is required for oauth2 flow: " + key)
                 }
