@@ -47,3 +47,7 @@ Please have look at the `playground-cli` [package](https://github.com/thingweb/t
 ## License
 
 All packages are licensed under the MIT license.
+
+## Publish a new version
+
+Run `lerna publish` to publish new package versions. Lerna will then ask for every changed package whether it received a patch, minor or major update.
