@@ -1,7 +1,6 @@
 const fs = require("fs")
 const addDefaults = require("../index.js")
 const tdValidator = require("@thing-description-playground/core")
-const { hasUncaughtExceptionCaptureCallback } = require( 'process' )
 
 if (!fs.existsSync("./out")) {fs.mkdirSync("./out")}
 
@@ -13,17 +12,15 @@ describe("test if all valid TDs are properly extended by default values", () => 
         const td = JSON.parse(fs.readFileSync(directory + filename, "utf-8"))
         test("testAll testing: " + filename, () => {
             expect.assertions(3)
+            const extendedTd = addDefaults(td)
+            const extendedTdString = JSON.stringify(extendedTd, undefined, 2)
+            fs.writeFileSync("./out/" + filename.slice(0, -5) + "_extended.json", extendedTdString)
 
-            return addDefaults(td).then( extendedTd => {
-                const extendedTdString = JSON.stringify(extendedTd, undefined, 2)
-                fs.writeFileSync("./out/" + filename.slice(0, -5) + "_extended.json", extendedTdString)
-
-                tdValidator(extendedTdString, ()=>{}, {checkJsonLd: false, checkDefaults: true}).then( result => {
-                    const report = result.report
-                    expect(report.json).toBe("passed")
-                    expect(report.schema).toBe("passed")
-                    expect(report.defaults).toBe("passed")
-                })
+            return tdValidator(extendedTdString, ()=>{}, {checkJsonLd: false, checkDefaults: true}).then( result => {
+                const report = result.report
+                expect(report.json).toBe("passed")
+                expect(report.schema).toBe("passed")
+                expect(report.defaults).toBe("passed")
             })
         })
     })
