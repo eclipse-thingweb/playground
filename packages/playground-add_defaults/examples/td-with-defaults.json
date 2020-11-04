@@ -18,7 +18,7 @@
 			"forms": [
 				{
 					"href": "https://mylamp.example.com/status",
-					"op": "readproperty",
+					"op": ["readproperty", "writeproperty"],
 					"contentType": "application/json"
 				}
 			]
