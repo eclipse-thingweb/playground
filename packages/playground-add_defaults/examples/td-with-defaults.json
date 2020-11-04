@@ -15,6 +15,8 @@
 	"properties": {
 		"status": {
 			"type": "string",
+			"writeOnly": false,
+			"readOnly": false,
 			"forms": [
 				{
 					"href": "https://mylamp.example.com/status",
@@ -40,7 +42,9 @@
 	"events": {
 		"overheating": {
 			"data": {
-				"type": "string"
+				"type": "string",
+				"writeOnly": false,
+				"readOnly": false
 			},
 			"forms": [
 				{

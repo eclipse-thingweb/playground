@@ -110,19 +110,16 @@ describe("module tests", () => {
     })
 
     describe("DataSchema", () => {
-        const tdSchema = {
-            description: "just a data schema"
-        },
         const refTdSchema = {
             description: "just a data schema",
-            writeOnly: "false",
-            readOnly: "false"
+            writeOnly: false,
+            readOnly: false
         }
 
         test("PropertyAffordance", () => {
             const td = {
                 properties: {
-                    temperature: tdSchema
+                    temperature: {description: "just a data schema"}
                 }
             }
             expect(addDefaults(td).properties.temperature).toEqual(refTdSchema)
@@ -131,8 +128,8 @@ describe("module tests", () => {
             const td = {
                 actions: {
                     throwBall: {
-                        input: tdSchema,
-                        output: tdSchema
+                        input: {description: "just a data schema"},
+                        output: {description: "just a data schema"}
                     }
                 }
             }
@@ -143,9 +140,9 @@ describe("module tests", () => {
             const td = {
                 events: {
                     overheating: {
-                        subscription: tdSchema,
-                        data: tdSchema,
-                        cancellation: tdSchema
+                        subscription: {description: "just a data schema"},
+                        data: {description: "just a data schema"},
+                        cancellation: {description: "just a data schema"}
                     }
                 }
             }
@@ -158,21 +155,21 @@ describe("module tests", () => {
                 properties: {
                     temperature: {
                         uriVariables: {
-                            p: tdSchema
+                            p: {description: "just a data schema"}
                         }
                     }
                 },
                 actions: {
                     throwBall: {
                         uriVariables: {
-                            p: tdSchema
+                            p: {description: "just a data schema"}
                         }
                     }
-                }
+                },
                 events: {
                     overheating: {
                         uriVariables: {
-                            p: tdSchema
+                            p: {description: "just a data schema"}
                         }
                     }
                 }
@@ -187,8 +184,8 @@ describe("module tests", () => {
                 const td = {
                     properties: {
                         temperature: {
-                            oneOf: [tdSchema, {
-                                oneOf: [tdSchema, tdSchema]
+                            oneOf: [{description: "just a data schema"}, {
+                                oneOf: [{description: "just a data schema"}, {description: "just a data schema"}]
                             }]
                         }
                     }
@@ -202,10 +199,10 @@ describe("module tests", () => {
                     actions: {
                         throwBall: {
                             input: {
-                                items: tdSchema
+                                items: {description: "just a data schema"}
                             },
                             output: {
-                                items: [tdSchema, tdSchema]
+                                items: [{description: "just a data schema"}, {description: "just a data schema"}]
                             }
                         }
                     }
@@ -220,15 +217,15 @@ describe("module tests", () => {
                         overheating: {
                             subscription: {
                                 properties: {
-                                    a: tdSchema,
-                                    b: tdSchema
+                                    a: {description: "just a data schema"},
+                                    b: {description: "just a data schema"}
                                 }
                             }
                         }
                     }
                 }
-                expect(addDefaults(td).events.overheating.subscription.a).toEqual(refTdSchema)
-                expect(addDefaults(td).events.overheating.subscription.b).toEqual(refTdSchema)
+                expect(addDefaults(td).events.overheating.subscription.properties.a).toEqual(refTdSchema)
+                expect(addDefaults(td).events.overheating.subscription.properties.b).toEqual(refTdSchema)
             })
         })
     })
