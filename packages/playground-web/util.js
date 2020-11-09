@@ -150,6 +150,26 @@ export function generateOAP(fileType){
     })
 }
 
+/**
+ * applies adding unset default values
+ * to the TD in the editor
+ */
+export function addDefaults() {
+    const tdToExtend = JSON.parse(window.editor.getValue())
+    tdDefaults.addDefaults(tdToExtend)
+    window.editor.setValue(JSON.stringify(tdToExtend, undefined, 4))
+}
+
+/**
+ * applies removing explicitly given
+ * default values from the TD
+ * in the editor
+ */
+export function removeDefaults() {
+    const tdToReduce = JSON.parse(window.editor.getValue())
+    tdDefaults.removeDefaults(tdToReduce)
+    window.editor.setValue(JSON.stringify(tdToReduce, undefined, 4))
+}
 
 /**
  * Post the gist to the backend

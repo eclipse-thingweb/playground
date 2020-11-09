@@ -145,6 +145,10 @@ document.getElementById("btn_oap_yaml").addEventListener("click", () => {
 	util.generateOAP("yaml").catch(err => {alert(err)})
 })
 
+document.getElementById("btn_defaults_add").addEventListener("click", util.addDefaults)
+document.getElementById("btn_defaults_remove").addEventListener("click", util.removeDefaults)
+
+
 
 
 //* *************************Monaco editor code*********************************////
