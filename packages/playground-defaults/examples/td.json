@@ -5,8 +5,7 @@
 	"description": "Valid TD copied from the spec's first example",
 	"securityDefinitions": {
 		"basic_sc": {
-			"scheme": "basic",
-			"in": "header"
+			"scheme": "basic"
 		}
 	},
 	"security": [

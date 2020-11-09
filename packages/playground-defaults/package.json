@@ -3,7 +3,7 @@
   "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
   "license": "MIT",
   "version": "0.0.0",
-  "description": "Adds defaults for Thing Descriptions in the Web of Things - Thing Description Playground.",
+  "description": "Adds/removes defaults for Thing Descriptions in the Web of Things - Thing Description Playground.",
   "homepage": "https://github.com/thingweb/thingweb-playground#readme",
   "bugs": {
     "url": "https://github.com/thingweb/thingweb-playground/issues"
@@ -16,8 +16,7 @@
   },
   "scripts": {
     "test": "jest",
-    "bundle": "npx browserify ./index.js -s addDefaults -o ./dist/web-bundle.js & npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
-    "updateExamples": "node ./examples/updateExamples.js",
+    "bundle": "npx browserify ./index.js -s tdDefaults -o ./dist/web-bundle.js & npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
     "prepare": "npm run bundle"
   },
   "dependencies": {},

@@ -1,18 +1,18 @@
 const fs = require("fs")
-const addDefaults = require("../index.js")
-const staticTd = require("../examples/td.json")
+const {addDefaults} = require("../index.js")
 
 if (!fs.existsSync("./out")) {fs.mkdirSync("./out")}
 
+const staticTd = JSON.parse(fs.readFileSync("./examples/td.json", "utf-8"))
 const referenceOutput = JSON.parse(fs.readFileSync("./examples/td-with-defaults.json", "utf-8"))
 
 test("integration test", () => {
 
-    const extendedTd = addDefaults(staticTd)
+    addDefaults(staticTd)
     // write output to be able to compare it to reference
-    fs.writeFileSync("./out/1_example.json", JSON.stringify(extendedTd, undefined, 2))
+    fs.writeFileSync("./out/1_example.json", JSON.stringify(staticTd, undefined, 2))
 
-    expect(extendedTd).toEqual(referenceOutput)
+    expect(staticTd).toEqual(referenceOutput)
 })
 
 describe("module tests", () => {
@@ -31,7 +31,8 @@ describe("module tests", () => {
                 }
             }
         }
-        expect(addDefaults(td)).toEqual(refTd)
+        addDefaults(td)
+        expect(td).toEqual(refTd)
     })
 
     describe("forms", () => {
@@ -57,7 +58,8 @@ describe("module tests", () => {
                     }
                 }
             }
-            expect(addDefaults(td).properties.throwBall.forms).toEqual(refTd.properties.throwBall.forms)
+            addDefaults(td)
+            expect(td.properties.throwBall.forms).toEqual(refTd.properties.throwBall.forms)
         })
         test("ActionAffordance", () => {
             const td = {
@@ -81,7 +83,8 @@ describe("module tests", () => {
                     }
                 }
             }
-            expect(addDefaults(td).actions.throwBall.forms).toEqual(refTd.actions.throwBall.forms)
+            addDefaults(td)
+            expect(td.actions.throwBall.forms).toEqual(refTd.actions.throwBall.forms)
         })
         test("EventAffordance", () => {
             const td = {
@@ -105,7 +108,8 @@ describe("module tests", () => {
                     }
                 }
             }
-            expect(addDefaults(td).events.throwBall.forms).toEqual(refTd.events.throwBall.forms)
+            addDefaults(td)
+            expect(td.events.throwBall.forms).toEqual(refTd.events.throwBall.forms)
         })
     })
 
@@ -122,7 +126,8 @@ describe("module tests", () => {
                     temperature: {description: "just a data schema"}
                 }
             }
-            expect(addDefaults(td).properties.temperature).toEqual(refTdSchema)
+            addDefaults(td)
+            expect(td.properties.temperature).toEqual(refTdSchema)
         })
         test("ActionAffordance", () => {
             const td = {
@@ -133,8 +138,9 @@ describe("module tests", () => {
                     }
                 }
             }
-            expect(addDefaults(td).actions.throwBall.input).toEqual(refTdSchema)
-            expect(addDefaults(td).actions.throwBall.output).toEqual(refTdSchema)
+            addDefaults(td)
+            expect(td.actions.throwBall.input).toEqual(refTdSchema)
+            expect(td.actions.throwBall.output).toEqual(refTdSchema)
         })
         test("EventAffordance", () => {
             const td = {
@@ -146,9 +152,10 @@ describe("module tests", () => {
                     }
                 }
             }
-            expect(addDefaults(td).events.overheating.subscription).toEqual(refTdSchema)
-            expect(addDefaults(td).events.overheating.data).toEqual(refTdSchema)
-            expect(addDefaults(td).events.overheating.cancellation).toEqual(refTdSchema)
+            addDefaults(td)
+            expect(td.events.overheating.subscription).toEqual(refTdSchema)
+            expect(td.events.overheating.data).toEqual(refTdSchema)
+            expect(td.events.overheating.cancellation).toEqual(refTdSchema)
         })
         test("uriVariables", () => {
             const td = {
@@ -174,9 +181,10 @@ describe("module tests", () => {
                     }
                 }
             }
-            expect(addDefaults(td).properties.temperature.uriVariables.p).toEqual(refTdSchema)
-            expect(addDefaults(td).actions.throwBall.uriVariables.p).toEqual(refTdSchema)
-            expect(addDefaults(td).events.overheating.uriVariables.p).toEqual(refTdSchema)
+            addDefaults(td)
+            expect(td.properties.temperature.uriVariables.p).toEqual(refTdSchema)
+            expect(td.actions.throwBall.uriVariables.p).toEqual(refTdSchema)
+            expect(td.events.overheating.uriVariables.p).toEqual(refTdSchema)
         })
 
         describe("nested", () => {
@@ -190,9 +198,10 @@ describe("module tests", () => {
                         }
                     }
                 }
-                expect(addDefaults(td).properties.temperature.oneOf[0]).toEqual(refTdSchema)
-                expect(addDefaults(td).properties.temperature.oneOf[1].oneOf[0]).toEqual(refTdSchema)
-                expect(addDefaults(td).properties.temperature.oneOf[1].oneOf[1]).toEqual(refTdSchema)
+                addDefaults(td)
+                expect(td.properties.temperature.oneOf[0]).toEqual(refTdSchema)
+                expect(td.properties.temperature.oneOf[1].oneOf[0]).toEqual(refTdSchema)
+                expect(td.properties.temperature.oneOf[1].oneOf[1]).toEqual(refTdSchema)
             })
             test("items", () => {
                 const td = {
@@ -207,9 +216,10 @@ describe("module tests", () => {
                         }
                     }
                 }
-                expect(addDefaults(td).actions.throwBall.input.items).toEqual(refTdSchema)
-                expect(addDefaults(td).actions.throwBall.output.items[0]).toEqual(refTdSchema)
-                expect(addDefaults(td).actions.throwBall.output.items[1]).toEqual(refTdSchema)
+                addDefaults(td)
+                expect(td.actions.throwBall.input.items).toEqual(refTdSchema)
+                expect(td.actions.throwBall.output.items[0]).toEqual(refTdSchema)
+                expect(td.actions.throwBall.output.items[1]).toEqual(refTdSchema)
             })
             test("properties", () => {
                 const td = {
@@ -224,8 +234,9 @@ describe("module tests", () => {
                         }
                     }
                 }
-                expect(addDefaults(td).events.overheating.subscription.properties.a).toEqual(refTdSchema)
-                expect(addDefaults(td).events.overheating.subscription.properties.b).toEqual(refTdSchema)
+                addDefaults(td)
+                expect(td.events.overheating.subscription.properties.a).toEqual(refTdSchema)
+                expect(td.events.overheating.subscription.properties.b).toEqual(refTdSchema)
             })
         })
     })
@@ -246,7 +257,8 @@ describe("module tests", () => {
                 }
             }
         }
-        expect(addDefaults(td)).toEqual(refTd)
+        addDefaults(td)
+        expect(td).toEqual(refTd)
     })
 
     test("DigestSecurityScheme", () => {
@@ -266,7 +278,8 @@ describe("module tests", () => {
                 }
             }
         }
-        expect(addDefaults(td)).toEqual(refTd)
+        addDefaults(td)
+        expect(td).toEqual(refTd)
     })
 
     test("BearerSecurityScheme", () => {
@@ -287,7 +300,8 @@ describe("module tests", () => {
                 }
             }
         }
-        expect(addDefaults(td)).toEqual(refTd)
+        addDefaults(td)
+        expect(td).toEqual(refTd)
     })
 
     test("APIKeySecurityScheme", () => {
@@ -306,6 +320,7 @@ describe("module tests", () => {
                 }
             }
         }
-        expect(addDefaults(td)).toEqual(refTd)
+        addDefaults(td)
+        expect(td).toEqual(refTd)
     })
 })
