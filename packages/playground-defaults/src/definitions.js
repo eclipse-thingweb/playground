@@ -1,13 +1,13 @@
 /**
- * the TD default value definitions according to 
+ * the TD default value definitions according to
  * https://www.w3.org/TR/2020/REC-wot-thing-description-20200409/
- * 
+ *
  * represented with:
  * class[-superClass] -> property -> value
  */
 const defaultLookup = {
     Form: {
-        contentType: "application/json",
+        contentType: "application/json"
     },
     "Form-PropertyAffordance": {
         op: ["readproperty", "writeproperty"]

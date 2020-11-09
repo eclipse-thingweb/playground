@@ -16,7 +16,7 @@ function sharedDefaults(td, cbOneObject, cbDataSchema) {
     if (typeof td !== "object") {
         throw new Error("Typeof TD has to be object, not: " + typeof td)
     }
-    
+
 
     // -- Action Affordances
     forEvery(td.actions, action => {
@@ -25,8 +25,8 @@ function sharedDefaults(td, cbOneObject, cbDataSchema) {
 
     // -- Forms
     const interactionTypes = {
-        properties: defaultClasses.formPropertyAffordance, 
-        actions: defaultClasses.formActionAffordance, 
+        properties: defaultClasses.formPropertyAffordance,
+        actions: defaultClasses.formActionAffordance,
         events: defaultClasses.formEventAffordance
     }
     Object.keys(interactionTypes).forEach( interactionType => {
@@ -117,7 +117,9 @@ function sharedDataSchema(dataSchema, callback) {
 function sharedOneObject(target, type, callback) {
     if (typeof target !== "object") {throw new Error("target has to be of type 'object' not: " + typeof target)}
     if (typeof type !== "string") {throw new Error("type has to be of type 'string' not: " + typeof type)}
-    if (Object.keys(defaultLookup).every(key => (key !== type))) {throw new Error("type has to be a defaultLookup entry, type: " + type)}
+    if (Object.keys(defaultLookup).every(key => (key !== type))) {
+        throw new Error("type has to be a defaultLookup entry, type: " + type)
+    }
 
     callback(target, type)
 

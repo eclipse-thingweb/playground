@@ -19,8 +19,8 @@ function forEvery(obj, callback) {
  * Compare two variables for equality
  * (deep equality on objects)
  * (order doesn't matter on arrays, duplicates are allowed)
- * @param {any} objA 
- * @param {any} objB 
+ * @param {any} objA value A
+ * @param {any} objB value B
  * @returns {boolean} are both variables equal
  */
 function objEquality(objA, objB) {

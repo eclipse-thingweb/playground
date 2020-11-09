@@ -45,11 +45,11 @@ function reduceDataSchema(dataSchema) {
  */
 function extendOneObject(target, type) {
 
-    const callback = (target, type) => {
-        const defaultSource = defaultLookup[type]
+    const callback = (cTarget, cType) => {
+        const defaultSource = defaultLookup[cType]
         Object.keys(defaultSource).forEach( key => {
-            if (target[key] === undefined) {
-                target[key] = defaultSource[key]
+            if (cTarget[key] === undefined) {
+                cTarget[key] = defaultSource[key]
             }
         })
     }
@@ -65,11 +65,11 @@ function extendOneObject(target, type) {
  */
 function reduceOneObject(target, type) {
 
-    const callback = (target, type) => {
-        const defaultSource = defaultLookup[type]
+    const callback = (cTarget, cType) => {
+        const defaultSource = defaultLookup[cType]
         Object.keys(defaultSource).forEach( key => {
-            if (objEquality(target[key], defaultSource[key])) {
-                delete target[key]
+            if (objEquality(cTarget[key], defaultSource[key])) {
+                delete cTarget[key]
             }
         })
     }
@@ -78,12 +78,12 @@ function reduceOneObject(target, type) {
 }
 
 module.exports = {
-    addDefaults, 
-    removeDefaults, 
-    extendDataSchema, 
-    extendOneObject, 
-    reduceDataSchema, 
-    reduceOneObject, 
-    defaultLookup, 
+    addDefaults,
+    removeDefaults,
+    extendDataSchema,
+    extendOneObject,
+    reduceDataSchema,
+    reduceOneObject,
+    defaultLookup,
     defaultClasses
 }

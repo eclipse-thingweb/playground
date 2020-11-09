@@ -24,7 +24,8 @@
     "browserify": "^16.5.1",
     "jest": "^26.4.2",
     "terser": "^4.7.0",
-    "@thing-description-playground/core": "^1.0.0"
+    "@thing-description-playground/core": "^1.0.0",
+    "eslint": "7.10.0"
   },
   "publishConfig": {
     "access": "public"
