@@ -9,7 +9,6 @@ function crawlPaths(td) {
     const interactionTypes = ["properties", "actions", "events"]
     const httpBase = td.base && (td.base.startsWith("http://") || td.base.startsWith("https://")) ? true : false
 
-
     // crawl Interaction Affordances forms
     interactionTypes.forEach( interactionType => {
         if (td[interactionType] !== undefined) {
