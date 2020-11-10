@@ -10,8 +10,7 @@ const processStack = {
      * @param {string} comment Describe the test
      * @param {(sOut, sErr, lastErr?)=>boolean} cbTest Opt: Test executed after process execution
      */
-    add: 
-    function (command, comment, cbTest) {
+    add (command, comment, cbTest) {
         this.stack.push(new Promise( (res, rej) => {
             const details = {
                 sOut: "",
@@ -31,11 +30,10 @@ const processStack = {
      * Wait for all process executions currently in the stack to be finished,
      * then evaluate their results
      */
-    evaluate:
-    function () {
+    evaluate () {
         Promise.all(this.stack).then( results => {
             results.forEach(result => {
-                result.passed = result.cbTest !== undefined ? 
+                result.passed = result.cbTest !== undefined ?
                                 result.cbTest(result.details.sOut, result.details.sErr, result.details.lastErr) :
                                 "no-test"
                 if (result.details.sErr !== "" || result.details.lastErr !== undefined) {

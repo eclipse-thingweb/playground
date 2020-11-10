@@ -44,17 +44,17 @@ const refResultAdd = {
 }
 fileNames.forEach( fileName => {
     test(fileName, done => {
-    const tdToTest = fs.readFile(path.join(dirPath, fileName), "utf-8", (err, tdToTest) => {
+    fs.readFile(path.join(dirPath, fileName), "utf-8", (err, tdToTest) => {
             if (err) {done(err)}
-            const result = tdValidator(tdToTest, ()=>{},{}).then( result => {
+            tdValidator(tdToTest, ()=>{},{}).then( result => {
                 if (result.report.schema === "failed") {
                     expect(result).toEqual(refResult)
-                } 
+                }
                 else {
                     expect(result).toEqual(refResultAdd)
                 }
                 done()
-            }, err => {done(err)})
+            }, errTwo => {done(errTwo)})
         })
     })
 })

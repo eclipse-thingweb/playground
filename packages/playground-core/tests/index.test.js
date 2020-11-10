@@ -87,7 +87,7 @@ test("normal report generation", () => {
 				security: expect.any(String),
 				propUniqueness: expect.any(String),
 				multiLangConsistency: expect.any(String),
-				readWriteOnly: expect.any(String),
+				readWriteOnly: expect.any(String)
 			}
 		}
 		expect(result).toEqual(refResult)
