@@ -15,7 +15,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "node ./index.js",
+    "test": "node ./tests/index-test.js",
     "start": "node ./index.js"
   },
   "dependencies": {
