@@ -1,5 +1,5 @@
 // Test utility to test index.js
-const tdAsserter = require("./index")
+const tdAsserter = require("../index")
 const fs = require("fs")
 
 const simpleTD = JSON.stringify({
