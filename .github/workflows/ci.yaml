@@ -1,0 +1,23 @@
+name: Default CI Pipeline
+
+on: [push, pull_request]
+
+jobs:
+  setup-and-test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+            node-version: '12.x'
+      
+      - name: Bootstrap
+        run: lerna bootstrap
+      
+      - name: Test
+        run: lerna run test --no-bail --stream
