@@ -24,3 +24,7 @@ jobs:
       
       - name: Test
         run: lerna run test --no-bail --stream
+        env:
+          # avoid errors from gist_backend test
+          TD_PLAYGROUND_LOGIN: example
+          TD_PLAYGROUND_TOKEN: example
