@@ -1,6 +1,6 @@
 name: Visual Testing Pipeline
 
-on: [pull_request, push]
+on: pull_request
 
 jobs:
   setup-and-visual-test:
