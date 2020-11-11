@@ -73,6 +73,6 @@ processStack.add("node ./index.js", "normal validation", sOut => (
     sOut.search("Validity test succesful") !== -1
 ))
 // processStack.add("node ./index.js -a", "normal assertions")
-// processStack.add("node ./index.js -p", "normal openAPI generation")
+processStack.add("node ./index.js -p", "normal openAPI generation")
 
 processStack.evaluate()
