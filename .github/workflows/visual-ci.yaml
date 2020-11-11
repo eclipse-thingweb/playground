@@ -28,7 +28,7 @@ jobs:
           npm test
       
       - name: Upload test screenshots
-        uses: actions/upload-artifacts@v2
+        uses: actions/upload-artifact@v2
         with:
           name: playwright screenshots and downloads
           path: test_results
