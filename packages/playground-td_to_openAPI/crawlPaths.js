@@ -4,8 +4,13 @@ const {mapFormSecurity} = require("./mapSecurity")
 
 module.exports = crawlPaths
 
+/**
+ * Generates the openAPI paths object from a TD
+ * @param {object} td The TD that is used as input
+ * @returns {object} The openAPI paths object
+ */
 function crawlPaths(td) {
-    let cPaths = {}
+    const cPaths = {}
     const interactionTypes = ["properties", "actions", "events"]
     const httpBase = td.base && (td.base.startsWith("http://") || td.base.startsWith("https://")) ? true : false
 
@@ -34,7 +39,7 @@ function crawlPaths(td) {
 
                     interactionInfo.description += "op:" + ((typeof op === "string") ? op : op.join(", "))
 
-                    cPaths = addForm(form, interactionInfo, interactionSchemas, op, httpBase, cPaths, td.securityDefinitions)
+                    addForm(form, interactionInfo, interactionSchemas, op, httpBase, cPaths, td.securityDefinitions)
                 })
             })
         }
@@ -52,7 +57,7 @@ function crawlPaths(td) {
 
                 const interactionSchemas = {requestSchema: {}, responseSchema: {}}
 
-                cPaths = addForm(form, interactionInfo, interactionSchemas, form.op, httpBase, cPaths)
+                addForm(form, interactionInfo, interactionSchemas, form.op, httpBase, cPaths)
             }
         })
     }
@@ -70,6 +75,8 @@ function crawlPaths(td) {
  * @param {object} interactionSchemas The common request & response schemas
  * @param {string|string[]} myOp The op property (or default value) of the form
  * @param {boolean} httpBase Is there a httpBase
+ * @param {object} cPaths The openAPI paths object being generated
+ * @param {object} tdSecurityDefinitions The TD security definitions object
  */
 function addForm(form, interactionInfo, interactionSchemas, myOp, httpBase, cPaths, tdSecurityDefinitions) {
     if (form.href.startsWith("http://") ||
@@ -123,9 +130,8 @@ function addForm(form, interactionInfo, interactionSchemas, myOp, httpBase, cPat
             Object.assign(interactionInfo, formInfo)
         }
 
-        cPaths = addPaths(methods, path, server, types, interactionInfo, interactionSchemas, cPaths)
+        addPaths(methods, path, server, types, interactionInfo, interactionSchemas, cPaths)
     }
-    return cPaths
 }
 
 
@@ -229,7 +235,12 @@ function addPaths(methods, path, server, types, interactionInfo, interactionSche
                     }
                 }
             }
+
             Object.assign(cPaths[path][method], interactionInfo)
+
+            if (method === "get") {
+                delete cPaths[path][method].requestBody
+            }
 
             // check if server is given (ain't the case for "base" url fragments) and add
             if (server) {
@@ -237,6 +248,4 @@ function addPaths(methods, path, server, types, interactionInfo, interactionSche
             }
         }
     })
-
-    return cPaths
 }
