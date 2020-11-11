@@ -1,0 +1,34 @@
+name: Visual Testing Pipeline
+
+on: [pull_request, push]
+
+jobs:
+  setup-and-visual-test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Use Node.js 12
+        uses: actions/setup-node@v1
+        with:
+            node-version: '12.x'
+      
+      - name: Use lerna
+        run: npm install -g lerna
+      
+      - name: Bootstrap
+        run: lerna bootstrap
+      
+      - name: Visual Test
+        run: |
+          cd ./packages/playground-web
+          npm test
+      
+      - name: Upload test screenshots
+        uses: actions/upload-artifacts@v2
+        with:
+          name: playwright screenshots and downloads
+          path: test_results
