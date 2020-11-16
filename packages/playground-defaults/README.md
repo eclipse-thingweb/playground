@@ -33,10 +33,12 @@ You can use this package to integrate TD default value adding/removing in your a
 
 * Now you can call the add/remove defaults function to extend/reduce a TD object.
 
-```javascript
-addDefaults(td)
-removeDefaults(td)
-```
+  ```javascript
+  addDefaults(td)
+  removeDefaults(td)
+  ```
+
+  You can find usage examples in the [tests folder](./tests/), or the [playground-web] and [playground-cli] packages.
 
 ## Documentation
 
@@ -70,3 +72,6 @@ removeDefaults(td)
   #19 |       delete object[type]
   #20 | }
   ```
+
+[playground-web]: https://github.com/thingweb/thingweb-playground/tree/master/packages/playground-web
+[playground-cli]: https://github.com/thingweb/thingweb-playground/tree/master/packages/playground-cli

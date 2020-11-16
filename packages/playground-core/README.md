@@ -47,7 +47,7 @@ The [shared.js](./shared.js) file contains additional check functions, which are
 
 These examples cover all the features of the TD spec. If you think that there is a missing feature not represented, write an issue.
 
-* Additionally there are also example scripts provided (in the [example-script folder](./examples/scripts/)) to demonstrate the usage of this package.
+* Additionally there are also example scripts provided (in the [example-script folder](./examples/scripts/)) to demonstrate the usage of this package. Further examples for its usage can be found in the [playground-web] and [playground-cli] packages.
 
 * Small example for using this package in a Node.js script, to validate an example TD:
 
@@ -108,3 +108,6 @@ The core validation report is an object, which contains three objects (as you ca
   * additional: Combined indicator of the results of the additional checks that are listed in details.
 * The `details` object contains the results of the additional checks. The keywords can have the same values as in report.
 * The `detailComments` explains the meaning of every additional check.
+
+[playground-web]: https://github.com/thingweb/thingweb-playground/tree/master/packages/playground-web
+[playground-cli]: https://github.com/thingweb/thingweb-playground/tree/master/packages/playground-cli

@@ -4,7 +4,7 @@ The package providing support for openAPI instance generation (output as `json` 
 
 ## Abbreviations
 
-* OAP: openAPI
+* OAP: OpenAPI
 * TD: Thing Description
 
 ## Limitations
@@ -26,6 +26,38 @@ The package providing support for openAPI instance generation (output as `json` 
 
 * A TD hasn't necessarily to be valid in order to be converted to an openAPI instance. This converter will only throw an Error if the invalid part has a strong effect on the conversion result, but tries to ignore the most cases. This is by purpose, since there is the possibility to validate a TD using, e.g., the playground core package and the conversion of experimental TDs for example to create new TD features, should be supported.
 
+## Usage
+
+You can use this package to integrate OpenAPI instance generation from a TD in your application.
+
+* Install this package via NPM (`npm install @thing-description-playground/td_to_openapi`) (or clone repo and install the package with `npm install`)
+* Node.js or Browser import:
+  * Node.js: Require the package and use the functions
+
+  ```javascript
+  const tdToOpenAPI = require("@thing-description-playground/td_to_openapi")
+  ```
+
+  * Browser: Import the `tdToOpenAPI` object as a global by adding a script tag to your html.
+
+  ```html
+  <script src="./node_modules/@thing-description-playground/td_to_openapi/dist/web-bundle.min.js"></script>
+  ```
+
+* Now you can convert a TD to an OpenAPI instance.
+
+  ```javascript
+  tdToOpenAPI(td).then( OpenAPI => {
+    console.log(JSON.stringify(OpenAPI.json, undefined, 2))
+    console.log(OpenAPI.yaml)
+  })
+  ```
+
+  You can find usage examples in the [tests folder](./tests/), or the [playground-web] and [playground-cli] packages.
+
 ## License
 
 Licensed under the MIT license, see [License](./LICENSE.md).
+
+[playground-web]: https://github.com/thingweb/thingweb-playground/tree/master/packages/playground-web
+[playground-cli]: https://github.com/thingweb/thingweb-playground/tree/master/packages/playground-cli
