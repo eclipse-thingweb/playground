@@ -20,7 +20,7 @@ jobs:
         run: npm install -g lerna
       
       - name: Bootstrap
-        run: lerna bootstrap
+        run: lerna bootstrap --no-ci
       
       - name: Visual Test
         run: |

@@ -24,7 +24,7 @@ jobs:
         run: npm install -g lerna
       
       - name: Bootstrap
-        run: lerna bootstrap
+        run: lerna bootstrap --no-ci
       
       - name: Test
         run: lerna run test --no-bail --stream
