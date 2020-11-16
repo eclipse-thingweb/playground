@@ -22,7 +22,7 @@ function removeDefaults(td) {
 
 /**
  * Recursively extends nested data Schemas
- * @param {object} dataSchema An TD dataSchema object
+ * @param {object} dataSchema A TD dataSchema object
  */
 function extendDataSchema(dataSchema) {
     sharedDataSchema(dataSchema, extendOneObject)
@@ -30,7 +30,7 @@ function extendDataSchema(dataSchema) {
 
 /**
  * Recursively reduces nested data Schemas
- * @param {object} dataSchema An TD dataSchema object
+ * @param {object} dataSchema A TD dataSchema object
  */
 function reduceDataSchema(dataSchema) {
     sharedDataSchema(dataSchema, reduceOneObject)

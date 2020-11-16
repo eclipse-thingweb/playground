@@ -1,4 +1,4 @@
-# playground-td_to_openAPI
+# playground-defaults
 
 The package adds/removes defaults according to the Thing Description (TD) specification for every property with a default that is not filled with a value.
 Currently using [this](https://www.w3.org/TR/2020/REC-wot-thing-description-20200409/) version of the TD specification.
@@ -40,11 +40,11 @@ removeDefaults(td)
 
 ## Documentation
 
-* how it works:  
+* How it works:  
   The algorithm shipped with package basically tries to check all possible place (in terms of object hierachy e.g. `td.properties.temperature`) type combinations. A type refers to one objects default values (e.g. `form -> op: application/json`). It checks this combinations in the given TD, depending on whether it should **add** or **remove** default values:
   * add: If the default value(s) corresponding to the place type combination is/are not defined in the current TD, if this is true it adds the default value(s).  
   * remove: If the place type combination value(s) equal the default value(s), if this is true it removes the value(s).  
-  Since their can be `nested` places of type `DataSchema` (e.g. if one DataSchema includes another by using `oneOf`), these need to be handled recursively.
+  Since there can be `nested` places of type `DataSchema` (e.g. if one DataSchema includes another by using `oneOf`), these need to be handled recursively.
 * pseudocode:
 
   ```js
