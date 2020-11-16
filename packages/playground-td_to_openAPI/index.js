@@ -28,9 +28,9 @@ function toOpenAPI(td) {
         const servers = crawlServers(td.base)
         const {securitySchemes, security} = mapSecurity(td.securityDefinitions, td.security)
         const components = {
-            securitySchemes /* : mapSecurityDefinitions(td.securityDefinitions) */
+            securitySchemes
         }
-        /* const security = mapSecurityString(td.security) */
+
         const tags = addTags(td)
         const externalDocs = new ExternalDocs(
             "http://plugfest.thingweb.io/playground/",

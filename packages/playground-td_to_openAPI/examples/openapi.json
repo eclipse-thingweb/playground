@@ -47,24 +47,6 @@
             }
           }
         },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "enum": [
-                  "Standby",
-                  "Grinding",
-                  "Brewing",
-                  "Filling",
-                  "Error"
-                ],
-                "readOnly": true,
-                "type": "string"
-              },
-              "example": "Standby"
-            }
-          }
-        },
         "tags": [
           "properties"
         ],
@@ -106,9 +88,9 @@
                   "type": "object"
                 },
                 "example": {
-                  "water": 16.68114145467461,
-                  "coffeebeans": 53.83715638648221,
-                  "bin": 78.29843066127067
+                  "water": 66.50774024967545,
+                  "coffeebeans": 66.9186659728265,
+                  "bin": 53.82116477802556
                 }
               }
             }
@@ -117,38 +99,6 @@
             "description": "some error",
             "content": {
               "application/json": {}
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "readOnly": true,
-                "properties": {
-                  "water": {
-                    "type": "number",
-                    "minimum": 0,
-                    "maximum": 100
-                  },
-                  "coffeebeans": {
-                    "type": "number",
-                    "minimum": 0,
-                    "maximum": 100
-                  },
-                  "bin": {
-                    "type": "number",
-                    "minimum": 0,
-                    "maximum": 100
-                  }
-                },
-                "type": "object"
-              },
-              "example": {
-                "water": 42.376509703184425,
-                "coffeebeans": 38.274819280854835,
-                "bin": 32.98942269537113
-              }
             }
           }
         },
@@ -192,7 +142,7 @@
                 ],
                 "type": "string"
               },
-              "example": "Coffee"
+              "example": "Espresso"
             }
           }
         },
@@ -257,11 +207,6 @@
             }
           }
         },
-        "requestBody": {
-          "content": {
-            "application/json": {}
-          }
-        },
         "tags": [
           "events"
         ],
@@ -290,11 +235,6 @@
             }
           }
         },
-        "requestBody": {
-          "content": {
-            "application/json": {}
-          }
-        },
         "tags": [
           "events"
         ],
@@ -321,11 +261,6 @@
             "content": {
               "application/json": {}
             }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {}
           }
         },
         "tags": [

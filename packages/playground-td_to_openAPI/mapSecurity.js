@@ -110,6 +110,12 @@ function mapSecurityString(tdSecurity, oapSecuritySchemes, tdScopes) {
     return oapSecurityContainer
 }
 
+/**
+ * Map the TD security definitions to
+ * openAPI security Schemes in components
+ * and return all used scopes in addition
+ * @param {object|undefined} tdDefinitions if no object is given, empty securitySchemes and scopes are returned
+ */
 function mapSecurityDefinitions(tdDefinitions) {
     const securitySchemes = {}
     const scopes = {}
@@ -154,6 +160,7 @@ function genOapDefinition(tdDefinition) {
 
         case "nosec":
         case "basic":
+        case "psk":
             // do nothing?
         break
 
@@ -173,10 +180,6 @@ function genOapDefinition(tdDefinition) {
             if (oapDefinition.in === "body") {
                 throw new Error("Cannot represent ApiKey in `body` with openAPI")
             }
-        break
-
-        case "psk":
-            // console.warn("PSK security is not supported")
         break
 
         case "oauth2":
@@ -220,14 +223,15 @@ function genOAuthFlows(tdDefinition) {
     const mapTdToOap = {
         implicit: ["implicit"],
         password: ["password", "ropc"],
-        clientCredentials: ["application", "clientcredentials", "clientcredential"],
-        authorizationCode: ["accesscode", "code", "authorizationcode"]
+        clientCredentials: ["application", "client", "clientcredentials", "clientcredential"],
+        authorizationCode: ["accesscode", "code", "authorizationcode"],
+        "x-device": ["device"]
     }
 
     Object.keys(mapTdToOap).forEach( key => {
         if (mapTdToOap[key].some( arrayElement => (arrayElement === tdFlow))) {
             const protoFlow = {}
-            if (key === "implicit" || key === "authorizationCode") {
+            if (key === "implicit" || key === "authorizationCode" || key === "x-device") {
                 if (tdDefinition.authorization === undefined) {
                     throw new Error("the authorization URI is required for oauth2 flow: " + key)
                 }
@@ -235,7 +239,7 @@ function genOAuthFlows(tdDefinition) {
                     protoFlow.authorizationUrl = tdDefinition.authorization
                 }
             }
-            if (key === "password" || key === "clientCredentials" || key === "authorizationCode") {
+            if (key === "password" || key === "clientCredentials" || key === "authorizationCode" || key === "x-device") {
                 if (tdDefinition.token === undefined) {
                     throw new Error("the token URI is required for oauth2 flow: " + key)
                 }
