@@ -479,7 +479,7 @@ function openApiGeneration() {
     // input checks
     if (!input) {input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid", "simple.json")}
     if (!fs.lstatSync(input).isFile()) {
-        throw new Error("please provide one File as input for the open API instance generation")
+        throw new Error("please provide one File as input for the OpenAPI instance generation")
     }
     if(!fs.existsSync("./out")) {
         fs.mkdirSync("./out")
@@ -500,13 +500,13 @@ function openApiGeneration() {
 }
 
 /**
- * add/remove defaults from 
+ * add/remove defaults from
  */
 function defaultManipulation() {
     // input checks
     if (!input) {input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid", "simple.json")}
     if (!fs.lstatSync(input).isFile()) {
-        throw new Error("please provide one File as input for the open API instance generation")
+        throw new Error("please provide one File as input for the OpenAPI instance generation")
     }
     if(!fs.existsSync("./out")) {
         fs.mkdirSync("./out")

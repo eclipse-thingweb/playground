@@ -134,7 +134,7 @@ export function generateOAP(fileType){
         const tdToValidate=window.editor.getValue()
 
         if (tdToValidate === "") {
-            rej("No TD given to generate Open API instance")
+            rej("No TD given to generate OpenAPI instance")
         }
         else if (fileType !== "json" && fileType !== "yaml") {
             rej("Wrong content type required: " + fileType)
