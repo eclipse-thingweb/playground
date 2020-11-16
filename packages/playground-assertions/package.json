@@ -21,7 +21,7 @@
     "prepare": "npm run bundle"
   },
   "dependencies": {
-    "@thing-description-playground/core": "^1.0.0",
+    "@thing-description-playground/core": "^1.0.1",
     "ajv": "^6.12.2",
     "csvjson": "^5.1.0",
     "is-utf8": "^0.2.1",
