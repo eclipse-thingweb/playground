@@ -2,7 +2,7 @@
   "name": "@thing-description-playground/assertions",
   "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
   "license": "MIT",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Provides the assertion testing functionality for the Web of Things - Thing Description Playground.",
   "homepage": "https://github.com/thingweb/thingweb-playground#readme",
   "bugs": {
