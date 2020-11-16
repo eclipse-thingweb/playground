@@ -1,3 +1,8 @@
+/**
+ * @file Test the add-defaults functionality by comparing against a snapshot (`integration test`)
+ *       and testing specific features (`module tests`)
+ */
+
 const fs = require("fs")
 const {addDefaults} = require("../index.js")
 

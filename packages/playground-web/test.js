@@ -1,3 +1,10 @@
+/**
+ * @file Visual testing for this package. Uses `playwright` to create screenshots of the locally served package
+ *       and download an instance of the assertion report. The screenshots are generated using chromium and firefox
+ *       (webkit fails ATM) and different viewports and actions (click on forms etc.).
+ *       The test results are written to "./test_results"
+ */
+
 const playwright = require('playwright')
 const fs = require("fs")
 const handler = require("serve-handler")

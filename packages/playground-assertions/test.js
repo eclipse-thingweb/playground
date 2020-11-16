@@ -1,4 +1,8 @@
-// Test utility to test index.js
+/**
+ * @file Uses a hardcoded example TD-string to check whether running the assertion
+ * 		 function on it throws any errors and allow manually checking the result
+ * 		 output on the console.
+ */
 const tdAsserter = require("./index")
 const fs = require("fs")
 

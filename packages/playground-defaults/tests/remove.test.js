@@ -1,3 +1,10 @@
+/**
+ * @file Test the remove-defaults functionality by
+ *       comparing against a snapshot (`integration test`)
+ *       testing specific features (`module tests`)
+ *       making sure values that are not equal to defaults are not removed (`Remove specific`)
+ */
+
 const fs = require("fs")
 const { TestScheduler } = require( 'jest' )
 const {removeDefaults} = require("../index.js")

@@ -1,3 +1,10 @@
+/**
+ * @file Uses all valid TD examples from the core package to test this package.
+ *       Call the add defaults function with every TD and check if defaults-schema passes.
+ *       Call the remove defaults function with every TD and check if defaults-schema throws warning.
+ *       Make sure for both functions that the TD output is still valid JSON and valid TD-schema-without-default-checking
+ */
+
 const fs = require("fs")
 const {addDefaults, removeDefaults} = require("../index.js")
 const tdValidator = require("@thing-description-playground/core")
