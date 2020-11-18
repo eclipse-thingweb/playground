@@ -2,7 +2,7 @@
   "name": "@thing-description-playground/assertions",
   "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
   "license": "MIT",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Provides the assertion testing functionality for the Web of Things - Thing Description Playground.",
   "homepage": "https://github.com/thingweb/thingweb-playground#readme",
   "bugs": {
@@ -15,13 +15,13 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "node test.js",
-    "bundle": "npx browserify ./index.js -s tdAssertions -o ./dist/web-bundle.js & npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
+    "test": "node ./tests/index-test.js",
+    "bundle": "npx browserify ./index.js -s tdAssertions -o ./dist/web-bundle.js && npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
     "newlist": "node update-list.js",
     "prepare": "npm run bundle"
   },
   "dependencies": {
-    "@thing-description-playground/core": "^1.0.0",
+    "@thing-description-playground/core": "^1.0.1",
     "ajv": "^6.12.2",
     "csvjson": "^5.1.0",
     "is-utf8": "^0.2.1",
@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "browserify": "^16.5.1",
+    "eslint": "^7.13.0",
     "terser": "^4.7.0"
   },
   "publishConfig": {

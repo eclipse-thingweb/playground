@@ -2,7 +2,7 @@
   "name": "@thing-description-playground/core",
   "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
   "license": "MIT",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Provides the validation functionality for the Web of Things - Thing Description Playground.",
   "homepage": "https://github.com/thingweb/thingweb-playground#readme",
   "bugs": {
@@ -15,8 +15,8 @@
     "directory": "packages/playground-core"
   },
   "scripts": {
-    "test": "node test.js",
-    "bundle": "npx browserify ./index.js -s tdValidator -o ./dist/web-bundle.js & npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
+    "test": "jest",
+    "bundle": "npx browserify ./index.js -s tdValidator -o ./dist/web-bundle.js && npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
     "prepare": "npm run bundle"
   },
   "dependencies": {
@@ -26,6 +26,8 @@
   },
   "devDependencies": {
     "browserify": "^16.5.1",
+    "eslint": "^7.13.0",
+    "jest": "^26.6.3",
     "terser": "^4.7.0"
   },
   "publishConfig": {

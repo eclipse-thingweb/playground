@@ -3,7 +3,7 @@
  * 		 function on it throws any errors and allow manually checking the result
  * 		 output on the console.
  */
-const tdAsserter = require("./index")
+const tdAsserter = require("../index")
 const fs = require("fs")
 
 const simpleTD = JSON.stringify({

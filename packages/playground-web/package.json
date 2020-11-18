@@ -2,7 +2,7 @@
   "name": "@thing-description-playground/web",
   "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
   "license": "MIT",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Provides a browser GUI for the Web of Things - Thing Description Playground.",
   "homepage": "https://github.com/thingweb/thingweb-playground#readme",
   "bugs": {
@@ -20,16 +20,17 @@
     "serve": "serve -p 5500"
   },
   "dependencies": {
-    "@thing-description-playground/assertions": "^1.0.1",
-    "@thing-description-playground/core": "^1.0.0",
-    "@thing-description-playground/td_to_openapi": "^1.0.0",
     "@thing-description-playground/defaults": "^0.0.0",
+    "@thing-description-playground/assertions": "^1.0.2",
+    "@thing-description-playground/core": "^1.0.1",
+    "@thing-description-playground/td_to_openapi": "^1.1.0",
     "bootstrap-css-only": "4.4.1",
     "monaco-editor": "^0.20.0",
     "papaparse": "^5.3.0"
   },
   "devDependencies": {
     "browserify": "^16.5.2",
+    "eslint": "^7.13.0",
     "jquery": "^3.5.1",
     "minify": "^5.1.1",
     "playwright": "^1.4.0",

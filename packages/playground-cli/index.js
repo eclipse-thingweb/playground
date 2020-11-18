@@ -9,8 +9,8 @@ const assertManualToJson = require('@thing-description-playground/assertions').m
 const assertMergeResults = require('@thing-description-playground/assertions').mergeResults
 const assertCheckCoverage = require('@thing-description-playground/assertions').checkCoverage
 const assertResultsToCsv = require('@thing-description-playground/assertions').resultsToCsv
-const tdToOAP = require('@thing-description-playground/td_to_openAPI')
 const {addDefaults, removeDefaults} = require('@thing-description-playground/defaults')
+const tdToOAP = require('@thing-description-playground/td_to_openapi')
 const argParser = require('argly')
     .createParser({
         '--help -h': { /* Displays the output specified by this object */
