@@ -1,6 +1,6 @@
 {
   "name": "@thing-description-playground/gist_backend",
-  "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
+  "author": "TUM ESI <esi@ei.tum.de> (https://www.ei.tum.de/en/esi/home/)",
   "license": "MIT",
   "version": "1.0.0",
   "description": "Provides a gist submission backend for the @thing-description-playground/web package.",

@@ -185,6 +185,13 @@
 												<button type="button" class="btn custom-btn" id="btn_oap_json" title="Download an OpenAPI instance of the TD as .json file">JSON</button>
 												<button type="button" class="btn custom-btn" id="btn_oap_yaml" title="Download an OpenAPI instance of the TD as .yaml file">YAML</button>
 											</div>
+
+											<br>
+											<div class="btn-group" role="group">
+												<button type="button" class="btn custom-btn oap-btn" title="Extend/reduce a TD by default values" disabled>Defaults</button>
+												<button type="button" class="btn custom-btn" id="btn_defaults_add" title="Add every default value explicitly">Add</button>
+												<button type="button" class="btn custom-btn" id="btn_defaults_remove" title="Remove all explicitly stated default values">Remove</button>
+											</div>
 											
 										</div>
 										
@@ -229,6 +236,7 @@
 		<script src="./node_modules/@thing-description-playground/core/dist/web-bundle.min.js"></script>
 		<script src="./node_modules/@thing-description-playground/assertions/dist/web-bundle.min.js"></script>
 		<script src="./node_modules/@thing-description-playground/td_to_openapi/dist/web-bundle.min.js"></script>
+		<script src="./node_modules/@thing-description-playground/defaults/dist/web-bundle.min.js"></script>
 		<script src="./node_modules/monaco-editor/min/vs/loader.js"></script>
 		<script type="module" src="./script.js"></script>
 

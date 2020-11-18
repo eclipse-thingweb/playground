@@ -1,6 +1,6 @@
 {
   "name": "@thing-description-playground/web",
-  "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
+  "author": "TUM ESI <esi@ei.tum.de> (https://www.ei.tum.de/en/esi/home/)",
   "license": "MIT",
   "version": "1.0.2",
   "description": "Provides a browser GUI for the Web of Things - Thing Description Playground.",
@@ -20,6 +20,7 @@
     "serve": "serve -p 5500"
   },
   "dependencies": {
+    "@thing-description-playground/defaults": "^0.0.0",
     "@thing-description-playground/assertions": "^1.0.2",
     "@thing-description-playground/core": "^1.0.1",
     "@thing-description-playground/td_to_openapi": "^1.1.0",

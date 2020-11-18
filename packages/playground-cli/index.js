@@ -9,6 +9,7 @@ const assertManualToJson = require('@thing-description-playground/assertions').m
 const assertMergeResults = require('@thing-description-playground/assertions').mergeResults
 const assertCheckCoverage = require('@thing-description-playground/assertions').checkCoverage
 const assertResultsToCsv = require('@thing-description-playground/assertions').resultsToCsv
+const {addDefaults, removeDefaults} = require('@thing-description-playground/defaults')
 const tdToOAP = require('@thing-description-playground/td_to_openapi')
 const argParser = require('argly')
     .createParser({
@@ -66,6 +67,14 @@ const argParser = require('argly')
         '--oap-yaml -y': {
             type: 'string',
             description: 'Whether openAPI should be written as YAML instead of json.'
+        },
+        '--default-add': {
+            type: 'boolean',
+            description: 'Whether the input TD should be extended by default values.'
+        },
+        '--default-rem': {
+            type: 'boolean',
+            description: 'Whether the input TD should be reduced by default values.'
         }
     })
     .usage('Usage: $0 [input] [options]')
@@ -113,6 +122,9 @@ if (myArguments.assertions === true) {
 }
 else if (myArguments.openApi === true) {
     openApiGeneration()
+}
+else if (myArguments.defaultAdd === true || myArguments.defaultRem === true) {
+    defaultManipulation()
 }
 else {
     coreValidation()
@@ -467,7 +479,10 @@ function openApiGeneration() {
     // input checks
     if (!input) {input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid", "simple.json")}
     if (!fs.lstatSync(input).isFile()) {
-        throw new Error("please provide one File as input for the open API instance generation")
+        throw new Error("please provide one File as input for the OpenAPI instance generation")
+    }
+    if(!fs.existsSync("./out")) {
+        fs.mkdirSync("./out")
     }
 
     // actual function call
@@ -482,6 +497,37 @@ function openApiGeneration() {
             fs.writeFileSync(outpath + ".json", JSON.stringify(openApiInstance.json, undefined, 4))
         }
     })
+}
+
+/**
+ * add/remove defaults from
+ */
+function defaultManipulation() {
+    // input checks
+    if (!input) {input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid", "simple.json")}
+    if (!fs.lstatSync(input).isFile()) {
+        throw new Error("please provide one File as input for the OpenAPI instance generation")
+    }
+    if(!fs.existsSync("./out")) {
+        fs.mkdirSync("./out")
+    }
+
+    // actual function call
+    const tdToConvert = JSON.parse(fs.readFileSync(input, "utf-8"))
+    const name = extractName(input)
+    let outpath = path.join("./out", name)
+    if (myArguments.defaultAdd === true) {
+        addDefaults(tdToConvert)
+        outpath += "_extended.json"
+    }
+    else if (myArguments.defaultRem === true) {
+        removeDefaults(tdToConvert)
+        outpath += "_reduced.json"
+    }
+    else {
+        throw new Error("argument problem, defaultManipulation")
+    }
+    fs.writeFileSync(outpath, JSON.stringify(tdToConvert, undefined, 4))
 }
 
 /**

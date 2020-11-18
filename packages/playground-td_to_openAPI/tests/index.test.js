@@ -1,3 +1,7 @@
+/**
+ * @file Test the functionality of this package by snapshot comparison.
+ */
+
 const fs = require("fs")
 const toOAP = require("../index.js")
 const td = require("../examples/td.json")

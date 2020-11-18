@@ -1,3 +1,7 @@
+/**
+ * @file Modules test for genInteraction.js, test its functionality by hardcoded example -> expected output pairs
+ */
+
 const genInteraction = require("../genInteraction")
 const {genParameters} = require("../genInteraction").test
 

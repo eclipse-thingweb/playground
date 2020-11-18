@@ -1,3 +1,7 @@
+/**
+ * @file Modules test for mapSecurity.js, test its functionality by hardcoded example -> expected output pairs
+ */
+
 const {mapSecurity, mapSecurityString, mapSecurityDefinitions, hasNoSec, mapFormSecurity} = require("../mapSecurity")
 
 // reused definitions

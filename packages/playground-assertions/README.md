@@ -29,16 +29,18 @@ You can use this package to integrate TD assertion testing in your own Browser/N
 
 * Now you can call the assertion testing function and handle the result.
 
-```javascript
-tdAssertions([simpleTD], fileLoad, /*OPT: log Function*/, /*OPT: manual report*/)
-.then( result => {
-  console.log("OKAY")
-  console.log(result)
-}, err => {
-  console.log("ERROR")
-  console.error(err)
-})
-```
+  ```javascript
+  tdAssertions([simpleTD], fileLoad, /*OPT: log Function*/, /*OPT: manual report*/)
+  .then( result => {
+    console.log("OKAY")
+    console.log(result)
+  }, err => {
+    console.log("ERROR")
+    console.error(err)
+  })
+  ```
+
+  You can also find examples on how to use this package in the [example-scripts folder](./example-scripts) or the [playground-web] and [playground-cli] packages.
 
 ## Structure
 
@@ -91,3 +93,6 @@ You can contribute by providing new JSON Schemas for assertions or by correcting
 ## Known Bugs
 
 * td-json-open assertion exists multiple times, [see issue 124](https://github.com/thingweb/thingweb-playground/issues/124)
+
+[playground-web]: https://github.com/thingweb/thingweb-playground/tree/master/packages/playground-web
+[playground-cli]: https://github.com/thingweb/thingweb-playground/tree/master/packages/playground-cli

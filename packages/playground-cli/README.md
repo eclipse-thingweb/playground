@@ -148,5 +148,21 @@ The core validation report is an object, which contains three objects (as you ca
 '--assertion-manual -m': {
     type: 'string',
     description: 'path and filename to manual.csv file'
+},
+'--open-api -p': {
+    type: 'boolean',
+    description: 'Call the openAPI instance generation instead of validation/assertions.'
+},
+'--oap-yaml -y': {
+    type: 'string',
+    description: 'Whether openAPI should be written as YAML instead of json.'
+},
+'--default-add': {
+    type: 'boolean',
+    description: 'Whether the input TD should be extended by default values.'
+},
+'--default-rem': {
+    type: 'boolean',
+    description: 'Whether the input TD should be reduced by default values.'
 }
 ```

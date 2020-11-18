@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/thingweb/thingweb-playground.git",
+    "url": "TUM ESI <esi@ei.tum.de> (https://www.ei.tum.de/en/esi/home/)",
     "directory": "packages/playground-cli"
   },
   "main": "index.js",
@@ -19,6 +19,7 @@
     "start": "node ./index.js"
   },
   "dependencies": {
+    "@thing-description-playground/defaults": "^0.0.0",
     "@thing-description-playground/assertions": "^1.0.2",
     "@thing-description-playground/core": "^1.0.1",
     "@thing-description-playground/td_to_openapi": "^1.1.0",

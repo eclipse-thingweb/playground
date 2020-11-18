@@ -1,0 +1,59 @@
+{
+	"id": "urn:simple",
+	"@context": "https://www.w3.org/2019/wot/td/v1",
+	"title": "MyLampThing",
+	"description": "Valid TD copied from the spec's first example",
+	"securityDefinitions": {
+		"basic_sc": {
+			"scheme": "basic",
+			"in": "header"
+		}
+	},
+	"security": [
+		"basic_sc"
+	],
+	"properties": {
+		"status": {
+			"type": "string",
+			"writeOnly": false,
+			"readOnly": false,
+			"forms": [
+				{
+					"href": "https://mylamp.example.com/status",
+					"op": ["readproperty", "writeproperty"],
+					"contentType": "application/json"
+				}
+			]
+		}
+	},
+	"actions": {
+		"toggle": {
+			"safe": false,
+			"idempotent": false,
+			"forms": [
+				{
+					"href": "https://mylamp.example.com/toggle",
+					"op": "invokeaction",
+					"contentType": "application/json"
+				}
+			]
+		}
+	},
+	"events": {
+		"overheating": {
+			"data": {
+				"type": "string",
+				"writeOnly": false,
+				"readOnly": false
+			},
+			"forms": [
+				{
+					"href": "https://mylamp.example.com/oh",
+					"op": "subscribeevent",
+					"subprotocol": "longpoll",
+					"contentType": "application/json"
+				}
+			]
+		}
+	}
+}
