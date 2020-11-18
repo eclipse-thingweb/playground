@@ -17,7 +17,7 @@ const jsonValidator = require('json-dup-key-validator')
  * @param {string} tdString The Thing Description to check as a string.
  * @param {function} logFunc (string) => void; Callback used to log the validation progress.
  * @param {object} options additional options, which checks should be executed
- * @returns {object} Results of the validation as {report, details} object
+ * @returns {Promise<object>} Results of the validation as {report, details, detailComments} object
  */
 function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }) {
     return new Promise( (res, rej) => {
@@ -443,15 +443,15 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
          * @returns "passed" if no check failed, "failed" if one or more checks failed
          */
         function evalAssertion(results) {
-            let eval = "passed"
+            let out = "passed"
             results.forEach( resultobj => {
                 if (resultobj.Status === "fail") {
-                    eval = "failed"
+                    out = "failed"
                     logFunc("KO Error: Assertion: " + resultobj.ID)
                     logFunc(resultobj.Comment)
                 }
             })
-            return eval
+            return out
         }
 
         /**

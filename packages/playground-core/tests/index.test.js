@@ -1,5 +1,5 @@
 // Test utility to test index.js
-const tdValidator = require("./index")
+const tdValidator = require("../index")
 
 const simpleTD = `{
 	"id": "urn:simple",
@@ -60,13 +60,38 @@ const simpleTD = `{
 	}
 }`
 
+test("normal report generation", () => {
+	expect.assertions(1)
 
-tdValidator(simpleTD, console.log, {})
-.then( result => {
-	console.log("OKAY")
-	console.log(result)
-}, err => {
-	console.log("ERROR")
-	console.error(err)
+	return tdValidator(simpleTD, ()=>{}, {})
+	.then( result => {
+		const refResult = {
+			report: {
+				json: 'passed',
+				schema: 'passed',
+				defaults: 'warning',
+				jsonld: 'passed',
+				additional: 'passed'
+			},
+			details: {
+				enumConst: 'passed',
+				propItems: 'passed',
+				security: 'passed',
+				propUniqueness: 'passed',
+				multiLangConsistency: 'passed',
+				readWriteOnly: 'passed'
+			},
+			detailComments: {
+				enumConst: expect.any(String),
+				propItems: expect.any(String),
+				security: expect.any(String),
+				propUniqueness: expect.any(String),
+				multiLangConsistency: expect.any(String),
+				readWriteOnly: expect.any(String)
+			}
+		}
+		expect(result).toEqual(refResult)
+	}, err => {
+		console.error(err)
+	})
 })
-

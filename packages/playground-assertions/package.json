@@ -15,8 +15,8 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "node test.js",
-    "bundle": "npx browserify ./index.js -s tdAssertions -o ./dist/web-bundle.js & npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
+    "test": "node ./tests/index-test.js",
+    "bundle": "npx browserify ./index.js -s tdAssertions -o ./dist/web-bundle.js && npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
     "newlist": "node update-list.js",
     "prepare": "npm run bundle"
   },
@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "browserify": "^16.5.1",
+    "eslint": "^7.13.0",
     "terser": "^4.7.0"
   },
   "publishConfig": {

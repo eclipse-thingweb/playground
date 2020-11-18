@@ -15,7 +15,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "node ./index.js",
+    "test": "node ./tests/index-test.js",
     "start": "node ./index.js"
   },
   "dependencies": {
@@ -26,5 +26,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "eslint": "^7.13.0"
   }
 }
