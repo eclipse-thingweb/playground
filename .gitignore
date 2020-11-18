@@ -1,8 +1,6 @@
 # node
 node_modules
 
-# ignore package-lock.json as not part of published module and might cause break
-package-lock.json
 
 # test screenshots for web package
 test_results/

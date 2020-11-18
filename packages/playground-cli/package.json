@@ -21,8 +21,8 @@
   "dependencies": {
     "@thing-description-playground/assertions": "^1.0.1",
     "@thing-description-playground/core": "^1.0.0",
-    "@thing-description-playground/td_to_openAPI": "^1.0.0",
-    "@thing-description-playground/defaults": "^1.0.0",
+    "@thing-description-playground/td_to_openapi": "^1.0.0",
+    "@thing-description-playground/defaults": "^0.0.0",
     "argly": "^1.2.0"
   },
   "publishConfig": {
