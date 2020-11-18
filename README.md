@@ -1,6 +1,6 @@
 # WoT (W3C) Thingweb-Playground
 
-Try it online at http://plugfest.thingweb.io/playground/
+Try it online at [http://plugfest.thingweb.io/playground/](http://plugfest.thingweb.io/playground/)
 
 ## Structure
 
@@ -12,13 +12,13 @@ Both packages are used by the Web and CLI packages to provide their functionalit
 
 ## Packages
 
-* You can use the `playground-assertion` package to integrate assertion testing via an API in your own packages. The assertions package can be found [here](./packages/playground-assertions/).
-* You can use the `playground-cli` package to test one/multiple TDs via the command line or execute assertion testing with it. The cli for the playground can be found [here](./packages/playground-cli/).
-* You can use the `playground-core` package as an API to validate TDs in your own packages. The core package can be found [here](./packages/playground-core/).
-* You can use the `playground-defaults` package to add/remove explicitly stated default values in a TD. The default package can be found [here](./packages/playground-defaults/).
-* You can use the `playground-gist_backend` package to host a backend for the gist-submission functionality of the browser version of the playground. The package can be found [here](./packages/playground-gist_backend).
-* You can use the `playground-td_to_openAPI` package to create an openAPI instance from a Thing Description. The package can be found [here](./packages/playground-td_to_openAPI).
-* You can use the `playground-web` package to host/adapt your own browser version of the WoT playground. The web package can be found [here](./packages/playground-web/).
+* You can use the `playground-assertion` package to integrate assertion testing via an API in your own packages. The assertions package can be found [here](./packages/playground-assertions/) or [on NPM](https://www.npmjs.com/package/@thing-description-playground/assertions).
+* You can use the `playground-cli` package to test one/multiple TDs via the command line or execute assertion testing with it. The cli for the playground can be found [here](./packages/playground-cli/) or [on NPM](https://www.npmjs.com/package/@thing-description-playground/cli).
+* You can use the `playground-core` package as an API to validate TDs in your own packages. The core package can be found [here](./packages/playground-core/) or [on NPM](https://www.npmjs.com/package/@thing-description-playground/core).
+* You can use the `playground-defaults` package to add/remove explicitly stated default values in a TD. The default package can be found [here](./packages/playground-defaults/) or [on NPM](https://www.npmjs.com/package/@thing-description-playground/defaults).
+* You can use the `playground-gist_backend` package to host a backend for the gist-submission functionality of the browser version of the playground. The package can be found [here](./packages/playground-gist_backend) or [on NPM](https://www.npmjs.com/package/@thing-description-playground/gist_backend).
+* You can use the `playground-td_to_openAPI` package to create an openAPI instance from a Thing Description. The package can be found [here](./packages/playground-td_to_openAPI) or [on NPM](https://www.npmjs.com/package/@thing-description-playground/td_to_openapi).
+* You can use the `playground-web` package to host/adapt your own browser version of the WoT playground. The web package can be found [here](./packages/playground-web/) or [on NPM](https://www.npmjs.com/package/@thing-description-playground/web).
 
 ## Examples
 
