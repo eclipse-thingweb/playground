@@ -33,7 +33,7 @@ function sharedDefaults(td, cbOneObject, cbDataSchema) {
         forEvery(td[interactionType], interaction => {
             if (interaction.forms) {
                 interaction.forms.forEach( form => {
-                    cbOneObject(form, interactionTypes[interactionType])
+                    cbOneObject(form, interactionTypes[interactionType], interaction)
                 })
             }
         })
@@ -114,14 +114,14 @@ function sharedDataSchema(dataSchema, callback) {
  * @param {{}} target the object to extend
  * @param {string} type The type according to the defaultLookup table
  */
-function sharedOneObject(target, type, callback) {
+function sharedOneObject(target, type, callback, parentInteraction) {
     if (typeof target !== "object") {throw new Error("target has to be of type 'object' not: " + typeof target)}
     if (typeof type !== "string") {throw new Error("type has to be of type 'string' not: " + typeof type)}
     if (Object.keys(defaultLookup).every(key => (key !== type))) {
         throw new Error("type has to be a defaultLookup entry, type: " + type)
     }
 
-    callback(target, type)
+    callback(target, type, parentInteraction)
 
     // handle default values with superClasses (e.g. Form-EventAffordance)
     if (type.includes("-")) {

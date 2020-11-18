@@ -430,4 +430,58 @@ describe("module tests", () => {
         removeDefaults(td)
         expect(td).toEqual(refTd)
     })
+
+    test("readOnly special case", () => {
+        const refTd = {
+            properties: {
+                temperature: {
+                    readOnly: true,
+                    forms: [{href:"asdf"}]
+                }
+            }
+        }
+        const td = {
+            properties: {
+                temperature: {
+                    readOnly: true,
+                    writeOnly: false,
+                    forms: [{
+                        href:"asdf",
+                        op: "readproperty",
+                        contentType: "application/json"
+                    }]
+                }
+            }
+        }
+        removeDefaults(td)
+        expect(td).toEqual(refTd)
+    })
+
+    test("writeOnly special case", () => {
+        const refTd = {
+            properties: {
+                temperature: {
+                    writeOnly: true,
+                    forms: [{href:"asdf"}, {}]
+                }
+            }
+        }
+        const td = {
+            properties: {
+                temperature: {
+                    readOnly: false,
+                    writeOnly: true,
+                    forms: [{
+                        href:"asdf",
+                        op: "writeproperty",
+                        contentType: "application/json"
+                    }, {
+                        op: ["writeproperty", "readproperty"]
+                    }]
+                }
+            }
+        }
+        removeDefaults(td)
+        expect(td).toEqual(refTd)
+    })
 })

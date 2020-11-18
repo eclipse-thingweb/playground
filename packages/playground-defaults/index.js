@@ -42,19 +42,38 @@ function reduceDataSchema(dataSchema) {
  * using the defaultLookup table
  * @param {{}} target the object to extend
  * @param {string} type The type according to the defaultLookup table
+ * @param {{}} parentInteraction Only for read/writeOnly special case
  */
-function extendOneObject(target, type) {
+function extendOneObject(target, type, parentInteraction) {
 
-    const callback = (cTarget, cType) => {
-        const defaultSource = defaultLookup[cType]
-        Object.keys(defaultSource).forEach( key => {
-            if (cTarget[key] === undefined) {
-                cTarget[key] = defaultSource[key]
+    const callback = (cTarget, cType, cParent) => {
+        // treat special case, that readOnly / writeOnly should be respected
+        if (cType === "Form-PropertyAffordance" && (cParent.readOnly || cParent.writeOnly)) {
+            if (cTarget.op === undefined) {
+                if (cParent.readOnly && cParent.writeOnly) {
+                    console.warn("readOnly and writeOnly are both true for: ", cParent)
+                    // do not set op in this case
+                }
+                else if (cParent.readOnly) {
+                    cTarget.op = "readproperty"
+                }
+                else {
+                    cTarget.op = "writeproperty"
+                }
             }
-        })
+        }
+        // default behavior
+        else {
+            const defaultSource = defaultLookup[cType]
+            Object.keys(defaultSource).forEach( key => {
+                if (cTarget[key] === undefined) {
+                    cTarget[key] = defaultSource[key]
+                }
+            })
+        }
     }
 
-    sharedOneObject(target, type, callback)
+    sharedOneObject(target, type, callback, parentInteraction)
 }
 
 /**
@@ -62,19 +81,38 @@ function extendOneObject(target, type) {
  * equal default values, using the defaultLookup table
  * @param {object} target the object to extend
  * @param {string} type The type according to the defaultLookup table
+ * @param {{}} parentInteraction Only for read/writeOnly special case
  */
-function reduceOneObject(target, type) {
+function reduceOneObject(target, type, parentInteraction) {
 
-    const callback = (cTarget, cType) => {
-        const defaultSource = defaultLookup[cType]
-        Object.keys(defaultSource).forEach( key => {
-            if (objEquality(cTarget[key], defaultSource[key])) {
-                delete cTarget[key]
+    const callback = (cTarget, cType, cParent) => {
+        // treat special case, that readOnly / writeOnly should be respected
+        if (cType === "Form-PropertyAffordance" && (cParent.readOnly || cParent.writeOnly) && typeof cTarget.op === "string") {
+            if (cParent.readOnly && cParent.writeOnly) {
+                console.warn("readOnly and writeOnly are both true for: ", cParent)
+                // do not set op in this case
             }
-        })
+            else if (cParent.readOnly && cTarget.op === "readproperty") {
+                delete cTarget.op
+            }
+            else if (cParent.writeOnly && cTarget.op === "writeproperty") {
+                delete cTarget.op
+            }
+            else {
+                // do nothing
+            }
+        }
+        else {
+            const defaultSource = defaultLookup[cType]
+            Object.keys(defaultSource).forEach( key => {
+                if (objEquality(cTarget[key], defaultSource[key])) {
+                    delete cTarget[key]
+                }
+            })
+        }
     }
 
-    sharedOneObject(target, type, callback)
+    sharedOneObject(target, type, callback, parentInteraction)
 }
 
 module.exports = {

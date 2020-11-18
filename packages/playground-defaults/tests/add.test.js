@@ -4,6 +4,7 @@
  */
 
 const fs = require("fs")
+const { TestScheduler } = require( 'jest' )
 const {addDefaults} = require("../index.js")
 
 if (!fs.existsSync("./out")) {fs.mkdirSync("./out")}
@@ -322,6 +323,59 @@ describe("module tests", () => {
                 "api_sc": {
                     scheme: "apikey",
                     in: "query"
+                }
+            }
+        }
+        addDefaults(td)
+        expect(td).toEqual(refTd)
+    })
+
+    test("readOnly special case", () => {
+        const td = {
+            properties: {
+                temperature: {
+                    readOnly: true,
+                    forms: [{href:"asdf"}]
+                }
+            }
+        }
+        const refTd = {
+            properties: {
+                temperature: {
+                    readOnly: true,
+                    writeOnly: false,
+                    forms: [{
+                        href:"asdf",
+                        op: "readproperty",
+                        contentType: "application/json"
+                    }]
+                }
+            }
+        }
+        addDefaults(td)
+        expect(td).toEqual(refTd)
+    })
+
+    test("writeOnly special case", () => {
+        const td = {
+            properties: {
+                temperature: {
+                    writeOnly: true,
+                    readOnly: false,
+                    forms: [{href:"asdf"}]
+                }
+            }
+        }
+        const refTd = {
+            properties: {
+                temperature: {
+                    readOnly: false,
+                    writeOnly: true,
+                    forms: [{
+                        href:"asdf",
+                        op: "writeproperty",
+                        contentType: "application/json"
+                    }]
                 }
             }
         }
