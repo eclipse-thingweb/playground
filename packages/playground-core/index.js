@@ -443,15 +443,15 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
          * @returns "passed" if no check failed, "failed" if one or more checks failed
          */
         function evalAssertion(results) {
-            let eval = "passed"
+            let evalResult = "passed"
             results.forEach( resultobj => {
                 if (resultobj.Status === "fail") {
-                    eval = "failed"
+                    evalResult = "failed"
                     logFunc("KO Error: Assertion: " + resultobj.ID)
                     logFunc(resultobj.Comment)
                 }
             })
-            return eval
+            return evalResult
         }
 
         /**
