@@ -19,7 +19,7 @@ Licensed under the MIT license, see [License](./LICENSE.md).
 
 * Offline/OnPremise: by hosting the `playground-web` yourself. You can use the `playground-web` package to host/adapt your own browser version of the WoT playground.  
   To host it yourself:
-  * Install the package with npm `npm install playground-web` (or clone repo and install the package with `npm install`)
+  * Install the package with npm `npm install @thing-description-playground/web` (or clone repo and install the package with `npm install`)
   * Deliver its files by a web server (also locally possible via localhost), simply opening the `index.html` with a browser won't do the job.  
 
 ## (Playwright) Testing

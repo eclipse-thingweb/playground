@@ -13,19 +13,19 @@ Limitations:
 
 You can use this package to integrate TD assertion testing in your own Browser/NPM application.
 
-* Install this package via NPM (`npm install playground-assertions`) (or clone repo and install the package with `npm install`)
+* Install this package via NPM (`npm install @thing-description-playground/assertions`) (or clone repo and install the package with `npm install`)
 * Node.js or Browser import:
   * Node.js: Require the package and use the assertion Testing function
 
-    ```javascript
-    const tdAssertions = require("playground-assertions")
-    ```
+  ```javascript
+  const tdAssertions = require("@thing-description-playground/assertions")
+  ```
 
   * Browser: Import the `tdAssertions` function as a global by adding a script tag to your html.
 
-    ```html
-    <script src="./node_modules/playground-assertions/dist/web-bundle.min.js"></script>
-    ```
+  ```html
+  <script src="./node_modules/@thing-description-playground/assertions/dist/web-bundle.min.js"></script>
+  ```
 
 * Now you can call the assertion testing function and handle the result.
 

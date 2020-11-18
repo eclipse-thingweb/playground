@@ -19,18 +19,18 @@ This is a Node.js based tool.
 
 You can use the functionality of this package by:
 
-* Install the package with npm `npm install playground-core` (or clone repo and install the package with `npm install`)
+* Install the package with npm `npm install @thing-description-playground/core` (or clone repo and install the package with `npm install`)
 * Node.js or Browser
   * Node.js: Require the package and use the validation function
 
   ```javascript
-  const tdValidator = require("playground-core")
+  const tdValidator = require("@thing-description-playground/core")
   ```
 
   * Browser: Import the `tdValidator` function as a global by adding a script tag to your html.
 
   ```html
-  <script src="./node_modules/playground-core/dist/web-bundle.min.js"></script>
+  <script src="./node_modules/@thing-description-playground/core/dist/web-bundle.min.js"></script>
   ```
 
 ### Structure
@@ -52,10 +52,10 @@ These examples cover all the features of the TD spec. If you think that there is
 * Small example for using this package in a Node.js script, to validate an example TD:
 
 ```javascript
-const tdValidator = require("playground-core")
+const tdValidator = require("@thing-description-playground/core")
 const fs = require("fs")
 
-const simpleTD = fs.readFileSync("./node_modules/playground-core/examples/tds/valid/simple.json", "utf8")
+const simpleTD = fs.readFileSync("./node_modules/@thing-description-playground/core/examples/tds/valid/simple.json", "utf8")
 
 /**
  * Use console for logging, no options
