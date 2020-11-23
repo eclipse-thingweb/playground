@@ -70,13 +70,15 @@ cp -r ./ ./var/www/html/subdir/
 
 ### As repository
 
+Requires [Lerna](https://www.npmjs.com/package/lerna) to be installed globally (`npm install -g lerna`).
+
 1. Clone the repo
-2. Install the production dependencies of `playground-web`
+2. Install the monorepo (allows linking unpublished versions).
 3. Copy the folder content to your web-directory
 
 ```sh
 git clone git@github.com:thingweb/thingweb-playground.git
-cd thingweb-playground/packages/playground-web/
-npm install --only=production
-cp -r ./ ./var/www/html/subdir/
+cd thingweb-playground
+lerna bootstrap
+cp -r ./packages/playground-web/ ./var/www/html/subdir/
 ```
