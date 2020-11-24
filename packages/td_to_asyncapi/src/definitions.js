@@ -26,7 +26,7 @@ function AsyncAPI(props) {
  * The AsyncAPI Info object
  * @param {string} title The title of the application
  * @param {string} version The API version (NOT async specification version), defaults to undefined
- * @param {{description, termsOfService, contact, license}} opt Optional properties
+ * @param {{description?, termsOfService?, contact?, license?}|undefined} opt Optional properties
  */
 function Info(title, version, opt) {
     if (title === undefined || version === undefined) {throw new Error("title or version for infos object missing")}
@@ -50,4 +50,17 @@ function ExternalDocs(url, description) {
     if (description) {this.description = description}
 }
 
-module.exports = {AsyncAPI, Info, ExternalDocs}
+/**
+ * The AsyncAPI Tag object
+ * @param {string} name The Tag name
+ * @param {{description?: string, externalDocs?: ExternalDocs}|undefined} opt optional properties
+ */
+function Tag(name, opt) {
+    if (name === undefined) {throw new Error("name for tag missing")}
+    this.name = name
+    if (opt === undefined) {opt = {}}
+    this.description = opt.description
+    this.externalDocs = opt.externalDocs
+}
+
+module.exports = { AsyncAPI, Info, ExternalDocs, Tag }
