@@ -15,7 +15,7 @@
     "directory": "packages/td_to_asyncapi"
   },
   "scripts": {
-    "test": "jest",
+    "test": "jest & node ./tests/mytest.js",
     "testAll": "node testAll.js",
     "XYZbundle": "npx browserify ./index.js -s tdToAsyncAPI -o ./dist/web-bundle.js && npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
     "updateExamples": "node ./examples/updateExamples.js",

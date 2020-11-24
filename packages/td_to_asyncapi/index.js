@@ -1,5 +1,5 @@
-const apiParser = require('@asyncapi/parser')
-const YAML = require("json-to-pretty-yaml")
+const { AsyncAPI, ExternalDocs } = require( './src/definitions' )
+const genInfo = require( './src/genInfos' )
 
 /**
  * Create an AsyncAPI document from a Web of Things Thing Description
@@ -11,24 +11,22 @@ function toAsyncAPI(td) {
 
         if (typeof td !== "object") {rej("TD has wrong type, should be an object")}
 
-        /* required */
-        const API = {
+        const asyncApiInstance = new AsyncAPI({
             asyncapi: "2.0.0",
-            info: {
-                title: "ASDF",
-                version: "unknown"
-            },
-            channels: {
-                "example-channel": {}
-            }
-        }
+            info: genInfo(td),
+            channels: {},
+            id: td.id,
+            externalDocs: new ExternalDocs(
+                "http://plugfest.thingweb.io/playground/",
+                "This AsyncAPI instance was generated from a Web of Things (WoT) - Thing Description by the WoT Playground"
+            )
+        })
 
-
-
-        apiParser.parse(API).then( () => {
-            res({json: API, yaml: YAML.stringify(API)})
+        console.log(asyncApiInstance.asYaml())
+        asyncApiInstance.parse().then( apiExport => {
+            res(apiExport)
         }, err => {
-            console.log(JSON.stringify(API, undefined, 4))
+            console.log(asyncApiInstance.asYaml())
             rej(err)
         })
     })
