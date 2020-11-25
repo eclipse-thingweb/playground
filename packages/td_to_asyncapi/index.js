@@ -1,5 +1,7 @@
 const { AsyncAPI, ExternalDocs } = require( './src/definitions' )
-const genInfo = require( './src/genInfos' )
+const genChannels = require( './src/genChannels' )
+const {genInfo, genTags} = require( './src/genRoot' )
+const defaults = require("@thing-description-playground/defaults")
 
 /**
  * Create an AsyncAPI document from a Web of Things Thing Description
@@ -11,11 +13,14 @@ function toAsyncAPI(td) {
 
         if (typeof td !== "object") {rej("TD has wrong type, should be an object")}
 
+        defaults.addDefaults(td)
+
         const asyncApiInstance = new AsyncAPI({
             asyncapi: "2.0.0",
             info: genInfo(td),
-            channels: {},
+            channels: genChannels(td),
             id: td.id,
+            tags: genTags(td),
             externalDocs: new ExternalDocs(
                 "http://plugfest.thingweb.io/playground/",
                 "This AsyncAPI instance was generated from a Web of Things (WoT) - Thing Description by the WoT Playground"

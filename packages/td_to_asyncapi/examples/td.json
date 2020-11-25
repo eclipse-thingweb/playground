@@ -16,41 +16,50 @@
     },
     "security": ["nosec_sc"],
     "properties": {
-        "status" : {
-            "type" : "string",
-            "enum" : ["Standby", "Grinding", "Brewing", "Filling","Error"],
-            "readOnly" : true,
-            "forms" : [{
-                "href" : "http://mycoffeemaker.example.com/status",
-                "op" : "readproperty",
-                "contentType" : "application/json"
-                }]
+        "oneOfTest": {
+            "readOnly":true,
+            "writeOnly": false,
+            "oneOf": [
+                {
+                    "type": "string"
+                }, 
+                {
+                    "type": "integer"
+                }, 
+                {
+                    "type": "null"
+                }
+            ],
+            "forms": [
+                {
+                    "href": "mqtt://iot.eclipse.org/oneOfTest",
+                    "op":"observeproperty",
+                    "mqv:controlPacketValue": "SUBSCRIBE"
+                },
+                {
+                    "href": "mqtt://iot.eclipse.org/oneOfTest",
+                    "op": "unobserveproperty",
+                    "mqv:controlPacketValue": "UNSUBSCRIBE"
+                }
+            ]
         },
-        "fillstates" : {
-            "type" : "object",
-            "properties" : {
-                "water" : {
-                    "type":"number",
-                    "minimum": 0,
-                    "maximum": 100
-                    },
-                "coffeebeans" : {
-                    "type":"number",
-                    "minimum": 0,
-                    "maximum": 100
-                    },
-                "bin" : {
-                    "type":"number",
-                    "minimum": 0,
-                    "maximum": 100
-                    }
-            },
-            "readOnly" : true,
-            "forms" : [{
-                "href" : "http://mycoffeemaker.example.com/fillstates",
-                "op" : "readproperty",
-                "contentType" : "application/json"
-                }]
+        "maxItemsTest": {
+            "readOnly": true,
+            "writeOnly": false,
+            "type": "array",
+            "items":{"type":"integer"},
+            "maxItems":5,
+            "minItems": 2,
+            "forms": [
+                {
+                    "href": "mqtt://iot.eclipse.org/maxItemsTest",
+                    "op": "observeproperty"
+                },
+                {
+                    "href": "mqtt://iot.eclipse.org/maxItemsTest",
+                    "op": "unobserveproperty"
+                }
+            ]
         }
     },
     "actions": {
@@ -124,10 +133,9 @@
                 "maximum": 100
                 },
             "forms" : [{
-                "href" : "http://mycoffeemaker.example.com/binfull",
+                "href" : "mqtt://mycoffeemaker.example.com/binfull",
                 "op" : "subscribeevent",
-                "contentType" : "application/json",
-                "subprotocol": "longpoll"
+                "contentType" : "application/json"
             }]
         }
     }

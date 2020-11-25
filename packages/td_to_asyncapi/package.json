@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@asyncapi/parser": "^1.2.0",
+    "@thing-description-playground/defaults": "^1.0.0",
     "json-to-pretty-yaml": "^1.2.2"
   },
   "devDependencies": {

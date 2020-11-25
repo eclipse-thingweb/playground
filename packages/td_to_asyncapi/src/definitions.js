@@ -26,17 +26,17 @@ function AsyncAPI(props) {
  * The AsyncAPI Info object
  * @param {string} title The title of the application
  * @param {string} version The API version (NOT async specification version), defaults to undefined
- * @param {{description?, termsOfService?, contact?, license?}|undefined} opt Optional properties
+ * @param {{description?, termsOfService?, contact?, license?}|undefined} opts Optional properties
  */
-function Info(title, version, opt) {
+function Info(title, version, opts) {
     if (title === undefined || version === undefined) {throw new Error("title or version for infos object missing")}
-    if (opt === undefined) {opt = {}}
+    if (opts === undefined) {opts = {}}
     this.title = title
     this.version = version
-    this.description = opt.description
-    this.termsOfService = opt.termsOfService
-    this.contact = opt.contact
-    this.license = opt.license
+    this.description = opts.description
+    this.termsOfService = opts.termsOfService
+    this.contact = opts.contact
+    this.license = opts.license
 }
 
 /**
@@ -63,4 +63,15 @@ function Tag(name, opt) {
     this.externalDocs = opt.externalDocs
 }
 
-module.exports = { AsyncAPI, Info, ExternalDocs, Tag }
+/**
+ * One AsyncAPI Channel Item Object
+ * @param {string} channel The channel, e.g. "user/signup"
+ * @param {{description, subscribe, publish, parameters, bindings }|undefined} opts The possible object properties
+ */
+function Channel(channel, opts) {
+    if (typeof channel !== "string") {throw new Error("Channel was constructed with wrong channel type: " + typeof channel)}
+    this[channel] = {}
+    Object.assign(this[channel], opts)
+}
+
+module.exports = { AsyncAPI, Info, ExternalDocs, Tag, Channel }
