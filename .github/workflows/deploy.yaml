@@ -9,7 +9,11 @@ jobs:
 
     steps:
       - name: sshTest
-        run: |
-          ssh bandit0@bandit.labs.overthewire.org -p 2220
-          bandit0
-          ls
+        uses: fifsky/ssh-action@master
+        with:
+          command: |
+            ls
+        host: bandit.labs.overthewire.org
+        user: bandit0
+        port: 2220
+        key: bandit0
