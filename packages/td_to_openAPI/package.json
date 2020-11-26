@@ -1,0 +1,38 @@
+{
+  "name": "@thing-description-playground/td_to_openapi",
+  "author": "TUM ESI <esi@ei.tum.de> (https://www.ei.tum.de/en/esi/home/)",
+  "license": "MIT",
+  "version": "1.1.1",
+  "description": "Provides openAPI instance generation for Thing Descriptions in the Web of Things - Thing Description Playground.",
+  "homepage": "https://github.com/thingweb/thingweb-playground#readme",
+  "bugs": {
+    "url": "https://github.com/thingweb/thingweb-playground/issues"
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thingweb/thingweb-playground.git",
+    "directory": "packages/td_to_openAPI"
+  },
+  "scripts": {
+    "test": "jest",
+    "testAll": "node testAll.js",
+    "bundle": "npx browserify ./index.js -s tdToOpenAPI -o ./dist/web-bundle.js && npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
+    "updateExamples": "node ./examples/updateExamples.js",
+    "prepare": "npm run bundle"
+  },
+  "dependencies": {
+    "json-schema-faker": "^0.5.0-rcv.29",
+    "json-to-pretty-yaml": "^1.2.2",
+    "swagger-parser": "^10.0.2"
+  },
+  "devDependencies": {
+    "browserify": "^16.5.1",
+    "eslint": "^7.13.0",
+    "jest": "^26.4.2",
+    "terser": "^4.7.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

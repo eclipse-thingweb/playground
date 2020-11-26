@@ -24,11 +24,11 @@ jobs:
       
       - name: Visual Test
         run: |
-          cd ./packages/playground-web
+          cd ./packages/web
           npm test
       
       - name: Upload test screenshots
         uses: actions/upload-artifact@v2
         with:
           name: playwright screenshots and downloads
-          path: packages/playground-web/test_results
+          path: packages/web/test_results
