@@ -1,4 +1,4 @@
-# gist_backend
+# @thing-description-playground/**GIST_BACKEND**
 
 The backend to submit gists to GitHub while keeping authorization private.
 

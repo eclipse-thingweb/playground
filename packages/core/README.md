@@ -1,4 +1,4 @@
-# Thingweb-Playground Core
+# @thing-description-playground/**CORE**
 
 This package provides the main functionality of the Web of Things Playground, i.e., validating given Thing Descriptions.
 You can find more information about the Thingweb-Playground [here](https://github.com/thingweb/thingweb-playground).

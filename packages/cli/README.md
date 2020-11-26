@@ -1,4 +1,4 @@
-# Thingweb-Playground CLI
+# @thing-description-playground/**CLI**
 
 This package provides a Command Line Interface (CLI) for the Web of Things Playground.
 You can find more information about the Thingweb-Playground [here](https://github.com/thingweb/thingweb-playground).

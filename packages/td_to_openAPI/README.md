@@ -1,6 +1,6 @@
-# td_to_openAPI
+# @thing-description-playground/**TD_TO_OPENAPI**
 
-The package providing support for openAPI instance generation (output as `json` or `yaml`), using a Thing Description as input.
+The package providing support for OpenAPI instance generation (output as `json` or `yaml`), using a Thing Description as input.
 
 ## Abbreviations
 

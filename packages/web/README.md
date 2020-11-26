@@ -1,4 +1,4 @@
-# Thingweb-Playground Web
+# @thing-description-playground/**WEB**
 
 This package provides the web interface of the Web of Things Playground.
 It uses the functionality of the `core` package to validate Thing Descriptions and `assertions` to generate an assertion Test report.
