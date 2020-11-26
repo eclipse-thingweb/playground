@@ -1,6 +1,9 @@
-# WoT (W3C) Thingweb-Playground
+# Web of Things (W3C) - Thing Description Playground
 
-Try it online at [http://plugfest.thingweb.io/playground/](http://plugfest.thingweb.io/playground/)
+Try it online at [http://plugfest.thingweb.io/playground/](http://plugfest.thingweb.io/playground/)  
+
+[![GitHub license](https://img.shields.io/github/license/thingweb/thingweb-playground)](./LICENSE.md)
+[![GitHub license](https://img.shields.io/github/workflow/status/thingweb/thingweb-playground/Default%20CI%20Pipeline)](./LICENSE.md)
 
 ## Structure
 
