@@ -1,3 +1,10 @@
+/**
+ * @file The `script.js` takes care of setting eventHandlers
+ * and connecting the functionality of `util.js` with
+ * the html document. Furthermore it contains the code
+ * to integrate the monaco editor
+ */
+
 import * as util from "./util.js"
 import * as config from "./config.js"
 
@@ -127,8 +134,8 @@ document.getElementById("editor_theme").addEventListener("change", () => {
 	window.monaco.editor.setTheme(document.getElementById("editor_theme").value);
 })
 
-document.getElementById("btn_assertion").addEventListener("click", e => {
-	util.performAssertionTest(e, manualAssertions)
+document.getElementById("btn_assertion").addEventListener("click", () => {
+	util.performAssertionTest(manualAssertions)
 })
 
 document.getElementById("btn_validate").addEventListener("click", () => {

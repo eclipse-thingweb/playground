@@ -1,4 +1,12 @@
 /**
+ * @file The `util.js` contains the core
+ * functionality the playground-web offers. It takes
+ * care of integrating other playground packages
+ * and offers a few utility functions.
+ */
+
+
+/**
  * Fetch the TD from the given address and return the JSON object
  * @param {string} urlAddr url of the TD to fetch
  */
@@ -54,10 +62,12 @@ export function populateExamples(urlAddrObject){
 }
 
 /**
- * TODO:
- * @param {*} e sadf
+ * Executes an assertion test and
+ * passes the result to the user
+ * as download
+ * @param {object} manualAssertions The manual assertions input of the user
  */
-export function performAssertionTest(e, manualAssertions){
+export function performAssertionTest(manualAssertions){
 
     document.getElementById("curtain").style.display = "block"
     document.getElementById("curtain-text").innerHTML = "Assertion test ongoing..."
@@ -129,6 +139,12 @@ function offerFileDownload(fileName, content, type) {
 
 }
 
+/**
+ * Generates an OpenAPI instance from
+ * the TD in the Editor and passes it
+ * to the user as a download
+ * @param {"json"|"yaml"} fileType 
+ */
 export function generateOAP(fileType){
     return new Promise( (res, rej) => {
         const tdToValidate=window.editor.getValue()
@@ -312,7 +328,6 @@ export function validate(source, autoValidate) {
     }
 }
 
-/* ----------------- Private Helpers ----------------------- */
 /**
  * Calls the Validator of the playground-core package
  * @param {string} td Thing Description to validate
@@ -414,7 +429,6 @@ function updateValidationStatusHead(validationStatus)
 
     document.getElementById("validation_table_head").setAttribute("class", "btn-" + validationStatus)
 }
-/* ------------------------------------------------------ */
 
 /**
  * Delete the content of the logging container and reset the validation lights
