@@ -11,9 +11,8 @@ jobs:
       - name: sshTest
         uses: fifsky/ssh-action@master
         with:
-          command: |
-            ls
-        host: bandit.labs.overthewire.org
-        user: bandit0
-        port: 2220
-        key: bandit0
+          command: ls
+          host: bandit.labs.overthewire.org
+          user: bandit0
+          port: 2220
+          key: bandit0
