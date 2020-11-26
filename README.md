@@ -3,7 +3,7 @@
 Try it online at [http://plugfest.thingweb.io/playground/](http://plugfest.thingweb.io/playground/)  
 
 [![GitHub license](https://img.shields.io/github/license/thingweb/thingweb-playground)](./LICENSE.md)
-[![GitHub license](https://img.shields.io/github/workflow/status/thingweb/thingweb-playground/Default%20CI%20Pipeline)](./LICENSE.md)
+[![GitHub testing](https://img.shields.io/github/workflow/status/thingweb/thingweb-playground/Default%20CI%20Pipeline)](https://github.com/thingweb/thingweb-playground/actions)
 
 ## Structure
 
