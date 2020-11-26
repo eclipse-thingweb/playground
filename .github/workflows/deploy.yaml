@@ -15,4 +15,4 @@ jobs:
           host: bandit.labs.overthewire.org
           user: bandit0
           port: 2220
-          key: bandit0
+          pass: bandit0
