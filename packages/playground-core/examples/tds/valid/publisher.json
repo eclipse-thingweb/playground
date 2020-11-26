@@ -30,12 +30,12 @@
                 {
                     "href": "mqtt://iot.eclipse.org/oneOfTest",
                     "op":"observeproperty",
-                    "mqtt:commandCode":8
+                    "mqv:controlPacketValue": "SUBSCRIBE"
                 },
                 {
                     "href": "mqtt://iot.eclipse.org/oneOfTest",
                     "op": "unobserveproperty",
-                    "mqtt:methodCode": 10
+                    "mqv:controlPacketValue": "UNSUBSCRIBE"
                 }
             ]
         },
@@ -49,13 +49,11 @@
             "forms": [
                 {
                     "href": "mqtt://iot.eclipse.org/maxItemsTest",
-                    "op": "observeproperty",
-                    "mqtt:commandCode": 8
+                    "op": "observeproperty"
                 },
                 {
                     "href": "mqtt://iot.eclipse.org/maxItemsTest",
-                    "op": "unobserveproperty",
-                    "mqtt:methodCode": 10
+                    "op": "unobserveproperty"
                 }
             ]
         }
