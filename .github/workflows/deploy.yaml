@@ -1,0 +1,15 @@
+name: Deploy Pipeline
+
+on: [push]
+
+jobs:
+  my-test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: sshTest
+        run: |
+          ssh bandit0@bandit.labs.overthewire.org -p 2220
+          bandit0
+          ls
