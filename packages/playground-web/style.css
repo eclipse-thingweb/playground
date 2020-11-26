@@ -63,10 +63,6 @@ body {
 	width: auto;
 }
 
-/*.push {
-	height: 200px;
-}*/ /*must be same height as footer ? */
-
 .conrow {
 	max-height: 250px;
 	height: fit-content;
