@@ -9,10 +9,5 @@ jobs:
 
     steps:
       - name: sshTest
-        uses: fifsky/ssh-action@master
-        with:
-          command: ls
-          host: bandit.labs.overthewire.org
-          user: bandit0
-          port: 2220
-          pass: bandit0
+        run: ./.github/scripts/deploy-web.sh
+        shell: bash
