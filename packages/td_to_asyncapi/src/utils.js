@@ -4,6 +4,8 @@
  * @returns {object} An AsyncAPI Schema instance
  */
 function dataToAsyncSchema(source) {
+
+    if (source === undefined) {return }
     const target = {}
     const tdCustoms = ["@type", "titles", "descriptions", "unit"]
     const commons = ["title", "type", "description", "const", "oneOf", "enum", "readOnly", "writeOnly", "format"]
