@@ -3,7 +3,7 @@ const { Channel, Operation, Tag, Message, MqttOperationBinding, Server } = requi
 
 /**
  * Maps TD interactions and their forms to AsyncAPI channels
- * @param {object} td 
+ * @param {object} td The Thing Description input
  * @param {object} servers The AsyncAPI servers map
  */
 function genChannels(td, servers) {
@@ -41,7 +41,8 @@ function scanPropForm(form, channels, propertyName, payload, servers) {
 
     if (form.href && (form.href.startsWith("mqtt://") || (hasBase && isRelative))) {
         const opArray = (typeof form.op === "string") ? [form.op] : form.op
-        if (opArray.some( op => (op === "observeproperty" || op === "unobserveproperty")) || form["mqv:controlPacketValue"] === "SUBSCRIBE") {
+        if (opArray.some( op => (op === "observeproperty" || op === "unobserveproperty")) ||
+                    form["mqv:controlPacketValue"] === "SUBSCRIBE") {
             console.log("found mqtt observable property")
             const {channel, server} = extractChannel(form.href)
             // add server
@@ -60,11 +61,13 @@ function scanPropForm(form, channels, propertyName, payload, servers) {
                     let qos
                     let retain
                     form["mqv:options"].forEach( mqvOption => {
-                        if(mqvOption["mqv:optionName"] && mqvOption["mqv:optionName"] === "qos" && mqvOption["mqv:optionValue"]) {
-                            qos = mqvOption["mqv:optionValue"]
-                        }
-                        else if (mqvOption["mqv:optionName"] && mqvOption["mqv:optionName"] === "retain" && mqvOption["mqv:optionValue"]) {
-                            retain = mqvOption["mqv:optionValue"]
+                        if (mqvOption["mqv:optionName"] &&mqvOption["mqv:optionValue"]) {
+                            if(mqvOption["mqv:optionName"] === "qos") {
+                                qos = mqvOption["mqv:optionValue"]
+                            }
+                            else if (mqvOption["mqv:optionName"] === "retain") {
+                                retain = mqvOption["mqv:optionValue"]
+                            }
                         }
                     })
                     if (qos !== undefined || retain !== undefined) {
