@@ -1,3 +1,4 @@
 # @thing-description-playground/td_to_asyncapi
 
-TODO: fill
+TODO: fill Readme
+TODO: add security

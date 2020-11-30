@@ -34,7 +34,11 @@
                 {
                     "href": "mqtt://iot.eclipse.org/oneOfTest",
                     "op":"observeproperty",
-                    "mqv:controlPacketValue": "SUBSCRIBE"
+                    "mqv:controlPacketValue": "SUBSCRIBE",
+                    "mqv:options": [{
+                        "mqv:optionName": "qos",
+                        "mqv:optionValue": 1
+                    }]
                 },
                 {
                     "href": "mqtt://iot.eclipse.org/oneOfTest",

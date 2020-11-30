@@ -1,4 +1,4 @@
-const { Info, Tag, ExternalDocs } = require("./definitions")
+const { Info, Tag, ExternalDocs, Server } = require("./definitions")
 
 /**
  * Generate the root level AsyncAPI general information
@@ -80,4 +80,14 @@ function genTags(td) {
     return tags
 }
 
-module.exports = { genInfo, genTags }
+function genBaseServer(td) {
+    const servers = {}
+    if (td.base) {
+        if (td.base.startsWith("mqtt")) {
+            servers.base = new Server(td.base, "mqtt")
+        }
+    }
+    return servers
+}
+
+module.exports = { genInfo, genTags, genBaseServer }

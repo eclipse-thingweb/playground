@@ -1,6 +1,6 @@
 const { AsyncAPI, ExternalDocs } = require( './src/definitions' )
 const genChannels = require( './src/genChannels' )
-const {genInfo, genTags} = require( './src/genRoot' )
+const {genInfo, genTags, genBaseServer} = require( './src/genRoot' )
 const defaults = require("@thing-description-playground/defaults")
 
 /**
@@ -15,11 +15,13 @@ function toAsyncAPI(td) {
 
         defaults.addDefaults(td)
 
+        const servers = genBaseServer(td)
         const asyncApiInstance = new AsyncAPI({
             asyncapi: "2.0.0",
             info: genInfo(td),
-            channels: genChannels(td),
+            channels: genChannels(td, servers),
             id: td.id,
+            servers,
             tags: genTags(td),
             externalDocs: new ExternalDocs(
                 "http://plugfest.thingweb.io/playground/",

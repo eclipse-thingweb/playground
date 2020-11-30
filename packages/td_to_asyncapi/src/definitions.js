@@ -3,7 +3,7 @@ const YAML = require("json-to-pretty-yaml")
 
 /**
  * AsyncAPI Constructor
- * @param {{asyncapi, info: Info, channels,
+ * @param {{asyncapi, info: Info, channels: {[key:string]: Channel},
  *          id?, servers?, components?, tags?, externalDocs?: ExternalDocs
  *         }} props The AsyncAPI instance properties
  */
@@ -66,7 +66,12 @@ function Tag(name, opt) {
 /**
  * One AsyncAPI Channel Item Object
  * @param {string} channel The channel, e.g. "user/signup"
- * @param {{description, subscribe, publish, parameters, bindings }|undefined} opts The possible object properties
+ * @param {{description: string,
+ *          subscribe: Operation,
+ *          publish: Operation,
+ *          parameters,
+ *          bindings
+ *          }|undefined} opts The possible object properties
  */
 function Channel(channel, opts) {
     if (typeof channel !== "string") {throw new Error("Channel was constructed with wrong channel type: " + typeof channel)}
@@ -74,4 +79,158 @@ function Channel(channel, opts) {
     Object.assign(this[channel], opts)
 }
 
-module.exports = { AsyncAPI, Info, ExternalDocs, Tag, Channel }
+/**
+ * An Async API Operation object
+ * @param {{
+ *          tdOp: "observe" | "read" | "write" | "subscribe",
+ *          opName: string,
+ *          ixType: "property" | "action" | "event",
+ *          summary: string,
+ *          description: string,
+ *          tags: Tag[],
+ *          externalDocs: ExternalDocs,
+ *          bindings: HttpOperationBinding | MqttOperationBinding,
+ *          traits,
+ *          message: Message | {oneOf: Message[]}
+ * }} opts All parameters are optional
+ */
+function Operation(opts) {
+    if (opts.tdOp !== undefined && opts.opName !== undefined && opts.ixType !== undefined) {
+        this.operationId = "" + opts.tdOp + opts.opName + opts.ixType
+    }
+    if (opts.tags === undefined && opts.ixType) {
+        if (opts.ixType === "property") {
+            this.tags = [new Tag("properties")]
+        }
+        else if (opts.ixType === "action" || opts.ixType === "event") {
+            this.tags = [new Tag(opts.ixType + "s")]
+        }
+    }
+    delete opts.tdOp
+    delete opts.opName
+    delete opts.ixType
+
+    Object.assign(this, opts)
+}
+
+/**
+ * An AsyncAPI message object
+ * @param {{
+ *          headers,
+ *          payload,
+ *          schemaFormat,
+ *          contentType,
+ *          examples
+ *        }} opts All parameters are optional
+ */
+function Message(opts) {
+    this.headers = opts.headers
+    this.payload = opts.payload
+    this.schemaFormat = opts.schemaFormat
+    this.contentType = opts.contentType
+    this.examples = opts.examples
+}
+
+/**
+ * An AsyncAPI http protocol operation binding
+ * @param {"request" | "response"} type Type of the operation
+ * @param {{
+ *          method: string,
+ *          query
+ *         }} opts optional properties
+ */
+function HttpOperationBinding(type, opts) {
+    if (type === undefined) {throw new Error("type is required")}
+    this.http = {}
+    this.http.type = type
+    this.http.bindingVersion = "0.1.0"
+    Object.assign(this.http, opts)
+}
+
+/**
+ * An AsyncAPI http protocol message binding
+ * @param {*} headers A Schema object containing the definitions for HTTP-specific headers.
+ *                    This schema MUST be of type object and have a properties key.
+ *                    E.g. `headers: {type: object, properties: {Content-Type: {type: string, enum: ["application/json"]}}}`
+ */
+function HttpMessageBinding(headers) {
+    this.http = {}
+    this.http.headers = headers
+    this.http.bindingVersion = "0.1.0"
+}
+
+/**
+ * An AsyncAPI mqtt protocol server binding
+ * @param {{
+ *          clientId: string,
+ *          cleanSession: boolean,
+ *          lastWill: {
+ *            topic: string,
+ *            qos: 0 | 1 | 2,
+ *            message: string,
+ *            retain: boolean
+ *          },
+ *          keepAlive: number
+ * }} opts All parameters are optional
+ */
+function MqttServerBinding(opts) {
+    this.mqtt = {}
+    this.mqtt.bindingVersion = "0.1.0"
+    Object.assign(this.mqtt, opts)
+}
+
+/**
+ * An AsyncAPI mqtt protocol operation binding
+ * @param {{
+ *          qos: 0 | 1 | 2,
+ *          retain: boolean
+ * }} opts All parameters are optional
+ */
+function MqttOperationBinding(opts) {
+    this.mqtt = {}
+    this.mqtt.bindingVersion = "0.1.0"
+    Object.assign(this.mqtt, opts)
+}
+
+/**
+ * An AsyncAPI mqtt protocol message binding
+ * **Does not make sense ATM**
+ */
+function MqttMessageBinding() {
+    this.mqtt = {}
+    this.mqtt.bindingVersion = "0.1.0"
+}
+
+/**
+ * An AsyncAPI server
+ * @param {string} url e.g. subdomain.example.com
+ * @param {"http"|"https"|"mqtt"} protocol
+ * @param {{
+ *          protocolVersion:string,
+ *          security,
+ *          variables,
+ *          bindings: MqttServerBinding
+ * }} opts Optional parameters
+ */
+function Server(url, protocol, opts) {
+    if (typeof url !== "string" || typeof protocol !== "string") {throw new Error("url and protocol have to be type string")}
+    this.url = url
+    this.protocol = protocol
+    Object.assign(this, opts)
+}
+
+module.exports = {
+    AsyncAPI,
+    Info,
+    ExternalDocs,
+    Tag,
+    Channel,
+    Operation,
+    Message,
+    HttpOperationBinding,
+    HttpMessageBinding,
+    MqttServerBinding,
+    MqttOperationBinding,
+    MqttMessageBinding,
+    Server
+}
