@@ -7,7 +7,6 @@ const { Channel, Operation, Tag, Message, MqttOperationBinding, Server } = requi
  * @param {object} servers The AsyncAPI servers map
  */
 function genChannels(td, servers) {
-    // TODO: find events to add
     // TODO: add http-longpoll, ws, sse?
     const channels = {}
 
