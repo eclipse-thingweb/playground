@@ -1,4 +1,4 @@
-name: Default CI Pipeline
+name: Default CI & CD Pipeline
 
 on: [push, pull_request]
 
@@ -32,3 +32,20 @@ jobs:
           # avoid errors from gist_backend test
           TD_PLAYGROUND_LOGIN: example
           TD_PLAYGROUND_TOKEN: example
+
+  deploy-via-ssh:
+
+    runs-on: ubuntu-latest
+
+    needs: setup-and-test
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Run remote commands script
+        run: ./.github/scripts/deploy-web.sh
+        shell: bash
+        env:
+          SSH_PASS: ${{ secrets.SSH_PASS }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
