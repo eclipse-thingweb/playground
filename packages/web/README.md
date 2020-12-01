@@ -74,11 +74,19 @@ Requires [Lerna](https://www.npmjs.com/package/lerna) to be installed globally (
 
 1. Clone the repo
 2. Install the monorepo (allows linking unpublished versions).
-3. Copy the folder content to your web-directory
+3. Install the web package locally to ensure that e.g. `core` dependency is not just a symlink (loading e.g. examples wouldn't work otherwise)
+4. Clean the target dir (nginx web-directory)
+5. Copy the folder content to your web-directory
+6. Clean the checked out files
 
 ```sh
 git clone git@github.com:thingweb/thingweb-playground.git
 cd thingweb-playground
 lerna bootstrap
-cp -r ./packages/web/ ./var/www/html/subdir/
+cd ./packages/playground-web
+npm install
+rm -r -f /var/www/html/subdir/*
+cp -r ./* /var/www/html
+cd ../../../
+rm -r -f thingweb-playground
 ```
