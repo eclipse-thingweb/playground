@@ -14,3 +14,6 @@ jobs:
       - name: sshTest
         run: ./.github/scripts/deploy-web.sh
         shell: bash
+        env:
+          SSH_PASS: ${{ secrets.SSH_PASS }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
