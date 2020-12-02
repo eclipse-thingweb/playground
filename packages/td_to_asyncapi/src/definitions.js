@@ -131,54 +131,6 @@ function Message(opts) {
 }
 
 /**
- * An AsyncAPI http protocol operation binding
- * @param {"request" | "response"} type Type of the operation
- * @param {{
- *          method?: string,
- *          query?
- *         }} opts optional properties
- */
-function HttpOperationBinding(type, opts) {
-    if (type === undefined) {throw new Error("type is required")}
-    this.http = {}
-    this.http.type = type
-    this.http.bindingVersion = "0.1.0"
-    Object.assign(this.http, opts)
-}
-
-/**
- * An AsyncAPI http protocol message binding
- * @param {*} headers A Schema object containing the definitions for HTTP-specific headers.
- *                    This schema MUST be of type object and have a properties key.
- *                    E.g. `headers: {type: object, properties: {Content-Type: {type: string, enum: ["application/json"]}}}`
- */
-function HttpMessageBinding(headers) {
-    this.http = {}
-    this.http.headers = headers
-    this.http.bindingVersion = "0.1.0"
-}
-
-/**
- * An AsyncAPI mqtt protocol server binding
- * @param {{
- *          clientId?: string,
- *          cleanSession?: boolean,
- *          lastWill?: {
- *            topic: string,
- *            qos: 0 | 1 | 2,
- *            message?: string,
- *            retain?: boolean
- *          },
- *          keepAlive?: number
- * }} opts All parameters are optional
- */
-function MqttServerBinding(opts) {
-    this.mqtt = {}
-    this.mqtt.bindingVersion = "0.1.0"
-    Object.assign(this.mqtt, opts)
-}
-
-/**
  * An AsyncAPI mqtt protocol operation binding
  * @param {{
  *          qos?: 0 | 1 | 2,
@@ -194,12 +146,12 @@ function MqttOperationBinding(opts) {
 /**
  * An AsyncAPI server
  * @param {string} url e.g. subdomain.example.com
- * @param {"http"|"https"|"mqtt"} protocol
+ * @param {"mqtt"} protocol
  * @param {{
  *          protocolVersion?: string,
  *          security?,
  *          variables?,
- *          bindings?: MqttServerBinding
+ *          bindings?
  * }} opts Optional parameters
  */
 function Server(url, protocol, opts) {
@@ -217,9 +169,6 @@ module.exports = {
     Channel,
     Operation,
     Message,
-    HttpOperationBinding,
-    HttpMessageBinding,
-    MqttServerBinding,
     MqttOperationBinding,
     Server
 }
