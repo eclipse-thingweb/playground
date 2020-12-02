@@ -3,61 +3,51 @@ const { Channel, Operation, Tag, Message, MqttOperationBinding, Server } = requi
 
 /**
  * Maps TD interactions and their forms to AsyncAPI channels
+ * by iterating over all TD properties & events forms
+ * to find relevant ones
  * @param {object} td The Thing Description input
  * @param {object} servers The AsyncAPI servers map
  */
 function genChannels(td, servers) {
-    // TODO: add http-longpoll, ws, sse?
+
     const channels = {}
 
-    scanProperties(td.properties, channels, servers)
-    scanEvents(td.events, channels, servers)
+    // Scan Properties
+    const allInteractionsInfo = {
+        properties: {
+            ops: ["observeproperty", "unobserveproperty"],
+            tdOp: "observe",
+            interaction: "property",
+            getDataSchema: property => property
+        },
+        events: {
+            ops: ["subscribeevent", "unsubscribeevent"],
+            tdOp: "subscribe",
+            interaction: "event",
+            getDataSchema: event => event.data
+        }
+    }
+
+    Object.keys(allInteractionsInfo).forEach( interactionType => {
+
+        const interactionInfo = allInteractionsInfo[interactionType]
+
+        Object.keys(td[interactionType]).forEach( interactionName => {
+
+            const interaction = td[interactionType][interactionName]
+
+            if (interaction.forms) {
+                interaction.forms.forEach( form => {
+                    const dataSchema = interactionInfo.getDataSchema(interaction)
+                    const payload = dataToAsyncSchema(dataSchema)
+                    scanPropForm(form, channels, interactionName, payload, servers, interactionInfo)
+                })
+            }
+
+        })
+    })
 
     return channels
-}
-
-/**
- * Iterate over all forms of properties
- * @param {object} properties The TD properties map
- */
-function scanProperties(properties, channels, servers) {
-
-    const propertyInfo = {
-        ops: ["observeproperty", "unobserveproperty"],
-        tdOp: "observe",
-        interaction: "property"
-    }
-
-    Object.keys(properties).forEach( propertyName => {
-        const property = properties[propertyName]
-        if (property.forms) {
-            property.forms.forEach( form => {
-                scanPropForm(form, channels, propertyName, dataToAsyncSchema(property), servers, propertyInfo)
-            })
-        }
-    })
-}
-
-/**
- * Iterate over all forms of properties
- * @param {object} properties The TD properties map
- */
-function scanEvents(events, channels, servers) {
-
-    const eventInfo = {
-        ops: ["subscribeevent", "unsubscribeevent"],
-        tdOp: "subscribe",
-        interaction: "event"
-    }
-
-    Object.keys(events).forEach( eventName => {
-        const event = events[eventName]
-        if (event.forms) {
-            event.forms.forEach( form => {
-                scanPropForm(form, channels, eventName, dataToAsyncSchema(event.data), servers, eventInfo)
-            })
-        }
-    })
 }
 
 /**
