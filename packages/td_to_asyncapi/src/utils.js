@@ -10,16 +10,7 @@ function dataToAsyncSchema(source) {
     const tdCustoms = ["@type", "titles", "descriptions", "unit"]
     const commons = ["title", "type", "description", "const", "oneOf", "enum", "readOnly", "writeOnly", "format"]
 
-    tdCustoms.forEach( customKey => {
-        if (source[customKey] !== undefined) {
-            if (customKey.startsWith("@")) {
-                target["x-AT-" + customKey.slice(1)] = source[customKey]
-            }
-            else {
-                target["x-" + customKey] = source[customKey]
-            }
-        }
-    })
+    copySpecExtensions(tdCustoms, source, target)
 
     commons.forEach( commonKey => {
         if (source[commonKey] !== undefined) {
@@ -37,6 +28,28 @@ function dataToAsyncSchema(source) {
     }
 
     return target
+}
+
+/**
+ * Takes an array of keys to check which properties are present on the source object,
+ * then adds them prefix with "x-" or "x-AT-" to the target array.
+ * The @ symbol is not allowed as part of an specification extension key in
+ * AsyncAPI that makes the "x-AT-" prefix necessary.
+ * @param {string[]} keys The property keys, e.g. ["@context", descriptions]
+ * @param {object} source Mostly an subObject of the input TD
+ * @param {object} target Mostly an subObject of the AsyncAPI instance to create
+ */
+function copySpecExtensions(keys, source, target) {
+    keys.forEach( key => {
+        if (source[key] !== undefined) {
+            if (key.startsWith("@")) {
+                target["x-AT-" + key.slice(1)] = source[key]
+            }
+            else {
+                target["x-" + key] = source[key]
+            }
+        }
+    })
 }
 
 /**
@@ -59,4 +72,4 @@ function extractChannel(link) {
     return {channel, server}
 }
 
-module.exports = { dataToAsyncSchema, extractChannel }
+module.exports = { dataToAsyncSchema, extractChannel, copySpecExtensions }

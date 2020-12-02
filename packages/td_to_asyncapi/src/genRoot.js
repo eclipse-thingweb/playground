@@ -1,4 +1,5 @@
 const { Info, Tag, ExternalDocs, Server } = require("./definitions")
+const { copySpecExtensions } = require( './utils' )
 
 /**
  * Generate the root level AsyncAPI general information
@@ -29,16 +30,7 @@ function genInfo(td) {
 
     // add optional custom fields
     const tdOpts = ["@context", "@type", "created", "descriptions", "links", "modified", "name", "titles"]
-    tdOpts.forEach( prop => {
-        if (td[prop] !== undefined) {
-            if (prop.startsWith("@")) {
-                info["x-AT-" + prop.slice(1)] = td[prop]
-            }
-            else {
-                info["x-" + prop] = td[prop]
-            }
-        }
-    })
+    copySpecExtensions(tdOpts, td, info)
 
     return info
 }
@@ -59,13 +51,11 @@ function genTags(td) {
                                             "Find out more about Property Affordances.")
         }),
         actions: new Tag("actions", {
-            name: "actions",
             description: "An action can expose something to be executed by a Thing, an action can be invoked.",
             externalDocs: new ExternalDocs("https://www.w3.org/TR/wot-thing-description/#actionaffordance",
                                             "Find out more about Action Affordances.")
         }),
         events: new Tag("events", {
-            name: "events",
             description: "An event can expose a notification by a Thing, this notification can be subscribed and/or unsubscribed.",
             externalDocs: new ExternalDocs("https://www.w3.org/TR/wot-thing-description/#eventaffordance",
                                             "Find out more about Event Affordances.")
