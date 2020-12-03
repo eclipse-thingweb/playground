@@ -11,6 +11,7 @@ const assertCheckCoverage = require('@thing-description-playground/assertions').
 const assertResultsToCsv = require('@thing-description-playground/assertions').resultsToCsv
 const {addDefaults, removeDefaults} = require('@thing-description-playground/defaults')
 const tdToOAP = require('@thing-description-playground/td_to_openapi')
+const tdToAAP = require('@thing-description-playground/td_to_asyncapi')
 const argParser = require('argly')
     .createParser({
         '--help -h': { /* Displays the output specified by this object */
@@ -62,11 +63,19 @@ const argParser = require('argly')
         },
         '--open-api -p': {
             type: 'boolean',
-            description: 'Call the openAPI instance generation instead of validation/assertions.'
+            description: 'Call the OpenAPI instance generation instead of validation/assertions.'
         },
         '--oap-yaml -y': {
-            type: 'string',
-            description: 'Whether openAPI should be written as YAML instead of json.'
+            type: 'boolean',
+            description: 'Whether OpenAPI should be written as YAML instead of json.'
+        },
+        '--async-api': {
+            type: 'boolean',
+            description: 'Call the AsyncAPI instance generation instead of validation/assertions.'
+        },
+        '--aap-yaml': {
+            type: 'boolean',
+            description: 'Whether AsyncAPI should be written as YAML instead of json.'
         },
         '--default-add': {
             type: 'boolean',
@@ -122,6 +131,9 @@ if (myArguments.assertions === true) {
 }
 else if (myArguments.openApi === true) {
     openApiGeneration()
+}
+else if (myArguments.asyncApi === true) {
+    asyncApiGeneration()
 }
 else if (myArguments.defaultAdd === true || myArguments.defaultRem === true) {
     defaultManipulation()
@@ -495,6 +507,30 @@ function openApiGeneration() {
         }
         else {
             fs.writeFileSync(outpath + ".json", JSON.stringify(openApiInstance.json, undefined, 4))
+        }
+    })
+}
+
+function asyncApiGeneration() {
+    // input checks
+    if (!input) {input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid", "simple.json")}
+    if (!fs.lstatSync(input).isFile()) {
+        throw new Error("please provide one File as input for the AsyncAPI instance generation")
+    }
+    if(!fs.existsSync("./out")) {
+        fs.mkdirSync("./out")
+    }
+
+    // actual function call
+    const tdToConvert = JSON.parse(fs.readFileSync(input, "utf-8"))
+    tdToAAP(tdToConvert).then( asyncApiInstance => {
+        const name = extractName(input)
+        const outpath = path.join("./out", name + "_asyncapi")
+        if (myArguments.aapYaml) {
+            fs.writeFileSync(outpath + ".yaml", asyncApiInstance.yaml)
+        }
+        else {
+            fs.writeFileSync(outpath + ".json", JSON.stringify(asyncApiInstance.json, undefined, 4))
         }
     })
 }
