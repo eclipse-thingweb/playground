@@ -17,6 +17,7 @@ channels:
       tags:
         - name: "properties"
       message:
+        contentType: "application/json"
         payload:
           oneOf:
             - type: "string"
@@ -30,7 +31,6 @@ channels:
               writeOnly: false
           readOnly: true
           writeOnly: false
-        contentType: "application/json"
       bindings:
         mqtt:
           bindingVersion: "0.1.0"
@@ -41,22 +41,22 @@ channels:
       tags:
         - name: "properties"
       message:
+        contentType: "application/json"
         payload:
           type: "array"
           readOnly: true
           writeOnly: false
-        contentType: "application/json"
   /binfull:
     subscribe:
       operationId: "subscribebinFullevent"
       tags:
         - name: "events"
       message:
+        contentType: "application/json"
         payload:
           type: "number"
           readOnly: false
           writeOnly: false
-        contentType: "application/json"
 id: "urn:dev:home:coff:type123-SNR123456"
 servers:
   0:

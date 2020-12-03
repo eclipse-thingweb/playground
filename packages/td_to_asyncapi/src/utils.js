@@ -27,7 +27,12 @@ function dataToAsyncSchema(source) {
         })
     }
 
-    return target
+    if (Object.keys(target).length === 0) {
+        return undefined
+    }
+    else {
+        return target
+    }
 }
 
 /**

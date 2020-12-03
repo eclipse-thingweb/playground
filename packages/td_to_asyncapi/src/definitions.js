@@ -75,8 +75,7 @@ function Tag(name, opts) {
     if (name === undefined) {throw new Error("name for tag missing")}
     this.name = name
     if (opts === undefined) {opts = {}}
-    this.description = opts.description
-    this.externalDocs = opts.externalDocs
+    Object.assign(this, opts)
 }
 
 /**
@@ -105,7 +104,7 @@ function Channel(channel, opts) {
  *          description?: string,
  *          tags?: Tag[],
  *          externalDocs?: ExternalDocs,
- *          bindings?: HttpOperationBinding | MqttOperationBinding,
+ *          bindings?: MqttOperationBinding,
  *          message?: Message | {oneOf: Message[]}
  * }} opts All parameters are optional
  */
@@ -125,6 +124,7 @@ function Operation(opts) {
     delete opts.opName
     delete opts.ixType
 
+    if (opts === undefined) {opts = {}}
     Object.assign(this, opts)
 }
 
@@ -139,11 +139,11 @@ function Operation(opts) {
  *        }} opts All parameters are optional
  */
 function Message(opts) {
-    this.headers = opts.headers
-    this.payload = opts.payload
-    this.schemaFormat = opts.schemaFormat
-    this.contentType = opts.contentType
-    this.examples = opts.examples
+    Object.keys(opts).forEach( key => {
+        if (opts[key] !== undefined) {
+            this[key] = opts[key]
+        }
+    })
 }
 
 /**

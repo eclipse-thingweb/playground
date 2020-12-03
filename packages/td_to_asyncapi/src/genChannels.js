@@ -32,19 +32,21 @@ function genChannels(td, servers) {
 
         const interactionInfo = allInteractionsInfo[interactionType]
 
-        Object.keys(td[interactionType]).forEach( interactionName => {
+        if (td[interactionType]) {
+            Object.keys(td[interactionType]).forEach( interactionName => {
 
-            const interaction = td[interactionType][interactionName]
+                const interaction = td[interactionType][interactionName]
 
-            if (interaction.forms) {
-                interaction.forms.forEach( form => {
-                    const dataSchema = interactionInfo.getDataSchema(interaction)
-                    const payload = dataToAsyncSchema(dataSchema)
-                    scanPropForm(form, channels, interactionName, payload, servers, interactionInfo)
-                })
-            }
+                if (interaction.forms) {
+                    interaction.forms.forEach( form => {
+                        const dataSchema = interactionInfo.getDataSchema(interaction)
+                        const payload = dataToAsyncSchema(dataSchema)
+                        scanPropForm(form, channels, interactionName, payload, servers, interactionInfo)
+                    })
+                }
 
-        })
+            })
+        }
     })
 
     return channels

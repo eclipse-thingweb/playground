@@ -1,3 +1,7 @@
+/**
+ * @file Test all functions in "genRoot.js" with td fragments as input
+ */
+
 const { genInfo, genTags, genBaseServer } = require("../src/genRoot")
 
 describe("genInfo", () => {

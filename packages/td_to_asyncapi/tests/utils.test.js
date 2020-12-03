@@ -1,9 +1,13 @@
-const { TestScheduler } = require( 'jest' )
+/**
+ * @file Test all functions in "util.js", module test
+ */
+
 const { dataToAsyncSchema, extractChannel, copySpecExtensions } = require("../src/utils")
 
 test("dataToAsyncSchema", () => {
 
     expect(dataToAsyncSchema(undefined)).toBe(undefined)
+    expect(dataToAsyncSchema({})).toBe(undefined)
 
     const tdSchema = {
         readOnly: false,

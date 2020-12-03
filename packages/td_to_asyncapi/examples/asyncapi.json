@@ -27,6 +27,7 @@
           }
         ],
         "message": {
+          "contentType": "application/json",
           "payload": {
             "oneOf": [
               {
@@ -47,8 +48,7 @@
             ],
             "readOnly": true,
             "writeOnly": false
-          },
-          "contentType": "application/json"
+          }
         },
         "bindings": {
           "mqtt": {
@@ -67,12 +67,12 @@
           }
         ],
         "message": {
+          "contentType": "application/json",
           "payload": {
             "type": "array",
             "readOnly": true,
             "writeOnly": false
-          },
-          "contentType": "application/json"
+          }
         }
       }
     },
@@ -85,12 +85,12 @@
           }
         ],
         "message": {
+          "contentType": "application/json",
           "payload": {
             "type": "number",
             "readOnly": false,
             "writeOnly": false
-          },
-          "contentType": "application/json"
+          }
         }
       }
     }
