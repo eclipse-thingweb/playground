@@ -28,5 +28,38 @@ Resulting from the current Limitations there are possible extensions for the fut
 
 A TD hasn't necessarily to be valid in order to be converted to an AsyncAPI instance. This converter will only throw an Error if the invalid part has a strong effect on the conversion result, but tries to ignore the most cases. This is by purpose, since there is the possibility to validate a TD using, e.g., the playground core package and the conversion of experimental TDs for example to create new TD features, should be supported.
 
-TODO: fill Readme  
-TODO: think about collisions with different interactions with the same path (= channel)
+## Usage
+
+You can use this package to integrate AsyncAPI instance generation from a TD in your application.
+
+* Install this package via NPM (`npm install @thing-description-playground/td_to_asyncapi`) (or clone repo and install the package with `npm install`)
+* Node.js or Browser import:
+  * Node.js: Require the package and use the functions
+
+  ```javascript
+  const tdToAsyncAPI = require("@thing-description-playground/td_to_asyncapi")
+  ```
+
+  * Browser: Import the `tdToAsyncAPI` object as a global by adding a script tag to your html.
+
+  ```html
+  <script src="./node_modules/@thing-description-playground/td_to_asyncapi/dist/web-bundle.min.js"></script>
+  ```
+
+* Now you can convert a TD to an AsyncAPI instance.
+
+  ```javascript
+  tdToAsyncAPI(td).then( AsyncAPI => {
+    console.log(JSON.stringify(AsyncAPI.json, undefined, 2))
+    console.log(AsyncAPI.yaml)
+  })
+  ```
+
+  You can find usage examples in the [tests folder](./tests/), or the [web] and [cli] packages.
+
+## License
+
+Licensed under the MIT license, see [License](./LICENSE.md).
+
+[web]: https://github.com/thingweb/thingweb-playground/tree/master/packages/web
+[cli]: https://github.com/thingweb/thingweb-playground/tree/master/packages/cli
