@@ -8,23 +8,22 @@ const td = require("../examples/td.json")
 
 if (!fs.existsSync("./out")) {fs.mkdirSync("./out")}
 
-// remove examples for testing, since they are random generated
-// let oapJson = fs.readFileSync("./examples/asyncapi.json", "utf-8")
-// oapJson = JSON.parse(oapJson)
-// oapJson = JSON.stringify(oapJson, removeExample, 2)
+const aapJson = fs.readFileSync("./examples/asyncapi.json", "utf-8")
+const aapYaml = fs.readFileSync("./examples/asyncapi.yaml", "utf-8")
+
 
 test("test the whole openAPI convertion", () => {
-    expect.assertions(1)
+    expect.assertions(2)
 
     return toAAP(td).then( apiSpec => {
         // write output
         fs.writeFileSync("./out/1.json", JSON.stringify(apiSpec.json, undefined, 2))
         fs.writeFileSync("./out/1.yaml", apiSpec.yaml)
 
-        // TODO: test equality without examples
-        // const jsonString = JSON.stringify(apiSpec.json, removeExample, 2)
-        // expect(jsonString).toBe(oapJson)
-        expect(1).toBe(1)
+        // test equality
+        const jsonString = JSON.stringify(apiSpec.json, undefined, 2)
+        expect(jsonString).toBe(aapJson)
+        expect(apiSpec.yaml).toBe(aapYaml)
     }, err => {
         console.error(err)
     })
