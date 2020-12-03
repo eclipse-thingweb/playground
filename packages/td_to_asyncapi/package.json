@@ -15,11 +15,12 @@
     "directory": "packages/td_to_asyncapi"
   },
   "scripts": {
-    "test": "jest & node ./tests/mytest.js",
+    "test": "jest",
     "testAll": "node testAll.js",
-    "XYZbundle": "npx browserify ./index.js -s tdToAsyncAPI -o ./dist/web-bundle.js && npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
+    "bundle": "npm run aapParserBundle && npx browserify ./index.js -s tdToAsyncAPI -o ./dist/web-bundle.js && npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
     "updateExamples": "node ./examples/updateExamples.js",
-    "XYZprepare": "npm run bundle"
+    "prepare": "npm run bundle",
+    "aapParserBundle": "cd ./node_modules/@asyncapi/parser && npm install && cd ../../../"
   },
   "dependencies": {
     "@asyncapi/parser": "^1.2.0",
