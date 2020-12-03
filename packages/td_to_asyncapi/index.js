@@ -4,7 +4,7 @@ const {genInfo, genTags, genBaseServer} = require( './src/genRoot' )
 const defaults = require("@thing-description-playground/defaults")
 
 /**
- * Create an AsyncAPI document from a Web of Things Thing Description
+ * Create an AsyncAPI instance from a Web of Things Thing Description
  * @param {object} td A Thing Description object as input
  * @returns {Promise<{json:object, yaml:String}>} Resolves as object containing the OAP document or rejects
  */
@@ -16,10 +16,7 @@ function toAsyncAPI(td) {
         defaults.addDefaults(td)
 
         const servers = genBaseServer(td)
-        const asyncApiInstance = new AsyncAPI({
-            asyncapi: "2.0.0",
-            info: genInfo(td),
-            channels: genChannels(td, servers),
+        const asyncApiInstance = new AsyncAPI("2.0.0", genInfo(td), genChannels(td, servers), {
             id: td.id,
             servers,
             tags: genTags(td),
@@ -29,7 +26,6 @@ function toAsyncAPI(td) {
             )
         })
 
-        console.log(asyncApiInstance.asYaml())
         asyncApiInstance.parse().then( apiExport => {
             res(apiExport)
         }, err => {

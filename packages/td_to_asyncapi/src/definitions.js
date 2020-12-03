@@ -2,24 +2,40 @@ const apiParser = require('@asyncapi/parser')
 const YAML = require("json-to-pretty-yaml")
 
 /**
- * AsyncAPI Constructor
- * @param {{asyncapi: string, info: Info, channels: {[key:string]: Channel},
- *          id?, servers?: {[key:string]: Server}, components?, tags?: Tag[], externalDocs?: ExternalDocs
- *         }} props The AsyncAPI instance properties
+ * AsyncAPI Instance Constructor
+ * @param {string} asyncapi The asyncapi specification version to apply
+ * @param {Info} info The root level information, e.g., title
+ * @param {{[key:string]: Channel}} channels The channels (= topics = ...) of the instance
+ * @param {{
+ *          id?,
+ *          servers?: {[key:string]: Server},
+ *          components?,
+ *          tags?: Tag[],
+ *          externalDocs?: ExternalDocs
+ *         } | undefined} opts The AsyncAPI instance optional properties
  */
-function AsyncAPI(props) {
+function AsyncAPI(asyncapi, info, channels, opts) {
+
+    if (!asyncapi || !info || !channels) {throw new Error("AsyncAPI constructor problem, parameter missing")}
+    if (!opts) {opts = {}}
+    this.props = {asyncapi, info, channels}
+    Object.assign(this.props, opts)
 
     this.asYaml = function () {
-       return YAML.stringify(props)
+       return YAML.stringify(this.props)
     }
+
     this.parse = function () {
         return new Promise( (res, rej) => {
-            apiParser.parse(props).then( parsedAapi => {
+            // use object copy to avoid exporting parser annotations
+            const propsCopy = JSON.parse(JSON.stringify(this.props))
+            apiParser.parse(propsCopy).then( parsedAapi => {
                 this.aap = parsedAapi
-                res({json: props, yaml: this.asYaml()})
+                res({json: this.props, yaml: this.asYaml()})
             })
         })
     }
+
 }
 
 /**
