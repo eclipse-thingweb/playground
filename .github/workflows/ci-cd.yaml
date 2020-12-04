@@ -30,8 +30,8 @@ jobs:
         run: lerna run test --no-bail --stream
         env:
           # avoid errors from gist_backend test
-          TD_PLAYGROUND_LOGIN: example
-          TD_PLAYGROUND_TOKEN: example
+          TD_PLAYGROUND_LOGIN: ${{ secrets.TD_PLAYGROUND_LOGIN }}
+          TD_PLAYGROUND_TOKEN: ${{ secrets.TD_PLAYGROUND_TOKEN }}
 
   deploy-via-ssh:
 

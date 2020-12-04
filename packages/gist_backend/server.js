@@ -1,13 +1,8 @@
 const express = require("express")
 const fetch = require("node-fetch")
 const fs = require("fs")
+const { port, keepLogMessages, allowHosts, login, token } = require("./config")
 
-
-const port = 8082
-const login = process.env.TD_PLAYGROUND_LOGIN
-const token = process.env.TD_PLAYGROUND_TOKEN
-const keepLogMessages = 100
-const allowHosts = ["http://127.0.0.1:5500", "http://localhost:5500", "http://plugfest.thingweb.io"]
 const app = express()
 const logs = fs.existsSync("./logs.json") ? JSON.parse(fs.readFileSync("./logs.json", "utf-8")) : []
 
@@ -103,6 +98,7 @@ function checkInput({name, description, content}) {
  * @param {string} name The name of the gist to submit
  * @param {string} description The description of the gist to submit
  * @param {string} content The TD of the gist to submit
+ * @returns {Promise<{htmlUrl: string, location: string}>} The properties of the generated gist
  */
 function postGist({name, description, content}){
     return new Promise( (res, rej) => {
