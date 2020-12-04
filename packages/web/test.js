@@ -1,8 +1,8 @@
 /**
  * @file Visual testing for this package. Uses `playwright` to create screenshots of the locally served package
- *       and download an instance of the assertion report. The screenshots are generated using chromium and firefox
- *       (webkit fails ATM) and different viewports and actions (click on forms etc.).
- *       The test results are written to "./test_results"
+ *       and download an instance of the assertion report and OpenAPI convertion result (json & yaml).
+ *        The screenshots are generated using chromium and firefox (webkit fails ATM) and different
+ *        viewports and actions (click on forms etc.). The test results are written to "./test_results".
  */
 
 const playwright = require('playwright')
@@ -125,9 +125,21 @@ async function testVisualChromium(page) {
   assertionDownload.saveAs("./test_results/assertions.csv")
   await page.click("#close_assertion_test_popup")
 
+  const [openapiJsonDownload] = await Promise.all([
+    page.waitForEvent("download"),
+    page.click("#btn_oap_json")
+  ])
+  openapiJsonDownload.saveAs("./test_results/openapi.json")
+
+  const [openapiYamlDownload] = await Promise.all([
+    page.waitForEvent("download"),
+    page.click("#btn_oap_yaml")
+  ])
+  openapiYamlDownload.saveAs("./test_results/openapi.yaml")
+
   await page.click("#btn_clearLog")
-  const consoleField = await page.$("#console")
-  await consoleField.screenshot({ path: path.join(testDir, "chromium_cleared-log.png")})
+  await myWait(300)
+  await customShot("cleared-log")
 
   await page.click("#editor_theme")
   await customShot("dropdown-editor-color")
