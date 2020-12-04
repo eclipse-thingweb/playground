@@ -29,38 +29,40 @@ startedServer.on("close", code => {
     }
 })
 
-// Make the gist submission request
-fetch("http://127.0.0.1:" + port, {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-        name: "CI gist_backend test 2",
-        description: "An TD submitted to test if the backend works, should be removed soon...",
-        content: "{\n  \"id\": \"test:test:test\"\n}"
-    })
-}).then( reply => {
-    if (reply.status === 201) {
-        reply.json()
-        .then(json => {
-            // res({htmlUrl: json.html_url, location: json.url})
-            console.log("Gist submission successful! starting delete")
-            console.log(json)
-            startedServer.kill()
-            deleteGist(json.location)
-        }, err => {
-            console.error("The gist reply could not be turned into JSON: " + err)
-            process.exit(1)
+setTimeout( () => {
+    // Make the gist submission request
+    fetch("http://127.0.0.1:" + port, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            name: "CI gist_backend test 2",
+            description: "An TD submitted to test if the backend works, should be removed soon...",
+            content: "{\n  \"id\": \"test:test:test\"\n}"
         })
-    } else {
-        console.error("The gist could not be created by GitHub: " + reply.status + " " + reply.statusText)
+    }).then( reply => {
+        if (reply.status === 201) {
+            reply.json()
+            .then(json => {
+                // res({htmlUrl: json.html_url, location: json.url})
+                console.log("Gist submission successful! starting delete")
+                console.log(json)
+                startedServer.kill()
+                deleteGist(json.location)
+            }, err => {
+                console.error("The gist reply could not be turned into JSON: " + err)
+                process.exit(1)
+            })
+        } else {
+            console.error("The gist could not be created by GitHub: " + reply.status + " " + reply.statusText)
+            process.exit(1)
+        }
+    }, err => {
+        console.error("Gist request at GitHub failed: " + err)
         process.exit(1)
-    }
-}, err => {
-    console.error("Gist request at GitHub failed: " + err)
-    process.exit(1)
-})
+    })
+}, 3000)
 
 function deleteGist(gistLocation) {
     fetch(gistLocation, {
