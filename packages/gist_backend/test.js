@@ -1,4 +1,10 @@
-/* check if the server starts without error message and then shut it down after 3s */
+/**
+ * @file launches the gist submission backend
+ *       waits so the server is ready
+ *       sends a TD to submit
+ *       deletes the submitted TD by an own request
+ *       directly to GitHub
+ */
 
 const {spawn} = require("child_process")
 const { port, login, token } = require("./config")

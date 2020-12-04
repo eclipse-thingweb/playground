@@ -2,7 +2,6 @@ const express = require("express")
 const fetch = require("node-fetch")
 const fs = require("fs")
 const { port, keepLogMessages, allowHosts, login, token } = require("./config")
-const os = require("os")
 
 const app = express()
 const logs = fs.existsSync("./logs.json") ? JSON.parse(fs.readFileSync("./logs.json", "utf-8")) : []
