@@ -30,7 +30,7 @@ startedServer.on("close", code => {
 })
 
 // Make the gist submission request
-fetch("http://localhost:" + port, {
+fetch("http://127.0.0.1:" + port, {
     method: "POST",
     headers: {
         "Content-Type": "application/json"
