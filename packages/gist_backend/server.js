@@ -51,12 +51,8 @@ app.post("/", (req, res) => {
     }
 })
 
-const myServer = app.listen(port, "127.0.0.1", () => {
+const myServer = app.listen(port, () => {
     console.log("Server started on Port ", port)
-    // console.log(app)
-    // console.log(myServer)
-    console.log(os.networkInterfaces())
-    
 })
 
 /**

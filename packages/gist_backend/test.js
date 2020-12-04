@@ -29,9 +29,12 @@ startedServer.on("close", code => {
     }
 })
 
-setTimeout( () => {
+// wait until server is up and running, then make request
+setTimeout( createGist, 3000)
+
+function createGist() {
     // Make the gist submission request
-    fetch("http://127.0.0.1:" + port, {
+    fetch("http://localhost:" + port, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -62,7 +65,7 @@ setTimeout( () => {
         console.error("Gist request at GitHub failed: " + err)
         process.exit(1)
     })
-}, 3000)
+}
 
 function deleteGist(gistLocation) {
     fetch(gistLocation, {
