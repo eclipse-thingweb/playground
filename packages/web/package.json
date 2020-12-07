@@ -1,0 +1,42 @@
+{
+  "name": "@thing-description-playground/web",
+  "author": "TUM ESI <esi@ei.tum.de> (https://www.ei.tum.de/en/esi/home/)",
+  "license": "MIT",
+  "version": "1.1.0",
+  "description": "Provides a browser GUI for the Web of Things - Thing Description Playground.",
+  "homepage": "https://github.com/thingweb/thingweb-playground#readme",
+  "bugs": {
+    "url": "https://github.com/thingweb/thingweb-playground/issues"
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thingweb/thingweb-playground.git",
+    "directory": "packages/web"
+  },
+  "scripts": {
+    "test": "node test.js",
+    "debug": "node test.js -d",
+    "serve": "serve -p 5500"
+  },
+  "dependencies": {
+    "@thing-description-playground/assertions": "^1.0.3",
+    "@thing-description-playground/core": "^1.0.2",
+    "@thing-description-playground/defaults": "^1.0.0",
+    "@thing-description-playground/td_to_openapi": "^1.1.1",
+    "bootstrap-css-only": "4.4.1",
+    "monaco-editor": "^0.20.0",
+    "papaparse": "^5.3.0"
+  },
+  "devDependencies": {
+    "browserify": "^16.5.2",
+    "eslint": "^7.13.0",
+    "terser": "^5.5.1",
+    "playwright": "^1.4.0",
+    "serve": "^11.3.2",
+    "serve-handler": "^6.1.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
