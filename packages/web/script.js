@@ -152,6 +152,14 @@ document.getElementById("btn_oap_yaml").addEventListener("click", () => {
 	util.generateOAP("yaml").catch(err => {alert(err)})
 })
 
+document.getElementById("btn_aap_json").addEventListener("click", () => {
+	util.generateAAP("json").catch(err => {alert(err)})
+})
+
+document.getElementById("btn_aap_yaml").addEventListener("click", () => {
+	util.generateAAP("yaml").catch(err => {alert(err)})
+})
+
 document.getElementById("btn_defaults_add").addEventListener("click", util.addDefaults)
 document.getElementById("btn_defaults_remove").addEventListener("click", util.removeDefaults)
 

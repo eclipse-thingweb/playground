@@ -1,0 +1,39 @@
+{
+  "name": "@thing-description-playground/td_to_asyncapi",
+  "author": "TUM ESI <esi@ei.tum.de> (https://www.ei.tum.de/en/esi/home/)",
+  "license": "MIT",
+  "version": "0.0.0",
+  "description": "Provides AsyncAPI instance generation for Thing Descriptions in the Web of Things - Thing Description Playground.",
+  "homepage": "https://github.com/thingweb/thingweb-playground#readme",
+  "bugs": {
+    "url": "https://github.com/thingweb/thingweb-playground/issues"
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thingweb/thingweb-playground.git",
+    "directory": "packages/td_to_asyncapi"
+  },
+  "scripts": {
+    "test": "jest",
+    "testAll": "node testAll.js",
+    "bundle": "npx browserify ./index.js -s tdToAsyncAPI -o ./dist/web-bundle.js && npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
+    "updateExamples": "node ./examples/updateExamples.js",
+    "prepare": "npm run bundle"
+  },
+  "dependencies": {
+    "@asyncapi/parser": "^1.2.0",
+    "@thing-description-playground/defaults": "^1.0.0",
+    "json-to-pretty-yaml": "^1.2.2"
+  },
+  "devDependencies": {
+    "browserify": "^16.5.1",
+    "browserify-shim": "^3.8.14",
+    "eslint": "^7.13.0",
+    "jest": "^26.4.2",
+    "terser": "^4.7.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

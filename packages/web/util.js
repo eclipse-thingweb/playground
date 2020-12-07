@@ -167,6 +167,32 @@ export function generateOAP(fileType){
 }
 
 /**
+ * Get the current TD
+ * Call the td_to_asyncapi package
+ * and return an AsyncAPI instance
+ * @param {"json"|"yaml"} fileType
+ */
+export function generateAAP(fileType){
+    return new Promise( (res, rej) => {
+        const tdToValidate=window.editor.getValue()
+
+        if (tdToValidate === "") {
+            rej("No TD given to generate AsyncAPI instance")
+        }
+        else if (fileType !== "json" && fileType !== "yaml") {
+            rej("Wrong content type required: " + fileType)
+        }
+        else {
+            tdToAsyncAPI(JSON.parse(tdToValidate)).then( asyncAPI => {
+                const contentType = (fileType === "json" ? "application/json;" : "application/yaml;") + "charset=utf-8;"
+                const content = fileType === "json" ? JSON.stringify(asyncAPI[fileType], undefined, 4) : asyncAPI[fileType]
+                offerFileDownload("asyncapi." + fileType, content, contentType)
+            }, err => {rej("AsyncAPI generation problem: " + err)})
+        }
+    })
+}
+
+/**
  * applies adding unset default values
  * to the TD in the editor
  */

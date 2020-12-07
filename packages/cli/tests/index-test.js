@@ -1,4 +1,5 @@
 const {exec} = require("child_process")
+const { fstat, existsSync } = require( 'fs' )
 
 /**
  * The testing processes stack object
@@ -73,6 +74,9 @@ processStack.add("node ./index.js", "normal validation", sOut => (
     sOut.search("Validity test succesful") !== -1
 ))
 // processStack.add("node ./index.js -a", "normal assertions")
-// processStack.add("node ./index.js -p", "normal openAPI generation")
+processStack.add("node ./index.js -p", "OpenAPI JSON generation", () => existsSync("./out/simple_openapi.json"))
+processStack.add("node ./index.js -p --oap-yaml", "OpenAPI YAML generation", () => existsSync("./out/simple_openapi.yaml"))
+processStack.add("node ./index.js --async-api", "AsyncAPI JSON generation", () => existsSync("./out/simple_asyncapi.json"))
+processStack.add("node ./index.js --async-api --aap-yaml", "AsyncaPI YAML generation", () => existsSync("./out/simple_asyncapi.yaml"))
 
 processStack.evaluate()
