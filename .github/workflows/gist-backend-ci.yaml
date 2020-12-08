@@ -26,7 +26,10 @@ jobs:
           npm install
       
       - name: Run real Test
-        run: npm run realTest
+        run: |
+          cd ./packages/gist_backend
+          npm run realTest
+
         env:
           # set real credentials
           TD_PLAYGROUND_LOGIN: ${{ secrets.TD_PLAYGROUND_LOGIN }}
