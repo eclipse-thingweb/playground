@@ -16,7 +16,8 @@
   },
   "scripts": {
     "test": "node test.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "realTest": "node real-test.js"
   },
   "dependencies": {
     "express": "^4.17.1",
