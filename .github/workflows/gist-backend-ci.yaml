@@ -1,0 +1,33 @@
+name: Gist Backend CI
+
+on: push
+
+jobs:
+
+  test-gist-backend:
+
+    runs-on: ubuntu-latest
+
+    # make sure repository secrets are set
+    if: ${{ github.event_name == 'push' && github.repository_owner == 'thingweb' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+            node-version: 12.x
+      
+      - name: Install deps
+        run: |
+          cd ./packages/gist_backend
+          npm install
+      
+      - name: Run real Test
+        run: npm run realTest
+        env:
+          # set real credentials
+          TD_PLAYGROUND_LOGIN: ${{ secrets.TD_PLAYGROUND_LOGIN }}
+          TD_PLAYGROUND_TOKEN: ${{ secrets.TD_PLAYGROUND_TOKEN }}
