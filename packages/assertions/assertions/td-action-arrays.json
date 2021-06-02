@@ -82,11 +82,8 @@
                         "type": "string"
                     }
                 },
-                "subProtocol": {
-                    "type": "string",
-                    "enum": [
-                        "longpoll", "websub", "sse"
-                    ]
+                "subprotocol": {
+                    "type": "string"
                 },
                 "response": {
                     "type": "object",

@@ -38,7 +38,7 @@
             "data":{"type": "string"},
             "forms": [{
                 "href": "https://mylamp.example.com/oh",
-                "subProtocol": "longpoll",
+                "subprotocol": "longpoll",
                 "security": ["nosec_sc"]
             }]
         }

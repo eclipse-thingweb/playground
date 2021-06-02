@@ -87,7 +87,7 @@
             "if": {
                 "required": ["subprotocol"],
                 "properties": {
-                    "subProtocol": {
+                    "subprotocol": {
                         "type": "string",
                         "enum": [
                             "sse"

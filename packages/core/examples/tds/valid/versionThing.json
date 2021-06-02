@@ -35,7 +35,7 @@
             "forms": [
                 {
                     "href": "https://mylamp.example.com/oh",
-                    "subProtocol": "longpoll"
+                    "subprotocol": "longpoll"
                 }
             ]
         }

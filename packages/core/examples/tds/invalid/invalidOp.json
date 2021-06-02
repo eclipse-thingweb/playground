@@ -30,7 +30,7 @@
                     "href": "http://example.org:9191/api/brightness/observe",
                     "op": ["subscribeevent"],
                     "htv:methodName": "GET",
-                    "subProtocol": "longpoll"
+                    "subprotocol": "longpoll"
                 }
             ]
         }
@@ -50,7 +50,7 @@
             },
             "forms": [{
                 "href": "https://mylamp.example.com/oh",
-                "subProtocol": "longpoll",
+                "subprotocol": "longpoll",
                 "op": ["subscribeevent"]
             }]
         }

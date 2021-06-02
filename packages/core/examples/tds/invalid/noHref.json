@@ -34,7 +34,7 @@
             "data":{"type": "string"},
             "forms": [
                 {
-                    "subProtocol": "longpoll"
+                    "subprotocol": "longpoll"
                 }
             ]
         }

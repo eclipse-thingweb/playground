@@ -103,7 +103,7 @@
                         "type": "string"
                     }
                 },
-                "subProtocol": {
+                "subprotocol": {
                     "type": "string",
                     "enum": [
                         "longpoll", "websub", "sse"

@@ -51,7 +51,7 @@
                 }
             ]
         },
-        "subProtocol": {
+        "subprotocol": {
             "type": "string",
             "enum": [
                 "longpoll",
@@ -445,8 +445,8 @@
                 "contentCoding": {
                     "type": "string"
                 },
-                "subProtocol": {
-                    "$ref": "#/definitions/subProtocol"
+                "subprotocol": {
+                    "$ref": "#/definitions/subprotocol"
                 },
                 "security": {
                     "$ref": "#/definitions/security"
@@ -501,8 +501,8 @@
                 "contentCoding": {
                     "type": "string"
                 },
-                "subProtocol": {
-                    "$ref": "#/definitions/subProtocol"
+                "subprotocol": {
+                    "$ref": "#/definitions/subprotocol"
                 },
                 "security": {
                     "$ref": "#/definitions/security"
@@ -559,8 +559,8 @@
                 "contentCoding": {
                     "type": "string"
                 },
-                "subProtocol": {
-                    "$ref": "#/definitions/subProtocol"
+                "subprotocol": {
+                    "$ref": "#/definitions/subprotocol"
                 },
                 "security": {
                     "$ref": "#/definitions/security"
@@ -621,8 +621,8 @@
                 "contentCoding": {
                     "type": "string"
                 },
-                "subProtocol": {
-                    "$ref": "#/definitions/subProtocol"
+                "subprotocol": {
+                    "$ref": "#/definitions/subprotocol"
                 },
                 "security": {
                     "$ref": "#/definitions/security"

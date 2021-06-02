@@ -30,13 +30,13 @@
                     "href": "http://example.org:9191/api/brightness/observe",
                     "op": ["observeproperty"],
                     "htv:methodName": "GET",
-                    "subProtocol": "websub"
+                    "subprotocol": "websub"
                 },
                 {
                     "href": "http://example.org:9191/api/brightness/unobserve",
                     "op": ["unobserveproperty"],
                     "htv:methodName": "GET",
-                    "subProtocol": "websub"
+                    "subprotocol": "websub"
                 }
             ]
         },
@@ -58,7 +58,7 @@
                     "href": "http://example.org:9191/api/simple2/observe",
                     "op": ["observeproperty"],
                     "htv:methodName": "GET",
-                    "subProtocol": "longpoll"
+                    "subprotocol": "longpoll"
                 }
             ]
         }
@@ -94,14 +94,14 @@
             },
             "forms": [{
                 "href": "https://mylamp.example.com/oh",
-                "subProtocol": "longpoll",
+                "subprotocol": "longpoll",
                 "op": ["subscribeevent"]
             }]
         },
         "simple5": {
             "forms": [{
                 "href": "https://mylamp.example.com/oh",
-                "subProtocol": "longpoll"
+                "subprotocol": "longpoll"
             }]
         },
         "simple6": {
@@ -110,17 +110,17 @@
             },
             "forms": [{
                     "href": "https://mylamp.example.com/oh",
-                    "subProtocol": "longpoll",
+                    "subprotocol": "longpoll",
                     "op": ["subscribeevent"]
                 },
                 {
                     "href": "https://mylamp.example.com/oh",
-                    "subProtocol": "longpoll",
+                    "subprotocol": "longpoll",
                     "op": ["unsubscribeevent"]
                 },
                 {
                     "href": "https://mylamp.example.com/oh",
-                    "subProtocol": "longpoll"
+                    "subprotocol": "longpoll"
                 }
             ]
         }
