@@ -2,7 +2,7 @@
   "name": "@thing-description-playground/core",
   "author": "TUM ESI <esi@ei.tum.de> (https://www.ei.tum.de/en/esi/home/)",
   "license": "MIT",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Provides the validation functionality for the Web of Things - Thing Description Playground.",
   "homepage": "https://github.com/thingweb/thingweb-playground#readme",
   "bugs": {
