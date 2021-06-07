@@ -2,7 +2,7 @@
   "name": "@thing-description-playground/defaults",
   "author": "TUM ESI <esi@ei.tum.de> (https://www.ei.tum.de/en/esi/home/)",
   "license": "MIT",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Adds/removes defaults for Thing Descriptions in the Web of Things - Thing Description Playground.",
   "homepage": "https://github.com/thingweb/thingweb-playground#readme",
   "bugs": {
@@ -20,7 +20,7 @@
     "prepare": "npm run bundle"
   },
   "devDependencies": {
-    "@thing-description-playground/core": "^1.1.0",
+    "@thing-description-playground/core": "^1.2.0",
     "browserify": "^16.5.1",
     "eslint": "7.10.0",
     "jest": "^26.4.2",
