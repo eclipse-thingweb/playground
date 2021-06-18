@@ -61,11 +61,19 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual) {
 
             const jsonResults = {}
             tdStrings.forEach( tdToValidate => {
-                const tdId = JSON.parse(tdToValidate).id
-                const tdName = tdId.replace(/:/g, "_")
+                // check if id exists, use it for name if it does, title + some rand number otherwise
+                let tdName = ""
+                if ("id" in JSON.parse(tdToValidate)){
+                    const tdId = JSON.parse(tdToValidate).id
+                    tdName = tdId.replace(/:/g, "_")
+                } else {
+                    const tdTitle = JSON.parse(tdToValidate).title
+                    tdName = tdTitle + Math.floor(Math.random() * 1000)
+                }
+
                 if (typeof tdToValidate === "string") {tdToValidate = Buffer.from(tdToValidate, "utf8")}
 
-                if (jsonResults[tdName] !== undefined) {throw new Error("TDs have same Ids: " + tdName)}
+                if (jsonResults[tdName] !== undefined) {throw new Error("TDs have same Ids or titles: " + tdName)}
                 jsonResults[tdName] = validate(tdToValidate, assertionSchemas, manualAssertionsJSON, logFunc)
             })
 
