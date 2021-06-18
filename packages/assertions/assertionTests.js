@@ -26,7 +26,8 @@ function validate(tdData, assertions, manualAssertions, logFunc) {
     // a JSON file that will be returned containing the result for each assertion as a JSON Object
     let results = []
     // !!! uses console info on purpose, to be able to deactivate it, without overwriting console.log !!!
-    console.info("=================================================================")
+    // console.info("=================================================================")
+    // it is commented out to make sure that the output to std is also a valid csv file
 
     // check whether it is a valid JSON
     let tdJson
