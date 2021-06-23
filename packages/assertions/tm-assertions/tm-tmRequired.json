@@ -23,7 +23,7 @@
     "$def": {
         "JSONPointer": {
             "type": "string",
-            "format": "json-pointer"
+            "format": "uri-reference"
         }
     }
 }
