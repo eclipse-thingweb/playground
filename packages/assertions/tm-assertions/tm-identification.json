@@ -1,0 +1,35 @@
+{
+    "title": "tm-identification",
+    "description": "Thing Model definitions MUST use the keyword @type at top level and a value of type string or array that equals or respectively contains tm:ThingModel.",
+    "$schema ": "https://json-schema.org/draft/2019-09/schema#",
+    "is-complex":false,
+    "type": "object",
+    "properties": {
+        "@type": {
+            "anyOf": [
+                {
+                    "$ref":"#/$def/tm_string"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "contains": {
+                        "$ref":"#/$def/tm_string"
+                    }
+                }
+            ]
+        }
+    },
+    "required": [
+        "@type"
+    ],
+    "additionalProperties": true,
+    "$def": {
+        "tm_string": {
+            "type": "string",
+            "const": "tm:ThingModel"
+        }
+    }
+}
