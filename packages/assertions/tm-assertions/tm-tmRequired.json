@@ -10,9 +10,6 @@
             "type": "array",
             "items": {
                 "$ref": "#/$def/JSONPointer"
-            },
-            "contains": {
-                "$ref": "#/$def/tm_extend_link_element"
             }
         }
     },
