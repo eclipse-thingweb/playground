@@ -8,10 +8,10 @@
         "links": {
             "type": "array",
             "items": {
-                "$ref": "#/$def/base_link_element"
+                "$ref": "#/$defs/base_link_element"
             },
             "contains": {
-                "$ref": "#/$def/tm_extend_link_element"
+                "$ref": "#/$defs/tm_extend_link_element"
             }
         }
     },
@@ -19,7 +19,7 @@
         "links"
     ],
     "additionalProperties": true,
-    "$def": {
+    "$defs": {
         "anyUri": {
             "type": "string",
             "format": "iri-reference"
@@ -28,7 +28,7 @@
             "type": "object",
             "properties": {
                 "href": {
-                    "$ref": "#/$def/anyUri"
+                    "$ref": "#/$defs/anyUri"
                 },
                 "type": {
                     "type": "string"
@@ -37,7 +37,7 @@
                     "type": "string"
                 },
                 "anchor": {
-                    "$ref": "#/$def/anyUri"
+                    "$ref": "#/$defs/anyUri"
                 }
             },
             "required": [
@@ -48,7 +48,7 @@
         "tm_extend_link_element":{
             "allOf": [
                 {
-                    "$ref": "#/$def/base_link_element"
+                    "$ref": "#/$defs/base_link_element"
                 },
                 {
                     "properties": {

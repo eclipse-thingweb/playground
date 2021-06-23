@@ -9,7 +9,7 @@
         "tm:required": {
             "type": "array",
             "items": {
-                "$ref": "#/$def/JSONPointer"
+                "$ref": "#/$defs/JSONPointer"
             }
         }
     },
@@ -17,7 +17,7 @@
         "tm:required"
     ],
     "additionalProperties": true,
-    "$def": {
+    "$defs": {
         "JSONPointer": {
             "type": "string",
             "format": "uri-reference"
