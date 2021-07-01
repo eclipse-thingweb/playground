@@ -1,0 +1,124 @@
+{
+    "title": "td-vocab-additionalResponses--Form",
+    "description": "additionalResponses: This optional term can be used if additional expected responses are possible, e.g. for error reporting. Each additional response needs to be distinguished from others in some way (for example, by specifying a protocol-specific error code), and may also have its own data schema. MAY be included. Type: AdditionalExpectedResponse or Array of AdditionalExpectedResponse.",
+    "$schema ": "http://json-schema.org/draft/2019-09/schema#",
+    "is-complex": true,
+    "type": "object",
+    "properties": {
+        "forms": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "$ref": "#/$defs/form_element"
+            }
+        },
+        "properties": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/$defs/property_element"
+            }
+
+        },
+        "actions": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/$defs/action_element"
+            }
+        },
+        "events": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/$defs/event_element"
+            }
+        }
+    },
+    "$defs": {
+        "property_element": {
+            "type": "object",
+            "properties": {
+                "forms": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "$ref": "#/$defs/form_element"
+                    }
+                }
+            },
+            "required": [
+                "forms"
+            ],
+            "additionalProperties": true
+        },
+        "action_element": {
+            "type": "object",
+            "properties": {
+                "forms": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "$ref": "#/$defs/form_element"
+                    }
+                }
+            },
+            "required": [
+                "forms"
+            ],
+            "additionalProperties": true
+        },
+        "event_element": {
+            "type": "object",
+            "properties": {
+                "forms": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "$ref": "#/$defs/form_element"
+                    }
+                }
+            },
+            "required": [
+                "forms"
+            ],
+            "additionalProperties": true
+        },
+        "form_element": {
+            "type": "object",
+            "if": {
+                "required": ["additionalResponses"],
+                "properties": {
+                     "additionalResponses": {
+                        "oneOff": [
+                            {
+                                "$ref": "#/$defs/additionalResponse_element"
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/$defs/additionalResponse_element"
+                                }
+                            }
+                        ]
+                     }
+                }
+                                   
+            },
+            "then": {
+                "const": "td-vocab-additionalResponses--Form=pass"
+            }
+        },
+        "additionalResponse_element":{
+            "type": "object",
+            "properties": {
+                "contentType": {
+                    "type": "string"
+                },
+                "schema": {
+                    "type": "string"
+                },
+                "success":{
+                    "type":"boolean"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,52 @@
+{
+    "title": "td-vocab-oneOf--ComboSecurityScheme",
+    "description": "oneOf: Array of two or more strings identifying other named security scheme definitions, any one of which, when satisfied, will allow access. Only one may be chosen for use. MUST be included. Type: string or Array of string.",
+    "$schema ": "http://json-schema.org/draft/2019-09/schema#",
+    "is-complex": true,
+    "type": "object",
+    "properties": {     
+        "securityDefinitions": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+                "$ref": "#/$defs/comboSecurity_element"
+            }
+        }
+    },
+    "required": [
+        "securityDefinitions"
+    ],
+    "additionalProperties": true,
+
+    "$defs": {
+        "comboSecurity_element": {
+            "type": "object",
+            "if": {
+                "properties": {
+                    "scheme": {
+                        "type": "string",
+                        "const": "combo"
+                    },
+                    "oneOf": {
+                        "type": "array",
+                        "minItems": 2,
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "required": [
+                    "scheme",
+                    "oneOf"
+                ],
+                "not": {
+                    "required": ["allOf"]
+                },
+                "additionalProperties": true
+            },
+            "then": {
+                "const": "td-vocab-oneOf--ComboSecurityScheme=pass"
+            }
+        }
+    }
+}

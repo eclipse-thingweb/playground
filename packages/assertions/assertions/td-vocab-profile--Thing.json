@@ -1,0 +1,29 @@
+{
+    "title": "td-vocab-profile--Thing",
+    "description": "profile: Indicates the WoT Profile mechanisms followed by this Thing Description and the corresponding Thing implementation. MAY be included. Type: anyURI or Array of anyURI.",
+    "$schema ": "http://json-schema.org/draft/2019-09/schema#",
+    "is-complex": false,
+    "type": "object",
+    "properties": {
+        "profile": {
+            "oneof": [
+                {
+                    "$ref": "#/$defs/anyUri"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/anyUri"
+                    }
+                }
+            ]
+        }
+    },
+    "$defs": {
+        "anyUri": {
+            "type": "string",
+            "format": "iri-reference"
+        }
+    },
+    "required": ["profile"]
+}

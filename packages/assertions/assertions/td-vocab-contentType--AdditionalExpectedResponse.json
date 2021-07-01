@@ -1,0 +1,125 @@
+{
+    "title": "td-vocab-contentType--AdditionalExpectedResponse",
+    "description": "contentType: Assign a content type based on a media type (e.g., text/plain) and potential parameters (e.g., charset=utf-8) for the media type [RFC2046]. MAY be included. Type: string.",
+    "$schema ": "http://json-schema.org/draft/2019-09/schema#",
+    "is-complex": true,
+    "type": "object",
+    "properties": {
+        "forms": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "$ref": "#/$defs/form_element"
+            }
+        },
+        "properties": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/$defs/property_element"
+            }
+
+        },
+        "actions": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/$defs/action_element"
+            }
+        },
+        "events": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/$defs/event_element"
+            }
+        }
+    },
+    "$defs": {
+        "property_element": {
+            "type": "object",
+            "properties": {
+                "forms": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "$ref": "#/$defs/form_element"
+                    }
+                }
+            },
+            "required": [
+                "forms"
+            ],
+            "additionalProperties": true
+        },
+        "action_element": {
+            "type": "object",
+            "properties": {
+                "forms": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "$ref": "#/$defs/form_element"
+                    }
+                }
+            },
+            "required": [
+                "forms"
+            ],
+            "additionalProperties": true
+        },
+        "event_element": {
+            "type": "object",
+            "properties": {
+                "forms": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "$ref": "#/$defs/form_element"
+                    }
+                }
+            },
+            "required": [
+                "forms"
+            ],
+            "additionalProperties": true
+        },
+        "form_element": {
+            "type": "object",
+            "if": {
+                "required": ["additionalResponses"],
+                "properties": {
+                     "additionalResponses": {
+                        "oneOff": [
+                            {
+                                "$ref": "#/$defs/additionalResponse_element"
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/$defs/additionalResponse_element"
+                                }
+                            }
+                        ]
+                     }
+                }
+                                   
+            },
+            "then": {
+                "const": "td-vocab-contentType--AdditionalExpectedResponse=pass"
+            }
+        },
+        "additionalResponse_element":{
+            "type": "object",
+            "properties": {
+                "contentType": {
+                    "type": "string"
+                },
+                "schema": {
+                    "type": "string"
+                },
+                "success":{
+                    "type":"boolean"
+                }
+            },
+            "required":["contentType"]
+        }
+    }
+}

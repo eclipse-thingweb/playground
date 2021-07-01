@@ -1,0 +1,52 @@
+{
+    "title": "td-vocab-allOf--ComboSecurityScheme",
+    "description": "allOf: Array of two or more strings identifying other named security scheme definitions, all of which must be satisfied for access. MUST be included. Type: string or Array of string.",
+    "$schema ": "http://json-schema.org/draft/2019-09/schema#",
+    "is-complex": true,
+    "type": "object",
+    "properties": {     
+        "securityDefinitions": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+                "$ref": "#/$defs/comboSecurity_element"
+            }
+        }
+    },
+    "required": [
+        "securityDefinitions"
+    ],
+    "additionalProperties": true,
+    
+    "$defs": {
+        "comboSecurity_element": {
+            "type": "object",
+            "if": {
+                "properties": {
+                    "scheme": {
+                        "type": "string",
+                        "const": "combo"
+                    },
+                    "allOf": {
+                        "type": "array",
+                        "minItems": 2,
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "required": [
+                    "scheme",
+                    "allOf"
+                ],
+                "not": {
+                    "required": ["oneOf"]
+                },
+                "additionalProperties": true
+            },
+            "then": {
+                "const": "td-vocab-allOf--ComboSecurityScheme=pass"
+            }
+        }
+    }
+}

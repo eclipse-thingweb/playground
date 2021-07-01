@@ -1,0 +1,20 @@
+{
+    "title": "td-vocab-model--VersionInfo",
+    "description": "model: Provides a version indicator of the underlying TM. instance. MAY be included. Type: string.",
+    "$schema ": "http://json-schema.org/draft/2019-09/schema#",
+    "is-complex": false,
+    "type": "object",
+    "properties": {
+        "VersionInfo": {
+            "type": "object",
+            "instance": {
+                "type": "string"
+            },
+            "model": {
+                "type": "string"
+            },
+            "required": ["instance", "model"]
+        }
+    },
+    "required": ["VersionInfo"]
+}
