@@ -2,7 +2,13 @@
 const isUtf8 = require('is-utf8')
 
 // The usual library used for validation
-const Ajv = require('ajv')
+const Ajv = require("ajv")
+const addFormats = require("ajv-formats")
+const apply = require('ajv-formats-draft2019');
+
+const ajv = new Ajv()
+ajv = addFormats(ajv)
+ajv = apply(ajv)
 
 // Imports from playground core
 const checkUniqueness = require('@thing-description-playground/core').propUniqueness
