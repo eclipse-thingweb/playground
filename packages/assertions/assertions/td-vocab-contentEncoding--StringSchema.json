@@ -65,8 +65,7 @@
                         ]
                     },
                     "contentEncoding": {
-                        "type": "string",
-                        "enum": ["7bit", "8bit", "binary", "quoted-printable", "base64"]
+                        "type": "string"
                     }
                 },
                 "required": ["type", "contentEncoding"]

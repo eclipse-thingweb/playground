@@ -68,7 +68,7 @@
                         "type": "string"
                     }
                 },
-                "required": ["type", "maxLength"]
+                "required": ["type", "pattern"]
             },
             "then": {
                 "const": "td-vocab-pattern--StringSchema=pass"

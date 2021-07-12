@@ -64,11 +64,11 @@
                             "number"
                         ]
                     },
-                    "exclusiveMinimum": {
+                    "multipleOf": {
                         "type": "number"
                     }
                 },
-                "required": ["type", "exclusiveMinimum"]
+                "required": ["type", "multipleOf"]
             },
             "then": {
                 "const": "td-vocab-multipleOf--NumberSchema=pass"

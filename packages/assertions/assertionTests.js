@@ -6,7 +6,7 @@ const Ajv = require("ajv")
 const addFormats = require("ajv-formats")
 const apply = require('ajv-formats-draft2019');
 
-const ajv = new Ajv()
+let ajv = new Ajv()
 ajv = addFormats(ajv)
 ajv = apply(ajv)
 

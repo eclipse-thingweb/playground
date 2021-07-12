@@ -64,12 +64,12 @@
                             "string"
                         ]
                     },
-                    "maxLength": {
+                    "minLength": {
                         "type": "integer",
                         "minimum": 0
                     }
                 },
-                "required": ["type", "maxLength"]
+                "required": ["type", "minLength"]
             },
             "then": {
                 "const": "td-vocab-minLength--StringSchema=pass"
