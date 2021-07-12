@@ -75,9 +75,8 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             res({report, details, detailComments})
         }
 
-
-        let ajv = new Ajv() // options can be passed, e.g. {allErrors: true}
-        ajv = addFormats(ajv); // ajv does not support formats by default anymore
+        let ajv = new Ajv({strict: false}) // options can be passed, e.g. {allErrors: true}
+        ajv = addFormats(ajv) // ajv does not support formats by default anymore
         ajv = apply(ajv) // new formats that include iri
 
         ajv.addSchema(schema, 'td')

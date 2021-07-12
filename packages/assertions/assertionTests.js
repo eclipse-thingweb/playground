@@ -6,7 +6,7 @@ const Ajv = require("ajv")
 const addFormats = require("ajv-formats")
 const apply = require('ajv-formats-draft2019');
 
-let ajv = new Ajv()
+let ajv = new Ajv({strict: false})
 ajv = addFormats(ajv)
 ajv = apply(ajv)
 
@@ -89,9 +89,12 @@ function validate(tdData, assertions, manualAssertions, logFunc) {
             "$comment" (v) {
                 logFunc("\n!!!! COMMENT", v)
             },
-            "allErrors": true
+            "allErrors": true,
+            "strict":false
         }
-        const ajv = new Ajv(ajvOptions)
+        let ajv = new Ajv(ajvOptions)
+        ajv = addFormats(ajv) // ajv does not support formats by default anymore
+        ajv = apply(ajv) // new formats that include iri
         ajv.addSchema(schema, 'td')
 
 
@@ -266,7 +269,9 @@ module.exports = validate
 function checkVocabulary(tdJson) {
 
     const results = []
-    const ajv = new Ajv()
+    let ajv = new Ajv({strict: false})
+    ajv = addFormats(ajv) // ajv does not support formats by default anymore
+    ajv = apply(ajv) // new formats that include iri
     ajv.addSchema(tdSchema, 'td')
 
     const valid = ajv.validate('td', tdJson)
