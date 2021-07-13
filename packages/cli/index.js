@@ -153,7 +153,17 @@ function assertionReport() {
         manualAssertions = assertManualToJson(fs.readFileSync(myArguments.assertionManual, "utf-8"))
     }
 
-    if (input === undefined) {input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid")}
+    if (input === undefined) {
+        let modulesPath = path.join("node_modules", "@thing-description-playground");
+        let hoistedModulesPath = path.join("..", "..", "node_modules", "@thing-description-playground");
+        if(fs.existsSync(modulesPath)) {
+            input = path.join(modulesPath, "core", "examples", "tds", "valid");
+        } else if (fs.existsSync(hoistedModulesPath)) {
+            input = path.join(hoistedModulesPath, "core", "examples", "tds", "valid");
+        } else {
+            throw "Could not find input files"
+        }
+    }
 
     if (typeof input === "object") {
         assertType = "list"
