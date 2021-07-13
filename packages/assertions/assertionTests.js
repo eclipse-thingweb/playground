@@ -296,7 +296,8 @@ function checkVocabulary(tdJson) {
         return results
 
     } else {
-        throw new Error("invalid TD")
+        console.log(ajv.errors);
+        throw new Error("Invalid TD")
     }
 }
 
