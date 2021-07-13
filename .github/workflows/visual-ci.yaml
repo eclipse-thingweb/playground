@@ -15,10 +15,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
             node-version: '12.x'
-
-      - name: Use yarn
-        run: npm install -g yarn
-
+      
       - name: Use lerna
         run: npm install -g lerna
       
@@ -28,7 +25,7 @@ jobs:
       - name: Visual Test
         run: |
           cd ./packages/web
-          yarn test
+          npm test
       
       - name: Upload test screenshots
         uses: actions/upload-artifact@v2

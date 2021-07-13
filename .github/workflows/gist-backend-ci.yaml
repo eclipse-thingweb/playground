@@ -19,19 +19,16 @@ jobs:
         uses: actions/setup-node@v1
         with:
             node-version: 12.x
-
-      - name: Use yarn
-        run: npm install -g yarn
       
       - name: Install deps
         run: |
           cd ./packages/gist_backend
-          yarn install
+          npm install
       
       - name: Run real Test
         run: |
           cd ./packages/gist_backend
-          yarn run realTest
+          npm run realTest
 
         env:
           # set real credentials

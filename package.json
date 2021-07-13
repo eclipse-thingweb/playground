@@ -2,10 +2,6 @@
   "name": "root",
   "private": true,
   "devDependencies": {
-    "lerna": "^3.22.1",
-    "yarn": "^1.22.10"
-  },
-  "workspaces": [
-    "packages/*"
-  ]
+    "lerna": "^3.22.1"
+  }
 }
