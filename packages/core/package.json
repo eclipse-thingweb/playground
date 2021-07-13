@@ -17,8 +17,7 @@
   "scripts": {
     "test": "jest",
     "bundle": "npx browserify ./index.js -s tdValidator -o ./dist/web-bundle.js && npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
-    "prepare": "yarn run bundle",
-    "postinstall": "node ./postinstall.js"
+    "prepare": "npm run bundle"
   },
   "dependencies": {
     "ajv": "^8.6.0",
