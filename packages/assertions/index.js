@@ -6,7 +6,6 @@ const mergeResults = require("./mergeResults")
 const Json2csvParser = require('json2csv').Parser
 const csvjson = require('csvjson')
 
-const fs = require("fs")
 const path = require("path")
 
 module.exports = tdAssertions
@@ -39,35 +38,16 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual) {
 
         // set directory for node.js and browser environment
         let pathOffset
-        let hoisted = false;
-        let modulesPath = path.join("node_modules", "@thing-description-playground");
-        let hoistedModulesPath = path.join("..", "..", "node_modules", "@thing-description-playground");
-
         if (process !== undefined && process.release !== undefined && process.release.name === "node") {
-            if(fs.existsSync(modulesPath)) {
-                pathOffset = path.join(modulesPath, "assertions");
-            } else if (fs.existsSync(hoistedModulesPath)) {
-                pathOffset = path.join(hoistedModulesPath, "assertions");
-                hoisted = true;
-            }
+            pathOffset = __dirname
         } else {
-            if(fs.existsSync(modulesPath)) {
-                pathOffset = path.join(modulesPath, "assertions");
-            } else if (fs.existsSync(hoistedModulesPath)) {
-                pathOffset = path.join(hoistedModulesPath, "assertions");
-                hoisted = true;
-            }
+            pathOffset = path.join("./node_modules", "@thing-description-playground", "assertions")
         }
 
         // loading files
         const loadProm = []
         loadProm.push(collectAssertionSchemas(path.join(pathOffset, "./assertions"), path.join(pathOffset, "./list.json"), fileLoader))
-        if(!hoisted) {
-            loadProm.push(fileLoader(path.join(pathOffset, "node_modules", "@thing-description-playground", "core", "td-schema.json")));
-        } else {
-            loadProm.push(fileLoader(path.join(hoistedModulesPath, "core", "td-schema.json")))
-        }
-        
+        loadProm.push(fileLoader(path.join(pathOffset, "./node_modules", "@thing-description-playground", "core", "td-schema.json")))
         if (givenManual === undefined) {loadProm.push(fileLoader(path.join(pathOffset, "./manual.csv")))}
 
         Promise.all(loadProm).then( promResults => {
@@ -94,8 +74,6 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual) {
                 if (typeof tdToValidate === "string") {tdToValidate = Buffer.from(tdToValidate, "utf8")}
 
                 if (jsonResults[tdName] !== undefined) {throw new Error("TDs have same Ids or titles: " + tdName)}
-
-                console.log("Validating "+ tdName);
                 jsonResults[tdName] = validate(tdToValidate, assertionSchemas, manualAssertionsJSON, logFunc)
             })
 
