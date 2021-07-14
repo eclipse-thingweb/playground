@@ -1,0 +1,79 @@
+{
+    "title": "td-vocab-maxLength--StringSchema",
+    "description": "maxLength: Specifies the maximum length of a string. Only applicable for associated string types. MAY be included. Type: unsignedInt.",
+    "$schema ": "http://json-schema.org/draft/2019-09/schema#",
+    "is-complex": true,
+    "type": "object",
+    "properties": {
+        "properties": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/$defs/property_element"
+            }
+        },
+        "actions": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/$defs/action_element"
+            }
+        },
+        "events": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/$defs/event_element"
+            }
+        }
+    },
+    "additionalProperties": true,
+    "$defs": {
+        "property_element": {
+            "$ref": "#/$defs/dataSchema"
+        },
+        "action_element": {
+            "type": "object",
+            "properties": {
+                "input": {
+                    "$ref": "#/$defs/dataSchema"
+                },
+                "output": {
+                    "$ref": "#/$defs/dataSchema"
+                }
+            }
+        },
+        "event_element": {
+            "type": "object",
+            "properties": {
+                "subscription": {
+                    "$ref": "#/$defs/dataSchema"
+                },
+                "data": {
+                    "$ref": "#/$defs/dataSchema"
+                },
+                "cancellation": {
+                    "$ref": "#/$defs/dataSchema"
+                }
+            }
+        },
+        "dataSchema": {
+            "type": "object",
+            "if": {
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "string"
+                        ]
+                    },
+                    "maxLength": {
+                        "type": "integer",
+                        "minimum": 0
+                    }
+                },
+                "required": ["type", "maxLength"]
+            },
+            "then": {
+                "const": "td-vocab-maxLength--StringSchema=pass"
+            }
+        }
+    }
+}

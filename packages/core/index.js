@@ -1,5 +1,7 @@
 const jsonld = require("jsonld")
 const Ajv = require("ajv")
+const addFormats = require("ajv-formats")
+const apply = require('ajv-formats-draft2019');
 
 const coreAssertions = require("./shared")
 const schema = require("./td-schema.json")
@@ -73,8 +75,10 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             res({report, details, detailComments})
         }
 
+        let ajv = new Ajv({strict: false}) // options can be passed, e.g. {allErrors: true}
+        ajv = addFormats(ajv) // ajv does not support formats by default anymore
+        ajv = apply(ajv) // new formats that include iri
 
-        const ajv = new Ajv() // options can be passed, e.g. {allErrors: true}
         ajv.addSchema(schema, 'td')
         const valid = ajv.validate('td', tdJson)
         // used to be var valid = ajv.validate('td', e.detail);

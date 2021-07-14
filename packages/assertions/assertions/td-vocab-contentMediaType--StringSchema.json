@@ -1,0 +1,78 @@
+{
+    "title": "td-vocab-contentMediaType--StringSchema",
+    "description": "contentMediaType: Specifies the MIME type (e.g., image/png, audio/mpeg) of the contents of a string value, as described in RFC 2046. MAY be included. Type: string.",
+    "$schema ": "http://json-schema.org/draft/2019-09/schema#",
+    "is-complex": true,
+    "type": "object",
+    "properties": {
+        "properties": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/$defs/property_element"
+            }
+        },
+        "actions": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/$defs/action_element"
+            }
+        },
+        "events": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/$defs/event_element"
+            }
+        }
+    },
+    "additionalProperties": true,
+    "$defs": {
+        "property_element": {
+            "$ref": "#/$defs/dataSchema"
+        },
+        "action_element": {
+            "type": "object",
+            "properties": {
+                "input": {
+                    "$ref": "#/$defs/dataSchema"
+                },
+                "output": {
+                    "$ref": "#/$defs/dataSchema"
+                }
+            }
+        },
+        "event_element": {
+            "type": "object",
+            "properties": {
+                "subscription": {
+                    "$ref": "#/$defs/dataSchema"
+                },
+                "data": {
+                    "$ref": "#/$defs/dataSchema"
+                },
+                "cancellation": {
+                    "$ref": "#/$defs/dataSchema"
+                }
+            }
+        },
+        "dataSchema": {
+            "type": "object",
+            "if": {
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "string"
+                        ]
+                    },
+                    "contentMediaType": {
+                        "type": "string"
+                    }
+                },
+                "required": ["type", "contentMediaType"]
+            },
+            "then": {
+                "const": "td-vocab-contentMediaType--StringSchema=pass"
+            }
+        }
+    }
+}

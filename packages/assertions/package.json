@@ -22,7 +22,9 @@
   },
   "dependencies": {
     "@thing-description-playground/core": "^1.2.0",
-    "ajv": "^6.12.2",
+    "ajv": "^8.6.0",
+    "ajv-formats": "^2.1.0",
+    "ajv-formats-draft2019": "^1.4.3",
     "csvjson": "^5.1.0",
     "is-utf8": "^0.2.1",
     "json2csv": "^5.0.1"
