@@ -11,6 +11,11 @@
     "security": ["basic_sc"],
     "actions": {
         "crop": {
+            "input":{
+                "type":"string",
+                "contentMediaType":"8bit",
+                "contentEncoding":"8bit"
+            },
             "forms": [{
                 "href": "http://upsq1c.local:9191/api/frame/crop",
                 "contentType": "application/json",
