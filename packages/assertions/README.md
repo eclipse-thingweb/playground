@@ -67,6 +67,8 @@ This is a Node.js based tool.
 
 ## Script based Assertion Tester
 
+TODO: Update these numbers
+
 297 out of 349 assertions of the TD specification can be tested with this tool.
 
 This tool checks which assertions are satisfied by a given Thing Description(s). The assertions are modeled as JSON Schema or as scripts. 'AssertionTester/Assertions' has the JSON Schema assertions.
