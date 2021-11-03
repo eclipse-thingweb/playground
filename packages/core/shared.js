@@ -15,7 +15,8 @@ const bcp47pattern = /^(?:(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-kl
 module.exports =  {
     checkPropUniqueness,
     checkSecurity,
-    checkMultiLangConsistency
+    checkMultiLangConsistency,
+    checkLinksRelTypeCount
 }
 
 
@@ -204,7 +205,7 @@ function checkPropUniqueness(tdString) {
 
 /**
  * check if used Security definitions are properly defined previously
- * @param {object} td The Td to do assertion tests
+ * @param {object} td The TD to do assertion tests
  */
 function checkSecurity(td) {
 
@@ -349,7 +350,7 @@ function securityContains(parent, child) {
  *
  *  first collect them all, and then compare them
  *
- * @param {object} td The Td to do assertion tests
+ * @param {object} td The TD to do assertion tests
  */
 function checkMultiLangConsistency(td) {
 
@@ -640,3 +641,54 @@ function checkAzeri(myMultiLangArray){
 }
 
 // --------------------------------------------------
+
+// -------------------------------------------------- checkLinksRelTypeCount
+
+/**
+ *  this checks whether rel:type appears only once in the links array
+ *
+ * @param {object} td The TD to do assertion tests
+ */
+function checkLinksRelTypeCount(td){
+
+    const results = []
+
+    if (td.hasOwnProperty("links")){
+        // links exist, check if there is rel type
+        let typeCount = 0
+        for (let i = 0; i < td.links.length; i++) {
+            const element = td.links[i]
+            if(element.hasOwnProperty("rel")){
+                if (element.rel === "type"){
+                    typeCount++
+                }
+            }
+        }
+        if (typeCount === 0){
+            results.push({
+                "ID": "tm-rel-type-maximum",
+                "Status": "not-impl",
+                "Comment": "no rel:type in any link"
+            })
+        } else if (typeCount === 1){
+            results.push({
+                "ID": "tm-rel-type-maximum",
+                "Status": "pass",
+                "Comment": ""
+            })
+        } else {
+            results.push({
+                "ID": "tm-rel-type-maximum",
+                "Status": "fail",
+                "Comment": "too many rel:type in links array"
+            })
+        }
+    } else {
+        results.push({
+            "ID": "tm-rel-type-maximum",
+            "Status": "not-impl",
+            "Comment": "no links array in the td"
+        })
+    }
+    return results
+}

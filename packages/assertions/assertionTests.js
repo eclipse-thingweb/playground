@@ -14,6 +14,7 @@ ajv = apply(ajv)
 const checkUniqueness = require('@thing-description-playground/core').propUniqueness
 const checkMultiLangConsistency = require("@thing-description-playground/core").multiLangConsistency
 const checkSecurity = require("@thing-description-playground/core").security
+const checkLinksRelTypeCount = require("@thing-description-playground/core").checkLinksRelTypeCount
 const tdSchema = require("@thing-description-playground/core/td-schema.json")
 
 /**
@@ -76,6 +77,8 @@ function validate(tdData, assertions, manualAssertions, logFunc) {
     // additional checks
     results.push(...checkSecurity(tdJson))
     results.push(...checkMultiLangConsistency(tdJson))
+    // checkLinksRelTypeCount(tdJson)
+    results.push(...checkLinksRelTypeCount(tdJson))
 
     // Iterating through assertions
     for (let index = 0; index < assertions.length; index++) {

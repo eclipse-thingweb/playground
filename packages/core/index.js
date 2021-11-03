@@ -10,6 +10,7 @@ const fullschema = require("./td-schema-full.json")
 module.exports = tdValidator
 module.exports.propUniqueness = coreAssertions.checkPropUniqueness
 module.exports.multiLangConsistency = coreAssertions.checkMultiLangConsistency
+module.exports.checkLinksRelTypeCount = coreAssertions.checkLinksRelTypeCount
 module.exports.security = coreAssertions.checkSecurity
 
 const jsonValidator = require('json-dup-key-validator')
@@ -50,6 +51,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             security: null,
             propUniqueness: null,
             multiLangConsistency: null,
+            linksRelTypeCount: null,
             readWriteOnly: null
         }
 
@@ -59,6 +61,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             security: "Check if used Security definitions are properly defined previously.",
             propUniqueness: "Checking whether in one interaction pattern there are duplicate names, e.g. two properties called temp.",
             multiLangConsistency: "Checks whether all titles and descriptions have the same language fields.",
+            linksRelTypeCount: "Checks whether rel:type is used more than once in the links array",
             readWriteOnly: "Warns if a property has readOnly or writeOnly set to true conflicting with another property."
         }
 
@@ -113,6 +116,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
                 checkSecPropUniqueness(tdString, tdJson)
             }
             details.multiLangConsistency = evalAssertion(coreAssertions.checkMultiLangConsistency(tdJson))
+            details.linksRelTypeCount = evalAssertion(coreAssertions.checkLinksRelTypeCount(tdJson))
 
             // determine additional check state
             // passed + warning -> warning
