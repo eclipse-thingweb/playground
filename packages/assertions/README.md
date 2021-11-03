@@ -54,7 +54,7 @@ You can use this package to integrate TD assertion testing in your own Browser/N
 
 ## License
 
-Licensed under the MIT license, see [License](./LICENSE.md).
+Licensed under the MIT license, see [License](../../LICENSE.md).
 
 ## Script based Thing Description Validation
 
@@ -79,6 +79,8 @@ To use the assertion testing via the command line please use the `cli` package.
 
 ### Contributing
 
+1. Schema based assertions
+
 You can contribute by providing new JSON Schemas for assertions or by correcting them. There are two types of assertions:
 
 * Not-complex: This is generally used to check assertions that are in the Thing instance or mandatory assertions. You simply put the JSON key to be checked in the `required` validation keyword.
@@ -92,6 +94,20 @@ You can contribute by providing new JSON Schemas for assertions or by correcting
 
   This way, the validation will surely fail at the const keyword and display that the JSON data has to be `"td-data-schema_description=pass"` string. This will be then detected by the assertion testing tool which will look for the `=` sign to find the result. If the schema doesn't fail, it implies that this if was false, which in turn implies that the assertion you wanted to test was not implemented in the given TD.
 
+2. Script based assertions
+
+Some assertions cannot be verified just by a schema, even when the complex schemas are used. 
+Examples are checking that all multi language definitions like titles and descriptions contain the same language tags.
+
+When a new one is added, it is advised to add it to the [shared.js](https://github.com/thingweb/thingweb-playground/blob/master/packages/core/shared.js) since such checks can be used by the core package as well.
+
+After adding the function, you should do the following:
+1. Add it to the exports of `shared.js`
+2. Add it to the exports of `index.js` of the core package
+3. Add its name to the details object in `index.js` and its description to the detailComments of the `index.js`
+4. In the assertions package, adding it to the imports at the [assertionTests.js](https://github.com/thingweb/thingweb-playground/blob/master/packages/assertions/assertionTests.js)
+5. In the same file, calling it whenever needed. The other ones are done at around line 80.
+6. Adding it to the expected results of the tests (refResults) at the core package.
 ## Known Bugs
 
 * td-json-open assertion exists multiple times, [see issue 124](https://github.com/thingweb/thingweb-playground/issues/124)
