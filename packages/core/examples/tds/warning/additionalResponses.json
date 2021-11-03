@@ -12,9 +12,7 @@
     "security": ["basic_sc"],
     "schemaDefinitions":{
         "mySchema":{
-            "type":"string",
-            "readOnly":true,
-            "writeOnly":false
+            "type":"string"
         }
     },
     "actions": {
@@ -35,6 +33,14 @@
                     },
                     {
                         "success":false,
+                        "contentType": "application/json"
+                    },
+                    {
+                    },
+                    {
+                        "success":false
+                    },
+                    {
                         "contentType": "application/json"
                     }
                 ]
