@@ -45,6 +45,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             jsonld: null,
             additional: null
         }
+        // changing the two following objects implies adjusting the tests accordingly
         const details = {
             enumConst: null,
             propItems: null,

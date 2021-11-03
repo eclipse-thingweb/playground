@@ -20,6 +20,7 @@ const refResult = {
         security: expect.stringMatching(/warning|passed/),
         propUniqueness: expect.stringMatching(/warning|passed/),
         multiLangConsistency: expect.stringMatching(/warning|passed/),
+        linksRelTypeCount: expect.stringMatching(/warning|passed/),
         readWriteOnly: expect.stringMatching(/warning|passed/)
     },
     detailComments: expect.any(Object)

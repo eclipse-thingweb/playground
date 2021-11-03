@@ -20,6 +20,7 @@ const refResult = {
         security: null,
         propUniqueness: null,
         multiLangConsistency: null,
+        linksRelTypeCount: null,
         readWriteOnly: null
     },
     detailComments: expect.any(Object)
@@ -28,7 +29,7 @@ const refResultAdd = {
     report: {
         json: 'passed',
         schema: 'passed',
-        defaults: "warning",
+        defaults: expect.stringMatching(/warning|passed/),
         jsonld: "passed",
         additional: "failed"
     },
@@ -38,6 +39,7 @@ const refResultAdd = {
         security: expect.stringMatching(/failed|passed/),
         propUniqueness: expect.stringMatching(/failed|passed/),
         multiLangConsistency: expect.stringMatching(/failed|passed/),
+        linksRelTypeCount: expect.stringMatching(/failed|passed/),
         readWriteOnly: expect.stringMatching(/failed|passed/)
     },
     detailComments: expect.any(Object)
