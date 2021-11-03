@@ -413,7 +413,7 @@ function coreValidation() {
             warnNames.forEach( el => {
                 if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                     tdToCheck = fs.readFileSync(path.join(warnPath, el), "utf-8")
-                    const thisProm = tdValidator(tdToCheck, console.log, {checkDefaults: false})
+                    const thisProm = tdValidator(tdToCheck, console.log, {checkDefaults: true})
                     .then( result => {
                         if (statResult("failed", result.report)) {
                             console.log(el, "was supposed to give a warning but gave error")
