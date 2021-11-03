@@ -77,7 +77,6 @@ function validate(tdData, assertions, manualAssertions, logFunc) {
     // additional checks
     results.push(...checkSecurity(tdJson))
     results.push(...checkMultiLangConsistency(tdJson))
-    // checkLinksRelTypeCount(tdJson)
     results.push(...checkLinksRelTypeCount(tdJson))
 
     // Iterating through assertions
