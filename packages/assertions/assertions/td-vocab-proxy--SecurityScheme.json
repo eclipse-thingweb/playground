@@ -21,8 +21,10 @@
         "securityScheme": {
             "type": "object",
             "if": {
-                "proxy": {
-                    "$ref": "#/$defs/url"
+                "properties": {
+                    "proxy": {
+                        "$ref": "#/$defs/url"
+                    }
                 },
                 "required": ["proxy"]
             },
