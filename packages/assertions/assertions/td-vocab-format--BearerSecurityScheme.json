@@ -1,7 +1,7 @@
 {
     "title": "td-vocab-format--BearerSecurityScheme",
     "description": "format: Specifies format of security authentication information (one of jwt, jwe, or jws). MUST be included. Type: string.",
-    "$schema ": "http://json-schema.org/draft-07/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "is-complex": true,
     "type": "object",
     "properties": {

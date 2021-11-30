@@ -1,7 +1,7 @@
 {
     "title": "td-vocab-idempotent--ActionAffordance",
     "description": "idempotent: Indicates whether the action is idempotent (=true) or not. Informs whether the action can be called repeatedly with the same result, if present, based on the same input.",
-    "$schema ": "http://json-schema.org/draft-07/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "also": ["td-action-names_idempotent", "td-boolean-type"],
     "is-complex":true,
     "type": "object",

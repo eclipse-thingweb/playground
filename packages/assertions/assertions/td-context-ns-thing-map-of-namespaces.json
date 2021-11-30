@@ -2,7 +2,7 @@
     "title": "td-context-ns-thing-map-of-namespaces",
     "description": "Maps contained in an @context Array MAY contain name-value pairs, where the value is a namespace identifier of type anyURI and the name a Term or prefix denoting that namespace. ",
     "is-complex": true,
-    "$schema ": "http://json-schema.org/draft-07/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
     "if": {
         "required": [

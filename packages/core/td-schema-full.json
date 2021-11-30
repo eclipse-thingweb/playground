@@ -1,7 +1,7 @@
 {
     "title": "WoT TD Schema - 02 June 2021",
     "description": "JSON Schema for validating TD instances against the TD information model. For a TD to validate this schema it must contain all the default terms defined in Section 5.4",
-    "$schema ": "http://json-schema.org/draft-07/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "$defs": {
         "anyUri": {
             "type": "string",

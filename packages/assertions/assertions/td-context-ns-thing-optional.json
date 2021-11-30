@@ -2,7 +2,7 @@
     "title": "td-context-ns-thing-optional",
     "description": "When @context is an Array, the anyURI https://www.w3.org/2019/wot/td/v1 MAY be followed by elements of type anyURI or type Map in any order, while it is RECOMMENDED to include only one Map with all the name-value pairs in the @context Array. ",
     "is-complex": true,
-    "$schema ": "http://json-schema.org/draft-07/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
     "if": {
         "required": [

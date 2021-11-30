@@ -1,7 +1,7 @@
 {
     "title": "td-vocab-minimum--IntegerSchema",
     "description": "minimum: Specifies a minimum numeric value. Only applicable for associated number or integer types. MAY be included. Type: integer.",
-    "$schema ": "http://json-schema.org/draft-07/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "is-complex": true,
     "also": ["td-data-schema_minimum-IntegerSchema", "td-integer-type"],
     "type": "object",

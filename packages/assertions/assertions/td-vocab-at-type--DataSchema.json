@@ -1,7 +1,7 @@
 {
     "title": "td-vocab-at-type--DataSchema",
     "description": "@type: Known from JSON-LD [[!json-ld]], @type is used to state that values described by the DataSchema are instances of a class. Each string in the value array represents a class. MAY be included. Type: array of string.",
-    "$schema ": "http://json-schema.org/draft-07/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "also": ["td-data-schema_at-type"],
     "is-complex": true,
     "type": "object",

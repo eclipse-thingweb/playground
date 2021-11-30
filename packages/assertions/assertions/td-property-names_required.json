@@ -1,7 +1,7 @@
 {
     "title": "td-property-names_required",
     "description": "Each mandatory and optional vocabulary term as defined in the class Property, as well as its two superclasses InteractionPattern and DataSchema, MUST be serialized as a JSON name within a Property object. This means that at the level of an interaction property instance, the vocabulary terms of InteractionPattern and DataSchema can be presented at the same time.",
-    "$schema ": "http://json-schema.org/draft-07/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "is-complex": true,
     "type": "object",
     "properties": {

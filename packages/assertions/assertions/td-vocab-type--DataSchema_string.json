@@ -1,7 +1,7 @@
 {
     "title": "td-vocab-type--DataSchema_string",
     "description": "type: Assignment of JSON-based data types compatible with JSON Schema (one of boolean, integer, number, string, object, array, or null). MAY be included. Type: string string).",
-    "$schema ": "http://json-schema.org/draft-07/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "also": ["td-data-schema_type"],
     "is-complex": true,
     "type": "object",

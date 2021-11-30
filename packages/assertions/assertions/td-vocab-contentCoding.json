@@ -1,7 +1,7 @@
 {
     "title": "td-vocab-contentCoding--Form",
     "description": "contentCoding: Content coding values indicate an encoding transformation that has been or can be applied to a representation. Content codings are primarily used to allow a representation to be compressed or otherwise usefully transformed without losing the identity of its underlying media type and without loss of information. ",
-    "$schema ": "http://json-schema.org/draft-07/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "is-complex": true,
     "type": "object",
     "properties": {
