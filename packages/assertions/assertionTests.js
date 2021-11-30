@@ -88,7 +88,7 @@ function validate(tdData, assertions, manualAssertions, logFunc) {
         }
         const ajv = new Ajv(ajvOptions)
         ajv.addSchema(schema, 'td')
-        ajv.addKeyword(['is-complex', 'also']);
+        ajv.addVocabulary(['is-complex', 'also']);
         addFormats(ajv)
 
 
@@ -266,7 +266,7 @@ function checkVocabulary(tdJson) {
     const results = []
     const ajv = new Ajv()
     ajv.addSchema(tdSchema, 'td')
-    ajv.addKeyword(['is-complex', 'also']);
+    ajv.addVocabulary(['is-complex', 'also']);
     addFormats(ajv)
 
     const valid = ajv.validate('td', tdJson)
