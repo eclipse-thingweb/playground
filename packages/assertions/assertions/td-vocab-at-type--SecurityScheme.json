@@ -22,8 +22,10 @@
         "securityScheme": {
             "type": "object",
             "if": {
-                "@type": {
-                    "$ref": "#/$defs/type_declaration"
+                "properties": {
+                    "@type": {
+                        "$ref": "#/$defs/type_declaration"
+                    }
                 },
                 "required": ["@type"]
             },
