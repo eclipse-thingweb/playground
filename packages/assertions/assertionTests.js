@@ -5,6 +5,7 @@ const isUtf8 = require('is-utf8')
 const Ajv = require('ajv')
 const addFormats = require("ajv-formats")
 
+
 // Imports from playground core
 const checkUniqueness = require('@thing-description-playground/core').propUniqueness
 const checkMultiLangConsistency = require("@thing-description-playground/core").multiLangConsistency
@@ -87,7 +88,9 @@ function validate(tdData, assertions, manualAssertions, logFunc) {
         }
         const ajv = new Ajv(ajvOptions)
         ajv.addSchema(schema, 'td')
+        ajv.addKeyword('is-complex');
         addFormats(ajv)
+
 
 
         const valid = ajv.validate('td', tdJson)
@@ -263,6 +266,7 @@ function checkVocabulary(tdJson) {
     const results = []
     const ajv = new Ajv()
     ajv.addSchema(tdSchema, 'td')
+    ajv.addKeyword('is-complex');
     addFormats(ajv)
 
     const valid = ajv.validate('td', tdJson)
