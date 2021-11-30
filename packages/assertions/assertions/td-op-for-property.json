@@ -1,19 +1,19 @@
 {
     "title": "td-op-for-property",
     "description": "When a forms term member is present in a Property instance, the value(s) of op in the forms MUST be one of readproperty, writeproperty or observeproperty. ",
-    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "$schema ": "http://json-schema.org/draft-07/schema#",
     "is-complex": true,
     "type": "object",
     "properties": {
         "properties": {
             "type": "object",
             "additionalProperties": {
-                "$ref": "#/definitions/property_element"
+                "$ref": "#/$defs/property_element"
             }
         }
     },
     "additionalProperties": true,
-    "definitions": {
+    "$defs": {
         "property_element": {
             "type": "object",
             "properties": {
@@ -21,7 +21,7 @@
                     "type": "array",
                     "minItems": 1,
                     "items": {
-                        "$ref": "#/definitions/form_element_property"
+                        "$ref": "#/$defs/form_element_property"
                     }
                 }
             },
@@ -35,7 +35,7 @@
                 "type": "object",
                 "properties": {
                     "href": {
-                        "$ref": "#/definitions/url"
+                        "$ref": "#/$defs/url"
                     },
                     "op": {
                         "oneOf": [{

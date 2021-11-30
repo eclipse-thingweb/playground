@@ -1,7 +1,7 @@
 {
     "title": "td-vocab-identity--PSKSecurityScheme",
     "description": "identity: Pre-shared key identity. MAY be included. Type: string.",
-    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "$schema ": "http://json-schema.org/draft-07/schema#",
     "is-complex": true,
     "type": "object",
     "properties": {
@@ -9,7 +9,7 @@
             "type": "object",
             "minProperties": 1,
             "additionalProperties": {
-                "$ref": "#/definitions/securityScheme"
+                "$ref": "#/$defs/securityScheme"
             }
         }
     },
@@ -17,7 +17,7 @@
         "securityDefinitions"
     ],
     "additionalProperties": true,
-    "definitions": {
+    "$defs": {
         "securityScheme": {
             "if": {
                 "type": "object",
@@ -26,7 +26,7 @@
                         "type": "string"
                     },
                     "proxy": {
-                        "$ref": "#/definitions/url"
+                        "$ref": "#/$defs/url"
                     },
                     "scheme": {
                         "type": "string",

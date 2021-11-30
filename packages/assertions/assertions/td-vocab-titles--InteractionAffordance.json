@@ -1,7 +1,7 @@
 {
     "title": "td-vocab-titles--InteractionAffordance",
     "description": "titles: Provides multi-language human-readable titles (e.g., display a text for UI representation in different languages) of the interaction pattern. MAY be included. Type: MultiLanguage.",
-    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "$schema ": "http://json-schema.org/draft-07/schema#",
     "also": ["td-multi-languages_titles", "td-multilanguage-value"],
     "is-complex": true,
     "type": "object",
@@ -9,31 +9,31 @@
         "properties": {
             "type": "object",
             "additionalProperties": {
-                "$ref": "#/definitions/property_element"
+                "$ref": "#/$defs/property_element"
             }
         },
         "actions": {
             "type": "object",
             "additionalProperties": {
-                "$ref": "#/definitions/action_element"
+                "$ref": "#/$defs/action_element"
             }
         },
         "events": {
             "type": "object",
             "additionalProperties": {
-                "$ref": "#/definitions/event_element"
+                "$ref": "#/$defs/event_element"
             }
         }
     },
     "additionalProperties": true,
-    "definitions": {
+    "$defs": {
         "property_element": {
             "type": "object",
             "if": {
                 "required": ["titles"],
                 "properties": {
                     "titles": {
-                        "$ref": "#/definitions/titles"
+                        "$ref": "#/$defs/titles"
                     }
                 }
             },
@@ -47,7 +47,7 @@
                 "required": ["titles"],
                 "properties": {
                     "titles": {
-                        "$ref": "#/definitions/titles"
+                        "$ref": "#/$defs/titles"
                     }
                 }
             },
@@ -61,7 +61,7 @@
                 "required": ["titles"],
                 "properties": {
                     "titles": {
-                        "$ref": "#/definitions/titles"
+                        "$ref": "#/$defs/titles"
                     }
                 }
             },

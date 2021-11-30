@@ -1,7 +1,7 @@
 {
     "title": "td-vocab-contentType--Form",
     "description": "contentType: Assign a content type based on a media type [[!MEDIATYPES]] (e.g., 'application/json) and (optional) parameters (e.g., 'charset=utf-8'). ",
-    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "$schema ": "http://json-schema.org/draft-07/schema#",
     "is-complex": true,
     "type": "object",
     "properties": {
@@ -9,32 +9,32 @@
             "type": "array",
             "minItems": 1,
             "items": {
-                "$ref": "#/definitions/form_element"
+                "$ref": "#/$defs/form_element"
             }
         },
         "properties": {
             "type": "object",
             "additionalProperties": {
-                "$ref": "#/definitions/property_element"
+                "$ref": "#/$defs/property_element"
             }
 
         },
         "actions": {
             "type": "object",
             "additionalProperties": {
-                "$ref": "#/definitions/action_element"
+                "$ref": "#/$defs/action_element"
             }
         },
         "events": {
             "type": "object",
             "additionalProperties": {
-                "$ref": "#/definitions/event_element"
+                "$ref": "#/$defs/event_element"
             }
         }
 
     },
     "additionalProperties": true,
-    "definitions": {
+    "$defs": {
         "property_element": {
             "type": "object",
             "properties": {
@@ -42,7 +42,7 @@
                     "type": "array",
                     "minItems": 1,
                     "items": {
-                        "$ref": "#/definitions/form_element"
+                        "$ref": "#/$defs/form_element"
                     }
                 }
             },
@@ -58,7 +58,7 @@
                     "type": "array",
                     "minItems": 1,
                     "items": {
-                        "$ref": "#/definitions/form_element"
+                        "$ref": "#/$defs/form_element"
                     }
                 }
             },
@@ -74,7 +74,7 @@
                     "type": "array",
                     "minItems": 1,
                     "items": {
-                        "$ref": "#/definitions/form_element"
+                        "$ref": "#/$defs/form_element"
                     }
                 }
             },
@@ -99,7 +99,7 @@
             "else": {
                 "properties": {
                     "href": {
-                        "$ref": "#/definitions/url"
+                        "$ref": "#/$defs/url"
                     },
                     "contentType": {
                         "type": "string"

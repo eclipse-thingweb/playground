@@ -1,7 +1,7 @@
 {
     "title": "td-vocab-cancellation--EventAffordance",
     "description": "cancellation: Defines any data that needs to be passed to cancel a subscription, e.g., a specific message to remove a Webhook.",
-    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "$schema ": "http://json-schema.org/draft-07/schema#",
     "is-complex":true,
     "also": ["td-event-names_cancellation", "td-event-objects_cancellation"],
     "type": "object",
@@ -9,18 +9,18 @@
         "events": {
             "type": "object",
             "additionalProperties": {
-                "$ref": "#/definitions/event_element"
+                "$ref": "#/$defs/event_element"
             }
         }
     },
     "additionalProperties": true,
-    "definitions": {
+    "$defs": {
         "event_element": {
             "if":{
                 "type": "object",
                 "properties": {
                     "cancellation": {
-                        "$ref": "#/definitions/dataSchema"
+                        "$ref": "#/$defs/dataSchema"
                     }
                 },
                 "required": [
@@ -42,10 +42,10 @@
                     "type": "string"
                 },
                 "descriptions": {
-                    "$ref": "#/definitions/descriptions"
+                    "$ref": "#/$defs/descriptions"
                 },
                 "titles": {
-                    "$ref": "#/definitions/titles"
+                    "$ref": "#/$defs/titles"
                 },
                 "writeOnly": {
                     "type": "boolean"
@@ -56,7 +56,7 @@
                 "oneOf": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/dataSchema"
+                        "$ref": "#/$defs/dataSchema"
                     }
                 },
                 "unit": {
@@ -82,12 +82,12 @@
                 },
                 "items": {
                     "oneOf": [{
-                            "$ref": "#/definitions/dataSchema"
+                            "$ref": "#/$defs/dataSchema"
                         },
                         {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/dataSchema"
+                                "$ref": "#/$defs/dataSchema"
                             }
                         }
                     ]
@@ -112,7 +112,7 @@
                 },
                 "properties": {
                     "additionalProperties": {
-                        "$ref": "#/definitions/dataSchema"
+                        "$ref": "#/$defs/dataSchema"
                     }
                 },
                 "required": {

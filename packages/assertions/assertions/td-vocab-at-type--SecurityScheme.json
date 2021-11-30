@@ -1,7 +1,7 @@
 {
     "title": "td-vocab-at-type--SecurityScheme",
     "description": "@type: Known from JSON-LD [[!json-ld]], @type is used to state that a security mechanism configured by the SecurityScheme is an instance of a class. Each string in the value array represents a class. MAY be included. Type: array of string.",
-    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "$schema ": "http://json-schema.org/draft-07/schema#",
     "is-complex": true,
     "also": ["td-jsonld-keywords_at-type"],
     "type": "object",
@@ -10,7 +10,7 @@
             "type": "object",
             "minProperties": 1,
             "additionalProperties": {
-                "$ref": "#/definitions/securityScheme"
+                "$ref": "#/$defs/securityScheme"
             }
         }
     },
@@ -18,12 +18,12 @@
         "securityDefinitions"
     ],
     "additionalProperties": true,
-    "definitions": {
+    "$defs": {
         "securityScheme": {
             "type": "object",
             "if": {
                 "@type": {
-                    "$ref": "#/definitions/type_declaration"
+                    "$ref": "#/$defs/type_declaration"
                 },
                 "required": ["@type"]
             },

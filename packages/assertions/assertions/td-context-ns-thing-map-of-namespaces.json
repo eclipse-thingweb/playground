@@ -2,7 +2,7 @@
     "title": "td-context-ns-thing-map-of-namespaces",
     "description": "Maps contained in an @context Array MAY contain name-value pairs, where the value is a namespace identifier of type anyURI and the name a Term or prefix denoting that namespace. ",
     "is-complex": true,
-    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "$schema ": "http://json-schema.org/draft-07/schema#",
     "type": "object",
     "if": {
         "required": [
@@ -20,7 +20,7 @@
                 },
                 "else": {
                     "if": {
-                        "$ref": "#/definitions/thing-context"
+                        "$ref": "#/$defs/thing-context"
                     },
                     "then": {
                         "const": "td-context-ns-thing-map-of-namespaces=pass"
@@ -30,7 +30,7 @@
         }
     },
     "additionalProperties": true,
-    "definitions": {
+    "$defs": {
         "thing-context-w3c-uri": {
             "type": "string",
             "enum": [
@@ -41,7 +41,7 @@
             "type": "array",
             "items": [
                 {
-                    "$ref": "#/definitions/thing-context-w3c-uri"
+                    "$ref": "#/$defs/thing-context-w3c-uri"
                 }
             ],
             "additionalItems": {

@@ -1,14 +1,14 @@
 {
     "title": "td-action-arrays",
     "description": "The type of the members forms MUST be serialized as a JSON array.",
-    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "$schema ": "http://json-schema.org/draft-07/schema#",
     "is-complex":false,
     "also": ["td-action-names_forms"],
     "type": "object",
     "properties": {
         "actions": {
             "additionalProperties": {
-                "$ref": "#/definitions/action_element"
+                "$ref": "#/$defs/action_element"
             }
         }
     },
@@ -16,14 +16,14 @@
         "actions"
     ],
     "additionalProperties": true,
-    "definitions": {
+    "$defs": {
         "action_element": {
             "type": "object",
             "properties": {
                 "forms": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/form_element"
+                        "$ref": "#/$defs/form_element"
                     }
                 }
 
@@ -37,7 +37,7 @@
             "type": "object",
             "properties": {
                 "href": {
-                    "$ref": "#/definitions/url"
+                    "$ref": "#/$defs/url"
                 },
                 "op": {
                     "oneOf": [{
