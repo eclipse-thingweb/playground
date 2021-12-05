@@ -1,7 +1,7 @@
 {
     "title": "td-vocab-input--ActionAffordance",
     "description": "input: Used to define the input data schema of the action.",
-    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "is-complex": true,
     "also": ["td-action-objects_input", "td-action-names_input"],
     "type": "object",
@@ -9,18 +9,18 @@
         "actions": {
             "type": "object",
             "additionalProperties": {
-                "$ref": "#/definitions/action_element"
+                "$ref": "#/$defs/action_element"
             }
         }
     },
     "additionalProperties": true,
-    "definitions": {
+    "$defs": {
         "action_element": {
             "type": "object",
             "if": {
                 "properties": {
                     "input": {
-                        "$ref": "#/definitions/dataSchema"
+                        "$ref": "#/$defs/dataSchema"
                     }
                 },
                 "required": [
@@ -42,10 +42,10 @@
                     "type": "string"
                 },
                 "descriptions": {
-                    "$ref": "#/definitions/descriptions"
+                    "$ref": "#/$defs/descriptions"
                 },
                 "titles": {
-                    "$ref": "#/definitions/titles"
+                    "$ref": "#/$defs/titles"
                 },
                 "writeOnly": {
                     "type": "boolean"
@@ -56,7 +56,7 @@
                 "oneOf": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/dataSchema"
+                        "$ref": "#/$defs/dataSchema"
                     }
                 },
                 "unit": {
@@ -82,12 +82,12 @@
                 },
                 "items": {
                     "oneOf": [{
-                            "$ref": "#/definitions/dataSchema"
+                            "$ref": "#/$defs/dataSchema"
                         },
                         {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/dataSchema"
+                                "$ref": "#/$defs/dataSchema"
                             }
                         }
                     ]
@@ -112,7 +112,7 @@
                 },
                 "properties": {
                     "additionalProperties": {
-                        "$ref": "#/definitions/dataSchema"
+                        "$ref": "#/$defs/dataSchema"
                     }
                 },
                 "required": {

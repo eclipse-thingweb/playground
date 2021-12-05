@@ -1,7 +1,7 @@
 {
     "title": "td-vocab-descriptions--InteractionAffordance",
     "description": "descriptions: Can be used to support (human-readable) information in different languages. MAY be included. Type: MultiLanguage.",
-    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "also": ["td-multi-languages_descriptions", "td-multilanguage-value"],
     "is-complex": true,
     "type": "object",
@@ -9,31 +9,31 @@
         "properties": {
             "type": "object",
             "additionalProperties": {
-                "$ref": "#/definitions/property_element"
+                "$ref": "#/$defs/property_element"
             }
         },
         "actions": {
             "type": "object",
             "additionalProperties": {
-                "$ref": "#/definitions/action_element"
+                "$ref": "#/$defs/action_element"
             }
         },
         "events": {
             "type": "object",
             "additionalProperties": {
-                "$ref": "#/definitions/event_element"
+                "$ref": "#/$defs/event_element"
             }
         }
     },
     "additionalProperties": true,
-    "definitions": {
+    "$defs": {
         "property_element": {
             "type": "object",
             "if": {
                 "required": ["descriptions"],
                 "properties": {
                     "descriptions": {
-                        "$ref": "#/definitions/descriptions"
+                        "$ref": "#/$defs/descriptions"
                     }
                 }
             },
@@ -44,29 +44,29 @@
                 "properties": {
                     "properties": {
                         "additionalProperties": {
-                            "$ref": "#/definitions/dataSchema"
+                            "$ref": "#/$defs/dataSchema"
                         }
                     },
                     "uriVariables": {
                         "type": "object",
                         "additionalProperties": {
-                            "$ref": "#/definitions/dataSchema"
+                            "$ref": "#/$defs/dataSchema"
                         }
                     },
                     "oneOf": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/definitions/dataSchema"
+                            "$ref": "#/$defs/dataSchema"
                         }
                     },
                     "items": {
                         "oneOf": [{
-                                "$ref": "#/definitions/dataSchema"
+                                "$ref": "#/$defs/dataSchema"
                             },
                             {
                                 "type": "array",
                                 "items": {
-                                    "$ref": "#/definitions/dataSchema"
+                                    "$ref": "#/$defs/dataSchema"
                                 }
                             }
                         ]
@@ -80,7 +80,7 @@
                 "required": ["descriptions"],
                 "properties": {
                     "descriptions": {
-                        "$ref": "#/definitions/descriptions"
+                        "$ref": "#/$defs/descriptions"
                     }
                 }
             },
@@ -91,10 +91,10 @@
 
                 "properties": {
                     "input": {
-                        "$ref": "#/definitions/dataSchema"
+                        "$ref": "#/$defs/dataSchema"
                     },
                     "output": {
-                        "$ref": "#/definitions/dataSchema"
+                        "$ref": "#/$defs/dataSchema"
                     }
                 }
             }
@@ -105,7 +105,7 @@
                 "required": ["descriptions"],
                 "properties": {
                     "descriptions": {
-                        "$ref": "#/definitions/descriptions"
+                        "$ref": "#/$defs/descriptions"
                     }
                 }
             },
@@ -115,13 +115,13 @@
             "else": {
                 "properties": {
                     "subscription": {
-                        "$ref": "#/definitions/dataSchema"
+                        "$ref": "#/$defs/dataSchema"
                     },
                     "data": {
-                        "$ref": "#/definitions/dataSchema"
+                        "$ref": "#/$defs/dataSchema"
                     },
                     "cancellation": {
-                        "$ref": "#/definitions/dataSchema"
+                        "$ref": "#/$defs/dataSchema"
                     }
                 }
             }
@@ -130,16 +130,16 @@
             "type": "object",
             "properties": {
                 "description": {
-                    "$ref": "#/definitions/description"
+                    "$ref": "#/$defs/description"
                 },
                 "title": {
-                    "$ref": "#/definitions/title"
+                    "$ref": "#/$defs/title"
                 },
                 "descriptions": {
-                    "$ref": "#/definitions/descriptions"
+                    "$ref": "#/$defs/descriptions"
                 },
                 "titles": {
-                    "$ref": "#/definitions/titles"
+                    "$ref": "#/$defs/titles"
                 },
                 "writeOnly": {
                     "type": "boolean"
@@ -150,7 +150,7 @@
                 "oneOf": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/dataSchema"
+                        "$ref": "#/$defs/dataSchema"
                     }
                 },
                 "unit": {
@@ -176,12 +176,12 @@
                 },
                 "items": {
                     "oneOf": [{
-                            "$ref": "#/definitions/dataSchema"
+                            "$ref": "#/$defs/dataSchema"
                         },
                         {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/dataSchema"
+                                "$ref": "#/$defs/dataSchema"
                             }
                         }
                     ]
@@ -204,7 +204,7 @@
                 },
                 "properties": {
                     "additionalProperties": {
-                        "$ref": "#/definitions/dataSchema"
+                        "$ref": "#/$defs/dataSchema"
                     }
                 },
                 "required": {

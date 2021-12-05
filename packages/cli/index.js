@@ -47,7 +47,7 @@ const argParser = require('argly')
         },
         '--assertion-nomerge -n': {
             type: 'boolean',
-            description: 'if multiple files where given as input, don\'t create a merged report, but one for each'
+            description: 'if multiple files where given as input, don\'t create a merged report, but create one for each'
         },
         '--assertion-tostd -s': {
             type: 'boolean',
@@ -464,7 +464,7 @@ function coreValidation() {
  */
 function checkTd(td) {
 
-    tdValidator(td, console.log,{checkDefaults: !myArguments.nodefaults,checkJsonLd: !myArguments.nojsonld})
+    tdValidator(td, console.log,{checkDefaults: !myArguments.nodefaults, checkJsonLd: !myArguments.nojsonld})
     .then( result => {
         console.log("OKAY \n")
         console.log("\n")

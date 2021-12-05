@@ -1,7 +1,7 @@
 {
     "title": "td-vocab-readOnly--DataSchema",
     "description": "readOnly: Boolean value that indicates whether a property interaction / value is read only (=true) or not (=false). MUST be included. Type: boolean.",
-    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "also": ["td-data-schema_readOnly", "td-boolean-type"],
     "is-complex": true,
     "type": "object",
@@ -9,24 +9,24 @@
         "properties": {
             "type": "object",
             "additionalProperties": {
-                "$ref": "#/definitions/property_element"
+                "$ref": "#/$defs/property_element"
             }
         },
         "actions": {
             "type": "object",
             "additionalProperties": {
-                "$ref": "#/definitions/action_element"
+                "$ref": "#/$defs/action_element"
             }
         },
         "events": {
             "type": "object",
             "additionalProperties": {
-                "$ref": "#/definitions/event_element"
+                "$ref": "#/$defs/event_element"
             }
         }
     },
     "additionalProperties": true,
-    "definitions": {
+    "$defs": {
         "property_element": {
             "type": "object",
             "if": {
@@ -44,29 +44,29 @@
                 "properties": {
                     "properties": {
                         "additionalProperties": {
-                            "$ref": "#/definitions/dataSchema"
+                            "$ref": "#/$defs/dataSchema"
                         }
                     },
                     "uriVariables": {
                         "type": "object",
                         "additionalProperties": {
-                            "$ref": "#/definitions/dataSchema"
+                            "$ref": "#/$defs/dataSchema"
                         }
                     },
                     "oneOf": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/definitions/dataSchema"
+                            "$ref": "#/$defs/dataSchema"
                         }
                     },
                     "items": {
                         "oneOf": [{
-                                "$ref": "#/definitions/dataSchema"
+                                "$ref": "#/$defs/dataSchema"
                             },
                             {
                                 "type": "array",
                                 "items": {
-                                    "$ref": "#/definitions/dataSchema"
+                                    "$ref": "#/$defs/dataSchema"
                                 }
                             }
                         ]
@@ -78,10 +78,10 @@
             "type": "object",
             "properties": {
                 "input": {
-                    "$ref": "#/definitions/dataSchema"
+                    "$ref": "#/$defs/dataSchema"
                 },
                 "output": {
-                    "$ref": "#/definitions/dataSchema"
+                    "$ref": "#/$defs/dataSchema"
                 }
             }
         },
@@ -89,13 +89,13 @@
             "type": "object",
             "properties": {
                 "subscription": {
-                    "$ref": "#/definitions/dataSchema"
+                    "$ref": "#/$defs/dataSchema"
                 },
                 "data": {
-                    "$ref": "#/definitions/dataSchema"
+                    "$ref": "#/$defs/dataSchema"
                 },
                 "cancellation": {
-                    "$ref": "#/definitions/dataSchema"
+                    "$ref": "#/$defs/dataSchema"
                 }
             }
         },
@@ -115,16 +115,16 @@
             "else": {
                 "properties": {
                     "description": {
-                        "$ref": "#/definitions/description"
+                        "$ref": "#/$defs/description"
                     },
                     "title": {
-                        "$ref": "#/definitions/title"
+                        "$ref": "#/$defs/title"
                     },
                     "descriptions": {
-                        "$ref": "#/definitions/descriptions"
+                        "$ref": "#/$defs/descriptions"
                     },
                     "titles": {
-                        "$ref": "#/definitions/titles"
+                        "$ref": "#/$defs/titles"
                     },
                     "writeOnly": {
                         "type": "boolean"
@@ -135,7 +135,7 @@
                     "oneOf": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/definitions/dataSchema"
+                            "$ref": "#/$defs/dataSchema"
                         }
                     },
                     "unit": {
@@ -161,12 +161,12 @@
                     },
                     "items": {
                         "oneOf": [{
-                                "$ref": "#/definitions/dataSchema"
+                                "$ref": "#/$defs/dataSchema"
                             },
                             {
                                 "type": "array",
                                 "items": {
-                                    "$ref": "#/definitions/dataSchema"
+                                    "$ref": "#/$defs/dataSchema"
                                 }
                             }
                         ]
@@ -189,7 +189,7 @@
                     },
                     "properties": {
                         "additionalProperties": {
-                            "$ref": "#/definitions/dataSchema"
+                            "$ref": "#/$defs/dataSchema"
                         }
                     },
                     "required": {

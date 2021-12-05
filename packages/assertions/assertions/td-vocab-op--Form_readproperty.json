@@ -1,19 +1,19 @@
 {
     "title": "td-vocab-op--Form_readproperty",
     "description": "op: Indicates the expected result of performing the operation described by the form. For example, the Property interaction allows get and set operations. The protocol binding may contain a form for the get operation and a different form for the set operation. The op attribute indicates which form is which and allows the client to select the correct form for the operation required. ",
-    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "is-complex": true,
     "type": "object",
     "properties": {
         "properties": {
             "type": "object",
             "additionalProperties": {
-                "$ref": "#/definitions/property_element"
+                "$ref": "#/$defs/property_element"
             }
         }
     },
     "additionalProperties": true,
-    "definitions": {
+    "$defs": {
         "property_element": {
             "type": "object",
             "properties": {
@@ -21,7 +21,7 @@
                     "type": "array",
                     "minItems": 1,
                     "items": {
-                        "$ref": "#/definitions/form_element"
+                        "$ref": "#/$defs/form_element"
                     }
                 }
             },
