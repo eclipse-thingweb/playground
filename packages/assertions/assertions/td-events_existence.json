@@ -1,7 +1,7 @@
 {
     "title": "td-events_existence",
     "description": "Events offered by a Thing MUST be collected in the JSON-object based events member with (unique) Event names as JSON names. (Checking if they exist)",
-    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "is-complex":false,
     "also": ["td-vocab-events--Thing", "td-objects_events"],
     "type": "object",

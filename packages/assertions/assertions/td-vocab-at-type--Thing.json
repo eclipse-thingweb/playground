@@ -8,7 +8,7 @@
         "required": ["@type"],
         "properties": {
             "@type": {
-                "$ref": "#/definitions/type_declaration"
+                "$ref": "#/$defs/type_declaration"
             }
         }
     },
@@ -16,7 +16,7 @@
         "const": "td-at-type=pass"
     },
     "additionalProperties": true,
-    "definitions": {
+    "$defs": {
         "type_declaration": {
             "oneOf": [{
                     "type": "string"

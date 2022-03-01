@@ -13,10 +13,10 @@ There are different ways to use Playground:
 - You can install the different packages from npm ([see below](./packages)) or in their respective directories.
 ## Structure
 
-The structure of all Web of Things (WoT) Playground packages is shown here: ![packageStructure](https://i.imgur.com/RTG02d8.png)  
+The structure of all Web of Things (WoT) Playground packages is shown here: ![packageStructure](images/playground-structure.png)  
 The core package provides a function to check whether a Thing Description (TD) is valid according to the W3C WoT [standard](https://w3c.github.io/wot-thing-description/#).
 Its functionality can be imported, as well as the assertion checks of the assertion package.
-They create a report stating how much standard assertions a fullfilled by a single TD or WoT Implementation.
+They create a report stating how much standard assertions a fulfilled by a single TD or WoT Implementation.
 Both packages are used by the Web and CLI packages to provide their functionalities, plus IO functionalities through an UI.
 
 ## Packages

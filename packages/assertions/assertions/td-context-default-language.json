@@ -2,7 +2,7 @@
     "title": "td-context-default-language",
     "description": "One Map contained in an @context Array SHOULD contain a name-value pair that defines the default language for the Thing Description, where the name is the Term @language and the value is a well-formed language tag as defined by [[!BCP47]] (e.g., en, de-AT, gsw-CH, zh-Hans, zh-Hant-HK, sl-nedis). ",
     "is-complex": true,
-    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
     "if": {
         "required": [
@@ -20,7 +20,7 @@
                 },
                 "else": {
                     "if": {
-                        "$ref": "#/definitions/thing-context"
+                        "$ref": "#/$defs/thing-context"
                     },
                     "then": {
                         "const": "td-context-default-language=pass"
@@ -30,7 +30,7 @@
         }
     },
     "additionalProperties": true,
-    "definitions": {
+    "$defs": {
         "thing-context-w3c-uri": {
             "type": "string",
             "enum": [
@@ -41,7 +41,7 @@
             "type": "array",
             "items": [
                 {
-                    "$ref": "#/definitions/thing-context-w3c-uri"
+                    "$ref": "#/$defs/thing-context-w3c-uri"
                 }
             ],
             "additionalItems": {

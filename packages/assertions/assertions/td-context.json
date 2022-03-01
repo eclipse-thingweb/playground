@@ -2,7 +2,7 @@
     "title": "td-context",
     "description": "The root object of a Thing Description instance MAY include the @context name known from JSON-LD [[!json-ld]] with the value URI of the Thing description context file http://www.w3.org/ns/td.",
     "is-complex": true,
-    "$schema ": "http://json-schema.org/draft-06/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "also": [
         "td-vocab-at-context--Thing",
         "td-jsonld-keywords_at-context"
@@ -14,7 +14,7 @@
         ],
         "properties": {
             "@context": {
-                "$ref": "#/definitions/thing-context"
+                "$ref": "#/$defs/thing-context"
             }
         }
     },
@@ -22,7 +22,7 @@
         "const": "td-context=pass"
     },
     "additionalProperties": true,
-    "definitions": {
+    "$defs": {
         "thing-context-w3c-uri": {
             "type": "string",
             "enum": [
@@ -35,13 +35,13 @@
                     "type": "array",
                     "items": [
                         {
-                            "$ref": "#/definitions/thing-context-w3c-uri"
+                            "$ref": "#/$defs/thing-context-w3c-uri"
                         }
                     ],
                     "additionalItems": {
                         "anyOf": [
                             {
-                                "$ref": "#/definitions/anyUri"
+                                "$ref": "#/$defs/anyUri"
                             },
                             {
                                 "type": "object"
@@ -50,7 +50,7 @@
                     }
                 },
                 {
-                    "$ref": "#/definitions/thing-context-w3c-uri"
+                    "$ref": "#/$defs/thing-context-w3c-uri"
                 }
             ]
         },

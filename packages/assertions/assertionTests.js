@@ -2,6 +2,7 @@
 const isUtf8 = require('is-utf8')
 
 // The usual library used for validation
+
 const Ajv = require("ajv")
 const addFormats = require("ajv-formats")
 const apply = require('ajv-formats-draft2019');
@@ -9,6 +10,7 @@ const apply = require('ajv-formats-draft2019');
 let ajv = new Ajv({strict: false})
 ajv = addFormats(ajv)
 ajv = apply(ajv)
+
 
 // Imports from playground core
 const checkUniqueness = require('@thing-description-playground/core').propUniqueness
@@ -98,6 +100,9 @@ function validate(tdData, assertions, manualAssertions, logFunc) {
         ajv = addFormats(ajv) // ajv does not support formats by default anymore
         ajv = apply(ajv) // new formats that include iri
         ajv.addSchema(schema, 'td')
+        ajv.addVocabulary(['is-complex', 'also']);
+        addFormats(ajv)
+
 
 
         const valid = ajv.validate('td', tdJson)
@@ -275,6 +280,8 @@ function checkVocabulary(tdJson) {
     ajv = addFormats(ajv) // ajv does not support formats by default anymore
     ajv = apply(ajv) // new formats that include iri
     ajv.addSchema(tdSchema, 'td')
+    ajv.addVocabulary(['is-complex', 'also']);
+    addFormats(ajv)
 
     const valid = ajv.validate('td', tdJson)
     const otherAssertions = ["td-objects_securityDefinitions", "td-arrays_security", "td-vocab-security--Thing",
