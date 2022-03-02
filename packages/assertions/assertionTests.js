@@ -7,10 +7,6 @@ const Ajv = require("ajv")
 const addFormats = require("ajv-formats")
 const apply = require('ajv-formats-draft2019');
 
-let ajv = new Ajv({strict: false})
-ajv = addFormats(ajv)
-ajv = apply(ajv)
-
 
 // Imports from playground core
 const checkUniqueness = require('@thing-description-playground/core').propUniqueness
@@ -101,7 +97,6 @@ function validate(tdData, assertions, manualAssertions, logFunc) {
         ajv = apply(ajv) // new formats that include iri
         ajv.addSchema(schema, 'td')
         ajv.addVocabulary(['is-complex', 'also']);
-        addFormats(ajv)
 
 
 
@@ -281,7 +276,6 @@ function checkVocabulary(tdJson) {
     ajv = apply(ajv) // new formats that include iri
     ajv.addSchema(tdSchema, 'td')
     ajv.addVocabulary(['is-complex', 'also']);
-    addFormats(ajv)
 
     const valid = ajv.validate('td', tdJson)
     const otherAssertions = ["td-objects_securityDefinitions", "td-arrays_security", "td-vocab-security--Thing",
@@ -305,6 +299,7 @@ function checkVocabulary(tdJson) {
         return results
 
     } else {
+        console.log(ajv.errorsText())
         throw new Error("invalid TD")
     }
 }
