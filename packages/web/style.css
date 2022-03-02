@@ -66,7 +66,7 @@ body {
 .conrow {
 	max-height: 250px;
 	height: fit-content;
-	/*overflow-y: scroll;*/
+	/* overflow-y: auto; */
 }
 
 #console {
@@ -97,7 +97,7 @@ body {
 }
 
 footer {
-	position: absolute;
+	position: fixed;
 	bottom: 0;
 	width: 100%;
 }

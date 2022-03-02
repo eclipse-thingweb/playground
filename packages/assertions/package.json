@@ -21,6 +21,7 @@
     "prepare": "npm run bundle"
   },
   "dependencies": {
+    "ajv-formats-draft2019": "^1.4.3",
     "@thing-description-playground/core": "^1.2.1",
     "ajv": "^8.8.2",
     "ajv-formats": "^2.1.1",

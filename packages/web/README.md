@@ -8,7 +8,7 @@ The gist submission backend (required to keep authentication private) is provide
 
 ## License
 
-Licensed under the MIT license, see [License](./LICENSE.md).
+Licensed under the MIT license, see [License](../../LICENSE.md).
 
 ## Browser based Thing Description Validation
 

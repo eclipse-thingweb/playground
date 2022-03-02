@@ -1,0 +1,26 @@
+{
+    "title": "tm-tmRequired",
+    "description": "To guarantee the implementation of particular kind of interaction models, Thing Model definitions MUST use the JSON member name tm:required.",
+    "$schema ": "http://json-schema.org/draft/2019-09/schema#",
+    "also": ["tm-tmRequired-JSONPointer", "tm-tmRequired-array"],
+    "is-complex":false,
+    "type": "object",
+    "properties": {
+        "tm:required": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/JSONPointer"
+            }
+        }
+    },
+    "required": [
+        "tm:required"
+    ],
+    "additionalProperties": true,
+    "$defs": {
+        "JSONPointer": {
+            "type": "string",
+            "format": "uri-reference"
+        }
+    }
+}

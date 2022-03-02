@@ -1,0 +1,27 @@
+{
+    "@context":"https://www.w3.org/2019/wot/td/v1",
+    "title": "MyLampThing",
+    "description": "Valid TD showing how to specify another content type in an action response",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": ["basic_sc"],
+    "actions": {
+        "crop": {
+            "input":{
+                "type":"string",
+                "contentMediaType":"8bit",
+                "contentEncoding":"8bit"
+            },
+            "forms": [{
+                "href": "http://upsq1c.local:9191/api/frame/crop",
+                "contentType": "application/json",
+                "security": ["basic_sc"],
+                "op": ["invokeaction"]
+            }]
+        }
+    }
+}

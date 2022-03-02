@@ -9,7 +9,7 @@ Limitations:
 
 ## License
 
-Licensed under the MIT license, see [License](./LICENSE.md).
+Licensed under the MIT license, see [License](../../LICENSE.md).
 
 ## Script based Thing Description Validation
 

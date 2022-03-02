@@ -95,46 +95,6 @@
             },
             "then": {
                 "const": "td-vocab-contentType--Form=pass"
-            },
-            "else": {
-                "properties": {
-                    "href": {
-                        "$ref": "#/$defs/url"
-                    },
-                    "contentType": {
-                        "type": "string"
-                    },
-                    "security": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
-                    },
-                    "scopes": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
-                    },
-                    "subprotocol": {
-                        "type": "string",
-                        "enum": [
-                            "longpoll", "websub", "sse"
-                        ]
-                    },
-                    "response": {
-                        "type": "object",
-                        "properties": {
-                            "contentType": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                },
-                "required": [
-                    "href"
-                ],
-                "additionalProperties": true
             }
         },
         "url": {

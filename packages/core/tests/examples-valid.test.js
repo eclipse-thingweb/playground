@@ -20,6 +20,7 @@ const refResult = {
         security: 'passed',
         propUniqueness: 'passed',
         multiLangConsistency: 'passed',
+        linksRelTypeCount: 'passed',
         readWriteOnly: 'passed'
     },
     detailComments: expect.any(Object)

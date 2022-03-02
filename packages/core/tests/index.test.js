@@ -82,6 +82,7 @@ test("normal report generation", () => {
 				security: 'passed',
 				propUniqueness: 'passed',
 				multiLangConsistency: 'passed',
+				linksRelTypeCount: 'passed',
 				readWriteOnly: 'passed'
 			},
 			detailComments: {
@@ -90,6 +91,7 @@ test("normal report generation", () => {
 				security: expect.any(String),
 				propUniqueness: expect.any(String),
 				multiLangConsistency: expect.any(String),
+				linksRelTypeCount: expect.any(String),
 				readWriteOnly: expect.any(String)
 			}
 		}

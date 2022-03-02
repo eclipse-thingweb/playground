@@ -7,4 +7,4 @@ For testing purposes (to see if npm test succeeds) setting empty Variables is su
 
 ## License
 
-Licensed under the MIT license, see [License](./LICENSE.md).
+Licensed under the MIT license, see [License](../../LICENSE.md).

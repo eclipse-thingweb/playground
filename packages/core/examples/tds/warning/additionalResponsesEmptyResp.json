@@ -1,0 +1,52 @@
+{
+    "id": "urn:actionResponse",
+    "@context":"https://www.w3.org/2019/wot/td/v1",
+    "title": "MyLampThing",
+    "description": "Warning TD since an additional response does not specify success and contenttype",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": ["basic_sc"],
+    "schemaDefinitions":{
+        "mySchema":{
+            "type":"string",
+            "readOnly":false,
+            "writeOnly":false
+        }
+    },
+    "actions": {
+        "crop": {
+            "idempotent":false,
+            "safe":false,
+            "forms": [{
+                "href": "http://upsq1c.local:9191/api/frame/crop",
+                "contentType": "application/json",
+                "security": ["basic_sc"],
+                "op": ["invokeaction"],
+                "htv:methodName": "POST",
+                "additionalResponses": [
+                    {
+                        "success":true,
+                        "contentType": "application/json",
+                        "schema":"mySchema"
+                    },
+                    {
+                        "success":false,
+                        "contentType": "application/json"
+                    },
+                    {
+                    },
+                    {
+                        "success":false
+                    },
+                    {
+                        "contentType": "application/json"
+                    }
+                ]
+            }]
+        }
+    }
+}

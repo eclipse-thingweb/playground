@@ -2,14 +2,17 @@
 const isUtf8 = require('is-utf8')
 
 // The usual library used for validation
-const Ajv = require('ajv')
+
+const Ajv = require("ajv")
 const addFormats = require("ajv-formats")
+const apply = require('ajv-formats-draft2019');
 
 
 // Imports from playground core
 const checkUniqueness = require('@thing-description-playground/core').propUniqueness
 const checkMultiLangConsistency = require("@thing-description-playground/core").multiLangConsistency
 const checkSecurity = require("@thing-description-playground/core").security
+const checkLinksRelTypeCount = require("@thing-description-playground/core").checkLinksRelTypeCount
 const tdSchema = require("@thing-description-playground/core/td-schema.json")
 
 /**
@@ -28,7 +31,8 @@ function validate(tdData, assertions, manualAssertions, logFunc) {
     // a JSON file that will be returned containing the result for each assertion as a JSON Object
     let results = []
     // !!! uses console info on purpose, to be able to deactivate it, without overwriting console.log !!!
-    console.info("=================================================================")
+    // console.info("=================================================================")
+    // it is commented out to make sure that the output to std is also a valid csv file
 
     // check whether it is a valid JSON
     let tdJson
@@ -71,6 +75,7 @@ function validate(tdData, assertions, manualAssertions, logFunc) {
     // additional checks
     results.push(...checkSecurity(tdJson))
     results.push(...checkMultiLangConsistency(tdJson))
+    results.push(...checkLinksRelTypeCount(tdJson))
 
     // Iterating through assertions
     for (let index = 0; index < assertions.length; index++) {
@@ -84,12 +89,14 @@ function validate(tdData, assertions, manualAssertions, logFunc) {
             "$comment" (v) {
                 logFunc("\n!!!! COMMENT", v)
             },
-            "allErrors": true
+            "allErrors": true,
+            "strict":false
         }
-        const ajv = new Ajv(ajvOptions)
+        let ajv = new Ajv(ajvOptions)
+        ajv = addFormats(ajv) // ajv does not support formats by default anymore
+        ajv = apply(ajv) // new formats that include iri
         ajv.addSchema(schema, 'td')
         ajv.addVocabulary(['is-complex', 'also']);
-        addFormats(ajv)
 
 
 
@@ -264,10 +271,11 @@ module.exports = validate
 function checkVocabulary(tdJson) {
 
     const results = []
-    const ajv = new Ajv()
+    let ajv = new Ajv({strict: false})
+    ajv = addFormats(ajv) // ajv does not support formats by default anymore
+    ajv = apply(ajv) // new formats that include iri
     ajv.addSchema(tdSchema, 'td')
     ajv.addVocabulary(['is-complex', 'also']);
-    addFormats(ajv)
 
     const valid = ajv.validate('td', tdJson)
     const otherAssertions = ["td-objects_securityDefinitions", "td-arrays_security", "td-vocab-security--Thing",
@@ -291,6 +299,7 @@ function checkVocabulary(tdJson) {
         return results
 
     } else {
+        console.log(ajv.errorsText())
         throw new Error("invalid TD")
     }
 }
