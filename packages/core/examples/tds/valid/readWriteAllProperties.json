@@ -10,7 +10,6 @@
     "versioning": {
         "instance": "1.0.0"
     },
-    "support": "none",
     "forms": [{
         "href": "http://10.0.2.15:8080/Siemens-ReadWriteAllProperties-Tester/properties",
         "contentType": "application/json",

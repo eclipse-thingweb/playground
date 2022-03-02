@@ -10,10 +10,12 @@
         }
     },
     "security": ["basic_sc"],
-    "support": "mailto:support@example.com",
+    "support": "mailto:John.Doe@example.com",
     "properties": {
         "status": {
             "type": "string",
+            "readOnly":false,
+            "writeOnly":false,
             "forms": [{
                 "href": "https://mylamp.example.com/status"
             }]
