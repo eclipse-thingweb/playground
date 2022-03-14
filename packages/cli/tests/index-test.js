@@ -69,9 +69,9 @@ const processStack = {
 
 // TESTFLOW
 processStack.add("node ./index.js", "normal validation", sOut => (
-    sOut.search("Warning test succesful") !== -1 &&
-    sOut.search("Invalidity test succesful") !== -1 &&
-    sOut.search("Validity test succesful") !== -1
+    sOut.search("Warning test successful") !== -1 &&
+    sOut.search("Invalidity test successful") !== -1 &&
+    sOut.search("Validity test successful") !== -1
 ))
 // processStack.add("node ./index.js -a", "normal assertions")
 processStack.add("node ./index.js -p", "OpenAPI JSON generation", () => existsSync("./out/simple_openapi.json"))
