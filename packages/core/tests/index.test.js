@@ -2,7 +2,7 @@
  * @file Calls the core validation with an hardcoded TD string as input
  * 		 to check whether the validation throws an error and allow manual
  * 		 checking of the result
- */const tdValidator = require("../index")
+ */const tdValidator = require("../index").tdValidator
 
 const simpleTD = `{
 	"id": "urn:simple",

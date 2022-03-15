@@ -7,7 +7,7 @@
 
 const fs = require("fs")
 const {addDefaults, removeDefaults} = require("../index.js")
-const tdValidator = require("@thing-description-playground/core")
+const tdValidator = require("@thing-description-playground/core").tdValidator
 
 if (!fs.existsSync("./out")) {fs.mkdirSync("./out")}
 
