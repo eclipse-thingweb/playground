@@ -1,0 +1,8 @@
+{
+    "$comment":"absence of @type",
+    "id": "urn:no:type",
+    "@context": ["http://www.w3.org/ns/td"],
+    "title": "Invalid model 1"
+}
+
+
