@@ -24,10 +24,10 @@ You can use the functionality of this package by:
   * Node.js: Require the package and use the validation function
 
   ```javascript
-  const tdValidator = require("@thing-description-playground/core")
+  const tdValidator = require("@thing-description-playground/core").tdValidator
   ```
 
-  * Browser: Import the `tdValidator` function as a global by adding a script tag to your html.
+  * Browser: Import the `Validators.tdValidator` function as a global by adding a script tag to your HTML.
 
   ```html
   <script src="./node_modules/@thing-description-playground/core/dist/web-bundle.min.js"></script>
@@ -52,7 +52,7 @@ These examples cover all the features of the TD spec. If you think that there is
 * Small example for using this package in a Node.js script, to validate an example TD:
 
 ```javascript
-const tdValidator = require("@thing-description-playground/core")
+const tdValidator = require("@thing-description-playground/core").tdValidator
 const fs = require("fs")
 
 const simpleTD = fs.readFileSync("./node_modules/@thing-description-playground/core/examples/tds/valid/simple.json", "utf8")
