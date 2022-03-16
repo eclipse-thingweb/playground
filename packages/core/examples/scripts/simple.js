@@ -1,5 +1,5 @@
 // Test utility to test index.js
-const tdValidator = require("../../index")
+const tdValidator = require("../../index").tdValidator
 
 const simpleTD = JSON.stringify({
 	"id": "urn:simple",
