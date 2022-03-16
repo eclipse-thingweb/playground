@@ -1,0 +1,16 @@
+{
+    "id": "urn:overwrite",
+    "$comment": "example 54 of the spec",
+    "@context": [
+        "http://www.w3.org/ns/td"
+    ],
+    "@type": "tm:ThingModel",
+    "title": "Valid Model 8",
+    "properties": {
+        "dimming": {
+            "tm:ref": "http://example.com/SmartLampControlwithDimming.tm.jsonld#/properties/dim",
+            "maximum": 80,
+            "unit": "%"
+        }
+    }
+}
