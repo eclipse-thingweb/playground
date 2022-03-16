@@ -48,6 +48,7 @@ program
     .option('-p, --open-api', 'Call the OpenAPI instance generation instead of validation/assertions')
     .option('-y --oap-yaml', 'Whether OpenAPI should be written as YAML instead of JSON')
     .option('--async-api', 'Call the AsyncAPI instance generation instead of validation/assertions')
+    .option('--aap-yaml', 'Whether AsyncAPI should be written as YAML instead of json.')
     .option('--default-add', 'Whether the input TD should be extended by default values')
     .option('--default-rem', 'Whether the input TD should be reduced by default values')
     
