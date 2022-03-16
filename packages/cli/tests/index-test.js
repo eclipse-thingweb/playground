@@ -77,6 +77,6 @@ processStack.add("node ./index.js", "normal validation", sOut => (
 processStack.add("node ./index.js -p", "OpenAPI JSON generation", () => existsSync("./out/simple_openapi.json"))
 processStack.add("node ./index.js -p --oap-yaml", "OpenAPI YAML generation", () => existsSync("./out/simple_openapi.yaml"))
 processStack.add("node ./index.js --async-api", "AsyncAPI JSON generation", () => existsSync("./out/simple_asyncapi.json"))
-processStack.add("node ./index.js --async-api --aap-yaml", "AsyncaPI YAML generation", () => existsSync("./out/simple_asyncapi.yaml"))
+processStack.add("node ./index.js --async-api --aap-yaml", "AsyncAPI YAML generation", () => existsSync("./out/simple_asyncapi.yaml"))
 
 processStack.evaluate()
