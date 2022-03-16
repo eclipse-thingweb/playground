@@ -9,7 +9,7 @@
  *================================================================================================**/
 const fs = require('fs')
 const path = require('path')
-const { tdValidator, tmValidator} = require('@thing-description-playground/core')
+const { tdValidator, tmValidator } = require('@thing-description-playground/core')
 const { tdAssertions, tmAssertions }= require('@thing-description-playground/assertions')
 const assertManualToJson = require('@thing-description-playground/assertions').manualToJson
 const assertMergeResults = require('@thing-description-playground/assertions').mergeResults
