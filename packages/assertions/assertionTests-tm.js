@@ -1,5 +1,5 @@
 // used to check whether the supplied data is utf8
-// const isUtf8 = require('is-utf8')
+const isUtf8 = require('is-utf8')
 
 // The usual library used for validation
 
@@ -20,6 +20,8 @@ const mergeIdenticalResults = require("./util").mergeIdenticalResults;
 // const checkSecurity = require("@thing-description-playground/core").security
 // const checkLinksRelTypeCount = require("@thing-description-playground/core").checkLinksRelTypeCount
 const tmSchema = require("@thing-description-playground/core/tm-schema.json")
+const tmPlaceholderSchema = require("./assertions-tm/tm-placeholder.json")
+const tmRefSchema =  require("./assertions-tm/tm-tmRef-1.json")
 
 module.exports = validateTM
 
@@ -42,27 +44,27 @@ module.exports = validateTM
     // it is commented out to make sure that the output to std is also a valid csv file
 
     //todo Not sure what to do in this case
-    // // check whether it is a valid JSON
-    // let tmJson
-    // try {
-    //     tmJson = JSON.parse(tmData)
-    //     results.push({
-    //         "ID": "td-json-open",
-    //         "Status": "pass"
-    //     })
-    // } catch (error) {
-    //     throw new Error("td-json-open")
-    // }
+    // check whether it is a valid JSON
+    let tmJson
+    try {
+        tmJson = JSON.parse(tmData)
+        // results.push({
+        //     "ID": "td-json-open",
+        //     "Status": "pass"
+        // })
+    } catch (error) {
+        throw new Error("td-json-open")
+    }
 
-    // // check whether it is a valid UTF-8
-    // if (isUtf8(tmData)) {
-    //     results.push({
-    //         "ID": "td-json-open_utf-8",
-    //         "Status": "pass"
-    //     })
-    // } else {
-    //     throw new Error("td-json-open_utf-8")
-    // }
+    // check whether it is a valid UTF-8
+    if (isUtf8(tmData)) {
+        // results.push({
+        //     "ID": "td-json-open_utf-8",
+        //     "Status": "pass"
+        // })
+    } else {
+        throw new Error("td-json-open_utf-8")
+    }
 
     // // checking whether two interactions of the same interaction affordance type have the same names
     // // This requires to use the string version of the TM that will be passed down to the jsonvalidator library
@@ -90,6 +92,15 @@ module.exports = validateTM
         const curAssertion = assertions[index]
 
         const schema = curAssertion
+        if(schema["title"] === "tm-placeholder") {
+            validateTmPlaceholder(tmJson, logFunc, results)
+            continue;
+        }
+
+        if(schema["title"] === "tm-tmRef-1") {
+            validateTmRef(tmJson, logFunc, results)
+            continue;
+        }
 
         // Validation starts here
 
@@ -284,3 +295,199 @@ function checkTMVocabulary(tmJson) {
         throw new Error("Invalid TM")
     }
 }
+
+
+/**
+ * A script for validating tm-placeholder
+ * @param {object} obj 
+ * @param {function} logFunc 
+ * @param {Array<{"ID": string, "Status": string}>} results
+ */
+
+function validateTmPlaceholder(obj, logFunc, results) {
+
+    let FOUND_TM_PLACEHOLDER = false
+
+    let tmpResults = [];
+    let validPayload = null
+    checkObjContainsTmPlaceholder(obj, logFunc)
+    let otherAssertion = [];
+    if(tmSchema.also && tmSchema.also.length >= 1) otherAssertion = tmSchema.also;
+
+    if(FOUND_TM_PLACEHOLDER) {
+        // Return a fail result if found
+        for(let result of tmpResults) {
+            if(result && !result.valid) return result
+        }
+        // if no fail was found, return a valid result
+        validPayload = tmpResults[0];
+    }
+
+    if(FOUND_TM_PLACEHOLDER) {
+        if(validPayload && validPayload.valid) {
+            results.push({
+                "ID": "tm-placeholder",
+                "Status": "pass"
+            })
+
+            for(let asser of otherAssertion) {
+                results.push({
+                    "ID": asser,
+                    "Status": "pass"
+                })
+            }
+        } else if (validPayload && validPayload.valid === false) {
+            results.push({
+                "ID": "tm-placeholder",
+                "Status": "fail",
+                "Comment": validPayload.ajvObject.errorsText()
+            })
+
+            for(let asser of otherAssertion) {
+                results.push({
+                    "ID": asser,
+                    "Status": "fail",
+                    "Comment": validPayload.ajvObject.errorsText()
+                })
+            }
+        }
+    } else {
+        results.push({
+            "ID": "tm-placeholder",
+            "Status": "not-impl",
+        })
+
+        for(let asser of otherAssertion) {
+            results.push({
+                "ID": asser,
+                "Status": "not-impl",
+            })
+        }
+    }
+
+    /**
+     * 
+     * @param {object} obj 
+     * @param {function} logFunc 
+     * @returns {{valid: boolean, ajvObject: object} | null} true if validation passes, else false
+     */
+     function checkObjContainsTmPlaceholder(obj, logFunc) {
+        
+        for(let key in obj) {
+            let value = obj[key]
+            if(typeof value === "string") {
+                let regex = /^.*[{]{2}[ -~]+[}]{2}.*$/
+                if(value.match(regex)) {
+                    FOUND_TM_PLACEHOLDER = true
+                    let result = {valid: true, ajvObject: {}}
+                    tmpResults.push(result)
+                } 
+            }
+            if(typeof obj[key] === "object") {
+                checkObjContainsTmPlaceholder(obj[key])
+            }
+        }
+        return null
+    }
+
+}
+
+
+/**
+ * A script for validating tm-tmRef-1
+ * @param {object} obj 
+ * @param {function} logFunc 
+ * @param {Array<{"ID": string, "Status": string}>} results
+ */
+function validateTmRef(obj, logFunc, results) {
+
+    let tmpResults = [];
+    let FOUND_TM_REF = false
+
+    let validPayload = checkObjContainsTmRef(obj, logFunc)
+    let otherAssertion = [];
+    if(tmSchema.also && tmSchema.also.length >= 1) otherAssertion = tmSchema.also;
+
+    if(FOUND_TM_REF) {
+        // Return a fail result if found
+        for(let result of tmpResults) {
+            if(result && !result.valid) return result
+        }
+        // if no fail was found, return a valid result
+        validPayload = tmpResults[0];
+    }
+
+    if(FOUND_TM_REF) {
+        if(validPayload && validPayload.valid) {
+            results.push({
+                "ID": "tm-tmRef-1",
+                "Status": "pass"
+            })
+
+            for(let asser of otherAssertion) {
+                results.push({
+                    "ID": asser,
+                    "Status": "pass"
+                })
+            }
+        } else if (validPayload && !validPayload.valid) {
+            results.push({
+                "ID": "tm-tmRef-1",
+                "Status": "fail",
+                "Comment": validPayload.ajvObject.errorsText()
+            })
+
+            for(let asser of otherAssertion) {
+                results.push({
+                    "ID": asser,
+                    "Status": "fail",
+                    "Comment": validPayload.ajvObject.errorsText()
+                })
+            }
+        }
+    } else {
+        results.push({
+            "ID": "tm-tmRef-1",
+            "Status": "not-impl",
+        })
+
+        for(let asser of otherAssertion) {
+            results.push({
+                "ID": asser,
+                "Status": "not-impl",
+            })
+        }
+    }
+
+    /**
+     * 
+     * @param {object} obj 
+     * @param {function} logFunc 
+     * @returns {{valid: boolean, ajvObject: object} | null} true if validation passes, else false
+     */
+     function checkObjContainsTmRef(obj, logFunc) {
+        
+        for(let key in obj) {
+            if(key === "tm:ref") {
+                FOUND_TM_REF = true
+                let result = validate(obj, tmRefSchema, logFunc)
+                tmpResults.push(result);
+            }
+            if(typeof obj[key] == "object") {
+                checkObjContainsTmRef(obj[key])
+            }
+        }
+        if(FOUND_TM_REF) {
+            // Return a fail result if found
+            for(let result of tmpResults) {
+                if(result && !result.valid) return result
+            }
+            // if no fail was found, return a valid result
+            return results[0];
+        }
+        return null
+    }
+
+}
+    
+
