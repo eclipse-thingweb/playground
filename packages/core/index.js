@@ -637,9 +637,9 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             details.enumConst = "passed"
             if (tm.hasOwnProperty("properties")) {
                 // checking properties
-                tdProperties = Object.keys(tm.properties)
-                for (let i = 0; i < tdProperties.length; i++) {
-                    const curPropertyName = tdProperties[i]
+                tmProperties = Object.keys(tm.properties)
+                for (let i = 0; i < tmProperties.length; i++) {
+                    const curPropertyName = tmProperties[i]
                     const curProperty = tm.properties[curPropertyName]
                     if (curProperty.hasOwnProperty("enum") && curProperty.hasOwnProperty("const")) {
                         details.enumConst = "warning"
@@ -678,7 +678,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             }
             // checking events
             if (tm.hasOwnProperty("events")) {
-                tdEvents = Object.keys(td.events)
+                tmEvents = Object.keys(tm.events)
                 for (let i = 0; i < tmEvents.length; i++) {
                     const curEventName = tmEvents[i]
                     const curEvent = tm.events[curEventName]
@@ -702,7 +702,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
 
             if (tm.hasOwnProperty("properties")) {
                 // checking properties
-                tdProperties = Object.keys(tm.properties)
+                tmProperties = Object.keys(tm.properties)
                 for (let i = 0; i < tmProperties.length; i++) {
                     const curPropertyName = tmProperties[i]
                     const curProperty = tm.properties[curPropertyName]
@@ -764,7 +764,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             if (tm.hasOwnProperty("events")) {
                 tmEvents = Object.keys(tm.events)
                 for (let i = 0; i < tmEvents.length; i++) {
-                    const curEventName = tdEvents[i]
+                    const curEventName = tmEvents[i]
                     const curEvent = tm.events[curEventName]
 
                     if (curEvent.hasOwnProperty("type")) {
