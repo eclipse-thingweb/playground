@@ -24,6 +24,7 @@
     "@thing-description-playground/defaults": "^1.2.1",
     "@thing-description-playground/td_to_asyncapi": "^1.0.2",
     "@thing-description-playground/td_to_openapi": "^1.2.2",
+    "cli-progress": "^3.10.0",
     "commander": "^9.0.0"
   },
   "publishConfig": {

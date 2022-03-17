@@ -29,8 +29,9 @@ module.exports.collectAssertionSchemas = collectAssertionSchemas
  * @param {Function} fileLoader (string) => string Path to a file as input, should return file content
  * @param {Function} logFunc OPT (string) => void; Callback used to log the validation progress.
  * @param {object} givenManual OPT JSON object of the manual assertions
+ * @param {EventEmitter} doneEventEmitter
  */
-function tdAssertions(tdStrings, fileLoader, logFunc, givenManual) {
+function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, doneEventEmitter) {
     return new Promise( (res, rej) => {
 
         // parameter handling
@@ -74,11 +75,13 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual) {
                     const tdTitle = JSON.parse(tdToValidate).title
                     tdName = tdTitle + Math.floor(Math.random() * 1000)
                 }
+                if(doneEventEmitter) doneEventEmitter.emit("start", tdName)
 
                 if (typeof tdToValidate === "string") {tdToValidate = Buffer.from(tdToValidate, "utf8")}
 
                 if (jsonResults[tdName] !== undefined) {throw new Error("TDs have same Ids or titles: " + tdName)}
                 jsonResults[tdName] = validateTD(tdToValidate, assertionSchemas, manualAssertionsJSON, logFunc)
+                if(doneEventEmitter) doneEventEmitter.emit("done", tdName)
             })
 
             const tdNames = Object.keys(jsonResults)
@@ -114,7 +117,7 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual) {
  * @param {Function} logFunc OPT (string) => void; Callback used to log the validation progress.
  * @param {object} givenManual OPT JSON object of the manual assertions
  */
- function tmAssertions(tmStrings, fileLoader, logFunc, givenManual) {
+ function tmAssertions(tmStrings, fileLoader, logFunc, givenManual, doneEventEmitter) {
     return new Promise( (res, rej) => {
 
         // parameter handling
@@ -141,7 +144,6 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual) {
 
         Promise.all(loadProm).then( promResults => {
 
-
             const assertionSchemas = promResults.shift()
             //! Is needed, do not remove! 
             const tmSchema = promResults.shift()
@@ -160,11 +162,13 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual) {
                     const tmTitle = JSON.parse(tmToValidate).title
                     tmName = tmTitle + Math.floor(Math.random() * 1000)
                 }
+                if(doneEventEmitter) doneEventEmitter.emit("start", tmName)
 
                 if (typeof tmToValidate === "string") {tmToValidate = Buffer.from(tmToValidate, "utf8")}
 
                 if (jsonResults[tmName] !== undefined) {throw new Error("TDs have same Ids or titles: " + tmName)}
                 jsonResults[tmName] = validateTM(tmToValidate, assertionSchemas, manualAssertionsJSON, logFunc)
+                if(doneEventEmitter) doneEventEmitter.emit("done", tmName)
             })
             
             const tmNames = Object.keys(jsonResults)

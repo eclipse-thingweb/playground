@@ -19,6 +19,8 @@ const {addDefaults, removeDefaults} = require('@thing-description-playground/def
 const tdToOAP = require('@thing-description-playground/td_to_openapi')
 const tdToAAP = require('@thing-description-playground/td_to_asyncapi')
 const commander = require('commander');
+const EventEmitter = require("events");
+const cliProgress = require('cli-progress')
 
 /**================================================================================================
  *                                         CLI Configuration
@@ -114,6 +116,11 @@ function tdAssertionReport(input) {
     const tdsToMerge = []
     let manualAssertions
 
+    let numberOfFilesAssertion = 0
+    let numberOfFilesMerge = 0
+
+    const bar = new cliProgress.SingleBar({clearOnComplete: true ,format: 'progress [{bar}] {percentage}% | TD Name: {tdName} | {value}/{total}'}, cliProgress.Presets.shades_classic)
+
     let assertType
     // handle manual param
     if (myArguments.assertionManual) {
@@ -166,9 +173,14 @@ function tdAssertionReport(input) {
             return
         }
     }
-    assertTd(tdsToCheck, assertType, tdsToMerge, manualAssertions)
+    let doneEventEmitter = new EventEmitter()
+    doneEventEmitter.on("start", (tdName) =>  { bar.increment(1, {"tdName": tdName})})
+
+    bar.start(numberOfFilesAssertion, 0)
+    assertTm(tdsToCheck, assertType, tdsToMerge, manualAssertions, doneEventEmitter)
     .then( () => {
-        mergeReports(tdsToMerge)
+        bar.stop()
+        setTimeout(() => {mergeReports(tmsToMerge)}, 100)
     })
 }
 
@@ -178,10 +190,10 @@ function tdAssertionReport(input) {
  * @param {*} tds One or more td to do assertion testing
  * @param {*} type "file", "list" or "dir" are valid types
  */
-function assertTd(tds, type, tdsToMerge, manualAssertions) {
+function assertTd(tds, type, tdsToMerge, manualAssertions, doneEventEmitter) {
     return new Promise( (res, rej) => {
         if (tds.length > 0) {
-            tdAssertions(tds, fileLoader, logFunc, manualAssertions).then( results => {
+            tdAssertions(tds, fileLoader, logFunc, manualAssertions, doneEventEmitter).then( results => {
                 if (type === "file") {
                     outReport(results, "assertionsTest_", input)
                     res()
@@ -578,15 +590,22 @@ function tmAssertionReport(input) {
 
     if (input === undefined) {input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tms", "valid")}
 
+    let numberOfFilesAssertion = 0
+    let numberOfFilesMerge = 0
+
+    const bar = new cliProgress.SingleBar({format: 'progress [{bar}] {percentage}% | TM Name: {tmName} | {value}/{total}'}, cliProgress.Presets.shades_classic)
+
     if (typeof input === "object") {
         assertType = "list"
-        // check given TDs
+        // check given TMs
         input.forEach( el => {
             if(el.endsWith(".json") || el.endsWith(".jsonld")) {
                 tmsToCheck.push(fs.readFileSync(el))
+                numberOfFilesAssertion++
             }
             else if (el.endsWith(".csv")) {
                 tmsToMerge.push(assertManualToJson(fs.readFileSync(el, "utf-8")))
+                numberOfFilesMerge++
             }
             else {
                 console.log("CANNOT HANDLE file of list: ", el)
@@ -595,13 +614,15 @@ function tmAssertionReport(input) {
     }
     else if (fs.lstatSync(input).isDirectory()) {
         assertType = "dir"
-        // check TDs contained in the directory
+        // check TMs contained in the directory
         fs.readdirSync(input).forEach( el => {
             if(el.endsWith(".json") || el.endsWith(".jsonld")) {
                 tmsToCheck.push(fs.readFileSync(path.join(input, el)))
+                numberOfFilesAssertion++
             }
             else if (el.endsWith(".csv")) {
                 tmsToMerge.push(assertManualToJson(fs.readFileSync(path.join(input, el), "utf-8")))
+                numberOfFilesMerge++
             }
             else {
                 console.log("CANNOT HANDLE file in dir: ", path.join(input, el))
@@ -609,21 +630,28 @@ function tmAssertionReport(input) {
         })
     }
     else {
-        // check single TD
+        // check single TM
         assertType = "file"
         if(input.endsWith(".json") || input.endsWith(".jsonld")) {
             tmsToCheck.push(fs.readFileSync(input))
+            numberOfFilesAssertion++
         }
         else if (input.endsWith(".csv")) {
             tmsToMerge.push(assertManualToJson(fs.readFileSync(input,"utf-8")))
+            numberOfFilesMerge++
         }
         else {
             console.log("CANNOT HANDLE file: ", el)
             return
         }
     }
-    assertTm(tmsToCheck, assertType, tmsToMerge, manualAssertions)
+    let doneEventEmitter = new EventEmitter()
+    doneEventEmitter.on("start", (tmName) =>  { bar.increment(1, {"tmName": tmName})})
+
+    bar.start(numberOfFilesAssertion, 0)
+    assertTm(tmsToCheck, assertType, tmsToMerge, manualAssertions, doneEventEmitter)
     .then( () => {
+        setTimeout(() => {bar.stop()}, 100) 
         mergeReports(tmsToMerge)
     })
 }
@@ -773,10 +801,10 @@ function tmAssertionReport(input) {
  * @param {*} tms One or more td to do assertion testing
  * @param {*} type "file", "list" or "dir" are valid types
  */
- function assertTm(tms, type, tmsToMerge, manualAssertions) {
+ function assertTm(tms, type, tmsToMerge, manualAssertions, doneEventEmitter) {
     return new Promise( (res, rej) => {
         if (tms.length > 0) {
-            tmAssertions(tms, fileLoader, logFunc, manualAssertions).then( results => {
+            tmAssertions(tms, fileLoader, logFunc, manualAssertions, doneEventEmitter).then( results => {
                 if (type === "file") {
                     outReport(results, "tmAssertionsTest_", input)
                     res()
