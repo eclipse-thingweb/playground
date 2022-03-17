@@ -593,7 +593,7 @@ function tmAssertionReport(input) {
     let numberOfFilesAssertion = 0
     let numberOfFilesMerge = 0
 
-    const bar = new cliProgress.SingleBar({format: 'progress [{bar}] {percentage}% | TM Name: {tmName} | {value}/{total}'}, cliProgress.Presets.shades_classic)
+    const bar = new cliProgress.SingleBar({format: 'progress [{bar}] {percentage}% | TM Name: {tmName} | {value}/{total} \n'}, cliProgress.Presets.shades_classic)
 
     if (typeof input === "object") {
         assertType = "list"
