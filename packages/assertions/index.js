@@ -1,4 +1,6 @@
-const { validate, validateTD, validateTM } = require("./assertionTests")
+const validate = require("./util").validate
+const validateTD = require("./assertionTests-td")
+const validateTM = require("./assertionTests-tm")
 const checkCoverage = require("./checkCoverage")
 const mergeResults = require("./mergeResults")
 
@@ -11,6 +13,7 @@ const path = require("path")
 module.exports.tdAssertions = tdAssertions
 module.exports.tmAssertions = tmAssertions
 module.exports.resultsToCsv = resultsToCsv
+module.exports.validate = validate
 module.exports.tdAssertionTests = validateTD
 module.exports.tmAssertionTests = validateTM
 module.exports.checkCoverage = checkCoverage
