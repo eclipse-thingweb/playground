@@ -119,7 +119,7 @@ function tdAssertionReport(input) {
     let numberOfFilesAssertion = 0
     let numberOfFilesMerge = 0
 
-    const bar = new cliProgress.SingleBar({clearOnComplete: true ,format: 'progress [{bar}] {percentage}% | TD Name: {tdName} | {value}/{total}'}, cliProgress.Presets.shades_classic)
+    const bar = new cliProgress.SingleBar({clearOnComplete: true ,format: 'progress [{bar}] {percentage}% | TD Name: {tdName} | {value}/{total} \n'}, cliProgress.Presets.shades_classic)
 
     let assertType
     // handle manual param
