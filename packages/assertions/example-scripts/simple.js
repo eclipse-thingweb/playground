@@ -1,4 +1,4 @@
-const tdAsserter = require("../index")
+const tdAsserter = require("../index").tdAssertions
 const fs = require("fs")
 
 const simpleTD = JSON.stringify({

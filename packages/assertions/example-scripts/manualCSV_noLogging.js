@@ -1,5 +1,5 @@
 // Test utility to test index.js
-const tdAsserter = require("../index")
+const tdAsserter = require("../index").tdAssertions
 const fs = require("fs")
 const path = require("path")
 
