@@ -363,7 +363,7 @@ function coreValidation() {
                     console.log("\nNo invalid TD to check has been found")
                 }
                 else if (invalidNames.length === invalidCount) {
-                    console.log("\nInvalidity test successful. All TDs that are supposed to be invalid are indeed valid")
+                    console.log("\nInvalidity test successful. All TDs that are supposed to be invalid are indeed invalid")
                 }
                 else {
                     console.log(
@@ -704,7 +704,7 @@ function tmAssertionReport(input) {
                     console.log("\nNo invalid TD to check has been found")
                 }
                 else if (invalidNames.length === invalidCount) {
-                    console.log("\nInvalidity test successful. All TDs that are supposed to be invalid are indeed valid")
+                    console.log("\nInvalidity test successful. All TDs that are supposed to be invalid are indeed invalid")
                 }
                 else {
                     console.log(
