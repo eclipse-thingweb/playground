@@ -29,8 +29,13 @@
                                     "readallproperties",
                                     "writeallproperties",
                                     "readmultipleproperties",
-                                    "writemultipleproperties"
-                                ]
+                                    "writemultipleproperties",
+                                    "observeallproperties",
+                                    "unobserveallproperties",
+                                    "queryallactions",
+                                    "subscribeallevents",
+                                    "unsubscribeallevents"
+                                  ]
                             },
                             {
                                 "type": "array",
@@ -40,8 +45,13 @@
                                         "readallproperties",
                                         "writeallproperties",
                                         "readmultipleproperties",
-                                        "writemultipleproperties"
-                                    ]
+                                        "writemultipleproperties",
+                                        "observeallproperties",
+                                        "unobserveallproperties",
+                                        "queryallactions",
+                                        "subscribeallevents",
+                                        "unsubscribeallevents"
+                                      ]
                                 }
                             }
                         ]
