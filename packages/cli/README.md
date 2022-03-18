@@ -34,7 +34,7 @@ This tool checks which assertions are satisfied by a given Thing Description(s).
 * For single TD: Run 'node index.js an_example_TD_location -a'. E.g. `node index.js ./node_modules/@thing-description-playground/core/examples/tds/valid/JsonLdThing.json -a`
   * You can specify the output location and filename with the -o argument, e.g. `node index.js inputTD.json -o outputResult -a`
 * For a directory with **only** TDs: Run 'node index.js a_directory_location'. E.g. `node index.js ./node_modules/@thing-description-playground/core/examples/tds/valid/`
-* The result(s) are found in the './out' merged into one report (unless the --assertion-nomerge parameter -n is set, then a report for every Td is created)
+* The result(s) are found in the './out' merged into one report (unless the `--assertion-no-merge` parameter -n is set, then a report for every Td is created)
   * By default there will be a .csv file, with the --assertions-nocsv parameter -c there will be a .json file. The .csv version has the format required by the implementation report and the .json version is provided for using the results in other tools, such as merging the results.
   * The result can be pass, fail or not-impl
   * Some assertions have an underscore, i.e. `_` before the last word. This means that this assertion is a sub assertion of a parent assertion. For example, td-actions assertion required the existence of action interaction in the TD and also the uniqueness of the names of actions. Because of this, there will be two assertions generated in the results with following names: td-actions_existence and td-actions_uniqueness.
