@@ -180,7 +180,7 @@ function tdAssertionReport(input) {
     assertTm(tdsToCheck, assertType, tdsToMerge, manualAssertions, doneEventEmitter)
     .then( () => {
         bar.stop()
-        setTimeout(() => {mergeReports(tmsToMerge)}, 100)
+        mergeReports(tdsToMerge)
     })
 }
 
