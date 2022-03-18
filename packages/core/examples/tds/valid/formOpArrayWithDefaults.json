@@ -1,6 +1,6 @@
 {
     "id": "urn:formOpArrayWithDefaults",
-    "@context":"https://www.w3.org/2019/wot/td/v1",
+    "@context":"https://www.w3.org/2022/wot/td/v1.1",
     "title": "MyLampThing",
     "description": "Valid TD demonstrating how to use multiple forms with different op",
     "securityDefinitions": {
@@ -17,6 +17,8 @@
             "minimum": -64,
             "maximum": 64,
             "observable": true,
+            "readOnly":false,
+            "writeOnly":false,
             "forms": [{
                     "href": "http://example.org:9191/api/brightness",
                     "op": ["readproperty"],
@@ -45,6 +47,9 @@
             ]
         },
         "simple": {
+            "readOnly":true,
+            "writeOnly":false,
+            "observable":false,
             "forms": [{
                 "href": "http://example.org:9191/api/simple1",
                 "contentType": "application/json",
@@ -52,6 +57,9 @@
             }]
         },
         "simple2": {
+            "readOnly":false,
+            "writeOnly":false,
+            "observable":false,
             "forms": [{
                     "href": "http://example.org:9191/api/simple2",
                     "op": ["readproperty"],
@@ -112,7 +120,10 @@
     "events": {
         "overheating": {
             "data": {
-                "type": "string"
+                "type": "string",
+                "readOnly":true,
+                "writeOnly":false,
+                "observable":false
             },
             "forms": [{
                 "href": "https://mylamp.example.com/oh",
@@ -131,7 +142,10 @@
         },
         "simple6": {
             "data": {
-                "type": "string"
+                "type": "string",
+                "readOnly":true,
+                "writeOnly":false,
+                "observable":false
             },
             "forms": [{
                     "href": "https://mylamp.example.com/oh",
