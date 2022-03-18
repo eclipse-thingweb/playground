@@ -1,6 +1,6 @@
 {
     "id": "urn:specExampleFull",
-    "@context": "https://www.w3.org/2019/wot/td/v1",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "description": "TD showing how each interaction can be fully annotated with the default values",
     "title": "MyLampThing",
     "securityDefinitions": {

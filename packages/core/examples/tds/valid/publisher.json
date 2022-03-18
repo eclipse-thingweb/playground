@@ -1,5 +1,5 @@
 {
-    "@context": "https://www.w3.org/2019/wot/td/v1",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:dev:ops:32473-WoTPublisher-1234",
     "title": "MyPublisher",
     "description": "A Thing demonstrating how to use observe and unobserve property",
