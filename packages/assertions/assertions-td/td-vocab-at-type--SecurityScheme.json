@@ -46,8 +46,7 @@
             ]
         },
         "url": {
-            "type": "string",
-            "format": "uri-reference"
+            "type": "string"
         }
     }
 }
