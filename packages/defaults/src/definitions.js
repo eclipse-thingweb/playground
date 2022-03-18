@@ -22,6 +22,9 @@ const defaultLookup = {
         readOnly: false,
         writeOnly: false
     },
+    PropertyAffordance: {
+        observable: false
+    },
     ActionAffordance: {
         safe: false,
         idempotent: false
@@ -52,6 +55,7 @@ const defaultClasses = {
     formActionAffordance: "Form-ActionAffordance",
     formEventAffordance: "Form-EventAffordance",
     dataSchema: "DataSchema",
+    propertyAffordance: "PropertyAffordance",
     actionAffordance: "ActionAffordance",
     basicSecuritySchema: "BasicSecuritySchema",
     digestSecurityScheme: "DigestSecurityScheme",
