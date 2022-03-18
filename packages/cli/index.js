@@ -135,9 +135,11 @@ function tdAssertionReport(input) {
         input.forEach( el => {
             if(el.endsWith(".json") || el.endsWith(".jsonld")) {
                 tdsToCheck.push(fs.readFileSync(el))
+                numberOfFilesAssertion++
             }
             else if (el.endsWith(".csv")) {
                 tdsToMerge.push(assertManualToJson(fs.readFileSync(el, "utf-8")))
+                numberOfFilesMerge++
             }
             else {
                 console.log("CANNOT HANDLE file of list: ", el)
@@ -150,9 +152,11 @@ function tdAssertionReport(input) {
         fs.readdirSync(input).forEach( el => {
             if(el.endsWith(".json") || el.endsWith(".jsonld")) {
                 tdsToCheck.push(fs.readFileSync(path.join(input, el)))
+                numberOfFilesAssertion++
             }
             else if (el.endsWith(".csv")) {
                 tdsToMerge.push(assertManualToJson(fs.readFileSync(path.join(input, el), "utf-8")))
+                numberOfFilesMerge++
             }
             else {
                 console.log("CANNOT HANDLE file in dir: ", path.join(input, el))
@@ -164,9 +168,11 @@ function tdAssertionReport(input) {
         assertType = "file"
         if(input.endsWith(".json") || input.endsWith(".jsonld")) {
             tdsToCheck.push(fs.readFileSync(input))
+            numberOfFilesAssertion++
         }
         else if (input.endsWith(".csv")) {
             tdsToMerge.push(assertManualToJson(fs.readFileSync(input,"utf-8")))
+            numberOfFilesMerge++
         }
         else {
             console.log("CANNOT HANDLE file: ", el)
@@ -177,7 +183,7 @@ function tdAssertionReport(input) {
     doneEventEmitter.on("start", (tdName) =>  { bar.increment(1, {"tdName": tdName})})
 
     bar.start(numberOfFilesAssertion, 0)
-    assertTm(tdsToCheck, assertType, tdsToMerge, manualAssertions, doneEventEmitter)
+    assertTd(tdsToCheck, assertType, tdsToMerge, manualAssertions, doneEventEmitter)
     .then( () => {
         bar.stop()
         mergeReports(tdsToMerge)
