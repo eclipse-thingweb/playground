@@ -1,0 +1,6 @@
+{
+    "id": "urn:no:context",
+    "$comment":"absence of @context",
+    "@type" : "tm:ThingModel",
+    "title": "Invalid model 2"
+}

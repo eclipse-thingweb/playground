@@ -1,6 +1,6 @@
 {
     "id": "urn:simpleWithDefaults",
-    "@context":"https://www.w3.org/2019/wot/td/v1",
+    "@context":"https://www.w3.org/2022/wot/td/v1.1",
     "title": "MyLampThing",
     "description":"Valid TD copied from the spec's first example",
     "securityDefinitions": {
@@ -10,6 +10,9 @@
     "properties": {
         "status" : {
             "type": "string",
+            "readOnly":true,
+            "writeOnly":false,
+            "observable":false,
             "forms": [
                 {
                     "href": "https://mylamp.example.com/status",
@@ -32,7 +35,10 @@
     },
     "events":{
         "overheating":{
-            "data": {"type": "string"},
+            "data": {"type": "string",
+                "readOnly":true,
+                "writeOnly":false
+            },
             "forms": [{
                 "href": "https://mylamp.example.com/oh",
                 "op": "subscribeevent",

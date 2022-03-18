@@ -2,7 +2,7 @@
     "title": "Siemens-ReadWriteAllProperties-Tester",
     "description": "Tests the read / write all of properties feature.",
     "@context": [
-        "https://www.w3.org/2019/wot/td/v1",
+        "https://www.w3.org/2022/wot/td/v1.1",
         {
             "http": "http://www.w3.org/2011/http#"
         }

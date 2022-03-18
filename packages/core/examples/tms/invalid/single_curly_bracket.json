@@ -1,0 +1,13 @@
+{
+    "id": "urn:single:curly",
+    "$comment":"single curly bracket",
+    "@context": ["http://www.w3.org/ns/td"], 
+    "@type" : "tm:ThingModel",
+    "title": "Invalid model 3",
+    "securityDefinitions": {
+        "example_sc": {
+            "scheme": "{PLACEHOLDER}"
+        }
+    },
+    "security": ["example_sc"]
+}

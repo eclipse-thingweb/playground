@@ -1,0 +1,74 @@
+{
+    "title": "td-security-combo-exclusive-oneof-or-allof",
+    "description": "Exactly one of either oneOf or allOf MUST be included.",
+    "$schema ": "http://json-schema.org/draft/2019-09/schema#",
+    "is-complex": true,
+    "type": "object",
+    "properties": {     
+        "securityDefinitions": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+                "$ref": "#/$defs/comboSecurity_element"
+            }
+        }
+    },
+    "required": [
+        "securityDefinitions"
+    ],
+    "additionalProperties": true,
+
+    "$defs": {
+        "comboSecurity_element": {
+            "if": {
+                "type": "object",
+                "properties": {
+                    "scheme": {
+                        "type": "string",
+                        "const": "combo"
+                    }
+                },
+                "additionalProperties": true,
+                "required": ["scheme"],
+                "oneOf":[
+                    {
+                        "properties": {
+                            "oneOf": {
+                                "type": "array",
+                                "minItems": 2,
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "required": ["oneOf"],
+                        "not": {
+                            "required": ["allOf"]
+                        },
+                        "additionalProperties": true
+                    },
+                    {
+                        "properties": {
+                            "allOf": {
+                                "type": "array",
+                                "minItems": 2,
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "required": ["allOf"],
+                        "not": {
+                            "required": ["oneOf"]
+                        },
+                        "additionalProperties": true
+                    }
+                    
+                ]
+            }
+        },
+        "then": {
+            "const": "td-security-combo-exclusive-oneof-or-allof=pass"
+        }
+    }
+}

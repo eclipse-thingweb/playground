@@ -1,0 +1,46 @@
+{
+    "title": "td-links",
+    "description": " Each mandatory and optional vocabulary term as defined in the class Link, MUST be serialized as a JSON name. ",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "is-complex":false,
+    "also": ["td-vocab-links--Thing", "td-arrays_links", "td-vocab-href--Link"],
+    "type": "object",
+    "properties": {
+        "links": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/link_element"
+            }
+        }
+    },
+    "required": [
+        "links"
+    ],
+    "additionalProperties": true,
+    "$defs": {
+        "link_element": {
+            "type": "object",
+            "properties": {
+                "anchor": {
+                    "$ref": "#/$defs/url"
+                },
+                "href": {
+                    "$ref": "#/$defs/url"
+                },
+                "rel": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "href"
+            ],
+            "additionalProperties": true
+        },
+        "url": {
+            "type": "string"
+        }
+    }
+}

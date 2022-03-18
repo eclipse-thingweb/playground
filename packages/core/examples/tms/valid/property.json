@@ -1,0 +1,14 @@
+{
+    "id": "urn:property",
+    "$comment": "example 51 of the spec",
+    "@context": [
+        "http://www.w3.org/ns/td"
+    ],
+    "@type": "tm:ThingModel",
+    "title": "Valid Model 5",
+    "properties": {
+        "onOff": {
+            "type": "boolean"
+        }
+    }
+}

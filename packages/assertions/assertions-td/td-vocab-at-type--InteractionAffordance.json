@@ -1,0 +1,88 @@
+{
+    "title": "td-vocab-at-type--InteractionAffordance",
+    "description": "@type: Known from JSON-LD [[!json-ld]], @type is used to state that an interaction resource is an instance of a class. Each string in the value array represents a class. MAY be included. Type: array of string.",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "is-complex": true,
+    "also": ["td-jsonld-keywords_at-type"],
+    "type": "object",
+    "properties": {
+        "properties": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/$defs/property_element"
+            }
+        },
+        "actions": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/$defs/action_element"
+            }
+        },
+        "events": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/$defs/event_element"
+            }
+        }
+    },
+    "additionalProperties": true,
+    "$defs": {
+        "property_element": {
+            "type": "object",
+            "if": {
+                "required": ["@type"],
+                "properties": {
+                    "@type": {
+                        "$ref": "#/$defs/type_declaration"
+                    }
+                }
+            },
+            "then": {
+                "const": "td-vocab-at-type--InteractionAffordance=pass"
+            }
+        },
+        "action_element": {
+            "type": "object",
+            "if": {
+                "required": ["@type"],
+                "properties": {
+                    "@type": {
+                        "$ref": "#/$defs/type_declaration"
+                    }
+                }
+            },
+            "then": {
+                "const": "td-vocab-at-type--InteractionAffordance=pass"
+            }
+        },
+        "event_element": {
+            "type": "object",
+            "if": {
+                "required": ["@type"],
+                "properties": {
+                    "@type": {
+                        "$ref": "#/$defs/type_declaration"
+                    }
+                }
+            },
+            "then": {
+                "const": "td-vocab-at-type--InteractionAffordance=pass"
+            }
+        },
+        "type_declaration": {
+            "oneOf": [{
+                    "type": "string"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            ]
+        },
+        "url": {
+            "type": "string"
+        }
+    }
+}

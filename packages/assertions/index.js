@@ -1,4 +1,6 @@
-const validate = require("./assertionTests")
+const validate = require("./util").validate
+const validateTD = require("./assertionTests-td")
+const validateTM = require("./assertionTests-tm")
 const checkCoverage = require("./checkCoverage")
 const mergeResults = require("./mergeResults")
 
@@ -8,9 +10,12 @@ const csvjson = require('csvjson')
 
 const path = require("path")
 
-module.exports = tdAssertions
+module.exports.tdAssertions = tdAssertions
+module.exports.tmAssertions = tmAssertions
 module.exports.resultsToCsv = resultsToCsv
-module.exports.assertionTests = validate
+module.exports.validate = validate
+module.exports.tdAssertionTests = validateTD
+module.exports.tmAssertionTests = validateTM
 module.exports.checkCoverage = checkCoverage
 module.exports.mergeResults = mergeResults
 module.exports.manualToJson = manualToJson
@@ -24,8 +29,9 @@ module.exports.collectAssertionSchemas = collectAssertionSchemas
  * @param {Function} fileLoader (string) => string Path to a file as input, should return file content
  * @param {Function} logFunc OPT (string) => void; Callback used to log the validation progress.
  * @param {object} givenManual OPT JSON object of the manual assertions
+ * @param {EventEmitter} doneEventEmitter
  */
-function tdAssertions(tdStrings, fileLoader, logFunc, givenManual) {
+function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, doneEventEmitter) {
     return new Promise( (res, rej) => {
 
         // parameter handling
@@ -46,12 +52,11 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual) {
 
         // loading files
         const loadProm = []
-        loadProm.push(collectAssertionSchemas(path.join(pathOffset, "./assertions"), path.join(pathOffset, "./list.json"), fileLoader))
+        loadProm.push(collectAssertionSchemas(path.join(pathOffset, "./assertions-td"), path.join(pathOffset, "./assertions-td", "./tdAssertionList.json"), fileLoader))
         loadProm.push(fileLoader(path.join(pathOffset, "./node_modules", "@thing-description-playground", "core", "td-schema.json")))
-        if (givenManual === undefined) {loadProm.push(fileLoader(path.join(pathOffset, "./manual.csv")))}
+        if (givenManual === undefined) {loadProm.push(fileLoader(path.join(pathOffset, "./assertions-td", "./manual.csv")))}
 
         Promise.all(loadProm).then( promResults => {
-
 
             const assertionSchemas = promResults.shift()
             const tdSchema = promResults.shift()
@@ -70,11 +75,13 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual) {
                     const tdTitle = JSON.parse(tdToValidate).title
                     tdName = tdTitle + Math.floor(Math.random() * 1000)
                 }
+                if(doneEventEmitter) doneEventEmitter.emit("start", tdName)
 
                 if (typeof tdToValidate === "string") {tdToValidate = Buffer.from(tdToValidate, "utf8")}
 
                 if (jsonResults[tdName] !== undefined) {throw new Error("TDs have same Ids or titles: " + tdName)}
-                jsonResults[tdName] = validate(tdToValidate, assertionSchemas, manualAssertionsJSON, logFunc)
+                jsonResults[tdName] = validateTD(tdToValidate, assertionSchemas, manualAssertionsJSON, logFunc)
+                if(doneEventEmitter) doneEventEmitter.emit("done", tdName)
             })
 
             const tdNames = Object.keys(jsonResults)
@@ -91,6 +98,93 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual) {
             }
             else {
                 const merged = jsonResults[tdNames[0]]
+                checkCoverage(merged, logFunc)
+                res(merged)
+            }
+
+
+        }, err => {
+            rej("collectAssertionSchemas function problem: "+ err)
+        })
+    })
+}
+
+/**
+ * Assertion testing function, does assertion testing with one/several TMs and
+ * returns either a single report or one merged report and all single reports.
+ * @param {string[]|Buffer[]} tmStrings The Thing Description(s) to check as an array of strings or Buffers.
+ * @param {Function} fileLoader (string) => string Path to a file as input, should return file content
+ * @param {Function} logFunc OPT (string) => void; Callback used to log the validation progress.
+ * @param {object} givenManual OPT JSON object of the manual assertions
+ */
+ function tmAssertions(tmStrings, fileLoader, logFunc, givenManual, doneEventEmitter) {
+    return new Promise( (res, rej) => {
+
+        // parameter handling
+        if(typeof tmStrings !== "object") {throw new Error("tmStrings has to be an Array of Strings or Buffers")}
+        if(typeof fileLoader !== "function") {throw new Error("jsonLoader has to be a function")}
+        if(logFunc === undefined) {logFunc = console.log}
+        if(givenManual !== undefined && typeof givenManual !== "object") {
+            throw new Error("givenManual has to be a JSON object if given.")
+        }
+
+        // set directory for node.js and browser environment
+        let pathOffset
+        if (process !== undefined && process.release !== undefined && process.release.name === "node") {
+            pathOffset = __dirname
+        } else {
+            pathOffset = path.join("./node_modules", "@thing-description-playground", "assertions")
+        }
+
+        // loading files
+        const loadProm = []
+        loadProm.push(collectAssertionSchemas(path.join(pathOffset, "./assertions-tm"), path.join(pathOffset, "./assertions-tm", "./tmAssertionList.json"), fileLoader))
+        loadProm.push(fileLoader(path.join(pathOffset, "./node_modules", "@thing-description-playground", "core", "tm-schema.json")))
+        if (givenManual === undefined) {loadProm.push(fileLoader(path.join(pathOffset, "./assertions-tm", "./manual.csv")))}
+
+        Promise.all(loadProm).then( promResults => {
+
+            const assertionSchemas = promResults.shift()
+            //! Is needed, do not remove! 
+            const tmSchema = promResults.shift()
+            const manualAssertionsJSON = (givenManual === undefined) ?
+                                        manualToJson(promResults.shift().toString()) :
+                                        givenManual
+            
+            const jsonResults = {}
+            tmStrings.forEach( tmToValidate => {
+                // check if id exists, use it for name if it does, title + some rand number otherwise
+                let tmName = ""
+                if ("id" in JSON.parse(tmToValidate)){
+                    const tmId = JSON.parse(tmToValidate).id
+                    tmName = tmId.replace(/:/g, "_")
+                } else {
+                    const tmTitle = JSON.parse(tmToValidate).title
+                    tmName = tmTitle + Math.floor(Math.random() * 1000)
+                }
+                if(doneEventEmitter) doneEventEmitter.emit("start", tmName)
+
+                if (typeof tmToValidate === "string") {tmToValidate = Buffer.from(tmToValidate, "utf8")}
+
+                if (jsonResults[tmName] !== undefined) {throw new Error("TDs have same Ids or titles: " + tmName)}
+                jsonResults[tmName] = validateTM(tmToValidate, assertionSchemas, manualAssertionsJSON, logFunc)
+                if(doneEventEmitter) doneEventEmitter.emit("done", tmName)
+            })
+            
+            const tmNames = Object.keys(jsonResults)
+
+            if (tmNames.length > 1) {
+                const resultAr = []
+                Object.keys(jsonResults).forEach( id => {
+                    resultAr.push(jsonResults[id])
+                })
+                mergeResults(resultAr).then( merged => {
+                    checkCoverage(merged, logFunc)
+                    res({jsonResults, merged})
+                }, err => {rej("merging failed: " + err)})
+            }
+            else {
+                const merged = jsonResults[tmNames[0]]
                 checkCoverage(merged, logFunc)
                 res(merged)
             }

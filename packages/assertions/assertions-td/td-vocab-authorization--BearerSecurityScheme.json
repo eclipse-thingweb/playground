@@ -1,0 +1,66 @@
+{
+    "title": "td-vocab-authorization--BearerSecurityScheme",
+    "description": "authorization: URI of the authorization server. MAY be included. Type: anyURI.",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "is-complex": true,
+    "type": "object",
+    "properties": {
+        "securityDefinitions": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+                "$ref": "#/$defs/securityScheme"
+            }
+        }
+    },
+    "required": [
+        "securityDefinitions"
+    ],
+    "additionalProperties": true,
+    "$defs": {
+        "securityScheme": {
+            "if": {
+                    "type": "object",
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "proxy": {
+                            "$ref": "#/$defs/url"
+                        },
+                        "scheme": {
+                            "type": "string",
+                            "enum": [
+                                "bearer"
+                            ]
+                        },
+                        "authorization": {
+                            "$ref": "#/$defs/url"
+                        },
+                        "alg": {
+                            "type": "string"
+                        },
+                        "format": {
+                            "type": "string"
+                        },
+                        "in": {
+                            "type": "string",
+                            "enum": ["header", "query", "body", "cookie"]
+                        },
+                        "name": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "scheme", "authorization"
+                    ]
+            },
+            "then": {
+                "const": "td-vocab-authorization--BearerSecurityScheme=pass"
+            }
+        },
+        "url": {
+            "type": "string"
+        }
+    }
+}

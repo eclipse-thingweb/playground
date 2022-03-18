@@ -1,0 +1,100 @@
+{
+    "title": "td-action-arrays",
+    "description": "The type of the members forms MUST be serialized as a JSON array.",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "is-complex":false,
+    "also": ["td-action-names_forms"],
+    "type": "object",
+    "properties": {
+        "actions": {
+            "additionalProperties": {
+                "$ref": "#/$defs/action_element"
+            }
+        }
+    },
+    "required": [
+        "actions"
+    ],
+    "additionalProperties": true,
+    "$defs": {
+        "action_element": {
+            "type": "object",
+            "properties": {
+                "forms": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/form_element"
+                    }
+                }
+
+            },
+            "required": [
+                "forms"
+            ],
+            "additionalProperties": true
+        },
+        "form_element": {
+            "type": "object",
+            "properties": {
+                "href": {
+                    "$ref": "#/$defs/url"
+                },
+                "op": {
+                    "oneOf": [{
+                            "type": "string",
+                            "enum": [
+                                "invokeaction",
+                                "queryaction",
+                                "cancelaction"
+                            ]
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "invokeaction",
+                                    "queryaction",
+                                    "cancelaction"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "contentType": {
+                    "type": "string"
+                },
+                "security": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "scopes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "subprotocol": {
+                    "type": "string"
+                },
+                "response": {
+                    "type": "object",
+                    "properties": {
+                        "contentType": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "required": [
+                "href"
+            ],
+            "additionalProperties": true
+        },
+        "url": {
+            "type": "string"
+        }
+    }
+}

@@ -1,10 +1,16 @@
-/**
- * CLI interface for the Thing Description Playground
- */
+/**================================================================================================
+ * ?                                           ABOUT 
+ * @description    :  CLI interface for the Thing Description Playground
+ *================================================================================================**/
+
+
+/**================================================================================================
+ *                                         Imports
+ *================================================================================================**/
 const fs = require('fs')
 const path = require('path')
-const tdValidator = require('@thing-description-playground/core')
-const tdAssertions = require('@thing-description-playground/assertions')
+const { tdValidator, tmValidator } = require('@thing-description-playground/core')
+const { tdAssertions, tmAssertions }= require('@thing-description-playground/assertions')
 const assertManualToJson = require('@thing-description-playground/assertions').manualToJson
 const assertMergeResults = require('@thing-description-playground/assertions').mergeResults
 const assertCheckCoverage = require('@thing-description-playground/assertions').checkCoverage
@@ -12,140 +18,108 @@ const assertResultsToCsv = require('@thing-description-playground/assertions').r
 const {addDefaults, removeDefaults} = require('@thing-description-playground/defaults')
 const tdToOAP = require('@thing-description-playground/td_to_openapi')
 const tdToAAP = require('@thing-description-playground/td_to_asyncapi')
-const argParser = require('argly')
-    .createParser({
-        '--help -h': { /* Displays the output specified by this object */
-            type: 'string',
-            description: 'For TD Playground core validation you can call the playground \n' +
-                        'validation with no input (example folder will be taken), \n'+
-                        'a Thing Description (.json file), a folder with multiple Thing Descriptions, \n' +
-                        'or a Folder with "valid", "invalid" and "warning" subfolder, where all included TDs \n' +
-                        'will be checked whether they produce the expected validation result. \n' +
-                        'Use the -a parameter for assertions testing.'
-        },
-        '--input -i *': {
-            type: 'string',
-            description: 'The file or the folder containing the files, which will be validated.'
-        },
-        '--nojsonld -j': {
-            type: 'boolean',
-            description: 'Turn off the JSON-LD validation (for example because internet connection is not available).'
-        },
-        '--nodefaults -d': {
-            type: 'boolean',
-            description: 'Turn off the Full JSON Schema validation, which checks e.g. for default values being explicitly set.'
-        },
-        '--assertions -a': {
-            type: 'boolean',
-            description: 'Call the assertion report instead of the core validation, \n' +
-                        'if files with .csv ending are given as input merging assertion reports is done.'
-        },
-        '--assertion-out -o': {
-            type: 'string',
-            description: 'Path and filename of the generated assertions report (defaults to ./out/[.]assertionsTest[_$input]). \n' +
-                         'Please notice that the folders you specify as target already have to exist.'
-        },
-        '--assertion-nomerge -n': {
-            type: 'boolean',
-            description: 'if multiple files where given as input, don\'t create a merged report, but create one for each'
-        },
-        '--assertion-tostd -s': {
-            type: 'boolean',
-            description: 'output the report(s) as stdout and don\'t write them to a file'
-        },
-        '--assertion-nocsv -c': {
-            type: 'boolean',
-            description: 'return assertion report(s) in json format instead of csv'
-        },
-        '--assertion-manual -m': {
-            type: 'string',
-            description: 'path and filename to manual.csv file'
-        },
-        '--open-api -p': {
-            type: 'boolean',
-            description: 'Call the OpenAPI instance generation instead of validation/assertions.'
-        },
-        '--oap-yaml -y': {
-            type: 'boolean',
-            description: 'Whether OpenAPI should be written as YAML instead of json.'
-        },
-        '--async-api': {
-            type: 'boolean',
-            description: 'Call the AsyncAPI instance generation instead of validation/assertions.'
-        },
-        '--aap-yaml': {
-            type: 'boolean',
-            description: 'Whether AsyncAPI should be written as YAML instead of json.'
-        },
-        '--default-add': {
-            type: 'boolean',
-            description: 'Whether the input TD should be extended by default values.'
-        },
-        '--default-rem': {
-            type: 'boolean',
-            description: 'Whether the input TD should be reduced by default values.'
-        }
-    })
-    .usage('Usage: $0 [input] [options]')
-    .example(
-        'Try with Example TDs',
-        '$0')
-    .example(
-        'Validate file',
-        '$0 TD.json'
-    )
-    .example(
-        'Validate folder content',
-        '$0 myFolder'
-    )
-    .example(
-        'Turn off JSON-LD validation',
-        '$0 TD.json -j'
-    )
-    .validate(function(result) {
-        if (result.help) {
-            this.printUsage()
-            process.exit(0)
-        }
-    })
-    .onError(function(err) {
-        this.printUsage()
-        console.error(err)
-        process.exit(1)
-    })
-const myArguments = argParser.parse()
-let tdToCheck = ""
-const tdsToCheck = []
-const tdsToMerge = []
-let manualAssertions
+const commander = require('commander');
+const EventEmitter = require("events");
+const cliProgress = require('cli-progress')
+
+/**================================================================================================
+ *                                         CLI Configuration
+ *================================================================================================**/
+const program = new commander.Command();
+program
+    .description('For TD Playground core validation you can call the Playground \n' +
+                    'validation with no input (example folder will be taken), \n'+
+                    'one or multiple Thing Descriptions (.json files), a folder with multiple Thing Descriptions, \n' +
+                    'or a Folder with "valid", "invalid" and "warning" subfolder, where all included TDs \n' +
+                    'will be checked whether they produce the expected validation result. \n' +
+                    'Use the -a parameter for assertions testing.')
+
+    
+    .addOption(new commander.Option('-t, --type <type>', 'The type of JSON documents that are passed as inputs').choices(['TD', 'TM', 'AUTO']).default('TD'))
+    .option('-i, --input <pathToInputs...>', 'The files or the folders containing the files, which will be processed and/or validated', undefined)
+    .option('-j, --no-jsonld', 'Turn off the JSON-LD validation (for example because internet connection is not available)')
+    .option('-d, --no-defaults', 'Turn off the Full JSON Schema validation, which checks e.g. for default values being explicitly set')
+    .option('-a, --assertions', 'Call the assertion report instead of the core validation, \n' +
+                                'if files with .csv ending are given as input merging assertion reports is done')
+    .option('-o, --assertion-out <pathToOutput>', 'Path and filename of the generated assertions report (defaults to ./out/[.]assertionsTest[_$input]) \n' +
+                                    'Please notice that the folders you specify as target already have to exist.')
+    .option('-n, --assertion-no-merge', 'If multiple files where given as input, don\'t create a merged report, but create one for each')
+    .option('-s, --assertion-to-std', 'Output the report(s) as stdout and don\'t write them to a file')
+    .option('-c, --assertion-no-csv', 'Return assertion report(s) in JSON format instead of CSV')
+    .option('-m, --assertion-manual <pathToManual>', 'Path and filename to manual.csv file')
+    .option('-p, --open-api', 'Call the OpenAPI instance generation instead of validation/assertions')
+    .option('-y --oap-yaml', 'Whether OpenAPI should be written as YAML instead of JSON')
+    .option('--async-api', 'Call the AsyncAPI instance generation instead of validation/assertions')
+    .option('--aap-yaml', 'Whether AsyncAPI should be written as YAML instead of json.')
+    .option('--default-add', 'Whether the input TD should be extended by default values')
+    .option('--default-rem', 'Whether the input TD should be reduced by default values')
+    
+const myArguments = program.parse().opts()
 
 // assign / overwrite logging functions used
-const logFunc = myArguments.assertionTostd ? () => {} : console.log
-if (!myArguments.assertionTostd) {console.info = () => {}}
+const logFunc = myArguments.assertionToStd ? () => {} : console.log
+if (!myArguments.assertionToStd) {console.info = () => {}}
 
 // handle input argument
 let input = myArguments.input
+if( input && input.length === 1 ) input = input[0];
 
-if (myArguments.assertions === true) {
-    assertionReport()
-}
-else if (myArguments.openApi === true) {
-    openApiGeneration()
-}
-else if (myArguments.asyncApi === true) {
-    asyncApiGeneration()
-}
-else if (myArguments.defaultAdd === true || myArguments.defaultRem === true) {
-    defaultManipulation()
-}
-else {
-    coreValidation()
+/**================================================================================================
+ *                                         Handling TDs
+ *================================================================================================**/
+
+if(myArguments.type === 'TD') {
+    if (myArguments.assertions === true) {
+        tdAssertionReport(input)
+    }
+    else if (myArguments.openApi === true) {
+        openApiGeneration()
+    }
+    else if (myArguments.asyncApi === true) {
+        asyncApiGeneration()
+    }
+    else if (myArguments.defaultAdd === true || myArguments.defaultRem === true) {
+        defaultManipulation()
+    }
+    else {
+        coreValidation()
+    }
 }
 
+/**================================================================================================
+ *                                         Handle TMs
+ *================================================================================================**/
+
+ if(myArguments.type === 'TM') {
+     console.log("Checking TMs...")
+    if (myArguments.assertions === true) {
+        console.log("Checking Assertions...")
+        tmAssertionReport(input)
+    }
+    else if (myArguments.defaultAdd === true || myArguments.defaultRem === true) {
+        defaultManipulation()
+    }
+    else {
+        tmCoreValidation()
+    }
+}
+
+
+/**================================================================================================
+ *                                         TD functions
+ *================================================================================================**/
 /**
  * handle manual & input param
  */
-function assertionReport() {
+function tdAssertionReport(input) {
+    const tdsToCheck = []
+    const tdsToMerge = []
+    let manualAssertions
+
+    let numberOfFilesAssertion = 0
+    let numberOfFilesMerge = 0
+
+    const bar = new cliProgress.SingleBar({clearOnComplete: true ,format: 'progress [{bar}] {percentage}% | TD Name: {tdName} | {value}/{total} \n'}, cliProgress.Presets.shades_classic)
 
     let assertType
     // handle manual param
@@ -161,9 +135,11 @@ function assertionReport() {
         input.forEach( el => {
             if(el.endsWith(".json") || el.endsWith(".jsonld")) {
                 tdsToCheck.push(fs.readFileSync(el))
+                numberOfFilesAssertion++
             }
             else if (el.endsWith(".csv")) {
                 tdsToMerge.push(assertManualToJson(fs.readFileSync(el, "utf-8")))
+                numberOfFilesMerge++
             }
             else {
                 console.log("CANNOT HANDLE file of list: ", el)
@@ -176,9 +152,11 @@ function assertionReport() {
         fs.readdirSync(input).forEach( el => {
             if(el.endsWith(".json") || el.endsWith(".jsonld")) {
                 tdsToCheck.push(fs.readFileSync(path.join(input, el)))
+                numberOfFilesAssertion++
             }
             else if (el.endsWith(".csv")) {
                 tdsToMerge.push(assertManualToJson(fs.readFileSync(path.join(input, el), "utf-8")))
+                numberOfFilesMerge++
             }
             else {
                 console.log("CANNOT HANDLE file in dir: ", path.join(input, el))
@@ -190,17 +168,24 @@ function assertionReport() {
         assertType = "file"
         if(input.endsWith(".json") || input.endsWith(".jsonld")) {
             tdsToCheck.push(fs.readFileSync(input))
+            numberOfFilesAssertion++
         }
         else if (input.endsWith(".csv")) {
             tdsToMerge.push(assertManualToJson(fs.readFileSync(input,"utf-8")))
+            numberOfFilesMerge++
         }
         else {
             console.log("CANNOT HANDLE file: ", el)
             return
         }
     }
-    assertTd(tdsToCheck, assertType)
+    let doneEventEmitter = new EventEmitter()
+    doneEventEmitter.on("start", (tdName) =>  { bar.increment(1, {"tdName": tdName})})
+
+    bar.start(numberOfFilesAssertion, 0)
+    assertTd(tdsToCheck, assertType, tdsToMerge, manualAssertions, doneEventEmitter)
     .then( () => {
+        bar.stop()
         mergeReports(tdsToMerge)
     })
 }
@@ -211,16 +196,16 @@ function assertionReport() {
  * @param {*} tds One or more td to do assertion testing
  * @param {*} type "file", "list" or "dir" are valid types
  */
-function assertTd(tds, type) {
+function assertTd(tds, type, tdsToMerge, manualAssertions, doneEventEmitter) {
     return new Promise( (res, rej) => {
         if (tds.length > 0) {
-            tdAssertions(tds, fileLoader, logFunc, manualAssertions).then( results => {
+            tdAssertions(tds, fileLoader, logFunc, manualAssertions, doneEventEmitter).then( results => {
                 if (type === "file") {
                     outReport(results, "assertionsTest_", input)
                     res()
                 }
                 else if (type === "list" || type === "dir") {
-                    if (myArguments.assertionNomerge) {
+                    if (myArguments.assertionNoMerge) {
                         Object.keys(results.jsonResults).forEach( id => {
                             outReport(results.jsonResults[id], "assertionsTest_", id)
                         })
@@ -255,7 +240,7 @@ function mergeReports(reports) {
         if (reports.length > 1) {
             assertMergeResults(reports).then( merged => {
                 assertCheckCoverage(merged, logFunc)
-                outReport(merged, ".assertionsMerged")
+                outReport(merged, ".tmAssertionsMerged")
                 res()
             }, err => {
                 rej(err)
@@ -286,17 +271,17 @@ function outReport(data, pathFragment, id) {
         id = extractName(id)
     }
 
-    if (myArguments.assertionNocsv) {
+    if (myArguments.assertionNoCsv) {
         data = JSON.stringify(data, undefined, 4)
     }
     else {
         data = assertResultsToCsv(data)
     }
 
-    if (myArguments.assertionTostd) {
+    if (myArguments.assertionToStd) {
         process.stdout.write(data)
     } else {
-        const fileEnd = myArguments.assertionNocsv ? ".json" : ".csv"
+        const fileEnd = myArguments.assertionNoCsv ? ".json" : ".csv"
         const outpath = myArguments.assertionOut ? myArguments.assertionOut : ("./out/" + pathFragment)
         const wholepath = outpath + id + fileEnd
 
@@ -326,6 +311,8 @@ function fileLoader(loc) {
  * and write outputs accordingly
  */
 function coreValidation() {
+    let tdToCheck = ""
+
     if (!input) {input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds")}
     if(fs.lstatSync(input).isDirectory()) {
 
@@ -359,7 +346,7 @@ function coreValidation() {
                     console.log("\nNo valid TD to check has been found")
                 }
                 else if (validNames.length === validCount) {
-                    console.log("\nValidity test succesful. All TDs that are supposed to be valid are indeed valid")
+                    console.log("\nValidity test successful. All TDs that are supposed to be valid are indeed valid")
                 }
                 else {
                     console.log("\nValidity test NOT successful, ", validCount, "/", validNames.length, "passed the validity test")
@@ -394,7 +381,7 @@ function coreValidation() {
                     console.log("\nNo invalid TD to check has been found")
                 }
                 else if (invalidNames.length === invalidCount) {
-                    console.log("\nInvalidity test succesful. All TDs that are supposed to be invalid are indeed valid")
+                    console.log("\nInvalidity test successful. All TDs that are supposed to be invalid are indeed invalid")
                 }
                 else {
                     console.log(
@@ -435,7 +422,7 @@ function coreValidation() {
                     console.log("\nNo warning TD to check has been found")
                 }
                 else if (warnNames.length === warnCount) {
-                    console.log("\nWarning test succesful. All TDs that are supposed to give a warning gave a warning")
+                    console.log("\nWarning test successful. All TDs that are supposed to give a warning gave a warning")
                 }
                 else {
                     console.log("\nWarning test NOT successful, ", warnCount, "/", warnNames.length, "passed the warning test")
@@ -464,7 +451,7 @@ function coreValidation() {
  */
 function checkTd(td) {
 
-    tdValidator(td, console.log,{checkDefaults: !myArguments.nodefaults, checkJsonLd: !myArguments.nojsonld})
+    tdValidator(td, console.log,{checkDefaults: myArguments.defaults, checkJsonLd: myArguments.jsonld})
     .then( result => {
         console.log("OKAY \n")
         console.log("\n")
@@ -583,4 +570,290 @@ function extractName(pathLike) {
                             .join(".")
     }
     return pathLike
+}
+
+/**================================================================================================
+ *                                         TM functions
+ *================================================================================================**/
+
+//* This  
+
+/**
+ * 
+ * @param {*} input 
+ * @returns 
+ */
+function tmAssertionReport(input) {
+    const tmsToCheck = []
+    const tmsToMerge = []
+    let manualAssertions
+
+    let assertType
+    // handle manual param
+    if (myArguments.assertionManual) {
+        manualAssertions = assertManualToJson(fs.readFileSync(myArguments.assertionManual, "utf-8"))
+    }
+
+    if (input === undefined) {input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tms", "valid")}
+
+    let numberOfFilesAssertion = 0
+    let numberOfFilesMerge = 0
+
+    const bar = new cliProgress.SingleBar({format: 'progress [{bar}] {percentage}% | TM Name: {tmName} | {value}/{total} \n'}, cliProgress.Presets.shades_classic)
+
+    if (typeof input === "object") {
+        assertType = "list"
+        // check given TMs
+        input.forEach( el => {
+            if(el.endsWith(".json") || el.endsWith(".jsonld")) {
+                tmsToCheck.push(fs.readFileSync(el))
+                numberOfFilesAssertion++
+            }
+            else if (el.endsWith(".csv")) {
+                tmsToMerge.push(assertManualToJson(fs.readFileSync(el, "utf-8")))
+                numberOfFilesMerge++
+            }
+            else {
+                console.log("CANNOT HANDLE file of list: ", el)
+            }
+        })
+    }
+    else if (fs.lstatSync(input).isDirectory()) {
+        assertType = "dir"
+        // check TMs contained in the directory
+        fs.readdirSync(input).forEach( el => {
+            if(el.endsWith(".json") || el.endsWith(".jsonld")) {
+                tmsToCheck.push(fs.readFileSync(path.join(input, el)))
+                numberOfFilesAssertion++
+            }
+            else if (el.endsWith(".csv")) {
+                tmsToMerge.push(assertManualToJson(fs.readFileSync(path.join(input, el), "utf-8")))
+                numberOfFilesMerge++
+            }
+            else {
+                console.log("CANNOT HANDLE file in dir: ", path.join(input, el))
+            }
+        })
+    }
+    else {
+        // check single TM
+        assertType = "file"
+        if(input.endsWith(".json") || input.endsWith(".jsonld")) {
+            tmsToCheck.push(fs.readFileSync(input))
+            numberOfFilesAssertion++
+        }
+        else if (input.endsWith(".csv")) {
+            tmsToMerge.push(assertManualToJson(fs.readFileSync(input,"utf-8")))
+            numberOfFilesMerge++
+        }
+        else {
+            console.log("CANNOT HANDLE file: ", el)
+            return
+        }
+    }
+    let doneEventEmitter = new EventEmitter()
+    doneEventEmitter.on("start", (tmName) =>  { bar.increment(1, {"tmName": tmName})})
+
+    bar.start(numberOfFilesAssertion, 0)
+    assertTm(tmsToCheck, assertType, tmsToMerge, manualAssertions, doneEventEmitter)
+    .then( () => {
+        setTimeout(() => {bar.stop()}, 100) 
+        mergeReports(tmsToMerge)
+    })
+}
+
+
+/**
+ * handle arguments to call the core validation
+ * and write outputs accordingly
+ */
+ function tmCoreValidation() {
+    let tmToCheck = ""
+
+    if (!input) {input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tms")}
+    if(fs.lstatSync(input).isDirectory()) {
+
+        // check Valid, Invalid and Warning Subfolders
+        const validPath = path.join(input, "valid")
+        if (fs.existsSync(validPath) && fs.lstatSync(validPath).isDirectory()) {
+            console.log("Starting Valid folder test")
+            const validNames = fs.readdirSync(validPath)
+            let validCount = 0
+            const checkPromises = []
+            validNames.forEach( el => {
+                if (el.endsWith(".json") || el.endsWith(".jsonld")) {
+                    tmToCheck = fs.readFileSync(path.join(validPath, el), "utf-8")
+                    const thisProm = tmValidator(tmToCheck, console.log, {checkDefaults: false})
+                    .then( result => {
+                        if (statResult("failed", result.report)) {
+                            console.log(el, "was supposed to be valid but gave error")
+                        } else if (statResult("warning", result.report)) {
+                            console.log(el, "was supposed to be valid but gave warning")
+                        } else {
+                            validCount++
+                        }
+                    }, err => {
+                        console.error("ERROR", err)
+                    })
+                    checkPromises.push(thisProm)
+                }
+            })
+            Promise.all(checkPromises).then( () => {
+                if (validNames.length === 0) {
+                    console.log("\nNo valid TD to check has been found")
+                }
+                else if (validNames.length === validCount) {
+                    console.log("\nValidity test successful. All TDs that are supposed to be valid are indeed valid")
+                }
+                else {
+                    console.log("\nValidity test NOT successful, ", validCount, "/", validNames.length, "passed the validity test")
+                }
+            }, err => {console.error("\nValid TD Check broken! " + err)})
+        }
+
+        const invalidPath = path.join(input, "invalid")
+        if (fs.existsSync(invalidPath) && fs.lstatSync(invalidPath).isDirectory()) {
+            console.log("Starting invalid folder test")
+            const invalidNames = fs.readdirSync(invalidPath)
+            let invalidCount = 0
+            const checkPromises = []
+            invalidNames.forEach( el => {
+                if (el.endsWith(".json") || el.endsWith(".jsonld")) {
+                    tmToCheck = fs.readFileSync(path.join(invalidPath, el), "utf-8")
+                    const thisProm = tmValidator(tmToCheck, console.log, {checkDefaults: false})
+                    .then( result => {
+                        if (statResult("failed", result.report)) {
+                            invalidCount++
+                        } else {
+                            console.log(el, "was supposed to be invalid but was not")
+                        }
+                    }, err => {
+                        console.error("ERROR", err)
+                    })
+                    checkPromises.push(thisProm)
+                }
+            })
+            Promise.all(checkPromises).then( () => {
+                if (invalidNames.length === 0) {
+                    console.log("\nNo invalid TD to check has been found")
+                }
+                else if (invalidNames.length === invalidCount) {
+                    console.log("\nInvalidity test successful. All TDs that are supposed to be invalid are indeed invalid")
+                }
+                else {
+                    console.log(
+                        "\nInvalidity test NOT successful, ", invalidCount, "/", invalidNames.length, "passed the invalidity test"
+                        )
+                }
+            }, err => {console.error("\nInvalid TD Check broken!" + err)})
+        }
+
+        const warnPath = path.join(input, "warning")
+        if (fs.existsSync(warnPath) && fs.lstatSync(warnPath).isDirectory()) {
+            console.log("Starting Warning folder test")
+            const warnNames = fs.readdirSync(warnPath)
+            let warnCount = 0
+            const checkPromises = []
+            warnNames.forEach( el => {
+                if (el.endsWith(".json") || el.endsWith(".jsonld")) {
+                    tmToCheck = fs.readFileSync(path.join(warnPath, el), "utf-8")
+                    const thisProm = tmValidator(tmToCheck, console.log, {checkDefaults: true})
+                    .then( result => {
+                        if (statResult("failed", result.report)) {
+                            console.log(el, "was supposed to give a warning but gave error")
+                            // result.console.forEach( line => {console.log(line)} )
+                        } else if (statResult("warning", result.report)) {
+                            warnCount++
+                        } else {
+                            console.log(el, "was supposed to give a warning but passed all the tests")
+                            // result.console.forEach( line => {console.log(line)} )
+                        }
+                    }, err => {
+                        console.error("ERROR", err)
+                    })
+                    checkPromises.push(thisProm)
+                }
+            })
+            Promise.all(checkPromises).then( () => {
+                if (warnNames.length === 0) {
+                    console.log("\nNo warning TD to check has been found")
+                }
+                else if (warnNames.length === warnCount) {
+                    console.log("\nWarning test successful. All TDs that are supposed to give a warning gave a warning")
+                }
+                else {
+                    console.log("\nWarning test NOT successful, ", warnCount, "/", warnNames.length, "passed the warning test")
+                }
+            }, err => {console.error("\nWarning TD Check broken!" + err)})
+        }
+
+        // check TDs contained in the directory
+        fs.readdirSync(input).forEach( el => {
+            if (el.endsWith(".json") || el.endsWith(".jsonld")) {
+                tmToCheck = fs.readFileSync(path.join(input, el), "utf-8")
+                checkTm(tmToCheck)
+            }
+        })
+
+    }
+    else {
+        tmToCheck = fs.readFileSync(input, "utf-8")
+        checkTm(tmToCheck)
+    }
+}
+
+/**
+ * Call assertion testing function and forward results
+ * @param {*} tms One or more td to do assertion testing
+ * @param {*} type "file", "list" or "dir" are valid types
+ */
+ function assertTm(tms, type, tmsToMerge, manualAssertions, doneEventEmitter) {
+    return new Promise( (res, rej) => {
+        if (tms.length > 0) {
+            tmAssertions(tms, fileLoader, logFunc, manualAssertions, doneEventEmitter).then( results => {
+                if (type === "file") {
+                    outReport(results, "tmAssertionsTest_", input)
+                    res()
+                }
+                else if (type === "list" || type === "dir") {
+                    if (myArguments.assertionNoMerge) {
+                        Object.keys(results.jsonResults).forEach( id => {
+                            outReport(results.jsonResults[id], "tmAssertionsTest_", id)
+                        })
+                    }
+                    else {
+                        outReport(results.merged, ".tmAssertionsTest")
+                        if (tmsToMerge.length > 0) {
+                            tmsToMerge.push(results.merged)
+                        }
+                    }
+                    res()
+                }
+                else {
+                    rej("unknown assertion type")
+                }
+            })
+        }
+        else {
+            res()
+        }
+    })
+}
+
+
+/**
+ * subfunction of coreValidation
+ * @param {*} tm
+ */
+ function checkTm(tm) {
+
+    tmValidator(tm, console.log,{checkDefaults: myArguments.defaults, checkJsonLd: myArguments.jsonld})
+    .then( result => {
+        console.log("OKAY \n")
+        console.log("\n")
+        console.log("--- Report ---\n", result, "\n--------------")
+    }, err => {
+        console.log("ERROR")
+        console.error(err)
+    })
 }

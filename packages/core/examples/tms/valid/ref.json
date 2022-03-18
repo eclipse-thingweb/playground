@@ -1,0 +1,14 @@
+{
+    "id": "urn:ref",
+    "$comment": "example 53 of the spec",
+    "@context": [
+        "http://www.w3.org/ns/td"
+    ],
+    "@type": "tm:ThingModel",
+    "title": "Valid Model 7",
+    "properties": {
+        "switch": {
+            "tm:ref": "http://example.com/BasicOnOffTM.tm.jsonld#/properties/onOff"
+        }
+    }
+}

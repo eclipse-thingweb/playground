@@ -85,7 +85,7 @@ export function performAssertionTest(manualAssertions){
         document.getElementById("curtain-text").innerHTML = input
     }
 
-    tdAssertions([tdToValidate], getTextUrl, logging, manualAssertions)
+    Assertions.tdAssertions([tdToValidate], getTextUrl, logging, manualAssertions)
     .then( result => {
         // remove commas to avoid errors
         const cleanResults = []
@@ -369,7 +369,10 @@ function realValidator(td, source) {
 
     const checkJsonLd = document.getElementById("box_jsonld_validate").checked
 
-    tdValidator(td, log, {checkDefaults: true, checkJsonLd})
+    console.log(Validators.tdValidator)
+    console.log(Validators.tmValidator);
+
+    Validators.tdValidator(td, log, {checkDefaults: true, checkJsonLd})
     .then( result => {
         let resultStatus = "success"
 

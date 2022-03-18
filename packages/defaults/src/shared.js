@@ -17,6 +17,10 @@ function sharedDefaults(td, cbOneObject, cbDataSchema) {
         throw new Error("Typeof TD has to be object, not: " + typeof td)
     }
 
+    // -- Property Affordances
+    forEvery(td.properties, property => {
+        cbOneObject(property, defaultClasses.propertyAffordance)
+    })
 
     // -- Action Affordances
     forEvery(td.actions, action => {

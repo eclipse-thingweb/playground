@@ -1,0 +1,69 @@
+{
+    "title": "td-security-bearer-format-extensions_format",
+    "description": "alg: Encoding, encryption, or digest algorithm (one of MD5, ES256, or ES512-256). MUST be included. Type: string.",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "is-complex": true,
+    "type": "object",
+    "properties": {
+        "securityDefinitions": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+                "$ref": "#/$defs/securityScheme"
+            }
+        }
+    },
+    "required": [
+        "securityDefinitions"
+    ],
+    "additionalProperties": true,
+    "$defs": {
+        "securityScheme": {
+            "if": {
+                "type": "object",
+                "properties": {
+                    "description": {
+                        "type": "string"
+                    },
+                    "proxy": {
+                        "$ref": "#/$defs/url"
+                    },
+                    "scheme": {
+                        "type": "string",
+                        "enum": [
+                            "bearer"
+                        ]
+                    },
+                    "authorization": {
+                        "$ref": "#/$defs/url"
+                    },
+                    "alg": {
+                        "type": "string"
+                    },
+                    "format": {
+                        "type": "string",
+                        "not":{
+                            "enum": ["jwt", "jwe", "jws"]
+                        }
+                    },
+                    "in": {
+                        "type": "string",
+                        "enum": ["header", "query", "body", "cookie"]
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "scheme","format"
+                ]
+            },
+            "then": {
+                "const": "td-security-bearer-format-extensions_format=pass"
+            }
+        },
+        "url": {
+            "type": "string"
+        }
+    }
+}

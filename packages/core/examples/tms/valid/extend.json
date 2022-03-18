@@ -1,0 +1,23 @@
+{
+    "id": "urn:extend",
+    "$comment": "example 52",
+    "@context": [
+        "http://www.w3.org/ns/td"
+    ],
+    "@type": "tm:ThingModel",
+    "title": "Valid Model 6",
+    "links": [
+        {
+            "rel": "tm:extends",
+            "href": "http://example.com/BasicOnOffTM",
+            "type": "application/td+json"
+        }
+    ],
+    "properties": {
+        "dim": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+        }
+    }
+}

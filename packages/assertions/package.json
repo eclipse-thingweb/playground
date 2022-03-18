@@ -16,7 +16,7 @@
   "main": "index.js",
   "scripts": {
     "test": "node ./tests/index-test.js",
-    "bundle": "npx browserify ./index.js -s tdAssertions -o ./dist/web-bundle.js && npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
+    "bundle": "npx browserify ./index.js -s Assertions -o ./dist/web-bundle.js && npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
     "newlist": "node update-list.js",
     "prepare": "npm run bundle"
   },

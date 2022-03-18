@@ -1,0 +1,67 @@
+{
+    "title": "td-context-ns-thing-optional",
+    "description": "When @context is an Array, the anyURI https://www.w3.org/2019/wot/td/v1 MAY be followed by elements of type anyURI or type Map in any order, while it is RECOMMENDED to include only one Map with all the name-value pairs in the @context Array. ",
+    "is-complex": true,
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "if": {
+        "required": [
+            "@context"
+        ]
+    },
+    "then": {
+        "properties": {
+            "@context": {
+                "if": {
+                    "type": "string"
+                },
+                "then": {
+                    "const": "td-context-ns-thing-optional=not-impl"
+                },
+                "else": {
+                    "if": {
+                        "$ref": "#/$defs/thing-context"
+                    },
+                    "then": {
+                        "const": "td-context-ns-thing-optional=pass"
+                    }
+                }
+            }
+        }
+    },
+    "additionalProperties": true,
+    "$defs": {
+        "thing-context-w3c-uri": {
+            "type": "string",
+            "enum": [
+                "https://www.w3.org/2019/wot/td/v1"
+            ]
+        },
+        "thing-context": {
+            "oneOf": [{
+                    "type": "array",
+                    "items": [{
+                        "$ref": "#/$defs/thing-context-w3c-uri"
+                    }],
+                    "additionalItems": {
+                        "anyOf": [{
+                                "$ref": "#/$defs/anyUri"
+                            },
+                            {
+                                "type": "object"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "$ref": "#/$defs/thing-context-w3c-uri"
+                }
+            ]
+        },
+        "anyUri": {
+        "anyUri": {
+            "type": "string"
+        }
+        }
+    }
+}

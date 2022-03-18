@@ -1,0 +1,72 @@
+{
+    "title": "td-op-for-action",
+    "description": "When a forms term member is present in an Action instance, the value(s) of op in the forms MUST be invokeaction. ",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "is-complex": true,
+    "type": "object",
+    "properties": {
+        "actions": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/$defs/action_element"
+            }
+        }
+    },
+    "additionalProperties": true,
+    "$defs": {
+        "action_element": {
+            "type": "object",
+            "properties": {
+                "forms": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "$ref": "#/$defs/form_element_action"
+                    }
+                }
+            },
+            "required": [
+                "forms"
+            ],
+            "additionalProperties": true
+        },
+        "form_element_action": {
+            "if":{
+                "type": "object",
+                "properties": {
+                    "href": {
+                        "$ref": "#/$defs/url"
+                    },
+                    "op": {
+                        "oneOf": [{
+                                "type": "string",
+                                "enum": [
+                                    "invokeaction"
+                                ]
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "type": "string",
+                                    "enum": [
+                                        "invokeaction"
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "href","op"
+                ],
+                "additionalProperties": true
+            },
+            "then":{
+                "const":"td-op-for-action=pass"
+            }
+        },
+        "url": {
+            "type": "string"
+        }
+    }
+}

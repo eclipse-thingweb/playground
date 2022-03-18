@@ -1,5 +1,5 @@
 // Test utility to test index.js
-const tdValidator = require("../../index")
+const tdValidator = require("../../index").tdValidator
 const fs = require("fs")
 
 const failTD = fs.readFileSync("../tds/invalid/noHref.json", "utf-8")

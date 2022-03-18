@@ -66,7 +66,7 @@ document.getElementById("close_gist_popup").addEventListener("click", () => {
 
 document.getElementById("btn_assertion_popup").addEventListener("click", () => {
 	if (!manualAssertionsLoaded) {
-		fetch("./node_modules/@thing-description-playground/assertions/manual.csv")
+		fetch("./node_modules/@thing-description-playground/assertions/assertions-td/manual.csv")
 		.then( res => {
 			if (res.ok) {
 				return res.text()

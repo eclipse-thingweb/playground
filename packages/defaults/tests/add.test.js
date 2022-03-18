@@ -126,14 +126,23 @@ describe("module tests", () => {
             readOnly: false
         }
 
+        const refProperty = {
+            description: "just a data schema",
+            writeOnly: false,
+            readOnly: false,
+            observable:false
+        }
+
         test("PropertyAffordance", () => {
             const td = {
                 properties: {
-                    temperature: {description: "just a data schema"}
+                    temperature: {
+                        description: "just a data schema"
+                    }
                 }
             }
             addDefaults(td)
-            expect(td.properties.temperature).toEqual(refTdSchema)
+            expect(td.properties.temperature).toEqual(refProperty)
         })
         test("ActionAffordance", () => {
             const td = {
@@ -344,6 +353,7 @@ describe("module tests", () => {
                 temperature: {
                     readOnly: true,
                     writeOnly: false,
+                    observable: false,
                     forms: [{
                         href:"asdf",
                         op: "readproperty",
@@ -371,6 +381,7 @@ describe("module tests", () => {
                 temperature: {
                     readOnly: false,
                     writeOnly: true,
+                    observable: false,
                     forms: [{
                         href:"asdf",
                         op: "writeproperty",
