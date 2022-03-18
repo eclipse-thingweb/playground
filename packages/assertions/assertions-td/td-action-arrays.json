@@ -43,12 +43,9 @@
                     "oneOf": [{
                             "type": "string",
                             "enum": [
-                                "readproperty",
-                                "writeproperty",
-                                "observeproperty",
                                 "invokeaction",
-                                "subscribeevent",
-                                "unsubscribeevent"
+                                "queryaction",
+                                "cancelaction"
                             ]
                         },
                         {
@@ -56,12 +53,9 @@
                             "items": {
                                 "type": "string",
                                 "enum": [
-                                    "readproperty",
-                                    "writeproperty",
-                                    "observeproperty",
                                     "invokeaction",
-                                    "subscribeevent",
-                                    "unsubscribeevent"
+                                    "queryaction",
+                                    "cancelaction"
                                 ]
                             }
                         }
