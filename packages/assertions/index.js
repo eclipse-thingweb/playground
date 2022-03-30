@@ -101,7 +101,7 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, doneEventEmit
             else {
                 const merged = jsonResults[tdNames[0]]
                 checkCoverage(merged, logFunc)
-                res({merged})
+                res(merged)
             }
 
 
@@ -189,7 +189,7 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, doneEventEmit
             else {
                 const merged = jsonResults[tmNames[0]]
                 checkCoverage(merged, logFunc)
-                res({merged})
+                res(merged)
             }
 
 

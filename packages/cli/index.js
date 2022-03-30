@@ -828,6 +828,7 @@ function tmAssertionReport(input) {
                         })
                     }
                     else {
+                        if(!results.merged) results = {"merged": results}
                         outReport(results.merged, "tmAssertionsTest")
                         if (tmsToMerge.length > 0) {
                             tmsToMerge.push(results.merged)
