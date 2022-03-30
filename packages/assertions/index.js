@@ -52,7 +52,9 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, doneEventEmit
 
         // loading files
         const loadProm = []
-        loadProm.push(collectAssertionSchemas(path.join(pathOffset, "./assertions-td"), path.join(pathOffset, "./assertions-td", "./tdAssertionList.json"), fileLoader))
+        loadProm.push(collectAssertionSchemas(path.join(pathOffset, "./assertions-td"),
+        path.join(pathOffset, "./assertions-td", "./tdAssertionList.json"), fileLoader))
+
         loadProm.push(fileLoader(path.join(pathOffset, "./node_modules", "@thing-description-playground", "core", "td-schema.json")))
         if (givenManual === undefined) {loadProm.push(fileLoader(path.join(pathOffset, "./assertions-td", "./manual.csv")))}
 
@@ -138,7 +140,8 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, doneEventEmit
 
         // loading files
         const loadProm = []
-        loadProm.push(collectAssertionSchemas(path.join(pathOffset, "./assertions-tm"), path.join(pathOffset, "./assertions-tm", "./tmAssertionList.json"), fileLoader))
+        loadProm.push(collectAssertionSchemas(path.join(pathOffset, "./assertions-tm"),
+        path.join(pathOffset, "./assertions-tm", "./tmAssertionList.json"), fileLoader))
         loadProm.push(fileLoader(path.join(pathOffset, "./node_modules", "@thing-description-playground", "core", "tm-schema.json")))
         if (givenManual === undefined) {loadProm.push(fileLoader(path.join(pathOffset, "./assertions-tm", "./manual.csv")))}
 
