@@ -145,12 +145,12 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, doneEventEmit
         Promise.all(loadProm).then( promResults => {
 
             const assertionSchemas = promResults.shift()
-            //! Is needed, do not remove! 
+            // ! Is needed, do not remove!
             const tmSchema = promResults.shift()
             const manualAssertionsJSON = (givenManual === undefined) ?
                                         manualToJson(promResults.shift().toString()) :
                                         givenManual
-            
+
             const jsonResults = {}
             tmStrings.forEach( tmToValidate => {
                 // check if id exists, use it for name if it does, title + some rand number otherwise
@@ -170,7 +170,7 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, doneEventEmit
                 jsonResults[tmName] = validateTM(tmToValidate, assertionSchemas, manualAssertionsJSON, logFunc)
                 if(doneEventEmitter) doneEventEmitter.emit("done", tmName)
             })
-            
+
             const tmNames = Object.keys(jsonResults)
 
             if (tmNames.length > 1) {

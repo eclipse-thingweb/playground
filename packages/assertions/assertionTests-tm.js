@@ -5,13 +5,13 @@ const isUtf8 = require('is-utf8')
 
 const Ajv = require("ajv")
 const addFormats = require("ajv-formats")
-const apply = require('ajv-formats-draft2019');
+const apply = require('ajv-formats-draft2019')
 
 
-//Imports from utils
-const validate = require("./util").validate;
-const createParents = require("./util").createParents;
-const mergeIdenticalResults = require("./util").mergeIdenticalResults;
+// Imports from utils
+const validate = require("./util").validate
+const createParents = require("./util").createParents
+const mergeIdenticalResults = require("./util").mergeIdenticalResults
 
 
 // Imports from playground core
@@ -43,7 +43,7 @@ module.exports = validateTM
     // console.info("=================================================================")
     // it is commented out to make sure that the output to std is also a valid csv file
 
-    //todo Not sure what to do in this case
+    // todo Not sure what to do in this case
     // check whether it is a valid JSON
     let tmJson
     try {
@@ -92,14 +92,14 @@ module.exports = validateTM
         const curAssertion = assertions[index]
 
         const schema = curAssertion
-        if(schema["title"] === "tm-placeholder") {
+        if(schema.title === "tm-placeholder") {
             validateTmPlaceholder(tmJson, logFunc, results)
-            continue;
+            continue
         }
 
-        if(schema["title"] === "tm-tmRef-1") {
+        if(schema.title === "tm-tmRef-1") {
             validateTmRef(tmJson, logFunc, results)
-            continue;
+            continue
         }
 
         // Validation starts here
@@ -271,7 +271,7 @@ function checkTMVocabulary(tmJson) {
     ajv = addFormats(ajv) // ajv does not support formats by default anymore
     ajv = apply(ajv) // new formats that include iri
     ajv.addSchema(tmSchema, 'tm')
-    ajv.addVocabulary(['is-complex', 'also']);
+    ajv.addVocabulary(['is-complex', 'also'])
 
     const valid = ajv.validate('tm', tmJson)
     const otherAssertions =  ["tm-placeholder-value", "tm-td-generation-inconsistencies"]
@@ -299,8 +299,8 @@ function checkTMVocabulary(tmJson) {
 
 /**
  * A script for validating tm-placeholder
- * @param {object} obj 
- * @param {function} logFunc 
+ * @param {object} obj
+ * @param {function} logFunc
  * @param {Array<{"ID": string, "Status": string}>} results
  */
 
@@ -308,19 +308,19 @@ function validateTmPlaceholder(obj, logFunc, results) {
 
     let FOUND_TM_PLACEHOLDER = false
 
-    let tmpResults = [];
+    const tmpResults = []
     let validPayload = null
     checkObjContainsTmPlaceholder(obj, logFunc)
-    let otherAssertion = [];
-    if(tmSchema.also && tmSchema.also.length >= 1) otherAssertion = tmSchema.also;
+    let otherAssertion = []
+    if(tmSchema.also && tmSchema.also.length >= 1) otherAssertion = tmSchema.also
 
     if(FOUND_TM_PLACEHOLDER) {
         // Return a fail result if found
-        for(let result of tmpResults) {
+        for(const result of tmpResults) {
             if(result && !result.valid) return result
         }
         // if no fail was found, return a valid result
-        validPayload = tmpResults[0];
+        validPayload = tmpResults[0]
     }
 
     if(FOUND_TM_PLACEHOLDER) {
@@ -330,7 +330,7 @@ function validateTmPlaceholder(obj, logFunc, results) {
                 "Status": "pass"
             })
 
-            for(let asser of otherAssertion) {
+            for(const asser of otherAssertion) {
                 results.push({
                     "ID": asser,
                     "Status": "pass"
@@ -343,7 +343,7 @@ function validateTmPlaceholder(obj, logFunc, results) {
                 "Comment": validPayload.ajvObject.errorsText()
             })
 
-            for(let asser of otherAssertion) {
+            for(const asser of otherAssertion) {
                 results.push({
                     "ID": asser,
                     "Status": "fail",
@@ -354,37 +354,39 @@ function validateTmPlaceholder(obj, logFunc, results) {
     } else {
         results.push({
             "ID": "tm-placeholder",
-            "Status": "not-impl",
+            "Status": "not-impl"
         })
 
-        for(let asser of otherAssertion) {
+        for(const asser of otherAssertion) {
             results.push({
                 "ID": asser,
-                "Status": "not-impl",
+                "Status": "not-impl"
             })
         }
     }
 
     /**
-     * 
-     * @param {object} obj 
-     * @param {function} logFunc 
+     *
+     * @param {object} obj
+     * @param {function} logFunc
      * @returns {{valid: boolean, ajvObject: object} | null} true if validation passes, else false
      */
-     function checkObjContainsTmPlaceholder(obj, logFunc) {
-        
-        for(let key in obj) {
-            let value = obj[key]
-            if(typeof value === "string") {
-                let regex = /^.*[{]{2}[ -~]+[}]{2}.*$/
-                if(value.match(regex)) {
-                    FOUND_TM_PLACEHOLDER = true
-                    let result = {valid: true, ajvObject: {}}
-                    tmpResults.push(result)
-                } 
-            }
-            if(typeof obj[key] === "object") {
-                checkObjContainsTmPlaceholder(obj[key])
+     function checkObjContainsTmPlaceholder(obj) {
+
+        for(const key in obj) {
+            if(Object.prototype.hasOwnProperty.call(obj, key)){
+                const value = obj[key]
+                if(typeof value === "string") {
+                    const regex = /^.*[{]{2}[ -~]+[}]{2}.*$/
+                    if(value.match(regex)) {
+                        FOUND_TM_PLACEHOLDER = true
+                        const result = {valid: true, ajvObject: {}}
+                        tmpResults.push(result)
+                    }
+                }
+                if(typeof obj[key] === "object") {
+                    checkObjContainsTmPlaceholder(obj[key])
+                }
             }
         }
         return null
@@ -395,26 +397,26 @@ function validateTmPlaceholder(obj, logFunc, results) {
 
 /**
  * A script for validating tm-tmRef-1
- * @param {object} obj 
- * @param {function} logFunc 
+ * @param {object} obj
+ * @param {function} logFunc
  * @param {Array<{"ID": string, "Status": string}>} results
  */
 function validateTmRef(obj, logFunc, results) {
 
-    let tmpResults = [];
+    const tmpResults = []
     let FOUND_TM_REF = false
 
     let validPayload = checkObjContainsTmRef(obj, logFunc)
-    let otherAssertion = [];
-    if(tmSchema.also && tmSchema.also.length >= 1) otherAssertion = tmSchema.also;
+    let otherAssertion = []
+    if(tmSchema.also && tmSchema.also.length >= 1) otherAssertion = tmSchema.also
 
     if(FOUND_TM_REF) {
         // Return a fail result if found
-        for(let result of tmpResults) {
+        for(const result of tmpResults) {
             if(result && !result.valid) return result
         }
         // if no fail was found, return a valid result
-        validPayload = tmpResults[0];
+        validPayload = tmpResults[0]
     }
 
     if(FOUND_TM_REF) {
@@ -424,7 +426,7 @@ function validateTmRef(obj, logFunc, results) {
                 "Status": "pass"
             })
 
-            for(let asser of otherAssertion) {
+            for(const asser of otherAssertion) {
                 results.push({
                     "ID": asser,
                     "Status": "pass"
@@ -437,7 +439,7 @@ function validateTmRef(obj, logFunc, results) {
                 "Comment": validPayload.ajvObject.errorsText()
             })
 
-            for(let asser of otherAssertion) {
+            for(const asser of otherAssertion) {
                 results.push({
                     "ID": asser,
                     "Status": "fail",
@@ -448,46 +450,48 @@ function validateTmRef(obj, logFunc, results) {
     } else {
         results.push({
             "ID": "tm-tmRef-1",
-            "Status": "not-impl",
+            "Status": "not-impl"
         })
 
-        for(let asser of otherAssertion) {
+        for(const asser of otherAssertion) {
             results.push({
                 "ID": asser,
-                "Status": "not-impl",
+                "Status": "not-impl"
             })
         }
     }
 
     /**
-     * 
-     * @param {object} obj 
-     * @param {function} logFunc 
+     *
+     * @param {object} obj
+     * @param {function} logFunc
      * @returns {{valid: boolean, ajvObject: object} | null} true if validation passes, else false
      */
      function checkObjContainsTmRef(obj, logFunc) {
-        
-        for(let key in obj) {
-            if(key === "tm:ref") {
-                FOUND_TM_REF = true
-                let result = validate(obj, tmRefSchema, logFunc)
-                tmpResults.push(result);
-            }
-            if(typeof obj[key] == "object") {
-                checkObjContainsTmRef(obj[key])
+
+        for(const key in obj) {
+            if(Object.prototype.hasOwnProperty.call(obj, key)) {
+                if(key === "tm:ref") {
+                    FOUND_TM_REF = true
+                    const result = validate(obj, tmRefSchema, logFunc)
+                    tmpResults.push(result)
+                }
+                if(typeof obj[key] == "object") {
+                    checkObjContainsTmRef(obj[key])
+                }
             }
         }
         if(FOUND_TM_REF) {
             // Return a fail result if found
-            for(let result of tmpResults) {
+            for(const result of tmpResults) {
                 if(result && !result.valid) return result
             }
             // if no fail was found, return a valid result
-            return results[0];
+            return results[0]
         }
         return null
     }
 
 }
-    
+
 

@@ -5,12 +5,12 @@ const isUtf8 = require('is-utf8')
 
 const Ajv = require("ajv")
 const addFormats = require("ajv-formats")
-const apply = require('ajv-formats-draft2019');
+const apply = require('ajv-formats-draft2019')
 
-//Imports from utils
-const validate = require("./util").validate;
-const createParents = require("./util").createParents;
-const mergeIdenticalResults = require("./util").mergeIdenticalResults;
+// Imports from utils
+const validate = require("./util").validate
+const createParents = require("./util").createParents
+const mergeIdenticalResults = require("./util").mergeIdenticalResults
 
 // Imports from playground core
 const checkUniqueness = require('@thing-description-playground/core').propUniqueness
@@ -262,7 +262,7 @@ function checkVocabulary(tdJson) {
     ajv = addFormats(ajv) // ajv does not support formats by default anymore
     ajv = apply(ajv) // new formats that include iri
     ajv.addSchema(tdSchema, 'td')
-    ajv.addVocabulary(['is-complex', 'also']);
+    ajv.addVocabulary(['is-complex', 'also'])
 
     const valid = ajv.validate('td', tdJson)
     const otherAssertions = ["td-objects_securityDefinitions", "td-arrays_security", "td-vocab-security--Thing",
