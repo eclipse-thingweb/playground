@@ -52,7 +52,9 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, doneEventEmit
 
         // loading files
         const loadProm = []
-        loadProm.push(collectAssertionSchemas(path.join(pathOffset, "./assertions-td"), path.join(pathOffset, "./assertions-td", "./tdAssertionList.json"), fileLoader))
+        loadProm.push(collectAssertionSchemas(path.join(pathOffset, "./assertions-td"),
+        path.join(pathOffset, "./assertions-td", "./tdAssertionList.json"), fileLoader))
+
         loadProm.push(fileLoader(path.join(pathOffset, "./node_modules", "@thing-description-playground", "core", "td-schema.json")))
         if (givenManual === undefined) {loadProm.push(fileLoader(path.join(pathOffset, "./assertions-td", "./manual.csv")))}
 
@@ -138,19 +140,20 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, doneEventEmit
 
         // loading files
         const loadProm = []
-        loadProm.push(collectAssertionSchemas(path.join(pathOffset, "./assertions-tm"), path.join(pathOffset, "./assertions-tm", "./tmAssertionList.json"), fileLoader))
+        loadProm.push(collectAssertionSchemas(path.join(pathOffset, "./assertions-tm"),
+        path.join(pathOffset, "./assertions-tm", "./tmAssertionList.json"), fileLoader))
         loadProm.push(fileLoader(path.join(pathOffset, "./node_modules", "@thing-description-playground", "core", "tm-schema.json")))
         if (givenManual === undefined) {loadProm.push(fileLoader(path.join(pathOffset, "./assertions-tm", "./manual.csv")))}
 
         Promise.all(loadProm).then( promResults => {
 
             const assertionSchemas = promResults.shift()
-            //! Is needed, do not remove! 
+            // ! Is needed, do not remove!
             const tmSchema = promResults.shift()
             const manualAssertionsJSON = (givenManual === undefined) ?
                                         manualToJson(promResults.shift().toString()) :
                                         givenManual
-            
+
             const jsonResults = {}
             tmStrings.forEach( tmToValidate => {
                 // check if id exists, use it for name if it does, title + some rand number otherwise
@@ -170,7 +173,7 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, doneEventEmit
                 jsonResults[tmName] = validateTM(tmToValidate, assertionSchemas, manualAssertionsJSON, logFunc)
                 if(doneEventEmitter) doneEventEmitter.emit("done", tmName)
             })
-            
+
             const tmNames = Object.keys(jsonResults)
 
             if (tmNames.length > 1) {

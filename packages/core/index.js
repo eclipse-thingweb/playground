@@ -1,7 +1,7 @@
 const jsonld = require("jsonld")
 const Ajv = require("ajv")
 const addFormats = require("ajv-formats")
-const apply = require('ajv-formats-draft2019');
+const apply = require('ajv-formats-draft2019')
 
 const coreAssertions = require("./shared")
 const tdSchema = require("./td-schema.json")
@@ -556,7 +556,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
 
             report.schema = "passed"
 
-            //! No need to do defaults checking 
+            // ! No need to do defaults checking
             // check with full schema
             // if (checkDefaults) {
             //     ajv.addSchema(fullTdSchema, 'fulltd')
@@ -575,7 +575,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             checkEnumConst(tmJson)
             checkPropItems(tmJson)
             checkReadWriteOnly(tmJson)
-            //! no need to do security checking
+            // ! no need to do security checking
             // details.security = evalAssertion(coreAssertions.checkSecurity(tmJson))
             details.propUniqueness = evalAssertion(coreAssertions.checkPropUniqueness(tmString))
             if (details.propUniqueness === "passed") {

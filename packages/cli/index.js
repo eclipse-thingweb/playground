@@ -1,10 +1,10 @@
-/**================================================================================================
- * ?                                           ABOUT 
+/** ================================================================================================
+ * ?                                           ABOUT
  * @description    :  CLI interface for the Thing Description Playground
  *================================================================================================**/
 
 
-/**================================================================================================
+/** ================================================================================================
  *                                         Imports
  *================================================================================================**/
 const fs = require('fs')
@@ -18,14 +18,14 @@ const assertResultsToCsv = require('@thing-description-playground/assertions').r
 const {addDefaults, removeDefaults} = require('@thing-description-playground/defaults')
 const tdToOAP = require('@thing-description-playground/td_to_openapi')
 const tdToAAP = require('@thing-description-playground/td_to_asyncapi')
-const commander = require('commander');
-const EventEmitter = require("events");
+const commander = require('commander')
+const EventEmitter = require("events")
 const cliProgress = require('cli-progress')
 
-/**================================================================================================
+/** ================================================================================================
  *                                         CLI Configuration
  *================================================================================================**/
-const program = new commander.Command();
+const program = new commander.Command()
 program
     .description('For TD Playground core validation you can call the Playground \n' +
                     'validation with no input (example folder will be taken), \n'+
@@ -34,16 +34,20 @@ program
                     'will be checked whether they produce the expected validation result. \n' +
                     'Use the -a parameter for assertions testing.')
 
-    
-    .addOption(new commander.Option('-t, --type <type>', 'The type of JSON documents that are passed as inputs').choices(['TD', 'TM', 'AUTO']).default('TD'))
-    .option('-i, --input <pathToInputs...>', 'The files or the folders containing the files, which will be processed and/or validated', undefined)
+
+    .addOption(new commander.Option('-t, --type <type>',
+    'The type of JSON documents that are passed as inputs').choices(['TD', 'TM', 'AUTO']).default('TD'))
+    .option('-i, --input <pathToInputs...>',
+    'The files or the folders containing the files, which will be processed and/or validated', undefined)
     .option('-j, --no-jsonld', 'Turn off the JSON-LD validation (for example because internet connection is not available)')
     .option('-d, --no-defaults', 'Turn off the Full JSON Schema validation, which checks e.g. for default values being explicitly set')
     .option('-a, --assertions', 'Call the assertion report instead of the core validation, \n' +
                                 'if files with .csv ending are given as input merging assertion reports is done')
-    .option('-o, --assertion-out <pathToOutput>', 'Path and filename of the generated assertions report (defaults to ./out/[.]assertionsTest[_$input]) \n' +
+    .option('-o, --assertion-out <pathToOutput>',
+    'Path and filename of the generated assertions report (defaults to ./out/[.]assertionsTest[_$input]) \n' +
                                     'Please notice that the folders you specify as target already have to exist.')
-    .option('-n, --assertion-no-merge', 'If multiple files where given as input, don\'t create a merged report, but create one for each')
+    .option('-n, --assertion-no-merge',
+    'If multiple files where given as input, don\'t create a merged report, but create one for each')
     .option('-s, --assertion-to-std', 'Output the report(s) as stdout and don\'t write them to a file')
     .option('-c, --assertion-no-csv', 'Return assertion report(s) in JSON format instead of CSV')
     .option('-m, --assertion-manual <pathToManual>', 'Path and filename to manual.csv file')
@@ -53,7 +57,7 @@ program
     .option('--aap-yaml', 'Whether AsyncAPI should be written as YAML instead of json.')
     .option('--default-add', 'Whether the input TD should be extended by default values')
     .option('--default-rem', 'Whether the input TD should be reduced by default values')
-    
+
 const myArguments = program.parse().opts()
 
 // assign / overwrite logging functions used
@@ -62,9 +66,9 @@ if (!myArguments.assertionToStd) {console.info = () => {}}
 
 // handle input argument
 let input = myArguments.input
-if( input && input.length === 1 ) input = input[0];
+if( input && input.length === 1 ) input = input[0]
 
-/**================================================================================================
+/** ================================================================================================
  *                                         Handling TDs
  *================================================================================================**/
 
@@ -86,7 +90,7 @@ if(myArguments.type === 'TD') {
     }
 }
 
-/**================================================================================================
+/** ================================================================================================
  *                                         Handle TMs
  *================================================================================================**/
 
@@ -105,7 +109,7 @@ if(myArguments.type === 'TD') {
 }
 
 
-/**================================================================================================
+/** ================================================================================================
  *                                         TD functions
  *================================================================================================**/
 /**
@@ -119,7 +123,8 @@ function tdAssertionReport(input) {
     let numberOfFilesAssertion = 0
     let numberOfFilesMerge = 0
 
-    const bar = new cliProgress.SingleBar({clearOnComplete: true ,format: 'progress [{bar}] {percentage}% | TD Name: {tdName} | {value}/{total} \n'}, cliProgress.Presets.shades_classic)
+    const bar = new cliProgress.SingleBar({clearOnComplete: true,
+        format: 'progress [{bar}] {percentage}% | TD Name: {tdName} | {value}/{total} \n'}, cliProgress.Presets.shades_classic)
 
     let assertType
     // handle manual param
@@ -179,8 +184,8 @@ function tdAssertionReport(input) {
             return
         }
     }
-    let doneEventEmitter = new EventEmitter()
-    doneEventEmitter.on("start", (tdName) =>  { bar.increment(1, {"tdName": tdName})})
+    const doneEventEmitter = new EventEmitter()
+    doneEventEmitter.on("start", tdName =>  { bar.increment(1, {tdName})})
 
     bar.start(numberOfFilesAssertion, 0)
     assertTd(tdsToCheck, assertType, tdsToMerge, manualAssertions, doneEventEmitter)
@@ -211,7 +216,10 @@ function assertTd(tds, type, tdsToMerge, manualAssertions, doneEventEmitter) {
                         })
                     }
                     else {
-                        outReport(results.merged, ".assertionsTest")
+                        // Needed for batch assertions for folders with one file
+                        if(!results.merged) results = {"merged": results}
+
+                        outReport(results.merged, "assertionsTest")
                         if (tdsToMerge.length > 0) {
                             tdsToMerge.push(results.merged)
                         }
@@ -240,7 +248,7 @@ function mergeReports(reports) {
         if (reports.length > 1) {
             assertMergeResults(reports).then( merged => {
                 assertCheckCoverage(merged, logFunc)
-                outReport(merged, ".tmAssertionsMerged")
+                outReport(merged, "tmAssertionsMerged")
                 res()
             }, err => {
                 rej(err)
@@ -572,16 +580,16 @@ function extractName(pathLike) {
     return pathLike
 }
 
-/**================================================================================================
+/** ================================================================================================
  *                                         TM functions
  *================================================================================================**/
 
-//* This  
+//* This
 
 /**
- * 
- * @param {*} input 
- * @returns 
+ *
+ * @param {*} input
+ * @returns
  */
 function tmAssertionReport(input) {
     const tmsToCheck = []
@@ -599,7 +607,8 @@ function tmAssertionReport(input) {
     let numberOfFilesAssertion = 0
     let numberOfFilesMerge = 0
 
-    const bar = new cliProgress.SingleBar({format: 'progress [{bar}] {percentage}% | TM Name: {tmName} | {value}/{total} \n'}, cliProgress.Presets.shades_classic)
+    const bar = new cliProgress.SingleBar({format: 'progress [{bar}] {percentage}% | TM Name: {tmName} | {value}/{total} \n'},
+    cliProgress.Presets.shades_classic)
 
     if (typeof input === "object") {
         assertType = "list"
@@ -651,13 +660,13 @@ function tmAssertionReport(input) {
             return
         }
     }
-    let doneEventEmitter = new EventEmitter()
-    doneEventEmitter.on("start", (tmName) =>  { bar.increment(1, {"tmName": tmName})})
+    const doneEventEmitter = new EventEmitter()
+    doneEventEmitter.on("start", tmName =>  { bar.increment(1, {tmName})})
 
     bar.start(numberOfFilesAssertion, 0)
     assertTm(tmsToCheck, assertType, tmsToMerge, manualAssertions, doneEventEmitter)
     .then( () => {
-        setTimeout(() => {bar.stop()}, 100) 
+        setTimeout(() => {bar.stop()}, 100)
         mergeReports(tmsToMerge)
     })
 }
@@ -822,7 +831,10 @@ function tmAssertionReport(input) {
                         })
                     }
                     else {
-                        outReport(results.merged, ".tmAssertionsTest")
+                        // Needed for batch assertions for folders with one file
+                        if(!results.merged) results = {"merged": results}
+
+                        outReport(results.merged, "tmAssertionsTest")
                         if (tmsToMerge.length > 0) {
                             tmsToMerge.push(results.merged)
                         }
