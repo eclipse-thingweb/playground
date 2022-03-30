@@ -216,6 +216,9 @@ function assertTd(tds, type, tdsToMerge, manualAssertions, doneEventEmitter) {
                         })
                     }
                     else {
+                        // Needed for batch assertions for folders with one file
+                        if(!results.merged) results = {"merged": results}
+
                         outReport(results.merged, "assertionsTest")
                         if (tdsToMerge.length > 0) {
                             tdsToMerge.push(results.merged)
@@ -828,7 +831,9 @@ function tmAssertionReport(input) {
                         })
                     }
                     else {
+                        // Needed for batch assertions for folders with one file
                         if(!results.merged) results = {"merged": results}
+
                         outReport(results.merged, "tmAssertionsTest")
                         if (tmsToMerge.length > 0) {
                             tmsToMerge.push(results.merged)
