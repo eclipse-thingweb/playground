@@ -216,7 +216,7 @@ function assertTd(tds, type, tdsToMerge, manualAssertions, doneEventEmitter) {
                         })
                     }
                     else {
-                        outReport(results.merged, ".assertionsTest")
+                        outReport(results.merged, "assertionsTest")
                         if (tdsToMerge.length > 0) {
                             tdsToMerge.push(results.merged)
                         }
@@ -245,7 +245,7 @@ function mergeReports(reports) {
         if (reports.length > 1) {
             assertMergeResults(reports).then( merged => {
                 assertCheckCoverage(merged, logFunc)
-                outReport(merged, ".tmAssertionsMerged")
+                outReport(merged, "tmAssertionsMerged")
                 res()
             }, err => {
                 rej(err)
@@ -828,7 +828,7 @@ function tmAssertionReport(input) {
                         })
                     }
                     else {
-                        outReport(results.merged, ".tmAssertionsTest")
+                        outReport(results.merged, "tmAssertionsTest")
                         if (tmsToMerge.length > 0) {
                             tmsToMerge.push(results.merged)
                         }
