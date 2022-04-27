@@ -51,6 +51,7 @@ program
     .option('-s, --assertion-to-std', 'Output the report(s) as stdout and don\'t write them to a file')
     .option('-c, --assertion-no-csv', 'Return assertion report(s) in JSON format instead of CSV')
     .option('-m, --assertion-manual <pathToManual>', 'Path and filename to manual.csv file')
+    .option('--merge-only <pathToInputs...>', 'Path and filename of the csv files to merge')
     .option('-p, --open-api', 'Call the OpenAPI instance generation instead of validation/assertions')
     .option('-y --oap-yaml', 'Whether OpenAPI should be written as YAML instead of JSON')
     .option('--async-api', 'Call the AsyncAPI instance generation instead of validation/assertions')
@@ -59,6 +60,24 @@ program
     .option('--default-rem', 'Whether the input TD should be reduced by default values')
 
 const myArguments = program.parse().opts()
+
+// stop doing anything if all that is needed is merging two files
+if(myArguments.mergeOnly){
+    const fileArray = []
+    const toMergeFilePaths = myArguments.mergeOnly
+    myArguments.type = null
+    for (let index = 0; index < toMergeFilePaths.length; index++) {
+        const element = toMergeFilePaths[index]
+        const fileCSV = fs.readFileSync(element).toString()
+        const fileJSON = assertManualToJson(fileCSV)
+        fileArray.push(fileJSON)
+    }
+    mergeReports(fileArray).then(element=>{
+    })
+
+} else {
+    // do nothing
+}
 
 // assign / overwrite logging functions used
 const logFunc = myArguments.assertionToStd ? () => {} : console.log
@@ -108,6 +127,9 @@ if(myArguments.type === 'TD') {
     }
 }
 
+if(myArguments.type === 'AUTO') {
+    console.error("Not implemented")
+}
 
 /** ================================================================================================
  *                                         TD functions
@@ -132,7 +154,9 @@ function tdAssertionReport(input) {
         manualAssertions = assertManualToJson(fs.readFileSync(myArguments.assertionManual, "utf-8"))
     }
 
-    if (input === undefined) {input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid")}
+    if (input === undefined && !myArguments.mergeOnly) {
+        input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid")
+    }
 
     if (typeof input === "object") {
         assertType = "list"
@@ -248,7 +272,7 @@ function mergeReports(reports) {
         if (reports.length > 1) {
             assertMergeResults(reports).then( merged => {
                 assertCheckCoverage(merged, logFunc)
-                outReport(merged, "tmAssertionsMerged")
+                outReport(merged, "assertionsMerged")
                 res()
             }, err => {
                 rej(err)

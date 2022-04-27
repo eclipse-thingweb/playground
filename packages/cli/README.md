@@ -111,6 +111,11 @@ The core validation report is an object, which contains three objects (as you ca
                 'will be checked whether they produce the expected validation result.' +
                 'Use the -a parameter for assertions testing.'
 },
+'--type -t *': {
+    type: 'string',
+    choices: ['TD', 'TM', 'AUTO'],
+    description: 'Type of document to take as input. AUTO not implemented yet'
+},
 '--input -i *': {
     type: 'string',
     description: 'The file or the folder containing the files, which will be validated.'
