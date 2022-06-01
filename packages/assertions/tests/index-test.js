@@ -8,7 +8,7 @@ const fs = require("fs")
 
 const simpleTD = JSON.stringify({
 	"id": "urn:simple",
-	"@context": "https://www.w3.org/2019/wot/td/v1",
+	"@context": "https://www.w3.org/2022/wot/td/v1.1",
 	"title": "MyLampThing",
 	"description": "Valid TD copied from the specs first example",
 	"securityDefinitions": {
