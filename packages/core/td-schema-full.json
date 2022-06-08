@@ -642,7 +642,7 @@
         "forms",
         "readOnly",
         "writeOnly",
-        "observeable"
+        "observable"
       ],
       "additionalProperties": true
     },

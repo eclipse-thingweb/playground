@@ -50,7 +50,7 @@
 			"forms": [
 				{
 					"href": "https://mylamp.example.com/oh",
-					"op": "subscribeevent",
+					"op": ["subscribeevent", "unsubscribeevent"],
 					"subprotocol": "longpoll",
 					"contentType": "application/json"
 				}

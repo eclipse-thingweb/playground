@@ -107,7 +107,7 @@ describe("module tests", () => {
                     throwBall: {
                         forms: [
                             {
-                                op: "subscribeevent",
+                                op: ["subscribeevent", "unsubscribeevent"],
                                 contentType: "application/json"
                             }
                         ]
