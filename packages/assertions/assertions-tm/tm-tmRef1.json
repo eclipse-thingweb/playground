@@ -1,5 +1,5 @@
 {
-    "title": "tm-tmRef-1",
+    "title": "tm-tmRef1",
     "description": "The tm:ref value MUST follow the pattern: file location as URI [RFC3986](Section 4.1)), followed by # character, and followed by JSON Pointer [RFC6901] definition.",
     "$schema ": "https://json-schema.org/draft/2019-09/schema#",
     "is-complex":false,

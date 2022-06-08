@@ -43,10 +43,10 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
     let tdJson
     try {
         tdJson = JSON.parse(tdData)
-        results.push({
-            "ID": "td-json-open",
-            "Status": "pass"
-        })
+        // results.push({
+        //     "ID": "td-json-open",
+        //     "Status": "pass"
+        // })
     } catch (error) {
         throw new Error("td-json-open")
     }

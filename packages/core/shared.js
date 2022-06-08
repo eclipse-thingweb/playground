@@ -510,11 +510,11 @@ function checkMultiLangConsistency(td) {
         })
     }
 
-    // checking td-context-default-language-direction-script assertion
-    results.push({
-        "ID": "td-context-default-language-direction-script",
-        "Status": checkAzeri(flatArray)
-    })
+    // // checking td-context-default-language-direction-script assertion
+    // results.push({
+    //     "ID": "td-context-default-language-direction-script",
+    //     "Status": checkAzeri(flatArray)
+    // })
 
     // checking td-titles-descriptions assertion
     // if there are no multilang, then it is not impl
