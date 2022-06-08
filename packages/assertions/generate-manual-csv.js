@@ -10,7 +10,7 @@ const path = require("path")
 
 const csvGenerator = new Json2CsvParser()
 const mainPath = path.join("assertions-csv")
-const assertionsPath = path.join("assertions-csv", "results-template.csv")
+const assertionsPath = path.join("assertions-csv", "template.csv")
 const implementedPath = path.join("assertions-csv", "manual-generation-inputs", "pre-implemented.csv")
 
 /** ========================================================================
@@ -27,7 +27,6 @@ const csvParserOptions = {
 
 const assertionsTable = csvjson.toObject(assertionsTableCSV, csvParserOptions)
 const implementedTable = csvjson.toObject(implementedPathCSV, csvParserOptions)
-console.log(implementedTable.length)
 // implementedTable.forEach(a => console.log(a))
 
 /** ========================================================================
@@ -46,7 +45,6 @@ console.log(implementedTable.length)
         index++
     }
 }
-console.log(implementedTable.length)
 
 /** ========================================================================
  *                           Determine Manual CSV
@@ -67,7 +65,6 @@ for(let iteration = 0; iteration < iterations; iteration++) {
         index++
     }
 }
-console.log(implementedTable.length)
 /* ================== Add new manual assertions ================= */
 for(const assertion of assertionsTable) {
     const isNotFound = implementedTable.findIndex(implementedAssertion => {return implementedAssertion.ID === assertion.ID}) === -1

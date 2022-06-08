@@ -16,7 +16,11 @@ const defaultLookup = {
         op: "invokeaction"
     },
     "Form-EventAffordance": {
-        op: "subscribeevent" // will be ["subscribeevent", "unsubscribeevent"] in the future
+        op: ["subscribeevent", "unsubscribeevent"]
+    },
+    AdditionalExpectedResponse: {
+        success: false,
+        contentType: "application/json"
     },
     DataSchema: {
         readOnly: false,

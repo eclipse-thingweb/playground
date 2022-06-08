@@ -21,7 +21,7 @@ const mergeIdenticalResults = require("./util").mergeIdenticalResults
 // const checkLinksRelTypeCount = require("@thing-description-playground/core").checkLinksRelTypeCount
 const tmSchema = require("@thing-description-playground/core/tm-schema.json")
 const tmPlaceholderSchema = require("./assertions-tm/tm-placeholder.json")
-const tmRefSchema =  require("./assertions-tm/tm-tmRef-1.json")
+const tmRefSchema =  require("./assertions-tm/tm-tmRef1.json")
 
 module.exports = validateTM
 
@@ -97,7 +97,7 @@ module.exports = validateTM
             continue
         }
 
-        if(schema.title === "tm-tmRef-1") {
+        if(schema.title === "tm-tmRef1") {
             validateTmRef(tmJson, logFunc, results)
             continue
         }
@@ -422,7 +422,7 @@ function validateTmRef(obj, logFunc, results) {
     if(FOUND_TM_REF) {
         if(validPayload && validPayload.valid) {
             results.push({
-                "ID": "tm-tmRef-1",
+                "ID": "tm-tmRef1",
                 "Status": "pass"
             })
 
@@ -434,7 +434,7 @@ function validateTmRef(obj, logFunc, results) {
             }
         } else if (validPayload && !validPayload.valid) {
             results.push({
-                "ID": "tm-tmRef-1",
+                "ID": "tm-tmRef1",
                 "Status": "fail",
                 "Comment": validPayload.ajvObject.errorsText()
             })
@@ -449,7 +449,7 @@ function validateTmRef(obj, logFunc, results) {
         }
     } else {
         results.push({
-            "ID": "tm-tmRef-1",
+            "ID": "tm-tmRef1",
             "Status": "not-impl"
         })
 
