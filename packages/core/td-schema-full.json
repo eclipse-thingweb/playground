@@ -1,6 +1,6 @@
 {
   "title": "Thing Description",
-  "version": "1.1-28-January-2022",
+  "version": "1.1-10-June-2022",
   "description": "JSON Schema for validating TD instances against the TD information model. For a TD to validate this schema it must contain all the default terms defined in Section 5.4",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$defs": {
@@ -53,11 +53,7 @@
     },
     "subprotocol": {
       "type": "string",
-      "examples": [
-        "longpoll",
-        "websub",
-        "sse"
-      ]
+      "examples": ["longpoll", "websub", "sse"]
     },
     "thing-context-td-uri-v1": {
       "type": "string",
@@ -124,6 +120,33 @@
               }
             ]
           }
+        },
+        {
+          "$comment": "Old context URI, followed by possibly other vocabularies. minItems and contains are required since prefixItems does not say all items should be provided",
+          "type": "array",
+          "prefixItems": [
+            {
+              "$ref": "#/$defs/thing-context-td-uri-v1"
+            }
+          ],
+          "minItems": 1,
+          "contains": {
+            "$ref": "#/$defs/thing-context-td-uri-v1"
+          },
+          "additionalItems": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/anyUri"
+              },
+              {
+                "type": "object"
+              }
+            ]
+          }
+        },
+        {
+          "$comment": "Only the new context URI",
+          "$ref": "#/$defs/thing-context-td-uri-v1"
         }
       ]
     },
@@ -266,10 +289,7 @@
           }
         }
       },
-      "required": [
-        "readOnly",
-        "writeOnly"
-      ]
+      "required": ["readOnly", "writeOnly"]
     },
     "additionalResponsesDefinition": {
       "type": "array",
@@ -286,17 +306,11 @@
             "type": "boolean"
           }
         },
-        "required": [
-          "contentType",
-          "success"
-        ]
+        "required": ["contentType", "success"]
       }
     },
     "multipleOfDefinition": {
-      "type": [
-        "integer",
-        "number"
-      ],
+      "type": ["integer", "number"],
       "exclusiveMinimum": 0
     },
     "expectedResponse": {
@@ -348,11 +362,7 @@
           "$ref": "#/$defs/additionalResponsesDefinition"
         }
       },
-      "required": [
-        "href",
-        "contentType",
-        "op"
-      ],
+      "required": ["href", "contentType", "op"],
       "additionalProperties": true
     },
     "form_element_property": {
@@ -403,21 +413,13 @@
           "oneOf": [
             {
               "type": "string",
-              "enum": [
-                "invokeaction",
-                "queryaction",
-                "cancelaction"
-              ]
+              "enum": ["invokeaction", "queryaction", "cancelaction"]
             },
             {
               "type": "array",
               "items": {
                 "type": "string",
-                "enum": [
-                  "invokeaction",
-                  "queryaction",
-                  "cancelaction"
-                ]
+                "enum": ["invokeaction", "queryaction", "cancelaction"]
               }
             }
           ]
@@ -437,19 +439,13 @@
           "oneOf": [
             {
               "type": "string",
-              "enum": [
-                "subscribeevent",
-                "unsubscribeevent"
-              ]
+              "enum": ["subscribeevent", "unsubscribeevent"]
             },
             {
               "type": "array",
               "items": {
                 "type": "string",
-                "enum": [
-                  "subscribeevent",
-                  "unsubscribeevent"
-                ]
+                "enum": ["subscribeevent", "unsubscribeevent"]
               }
             }
           ]
@@ -638,12 +634,7 @@
           }
         }
       },
-      "required": [
-        "forms",
-        "readOnly",
-        "writeOnly",
-        "observable"
-      ],
+      "required": ["forms", "readOnly", "writeOnly", "observable"],
       "additionalProperties": true
     },
     "action_element": {
@@ -693,11 +684,7 @@
           "type": "boolean"
         }
       },
-      "required": [
-        "forms",
-        "safe",
-        "idempotent"
-      ],
+      "required": ["forms", "safe", "idempotent"],
       "additionalProperties": true
     },
     "event_element": {
@@ -744,9 +731,7 @@
           "$ref": "#/$defs/dataSchema"
         }
       },
-      "required": [
-        "forms"
-      ],
+      "required": ["forms"],
       "additionalProperties": true
     },
     "base_link_element": {
@@ -765,9 +750,7 @@
           "$ref": "#/$defs/anyUri"
         }
       },
-      "required": [
-        "href"
-      ],
+      "required": ["href"],
       "additionalProperties": true
     },
     "link_element": {
@@ -782,9 +765,7 @@
             "properties": {
               "sizes": {}
             },
-            "required": [
-              "sizes"
-            ]
+            "required": ["sizes"]
           }
         },
         {
@@ -792,15 +773,10 @@
             "description": "A basic link element should not contain icon or tm:extends",
             "properties": {
               "rel": {
-                "enum": [
-                  "icon",
-                  "tm:extends"
-                ]
+                "enum": ["icon", "tm:extends"]
               }
             },
-            "required": [
-              "rel"
-            ]
+            "required": ["rel"]
           }
         }
       ]
@@ -820,9 +796,7 @@
               "pattern": "[0-9]*x[0-9]+"
             }
           },
-          "required": [
-            "rel"
-          ]
+          "required": ["rel"]
         }
       ]
     },
@@ -834,10 +808,7 @@
           "scheme": "ace:ACESecurityScheme",
           "ace:as": "coaps://as.example.com/token",
           "ace:audience": "coaps://rs.example.com",
-          "ace:scopes": [
-            "limited",
-            "special"
-          ],
+          "ace:scopes": ["limited", "special"],
           "ace:cnonce": true
         }
       ],
@@ -860,9 +831,7 @@
           "pattern": ".+:.*"
         }
       },
-      "required": [
-        "scheme"
-      ]
+      "required": ["scheme"]
     },
     "noSecurityScheme": {
       "type": "object",
@@ -881,14 +850,10 @@
         },
         "scheme": {
           "type": "string",
-          "enum": [
-            "nosec"
-          ]
+          "enum": ["nosec"]
         }
       },
-      "required": [
-        "scheme"
-      ]
+      "required": ["scheme"]
     },
     "autoSecurityScheme": {
       "type": "object",
@@ -907,14 +872,10 @@
         },
         "scheme": {
           "type": "string",
-          "enum": [
-            "auto"
-          ]
+          "enum": ["auto"]
         }
       },
-      "required": [
-        "scheme"
-      ]
+      "required": ["scheme"]
     },
     "comboSecurityScheme": {
       "oneOf": [
@@ -935,9 +896,7 @@
             },
             "scheme": {
               "type": "string",
-              "enum": [
-                "combo"
-              ]
+              "enum": ["combo"]
             },
             "oneOf": {
               "type": "array",
@@ -947,10 +906,7 @@
               }
             }
           },
-          "required": [
-            "scheme",
-            "oneOf"
-          ]
+          "required": ["scheme", "oneOf"]
         },
         {
           "type": "object",
@@ -969,9 +925,7 @@
             },
             "scheme": {
               "type": "string",
-              "enum": [
-                "combo"
-              ]
+              "enum": ["combo"]
             },
             "allOf": {
               "type": "array",
@@ -981,10 +935,7 @@
               }
             }
           },
-          "required": [
-            "scheme",
-            "allOf"
-          ]
+          "required": ["scheme", "allOf"]
         }
       ]
     },
@@ -1005,28 +956,17 @@
         },
         "scheme": {
           "type": "string",
-          "enum": [
-            "basic"
-          ]
+          "enum": ["basic"]
         },
         "in": {
           "type": "string",
-          "enum": [
-            "header",
-            "query",
-            "body",
-            "cookie",
-            "auto"
-          ]
+          "enum": ["header", "query", "body", "cookie", "auto"]
         },
         "name": {
           "type": "string"
         }
       },
-      "required": [
-        "scheme",
-        "in"
-      ]
+      "required": ["scheme", "in"]
     },
     "digestSecurityScheme": {
       "type": "object",
@@ -1045,36 +985,21 @@
         },
         "scheme": {
           "type": "string",
-          "enum": [
-            "digest"
-          ]
+          "enum": ["digest"]
         },
         "qop": {
           "type": "string",
-          "enum": [
-            "auth",
-            "auth-int"
-          ]
+          "enum": ["auth", "auth-int"]
         },
         "in": {
           "type": "string",
-          "enum": [
-            "header",
-            "query",
-            "body",
-            "cookie",
-            "auto"
-          ]
+          "enum": ["header", "query", "body", "cookie", "auto"]
         },
         "name": {
           "type": "string"
         }
       },
-      "required": [
-        "scheme",
-        "in",
-        "qop"
-      ]
+      "required": ["scheme", "in", "qop"]
     },
     "apiKeySecurityScheme": {
       "type": "object",
@@ -1093,27 +1018,17 @@
         },
         "scheme": {
           "type": "string",
-          "enum": [
-            "apikey"
-          ]
+          "enum": ["apikey"]
         },
         "in": {
           "type": "string",
-          "enum": [
-            "header",
-            "query",
-            "body",
-            "cookie"
-          ]
+          "enum": ["header", "query", "body", "cookie"]
         },
         "name": {
           "type": "string"
         }
       },
-      "required": [
-        "scheme",
-        "in"
-      ]
+      "required": ["scheme", "in"]
     },
     "bearerSecurityScheme": {
       "type": "object",
@@ -1132,9 +1047,7 @@
         },
         "scheme": {
           "type": "string",
-          "enum": [
-            "bearer"
-          ]
+          "enum": ["bearer"]
         },
         "authorization": {
           "$ref": "#/$defs/anyUri"
@@ -1147,24 +1060,13 @@
         },
         "in": {
           "type": "string",
-          "enum": [
-            "header",
-            "query",
-            "body",
-            "cookie",
-            "auto"
-          ]
+          "enum": ["header", "query", "body", "cookie", "auto"]
         },
         "name": {
           "type": "string"
         }
       },
-      "required": [
-        "scheme",
-        "alg",
-        "format",
-        "in"
-      ]
+      "required": ["scheme", "alg", "format", "in"]
     },
     "pskSecurityScheme": {
       "type": "object",
@@ -1183,17 +1085,13 @@
         },
         "scheme": {
           "type": "string",
-          "enum": [
-            "psk"
-          ]
+          "enum": ["psk"]
         },
         "identity": {
           "type": "string"
         }
       },
-      "required": [
-        "scheme"
-      ]
+      "required": ["scheme"]
     },
     "oAuth2SecurityScheme": {
       "type": "object",
@@ -1212,9 +1110,7 @@
         },
         "scheme": {
           "type": "string",
-          "enum": [
-            "oauth2"
-          ]
+          "enum": ["oauth2"]
         },
         "authorization": {
           "$ref": "#/$defs/anyUri"
@@ -1245,18 +1141,12 @@
             },
             {
               "type": "string",
-              "enum": [
-                "code",
-                "client",
-                "device"
-              ]
+              "enum": ["code", "client", "device"]
             }
           ]
         }
       },
-      "required": [
-        "scheme"
-      ]
+      "required": ["scheme"]
     },
     "securityScheme": {
       "oneOf": [
@@ -1336,9 +1226,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "instance"
-      ]
+      "required": ["instance"]
     },
     "links": {
       "type": "array",
@@ -1429,11 +1317,6 @@
       "$ref": "#/$defs/thing-context"
     }
   },
-  "required": [
-    "title",
-    "security",
-    "securityDefinitions",
-    "@context"
-  ],
+  "required": ["title", "security", "securityDefinitions", "@context"],
   "additionalProperties": true
 }
