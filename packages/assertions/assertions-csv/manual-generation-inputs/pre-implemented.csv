@@ -24,8 +24,6 @@
 "td-arrays","not-impl","Error message can be seen in the children assertions",
 "td-arrays_forms","not-impl","result of a merge",
 "td-arrays_links","not-impl","data must have required property 'links'"," Each mandatory and optional vocabulary term as defined in the class Link, MUST be serialized as a JSON name. "
-"td-arrays_scopes","not-impl","result of a merge",
-"td-arrays_security","pass",,
 "td-at-type","not-impl",,
 "td-boolean-type","not-impl","result of a merge",
 "td-class-type","pass",,
@@ -41,7 +39,6 @@
 "td-data-schema-arrays_oneOf","not-impl",,
 "td-data-schema-arrays_required","not-impl",,
 "td-data-schema-objects","not-impl",,
-"td-data-schema-objects-arrays","not-impl",,
 "td-data-schema_at-type","not-impl",,
 "td-data-schema_const","not-impl",,
 "td-data-schema_contentEncoding","not-impl",,
@@ -105,9 +102,6 @@
 "td-integer-type","not-impl","result of a merge",
 "td-json-open","pass",,
 "td-json-open_utf-8","pass",,
-"td-jsonld-keywords","not-impl","Error message can be seen in the children assertions",
-"td-jsonld-keywords_at-context","not-impl",,
-"td-jsonld-keywords_at-type","not-impl","result of a merge",
 "td-links","not-impl","data must have required property 'links'"," Each mandatory and optional vocabulary term as defined in the class Link, MUST be serialized as a JSON name. "
 "td-map-type","pass",,
 "td-multi-languages","not-impl","Error message can be seen in the children assertions",
@@ -119,6 +113,7 @@
 "td-number-type","not-impl","result of a merge",
 "td-objects","not-impl","Error message can be seen in the children assertions",
 "td-objects_actions","not-impl","data must have required property 'actions'","Actions offered by a Thing MUST be collected in the JSON-object based actions member with (unique) Action names as JSON names.(Checking their existence)"
+"td-objects_descriptions","not-impl","result of a merge",
 "td-objects_events","not-impl","data must have required property 'events'","Events offered by a Thing MUST be collected in the JSON-object based events member with (unique) Event names as JSON names. (Checking if they exist)"
 "td-objects_properties","not-impl","data must have required property 'properties'"," Properties (and sub-properties) offered by a Thing MUST be collected in the JSON-object based properties member with (unique) Property names as JSON names. (Checking their existence)"
 "td-objects_securityDefinitions","pass",,
@@ -297,6 +292,7 @@
 "td-vocab-schemaDefinitions--Thing","not-impl","data must have required property 'schemaDefinitions'","schemaDefinitions: Set of named data schemas. To be used in a schema name-value pair inside an AdditionalExpectedResponse object. MAY be included. Type: Map of DataSchema."
 "td-vocab-scheme--SecurityScheme","not-impl","Error message can be seen in the children assertions",
 "td-vocab-scheme--SecurityScheme_apikey","not-impl",,"scheme: Identification of security mechanism being configured. MUST be included. Type: string apikey."
+"td-vocab-scheme--SecurityScheme_auto","not-impl",,"scheme: Identification of security mechanism being configured. MUST be included. Type: string auto."
 "td-vocab-scheme--SecurityScheme_basic","pass",,"scheme: Identification of security mechanism being configured. MUST be included. Type: string basic."
 "td-vocab-scheme--SecurityScheme_bearer","not-impl",,"scheme: Identification of security mechanism being configured. MUST be included. Type: string bearer."
 "td-vocab-scheme--SecurityScheme_digest","not-impl",,"scheme: Identification of security mechanism being configured. MUST be included. Type: string digest."
@@ -309,13 +305,11 @@
 "td-vocab-security--Thing","pass","result of a merge",
 "td-vocab-securityDefinitions--Thing","pass",,
 "td-vocab-sizes--Link","not-impl",,"sizes: Target attribute that specifies one or more sizes for the referenced icon. Only applicable for relation type ""icon"". The value pattern follows {Height}x{Width} (e.g., ""16x16"", ""16x16 32x32""). MAY be included. Type: string."
-"td-vocab-subprotocol--Form","not-impl","Error message can be seen in the children assertions",
-"td-vocab-subprotocol--Form_longpoll","not-impl",,"subprotocol: Indicates the exact mechanism by which an interaction will be accomplished for a given protocol when there are multiple options. For example, for HTTP and Events, it indicates which of several available mechanisms should be used for asynchronous notifications. "
-"td-vocab-subprotocol--Form_sse","not-impl",,"subprotocol: Indicates the exact mechanism by which an interaction will be accomplished for a given protocol when there are multiple options. For example, for HTTP and Events, it indicates which of several available mechanisms should be used for asynchronous notifications. "
-"td-vocab-subprotocol--Form_websub","not-impl",,"subprotocol: Indicates the exact mechanism by which an interaction will be accomplished for a given protocol when there are multiple options. For example, for HTTP and Events, it indicates which of several available mechanisms should be used for asynchronous notifications. "
+"td-vocab-subprotocol--Form","not-impl",,"subprotocol: Indicates the exact mechanism by which an interaction will be accomplished for a given protocol when there are multiple options. For example, for HTTP and Events, it indicates which of several available mechanisms should be used for asynchronous notifications such as long polling (longpoll), WebSub [websub] (websub), Server-Sent Events (sse) [html] (also known as EventSource). Please note that there is no restriction on the subprotocol selection and other mechanisms can also be announced by this subprotocol term."
 "td-vocab-subscription--EventAffordance","not-impl",,"subscription: Defines data that needs to be passed upon subscription, e.g., filters or message format for setting up Webhooks."
 "td-vocab-success--AdditionalExpectedResponse","not-impl",,"success: Signals if an additional response should not be considered an error."
 "td-vocab-support--Thing","not-impl","data must have required property 'support'","support: Provides information about the TD maintainer (e.g., author, link or telephone number to get support, etc)."
+"td-vocab-synchronous--ActionAffordance","not-impl",,"synchronous: Indicates whether the action is synchronous (=true) or not. A synchronous action means that the response of action contains all the information about the result of the action and no further querying about the status of the action is needed. Lack of this keyword means that no claim on the synchronicity of the action can be made. Type: boolean"
 "td-vocab-title--DataSchema","not-impl",,"title: Provides a human-readable title (e.g., display a text for UI representation) of the interaction pattern based on a default language. MAY be included. Type: string."
 "td-vocab-title--InteractionAffordance","not-impl",,"title: Provides a human-readable title (e.g., display a text for UI representation) of the interaction pattern based on a default language. MAY be included. Type: string."
 "td-vocab-title--Thing","pass",,
