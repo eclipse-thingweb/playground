@@ -3,6 +3,7 @@
     "description": "schemaDefinitions: Set of named data schemas. To be used in a schema name-value pair inside an AdditionalExpectedResponse object. MAY be included. Type: Map of DataSchema.",
     "$schema ": "http://json-schema.org/draft/2019-09/schema#",
     "is-complex": false,
+    "also":["td-objects_schemaDefinitions"],
     "type": "object",
     "properties": {
         "schemaDefinitions": {
