@@ -1,6 +1,6 @@
 {
     "title": "td-context",
-    "description": "The root object of a Thing Description instance MAY include the @context name known from JSON-LD [[!json-ld]] with the value URI of the Thing description context file http://www.w3.org/ns/td.",
+    "description": "The root element of a TD Serialization MUST be a JSON object that includes a member with the name @context and a value of type string or array that equals or respectively contains https://www.w3.org/2022/wot/td/v1.1. ",
     "is-complex": true,
     "$schema": "http://json-schema.org/draft-07/schema#",
     "also": [
@@ -25,7 +25,7 @@
         "thing-context-w3c-uri": {
             "type": "string",
             "enum": [
-                "https://www.w3.org/2019/wot/td/v1"
+                "https://www.w3.org/2022/wot/td/v1.1"
             ]
         },
         "thing-context": {

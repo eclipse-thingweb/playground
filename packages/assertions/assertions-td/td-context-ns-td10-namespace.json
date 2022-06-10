@@ -1,0 +1,61 @@
+{
+  "title": "td-context-ns-td10-namespace",
+  "description": "When there are possibly TD 1.0 consumers the anyURI https://www.w3.org/2019/wot/td/v1 MUST be the first entry and the https://www.w3.org/2022/wot/td/v1.1 MUST be the second entry.",
+  "is-complex": true,
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "if": {
+    "required": [
+      "@context"
+    ],
+    "properties": {
+      "@context": {
+        "$ref": "#/$defs/thing-context"
+      }
+    }
+  },
+  "then": {
+    "const": "td-context-ns-td10-namespace=pass"
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "thing-context-td-uri-v1": {
+      "type": "string",
+      "const": "https://www.w3.org/2019/wot/td/v1"
+    },
+    "thing-context-td-uri-v1.1": {
+      "type": "string",
+      "const": "https://www.w3.org/2022/wot/td/v1.1"
+    },
+    "thing-context": {
+      "$comment": "Old context URI, followed by the new one and possibly other vocabularies. minItems and contains are required since prefixItems does not say all items should be provided",
+      "type": "array",
+      "prefixItems": [
+        {
+          "$ref": "$defs/thing-context-td-uri-v1"
+        },
+        {
+          "$ref": "$defs/thing-context-td-uri-v1.1"
+        }
+      ],
+      "contains": {
+        "type": "string",
+        "const": "https://www.w3.org/2022/wot/td/v1.1"
+      },
+      "minItems": 2,
+      "additionalItems": {
+        "anyOf": [
+          {
+            "$ref": "$defs/anyUri"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      }
+    },
+    "anyUri": {
+      "type": "string"
+    }
+  }
+}
