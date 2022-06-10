@@ -3,6 +3,7 @@
     "description": "multipleOf: Specifies the multipleOf value number. The value must strictly greater than 0. Only applicable for associated number or integer types. MAY be included. Type: integer.",
     "$schema ": "http://json-schema.org/draft/2019-09/schema#",
     "is-complex": true,
+    "also": ["td-data-schema_multipleOf-IntegerSchema", "td-property-names_multipleOf"],
     "type": "object",
     "properties": {
         "properties": {

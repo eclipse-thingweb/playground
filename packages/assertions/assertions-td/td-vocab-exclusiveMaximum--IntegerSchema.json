@@ -2,6 +2,7 @@
     "title": "td-vocab-exclusiveMaximum--IntegerSchema",
     "description": "exclusiveMaximum: Specifies a maximum numeric value, representing an exclusive upper limit. Only applicable for associated number or integer types. MAY be included. Type: integer.",
     "$schema ": "http://json-schema.org/draft/2019-09/schema#",
+    "also": ["td-data-schema_exclusiveMaximum-IntegerSchema", "td-property-names_exclusiveMaximum"],
     "is-complex": true,
     "type": "object",
     "properties": {

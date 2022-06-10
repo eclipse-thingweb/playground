@@ -3,6 +3,7 @@
     "description": "pattern: Provides a regular expressions to express constraints of the string value. The regular expression must follow the [[ECMA-262]] dialect. MAY be included. Type: string.",
     "$schema ": "http://json-schema.org/draft/2019-09/schema#",
     "is-complex": true,
+    "also": ["td-data-schema_pattern"],
     "type": "object",
     "properties": {
         "properties": {

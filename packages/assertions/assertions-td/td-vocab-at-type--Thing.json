@@ -2,7 +2,7 @@
     "title": "td-vocab-at-type--Thing",
     "description": "@type: Known from JSON-LD [[!json-ld]], @type is used to state that a thing resource is an instance of a class. Each string in the value array represents a class. MAY be included. Type: array of string.",
     "is-complex":true,
-    "also": ["td-jsonld-keywords_at-type", "td-at-type"],
+    "also": ["td-at-type"],
     "type": "object",
     "if": {
         "required": ["@type"],

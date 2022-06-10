@@ -274,7 +274,7 @@ function checkVocabulary(tdJson) {
     ajv.addVocabulary(['is-complex', 'also'])
 
     const valid = ajv.validate('td', tdJson)
-    const otherAssertions = ["td-objects_securityDefinitions", "td-arrays_security", "td-vocab-security--Thing",
+    const otherAssertions = ["td-objects_securityDefinitions", "td-vocab-security--Thing",
                              "td-security-mandatory", "td-vocab-securityDefinitions--Thing", "td-context-toplevel",
                              "td-vocab-title--Thing", "td-vocab-security--Thing", "td-vocab-id--Thing",
                              "td-security", "td-security-activation", "td-context-ns-thing-mandatory",
