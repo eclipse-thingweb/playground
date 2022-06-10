@@ -3,6 +3,7 @@
     "description": "maxLength: Specifies the maximum length of a string. Only applicable for associated string types. MAY be included. Type: unsignedInt.",
     "$schema ": "http://json-schema.org/draft/2019-09/schema#",
     "is-complex": true,
+    "also": ["td-data-schema_maxLength", "td-property-names_maxLength"],
     "type": "object",
     "properties": {
         "properties": {

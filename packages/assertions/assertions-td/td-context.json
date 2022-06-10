@@ -4,8 +4,7 @@
     "is-complex": true,
     "$schema": "http://json-schema.org/draft-07/schema#",
     "also": [
-        "td-vocab-at-context--Thing",
-        "td-jsonld-keywords_at-context"
+        "td-vocab-at-context--Thing"
     ],
     "type": "object",
     "if": {

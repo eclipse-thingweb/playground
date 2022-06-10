@@ -105,7 +105,8 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
             if (validPayload.valid) {
                 results.push({
                     "ID": schema.title,
-                    "Status": "not-impl"
+                    "Status": "not-impl",
+                    "Assertion": schema.description
                 })
                 if (schema.hasOwnProperty("also")) {
                     const otherAssertions = schema.also
@@ -127,13 +128,15 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
                     if (result === "pass") {
                         results.push({
                             "ID": schema.title,
-                            "Status": result
+                            "Status": result,
+                            "Assertion": schema.description
                         })
                     } else {
                         results.push({
                             "ID": schema.title,
                             "Status": result,
-                            "Comment": validPayload.ajvObject.errorsText()
+                            "Comment": validPayload.ajvObject.errorsText(),
+                            "Assertion": schema.description
                         })
                     }
                     if (schema.hasOwnProperty("also")) {
@@ -150,7 +153,8 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
                     results.push({
                         "ID": schema.title,
                         "Status": "fail",
-                        "Comment": "Make sure you validate your TD before"
+                        "Comment": "Make sure you validate your TD before",
+                        "Assertion": schema.description
                     })
 
                     if (schema.hasOwnProperty("also")) {
@@ -177,7 +181,8 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
                     otherAssertions.forEach(function (asser) {
                         results.push({
                             "ID": asser,
-                            "Status": "pass"
+                            "Status": "pass",
+                            "Assertion": schema.description
                         })
                     })
                 }
@@ -188,7 +193,8 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
                     results.push({
                         "ID": schema.title,
                         "Status": "not-impl",
-                        "Comment": validPayload.ajvObject.errorsText()
+                        "Comment": validPayload.ajvObject.errorsText(),
+                        "Assertion": schema.description
                     })
                     if (schema.hasOwnProperty("also")) {
                         const otherAssertions = schema.also
@@ -196,7 +202,8 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
                             results.push({
                                 "ID": asser,
                                 "Status": "not-impl",
-                                "Comment": validPayload.ajvObject.errorsText()
+                                "Comment": validPayload.ajvObject.errorsText(),
+                                "Assertion": schema.description
                             })
                         })
                     }
@@ -205,7 +212,8 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
                     results.push({
                         "ID": schema.title,
                         "Status": "fail",
-                        "Comment": validPayload.ajvObject.errorsText()
+                        "Comment": validPayload.ajvObject.errorsText(),
+                        "Assertion": schema.description
                     })
                     if (schema.hasOwnProperty("also")) {
                         const otherAssertions = schema.also
@@ -213,7 +221,8 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
                             results.push({
                                 "ID": asser,
                                 "Status": "fail",
-                                "Comment": validPayload.ajvObject.errorsText()
+                                "Comment": validPayload.ajvObject.errorsText(),
+                                "Assertion": schema.description
                             })
                         })
                     }
@@ -265,7 +274,7 @@ function checkVocabulary(tdJson) {
     ajv.addVocabulary(['is-complex', 'also'])
 
     const valid = ajv.validate('td', tdJson)
-    const otherAssertions = ["td-objects_securityDefinitions", "td-arrays_security", "td-vocab-security--Thing",
+    const otherAssertions = ["td-objects_securityDefinitions", "td-vocab-security--Thing",
                              "td-security-mandatory", "td-vocab-securityDefinitions--Thing", "td-context-toplevel",
                              "td-vocab-title--Thing", "td-vocab-security--Thing", "td-vocab-id--Thing",
                              "td-security", "td-security-activation", "td-context-ns-thing-mandatory",

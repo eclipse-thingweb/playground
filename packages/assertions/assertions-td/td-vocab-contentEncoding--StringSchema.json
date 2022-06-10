@@ -3,6 +3,7 @@
     "description": "contentEncoding: Specifies the encoding used to store the contents, as specified in RFC 2054. The values that are accepted: \"7bit\", \"8bit\", \"binary\", \"quoted-printable\" and \"base64\". MAY be included. Type: string.",
     "$schema ": "http://json-schema.org/draft/2019-09/schema#",
     "is-complex": true,
+    "also": ["td-data-schema_contentEncoding", "td-property-names_contentEncoding"],
     "type": "object",
     "properties": {
         "properties": {
