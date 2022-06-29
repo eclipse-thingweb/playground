@@ -73,6 +73,39 @@
             },
             "then": {
                 "const": "td-vocab-exclusiveMinimum--IntegerSchema=pass"
+            },
+            "else": {
+                "properties": {
+                    "properties": {
+                        "additionalProperties": {
+                            "$ref": "#/$defs/dataSchema"
+                        }
+                    },
+                    "uriVariables": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/$defs/dataSchema"
+                        }
+                    },
+                    "oneOf": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/$defs/dataSchema"
+                        }
+                    },
+                    "items": {
+                        "oneOf": [{
+                                "$ref": "#/$defs/dataSchema"
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/$defs/dataSchema"
+                                }
+                            }
+                        ]
+                    }
+                }
             }
         }
     }
