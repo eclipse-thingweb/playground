@@ -1474,6 +1474,8 @@
                 "header",
                 "query",
                 "body",
+                "uri",
+                "auto",
                 "cookie"
               ]
             },

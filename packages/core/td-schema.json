@@ -1058,6 +1058,8 @@
           "enum": [
             "header",
             "query",
+            "uri",
+            "auto",
             "body",
             "cookie"
           ]

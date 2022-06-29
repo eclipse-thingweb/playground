@@ -1,0 +1,113 @@
+{
+    "@context": [
+        "https://www.w3.org/2019/wot/td/v1",
+        "https://www.w3.org/2022/wot/td/v1.1",
+        {
+            "@language": "en"
+        }
+    ],
+    "title": "DaylightSensor",
+    "security": "combo_sc",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header",
+            "description": "A basic username and password security",
+            "descriptions": {
+                "en": "A basic username and password security",
+                "de": "Eine einfache Benutzername- und Passwortsicherheit"
+            }
+        },
+        "api_sc": {
+            "scheme": "apikey",
+            "in": "uri",
+            "name": "hueKey",
+            "description": "The API key needed to access the Philips Hue Bridge",
+            "descriptions": {
+                "en": "The API key needed to access the Philips Hue Bridge",
+                "de": "Der API-Schlüssel, der für den Zugriff auf die Philips Hue Bridge benötigt wird"
+            }
+        },
+        "combo_sc": {
+            "scheme": "combo",
+            "allOf": [
+                "basic_sc",
+                "api_sc"
+            ]
+        }
+    },
+    "id": "urn:dev:ops:32473-HueDaylight-1234",
+    "description": "Daylight information based on the GPS coordinates of the Hue Bridge",
+    "properties": {
+        "sensorInformation": {
+            "title": "Sensor Information",
+            "description": "State, config and other metadata about the sensor",
+            "type": "object",
+            "readOnly": true,
+            "writeOnly": false,
+            "properties": {
+                "state": {
+                    "type": "object",
+                    "properties": {
+                        "daylight": {
+                            "type": "boolean",
+                            "description": "Indicates if sensor gets daylight"
+                        },
+                        "lastupdated": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Last update date of the sensor"
+                        }
+                    }
+                },
+                "config": {
+                    "type": "object",
+                    "description": "The configuration object with attributes corresponding to the sensor type. Attribute values represents configuration information.",
+                    "properties": {
+                        "on": {
+                            "type": "boolean",
+                            "description": "Turns the sensor on/off. When off, state changes of the sensor are not reflected in the sensor resource."
+                        },
+                        "reachable": {
+                            "type": "boolean",
+                            "description": "Indicates whether communication with devices is possible. CLIP Sensors do not yet support reachable verification. Mandatory for all Sensors except ZGPSwitch, Daylight"
+                        },
+                        "battery": {
+                            "type": "integer",
+                            "description": "The current battery state in percent, only for battery powered devices. Not present when not provided on creation (CLIP sensors)."
+                        }
+                    }
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The human readable name of the sensor, can be changed by the user."
+                },
+                "type": {
+                    "type": "string",
+                    "description": "Type name of the sensor"
+                },
+                "modelid": {
+                    "type": "string",
+                    "description": "This parameter uniquely identifies the hardware model of the device for the given manufaturer."
+                },
+                "manufacturername": {
+                    "type": "string",
+                    "description": "The name of the device manufacturer."
+                },
+                "swversion": {
+                    "type": "string",
+                    "description": "This parameter uniquely identifies the software version running in the hardware."
+                }
+            },
+            "forms": [
+                {
+                    "href": "https://esiremotelab.esi.ei.tum.de:8081/LabLocal/api/{hueKey}/sensors/1",
+                    "contentType": "application/json",
+                    "op": [
+                        "readproperty"
+                    ]
+                }
+            ]
+        }
+    }
+}
