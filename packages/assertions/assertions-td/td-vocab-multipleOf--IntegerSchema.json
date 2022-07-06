@@ -72,7 +72,7 @@
                 "required": ["type", "multipleOf"]
             },
             "then": {
-                "const": "td-vocab-multipleOf--IntegerSchema"
+                "const": "td-vocab-multipleOf--IntegerSchema=pass"
             },
             "else": {
                 "properties": {
