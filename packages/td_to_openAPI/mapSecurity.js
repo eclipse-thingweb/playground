@@ -194,6 +194,17 @@ function genOapDefinition(tdDefinition) {
             oapDefinition.flows = genOAuthFlows(tdDefinition)
         break
 
+        case "combo":
+            // todo  Implement combo security scheme 
+            // if (tdDefinition.allOf) {
+            //     oapDefinition.type = "allOf"
+            //     oapDefinition.secdef = tdDefinition.allOf
+            // } else {
+            //     oapDefinition.type = "oneOf"
+            //     oapDefinition.secdef = tdDefinition.oneOf
+            // }
+        break
+
 
         default:
             console.log("unknown security definition: " + tdScheme)

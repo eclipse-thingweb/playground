@@ -1022,7 +1022,14 @@
         },
         "in": {
           "type": "string",
-          "enum": ["header", "query", "body", "cookie"]
+          "enum": [
+            "header",
+            "query",
+            "body",
+            "uri",
+            "auto",
+            "cookie"
+          ]
         },
         "name": {
           "type": "string"

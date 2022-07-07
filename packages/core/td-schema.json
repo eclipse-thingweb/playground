@@ -997,7 +997,14 @@
         },
         "in": {
           "type": "string",
-          "enum": ["header", "query", "body", "cookie"]
+          "enum": [
+            "header",
+            "query",
+            "uri",
+            "auto",
+            "body",
+            "cookie"
+          ]
         },
         "name": {
           "type": "string"
