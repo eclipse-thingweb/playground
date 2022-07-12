@@ -18,9 +18,10 @@ jobs:
         with:
           node-version: '16'
       - name: Install dependencies
-        run: | 
-          cd ./packages/assertions
+        run: |
+          ls
           npm install
+          cd ./packages/assertions
       - name: Fetch updated assertions.csv
         run: wget https://raw.githubusercontent.com/w3c/wot-thing-description/main/testing/assertions.csv --output-document=assertions-csv/assertions.csv
         id: diff
