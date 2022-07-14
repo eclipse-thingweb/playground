@@ -46,6 +46,7 @@ jobs:
           add-paths: |
             packages/assertions/assertions-csv/assertions.csv
           branch: assertion-csv-sync
+          base: ${{ github.head_ref }}
           delete-branch: true
           title: 'Update assertions.csv for generating manual.csv'
           body: |
