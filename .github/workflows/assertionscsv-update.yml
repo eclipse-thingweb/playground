@@ -1,6 +1,6 @@
 # This is a workflow that syncs the current list of assertions from the TD repo every day. Then it runs the an assertion check to find the diff for generating manual.csv
 
-name: CI
+name: Manual Assertion Sync
 
 # Controls when the workflow will run
 on:
