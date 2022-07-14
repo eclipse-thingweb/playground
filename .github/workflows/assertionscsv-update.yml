@@ -32,12 +32,12 @@ jobs:
       - name: Look for changes
         continue-on-error: true 
         run: |
-          git diff --no-index packages/assertions/assertions-csv/assertions.csv .temp/testing/assertions.csv
+          git diff --no-index packages/assertions/assertions-csv/assertions.csv .temp/wot-thing-description/testing/assertions.csv
           echo "::set-output name=changed::$?"
         id: diff
       - name: Sync file
         if: ${{ ! steps.diff.outputs.changed }}
-        run: mv .temp/testing/assertions.csv packages/assertions/assertions-csv/assertions.csv && rm -rf .temp
+        run: mv .temp/wot-thing-description/testing/assertions.csv packages/assertions/assertions-csv/assertions.csv && rm -rf .temp
       - name: Create Pull Request
         if: ${{ ! steps.diff.outputs.changed }}
         id: cpr
