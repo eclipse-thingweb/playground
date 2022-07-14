@@ -28,8 +28,8 @@ jobs:
           # Retrieve json schema from td repository
           mkdir .temp && cd .temp
           git init
-          git fetch https://github.com/w3c/wot-thing-description.git
-          git checkout FETCH_HEAD -- testing/assertions.csv
+          git clone https://github.com/w3c/wot-thing-description.git
+          ls testing/
       - name: Look for changes
         continue-on-error: true 
         run: |
