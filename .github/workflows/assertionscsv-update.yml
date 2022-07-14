@@ -29,7 +29,6 @@ jobs:
           mkdir .temp && cd .temp
           git init
           git clone https://github.com/w3c/wot-thing-description.git
-          ls testing/
       - name: Look for changes
         continue-on-error: true 
         run: |
