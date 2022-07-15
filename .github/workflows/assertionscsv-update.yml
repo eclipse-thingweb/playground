@@ -23,13 +23,13 @@ jobs:
         run: |
           cd ./packages/assertions
           wget https://raw.githubusercontent.com/w3c/wot-thing-description/main/testing/assertions.csv --output-document=assertions-csv/assertions.csv
-        id: diff
       - name: Check for changes
         continue-on-error: true 
         run: |
           cd ./packages/assertions
           git diff --exit-code assertions-csv/assertions.csv
           echo "::set-output name=changed::$?"
+        id: diff
       - name: Run generation scripts
         if: ${{ ! steps.diff.outputs.changed }}
         run: |
