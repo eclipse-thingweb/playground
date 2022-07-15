@@ -25,6 +25,7 @@ jobs:
           wget https://raw.githubusercontent.com/w3c/wot-thing-description/main/testing/assertions.csv --output-document=assertions-csv/assertions.csv
         id: diff
       - name: Check for changes
+        continue-on-error: true 
         run: |
           cd ./packages/assertions
           git diff --exit-code assertions-csv/assertions.csv
