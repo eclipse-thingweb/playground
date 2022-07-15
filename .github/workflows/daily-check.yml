@@ -18,22 +18,22 @@ jobs:
         with:
           node-version: '16'
       - name: Install dependencies
-        run: |
-          ls
-          lerna bootstrap --no-ci
-          cd ./packages/assertions
+        run: lerna bootstrap --no-ci
       - name: Fetch updated assertions.csv
         run: |
-          ls
+          working-directory: packages/assertions
           wget https://raw.githubusercontent.com/w3c/wot-thing-description/main/testing/assertions.csv --output-document=assertions-csv/assertions.csv
         id: diff
       - name: Check for changes
-        run: | 
+        run: |
+          working-directory: packages/assertions
           git diff --exit-code assertions-csv/assertions.csv
           echo "::set-output name=changed::$?"
       - name: Run generation scripts
         if: ${{ ! steps.diff.outputs.changed }}
-        run: bash generate-manual-csv.sh
+        run: |
+          working-directory: packages/assertions
+          bash generate-manual-csv.sh
       - name: Add generated files and commit
         if: ${{ ! steps.diff.outputs.changed }}
         run: |
