@@ -20,7 +20,7 @@ jobs:
       - name: Install dependencies
         run: |
           ls
-          npm install --no-ci
+          lerna bootstrap --no-ci
           cd ./packages/assertions
       - name: Fetch updated assertions.csv
         run: wget https://raw.githubusercontent.com/w3c/wot-thing-description/main/testing/assertions.csv --output-document=assertions-csv/assertions.csv
