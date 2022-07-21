@@ -1,4 +1,1 @@
 "ID","Status","Assertion"
-"td-at-type",,""
-"td-data-schema_minLength",,""
-"td-vocab-scheme--SecurityScheme_auto",,"scheme: Identification of security mechanism being configured. MUST be included. Type: string auto."
