@@ -1,10 +1,21 @@
 name: Default CI & CD Pipeline
 
-on: [push, pull_request]
-
+on: 
+  push:
+    paths-ignore:
+    - '**.md'
+    - '**.png'
+    - '**.drawio'
+    - '**.xlsx'
+  pull_request:
+    paths-ignore:
+    - '**.md'
+    - '**.png'
+    - '**.drawio'
+    - '**.xlsx'
 jobs:
   setup-and-test:
-
+    
     runs-on: ubuntu-latest
 
     strategy:
