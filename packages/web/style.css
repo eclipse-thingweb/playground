@@ -54,12 +54,12 @@ body {
 }
 
 .wrapper>.row:first-child {
-	height: 700px;
+	height: 750px;
 }
 
 
 #monaco {
-	height: 700px; 
+	height: 750px;
 	width: auto;
 }
 

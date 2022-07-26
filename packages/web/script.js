@@ -12,6 +12,12 @@ const manualAssertions = []
 let manualAssertionsLoaded = false
 const results = []
 let autoValidate = false
+let docType = "td"
+
+const tdRelated = [];
+[].forEach.call(document.querySelectorAll('.td-related'), el => {
+	tdRelated.push({"el": el, "display": el.style.display})
+})
 
 document.getElementById("box_jsonld_validate").checked = true
 document.getElementById("box_reset_logging").checked = true
@@ -23,6 +29,19 @@ document.getElementById("validation_table_head").addEventListener("click", ()=>{
 // Auto validates only when the box is checked.
 document.getElementById("box_auto_validate").addEventListener("change", () => {
 	autoValidate = document.getElementById("box_auto_validate").checked
+})
+
+document.getElementById("doc_type").addEventListener("change", () => {
+	docType = document.getElementById("doc_type").value
+	if (docType == 'tm') {
+		[].forEach.call(tdRelated, el => {
+			el["el"].style.display = "none"
+		})
+	} else {
+		[].forEach.call(tdRelated, el => {
+			el["el"].style.display = el["display"]
+		})
+	}
 })
 
 document.getElementById("btn_gistify").addEventListener("click", () => {
@@ -139,7 +158,7 @@ document.getElementById("btn_assertion").addEventListener("click", () => {
 })
 
 document.getElementById("btn_validate").addEventListener("click", () => {
-	util.validate("manual")
+	util.validate("manual", undefined, docType)
 })
 
 document.getElementById("btn_clearLog").addEventListener("click", util.clearLog)
@@ -201,7 +220,7 @@ require(['vs/editor/editor.main'], editor=function() {
 		document.getElementById("curtain").style.display = "none"
 
 		model.onDidChangeContent(event => { // When text in the Editor changes
-			util.validate("auto", autoValidate)
+			util.validate("auto", autoValidate, docType)
 		})
 	}, err => {
 		console.error("loading TD schema for editor failed" + err)
