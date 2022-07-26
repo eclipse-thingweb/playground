@@ -157,13 +157,16 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, doneEventEmit
             const jsonResults = {}
             tmStrings.forEach( tmToValidate => {
                 // check if id exists, use it for name if it does, title + some rand number otherwise
-                let tmName = ""
-                if ("id" in JSON.parse(tmToValidate)){
-                    const tmId = JSON.parse(tmToValidate).id
+                const parsedTm = JSON.parse(tmToValidate)
+                const generateNumber = () => Math.floor(Math.random() * 1000)
+                let tmName
+                if ("id" in parsedTm){
+                    const tmId = parsedTm.id
                     tmName = tmId.replace(/:/g, "_")
+                } else if ("title" in parsedTm) {
+                    tmName = parsedTm.title + generateNumber()
                 } else {
-                    const tmTitle = JSON.parse(tmToValidate).title
-                    tmName = tmTitle + Math.floor(Math.random() * 1000)
+                    tmName = `Unnamed TM ${generateNumber()}`
                 }
                 if(doneEventEmitter) doneEventEmitter.emit("start", tmName)
 
