@@ -160,7 +160,7 @@ document.getElementById("editor_theme").addEventListener("change", () => {
 })
 
 document.getElementById("btn_assertion").addEventListener("click", () => {
-	util.performAssertionTest(manualAssertions)
+	util.performAssertionTest(manualAssertions, docType)
 })
 
 document.getElementById("btn_validate").addEventListener("click", () => {

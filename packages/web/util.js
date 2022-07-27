@@ -66,17 +66,18 @@ export function populateExamples(urlAddrObject){
  * passes the result to the user
  * as download
  * @param {object} manualAssertions The manual assertions input of the user
+ * @param {string} docType "td" or "tm"
  */
-export function performAssertionTest(manualAssertions){
+export function performAssertionTest(manualAssertions, docType){
 
     document.getElementById("curtain").style.display = "block"
     document.getElementById("curtain-text").innerHTML = "Assertion test ongoing..."
     const assertionSchemas=[]
     const manualAssertionsJSON=[]
-    const tdToValidate=window.editor.getValue()
+    const docToValidate=window.editor.getValue()
 
-    if (tdToValidate === "") {
-        alert("No TD given")
+    if (docToValidate === "") {
+        alert(`No ${docType.toUpperCase()} given`)
         document.getElementById("curtain").style.display = "none"
         return
     }
@@ -85,7 +86,9 @@ export function performAssertionTest(manualAssertions){
         document.getElementById("curtain-text").innerHTML = input
     }
 
-    Assertions.tdAssertions([tdToValidate], getTextUrl, logging, manualAssertions)
+    const assertions = (docType === "td") ? Assertions.tdAssertions : Assertions.tmAssertions
+
+    assertions([docToValidate], getTextUrl, logging, manualAssertions)
     .then( result => {
         // remove commas to avoid errors
         const cleanResults = []
