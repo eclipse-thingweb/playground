@@ -1095,6 +1095,9 @@
         },
         "anchor": {
           "$ref": "#/definitions/anyUri"
+        },
+        "instanceName": {
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -1860,17 +1863,24 @@
       "$ref": "#/definitions/descriptions"
     },
     "version": {
-      "type": "object",
-      "properties": {
-        "instance": {
-          "type": "string"
-        }
-      },
-      "propertyNames": {
-        "not": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "instance": {
+              "type": "string"
+            }
+          },
+          "propertyNames": {
+            "not": {
+              "$ref": "#/definitions/placeholder-pattern"
+            }
+          }
+        },
+        {
           "$ref": "#/definitions/placeholder-pattern"
         }
-      }
+      ]
     },
     "links": {
       "type": "array",
