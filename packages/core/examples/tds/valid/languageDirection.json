@@ -1,0 +1,23 @@
+{
+    "@context": [
+        "https://www.w3.org/2022/wot/td/v1.1",
+        { 
+          "@language": "ar-EG",
+          "@direction": "rtl" 
+        }
+    ],
+    "title": "شيء يخصني يقيس درجة الحرارة",
+    "description":"شيء يقيس درجة الحرارة و يظهر حالته",
+    "properties": {
+        "temp": {
+            "title": "درجة الحرارة",
+            "type": "boolean",
+            "forms": [{"href": "https://mylamp.example.com/abc"}]
+        },
+        "status": {
+            "title": "حالة",
+            "type": "object",
+            "forms": [{"href": "https://mylamp.example.com/abcc"}]
+        }
+    }
+}
