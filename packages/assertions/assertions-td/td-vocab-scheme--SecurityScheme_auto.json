@@ -3,7 +3,7 @@
     "description": "scheme: Identification of security mechanism being configured. MUST be included. Type: string auto.",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "is-complex": true,
-    "also":["td-security-binding"],
+    "also":["td-security-binding","sec-vuln-auto"],
     "type": "object",
     "properties": {
         "securityDefinitions": {
