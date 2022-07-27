@@ -1,7 +1,7 @@
 {
-    "title": "td-vocab-sizes--Link",
-    "description": "sizes: Target attribute that specifies one or more sizes for the referenced icon. Only applicable for relation type \"icon\". The value pattern follows {Height}x{Width} (e.g., \"16x16\", \"16x16 32x32\"). MAY be included. Type: string.",
-    "$schema ": "http://json-schema.org/draft/2019-09/schema#",
+    "title": "tm-compose-submodel",
+    "description": "If it is desired to provide information that a Thing Model consists of one or more (sub-)Thing Models, the links entries MUST use the rel:tm:submodel that targets to the (sub-) Thing Models",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "is-complex": true,
     "type": "object",
     "properties": {
@@ -20,18 +20,15 @@
                 "properties": {
                     "rel": {
                         "type": "string",
-                        "const": "icon"
-                    },
-                    "sizes": {
-                        "type": "string"
+                        "const":"tm:submodel"
                     }
                 },
                 "required": [
-                    "rel", "sizes"
+                    "rel"
                 ]
             },
             "then": {
-                "const": "td-vocab-sizes--Link=pass"
+                "const": "tm-compose-submodel=pass"
             }
         }
     }

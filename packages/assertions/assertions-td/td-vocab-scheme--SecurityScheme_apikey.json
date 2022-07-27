@@ -3,6 +3,7 @@
     "description": "scheme: Identification of security mechanism being configured. MUST be included. Type: string apikey.",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "is-complex": true,
+    "also":["td-security-binding"],
     "type": "object",
     "properties": {
         "securityDefinitions": {

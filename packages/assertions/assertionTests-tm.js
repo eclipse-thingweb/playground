@@ -274,7 +274,7 @@ function checkTMVocabulary(tmJson) {
     ajv.addVocabulary(['is-complex', 'also'])
 
     const valid = ajv.validate('tm', tmJson)
-    const otherAssertions =  ["tm-placeholder-value", "tm-td-generation-inconsistencies"]
+    const otherAssertions =  ["tm-placeholder-value", "tm-td-generation-inconsistencies","tm-context-requirement"]
 
     if (valid) {
         // results.push({

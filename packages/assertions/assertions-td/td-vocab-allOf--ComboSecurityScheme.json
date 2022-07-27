@@ -3,6 +3,7 @@
     "description": "allOf: Array of two or more strings identifying other named security scheme definitions, all of which must be satisfied for access. MUST be included. Type: string or Array of string.",
     "$schema ": "http://json-schema.org/draft/2019-09/schema#",
     "is-complex": true,
+    "also":["td-security-combo-deprecation"],
     "type": "object",
     "properties": {     
         "securityDefinitions": {
