@@ -310,3 +310,105 @@ function checkVocabulary(tdJson) {
 }
 
 
+/**
+ * TODO: INTEGRATE ME
+ *  Validates the following assertions:
+ *    td-expectedResponse-contentType
+ *  This means:
+ *  If the content type of the expected response differs from the content type of the form, the Form instance MUST
+ *  include a name - value pair with the name response.
+ "  In other words just checking for response contentType to be different from form contentType
+ * @param {object} tdJson The td to validate
+ * @returns {{"ID": td-expectedResponse-contentType,"Status": "not-impl OR pass"}}
+ */
+function checkContentTypeDifference(tdJson){
+
+    // checking inside each interaction
+    if (td.hasOwnProperty("properties")) {
+        // checking security in property level
+        tdProperties = Object.keys(td.properties)
+        for (let i = 0; i < tdProperties.length; i++) {
+            const curPropertyName = tdProperties[i]
+            const curProperty = td.properties[curPropertyName]
+            const curFormsArray = curProperty.forms
+            for (let j = 0; j < curFormsArray.length; j++) {
+                // checking if response exists
+                const curForm = curFormsArray[j]
+                if (curForm.hasOwnProperty("response")){
+                    if (curForm.contentType !== curForm.response.contentType){
+                        return {
+                            "ID": "td-expectedResponse-contentType",
+                            "Status": "pass"
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if (td.hasOwnProperty("actions")) {
+        // checking security in action level
+        tdActions = Object.keys(td.actions)
+        for (let i = 0; i < tdActions.length; i++) {
+            const curActionName = tdActions[i]
+            const curAction = td.actions[curActionName]
+            const curFormsArray = curAction.forms
+            for (let j = 0; j < curFormsArray.length; j++) {
+                // checking if response exists
+                const curForm = curFormsArray[j]
+                if (curForm.hasOwnProperty("response")) {
+                    if (curForm.contentType !== curForm.response.contentType) {
+                        return {
+                            "ID": "td-expectedResponse-contentType",
+                            "Status": "pass"
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if (td.hasOwnProperty("events")) {
+        // checking security in event level
+        tdEvents = Object.keys(td.events)
+        for (let i = 0; i < tdEvents.length; i++) {
+            const curEventsName = tdEvents[i]
+            const curEvent = td.events[curEventsName]
+            const curFormsArray = curEvent.forms
+            for (let j = 0; j < curFormsArray.length; j++) {
+                // checking if response exists
+                const curForm = curFormsArray[j]
+                if (curForm.hasOwnProperty("response")) {
+                    if (curForm.contentType !== curForm.response.contentType) {
+                        return {
+                            "ID": "td-expectedResponse-contentType",
+                            "Status": "pass"
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if (td.hasOwnProperty("forms")){
+        const curFormsArray = td.forms
+        for (let j = 0; j < curFormsArray.length; j++) {
+            // checking if response exists
+            const curForm = curFormsArray[j]
+            if (curForm.hasOwnProperty("response")) {
+                if (curForm.contentType !== curForm.response.contentType) {
+                    return {
+                        "ID": "td-expectedResponse-contentType",
+                        "Status": "pass"
+                    }
+                }
+            }
+        }
+    }
+
+    // if this contentType difference did not happen anywhere, return not impl
+    return {
+        "ID": "td-expectedResponse-contentType",
+        "Status": "not-impl"
+    }
+}
+
+
