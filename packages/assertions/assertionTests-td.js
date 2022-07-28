@@ -64,8 +64,7 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
     // checking whether two interactions of the same interaction affordance type have the same names
     // This requires to use the string version of the TD that will be passed down to the jsonvalidator library
     const tdDataString = tdData.toString()
-    results.push(...checkUniqueness(tdDataString))
-    results.push(checkContentTypeDifference(tdJson))
+
 
     // Normal TD Schema validation but this allows us to test multiple assertions at once
     try {
@@ -89,6 +88,9 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
     }
 
     // additional checks
+    results.push(...checkUniqueness(tdDataString))
+    results.push(checkContentTypeDifference(tdJson))
+    results.push(checkInstanceNameCollision(tdJson))
     results.push(...checkSecurity(tdJson))
     results.push(...checkMultiLangConsistency(tdJson))
     results.push(...checkLinksRelTypeCount(tdJson))
@@ -413,4 +415,79 @@ function checkContentTypeDifference(td){
     }
 }
 
+/**
+ *  Validates the following assertions:
+ *    tm-compose-name-collision
+ *  This means:
+ *  To avoid name collisions of the sub/child interaction names SHOULD rename the JSON name to the instanceName followed
+ *  with '_' and the interaction name of the sub/child Thing Model.",
+ *  "  This was not possible to validate with a JSON Schema since only one property name with this is enough. propertyNames
+ *  tries to validate it for all
+ * @param {object} tdJson The td to validate
+ * @returns {{"ID": tm-compose-name-collision,"Status": "not-impl OR pass"}}
+ */
+ function checkInstanceNameCollision(td){
+    let ajv = new Ajv({strict: false})
 
+    // check that if a TM is referenced
+    const ifTMused = ajv.validate({
+        "type":"object",
+        "properties": {
+            "links": {
+                "type": "array",
+                "contains": {
+                    "type":"object",
+                    "properties": {
+                        "rel":{
+                            "const":"type"
+                        }
+                    }
+                }
+            }
+        }
+    },td);
+
+    if (ifTMused){ // only valid when a tm is used for a TD
+        let affordanceNames = []
+        // checking inside each interaction
+        if (td.hasOwnProperty("properties")) {
+            // checking security in property level
+            tdProperties = Object.keys(td.properties)
+            affordanceNames.push(...tdProperties) // spread syntax to concat
+        }
+        if (td.hasOwnProperty("actions")) {
+            // checking security in action level
+            tdActions = Object.keys(td.actions)
+            affordanceNames.push(...tdActions)
+        }
+        if (td.hasOwnProperty("events")) {
+            // checking security in event level
+            tdEvents = Object.keys(td.events)
+            affordanceNames.push(...tdEvents)
+        }
+
+        const result = ajv.validate({
+        "type":"array",
+        "contains":{
+            "type":"string",
+            "pattern":"_+[ -~]+" // this means having _ somewhere and then having a string of any char after it
+        }
+        },affordanceNames)
+        if (result){
+            return {
+                "ID": "tm-compose-name-collision",
+                "Status": "pass"
+            }
+        } else {
+            return {
+                "ID": "tm-compose-name-collision",
+                "Status": "not-impl"
+            }
+        }
+    } else {
+        return {
+            "ID": "tm-compose-name-collision",
+            "Status": "not-impl"
+        }
+    }
+}
