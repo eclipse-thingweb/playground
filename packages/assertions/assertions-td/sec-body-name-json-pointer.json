@@ -1,6 +1,6 @@
 {
-    "title": "td-vocab-in--APIKeySecurityScheme",
-    "description": "in: Specifies the location of security authentication information (one of header, query, body, or cookie). MUST be included. Type: string.",
+    "title": "sec-body-name-json-pointer",
+    "description": "When used in the context of a body security information location, the value of name MUST be in the form of a JSON pointer [[!RFC6901]] relative to the root of the input DataSchema for each interaction it is used with.",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "is-complex": true,
     "type": "object",
@@ -25,22 +25,23 @@
                     "scheme": {
                         "type": "string",
                         "enum": [
-                            "apikey"
+                            "apikey","basic","bearer","digest"
                         ]
                     },
                     "in": {
                         "type": "string",
-                        "enum": ["header", "query", "body", "cookie","uri","auto"]
+                        "enum": ["body"]
+                    },
+                    "name":{
+                        "type":"string",
+                        "format":"json-pointer"
                     }
                 },
-                "required": ["in", "scheme"]
+                "required": ["in", "scheme","name"]
             },
             "then": {
-                "const": "td-vocab-in--APIKeySecurityScheme=pass"
+                "const": "sec-body-name-json-pointer=pass"
             }
-        },
-        "url": {
-            "type": "string"
         }
     }
 }
