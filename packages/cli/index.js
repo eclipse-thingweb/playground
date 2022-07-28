@@ -230,7 +230,8 @@ function assertTd(tds, type, tdsToMerge, manualAssertions, doneEventEmitter) {
         if (tds.length > 0) {
             tdAssertions(tds, fileLoader, logFunc, manualAssertions, doneEventEmitter).then( results => {
                 if (type === "file") {
-                    outReport(results, "assertionsTest_", input)
+                    const id = input.split('/').pop()
+                    outReport(results, "assertionsTest_", id)
                     res()
                 }
                 else if (type === "list" || type === "dir") {
@@ -316,6 +317,8 @@ function outReport(data, pathFragment, id) {
         const fileEnd = myArguments.assertionNoCsv ? ".json" : ".csv"
         const outpath = myArguments.assertionOut ? myArguments.assertionOut : ("./out/" + pathFragment)
         const wholepath = outpath + id + fileEnd
+
+        console.log(wholepath)
 
         if(!myArguments.assertionOut && !fs.existsSync("./out")) {
             fs.mkdirSync("./out")
@@ -845,7 +848,8 @@ function tmAssertionReport(input) {
         if (tms.length > 0) {
             tmAssertions(tms, fileLoader, logFunc, manualAssertions, doneEventEmitter).then( results => {
                 if (type === "file") {
-                    outReport(results, "tmAssertionsTest_", input)
+                    const id = input.split('/').pop()
+                    outReport(results, "tmAssertionsTest_", id)
                     res()
                 }
                 else if (type === "list" || type === "dir") {
