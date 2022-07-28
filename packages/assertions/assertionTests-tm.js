@@ -79,7 +79,17 @@ module.exports = validateTM
             "ID": error,
             "Status": "fail"
         })
-        throw new Error("Invalid TM")
+        let logName = "" // this will be id and or title
+        if (tmJson.hasOwnProperty("title") && (tmJson.hasOwnProperty("id"))) {
+            logName = "title: " + tmJson.title + " id: " + tmJson.id
+        } else if (tmJson.hasOwnProperty("title")) {
+            logName = "title: " + tmJson.title
+        } else if (tmJson.hasOwnProperty("id")) {
+            logName = "id: " + tmJson.id
+        } else { // if no id or title present, put the whole td as string
+            logName = JSON.stringify(tmJson) + "\n"
+        }
+        throw new Error(logName, " : Invalid TM")
     }
 
     // additional checks

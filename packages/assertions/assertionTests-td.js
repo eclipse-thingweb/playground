@@ -74,7 +74,17 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
             "ID": error,
             "Status": "fail"
         })
-        throw new Error("Invalid TD")
+        let logName = "" // this will be id and or title
+        if (tdJson.hasOwnProperty("title") && (tdJson.hasOwnProperty("id"))) {
+            logName = "title: "+tdJson.title + " id: " +tdJson.id
+        } else if (tdJson.hasOwnProperty("title")) {
+            logName = "title: " + tdJson.title
+        } else if (tdJson.hasOwnProperty("id")) {
+            logName = "id: " + tdJson.id
+        } else { // if no id or title present, put the whole td as string
+            logName = JSON.stringify(tdJson) + "\n"
+        }
+        throw new Error(logName+" : Invalid TD")
     }
 
     // additional checks
@@ -295,8 +305,7 @@ function checkVocabulary(tdJson) {
         return results
 
     } else {
-        console.log(ajv.errors)
-        throw new Error(`Invalid TD: ${ajv.errors}`)
+        throw new Error(`Invalid TD: ${JSON.stringify(ajv.errors,null,2)}`)
     }
 }
 
