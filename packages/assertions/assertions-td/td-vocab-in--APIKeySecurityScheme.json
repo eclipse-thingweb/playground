@@ -30,7 +30,7 @@
                     },
                     "in": {
                         "type": "string",
-                        "enum": ["header", "query", "body", "cookie"]
+                        "enum": ["header", "query", "body", "cookie","uri","auto"]
                     }
                 },
                 "required": ["in", "scheme"]
