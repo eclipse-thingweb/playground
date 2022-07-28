@@ -65,6 +65,7 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
     // This requires to use the string version of the TD that will be passed down to the jsonvalidator library
     const tdDataString = tdData.toString()
     results.push(...checkUniqueness(tdDataString))
+    results.push(checkContentTypeDifference(tdJson))
 
     // Normal TD Schema validation but this allows us to test multiple assertions at once
     try {
@@ -198,7 +199,9 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
                 }
             } else {
                 // failed because a required is not implemented
-                if (validPayload.ajvObject.errorsText().indexOf("required") > -1) {
+                if (validPayload.ajvObject.errorsText().indexOf("required") > -1 ||
+                    validPayload.ajvObject.errorsText().indexOf("must be")||
+                    validPayload.ajvObject.errorsText().indexOf("must match")) {
                     // failed because it doesnt have required key which is a non implemented feature
                     results.push({
                         "ID": schema.title,
@@ -311,7 +314,6 @@ function checkVocabulary(tdJson) {
 
 
 /**
- * TODO: INTEGRATE ME
  *  Validates the following assertions:
  *    td-expectedResponse-contentType
  *  This means:
@@ -321,7 +323,7 @@ function checkVocabulary(tdJson) {
  * @param {object} tdJson The td to validate
  * @returns {{"ID": td-expectedResponse-contentType,"Status": "not-impl OR pass"}}
  */
-function checkContentTypeDifference(tdJson){
+function checkContentTypeDifference(td){
 
     // checking inside each interaction
     if (td.hasOwnProperty("properties")) {
