@@ -868,6 +868,9 @@
           "enum": ["auto"]
         }
       },
+      "not":{
+        "required":["name"]
+      },
       "required": ["scheme"],
       "additionalProperties": true
     },
