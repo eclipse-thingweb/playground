@@ -152,6 +152,21 @@
                     }
                 }
             }
+        },
+        "description": {
+            "type": "string"
+        },
+        "title": {
+            "type": "string"
+        },
+        "descriptions": {
+            "type": "object"
+        },
+        "titles": {
+            "type": "object"
+        },
+        "url": {
+            "type": "string"
         }
     }
 }
