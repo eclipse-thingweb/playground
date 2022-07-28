@@ -16,7 +16,6 @@
   "required": [
     "securityDefinitions"
   ],
-  "additionalProperties": true,
   "$defs": {
     "comboSecurity_element": {
       "if": {
@@ -76,6 +75,9 @@
       },
       "then": {
         "const": "td-security-combo-exclusive-oneof-or-allof=pass"
+      },
+      "else": {
+        "type": "object"
       }
     }
   }
