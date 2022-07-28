@@ -31,7 +31,7 @@ This tool checks which assertions are satisfied by a given Thing Description(s).
 
 * Install the package with npm `npm install @thing-description-playground/cli` (or clone repo and install the package with `npm install`)
 * Change to `cli` directory
-* For single TD: Run 'node index.js an_example_TD_location -a'. E.g. `node index.js ./node_modules/@thing-description-playground/core/examples/tds/valid/JsonLdThing.json -a`
+* For single TD: Run 'node index.js an_example_TD_location -a'. E.g. `node index.js -i ./node_modules/@thing-description-playground/core/examples/tds/valid/JsonLdThing.json -a`
   * You can specify the output location and filename with the -o argument, e.g. `node index.js inputTD.json -o outputResult -a`
 * For a directory with **only** TDs: Run 'node index.js a_directory_location'. E.g. `node index.js ./node_modules/@thing-description-playground/core/examples/tds/valid/`
 * The result(s) are found in the './out' merged into one report (unless the `--assertion-no-merge` parameter -n is set, then a report for every Td is created)
