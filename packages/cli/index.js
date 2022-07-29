@@ -314,11 +314,13 @@ function outReport(data, pathFragment, id) {
         process.stdout.write(data)
     } else {
         const fileEnd = myArguments.assertionNoCsv ? ".json" : ".csv"
-        const outpath = myArguments.assertionOut ? myArguments.assertionOut : ("./out/" + pathFragment)
-        const wholepath = outpath + id + fileEnd
+        const outpath = myArguments.assertionOut ? myArguments.assertionOut : path.join('.', 'out', pathFragment)
+        const wholepath = path.join(outpath, id+fileEnd)
 
-        if(!myArguments.assertionOut && !fs.existsSync("./out")) {
-            fs.mkdirSync("./out")
+        console.log(wholepath)
+
+        if(!myArguments.assertionOut && !fs.existsSync(path.join('.', 'out'))) {
+            fs.mkdirSync(path.join('.', 'out'))
         }
 
         fs.writeFileSync(wholepath, data)
@@ -591,10 +593,7 @@ function defaultManipulation() {
  */
 function extractName(pathLike) {
     // remove path if existing
-    if (pathLike.indexOf(path.sep) !== -1) {
-        pathLike = pathLike.split(path.sep)
-                            .pop()
-    }
+    pathLike = path.basename(pathLike)
     // remove file ending if existing
     if (pathLike.indexOf(".") !== -1) {
         pathLike = pathLike.split(".")
