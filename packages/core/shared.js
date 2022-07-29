@@ -718,7 +718,7 @@ function checkLinksRelTypeCount(td){
                 if (curSecurityDefinition.hasOwnProperty("in")){
                     if (curSecurityDefinition.in === "uri"){
                         if (curSecurityDefinition.hasOwnProperty("name")){
-                            securityUriVariables.push("{"+curSecurityDefinition.name+"}")
+                            securityUriVariables.push(curSecurityDefinition.name)
                         }
                     }
                 }
@@ -738,6 +738,12 @@ function checkLinksRelTypeCount(td){
             })
             return results
         } else {
+            let uriVariablesResult = "not-impl"
+            let uriVariablesDistinctResult = "not-impl"
+            let rootUriVariables = [];
+            if (td.hasOwnProperty("uriVariables")) {
+                rootUriVariables = Object.keys(td.uriVariables)
+            }
             if (td.hasOwnProperty("properties")) {
                 // checking security in property level
                 tdProperties = Object.keys(td.properties)
@@ -753,106 +759,43 @@ function checkLinksRelTypeCount(td){
                             // bottom thing is taken from https://stackoverflow.com/a/5582621/3806426
                             if (securityUriVariables.some(v => curHref.includes(v))) {
                                 // There's at least one
-                                results.push({
-                                    "ID": "td-security-in-uri-variable",
-                                    "Status": "pass"
-                                })
+                                if(uriVariablesResult !== "fail"){
+                                    uriVariablesResult = "pass"
+                                }
                             }
                         }
                     }
-                }
-            }
-        }
-
-
-
-        const rootSecurity = td.security
-
-
-        if (td.hasOwnProperty("properties")) {
-            // checking security in property level
-            tdProperties = Object.keys(td.properties)
-            for (let i = 0; i < tdProperties.length; i++) {
-                const curPropertyName = tdProperties[i]
-                const curProperty = td.properties[curPropertyName]
-
-                // checking security in forms level
-                const curForms = curProperty.forms
-                for (let j = 0; j < curForms.length; j++) {
-                    const curForm = curForms[j]
-                    if (curForm.hasOwnProperty("security")) {
-                        const curSecurity = curForm.security
-                        if (securityContains(securityDefinitions, curSecurity)) {
-                            // all good
-                        } else {
-                            results.push({
-                                "ID": "td-security-scheme-name",
-                                "Status": "fail",
-                                "Comment": "used a non defined security scheme in a property form"
-                            })
-                            return results
-                        }
+                    // part for the check of td-security-uri-variables-distinct
+                    if (curProperty.hasOwnProperty("uriVariables")){
+                        curPropertyUriVariables = Object.keys(curProperty.uriVariables)
+                        curPropertyUriVariables.push(...rootUriVariables)
+                        if (curPropertyUriVariables.length>0){ // there are urivariables somewhere at least
+                            // below is from https://stackoverflow.com/a/1885569/3806426
+                            const filteredArray = curPropertyUriVariables.filter(value => securityUriVariables.includes(value))
+                            console.log(curPropertyUriVariables,"\n",securityUriVariables,"\n",filteredArray)
+                            if(filteredArray.length>0){
+                                uriVariablesDistinctResult = "fail"
+                            } else {
+                                if (uriVariablesDistinctResult !== "fail"){
+                                    uriVariablesDistinctResult = "pass"
+                                }
+                            }
+                        } // otherwise not-impl stays
                     }
                 }
             }
-        }
 
-        if (td.hasOwnProperty("actions")) {
-            // checking security in action level
-            tdActions = Object.keys(td.actions)
-            for (let i = 0; i < tdActions.length; i++) {
-                const curActionName = tdActions[i]
-                const curAction = td.actions[curActionName]
 
-                // checking security in forms level
-                const curForms = curAction.forms
-                for (let j = 0; j < curForms.length; j++) {
-                    const curForm = curForms[j]
-                    if (curForm.hasOwnProperty("security")) {
-                        const curSecurity = curForm.security
-                        if (securityContains(securityDefinitions, curSecurity)) {
-                            // all good
-                        } else {
-                            results.push({
-                                "ID": "td-security-scheme-name",
-                                "Status": "fail",
-                                "Comment": "used a non defined security scheme in an action form"
-                            })
-                            return results
-                        }
-                    }
-                }
+            results.push({
+                "ID": "td-security-in-uri-variable",
+                "Status": uriVariablesResult
+            })
+            results.push({
+                "ID": "td-security-in-uri-variable-distinct",
+                "Status": uriVariablesDistinctResult
+            })
+            return results
 
-            }
-        }
-
-        if (td.hasOwnProperty("events")) {
-            // checking security in event level
-            tdEvents = Object.keys(td.events)
-            for (let i = 0; i < tdEvents.length; i++) {
-                const curEventName = tdEvents[i]
-                const curEvent = td.events[curEventName]
-
-                // checking security in forms level
-                const curForms = curEvent.forms
-                for (let j = 0; j < curForms.length; j++) {
-                    const curForm = curForms[j]
-                    if (curForm.hasOwnProperty("security")) {
-                        const curSecurity = curForm.security
-                        if (securityContains(securityDefinitions, curSecurity)) {
-                            // all good
-                        } else {
-                            results.push({
-                                "ID": "td-security-scheme-name",
-                                "Status": "fail",
-                                "Comment": "used a non defined security scheme in an event form"
-                            })
-                            return results
-                        }
-                    }
-                }
-
-            }
         }
 
         // no security used non defined scheme, passed test

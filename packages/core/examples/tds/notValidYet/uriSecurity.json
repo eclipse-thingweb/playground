@@ -19,6 +19,11 @@
         }
     },
     "security": "apikey_combo",
+    "uriVariables":{
+        "unused":{
+            "type":"string"
+        }
+    },
     "properties": {
         "weather": {
             "uriVariables": {
