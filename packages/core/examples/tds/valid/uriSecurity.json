@@ -1,0 +1,41 @@
+{
+    "id": "urn:uriSecurity",
+    "@context":"https://www.w3.org/2022/wot/td/v1.1",
+    "title": "MyLampThing",
+    "securityDefinitions": {
+        "apikey_key": {
+            "scheme": "apikey",
+            "in": "uri",
+            "name": "secKey"
+        },
+        "apikey_id": {
+            "scheme": "apikey",
+            "in": "uri",
+            "name": "secClientID"
+        },
+        "apikey_combo": {
+            "scheme": "combo",
+            "allOf": ["apikey_key","apikey_id"]
+        }
+    },
+    "security": "apikey_combo",
+    "properties": {
+        "weather": {
+            "uriVariables": {
+                "lat": { 
+                    "type": "number", 
+                    "minimum": 0, 
+                    "maximum": 90, 
+                    "description": "Latitude for the desired location in the world" },
+                "long": { 
+                    "type": "number", 
+                    "minimum": -180, 
+                    "maximum": 180, 
+                    "description": "Longitude for the desired location in the world" }
+            },
+            "forms": [{
+                "href": "https://example.com/{secClientID}/status/{secKey}/{?lat,long}"
+            }]
+        }
+    }
+}

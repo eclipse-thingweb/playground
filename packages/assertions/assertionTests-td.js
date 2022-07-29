@@ -17,6 +17,8 @@ const checkUniqueness = require('@thing-description-playground/core').propUnique
 const checkMultiLangConsistency = require("@thing-description-playground/core").multiLangConsistency
 const checkSecurity = require("@thing-description-playground/core").security
 const checkLinksRelTypeCount = require("@thing-description-playground/core").checkLinksRelTypeCount
+const checkUriSecurity = require("@thing-description-playground/core").checkUriSecurity
+
 const tdSchema = require("@thing-description-playground/core/td-schema.json")
 
 module.exports = validateTD
@@ -94,6 +96,7 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
     results.push(...checkSecurity(tdJson))
     results.push(...checkMultiLangConsistency(tdJson))
     results.push(...checkLinksRelTypeCount(tdJson))
+    results.push(...checkUriSecurity(tdJson))
 
     // Iterating through assertions
     for (let index = 0; index < assertions.length; index++) {
