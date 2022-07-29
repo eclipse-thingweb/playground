@@ -322,7 +322,7 @@ function validateTmPlaceholder(obj, logFunc, results) {
     let validPayload = null
     checkObjContainsTmPlaceholder(obj, logFunc)
     let otherAssertion = []
-    if(tmSchema.also && tmSchema.also.length >= 1) otherAssertion = tmSchema.also
+    if(tmPlaceholderSchema.also && tmPlaceholderSchema.also.length >= 1) otherAssertion = tmPlaceholderSchema.also
 
     if(FOUND_TM_PLACEHOLDER) {
         // Return a fail result if found
@@ -418,7 +418,7 @@ function validateTmRef(obj, logFunc, results) {
 
     let validPayload = checkObjContainsTmRef(obj, logFunc)
     let otherAssertion = []
-    if(tmSchema.also && tmSchema.also.length >= 1) otherAssertion = tmSchema.also
+    if(tmRefSchema.also && tmRefSchema.also.length >= 1) otherAssertion = tmRefSchema.also
 
     if(FOUND_TM_REF) {
         // Return a fail result if found
