@@ -315,7 +315,7 @@ function outReport(data, pathFragment, id) {
     } else {
         const fileEnd = myArguments.assertionNoCsv ? ".json" : ".csv"
         const outpath = myArguments.assertionOut ? myArguments.assertionOut : path.join('.', 'out', pathFragment)
-        const wholepath = path.join(outpath, id+fileEnd)
+        const wholepath = outpath + id + fileEnd
 
         console.log(wholepath)
 
@@ -593,7 +593,9 @@ function defaultManipulation() {
  */
 function extractName(pathLike) {
     // remove path if existing
+    console.log("Before: "+pathLike)
     pathLike = path.basename(pathLike)
+    console.log("After: "+pathLike)
     // remove file ending if existing
     if (pathLike.indexOf(".") !== -1) {
         pathLike = pathLike.split(".")

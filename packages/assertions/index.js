@@ -81,9 +81,14 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, doneEventEmit
 
                 if (typeof tdToValidate === "string") {tdToValidate = Buffer.from(tdToValidate, "utf8")}
 
-                if (jsonResults[tdName] !== undefined) {throw new Error("TDs have same Ids or titles: " + tdName)}
-                jsonResults[tdName] = validateTD(tdToValidate, assertionSchemas, manualAssertionsJSON, logFunc)
-                if(doneEventEmitter) doneEventEmitter.emit("done", tdName)
+                try {
+                    if (jsonResults[tdName] !== undefined) {throw new Error("TDs have same Ids or titles: " + tdName)}
+                    jsonResults[tdName] = validateTD(tdToValidate, assertionSchemas, manualAssertionsJSON, logFunc)
+                } catch (error) {
+                    console.error(error)
+                } finally {
+                    if(doneEventEmitter) doneEventEmitter.emit("done", tdName)
+                }
             })
 
             const tdNames = Object.keys(jsonResults)
@@ -172,9 +177,14 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, doneEventEmit
 
                 if (typeof tmToValidate === "string") {tmToValidate = Buffer.from(tmToValidate, "utf8")}
 
-                if (jsonResults[tmName] !== undefined) {throw new Error("TDs have same Ids or titles: " + tmName)}
-                jsonResults[tmName] = validateTM(tmToValidate, assertionSchemas, manualAssertionsJSON, logFunc)
-                if(doneEventEmitter) doneEventEmitter.emit("done", tmName)
+                try {
+                    if (jsonResults[tmName] !== undefined) {throw new Error("TDs have same Ids or titles: " + tmName)}
+                    jsonResults[tmName] = validateTM(tmToValidate, assertionSchemas, manualAssertionsJSON, logFunc)
+                } catch (error) {
+                    console.log(error)
+                } finally {
+                    if(doneEventEmitter) doneEventEmitter.emit("done", tmName)
+                }
             })
 
             const tmNames = Object.keys(jsonResults)
