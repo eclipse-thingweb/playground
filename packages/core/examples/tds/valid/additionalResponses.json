@@ -27,6 +27,9 @@
                 "security": ["basic_sc"],
                 "op": ["invokeaction"],
                 "htv:methodName": "POST",
+                "response":{
+                    "contentType":"image/jpeg"
+                },
                 "additionalResponses": [
                     {
                         "success":true,

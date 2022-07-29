@@ -1,6 +1,6 @@
 {
-    "title": "td-vocab-in--APIKeySecurityScheme",
-    "description": "in: Specifies the location of security authentication information (one of header, query, body, or cookie). MUST be included. Type: string.",
+    "title": "td-security-in-query-over-uri",
+    "description": "The value uri SHOULD be specified for the name in in a security scheme only if query is not applicable.",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "is-complex": true,
     "type": "object",
@@ -25,22 +25,19 @@
                     "scheme": {
                         "type": "string",
                         "enum": [
-                            "apikey"
+                            "apikey","basic","bearer","digest"
                         ]
                     },
                     "in": {
                         "type": "string",
-                        "enum": ["header", "query", "body", "cookie","uri","auto"]
+                        "enum": ["uri"]
                     }
                 },
                 "required": ["in", "scheme"]
             },
             "then": {
-                "const": "td-vocab-in--APIKeySecurityScheme=pass"
+                "const": "td-security-in-query-over-uri=pass"
             }
-        },
-        "url": {
-            "type": "string"
         }
     }
 }
