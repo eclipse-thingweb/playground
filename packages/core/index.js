@@ -14,6 +14,7 @@ module.exports.propUniqueness = coreAssertions.checkPropUniqueness
 module.exports.multiLangConsistency = coreAssertions.checkMultiLangConsistency
 module.exports.checkLinksRelTypeCount = coreAssertions.checkLinksRelTypeCount
 module.exports.security = coreAssertions.checkSecurity
+module.exports.checkUriSecurity = coreAssertions.checkUriSecurity
 
 const jsonValidator = require('json-dup-key-validator')
 
