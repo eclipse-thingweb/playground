@@ -1,5 +1,6 @@
 "ID","Status","Assertion","Comment"
 "privacy-distributed-ids","null","TD identifiers SHOULD be generated using a distributed mechanism such as UUIDs that provides a high probability of uniqueness.",
+"privacy-id-metadata","null","TD identifiers SHOULD be generated using a distributed mechanism such as UUIDs that provides a high probability of uniqueness.",
 "sec-body-name-json-pointer","null","When used in the context of a body security information location, the value of name MUST be in the form of a JSON pointer [[!RFC6901]] relative to the root of the input DataSchema for each interaction it is used with.",
 "sec-body-name-json-pointer-array","null","The JSON pointer used in the body locator MAY use the - character to indicate a non-existent array element when it is necessary to insert an element after the last element of an existing array",
 "sec-security-vocab-auto-in-no-name","null","",
