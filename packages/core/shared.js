@@ -785,6 +785,87 @@ function checkLinksRelTypeCount(td){
                 }
             }
 
+            if (td.hasOwnProperty("actions")) {
+                // checking security in property level
+                tdActions = Object.keys(td.actions)
+                for (let i = 0; i < tdActions.length; i++) {
+                    const curActionName = tdActions[i]
+                    const curAction = td.actions[curActionName]
+                    // checking href with uriVariable in forms level
+                    const curForms = curAction.forms
+                    for (let j = 0; j < curForms.length; j++) {
+                        const curForm = curForms[j]
+                        if (curForm.hasOwnProperty("href")){
+                            const curHref = curForm.href
+                            // bottom thing is taken from https://stackoverflow.com/a/5582621/3806426
+                            if (securityUriVariables.some(v => curHref.includes(v))) {
+                                // There's at least one
+                                if(uriVariablesResult !== "fail"){
+                                    uriVariablesResult = "pass"
+                                }
+                            }
+                        }
+                    }
+                    // part for the check of td-security-uri-variables-distinct
+                    if (curAction.hasOwnProperty("uriVariables")){
+                        curActionUriVariables = Object.keys(curAction.uriVariables)
+                        curActionUriVariables.push(...rootUriVariables)
+                        if (curActionUriVariables.length>0){ // there are urivariables somewhere at least
+                            // below is from https://stackoverflow.com/a/1885569/3806426
+                            const filteredArray = curActionUriVariables.filter(value => securityUriVariables.includes(value))
+                            console.log(curActionUriVariables,"\n",securityUriVariables,"\n",filteredArray)
+                            if(filteredArray.length>0){
+                                uriVariablesDistinctResult = "fail"
+                            } else {
+                                if (uriVariablesDistinctResult !== "fail"){
+                                    uriVariablesDistinctResult = "pass"
+                                }
+                            }
+                        } // otherwise not-impl stays
+                    }
+                }
+            }
+
+            if (td.hasOwnProperty("events")) {
+                // checking security in property level
+                tdEvents = Object.keys(td.events)
+                for (let i = 0; i < tdEvents.length; i++) {
+                    const curEventName = tdEvents[i]
+                    const curEvent = td.events[curEventName]
+                    // checking href with uriVariable in forms level
+                    const curForms = curEvent.forms
+                    for (let j = 0; j < curForms.length; j++) {
+                        const curForm = curForms[j]
+                        if (curForm.hasOwnProperty("href")){
+                            const curHref = curForm.href
+                            // bottom thing is taken from https://stackoverflow.com/a/5582621/3806426
+                            if (securityUriVariables.some(v => curHref.includes(v))) {
+                                // There's at least one
+                                if(uriVariablesResult !== "fail"){
+                                    uriVariablesResult = "pass"
+                                }
+                            }
+                        }
+                    }
+                    // part for the check of td-security-uri-variables-distinct
+                    if (curEvent.hasOwnProperty("uriVariables")){
+                        curEventUriVariables = Object.keys(curEvent.uriVariables)
+                        curEventUriVariables.push(...rootUriVariables)
+                        if (curEventUriVariables.length>0){ // there are urivariables somewhere at least
+                            // below is from https://stackoverflow.com/a/1885569/3806426
+                            const filteredArray = curEventUriVariables.filter(value => securityUriVariables.includes(value))
+                            console.log(curEventUriVariables,"\n",securityUriVariables,"\n",filteredArray)
+                            if(filteredArray.length>0){
+                                uriVariablesDistinctResult = "fail"
+                            } else {
+                                if (uriVariablesDistinctResult !== "fail"){
+                                    uriVariablesDistinctResult = "pass"
+                                }
+                            }
+                        } // otherwise not-impl stays
+                    }
+                }
+            }
 
             results.push({
                 "ID": "td-security-in-uri-variable",
