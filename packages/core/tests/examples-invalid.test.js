@@ -21,7 +21,8 @@ const refResult = {
         propUniqueness: null,
         multiLangConsistency: null,
         linksRelTypeCount: null,
-        readWriteOnly: null
+        readWriteOnly: null,
+        uriVariableSecurity: null
     },
     detailComments: expect.any(Object)
 }
@@ -40,7 +41,8 @@ const refResultAdd = {
         propUniqueness: expect.stringMatching(/failed|passed/),
         multiLangConsistency: expect.stringMatching(/failed|passed/),
         linksRelTypeCount: expect.stringMatching(/failed|passed/),
-        readWriteOnly: expect.stringMatching(/failed|passed/)
+        readWriteOnly: expect.stringMatching(/failed|passed/),
+        uriVariableSecurity: expect.stringMatching(/failed|passed/)
     },
     detailComments: expect.any(Object)
 }

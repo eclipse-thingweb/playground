@@ -9,7 +9,7 @@ This folder contains all files related to automated generation of the assertions
   * [MinimalThingModel.json](manual-generation-inputs/MinimalThingModel.json): a sample TM
   * [pre-implemented.csv](manual-generation-inputs/pre-implemented.csv): The csv generated from running the assertion tester on both [MinimalThing.json](manual-generation-inputs/MinimalThing.json) and [MinimalThingModel.json](manual-generation-inputs/MinimalThingModel.json). May contain older assertions that are not in the spec currently and as such is filtered in during the generation process.
 
-* [assertions.csv](assertions.csv): A csv that is generated from the wot-thing-description repository. This file is fetched daily from the wot-thing-description repository.
+* [assertions.csv](assertions.csv): A csv that is generated at the wot-thing-description repository. This file is fetched daily from the wot-thing-description repository.
 
 * [implemented.csv](implemented.csv): A csv that contains all the assertions that can be automatically verified by the assertion tester and does not contain any assertions not found in [assertions.csv](assertions.csv). One of the outputs of the [generate-manual-csv.js](../generate-manual-csv.js) script.
 
