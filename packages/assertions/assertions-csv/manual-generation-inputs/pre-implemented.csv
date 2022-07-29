@@ -176,6 +176,7 @@
 "td-security-combo-deprecation","not-impl",,
 "td-security-combo-exclusive-oneof-or-allof","not-impl",,"Exactly one of either oneOf or allOf MUST be included."
 "td-security-in-query-over-uri","not-impl",,"The value uri SHOULD be specified for the name in in a security scheme only if query is not applicable."
+"td-security-in-uri-variable","not-impl","no use of name in a uri apikey scheme",
 "td-security-mandatory","pass",,
 "td-security-oauth2-client-flow","not-impl",,"For the client flow token MUST be included."
 "td-security-oauth2-client-flow-no-auth","not-impl",,
@@ -184,6 +185,7 @@
 "td-security-overrides","not-impl",,
 "td-security-scheme-name","pass",,
 "td-security-schemes","pass",,
+"td-security-uri-variables-distinct","not-impl","no use of name in a uri apikey scheme",
 "td-string-type","pass","result of a merge",
 "td-text-at-direction","not-impl","data/@context must be array","The root element of a TD Serialization MUST be a JSON object that includes a member with the name @context and a value of type string or array that equals or respectively contains https://www.w3.org/2022/wot/td/v1.1. "
 "td-title-description","not-impl","Error message can be seen in the children assertions",
