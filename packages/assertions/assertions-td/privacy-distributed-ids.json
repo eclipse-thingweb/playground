@@ -3,6 +3,7 @@
     "description": "TD identifiers SHOULD be generated using a distributed mechanism such as UUIDs that provides a high probability of uniqueness.",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "is-complex": false,
+    "also":["privacy-id-metadata"],
     "type": "object",
     "properties": {
         "id": {
