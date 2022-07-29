@@ -21,7 +21,8 @@ const refResult = {
         propUniqueness: 'passed',
         multiLangConsistency: 'passed',
         linksRelTypeCount: 'passed',
-        readWriteOnly: 'passed'
+        readWriteOnly: 'passed',
+        uriVariableSecurity: 'passed'
     },
     detailComments: expect.any(Object)
 }
