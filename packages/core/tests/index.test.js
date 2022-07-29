@@ -83,7 +83,8 @@ test("normal report generation", () => {
 				propUniqueness: 'passed',
 				multiLangConsistency: 'passed',
 				linksRelTypeCount: 'passed',
-				readWriteOnly: 'passed'
+				readWriteOnly: 'passed',
+				uriVariableSecurity: 'passed'
 			},
 			detailComments: {
 				enumConst: expect.any(String),
@@ -92,7 +93,8 @@ test("normal report generation", () => {
 				propUniqueness: expect.any(String),
 				multiLangConsistency: expect.any(String),
 				linksRelTypeCount: expect.any(String),
-				readWriteOnly: expect.any(String)
+				readWriteOnly: expect.any(String),
+				uriVariableSecurity: expect.any(String)
 			}
 		}
 		expect(result).toEqual(refResult)
