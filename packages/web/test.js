@@ -101,6 +101,7 @@ async function testVisualChromium(page) {
   await page.goto(fullHost)
   await customShot("index")
 
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
   await page.click('#load_example', {waitUntil: "networkidle"})
   await customShot("dropdown-examples")
 
