@@ -8,7 +8,7 @@
 import * as util from "./util.js"
 import * as config from "./config.js"
 
-const manualAssertions = []
+let manualAssertions = []
 let manualAssertionsLoaded = false
 const results = []
 let autoValidate = false
@@ -32,6 +32,8 @@ document.getElementById("box_auto_validate").addEventListener("change", () => {
 })
 
 document.getElementById("doc_type").addEventListener("change", () => {
+	manualAssertionsLoaded = false
+	manualAssertions = []
 	docType = document.getElementById("doc_type").value
 	if (docType == 'tm') {
 		[].forEach.call(tdRelated, el => {
@@ -91,7 +93,7 @@ document.getElementById("close_gist_popup").addEventListener("click", () => {
 
 document.getElementById("btn_assertion_popup").addEventListener("click", () => {
 	if (!manualAssertionsLoaded) {
-		fetch("./node_modules/@thing-description-playground/assertions/assertions-td/manual.csv")
+		fetch(`./node_modules/@thing-description-playground/assertions/assertions-${docType}/manual.csv`)
 		.then( res => {
 			if (res.ok) {
 				return res.text()
@@ -119,6 +121,10 @@ document.getElementById("btn_assertion_popup").addEventListener("click", () => {
 			const element = assertionData[index]
 			const singleAssertionJSON = {"ID":element[0],"Status":element[1],"Comment":element[2],"Description":element[3]}
 			manualAssertions.push(singleAssertionJSON)
+		}
+
+		if (manualAssertions.length == 0) {
+			document.getElementById("manual_assertion_table_body").innerHTML = ''
 		}
 
 		manualAssertions.forEach( (assertion, i) => {

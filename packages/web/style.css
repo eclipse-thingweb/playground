@@ -54,12 +54,12 @@ body {
 }
 
 .wrapper>.row:first-child {
-	height: 750px;
+	height: 800px;
 }
 
 
 #td-editor, #tm-editor {
-	height: 750px;
+	height: 800px;
 	width: auto;
 }
 
