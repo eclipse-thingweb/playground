@@ -14,6 +14,10 @@ const results = []
 let autoValidate = false
 let docType = "td"
 let urlAddrObject
+const jsonOptions = {
+	validate: true,
+	schemas: []
+}
 
 const tdRelated = [];
 [].forEach.call(document.querySelectorAll('.td-related'), el => {
@@ -214,17 +218,13 @@ require(['vs/editor/editor.main'], window.tdEditor=function() {
 	.then(res => res.json())
 	.then( json => {
 		const tdSchema=json;
+		jsonOptions['schemas'].push({
+			fileMatch: [modelUri.toString()], // associate with our model
+			schema: tdSchema
+		})
 
 		// configure the JSON language support with schemas and schema associations
-		monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-			validate: true,
-			// schemas: [schema] // List of schemas to validate against, It will validate the TD with in the editor area.
-			schemas:[{
-				fileMatch: [modelUri.toString()], // associate with our model
-				schema:tdSchema
-			}
-			]
-		});
+		monaco.languages.json.jsonDefaults.setDiagnosticsOptions(jsonOptions);
 
 		window.tdEditor=monaco.editor.create(document.getElementById("td-editor"), {
 			model,
@@ -244,12 +244,23 @@ require(['vs/editor/editor.main'], window.tdEditor=function() {
 	})
 })
 
-require(['vs/editor/editor.main'], function () {
-	// TODO: Possibly add validation (like for td editor above)
-
+require(['vs/editor/editor.main'], async function () {
 	window.tmEditor = monaco.editor.create(document.getElementById('tm-editor'), {
 	  language: 'json',
 	  // Without automaticLayout editor will not be built inside hidden div
 	  automaticLayout: true
 	});
+
+	window.tmEditor.getModel().onDidChangeContent(_ => {
+		util.validate("auto", autoValidate, docType)
+	});
+
+	const schema = await fetch("./node_modules/@thing-description-playground/core/tm-schema.json");
+	const schemaJson = await schema.json();
+	jsonOptions['schemas'].push({
+		fileMatch: [window.tmEditor.getModel().uri.toString()],
+		schema: schemaJson
+	});
+
+	monaco.languages.json.jsonDefaults.setDiagnosticsOptions(jsonOptions);
   });
