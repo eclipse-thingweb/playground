@@ -2,7 +2,7 @@
     "id": "urn:extend",
     "$comment": "example 52",
     "@context": [
-        "http://www.w3.org/ns/td"
+        "https://www.w3.org/2022/wot/td/v1.1"
     ],
     "@type": "tm:ThingModel",
     "title": "Valid Model 6",

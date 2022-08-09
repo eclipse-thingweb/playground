@@ -1,7 +1,7 @@
 {
     "id": "urn:no:curly",
     "$comment":"no curly bracket",
-    "@context": ["http://www.w3.org/ns/td"], 
+    "@context": ["https://www.w3.org/2022/wot/td/v1.1"], 
     "@type" : "tm:ThingModel",
     "title": "Invalid model 4",
     "securityDefinitions": {
