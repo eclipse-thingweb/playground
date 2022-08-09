@@ -13,6 +13,7 @@ let manualAssertionsLoaded = false
 const results = []
 let autoValidate = false
 let docType = "td"
+let urlAddrObject
 
 const tdRelated = [];
 [].forEach.call(document.querySelectorAll('.td-related'), el => {
@@ -35,6 +36,9 @@ document.getElementById("doc_type").addEventListener("change", () => {
 	manualAssertionsLoaded = false
 	manualAssertions = []
 	docType = document.getElementById("doc_type").value
+	urlAddrObject = util.getExamplesList(docType);
+	util.populateExamples(urlAddrObject);
+
 	if (docType == 'tm') {
 		[].forEach.call(tdRelated, el => {
 			el["el"].style.display = "none"
@@ -156,8 +160,8 @@ document.getElementById("close_assertion_test_popup").addEventListener("click", 
 	document.getElementById("assertion_test_popup").style.display = "none"
 })
 
-const urlAddrObject= util.getExamplesList(); // Fetching list of examples from the given array(in helperFunctions.js).
-util.populateExamples(urlAddrObject);     // Loading the examples given in list from their respective URLs
+urlAddrObject = util.getExamplesList(docType);  // Fetching list of examples from the given array(in helperFunctions.js).
+util.populateExamples(urlAddrObject);  // Loading the examples given in list from their respective URLs
 
 document.getElementById("load_example").addEventListener("change", e => {util.exampleSelectHandler(e, {urlAddrObject})})
 
