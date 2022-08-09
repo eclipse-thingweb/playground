@@ -44,13 +44,23 @@ You can use this package to integrate TD assertion testing in your own Browser/N
 
 ## Structure
 
-* [index.js](./index.js) contains the package import/export structure, application flow (assertion testing, merging, print stats), and handles loading of the assertion schemas
-* [assertionTests.js](./assertionTests.js) contains the actual assertion testing functionalities
-* [checkCoverage.js](./checkCoverage.js) can output stats about a given assertion testing report
-* [list.json](./list.json) a list of all filenames in the [assertions](./assertions) folder. Required, for browser usage of the package (since no access to ddirectory content exists there).
-* [manual.csv](./manual.csv) example of a manual report part. Used if no other file is specified as manual assertion report.
+* [index.js](./index.js) contains the package import/export structure, application flow (assertion testing, merging, print stats), and handles loading of the assertion schemas.
+* [assertionTests-td.js](./assertionTests-td.js) contains the actual assertion testing functionalities for TDs.
+* [assertionTests-tm.js](./assertionTests-tm.js) contains the actual assertion testing functionalities for TMs.
+* [util.js](./util.js) contains functionality that is used by both [assertionTests-td.js](./assertionTests.js) and [assertionTests-tm.js](./assertionTests.js).
+* [checkCoverage.js](./checkCoverage.js) can output stats about a given assertion testing report.
+* [assertion-td](./assertions-td) a folder that contains all TD assertion schemas. Includes the TD [manual.csv](assertions-td/manual.csv) and [tdAssertionList.json](assertions-td/tdAssertionList.json), a list of all filenames in the folder. It is required for browser usage of the package (since no access to directory content exits there).
+* [assertion-tm](./assertions-tm) a folder that contains all TM assertion schemas. Includes the TM [manual.csv](assertions-tm/manual.csv) and [tmAssertionList.json](assertions-tm/tmAssertionList.json), a list of all filenames in the folder. It is required for browser usage of the package (since no access to directory content exits there).
 * [mergeResults.js](./mergeResults.js) can merge several assertion testing reports to one single report, representing the assertions results of an whole implementation instead of single TDs.
-* [update-list.js](./update-list.js) Has to be executed after applying changes of files in the [assertions](./assertions) directory. Updates the [list.json](./list.json) with the current filenames.
+* [update-list.js](./update-list.js) Has to be executed after applying changes of files in the [assertion-td](./assertions-td) and [assertion-tm](./assertions-tm) directories. Updates the [tdAssertionList.json](assertions-td/tdAssertionList.json) and [tmAssertionList.json](assertions-tm/tmAssertionList.json) with the current filenames.
+
+### manual.csv Generation
+
+* [generate-manual-csv.sh](./generate-manual-csv.sh) a bash script that is the entry point for generating the manual.csv
+* [generate-manual-csv.js](./generate-manual-csv.js) a JavaScript script that does the actual generation of the manual.csv
+* [assertions-csv](assertions-csv) a folder that contains the inputs needed for the generation of the manual.csv as well as the outputs generated.
+
+For more details, please read the [README.md](assertions-csv/README.md) under `assertions-csv` folder
 
 ## License
 

@@ -23,9 +23,6 @@ module.exports = {
     // Validation starts here
 
     const ajvOptions = {
-        "$comment" (v) {
-            logFunc("\n!!!! COMMENT", v)
-        },
         "allErrors": true,
         "strict":false
     }

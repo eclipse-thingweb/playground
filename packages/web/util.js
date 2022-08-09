@@ -323,8 +323,7 @@ export function getExamplesList(docType){
         }
         : {
             "Placeholder": {
-                // TODO: Fix filename when it's fixed in the core package
-                "addr": "./node_modules/@thing-description-playground/core/examples/tms/valid/placedholder.json",
+                "addr": "./node_modules/@thing-description-playground/core/examples/tms/valid/placeholder.json",
                 "type": "valid"
             },
             "Reference": {

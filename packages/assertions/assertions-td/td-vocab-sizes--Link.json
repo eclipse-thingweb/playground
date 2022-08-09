@@ -18,7 +18,7 @@
             "if": {
                 "type": "object",
                 "properties": {
-                    "type": {
+                    "rel": {
                         "type": "string",
                         "const": "icon"
                     },
@@ -27,7 +27,7 @@
                     }
                 },
                 "required": [
-                    "type", "sizes"
+                    "rel", "sizes"
                 ]
             },
             "then": {

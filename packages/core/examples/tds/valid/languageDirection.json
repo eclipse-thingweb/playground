@@ -1,0 +1,31 @@
+{
+  "@context": [
+    "https://www.w3.org/2022/wot/td/v1.1",
+    {
+      "@language": "ar-EG",
+      "@direction": "rtl"
+    }
+  ],
+  "securityDefinitions": {
+    "basic_sc": { "scheme": "basic", "in": "header" }
+  },
+  "security": "basic_sc",
+  "title": "شيء يخصني يقيس درجة الحرارة",
+  "description": "شيء يقيس درجة الحرارة و يظهر حالته",
+  "properties": {
+    "temp": {
+      "title": "درجة الحرارة",
+      "type": "boolean",
+      "readOnly": false,
+      "writeOnly": false,
+      "observable": false,
+      "forms": [
+        {
+          "href": "https://mylamp.example.com/abc",
+          "op": ["readproperty", "writeproperty"],
+          "contentType": "application/json"
+        }
+      ]
+    }
+  }
+}

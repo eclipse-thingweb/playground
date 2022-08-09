@@ -79,7 +79,17 @@ module.exports = validateTM
             "ID": error,
             "Status": "fail"
         })
-        throw new Error("Invalid TM")
+        let logName = "" // this will be id and or title
+        if (tmJson.hasOwnProperty("title") && (tmJson.hasOwnProperty("id"))) {
+            logName = "title: " + tmJson.title + " id: " + tmJson.id
+        } else if (tmJson.hasOwnProperty("title")) {
+            logName = "title: " + tmJson.title
+        } else if (tmJson.hasOwnProperty("id")) {
+            logName = "id: " + tmJson.id
+        } else { // if no id or title present, put the whole td as string
+            logName = JSON.stringify(tmJson) + "\n"
+        }
+        throw new Error(logName, " : Invalid TM")
     }
 
     // additional checks
@@ -274,7 +284,7 @@ function checkTMVocabulary(tmJson) {
     ajv.addVocabulary(['is-complex', 'also'])
 
     const valid = ajv.validate('tm', tmJson)
-    const otherAssertions =  ["tm-placeholder-value", "tm-td-generation-inconsistencies"]
+    const otherAssertions =  ["tm-placeholder-value", "tm-td-generation-inconsistencies","tm-context-requirement"]
 
     if (valid) {
         // results.push({
@@ -312,7 +322,7 @@ function validateTmPlaceholder(obj, logFunc, results) {
     let validPayload = null
     checkObjContainsTmPlaceholder(obj, logFunc)
     let otherAssertion = []
-    if(tmSchema.also && tmSchema.also.length >= 1) otherAssertion = tmSchema.also
+    if(tmPlaceholderSchema.also && tmPlaceholderSchema.also.length >= 1) otherAssertion = tmPlaceholderSchema.also
 
     if(FOUND_TM_PLACEHOLDER) {
         // Return a fail result if found
@@ -408,7 +418,7 @@ function validateTmRef(obj, logFunc, results) {
 
     let validPayload = checkObjContainsTmRef(obj, logFunc)
     let otherAssertion = []
-    if(tmSchema.also && tmSchema.also.length >= 1) otherAssertion = tmSchema.also
+    if(tmRefSchema.also && tmRefSchema.also.length >= 1) otherAssertion = tmRefSchema.also
 
     if(FOUND_TM_REF) {
         // Return a fail result if found

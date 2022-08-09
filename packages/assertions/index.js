@@ -81,9 +81,14 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, doneEventEmit
 
                 if (typeof tdToValidate === "string") {tdToValidate = Buffer.from(tdToValidate, "utf8")}
 
-                if (jsonResults[tdName] !== undefined) {throw new Error("TDs have same Ids or titles: " + tdName)}
-                jsonResults[tdName] = validateTD(tdToValidate, assertionSchemas, manualAssertionsJSON, logFunc)
-                if(doneEventEmitter) doneEventEmitter.emit("done", tdName)
+                try {
+                    if (jsonResults[tdName] !== undefined) {throw new Error("TDs have same Ids or titles: " + tdName)}
+                    jsonResults[tdName] = validateTD(tdToValidate, assertionSchemas, manualAssertionsJSON, logFunc)
+                } catch (error) {
+                    console.error(error)
+                } finally {
+                    if(doneEventEmitter) doneEventEmitter.emit("done", tdName)
+                }
             })
 
             const tdNames = Object.keys(jsonResults)
@@ -157,21 +162,29 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, doneEventEmit
             const jsonResults = {}
             tmStrings.forEach( tmToValidate => {
                 // check if id exists, use it for name if it does, title + some rand number otherwise
-                let tmName = ""
-                if ("id" in JSON.parse(tmToValidate)){
-                    const tmId = JSON.parse(tmToValidate).id
+                const parsedTm = JSON.parse(tmToValidate)
+                const generateNumber = () => Math.floor(Math.random() * 1000)
+                let tmName
+                if ("id" in parsedTm){
+                    const tmId = parsedTm.id
                     tmName = tmId.replace(/:/g, "_")
+                } else if ("title" in parsedTm) {
+                    tmName = parsedTm.title + generateNumber()
                 } else {
-                    const tmTitle = JSON.parse(tmToValidate).title
-                    tmName = tmTitle + Math.floor(Math.random() * 1000)
+                    tmName = `Unnamed TM ${generateNumber()}`
                 }
                 if(doneEventEmitter) doneEventEmitter.emit("start", tmName)
 
                 if (typeof tmToValidate === "string") {tmToValidate = Buffer.from(tmToValidate, "utf8")}
 
-                if (jsonResults[tmName] !== undefined) {throw new Error("TDs have same Ids or titles: " + tmName)}
-                jsonResults[tmName] = validateTM(tmToValidate, assertionSchemas, manualAssertionsJSON, logFunc)
-                if(doneEventEmitter) doneEventEmitter.emit("done", tmName)
+                try {
+                    if (jsonResults[tmName] !== undefined) {throw new Error("TDs have same Ids or titles: " + tmName)}
+                    jsonResults[tmName] = validateTM(tmToValidate, assertionSchemas, manualAssertionsJSON, logFunc)
+                } catch (error) {
+                    console.log(error)
+                } finally {
+                    if(doneEventEmitter) doneEventEmitter.emit("done", tmName)
+                }
             })
 
             const tmNames = Object.keys(jsonResults)

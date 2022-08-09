@@ -1,0 +1,47 @@
+{
+    "title": "sec-body-name-json-pointer-array",
+    "description": "The JSON pointer used in the body locator MAY use the - character to indicate a non-existent array element when it is necessary to insert an element after the last element of an existing array",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "is-complex": true,
+    "type": "object",
+    "properties": {
+        "securityDefinitions": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+                "$ref": "#/$defs/securityScheme"
+            }
+        }
+    },
+    "required": [
+        "securityDefinitions"
+    ],
+    "additionalProperties": true,
+    "$defs": {
+        "securityScheme": {
+            "if": {
+                "type": "object",
+                "properties": {
+                    "scheme": {
+                        "type": "string",
+                        "enum": [
+                            "apikey","basic","bearer","digest"
+                        ]
+                    },
+                    "in": {
+                        "type": "string",
+                        "enum": ["body"]
+                    },
+                    "name":{
+                        "type":"string",
+                        "const":"-"
+                    }
+                },
+                "required": ["in", "scheme","name"]
+            },
+            "then": {
+                "const": "sec-body-name-json-pointer-array=pass"
+            }
+        }
+    }
+}

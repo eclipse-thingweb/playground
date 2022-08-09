@@ -14,6 +14,7 @@ module.exports.propUniqueness = coreAssertions.checkPropUniqueness
 module.exports.multiLangConsistency = coreAssertions.checkMultiLangConsistency
 module.exports.checkLinksRelTypeCount = coreAssertions.checkLinksRelTypeCount
 module.exports.security = coreAssertions.checkSecurity
+module.exports.checkUriSecurity = coreAssertions.checkUriSecurity
 
 const jsonValidator = require('json-dup-key-validator')
 
@@ -55,7 +56,8 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             propUniqueness: null,
             multiLangConsistency: null,
             linksRelTypeCount: null,
-            readWriteOnly: null
+            readWriteOnly: null,
+            uriVariableSecurity: null
         }
 
         const detailComments = {
@@ -65,7 +67,9 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             propUniqueness: "Checking whether in one interaction pattern there are duplicate names, e.g. two properties called temp.",
             multiLangConsistency: "Checks whether all titles and descriptions have the same language fields.",
             linksRelTypeCount: "Checks whether rel:type is used more than once in the links array",
-            readWriteOnly: "Warns if a property has readOnly or writeOnly set to true conflicting with another property."
+            readWriteOnly: "Warns if a property has readOnly or writeOnly set to true conflicting with another property.",
+            uriVariableSecurity: "Checks if the name of an APIKey security scheme with in:uri show up in href and does not \
+            conflict with normal uriVariables"
         }
 
         let tdJson
@@ -120,6 +124,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             }
             details.multiLangConsistency = evalAssertion(coreAssertions.checkMultiLangConsistency(tdJson))
             details.linksRelTypeCount = evalAssertion(coreAssertions.checkLinksRelTypeCount(tdJson))
+            details.uriVariableSecurity = evalAssertion(coreAssertions.checkUriSecurity(tdJson))
 
             // determine additional check state
             // passed + warning -> warning

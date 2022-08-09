@@ -1,0 +1,24 @@
+{
+    "title": "td-text-at-direction",
+    "description": "The root element of a TD Serialization MUST be a JSON object that includes a member with the name @context and a value of type string or array that equals or respectively contains https://www.w3.org/2022/wot/td/v1.1. ",
+    "is-complex": false,
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": [
+        "@context"
+    ],
+    "properties": {
+        "@context": {
+            "type":"array",
+            "contains": {
+                "type":"object",
+                "properties": {
+                    "@direction":{
+                        "type":"string"
+                    }
+                },
+                "required": ["@direction"]
+            }
+        }
+    }
+}

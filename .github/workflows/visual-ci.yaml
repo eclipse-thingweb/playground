@@ -1,6 +1,12 @@
 name: Visual Testing Pipeline
 
-on: pull_request
+on:
+  pull_request:
+    paths-ignore:
+    - '**.md'
+    - '**.png'
+    - '**.drawio'
+    - '**.xlsx'
 
 jobs:
   setup-and-visual-test:

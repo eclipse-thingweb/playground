@@ -8,7 +8,7 @@ const { readFileSync, writeFileSync } = require('fs')
 const path = require("path")
 // const assert = require('node:assert').strict
 
-const csvGenerator = new Json2CsvParser({fields: ["ID", "Status", "Assertion"]})
+const csvGenerator = new Json2CsvParser({fields: ["ID", "Status", "Assertion", "Comment"]})
 const mainPath = path.join("assertions-csv")
 const assertionsPath = path.join("assertions-csv", "assertions.csv")
 const preImplementedPath = path.join("assertions-csv", "manual-generation-inputs", "pre-implemented.csv")
@@ -49,6 +49,7 @@ const preImplementedTable = csvjson.toObject(preImplementedPathCSV, csvParserOpt
  *                           Determine Manual CSV
  *========================================================================**/
 const manualTable = []
+const needsReviewTable = []
 
 /* ================== Add old manual assertions ================= */
 const manualFlag = "not testable with Assertion Tester"
@@ -69,7 +70,8 @@ for(const assertion of assertionsTable) {
     const isNotFound = preImplementedTable.findIndex(implementedAssertion => {return implementedAssertion.ID === assertion.ID}) === -1
     const manualIsNotFound = manualTable.findIndex(manualAssertion => {return manualAssertion.ID === assertion.ID}) === -1
     if(isNotFound && manualIsNotFound) {
-        manualTable.push({"ID": assertion.ID, "Status": "null", "Assertion": assertion.Assertion})
+        manualTable.push({"ID": assertion.ID, "Status": "null", "Assertion": assertion.Assertion, "Comment": ""})
+        needsReviewTable.push({"ID": assertion.ID, "Status": "null", "Assertion": assertion.Assertion, "Comment": ""})
     }
 }
 
@@ -82,6 +84,7 @@ const assertionsSize = assertionsTable.length
 const implementedSize = preImplementedTable.length
 const manualSize = manualTable.length
 const oldSize = oldAssertionsTable.length
+const needsReviewSize = needsReviewTable.length
 
 // expectedSize = implementedSize + manualSize + oldSize
 
@@ -96,6 +99,9 @@ writeFileSync(path.join(mainPath, "implemented.csv"), csvGenerator.parse(preImpl
 console.log("Generating manual.csv")
 writeFileSync(path.join(mainPath, "manual.csv"), csvGenerator.parse(manualTable))
 
+console.log("Generating needsReview.csv")
+writeFileSync(path.join(mainPath, "needsReview.csv"), csvGenerator.parse(needsReviewTable))
+
 console.log("Generating old.csv")
 writeFileSync(path.join(mainPath, "old.csv"), csvGenerator.parse(oldAssertionsTable))
 
@@ -105,7 +111,8 @@ const report = {
     assertionsSize,
     implementedSize,
     manualSize,
-    oldSize
+    oldSize,
+    needsReviewSize
 }
 
 writeFileSync(path.join(mainPath, "report.json"), JSON.stringify(report))

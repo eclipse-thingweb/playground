@@ -21,7 +21,8 @@ const refResult = {
         propUniqueness: expect.stringMatching(/warning|passed/),
         multiLangConsistency: expect.stringMatching(/warning|passed/),
         linksRelTypeCount: expect.stringMatching(/warning|passed/),
-        readWriteOnly: expect.stringMatching(/warning|passed/)
+        readWriteOnly: expect.stringMatching(/warning|passed/),
+        uriVariableSecurity: expect.stringMatching(/warning|passed/)
     },
     detailComments: expect.any(Object)
 }

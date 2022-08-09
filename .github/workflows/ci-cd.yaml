@@ -1,15 +1,26 @@
 name: Default CI & CD Pipeline
 
-on: [push, pull_request]
-
+on: 
+  push:
+    paths-ignore:
+    - '**.md'
+    - '**.png'
+    - '**.drawio'
+    - '**.xlsx'
+  pull_request:
+    paths-ignore:
+    - '**.md'
+    - '**.png'
+    - '**.drawio'
+    - '**.xlsx'
 jobs:
   setup-and-test:
-
+    
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 15.x]
+        node-version: [12.x, 16.x, 18.x]
 
     steps:
       - name: Checkout
