@@ -54,12 +54,12 @@ body {
 }
 
 .wrapper>.row:first-child {
-	height: 700px;
+	height: 800px;
 }
 
 
-#monaco {
-	height: 700px; 
+#td-editor, #tm-editor {
+	height: 800px;
 	width: auto;
 }
 
@@ -82,7 +82,7 @@ body {
 	.wrapper > .row:first-child {
 		height: calc(800px + calc(91vh - 1000px));
 	}
-	#monaco {
+	#td-editor, #tm-editor {
 		height: calc(800px + calc(91vh - 1000px));
 	}
 	.conrow {

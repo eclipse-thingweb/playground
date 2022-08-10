@@ -48,7 +48,7 @@
         <label for="textDescription">Description</label><br>
         <textarea id="textDescription" type="text" maxlength="500"></textarea>
       </form>
-      <p>Please be aware that your TD is made publicly viewable!</p>
+      <p>Please be aware that your TD/TM is made publicly viewable!</p>
       <button type="button" class="btn custom-btn" id="btn_gist">Submit Gist</button>
       <span id="gistSuccess"></span><br>
       <br>
@@ -89,7 +89,9 @@
 
       <div class="row">
         <div class="col-8">
-          <div id="monaco">
+          <div id="td-editor">
+          </div>
+          <div id="tm-editor" style="display: none;">
           </div>
         </div>
 
@@ -110,7 +112,7 @@
                           <circle id="spot-json" cx="10" cy="10" r="9" />
                         </svg>
                       </td>
-                      <td title="Is green when TD is a valid JSON" class="tooltipline">JSON validation</td>
+                      <td title="Is green when TD/TM is a valid JSON" class="tooltipline">JSON validation</td>
                     </tr>
                     <tr>
                       <td>
@@ -118,7 +120,7 @@
                           <circle id="spot-schema" cx="10" cy="10" r="9" />
                         </svg>
                       </td>
-                      <td title="Is green when TD is valid according to the JSON Schema of the TD spec"
+                      <td title="Is green when TD/TM is valid according to the JSON Schema of the TD/TM spec"
                         class="tooltipline">JSON Schema validation</td>
                     </tr>
                     <tr>
@@ -138,7 +140,7 @@
                           <circle id="spot-jsonld" cx="10" cy="10" r="9" />
                         </svg>
                       </td>
-                      <td title="Is green when TD can be expanded using the @context value" class="tooltipline">JSON-LD
+                      <td title="Is green when TD/TM can be expanded using the @context value" class="tooltipline">JSON-LD
                         validation
                       </td>
                     </tr>
@@ -175,6 +177,13 @@
                     <label class="tooltipline" for="box_reset_logging"
                       title="Reset Logging for every new Validation">Reset Logging</label>
 
+                    <br><br>
+                    <label for="doc_type">Document Type</label>
+                    <select id="doc_type" class="btn btn-info dropdown-toggle btn-sm">
+                      <option class="btn-info" value="td">Thing Description</option>
+                      <option class="btn-info" value="tm">Thing Model</option>
+                    </select>
+
                     <br>
                     <div class="btn-group" role="group">
                       <button type="button" class="btn custom-btn" id="btn_validate">Validate</button>
@@ -184,12 +193,12 @@
                     <br>
                     <div class="btn-group" role="group">
                       <button type="button" class="btn custom-btn" id="btn_gistify"
-                        title="Stores the current TD as a gist at Thingweb">Gistify</button>
+                        title="Stores the current TD/TM as a gist at Thingweb">Gistify</button>
                       <button type="button" class="btn custom-btn" id="btn_assertion_popup">Assertion Test</button>
                     </div>
 
-                    <br>
-                    <div class="btn-group" role="group">
+                    <br class="td-related">
+                    <div class="btn-group td-related" role="group">
                       <button type="button" class="btn custom-btn oap-btn"
                         title="Download an OpenAPI instance of the Thing Description" disabled>OpenAPI</button>
                       <button type="button" class="btn custom-btn" id="btn_oap_json"
@@ -198,8 +207,8 @@
                         title="Download an OpenAPI instance of the TD as .yaml file">YAML</button>
                     </div>
 
-                    <br>
-                    <div class="btn-group" role="group">
+                    <br class="td-related">
+                    <div class="btn-group td-related" role="group">
                       <button type="button" class="btn custom-btn oap-btn"
                         title="Download an AsyncAPI instance of the Thing Description" disabled>AsyncAPI</button>
                       <button type="button" class="btn custom-btn" id="btn_aap_json"
@@ -208,8 +217,8 @@
                         title="Download an AsyncAPI instance of the TD as .yaml file">YAML</button>
                     </div>
 
-                    <br>
-                    <div class="btn-group" role="group">
+                    <br class="td-related">
+                    <div class="btn-group td-related" role="group">
                       <button type="button" class="btn custom-btn oap-btn" title="Extend/reduce a TD by default values"
                         disabled>Defaults</button>
                       <button type="button" class="btn custom-btn" id="btn_defaults_add"
@@ -228,7 +237,7 @@
                   <div class="form-group">
                     <label>Examples:</label>
                     <select id="load_example" class="btn btn-info btn-sm dropdown-toggle">
-                      <option class="btn-info" value="select_none">Select None</option>
+                      <!-- Examples will be dynamically populated here -->
                     </select>
                   </div>
                 </form>
@@ -238,7 +247,7 @@
           </div>
           <div class="row conrow">
             <div class="col">
-              <pre id="console">Please click Validate after an input TD...&#13;&#10;</pre>
+              <pre id="console">Please click Validate after an input TD/TM...&#13;&#10;</pre>
             </div>
           </div>
         </div>
