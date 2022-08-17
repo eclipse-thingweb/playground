@@ -20,13 +20,13 @@
     "realTest": "node real-test.js"
   },
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.18.1",
     "node-fetch": "^2.6.1"
   },
   "publishConfig": {
     "access": "public"
   },
   "devDependencies": {
-    "eslint": "^7.13.0"
+    "eslint": "^8.22.0"
   }
 }
