@@ -21,18 +21,18 @@
     "prepare": "npm run bundle"
   },
   "dependencies": {
-    "ajv-formats-draft2019": "^1.4.3",
     "@thing-description-playground/core": "^1.2.1",
-    "ajv": "^8.8.2",
+    "ajv": "^8.11.0",
     "ajv-formats": "^2.1.1",
+    "ajv-formats-draft2019": "^1.6.1",
     "csvjson": "^5.1.0",
     "is-utf8": "^0.2.1",
-    "json2csv": "^5.0.1"
+    "json2csv": "^5.0.7"
   },
   "devDependencies": {
-    "browserify": "^16.5.1",
-    "eslint": "^7.13.0",
-    "terser": "^4.7.0"
+    "browserify": "^17.0.0",
+    "eslint": "^8.22.0",
+    "terser": "^5.14.2"
   },
   "publishConfig": {
     "access": "public"
