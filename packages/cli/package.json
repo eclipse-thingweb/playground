@@ -24,14 +24,14 @@
     "@thing-description-playground/defaults": "^1.2.1",
     "@thing-description-playground/td_to_asyncapi": "^1.0.2",
     "@thing-description-playground/td_to_openapi": "^1.2.2",
-    "cli-progress": "^3.10.0",
-    "commander": "^9.0.0"
+    "cli-progress": "^3.11.2",
+    "commander": "^9.4.0"
   },
   "publishConfig": {
     "access": "public"
   },
   "devDependencies": {
     "@types/commander": "^2.12.2",
-    "eslint": "^7.13.0"
+    "eslint": "^8.22.0"
   }
 }
