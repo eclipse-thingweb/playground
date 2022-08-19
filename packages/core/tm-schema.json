@@ -1983,8 +1983,8 @@
     "@context": {
       "$ref": "#/definitions/thing-context"
     },
-    "tm:required": {
-      "$ref": "#/definitions/tm_required"
+    "tm:optional": {
+      "$ref": "#/definitions/tm_optional"
     }
   },
   "additionalProperties": true,
