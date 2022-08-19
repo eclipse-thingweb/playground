@@ -1677,7 +1677,7 @@
             "const": "tm-placeholder=pass"
         }
       },
-      "tm_required": {
+      "tm_optional": {
         "type": "array",
         "items": {
           "type": "string",
@@ -1825,8 +1825,8 @@
       "@context": {
         "$ref": "#/definitions/thing-context"
       },
-      "tm:required": {
-        "$ref": "#/definitions/tm_required"
+      "tm:optional": {
+        "$ref": "#/definitions/tm_optional"
       }
     },
     "additionalProperties": true,

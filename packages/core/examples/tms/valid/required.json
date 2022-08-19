@@ -7,7 +7,7 @@
     "@type": "tm:ThingModel",
     "title": "Valid Model 11",
     "description": "Lamp Thing Description Model",
-    "tm:required": [
+    "tm:optional": [
         "#/properties/status",
         "#/actions/toggle"
     ],
