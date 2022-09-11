@@ -10,7 +10,7 @@ module.exports = crawlPaths
  * @returns {object} The openAPI paths object
  */
 function crawlPaths(td) {
-    const cPaths = {}
+    const cPaths = new Map()
     const interactionTypes = ["properties", "actions", "events"]
     const httpBase = td.base && (td.base.startsWith("http://") || td.base.startsWith("https://")) ? true : false
 
@@ -61,7 +61,10 @@ function crawlPaths(td) {
         })
     }
 
-    return cPaths
+    // The method should return object instead of map
+    // So we need to convert all maps to objects before
+    cPaths.forEach((v, k) => cPaths.set(k, Object.fromEntries(v)))
+    return Object.fromEntries(cPaths)
 }
 
 /**
@@ -74,7 +77,7 @@ function crawlPaths(td) {
  * @param {object} interactionSchemas The common request & response schemas
  * @param {string|string[]} myOp The op property (or default value) of the form
  * @param {boolean} httpBase Is there a httpBase
- * @param {object} cPaths The openAPI paths object being generated
+ * @param {map<string, object>} cPaths The openAPI paths object being generated
  * @param {object} tdSecurityDefinitions The TD security definitions object
  */
 function addForm(form, interactionInfo, interactionSchemas, myOp, httpBase, cPaths, tdSecurityDefinitions) {
@@ -192,28 +195,28 @@ function recognizeMethod(ops) {
  * @param {{contentType: string, requestType: string}} types The content type of the response/request (e.g. application/json)
  * @param {array} interactionInfo The interactionInfo associated to the form (one/some of Property, Action, Event)
  * @param {object} interactionSchemas The common request & response schemas
- * @param {object} cPaths The paths object to extend
+ * @param {map<string, object>} cPaths The paths object to extend
  */
 function addPaths(methods, path, server, types, interactionInfo, interactionSchemas, cPaths) {
 
-    if (!cPaths[path] && methods.length > 0) {cPaths[path] = {}}
+    if (!cPaths.get(path) && methods.length > 0) {cPaths.set(path, new Map())}
 
     methods.forEach( method => {
         // check if same method is already there (e.g. as http instead of https version)
-        if (cPaths[path][method]) {
+        if (cPaths.get(path).get(method)) {
             if (server) {
-                if (cPaths[path][method].servers) {
-                    if (!cPaths[path][method].servers.some(someServer => (someServer.url === server))) {
-                        cPaths[path][method].servers.push(new Server(server))
+                if (cPaths.get(path).get(method).servers) {
+                    if (!cPaths.get(path).get(method).servers.some(someServer => (someServer.url === server))) {
+                        cPaths.get(path).get(method).servers.push(new Server(server))
                     }
                 }
                 else {
-                    cPaths[path][method].servers = [new Server(server)]
+                    cPaths.get(path).get(method).servers = [new Server(server)]
                 }
             }
         }
         else {
-            cPaths[path][method] = {
+            cPaths.get(path).set(method, {
                 responses: {
                     200: {
                         description: "default success response",
@@ -233,17 +236,17 @@ function addPaths(methods, path, server, types, interactionInfo, interactionSche
                         [types.requestType]: interactionSchemas.requestSchema
                     }
                 }
-            }
+            })
 
-            Object.assign(cPaths[path][method], interactionInfo)
+            Object.assign(cPaths.get(path).get(method), interactionInfo)
 
             if (method === "get") {
-                delete cPaths[path][method].requestBody
+                delete cPaths.get(path).get(method).requestBody
             }
 
             // check if server is given (ain't the case for "base" url fragments) and add
             if (server) {
-                cPaths[path][method].servers = [new Server(server)]
+                cPaths.get(path).get(method).servers = [new Server(server)]
             }
         }
     })
