@@ -1045,12 +1045,18 @@ function getTyposFromPath(td, path, wordList) {
           return
         }
 
+        if (key.includes(':') && (key.charAt(0) !== ':' && key.charAt(key.length - 1) !== ':')) {
+            return
+        }
+
         wordList.forEach(word => {
           if (doesTypoExist(key, word)) {
               typos.push({
                   word: key,
                   message: `Did you mean ${word}?`
               })
+
+              return
           }
         })
     })
