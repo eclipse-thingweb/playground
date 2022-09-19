@@ -15,6 +15,7 @@ module.exports.multiLangConsistency = coreAssertions.checkMultiLangConsistency
 module.exports.checkLinksRelTypeCount = coreAssertions.checkLinksRelTypeCount
 module.exports.security = coreAssertions.checkSecurity
 module.exports.checkUriSecurity = coreAssertions.checkUriSecurity
+module.exports.checkTypos = checkTypos
 
 const jsonValidator = require('json-dup-key-validator')
 
@@ -954,3 +955,209 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
     })
 }
 
+// --------------------------------------------------
+
+// -------------------------------------------------- checkTypos
+/**
+ *
+ * @param {object} td The TD to apply typo check on
+ * @returns List of possible typos
+ */
+ function checkTypos(td) {
+    let typos = []
+    const wordLists = new Map()
+    const paths = ["properties"]
+    const schema = require('./td-schema.json')
+    paths.forEach(path => {
+        wordLists.set(path, getWordListForPath(schema, path))
+    })
+
+    // Set paths to search for and get the word list for all
+    wordLists.forEach((wordList, path) => {
+        typos = typos.concat(getTyposFromPath(td, path, wordList))
+    })
+
+    return typos
+}
+
+/**
+ *
+ * @param {object} schema The TD schema to get available property names
+ * @param {string} path String that leads to specific JSON property
+ * @returns List of words to apply typo check on
+ */
+function getWordListForPath(schema, path) {
+    const wordList = []
+
+    const pathObject = getToPath(schema, path)
+
+    if (typeof pathObject === 'object') {
+        for(const key in pathObject) {
+          if (pathObject.hasOwnProperty(key)) {
+            wordList.push(key)
+          }
+        }
+    }
+
+    return wordList
+}
+
+
+/**
+ *
+ * @param {object} schema The TD schema to get available property names
+ * @param {string} path String that leads to specific JSON property
+ * @returns The specific JSON property
+ */
+function getToPath(schema, path) {
+    let result = schema
+    const keys = path.split('.')
+
+    keys.forEach(key => {
+        result = result[key]
+    })
+
+    return result
+}
+
+/**
+ *
+ * @param {object} td The TD to apply typo check on
+ * @param {string} path String that leads to a property to apply typo check on
+ * @param {array<string>} wordList List of words to apply typo check on
+ * @returns
+ */
+function getTyposFromPath(td, path, wordList) {
+    const typos = []
+    let parsedTD = {}
+
+    try {
+      parsedTD = JSON.parse(td)
+    } catch (err) {
+      console.log("JSON is not in a good form.")
+    }
+
+    const keys = []
+    findAllJSONKeys(parsedTD, keys)
+
+    keys.forEach(key => {
+        if (wordList.indexOf(key) !== -1) {
+          return
+        }
+
+        wordList.forEach(word => {
+          if (doesTypoExist(key, word)) {
+              typos.push({
+                  word: key,
+                  message: `Did you mean ${word}?`
+              })
+          }
+        })
+    })
+
+    return typos
+}
+
+function findAllJSONKeys(json, keys) {
+    for (const key in json) {
+        if (json.hasOwnProperty(key)) {
+            if (typeof json[key] === 'object') {
+                findAllJSONKeys(json[key], keys)
+            }
+            keys.push(key)
+        }
+    }
+}
+
+const SIMILARITY_THRESHOLD = 0.85
+const LENGTH_DIFFERENCE_THRESHOLD = 2
+
+/**
+ *
+ * @param {string} actual The property name of the TD entered by user
+ * @param {string} desired The desired propert name that is retrieved from TD Schema
+ * @returns Boolean value that tell whether typo exists or not
+ */
+function doesTypoExist(actual, desired) {
+  if (Math.abs(actual.length - desired.length) > LENGTH_DIFFERENCE_THRESHOLD) {
+    return false
+  }
+
+  const similarity = calculateSimilarity(actual, desired)
+  return similarity > SIMILARITY_THRESHOLD && similarity !== 1.0
+}
+
+/**
+ * Similarity of words calculated using Jaro-Winkler algorithm
+ * @param {string} actual The property name of the TD entered by user
+ * @param {string} desired The desired propert name that is retrieved from TD Schema
+ * @returns Similarity of value the two inputs
+ */
+function calculateSimilarity(actual, desired) {
+  let m = 0
+
+  if (actual.length === 0 || desired.length === 0) {
+    return 0
+  }
+
+  if (actual === desired) {
+    return 1
+  }
+
+  const range = Math.floor(Math.max(actual.length, desired.length) / 2) - 1
+  const actualMatches = new Array(actual.length)
+  const desiredMatches = new Array(desired.length)
+
+  // check lower and upper bounds to find the matches
+  for (let i = 0; i < actual.length; i++) {
+    const lowerBound = (i >= range) ? i - range : 0
+    const upperBound = (i + range <= desired.length) ? (i + range) : (desired.length - 1)
+
+    for (let j = lowerBound; j <= upperBound; j++) {
+      if (actualMatches[i] !== true && desiredMatches[j] !== true && actual[i] === desired[j]) {
+        m++
+        actualMatches[i] = desiredMatches[j] = true
+        break
+      }
+    }
+  }
+
+  if (m === 0) {
+    return 0
+  }
+
+  let k = 0
+  let transpositionCount = 0
+
+  // count transpositions
+  for (let i = 0; i < actual.length; i++) {
+    if (actualMatches[i] === true) {
+      let j = 0
+      for (j = k; j < desired.length; j++) {
+        if (desiredMatches[j] === true) {
+          k = j + 1
+          break
+        }
+      }
+
+      if (actual[i] !== desired[j]) {
+        transpositionCount++
+      }
+    }
+  }
+
+  let similarity = ( (m / actual.length) + (m / desired.length) + ((m - (transpositionCount / 2) ) / m)) / 3
+  let l = 0
+  const p = 0.1
+
+  // strengthen the similarity if the words start with same letters
+  if (similarity < 0.7) {
+    while (actual[l] === desired[l] && l < 4) {
+      l++
+    }
+
+    similarity = similarity + l * p * (1 - similarity)
+  }
+
+  return similarity
+}
