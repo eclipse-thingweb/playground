@@ -37,6 +37,7 @@ document.getElementById("box_auto_validate").addEventListener("change", () => {
 })
 
 document.getElementById("doc_type").addEventListener("change", () => {
+	document.getElementById("visualized").style.display = "none"
 	manualAssertionsLoaded = false
 	manualAssertions = []
 	docType = document.getElementById("doc_type").value
@@ -55,6 +56,32 @@ document.getElementById("doc_type").addEventListener("change", () => {
 			el["el"].style.display = el["display"]
 		})
 		window.editor = window.tdEditor
+		document.getElementById("td-editor").style.display = "block"
+		document.getElementById("tm-editor").style.display = "none"
+	}
+})
+
+document.getElementById("visualize-toggle").addEventListener("change", (e) => {
+	if (e.target.checked) {
+		document.getElementById("visualized").style.display = "block"
+		document.getElementById("td-editor").style.display = "none"
+		document.getElementById("tm-editor").style.display = "none"
+
+		try {
+			document.getElementById('visualized').innerHTML = '';
+			d3.jsonldVis(
+				JSON.parse(window.editor.getValue()),
+				'#visualized',
+				{
+					maxLabelWidth: 200,
+					scalingFactor: 5
+				}
+			);
+		} catch (_) { }
+	} else {
+		// Since visualization is only possible for td (not tm)
+		// We show td-editor when visualize is turned off
+		document.getElementById("visualized").style.display = "none"
 		document.getElementById("td-editor").style.display = "block"
 		document.getElementById("tm-editor").style.display = "none"
 	}
