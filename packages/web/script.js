@@ -13,6 +13,7 @@ let manualAssertionsLoaded = false
 const results = []
 let autoValidate = false
 let docType = "td"
+let visType = "graph"
 let urlAddrObject
 const jsonOptions = {
 	validate: true,
@@ -63,28 +64,45 @@ document.getElementById("doc_type").addEventListener("change", () => {
 
 document.getElementById("visualize-toggle").addEventListener("change", (e) => {
 	if (e.target.checked) {
+		document.getElementById("graph-vis").disabled = false;
+		document.getElementById("tree-vis").disabled = false;
+
 		document.getElementById("visualized").style.display = "block"
 		document.getElementById("td-editor").style.display = "none"
 		document.getElementById("tm-editor").style.display = "none"
 
 		try {
-			document.getElementById('jsonld-vis').innerHTML = '';
-			d3.jsonldVis(
-				JSON.parse(window.editor.getValue()),
-				'#jsonld-vis',
-				{
-					maxLabelWidth: 200,
-					scalingFactor: 5
-				}
-			);
+			if (visType == 'graph') {
+				document.getElementById('jsonld-vis').innerHTML = '';
+				d3.jsonldVis(
+					JSON.parse(window.editor.getValue()),
+					'#jsonld-vis',
+					{
+						maxLabelWidth: 200,
+						scalingFactor: 5
+					}
+				);
+
+			} else {
+
+			}
 		} catch (_) { }
 	} else {
+		document.getElementById("graph-vis").disabled = true;
+		document.getElementById("tree-vis").disabled = true;
+
 		// Since visualization is only possible for td (not tm)
 		// We show td-editor when visualize is turned off
 		document.getElementById("visualized").style.display = "none"
 		document.getElementById("td-editor").style.display = "block"
 		document.getElementById("tm-editor").style.display = "none"
 	}
+})
+
+document.querySelectorAll("#graph-vis, #tree-vis").forEach(el => {
+	el.addEventListener("change", (e) => {
+		visType = e.target.id.split('-')[0];
+	})
 })
 
 document.getElementById("btn_gistify").addEventListener("click", () => {

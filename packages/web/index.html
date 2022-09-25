@@ -196,10 +196,21 @@
                       <option class="btn-info" value="tm">Thing Model</option>
                     </select>
 
-                    <div class="custom-control custom-switch custom-control-inline mx-4 td-related">
-                      <input type="checkbox" class="custom-control-input" id="visualize-toggle">
-                      <label class="custom-control-label" for="visualize-toggle">Visualize</label>
-                    </div>
+                    <br><br>
+                    <div>
+                      <div class="custom-control custom-switch custom-control-inline td-related">
+                        <input type="checkbox" class="custom-control-input" id="visualize-toggle">
+                        <label class="custom-control-label" for="visualize-toggle">Visualize</label>
+                      </div>
+                      <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="graph-vis" name="visType" class="custom-control-input" disabled checked>
+                        <label class="custom-control-label" for="graph-vis">Graph</label>
+                      </div>
+                      <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="tree-vis" name="visType" class="custom-control-input" disabled>
+                        <label class="custom-control-label" for="tree-vis">Tree</label>
+                      </div>
+                  </div>
 
                     <br>
                     <div class="btn-group" role="group">
