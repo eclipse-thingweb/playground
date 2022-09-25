@@ -68,10 +68,10 @@ document.getElementById("visualize-toggle").addEventListener("change", (e) => {
 		document.getElementById("tm-editor").style.display = "none"
 
 		try {
-			document.getElementById('visualized').innerHTML = '';
+			document.getElementById('jsonld-vis').innerHTML = '';
 			d3.jsonldVis(
 				JSON.parse(window.editor.getValue()),
-				'#visualized',
+				'#jsonld-vis',
 				{
 					maxLabelWidth: 200,
 					scalingFactor: 5
