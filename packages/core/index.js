@@ -958,130 +958,253 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
 // --------------------------------------------------
 
 // -------------------------------------------------- checkTypos
+
+const REF = "$ref"
+const PROPERTIES = "properties"
+const ADDITONAL_PROPERTIES = "additional_properties"
+const DATA_SCHEMA = "dataSchema"
+const PATH = "#/"
+const JSON_SCHEMA = require('./td-schema.json')
+const TYPO_LOOKUP_TABLE = createSchemaLookupTable(JSON_SCHEMA)
+
 /**
- *
+ * Checks possible typos in a TD
  * @param {object} td The TD to apply typo check on
  * @returns List of possible typos
  */
  function checkTypos(td) {
-    let typos = []
-    const wordLists = new Map()
-    const paths = ["properties"]
-    const schema = require('./td-schema.json')
-    paths.forEach(path => {
-        wordLists.set(path, getWordListForPath(schema, path))
-    })
+    const typos = []
 
-    // Set paths to search for and get the word list for all
-    wordLists.forEach((wordList, path) => {
-        typos = typos.concat(getTyposFromPath(td, path, wordList))
-    })
+    const lookupTable = TYPO_LOOKUP_TABLE
+    const searchDepth = 1
+    const searchPath = PATH
+    let tdJson = {}
+
+    try {
+        tdJson = JSON.parse(td)
+    } catch(err) {
+        console.log("Error occurred while parsing JSON!")
+    }
+
+    searchTypos(typos, tdJson, lookupTable, searchDepth, searchPath)
 
     return typos
 }
 
 /**
- *
- * @param {object} schema The TD schema to get available property names
- * @param {string} path String that leads to specific JSON property
- * @returns List of words to apply typo check on
+ * Searching typos on a specific path and depth
+ * @param {Array} typos The list that typo objects are stored
+ * @param {object} tdJson JSON object of the TD
+ * @param {Map} lookupTable The map that stores paths and their available word list according to their path depth
+ * @param {integer} searchDepth The integer that decides the depth of the typo check search
+ * @param {string} searchPath The string that decided the path of the typo check search
  */
-function getWordListForPath(schema, path) {
-    const wordList = []
+function searchTypos(typos, tdJson, lookupTable, searchDepth, searchPath) {
+    for (const key in tdJson) {
+        if (tdJson.hasOwnProperty(key)) {
+            const pathMap = lookupTable.get(searchDepth)
+            const wordSet = pathMap.get(searchPath)
 
-    const pathObject = getToPath(schema, path)
+            if (wordSet.has(key)) {
+                continue
+            }
 
-    if (typeof pathObject === 'object') {
-        for(const key in pathObject) {
-          if (pathObject.hasOwnProperty(key)) {
-            wordList.push(key)
-          }
+            wordSet.forEach(word => {
+                if (doesTypoExist(key, word)) {
+                    typos.push({
+                        word: key,
+                        message: `Did you mean ${word}?`
+                    })
+
+                    return
+                }
+            })
         }
     }
-
-    return wordList
 }
 
-
 /**
- *
- * @param {object} schema The TD schema to get available property names
- * @param {string} path String that leads to specific JSON property
- * @returns The specific JSON property
+ * Creates a lookup table using JSON schema
+ * @param {object} jsonSchema JSON Schema to create a lookup table from
+ * @returns The map that constructs lookup table for typo check using TD Schema
  */
-function getToPath(schema, path) {
-    let result = schema
-    const keys = path.split('.')
+function createSchemaLookupTable(jsonSchema) {
+    const lookupTable = new Map()
+    const filteredLookupTable = new Map()
 
-    keys.forEach(key => {
-        result = result[key]
+    findPathsInSchema(lookupTable, jsonSchema, PATH)
+
+    lookupTable.forEach((value, key) => {
+        if (value.size > 0) {
+            const pathDepth = (key.match(/\//ig) || []).length
+
+            let pathDepthMap = filteredLookupTable.get(pathDepth)
+
+            if (pathDepthMap) {
+                pathDepthMap.set(key.replace(/^r/g, ''), value)
+                filteredLookupTable.set(pathDepth, pathDepthMap)
+            } else {
+                pathDepthMap = new Map()
+                pathDepthMap.set(key.replace(/^r/g, ''), value)
+                filteredLookupTable.set(pathDepth, pathDepthMap)
+            }
+        }
     })
 
-    return result
+    return filteredLookupTable
 }
 
 /**
- *
- * @param {object} td The TD to apply typo check on
- * @param {string} path String that leads to a property to apply typo check on
- * @param {array<string>} wordList List of words to apply typo check on
- * @returns
+ * Finds the paths under a parent path by parsing schema and adds them to a lookup table
+ * @param {Map} lookupTable The map that stores the paths in the schema
+ * @param {object} schema The schema to find the paths from
+ * @param {string} path The parent path that search is going under
  */
-function getTyposFromPath(td, path, wordList) {
-    const typos = []
-    let parsedTD = {}
+function findPathsInSchema(lookupTable, schema, path) {
+    const keys = new Set()
 
-    try {
-      parsedTD = JSON.parse(td)
-    } catch (err) {
-      console.log("JSON is not in a good form.")
-    }
-
-    const keys = []
-    findAllJSONKeys(parsedTD, keys)
-
-    keys.forEach(key => {
-        if (wordList.indexOf(key) !== -1) {
-          return
-        }
-
-        if (key.includes(':') && (key.charAt(0) !== ':' && key.charAt(key.length - 1) !== ':')) {
+    if (schema[REF]) {
+        if (path[0] === 'r' && schema[REF].includes(DATA_SCHEMA)) {
             return
         }
 
-        wordList.forEach(word => {
-          if (doesTypoExist(key, word)) {
-              typos.push({
-                  word: key,
-                  message: `Did you mean ${word}?`
-              })
+        if (schema[REF].includes(DATA_SCHEMA)) {
+            path = 'r' + path
+        }
 
-              return
-          }
-        })
-    })
+        findPathsInSchema(getRefObjectOfSchema(JSON_SCHEMA, schema[REF]), path)
+        return
+    }
 
-    return typos
-}
+    if (schema['type'] === 'object') {
+        const properties = schema[PROPERTIES]
+        for (const key in properties) {
+            if (properties.hasOwnProperty(key)) {
+                if (key === REF) {
+                    if (path[0] === 'r' && properties[key].includes(DATA_SCHEMA)) {
+                        continue
+                    }
 
-function findAllJSONKeys(json, keys) {
-    for (const key in json) {
-        if (json.hasOwnProperty(key)) {
-            if (typeof json[key] === 'object') {
-                findAllJSONKeys(json[key], keys)
+                    if (properties[key].includes(DATA_SCHEMA)) {
+                        path = 'r' + path
+                    }
+
+                    findPathsInSchema(getRefObjectOfSchema(JSON_SCHEMA, properties[key]), path)
+                    return
+                } else {
+                    findPathsInSchema(properties[key], `${path}${key}/`)
+                    keys.add(key)
+                }
             }
-            keys.push(key)
+        }
+
+        const additionalProperties = schema[ADDITONAL_PROPERTIES]
+        for (const key in additionalProperties) {
+            if (additionalProperties.hasOwnProperty(key)) {
+                if (key === REF) {
+                    if (path[0] === 'r' && additionalProperties[key].includes(DATA_SCHEMA)) {
+                        continue
+                    }
+
+                    if (additionalProperties[key].includes(DATA_SCHEMA)) {
+                        path = 'r' + path
+                    }
+
+                    findPathsInSchema(getRefObjectOfSchema(JSON_SCHEMA, additionalProperties[key]), `${path}*/`)
+                    return
+                }
+            }
+        }
+
+        putKeysToPath(lookupTable, path, keys)
+    }
+
+    if (schema['type'] === 'array') {
+        const items = schema['items']
+
+        for (const item in items) {
+            if (items.hasOwnProperty(item)) {
+                if (item === REF) {
+                    if (path[0] === 'r' && items[item].includes(DATA_SCHEMA)) {
+                        continue
+                    }
+
+                    if (items[item].includes(DATA_SCHEMA)) {
+                        path = 'r' + path
+                    }
+
+                    findPathsInSchema(getRefObjectOfSchema(JSON_SCHEMA, items[item]), path)
+                    return
+                }
+            }
+        }
+
+        putKeysToPath(lookupTable, path, keys)
+    }
+
+    for (const key in schema) {
+        if (schema.hasOwnProperty(key)) {
+            if (['allOf', 'oneOf', 'anyOf'].includes(key)) {
+                if (Array.isArray(schema[key])) {
+                    schema[key].forEach(element => {
+                        findPathsInSchema(element, path)
+                    })
+                }
+            }
         }
     }
+}
+
+/**
+ * Stores the keys under a specific path
+ * @param {Map} lookupTable The map that stores the paths in the schema
+ * @param {string} path The path that is owner of the current keys
+ * @param {Set} keys The set of keys that is going to be put 
+ */
+function putKeysToPath(lookupTable, path, keys) {
+    pathKeys = lookupTable.get(path)
+
+    if (pathKeys) {
+        const union = new Set(pathKeys)
+        keys.forEach(k => {
+            union.add(k)
+        })
+
+        lookupTable.set(path, union)
+    } else {
+        lookupTable.set(path, keys)
+    }
+}
+
+/**
+ * Gets the reference object in the schema
+ * @param {object} schema The object that represent the schema
+ * @param {string} ref The reference value in the schema 
+ * @returns The reference object the ref maps to
+ */
+function getRefObjectOfSchema(schema, ref) {
+    const splitRef = ref.split('/')
+    if (splitRef[0] !== '#') {
+        console.log('Parsing not implemented for between files')
+        return
+    }
+
+    let result = schema
+
+    for (let i = 1; i < splitRef.length; i++) {
+        result = result[splitRef[i]]
+    }
+
+    return result
 }
 
 const SIMILARITY_THRESHOLD = 0.85
 const LENGTH_DIFFERENCE_THRESHOLD = 2
 
 /**
- *
+ * Checks whether typo exists or not by comparing similarity of the two words
  * @param {string} actual The property name of the TD entered by user
- * @param {string} desired The desired propert name that is retrieved from TD Schema
+ * @param {string} desired The desired property name that is retrieved from TD Schema
  * @returns Boolean value that tell whether typo exists or not
  */
 function doesTypoExist(actual, desired) {

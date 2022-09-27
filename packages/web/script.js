@@ -266,6 +266,10 @@ require(['vs/editor/editor.main'], async function () {
 	monaco.languages.json.jsonDefaults.setDiagnosticsOptions(jsonOptions);
 });
 
+/**
+ * Marks the possible typos on the editor
+ * @param {object} model The model that represents the loaded Monaco editor
+ */
 function markTypos(model) {
 	const markers = []
 
@@ -273,7 +277,7 @@ function markTypos(model) {
 	const foundTypos = []
 
 	typos.forEach(typo => {
-		model.findMatches(typo.word).forEach(result => {
+		model.findMatches(typo.word, false, false, true, typo.word, false).forEach(result => {
 			foundTypos.push({
 				range: result.range,
 				message: typo.message

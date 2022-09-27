@@ -109,6 +109,26 @@ async function testVisualChromium(page) {
   await customShot("td")
   await page.screenshot({ path: `./test_results/chromium_td.png` })
 
+  await page.selectOption('#load_example', 'TypoCheckWithoutTypos')
+  await customShot("typo_check_without_typos")
+  await page.screenshot({ path: `./test_results/chromium_typo_check_without_typos.png`, fullPage: true })
+
+  await page.selectOption('#load_example', 'TypoCheckWithTypos')
+  await customShot("typo_check_with_typos")
+  await page.screenshot({ path: `./test_results/chromium_typo_check_with_typos.png`, fullPage: true })
+
+  await page.evaluate(() => window.tdEditor.getModel(monaco.Uri.parse("")).setValue('{ "context": "Test" }'));
+  await myWait(1000)
+  await customShot("typo_check_handwritten_typo_exists")
+  await page.screenshot({ path: `./test_results/chromium_typo_check_handwritten_typo_exists.png`, fullPage: true })
+
+  await page.evaluate(() => 
+    window.tdEditor.getModel(monaco.Uri.parse("")).setValue('{ "@context": "https://www.w3.org/2019/wot/td/v1" }')
+  );
+  await myWait(1000)
+  await customShot("typo_check_handwritten_typo_fixed")
+  await page.screenshot({ path: `./test_results/chromium_typo_check_handwritten_typo_fixed.png`, fullPage: true })
+
   await page.click("#btn_validate")
   await myWait(1000)
   await page.screenshot({ path: path.join(testDir, "chromium_validation.png"),fullPage: true })
