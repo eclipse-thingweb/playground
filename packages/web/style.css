@@ -39,11 +39,8 @@ body {
 }
 
 .wrapper {
-	height: calc(100vh - 250px);
-}
-
-#side-panel {
-	padding-bottom: 200px;
+	height: calc(100vh - 200px);
+	overflow-y: scroll;
 }
 
 #td-editor, #tm-editor {

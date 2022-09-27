@@ -13,8 +13,7 @@ export function vegaVis($container, td) {
         "width": 800,
         "height": 600,
         "padding": 5,
-        "autosize": "none",
-      
+
         "signals": [
           {
             "name": "labels", "value": true,
@@ -191,7 +190,15 @@ export function vegaVis($container, td) {
     
                 source[key].map((e, i) => {
                     if (typeof e === 'object') {
-                        tdToVega(e, `${parent}_${index}`);
+                        treeData.push(
+                            {
+                                id: `${parent}_${index}_${i}`,
+                                name: `${i}`,
+                                parent: `${parent}_${index}`
+                            }
+                        );
+
+                        tdToVega(e, `${parent}_${index}_${i}`);
                     } else {
                         treeData.push({
                             id: `${parent}_${index}_${i}`,

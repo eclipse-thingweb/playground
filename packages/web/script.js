@@ -72,6 +72,11 @@ function visualize() {
 	document.getElementById("td-editor").style.display = "none"
 	document.getElementById("tm-editor").style.display = "none"
 
+	let td;
+	try {
+		td = JSON.parse(window.editor.getValue());
+	} catch (_) { return; }
+
 	if (visType == 'graph') {
 		document.getElementById('visualized').innerHTML = `
 		<div>
@@ -83,7 +88,7 @@ function visualize() {
 		  </button>
 		</div>`;
 		jVis.jsonldVis(
-			JSON.parse(window.editor.getValue()),
+			td,
 			'#visualized',
 			{
 				maxLabelWidth: 200,
@@ -92,7 +97,7 @@ function visualize() {
 		);
 
 	} else {
-		vVis.vegaVis('#visualized', JSON.parse(window.editor.getValue()));
+		vVis.vegaVis('#visualized', td);
 	}
 }
 
