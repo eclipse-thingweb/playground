@@ -515,3 +515,23 @@ export function clearLog() {
 
     hideValidationStatusTable()
 }
+
+/**
+ * Finds the location/path of the text in JSON from its Monaco Editor location
+ * @param {string} text
+ * @param {object} editor
+ */
+export function findJSONLocationOfMonacoText(text, editor) {
+    const textModel = editor.getModel()
+}
+
+/**
+ * Finds the location of the text in Monaco Editor from its JSON location/path
+ * @param {string} text
+ * @param {string} jsonPath
+ * @param {object} editor
+
+ */
+export function findMonacoLocationOfJSONText(text, jsonPath, editor) {
+
+}
