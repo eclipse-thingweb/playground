@@ -11,8 +11,6 @@ body {
 	background-color: white;
 	font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', 'Trebuchet MS', sans-serif;
 	width: 100%;
-	min-height: 100vh;
-	position: relative;
 }
 
 .loading-spinner {
@@ -40,26 +38,20 @@ body {
 	padding: 0;
 }
 
-.wrap {
-	max-width: 90%;
-	margin: 0 auto;
+.main {
+	/* Take all height but respect footer */
+	height: calc(100vh - 100px);
+	overflow: hidden;
 }
 
-.wrapper {
-	/*min-height: 100%; */
-	height: auto !important;
-	height: 100%;
-	margin: 0 auto -200px auto;
-	/* the bottom margin is the negative value of the footer's height */
+#side-panel {
+	/* Side panel max height is (100vh - top navigation - footer - some margin) */
+	max-height: calc(100vh - 160px);
+	overflow-y: scroll;
 }
-
-.wrapper>.row:first-child {
-	height: 800px;
-}
-
 
 #td-editor, #tm-editor {
-	height: 800px;
+	height: 100%;
 	width: auto;
 }
 
@@ -76,24 +68,7 @@ body {
 	white-space: pre-wrap;
 	max-height: 250px;
 	height: fit-content;
-}
-
-@media(min-height: 1100px) {
-	.wrapper > .row:first-child {
-		height: calc(800px + calc(91vh - 1000px));
-	}
-	#td-editor, #tm-editor {
-		height: calc(800px + calc(91vh - 1000px));
-	}
-	.conrow {
-		max-height: calc(450px + calc(91vh - 1000px));
-	}
-	#console {
-		max-height: calc(450px + calc(91vh - 1000px));
-	}
-	.wrapper {
-		margin: 0 calc(4vw - 60px) -200px 6vw;
-	}
+	margin-bottom: 50px;
 }
 
 footer {
@@ -105,11 +80,6 @@ footer {
 .footer-shape img {
 	width: 100%;
 	height: 50px;
-}
-
-.main {
-	padding-top:0px; 
-	padding-bottom: 200px;
 }
 
 .panel {
