@@ -10,7 +10,7 @@
             "type": "object",
             "minProperties": 1,
             "additionalProperties": {
-                "$ref": "#/$defs/securityScheme"
+                "$ref": "#/definitions/securityScheme"
             }
         }
     },
@@ -18,13 +18,13 @@
         "securityDefinitions"
     ],
     "additionalProperties": true,
-    "$defs": {
+    "definitions": {
         "securityScheme": {
             "if": {
                 "type": "object",
                 "properties": {
                     "descriptions": {
-                        "$ref": "#/$defs/descriptions"
+                        "$ref": "#/definitions/descriptions"
                     }
                 },
                 "required": [

@@ -9,7 +9,7 @@
         "links": {
             "type": "array",
             "items": {
-                "$ref": "#/$defs/link_element"
+                "$ref": "#/definitions/link_element"
             }
         }
     },
@@ -17,15 +17,15 @@
         "links"
     ],
     "additionalProperties": true,
-    "$defs": {
+    "definitions": {
         "link_element": {
             "type": "object",
             "properties": {
                 "anchor": {
-                    "$ref": "#/$defs/url"
+                    "$ref": "#/definitions/url"
                 },
                 "href": {
-                    "$ref": "#/$defs/url"
+                    "$ref": "#/definitions/url"
                 },
                 "rel": {
                     "type": "string"

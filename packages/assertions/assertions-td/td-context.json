@@ -13,7 +13,7 @@
         ],
         "properties": {
             "@context": {
-                "$ref": "#/$defs/thing-context"
+                "$ref": "#/definitions/thing-context"
             }
         }
     },
@@ -21,7 +21,7 @@
         "const": "td-context=pass"
     },
     "additionalProperties": true,
-    "$defs": {
+    "definitions": {
         "thing-context-w3c-uri": {
             "type": "string",
             "enum": [
@@ -34,13 +34,13 @@
                     "type": "array",
                     "items": [
                         {
-                            "$ref": "#/$defs/thing-context-w3c-uri"
+                            "$ref": "#/definitions/thing-context-w3c-uri"
                         }
                     ],
                     "additionalItems": {
                         "anyOf": [
                             {
-                                "$ref": "#/$defs/anyUri"
+                                "$ref": "#/definitions/anyUri"
                             },
                             {
                                 "type": "object"
@@ -49,7 +49,7 @@
                     }
                 },
                 {
-                    "$ref": "#/$defs/thing-context-w3c-uri"
+                    "$ref": "#/definitions/thing-context-w3c-uri"
                 }
             ]
         },

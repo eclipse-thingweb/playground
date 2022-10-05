@@ -8,18 +8,18 @@
         "profile": {
             "oneof": [
                 {
-                    "$ref": "#/$defs/anyUri"
+                    "$ref": "#/definitions/anyUri"
                 },
                 {
                     "type": "array",
                     "items": {
-                        "$ref": "#/$defs/anyUri"
+                        "$ref": "#/definitions/anyUri"
                     }
                 }
             ]
         }
     },
-    "$defs": {
+    "definitions": {
         "anyUri": {
             "type": "string",
             "format": "iri-reference"
