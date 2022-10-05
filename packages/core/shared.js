@@ -697,10 +697,10 @@ function checkLinksRelTypeCount(td){
 /**
  * When you have apikey security with the key in uri, you put the name of the urivariable in the name field in
  * securityDefinitions. Ideally, that name appears in href as a uriVariable. See uriSecurity example
- * td-security-in-uri-variable: The URIs provided in interactions where a security scheme using uri as the value for 
+ * td-security-in-uri-variable: The URIs provided in interactions where a security scheme using uri as the value for
  * in MUST be a URI template including the defined variable.
  * Additionally, this also checks that the uriVariable used in the security does not conflict with ones for the TD
- * td-security-uri-variables-distinct: The names of URI variables declared in a SecurityScheme MUST be distinct from 
+ * td-security-uri-variables-distinct: The names of URI variables declared in a SecurityScheme MUST be distinct from
  * all other URI variables declared in the TD.
  * @param {object} td The TD to do assertion tests
  */
@@ -897,7 +897,7 @@ function checkUriSecurity(td) {
  * This function checks that programmatically
  * @param {object} td The TD to do assertion tests
  */
- function checkTmOptionalPointer(td){
+function checkTmOptionalPointer(td){
     /*
     * This function returns part of the object given in param with the value found when resolving the path. Similar to JSON Pointers.
     * In case no path is found, the param defaultValue is echoed back
