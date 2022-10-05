@@ -521,8 +521,80 @@ export function clearLog() {
  * @param {string} text
  * @param {object} editor
  */
-export function findJSONLocationOfMonacoText(text, editor) {
-    const textModel = editor.getModel()
+export function findJSONLocationOfMonacoText(text, textModel) {
+    const matches = textModel.findMatches(text, false, false, false, null, false)
+
+    matches.forEach(match => {
+        console.log(match)
+        console.log("Match is full word:" + isMatchFullWord(match, textModel))
+        findParentInRange(textModel, getEndPositionOfMatch(match))
+    })
+}
+
+function getStartPositionOfMatch(match) {
+    return {
+        column: match.range.startColumn,
+        lineNumber: match.range.startLineNumber
+    }
+}
+
+function getEndPositionOfMatch(match) {
+    return {
+        column: match.range.endColumn,
+        lineNumber: match.range.endLineNumber
+    }
+}
+
+function doesLeftBracketExistBefore(textModel, endPosition) {
+    return textModel.findPreviousMatch('{', endPosition)
+}
+
+function doesRightBracketExistInRange(textModel, startPosition, endPosition) {
+    const prevMatch = textModel.findPreviousMatch('}', endPosition)
+    const nextMatch = textModel.findNextMatch('}', startPosition)
+
+    const prevMatchStartPosition = getStartPositionOfMatch(prevMatch)
+    const nextMatchStartPosition = getStartPositionOfMatch(nextMatch)
+
+    return (prevMatchStartPosition.column === nextMatchStartPosition.column
+            && prevMatchStartPosition.lineNumber === nextMatchStartPosition.lineNumber) ? prevMatch : null
+}
+
+function findParentInRange(textModel, endPosition) {
+    const leftBracketMatch = doesLeftBracketExistBefore(textModel, endPosition)
+
+    if (leftBracketMatch) {
+        const rightBracketMatch = doesRightBracketExistInRange(textModel, getStartPositionOfMatch(leftBracketMatch), endPosition)
+
+        console.log(rightBracketMatch)
+        if (rightBracketMatch) {
+            findParentInRange(textModel, getStartPositionOfMatch(leftBracketMatch))
+        } else {
+            console.log('Found the parent!')
+            console.log(leftBracketMatch)
+        }
+    }
+}
+
+function isMatchFullWord(match, textModel) {
+    const wordBeginning = textModel.findPreviousMatch('"',
+        {
+            column: match.range.startColumn,
+            lineNumber: match.range.startLineNumber
+        }
+    )
+    const wordEnding = textModel.findNextMatch('"',
+        {
+            column: match.range.endColumn, 
+            lineNumber: match.range.endLineNumber
+        }
+    )
+
+    return (match.range.startLineNumber === wordBeginning.range.startLineNumber
+                && match.range.startColumn - 1 === wordBeginning.range.startColumn) &&
+            (match.range.endLineNumber === wordEnding.range.endLineNumber
+                && match.range.endColumn + 1 === wordEnding.range.endColumn
+            )
 }
 
 /**

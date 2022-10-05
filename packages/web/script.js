@@ -214,6 +214,10 @@ require(['vs/editor/editor.main'], window.tdEditor=function() {
 	const modelUri = monaco.Uri.parse("a://b/foo.json"); // a made up unique URI for our model
 	const model = monaco.editor.createModel(jsonCode, "json", modelUri);
 
+	model.onDidChangeContent(() => {
+		util.findJSONLocationOfMonacoText("hello", model)
+	})
+
 	fetch("./node_modules/@thing-description-playground/core/td-schema.json")
 	.then(res => res.json())
 	.then( json => {
