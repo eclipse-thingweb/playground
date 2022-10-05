@@ -704,7 +704,7 @@ function checkLinksRelTypeCount(td){
  * all other URI variables declared in the TD.
  * @param {object} td The TD to do assertion tests
  */
- function checkUriSecurity(td) {
+function checkUriSecurity(td) {
 
     const results = []
     if (td.hasOwnProperty("securityDefinitions")) {
@@ -889,3 +889,24 @@ function checkLinksRelTypeCount(td){
     }
     return results
 }
+
+/**
+ * When tm:optional uses a pointer, it should point to an actual affordance and only to an affordance, as said by
+ * tm-tmOptional-resolver: The JSON Pointers of tm:optional MUST resolve to an entire interaction affordance Map definition.
+ * JSON Schema checks for the syntax but cannot know if the pointed affordance exists.
+ * This function checks that programmatically
+ * @param {object} td The TD to do assertion tests
+ */
+ function checkTmOptionalPointer(td){
+    /*
+    * This function returns part of the object given in param with the value found when resolving the path. Similar to JSON Pointers.
+    * In case no path is found, the param defaultValue is echoed back
+    * Taken from
+    * https://stackoverflow.com/questions/6491463/accessing-nested-javascript-objects-and-arrays-by-string-path/6491621#6491621
+    **/
+    const resolvePath = (object, path, defaultValue) => path
+        .split(/[\.\[\]\'\"]/)
+        .filter(p => p)
+        .reduce((o, p) => o ? o[p] : defaultValue, object)
+
+ }
