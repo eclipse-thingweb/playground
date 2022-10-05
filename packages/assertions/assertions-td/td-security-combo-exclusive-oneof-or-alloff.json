@@ -9,14 +9,14 @@
       "type": "object",
       "minProperties": 1,
       "additionalProperties": {
-        "$ref": "#/$defs/comboSecurity_element"
+        "$ref": "#/definitions/comboSecurity_element"
       }
     }
   },
   "required": [
     "securityDefinitions"
   ],
-  "$defs": {
+  "definitions": {
     "comboSecurity_element": {
       "if": {
         "type": "object",

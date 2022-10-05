@@ -1,6 +1,6 @@
 {
     "title": "td-vocab-format--DataSchema",
-    "description": "format: Defines format pattern validation on certain kinds of string values. It is open to use pattern values that may originate from JSON schema presets (e.g., date/time, email, URL) or other (customer-based) $defs. . MAY be included. Type: string.",
+    "description": "format: Defines format pattern validation on certain kinds of string values. It is open to use pattern values that may originate from JSON schema presets (e.g., date/time, email, URL) or other (customer-based) definitions. . MAY be included. Type: string.",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "also": ["td-data-schema_format", "td-format-validation-known-values", "td-property-names_format"],
     "is-complex": true,
@@ -9,24 +9,24 @@
         "properties": {
             "type": "object",
             "additionalProperties": {
-                "$ref": "#/$defs/property_element"
+                "$ref": "#/definitions/property_element"
             }
         },
         "actions": {
             "type": "object",
             "additionalProperties": {
-                "$ref": "#/$defs/action_element"
+                "$ref": "#/definitions/action_element"
             }
         },
         "events": {
             "type": "object",
             "additionalProperties": {
-                "$ref": "#/$defs/event_element"
+                "$ref": "#/definitions/event_element"
             }
         }
     },
     "additionalProperties": true,
-    "$defs": {
+    "definitions": {
         "property_element": {
             "type": "object",
             "if": {
@@ -44,29 +44,29 @@
                 "properties": {
                     "properties": {
                         "additionalProperties": {
-                            "$ref": "#/$defs/dataSchema"
+                            "$ref": "#/definitions/dataSchema"
                         }
                     },
                     "uriVariables": {
                         "type": "object",
                         "additionalProperties": {
-                            "$ref": "#/$defs/dataSchema"
+                            "$ref": "#/definitions/dataSchema"
                         }
                     },
                     "oneOf": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/$defs/dataSchema"
+                            "$ref": "#/definitions/dataSchema"
                         }
                     },
                     "items": {
                         "oneOf": [{
-                                "$ref": "#/$defs/dataSchema"
+                                "$ref": "#/definitions/dataSchema"
                             },
                             {
                                 "type": "array",
                                 "items": {
-                                    "$ref": "#/$defs/dataSchema"
+                                    "$ref": "#/definitions/dataSchema"
                                 }
                             }
                         ]
@@ -78,10 +78,10 @@
             "type": "object",
             "properties": {
                 "input": {
-                    "$ref": "#/$defs/dataSchema"
+                    "$ref": "#/definitions/dataSchema"
                 },
                 "output": {
-                    "$ref": "#/$defs/dataSchema"
+                    "$ref": "#/definitions/dataSchema"
                 }
             }
         },
@@ -89,13 +89,13 @@
             "type": "object",
             "properties": {
                 "subscription": {
-                    "$ref": "#/$defs/dataSchema"
+                    "$ref": "#/definitions/dataSchema"
                 },
                 "data": {
-                    "$ref": "#/$defs/dataSchema"
+                    "$ref": "#/definitions/dataSchema"
                 },
                 "cancellation": {
-                    "$ref": "#/$defs/dataSchema"
+                    "$ref": "#/definitions/dataSchema"
                 }
             }
         },
@@ -117,7 +117,7 @@
                     "oneOf": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/$defs/dataSchema"
+                            "$ref": "#/definitions/dataSchema"
                         }
                     },
                     "type": {
@@ -134,19 +134,19 @@
                     },
                     "items": {
                         "oneOf": [{
-                                "$ref": "#/$defs/dataSchema"
+                                "$ref": "#/definitions/dataSchema"
                             },
                             {
                                 "type": "array",
                                 "items": {
-                                    "$ref": "#/$defs/dataSchema"
+                                    "$ref": "#/definitions/dataSchema"
                                 }
                             }
                         ]
                     },
                     "properties": {
                         "additionalProperties": {
-                            "$ref": "#/$defs/dataSchema"
+                            "$ref": "#/definitions/dataSchema"
                         }
                     },
                     "required": {

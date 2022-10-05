@@ -8,7 +8,7 @@
     "properties": {
         "events": {
             "additionalProperties": {
-                "$ref": "#/$defs/event_element"
+                "$ref": "#/definitions/event_element"
             }
         }
     },
@@ -16,14 +16,14 @@
         "events"
     ],
     "additionalProperties": true,
-    "$defs": {
+    "definitions": {
         "event_element": {
             "type": "object",
             "properties": {
                 "forms": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/$defs/form_element"
+                        "$ref": "#/definitions/form_element"
                     }
                 }
             },
@@ -36,7 +36,7 @@
             "type": "object",
             "properties": {
                 "href": {
-                    "$ref": "#/$defs/url"
+                    "$ref": "#/definitions/url"
                 },
                 "op": {
                     "oneOf": [{

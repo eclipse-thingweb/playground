@@ -4,7 +4,7 @@
   "description": "JSON Schema for validating TD instances against the TD information model. TD instances can be with or without terms that have default values",
   "$schema ": "http://json-schema.org/draft-07/schema#",
   "$id": "https://raw.githubusercontent.com/w3c/wot-thing-description/main/validation/td-json-schema-validation.json",
-  "$defs": {
+  "definitions": {
     "anyUri": {
       "type": "string"
     },
@@ -75,46 +75,46 @@
           "type": "array",
           "items": [
             {
-              "$ref": "#/$defs/thing-context-td-uri-v1.1"
+              "$ref": "#/definitions/thing-context-td-uri-v1.1"
             }
           ],
           "additionalItems": {
             "anyOf": [
               {
-                "$ref": "#/$defs/anyUri"
+                "$ref": "#/definitions/anyUri"
               },
               {
                 "type": "object"
               }
             ],
             "not": {
-              "$ref": "#/$defs/thing-context-td-uri-v1"
+              "$ref": "#/definitions/thing-context-td-uri-v1"
             }
           }
         },
         {
           "$comment": "Only the new context URI",
-          "$ref": "#/$defs/thing-context-td-uri-v1.1"
+          "$ref": "#/definitions/thing-context-td-uri-v1.1"
         },
         {
           "$comment": "Old context URI, followed by the new one and possibly other vocabularies. minItems and contains are required since prefixItems does not say all items should be provided",
           "type": "array",
           "prefixItems": [
             {
-              "$ref": "#/$defs/thing-context-td-uri-v1"
+              "$ref": "#/definitions/thing-context-td-uri-v1"
             },
             {
-              "$ref": "#/$defs/thing-context-td-uri-v1.1"
+              "$ref": "#/definitions/thing-context-td-uri-v1.1"
             }
           ],
           "minItems": 2,
           "contains": {
-            "$ref": "#/$defs/thing-context-td-uri-v1.1"
+            "$ref": "#/definitions/thing-context-td-uri-v1.1"
           },
           "additionalItems": {
             "anyOf": [
               {
-                "$ref": "#/$defs/anyUri"
+                "$ref": "#/definitions/anyUri"
               },
               {
                 "type": "object"
@@ -127,17 +127,17 @@
           "type": "array",
           "prefixItems": [
             {
-              "$ref": "#/$defs/thing-context-td-uri-v1"
+              "$ref": "#/definitions/thing-context-td-uri-v1"
             }
           ],
           "minItems": 1,
           "contains": {
-            "$ref": "#/$defs/thing-context-td-uri-v1"
+            "$ref": "#/definitions/thing-context-td-uri-v1"
           },
           "additionalItems": {
             "anyOf": [
               {
-                "$ref": "#/$defs/anyUri"
+                "$ref": "#/definitions/anyUri"
               },
               {
                 "type": "object"
@@ -147,7 +147,7 @@
         },
         {
           "$comment": "Only the new context URI",
-          "$ref": "#/$defs/thing-context-td-uri-v1"
+          "$ref": "#/definitions/thing-context-td-uri-v1"
         }
       ]
     },
@@ -190,19 +190,19 @@
       "type": "object",
       "properties": {
         "@type": {
-          "$ref": "#/$defs/type_declaration"
+          "$ref": "#/definitions/type_declaration"
         },
         "description": {
-          "$ref": "#/$defs/description"
+          "$ref": "#/definitions/description"
         },
         "title": {
-          "$ref": "#/$defs/title"
+          "$ref": "#/definitions/title"
         },
         "descriptions": {
-          "$ref": "#/$defs/descriptions"
+          "$ref": "#/definitions/descriptions"
         },
         "titles": {
-          "$ref": "#/$defs/titles"
+          "$ref": "#/definitions/titles"
         },
         "writeOnly": {
           "type": "boolean"
@@ -213,7 +213,7 @@
         "oneOf": {
           "type": "array",
           "items": {
-            "$ref": "#/$defs/dataSchema"
+            "$ref": "#/definitions/dataSchema"
           }
         },
         "unit": {
@@ -236,17 +236,17 @@
           "type": "string"
         },
         "type": {
-          "$ref": "#/$defs/dataSchema-type"
+          "$ref": "#/definitions/dataSchema-type"
         },
         "items": {
           "oneOf": [
             {
-              "$ref": "#/$defs/dataSchema"
+              "$ref": "#/definitions/dataSchema"
             },
             {
               "type": "array",
               "items": {
-                "$ref": "#/$defs/dataSchema"
+                "$ref": "#/definitions/dataSchema"
               }
             }
           ]
@@ -280,11 +280,11 @@
           "minimum": 0
         },
         "multipleOf": {
-          "$ref": "#/$defs/multipleOfDefinition"
+          "$ref": "#/definitions/multipleOfDefinition"
         },
         "properties": {
           "additionalProperties": {
-            "$ref": "#/$defs/dataSchema"
+            "$ref": "#/definitions/dataSchema"
           }
         },
         "required": {
@@ -341,7 +341,7 @@
           ]
         },
         "href": {
-          "$ref": "#/$defs/anyUri"
+          "$ref": "#/definitions/anyUri"
         },
         "contentType": {
           "type": "string"
@@ -350,26 +350,26 @@
           "type": "string"
         },
         "subprotocol": {
-          "$ref": "#/$defs/subprotocol"
+          "$ref": "#/definitions/subprotocol"
         },
         "security": {
-          "$ref": "#/$defs/security"
+          "$ref": "#/definitions/security"
         },
         "scopes": {
-          "$ref": "#/$defs/scopes"
+          "$ref": "#/definitions/scopes"
         },
         "response": {
-          "$ref": "#/$defs/expectedResponse"
+          "$ref": "#/definitions/expectedResponse"
         },
         "additionalResponses": {
-          "$ref": "#/$defs/additionalResponsesDefinition"
+          "$ref": "#/definitions/additionalResponsesDefinition"
         }
       },
       "required": ["href"],
       "additionalProperties": true
     },
     "form_element_property": {
-      "allOf": [{ "$ref": "#/$defs/form_element_base" }],
+      "allOf": [{ "$ref": "#/definitions/form_element_base" }],
       "type": "object",
       "properties": {
         "op": {
@@ -401,7 +401,7 @@
       "additionalProperties": true
     },
     "form_element_action": {
-      "allOf": [{ "$ref": "#/$defs/form_element_base" }],
+      "allOf": [{ "$ref": "#/definitions/form_element_base" }],
       "type": "object",
       "properties": {
         "op": {
@@ -423,7 +423,7 @@
       "additionalProperties": true
     },
     "form_element_event": {
-      "allOf": [{ "$ref": "#/$defs/form_element_base" }],
+      "allOf": [{ "$ref": "#/definitions/form_element_base" }],
       "type": "object",
       "properties": {
         "op": {
@@ -445,7 +445,7 @@
       "additionalProperties": true
     },
     "form_element_root": {
-      "allOf": [{ "$ref": "#/$defs/form_element_base" }],
+      "allOf": [{ "$ref": "#/definitions/form_element_base" }],
       "type": "object",
       "properties": {
         "op": {
@@ -490,41 +490,41 @@
     "form": {
       "$comment": "This is NOT for validation purposes but for automatic generation of TS types. For more info, please see: https://github.com/w3c/wot-thing-description/pull/1319#issuecomment-994950057",
       "oneOf": [
-        { "$ref": "#/$defs/form_element_property" },
-        { "$ref": "#/$defs/form_element_action" },
-        { "$ref": "#/$defs/form_element_event" },
-        { "$ref": "#/$defs/form_element_root" }
+        { "$ref": "#/definitions/form_element_property" },
+        { "$ref": "#/definitions/form_element_action" },
+        { "$ref": "#/definitions/form_element_event" },
+        { "$ref": "#/definitions/form_element_root" }
       ]
     },
     "property_element": {
       "type": "object",
       "properties": {
         "@type": {
-          "$ref": "#/$defs/type_declaration"
+          "$ref": "#/definitions/type_declaration"
         },
         "description": {
-          "$ref": "#/$defs/description"
+          "$ref": "#/definitions/description"
         },
         "descriptions": {
-          "$ref": "#/$defs/descriptions"
+          "$ref": "#/definitions/descriptions"
         },
         "title": {
-          "$ref": "#/$defs/title"
+          "$ref": "#/definitions/title"
         },
         "titles": {
-          "$ref": "#/$defs/titles"
+          "$ref": "#/definitions/titles"
         },
         "forms": {
           "type": "array",
           "minItems": 1,
           "items": {
-            "$ref": "#/$defs/form_element_property"
+            "$ref": "#/definitions/form_element_property"
           }
         },
         "uriVariables": {
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/$defs/dataSchema"
+            "$ref": "#/definitions/dataSchema"
           }
         },
         "observable": {
@@ -539,7 +539,7 @@
         "oneOf": {
           "type": "array",
           "items": {
-            "$ref": "#/$defs/dataSchema"
+            "$ref": "#/definitions/dataSchema"
           }
         },
         "unit": {
@@ -556,17 +556,17 @@
         "const": {},
         "default": {},
         "type": {
-          "$ref": "#/$defs/dataSchema-type"
+          "$ref": "#/definitions/dataSchema-type"
         },
         "items": {
           "oneOf": [
             {
-              "$ref": "#/$defs/dataSchema"
+              "$ref": "#/definitions/dataSchema"
             },
             {
               "type": "array",
               "items": {
-                "$ref": "#/$defs/dataSchema"
+                "$ref": "#/definitions/dataSchema"
               }
             }
           ]
@@ -600,11 +600,11 @@
           "minimum": 0
         },
         "multipleOf": {
-          "$ref": "#/$defs/multipleOfDefinition"
+          "$ref": "#/definitions/multipleOfDefinition"
         },
         "properties": {
           "additionalProperties": {
-            "$ref": "#/$defs/dataSchema"
+            "$ref": "#/definitions/dataSchema"
           }
         },
         "required": {
@@ -621,38 +621,38 @@
       "type": "object",
       "properties": {
         "@type": {
-          "$ref": "#/$defs/type_declaration"
+          "$ref": "#/definitions/type_declaration"
         },
         "description": {
-          "$ref": "#/$defs/description"
+          "$ref": "#/definitions/description"
         },
         "descriptions": {
-          "$ref": "#/$defs/descriptions"
+          "$ref": "#/definitions/descriptions"
         },
         "title": {
-          "$ref": "#/$defs/title"
+          "$ref": "#/definitions/title"
         },
         "titles": {
-          "$ref": "#/$defs/titles"
+          "$ref": "#/definitions/titles"
         },
         "forms": {
           "type": "array",
           "minItems": 1,
           "items": {
-            "$ref": "#/$defs/form_element_action"
+            "$ref": "#/definitions/form_element_action"
           }
         },
         "uriVariables": {
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/$defs/dataSchema"
+            "$ref": "#/definitions/dataSchema"
           }
         },
         "input": {
-          "$ref": "#/$defs/dataSchema"
+          "$ref": "#/definitions/dataSchema"
         },
         "output": {
-          "$ref": "#/$defs/dataSchema"
+          "$ref": "#/definitions/dataSchema"
         },
         "safe": {
           "type": "boolean"
@@ -671,44 +671,44 @@
       "type": "object",
       "properties": {
         "@type": {
-          "$ref": "#/$defs/type_declaration"
+          "$ref": "#/definitions/type_declaration"
         },
         "description": {
-          "$ref": "#/$defs/description"
+          "$ref": "#/definitions/description"
         },
         "descriptions": {
-          "$ref": "#/$defs/descriptions"
+          "$ref": "#/definitions/descriptions"
         },
         "title": {
-          "$ref": "#/$defs/title"
+          "$ref": "#/definitions/title"
         },
         "titles": {
-          "$ref": "#/$defs/titles"
+          "$ref": "#/definitions/titles"
         },
         "forms": {
           "type": "array",
           "minItems": 1,
           "items": {
-            "$ref": "#/$defs/form_element_event"
+            "$ref": "#/definitions/form_element_event"
           }
         },
         "uriVariables": {
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/$defs/dataSchema"
+            "$ref": "#/definitions/dataSchema"
           }
         },
         "subscription": {
-          "$ref": "#/$defs/dataSchema"
+          "$ref": "#/definitions/dataSchema"
         },
         "data": {
-          "$ref": "#/$defs/dataSchema"
+          "$ref": "#/definitions/dataSchema"
         },
         "dataResponse": {
-          "$ref": "#/$defs/dataSchema"
+          "$ref": "#/definitions/dataSchema"
         },
         "cancellation": {
-          "$ref": "#/$defs/dataSchema"
+          "$ref": "#/definitions/dataSchema"
         }
       },
       "required": ["forms"],
@@ -718,7 +718,7 @@
       "type": "object",
       "properties": {
         "href": {
-          "$ref": "#/$defs/anyUri"
+          "$ref": "#/definitions/anyUri"
         },
         "type": {
           "type": "string"
@@ -727,15 +727,15 @@
           "type": "string"
         },
         "anchor": {
-          "$ref": "#/$defs/anyUri"
+          "$ref": "#/definitions/anyUri"
         },
         "hreflang": {
           "anyOf": [
-            { "$ref": "#/$defs/bcp47_string" },
+            { "$ref": "#/definitions/bcp47_string" },
             {
               "type": "array",
               "items": {
-                "$ref": "#/$defs/bcp47_string"
+                "$ref": "#/definitions/bcp47_string"
               }
             }
           ]
@@ -747,7 +747,7 @@
     "link_element": {
       "allOf": [
         {
-          "$ref": "#/$defs/base_link_element"
+          "$ref": "#/definitions/base_link_element"
         },
         {
           "not": {
@@ -775,7 +775,7 @@
     "icon_link_element": {
       "allOf": [
         {
-          "$ref": "#/$defs/base_link_element"
+          "$ref": "#/definitions/base_link_element"
         },
         {
           "properties": {
@@ -806,16 +806,16 @@
       "type": "object",
       "properties": {
         "@type": {
-          "$ref": "#/$defs/type_declaration"
+          "$ref": "#/definitions/type_declaration"
         },
         "description": {
-          "$ref": "#/$defs/description"
+          "$ref": "#/definitions/description"
         },
         "descriptions": {
-          "$ref": "#/$defs/descriptions"
+          "$ref": "#/definitions/descriptions"
         },
         "proxy": {
-          "$ref": "#/$defs/anyUri"
+          "$ref": "#/definitions/anyUri"
         },
         "scheme": {
           "type": "string",
@@ -829,16 +829,16 @@
       "type": "object",
       "properties": {
         "@type": {
-          "$ref": "#/$defs/type_declaration"
+          "$ref": "#/definitions/type_declaration"
         },
         "description": {
-          "$ref": "#/$defs/description"
+          "$ref": "#/definitions/description"
         },
         "descriptions": {
-          "$ref": "#/$defs/descriptions"
+          "$ref": "#/definitions/descriptions"
         },
         "proxy": {
-          "$ref": "#/$defs/anyUri"
+          "$ref": "#/definitions/anyUri"
         },
         "scheme": {
           "type": "string",
@@ -852,16 +852,16 @@
       "type": "object",
       "properties": {
         "@type": {
-          "$ref": "#/$defs/type_declaration"
+          "$ref": "#/definitions/type_declaration"
         },
         "description": {
-          "$ref": "#/$defs/description"
+          "$ref": "#/definitions/description"
         },
         "descriptions": {
-          "$ref": "#/$defs/descriptions"
+          "$ref": "#/definitions/descriptions"
         },
         "proxy": {
-          "$ref": "#/$defs/anyUri"
+          "$ref": "#/definitions/anyUri"
         },
         "scheme": {
           "type": "string",
@@ -880,16 +880,16 @@
           "type": "object",
           "properties": {
             "@type": {
-              "$ref": "#/$defs/type_declaration"
+              "$ref": "#/definitions/type_declaration"
             },
             "description": {
-              "$ref": "#/$defs/description"
+              "$ref": "#/definitions/description"
             },
             "descriptions": {
-              "$ref": "#/$defs/descriptions"
+              "$ref": "#/definitions/descriptions"
             },
             "proxy": {
-              "$ref": "#/$defs/anyUri"
+              "$ref": "#/definitions/anyUri"
             },
             "scheme": {
               "type": "string",
@@ -910,16 +910,16 @@
           "type": "object",
           "properties": {
             "@type": {
-              "$ref": "#/$defs/type_declaration"
+              "$ref": "#/definitions/type_declaration"
             },
             "description": {
-              "$ref": "#/$defs/description"
+              "$ref": "#/definitions/description"
             },
             "descriptions": {
-              "$ref": "#/$defs/descriptions"
+              "$ref": "#/definitions/descriptions"
             },
             "proxy": {
-              "$ref": "#/$defs/anyUri"
+              "$ref": "#/definitions/anyUri"
             },
             "scheme": {
               "type": "string",
@@ -942,16 +942,16 @@
       "type": "object",
       "properties": {
         "@type": {
-          "$ref": "#/$defs/type_declaration"
+          "$ref": "#/definitions/type_declaration"
         },
         "description": {
-          "$ref": "#/$defs/description"
+          "$ref": "#/definitions/description"
         },
         "descriptions": {
-          "$ref": "#/$defs/descriptions"
+          "$ref": "#/definitions/descriptions"
         },
         "proxy": {
-          "$ref": "#/$defs/anyUri"
+          "$ref": "#/definitions/anyUri"
         },
         "scheme": {
           "type": "string",
@@ -972,16 +972,16 @@
       "type": "object",
       "properties": {
         "@type": {
-          "$ref": "#/$defs/type_declaration"
+          "$ref": "#/definitions/type_declaration"
         },
         "description": {
-          "$ref": "#/$defs/description"
+          "$ref": "#/definitions/description"
         },
         "descriptions": {
-          "$ref": "#/$defs/descriptions"
+          "$ref": "#/definitions/descriptions"
         },
         "proxy": {
-          "$ref": "#/$defs/anyUri"
+          "$ref": "#/definitions/anyUri"
         },
         "scheme": {
           "type": "string",
@@ -1006,16 +1006,16 @@
       "type": "object",
       "properties": {
         "@type": {
-          "$ref": "#/$defs/type_declaration"
+          "$ref": "#/definitions/type_declaration"
         },
         "description": {
-          "$ref": "#/$defs/description"
+          "$ref": "#/definitions/description"
         },
         "descriptions": {
-          "$ref": "#/$defs/descriptions"
+          "$ref": "#/definitions/descriptions"
         },
         "proxy": {
-          "$ref": "#/$defs/anyUri"
+          "$ref": "#/definitions/anyUri"
         },
         "scheme": {
           "type": "string",
@@ -1036,23 +1036,23 @@
       "type": "object",
       "properties": {
         "@type": {
-          "$ref": "#/$defs/type_declaration"
+          "$ref": "#/definitions/type_declaration"
         },
         "description": {
-          "$ref": "#/$defs/description"
+          "$ref": "#/definitions/description"
         },
         "descriptions": {
-          "$ref": "#/$defs/descriptions"
+          "$ref": "#/definitions/descriptions"
         },
         "proxy": {
-          "$ref": "#/$defs/anyUri"
+          "$ref": "#/definitions/anyUri"
         },
         "scheme": {
           "type": "string",
           "enum": ["bearer"]
         },
         "authorization": {
-          "$ref": "#/$defs/anyUri"
+          "$ref": "#/definitions/anyUri"
         },
         "alg": {
           "type": "string"
@@ -1075,16 +1075,16 @@
       "type": "object",
       "properties": {
         "@type": {
-          "$ref": "#/$defs/type_declaration"
+          "$ref": "#/definitions/type_declaration"
         },
         "description": {
-          "$ref": "#/$defs/description"
+          "$ref": "#/definitions/description"
         },
         "descriptions": {
-          "$ref": "#/$defs/descriptions"
+          "$ref": "#/definitions/descriptions"
         },
         "proxy": {
-          "$ref": "#/$defs/anyUri"
+          "$ref": "#/definitions/anyUri"
         },
         "scheme": {
           "type": "string",
@@ -1101,29 +1101,29 @@
       "type": "object",
       "properties": {
         "@type": {
-          "$ref": "#/$defs/type_declaration"
+          "$ref": "#/definitions/type_declaration"
         },
         "description": {
-          "$ref": "#/$defs/description"
+          "$ref": "#/definitions/description"
         },
         "descriptions": {
-          "$ref": "#/$defs/descriptions"
+          "$ref": "#/definitions/descriptions"
         },
         "proxy": {
-          "$ref": "#/$defs/anyUri"
+          "$ref": "#/definitions/anyUri"
         },
         "scheme": {
           "type": "string",
           "enum": ["oauth2"]
         },
         "authorization": {
-          "$ref": "#/$defs/anyUri"
+          "$ref": "#/definitions/anyUri"
         },
         "token": {
-          "$ref": "#/$defs/anyUri"
+          "$ref": "#/definitions/anyUri"
         },
         "refresh": {
-          "$ref": "#/$defs/anyUri"
+          "$ref": "#/definitions/anyUri"
         },
         "scopes": {
           "oneOf": [
@@ -1156,34 +1156,34 @@
     "securityScheme": {
       "oneOf": [
         {
-          "$ref": "#/$defs/noSecurityScheme"
+          "$ref": "#/definitions/noSecurityScheme"
         },
         {
-          "$ref": "#/$defs/autoSecurityScheme"
+          "$ref": "#/definitions/autoSecurityScheme"
         },
         {
-          "$ref": "#/$defs/comboSecurityScheme"
+          "$ref": "#/definitions/comboSecurityScheme"
         },
         {
-          "$ref": "#/$defs/basicSecurityScheme"
+          "$ref": "#/definitions/basicSecurityScheme"
         },
         {
-          "$ref": "#/$defs/digestSecurityScheme"
+          "$ref": "#/definitions/digestSecurityScheme"
         },
         {
-          "$ref": "#/$defs/apiKeySecurityScheme"
+          "$ref": "#/definitions/apiKeySecurityScheme"
         },
         {
-          "$ref": "#/$defs/bearerSecurityScheme"
+          "$ref": "#/definitions/bearerSecurityScheme"
         },
         {
-          "$ref": "#/$defs/pskSecurityScheme"
+          "$ref": "#/definitions/pskSecurityScheme"
         },
         {
-          "$ref": "#/$defs/oAuth2SecurityScheme"
+          "$ref": "#/definitions/oAuth2SecurityScheme"
         },
         {
-          "$ref": "#/$defs/additionalSecurityScheme"
+          "$ref": "#/definitions/additionalSecurityScheme"
         }
       ]
     }
@@ -1195,34 +1195,34 @@
       "format": "uri"
     },
     "title": {
-      "$ref": "#/$defs/title"
+      "$ref": "#/definitions/title"
     },
     "titles": {
-      "$ref": "#/$defs/titles"
+      "$ref": "#/definitions/titles"
     },
     "properties": {
       "type": "object",
       "additionalProperties": {
-        "$ref": "#/$defs/property_element"
+        "$ref": "#/definitions/property_element"
       }
     },
     "actions": {
       "type": "object",
       "additionalProperties": {
-        "$ref": "#/$defs/action_element"
+        "$ref": "#/definitions/action_element"
       }
     },
     "events": {
       "type": "object",
       "additionalProperties": {
-        "$ref": "#/$defs/event_element"
+        "$ref": "#/definitions/event_element"
       }
     },
     "description": {
-      "$ref": "#/$defs/description"
+      "$ref": "#/definitions/description"
     },
     "descriptions": {
-      "$ref": "#/$defs/descriptions"
+      "$ref": "#/definitions/descriptions"
     },
     "version": {
       "type": "object",
@@ -1238,10 +1238,10 @@
       "items": {
         "oneOf": [
           {
-            "$ref": "#/$defs/link_element"
+            "$ref": "#/definitions/link_element"
           },
           {
-            "$ref": "#/$defs/icon_link_element"
+            "$ref": "#/definitions/icon_link_element"
           }
         ]
       }
@@ -1250,28 +1250,28 @@
       "type": "array",
       "minItems": 1,
       "items": {
-        "$ref": "#/$defs/form_element_root"
+        "$ref": "#/definitions/form_element_root"
       }
     },
     "base": {
-      "$ref": "#/$defs/anyUri"
+      "$ref": "#/definitions/anyUri"
     },
     "securityDefinitions": {
       "type": "object",
       "minProperties": 1,
       "additionalProperties": {
-        "$ref": "#/$defs/securityScheme"
+        "$ref": "#/definitions/securityScheme"
       }
     },
     "schemaDefinitions": {
       "type": "object",
       "minProperties": 1,
       "additionalProperties": {
-        "$ref": "#/$defs/dataSchema"
+        "$ref": "#/definitions/dataSchema"
       }
     },
     "support": {
-      "$ref": "#/$defs/anyUri"
+      "$ref": "#/definitions/anyUri"
     },
     "created": {
       "type": "string",
@@ -1284,13 +1284,13 @@
     "profile": {
       "oneOf": [
         {
-          "$ref": "#/$defs/anyUri"
+          "$ref": "#/definitions/anyUri"
         },
         {
           "type": "array",
           "minItems": 1,
           "items": {
-            "$ref": "#/$defs/anyUri"
+            "$ref": "#/definitions/anyUri"
           }
         }
       ]
@@ -1312,14 +1312,14 @@
     "uriVariables": {
       "type": "object",
       "additionalProperties": {
-        "$ref": "#/$defs/dataSchema"
+        "$ref": "#/definitions/dataSchema"
       }
     },
     "@type": {
-      "$ref": "#/$defs/type_declaration"
+      "$ref": "#/definitions/type_declaration"
     },
     "@context": {
-      "$ref": "#/$defs/thing-context"
+      "$ref": "#/definitions/thing-context"
     }
   },
   "required": ["title", "security", "securityDefinitions", "@context"],

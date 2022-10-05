@@ -9,7 +9,7 @@
             "type": "object",
             "minProperties": 1,
             "additionalProperties": {
-                "$ref": "#/$defs/securityScheme"
+                "$ref": "#/definitions/securityScheme"
             }
         }
     },
@@ -17,13 +17,13 @@
         "securityDefinitions"
     ],
     "additionalProperties": true,
-    "$defs": {
+    "definitions": {
         "securityScheme": {
             "type": "object",
             "if": {
                 "properties": {
                     "proxy": {
-                        "$ref": "#/$defs/url"
+                        "$ref": "#/definitions/url"
                     }
                 },
                 "required": ["proxy"]

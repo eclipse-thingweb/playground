@@ -8,7 +8,7 @@
         "@type": {
             "anyOf": [
                 {
-                    "$ref":"#/$defs/tm_string"
+                    "$ref":"#/definitions/tm_string"
                 },
                 {
                     "type": "array",
@@ -16,7 +16,7 @@
                         "type": "string"
                     },
                     "contains": {
-                        "$ref":"#/$defs/tm_string"
+                        "$ref":"#/definitions/tm_string"
                     }
                 }
             ]
@@ -26,7 +26,7 @@
         "@type"
     ],
     "additionalProperties": true,
-    "$defs": {
+    "definitions": {
         "tm_string": {
             "type": "string",
             "const": "tm:ThingModel"

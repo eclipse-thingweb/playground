@@ -9,10 +9,10 @@
             "type": "array",
             "items": {
                 "if":{
-                    "$ref": "#/$defs/tm_extend_link_element"
+                    "$ref": "#/definitions/tm_extend_link_element"
                 },
                 "else":{
-                    "$ref": "#/$defs/base_link_element"
+                    "$ref": "#/definitions/base_link_element"
                 },
                 "then":{
                     "const": "tm-extend=pass"
@@ -22,7 +22,7 @@
         }
     },
     "additionalProperties": true,
-    "$defs": {
+    "definitions": {
         "anyUri": {
             "type": "string"
         },
@@ -30,7 +30,7 @@
             "type": "object",
             "properties": {
                 "href": {
-                    "$ref": "#/$defs/anyUri"
+                    "$ref": "#/definitions/anyUri"
                 },
                 "type": {
                     "type": "string"
@@ -39,7 +39,7 @@
                     "type": "string"
                 },
                 "anchor": {
-                    "$ref": "#/$defs/anyUri"
+                    "$ref": "#/definitions/anyUri"
                 }
             },
             "required": [
@@ -50,7 +50,7 @@
         "tm_extend_link_element":{
             "allOf": [
                 {
-                    "$ref": "#/$defs/base_link_element"
+                    "$ref": "#/definitions/base_link_element"
                 },
                 {
                     "properties": {

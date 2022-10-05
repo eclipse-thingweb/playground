@@ -7,14 +7,14 @@
     "type": "object",
     "properties": {
         "tm:ref": {
-            "$ref": "#/$defs/tm_ref"
+            "$ref": "#/definitions/tm_ref"
         } 
     },
     "required": [
         "tm:ref"
     ],
     "additionalProperties": true,
-    "$defs": {
+    "definitions": {
         "tm_ref": {
             "type": "string",
             "pattern": "^([a-zA-Z][a-zA-Z0-9+\\-.]*:[^\\s]*)(#(?:\/(?:[a-zA-Z0-9_\\-.!$&'()*+,;:=@]|%[0-9a-f]{2}|~0|~1)*)*)$"

@@ -10,32 +10,32 @@
             "type": "array",
             "minItems": 1,
             "items": {
-                "$ref": "#/$defs/form_element"
+                "$ref": "#/definitions/form_element"
             }
         },
         "properties": {
             "type": "object",
             "additionalProperties": {
-                "$ref": "#/$defs/property_element"
+                "$ref": "#/definitions/property_element"
             }
 
         },
         "actions": {
             "type": "object",
             "additionalProperties": {
-                "$ref": "#/$defs/action_element"
+                "$ref": "#/definitions/action_element"
             }
         },
         "events": {
             "type": "object",
             "additionalProperties": {
-                "$ref": "#/$defs/event_element"
+                "$ref": "#/definitions/event_element"
             }
         }
 
     },
     "additionalProperties": true,
-    "$defs": {
+    "definitions": {
         "property_element": {
             "type": "object",
             "properties": {
@@ -43,7 +43,7 @@
                     "type": "array",
                     "minItems": 1,
                     "items": {
-                        "$ref": "#/$defs/form_element"
+                        "$ref": "#/definitions/form_element"
                     }
                 }
             },
@@ -59,7 +59,7 @@
                     "type": "array",
                     "minItems": 1,
                     "items": {
-                        "$ref": "#/$defs/form_element"
+                        "$ref": "#/definitions/form_element"
                     }
                 }
             },
@@ -75,7 +75,7 @@
                     "type": "array",
                     "minItems": 1,
                     "items": {
-                        "$ref": "#/$defs/form_element"
+                        "$ref": "#/definitions/form_element"
                     }
                 }
             },
