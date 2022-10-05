@@ -105,10 +105,6 @@ async function testVisualChromium(page) {
   await page.click('#load_example', {waitUntil: "networkidle"})
   await customShot("dropdown-examples")
 
-  await page.selectOption('#load_example', "SimpleTD")
-  await customShot("td")
-  await page.screenshot({ path: `./test_results/chromium_td.png` })
-
   await page.selectOption('#load_example', 'TypoCheckWithoutTypos')
   await customShot("typo_check_without_typos")
   await page.screenshot({ path: `./test_results/chromium_typo_check_without_typos.png`, fullPage: true })
@@ -128,6 +124,11 @@ async function testVisualChromium(page) {
   await myWait(1000)
   await customShot("typo_check_handwritten_typo_fixed")
   await page.screenshot({ path: `./test_results/chromium_typo_check_handwritten_typo_fixed.png`, fullPage: true })
+
+
+  await page.selectOption('#load_example', "SimpleTD")
+  await customShot("td")
+  await page.screenshot({ path: `./test_results/chromium_td.png` })
 
   await page.click("#btn_validate")
   await myWait(1000)
