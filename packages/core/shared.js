@@ -17,7 +17,8 @@ module.exports =  {
     checkSecurity,
     checkMultiLangConsistency,
     checkLinksRelTypeCount,
-    checkUriSecurity
+    checkUriSecurity,
+    checkTmOptionalPointer
 }
 
 
@@ -903,10 +904,40 @@ function checkTmOptionalPointer(td){
     * In case no path is found, the param defaultValue is echoed back
     * Taken from
     * https://stackoverflow.com/questions/6491463/accessing-nested-javascript-objects-and-arrays-by-string-path/6491621#6491621
+    * However, tm:optional values start with / so it should be removed first
     **/
     const resolvePath = (object, path, defaultValue) => path
         .split(/[\.\[\]\'\"]/)
         .filter(p => p)
         .reduce((o, p) => o ? o[p] : defaultValue, object)
 
+    let results = []
+    if(td.hasOwnProperty("tm:optional")){
+        td["tm:optional"].forEach(element => {
+            element = element.substring(1);
+            const pathTarget = resolvePath(td,element,"noTarget")
+
+            if(pathTarget === "noTarget"){
+                results.push({
+                    "ID": "tm-tmOptional-resolver",
+                    "Status": "fail",
+                    "Comment": "tm:optional does not resolve to an affordance"
+                })
+            } else {
+                results.push({
+                    "ID": "tm-tmOptional-resolver",
+                    "Status": "pass",
+                    "Comment": ""
+                })
+            }
+        });
+    } else {
+        results.push({
+            "ID": "tm-tmOptional-resolver",
+            "Status": "not-impl",
+            "Comment": "no use of tm:optional"
+        })
+    }
+
+    return results
  }
