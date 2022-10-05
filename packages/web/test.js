@@ -122,7 +122,7 @@ async function testVisualChromium(page) {
   await customShot("typo_check_handwritten_typo_exists")
   await page.screenshot({ path: `./test_results/chromium_typo_check_handwritten_typo_exists.png`, fullPage: true })
 
-  await page.evaluate(() => 
+  await page.evaluate(() =>
     window.tdEditor.getModel(monaco.Uri.parse("")).setValue('{ "@context": "https://www.w3.org/2019/wot/td/v1" }')
   );
   await myWait(1000)

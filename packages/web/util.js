@@ -322,7 +322,7 @@ export function getExamplesList(docType){
             },
             "TypoCheckWithoutTypos": {
                 "addr": "./node_modules/@thing-description-playground/core/examples/tds/typo/typoCheckWithoutTypos.json",
-                "type": "valid"
+                "type": "invalid"
             },
             "TypoCheckWithTypos": {
                 "addr": "./node_modules/@thing-description-playground/core/examples/tds/typo/typoCheckWithTypos.json",
