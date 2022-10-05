@@ -531,6 +531,11 @@ export function findJSONLocationOfMonacoText(text, textModel) {
     })
 }
 
+/**
+ * Gets the start position of a match
+ * @param {FindMatch} match
+ * @returns The object contains the start column and line number of a match
+ */
 function getStartPositionOfMatch(match) {
     return {
         column: match.range.startColumn,
@@ -538,6 +543,11 @@ function getStartPositionOfMatch(match) {
     }
 }
 
+/**
+ * Gets the end position of a match
+ * @param {FindMatch} match
+ * @returns The object contains the end column and line number of a match
+ */
 function getEndPositionOfMatch(match) {
     return {
         column: match.range.endColumn,
@@ -545,10 +555,23 @@ function getEndPositionOfMatch(match) {
     }
 }
 
+/**
+ * Checks whether there is a left bracket or not before the position
+ * @param {ITextModel} textModel Monaco editor text model  to be searched
+ * @param {Position} endPosition End position of the search
+ * @returns boolean
+ */
 function doesLeftBracketExistBefore(textModel, endPosition) {
     return textModel.findPreviousMatch('{', endPosition)
 }
 
+/**
+ * Checks whethere there is a right bracket between the start position and the end position
+ * @param {ITextModel} textModel Monaco editor text model to be searched
+ * @param {*} startPosition Start position of the search
+ * @param {*} endPosition End position of the search
+ * @returns boolean
+ */
 function doesRightBracketExistInRange(textModel, startPosition, endPosition) {
     const prevMatch = textModel.findPreviousMatch('}', endPosition)
     const nextMatch = textModel.findNextMatch('}', startPosition)
@@ -560,6 +583,11 @@ function doesRightBracketExistInRange(textModel, startPosition, endPosition) {
             && prevMatchStartPosition.lineNumber === nextMatchStartPosition.lineNumber) ? prevMatch : null
 }
 
+/**
+ * Finds the parent object's key name
+ * @param {ITextModel} textModel Monaco editor text model to be searched
+ * @param {Position} endPosition End position of the search
+ */
 function findParentInRange(textModel, endPosition) {
     const leftBracketMatch = doesLeftBracketExistBefore(textModel, endPosition)
 
@@ -576,6 +604,12 @@ function findParentInRange(textModel, endPosition) {
     }
 }
 
+/**
+ * Checks whether the searched text is full word in the model or not
+ * @param {FindMatch} match
+ * @param {ITextModel} textModel Monaco editor text model that word exists in
+ * @returns boolean
+ */
 function isMatchFullWord(match, textModel) {
     const wordBeginning = textModel.findPreviousMatch('"',
         {
