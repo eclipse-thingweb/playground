@@ -1,0 +1,231 @@
+{
+    "@context": [
+        "https://www.w3.org/2022/wot/td/v1.1",
+        {
+            "@language": "en"
+        }
+    ],
+    "id": "urn:uuid:c2b126b3-4ef2-40e9-9cad-f768608fdd0d",
+    "title": "MQTT Experimental",
+    "description": "A Thing demonstrating how to use observe and unobserve property. You can publish to testOneOf or to testMaxItems to trigger the events",
+    "securityDefinitions": {
+        "auto_sc": {
+            "scheme": "auto"
+        }
+    },
+    "security": [
+        "auto_sc"
+    ],
+    "schemaDefinitions": {
+        "actionCancellation": {
+            "type": "string",
+            "const": "action canceled :-("
+        },
+        "actionQueryOutput": {
+            "type": "integer"
+        }
+    },
+    "support": "https://github.com/egekorkan/wot-implementations/tree/master/mqtt-online",
+    "properties": {
+        "oneOfTest": {
+            "readOnly": true,
+            "writeOnly": false,
+            "observable": true,
+            "oneOf": [
+                {
+                    "type": "string",
+                    "const": "smaller than 3"
+                },
+                {
+                    "type": "string",
+                    "pattern": "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$"
+                },
+                {
+                    "type": "integer",
+                    "multipleOf": 6,
+                    "exclusiveMaximum": 60,
+                    "exclusiveMinimum": 0
+                },
+                {
+                    "type": "number",
+                    "exclusiveMaximum": 60,
+                    "exclusiveMinimum": 0
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "forms": [
+                {
+                    "href": "mqtt://test.mosquitto.org",
+                    "mqv:topic": "EgeMyPublisher/oneOfTest",
+                    "contentType": "application/json",
+                    "op": "observeproperty",
+                    "mqv:controlPacket": "mqv:subscribe"
+                },
+                {
+                    "href": "mqtt://test.mosquitto.org",
+                    "mqv:topic": "EgeMyPublisher/oneOfTest",
+                    "contentType": "application/json",
+                    "op": "unobserveproperty",
+                    "mqv:controlPacket": "mqv:unsubscribe"
+                }
+            ]
+        },
+        "maxItemsTest": {
+            "readOnly": true,
+            "writeOnly": false,
+            "type": "array",
+            "items": {
+                "type": "integer"
+            },
+            "maxItems": 5,
+            "minItems": 2,
+            "forms": [
+                {
+                    "href": "mqtt://iot.eclipse.org/maxItemsTest",
+                    "contentType": "application/json",
+                    "op": "observeproperty",
+                    "mqtt:commandCode": 8
+                },
+                {
+                    "href": "mqtt://iot.eclipse.org/maxItemsTest",
+                    "contentType": "application/json",
+                    "op": "unobserveproperty",
+                    "mqtt:methodCode": 10
+                }
+            ]
+        },
+        "encodingTest": {
+            "readOnly": true,
+            "writeOnly": false,
+            "observable": true,
+            "type": "string",
+            "contentMediaType": "image/png",
+            "contentEncoding": "base64",
+            "forms": [
+                {
+                    "href": "mqtt://test.mosquitto.org",
+                    "mqv:topic": "EgeMyPublisher/encodingTest",
+                    "contentType": "application/json",
+                    "op": "observeproperty",
+                    "mqv:controlPacket": "mqv:subscribe"
+                },
+                {
+                    "href": "mqtt://test.mosquitto.org",
+                    "mqv:topic": "EgeMyPublisher/encodingTest",
+                    "contentType": "application/json",
+                    "op": "unobserveproperty",
+                    "mqv:controlPacket": "mqv:unsubscribe"
+                }
+            ]
+        },
+        "formEncodingTest": {
+            "description": "This delivers an array of sensor values as gzip",
+            "readOnly": true,
+            "writeOnly": false,
+            "observable": true,
+            "forms": [
+                {
+                    "href": "mqtt://test.mosquitto.org",
+                    "mqv:topic": "EgeMyPublisher/formEncodingTest",
+                    "contentType": "application/csv",
+                    "contentCoding": "gzip",
+                    "op": "readproperty",
+                    "mqv:controlPacket": "mqv:subscribe",
+                    "mqv:retain": true
+                }
+            ]
+        }
+    },
+    "actions": {
+        "actionTest": {
+            "input": {
+                "type": "integer",
+                "minimum": 1,
+                "default": 10,
+                "description": "indicates how long this action should run in seconds"
+            },
+            "output": {
+                "type": "string",
+                "enum": [
+                    "that took a while",
+                    "that was quick"
+                ]
+            },
+            "forms": [
+                {
+                    "href": "mqtt://test.mosquitto.org",
+                    "mqv:topic": "EgeMyPublisher/actionTest",
+                    "contentType": "application/json",
+                    "op": "invokeaction",
+                    "mqv:controlPacket": "mqv:publish"
+                },
+                {
+                    "href": "mqtt://test.mosquitto.org",
+                    "mqv:topic": "EgeMyPublisher/actionTest/remaining",
+                    "contentType": "application/json",
+                    "op": ["queryaction", "cancelaction"],
+                    "mqv:controlPacket": "mqv:subscribe",
+                    "additionalResponses": [
+                        {
+                            "success": true,
+                            "contentType": "application/json",
+                            "schema": "actionQueryOutput"
+                        }
+                    ]
+                },
+                {
+                    "href": "mqtt://test.mosquitto.org",
+                    "mqv:topic": "EgeMyPublisher/actionTest/cancel",
+                    "contentType": "application/json",
+                    "op": "cancelaction",
+                    "mqv:controlPacket": "mqv:publish",
+                    "additionalResponses": [
+                        {
+                            "success": true,
+                            "contentType": "application/json",
+                            "schema": "actionCancellation"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "links": [
+        {
+            "rel": "icon",
+            "href": "https://avatars.githubusercontent.com/u/20195407?s=64&v=4",
+            "type": "image/png",
+            "sizes": "64x64"
+        },
+        {
+            "rel": "service-doc",
+            "href": "https://github.com/egekorkan/wot-implementations/blob/master/mqtt-online/Readme.md",
+            "type": "application/html",
+            "hreflang": "en"
+        },
+        {
+            "rel": "predecessor-version",
+            "href": "https://raw.githubusercontent.com/egekorkan/wot-implementations/782d0aa30226eda376ced64da5b514c65966d97a/mqtt-hosted-retain/publisher.json",
+            "type": "application/td+json",
+            "anchor": "#"
+        }
+    ],
+    "forms": [
+        {
+            "href": "mqtt://test.mosquitto.org",
+            "mqv:filter": "EgeMyPublisher/*",
+            "contentType": "application/json",
+            "op": "observeallproperties",
+            "mqv:controlPacket": "mqv:subscribe"
+        },
+        {
+            "href": "mqtt://test.mosquitto.org",
+            "mqv:filter": "EgeMyPublisher/*",
+            "contentType": "application/json",
+            "op": "unobserveallproperties",
+            "mqv:controlPacket": "mqv:unsubscribe"
+        }
+    ]
+}
