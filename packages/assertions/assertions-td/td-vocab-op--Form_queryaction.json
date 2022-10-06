@@ -6,69 +6,16 @@
     "also":["well-known-operation-types-only"],
     "type": "object",
     "properties": {
-        "forms": {
-            "type": "array",
-            "minItems": 1,
-            "items": {
-                "$ref": "#/definitions/form_element"
-            }
-        },
-        "properties": {
-            "type": "object",
-            "additionalProperties": {
-                "$ref": "#/definitions/property_element"
-            }
-
-        },
         "actions": {
             "type": "object",
             "additionalProperties": {
                 "$ref": "#/definitions/action_element"
             }
-        },
-        "events": {
-            "type": "object",
-            "additionalProperties": {
-                "$ref": "#/definitions/event_element"
-            }
         }
-
     },
     "additionalProperties": true,
     "definitions": {
-        "property_element": {
-            "type": "object",
-            "properties": {
-                "forms": {
-                    "type": "array",
-                    "minItems": 1,
-                    "items": {
-                        "$ref": "#/definitions/form_element"
-                    }
-                }
-            },
-            "required": [
-                "forms"
-            ],
-            "additionalProperties": true
-        },
         "action_element": {
-            "type": "object",
-            "properties": {
-                "forms": {
-                    "type": "array",
-                    "minItems": 1,
-                    "items": {
-                        "$ref": "#/definitions/form_element"
-                    }
-                }
-            },
-            "required": [
-                "forms"
-            ],
-            "additionalProperties": true
-        },
-        "event_element": {
             "type": "object",
             "properties": {
                 "forms": {
@@ -98,11 +45,9 @@
                             },
                             {
                                 "type": "array",
-                                "items": {
+                                "contains": {
                                     "type": "string",
-                                    "enum": [
-                                        "queryaction"
-                                    ]
+                                    "const": "queryaction"
                                 }
                             }
                         ]
