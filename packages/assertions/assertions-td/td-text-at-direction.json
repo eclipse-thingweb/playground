@@ -14,7 +14,13 @@
                 "type":"object",
                 "properties": {
                     "@direction":{
-                        "type":"string"
+                        "oneOf": [{
+                            "type":"string",
+                            "enum":["ltr", "rtl"]
+                        },
+                        {
+                            "type":"null"
+                        }]  
                     }
                 },
                 "required": ["@direction"]
