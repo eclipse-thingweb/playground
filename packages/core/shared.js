@@ -21,6 +21,20 @@ module.exports =  {
     checkTmOptionalPointer
 }
 
+/**
+ * This function returns part of the object given in param with the value found when resolving the path. Similar to JSON Pointers.
+ * In case no path is found, the param defaultValue is echoed back
+ * Taken from
+ * https://stackoverflow.com/questions/6491463/accessing-nested-javascript-objects-and-arrays-by-string-path/6491621#6491621
+ * @param {object} object
+ * @param {string} path
+ * @param {any} defaultValue
+ * @return {object}
+ **/
+const resolvePath = (object, path, defaultValue) => path
+    .split(/[\.\[\]\'\"]/)
+    .filter(p => p)
+    .reduce((o, p) => o ? o[p] : defaultValue, object)
 
 // -------------------------------------------------- checkPropUniqueness
 
@@ -899,25 +913,14 @@ function checkUriSecurity(td) {
  * @param {object} td The TD to do assertion tests
  */
 function checkTmOptionalPointer(td){
-    /*
-    * This function returns part of the object given in param with the value found when resolving the path. Similar to JSON Pointers.
-    * In case no path is found, the param defaultValue is echoed back
-    * Taken from
-    * https://stackoverflow.com/questions/6491463/accessing-nested-javascript-objects-and-arrays-by-string-path/6491621#6491621
-    * However, tm:optional values start with / so it should be removed first
-    **/
-    const resolvePath = (object, path, defaultValue) => path
-        .split(/[\.\[\]\'\"]/)
-        .filter(p => p)
-        .reduce((o, p) => o ? o[p] : defaultValue, object)
-
-    let results = []
+    const results = []
     if(td.hasOwnProperty("tm:optional")){
         td["tm:optional"].forEach(element => {
-            element = element.substring(1);
+            // However, tm: optional values start with / so it should be removed first
+            element = element.substring(1)
+            element = element.replace("/",".") // since the resolvePath uses . instead of /
             const pathTarget = resolvePath(td,element,"noTarget")
-
-            if(pathTarget === "noTarget"){
+            if (pathTarget === "noTarget" || pathTarget === undefined) {
                 results.push({
                     "ID": "tm-tmOptional-resolver",
                     "Status": "fail",
