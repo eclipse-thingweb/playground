@@ -1,6 +1,6 @@
 {
     "title": "td-text-at-direction",
-    "description": "The root element of a TD Serialization MUST be a JSON object that includes a member with the name @context and a value of type string or array that equals or respectively contains https://www.w3.org/2022/wot/td/v1.1. ",
+    "description": "Given that the Thing Description format is based on JSON-LD 1.1 [[?json-ld11]], @direction with the string values ltr, rtl and null value null MAY be used inside the @context to indicate the default text direction for the human readable strings in the entire TD document.",
     "is-complex": false,
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
