@@ -6,33 +6,12 @@
     "also":["well-known-operation-types-only"],
     "type": "object",
     "properties": {
-        "forms": {
-            "type": "array",
-            "minItems": 1,
-            "items": {
-                "$ref": "#/definitions/form_element"
-            }
-        },
         "properties": {
             "type": "object",
             "additionalProperties": {
                 "$ref": "#/definitions/property_element"
             }
-
-        },
-        "actions": {
-            "type": "object",
-            "additionalProperties": {
-                "$ref": "#/definitions/action_element"
-            }
-        },
-        "events": {
-            "type": "object",
-            "additionalProperties": {
-                "$ref": "#/definitions/event_element"
-            }
         }
-
     },
     "additionalProperties": true,
     "definitions": {
