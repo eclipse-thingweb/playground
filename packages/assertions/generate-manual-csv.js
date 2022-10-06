@@ -4,21 +4,31 @@
 // JSON to CSV and vice versa libraries
 const Json2CsvParser = require('json2csv').Parser
 const csvjson = require('csvjson')
-const { readFileSync, writeFileSync } = require('fs')
+const {
+    readFileSync,
+    writeFileSync
+} = require('fs')
 const path = require("path")
 // const assert = require('node:assert').strict
 
-const csvGenerator = new Json2CsvParser({fields: ["ID", "Status", "Assertion", "Comment"]})
+const csvGenerator = new Json2CsvParser({
+    fields: ["ID", "Status", "Comment", "Description"]
+})
 const mainPath = path.join("assertions-csv")
 const assertionsPath = path.join("assertions-csv", "assertions.csv")
 const preImplementedPath = path.join("assertions-csv", "manual-generation-inputs", "pre-implemented.csv")
+const manualFlag = "not testable with Assertion Tester"
 
 /** ========================================================================
  *                           Read and Parse CSV
  *========================================================================**/
 
-const assertionsTableCSV = readFileSync(assertionsPath, {encoding: "utf-8"})
-const preImplementedPathCSV = readFileSync(preImplementedPath, {encoding: "utf-8"})
+const assertionsTableCSV = readFileSync(assertionsPath, {
+    encoding: "utf-8"
+})
+const preImplementedPathCSV = readFileSync(preImplementedPath, {
+    encoding: "utf-8"
+})
 
 const csvParserOptions = {
     delimiter: ',', // optional
@@ -32,14 +42,20 @@ const preImplementedTable = csvjson.toObject(preImplementedPathCSV, csvParserOpt
  *                   Determine and Remove Old Assertions
  *========================================================================**/
 
- const oldAssertionsTable = []
- let index = 0
- let iterations = preImplementedTable.length
- for(let iteration = 0; iteration < iterations; iteration++) {
-    const isNotFound = assertionsTable.findIndex(assertion => {return preImplementedTable[index].ID === assertion.ID}) === -1
-    if(isNotFound) {
-       oldAssertionsTable.push({"ID": preImplementedTable[index].ID, "Assertion": preImplementedTable[index].Assertion})
-       preImplementedTable.splice(index, 1)
+const oldAssertionsTable = []
+let index = 0
+let iterations = preImplementedTable.length
+for (let iteration = 0; iteration < iterations; iteration++) {
+    const isNotFound = assertionsTable.findIndex(assertion => {
+        return preImplementedTable[index].ID === assertion.ID
+    }) === -1
+    if (isNotFound) {
+        oldAssertionsTable.push({
+            "ID": preImplementedTable[index].ID,
+            "Description": preImplementedTable[index].Assertion,
+            "Comment": manualFlag
+        })
+        preImplementedTable.splice(index, 1)
     } else {
         index++
     }
@@ -52,12 +68,17 @@ const manualTable = []
 const needsReviewTable = []
 
 /* ================== Add old manual assertions ================= */
-const manualFlag = "not testable with Assertion Tester"
+
 index = 0
 iterations = preImplementedTable.length
-for(let iteration = 0; iteration < iterations; iteration++) {
-    if(preImplementedTable[index].Comment === manualFlag) {
-        manualTable.push({"ID": preImplementedTable[index].ID, "Status": "null", "Assertion": preImplementedTable[index].Assertion})
+for (let iteration = 0; iteration < iterations; iteration++) {
+    if (preImplementedTable[index].Comment === manualFlag) {
+        manualTable.push({
+            "ID": preImplementedTable[index].ID,
+            "Status": "null",
+            "Description": preImplementedTable[index].Assertion,
+            "Comment": manualFlag
+        })
         preImplementedTable.splice(index, 1)
     } else {
         preImplementedTable[index].Status = "null"
@@ -66,12 +87,26 @@ for(let iteration = 0; iteration < iterations; iteration++) {
     }
 }
 /* ================== Add new manual assertions ================= */
-for(const assertion of assertionsTable) {
-    const isNotFound = preImplementedTable.findIndex(implementedAssertion => {return implementedAssertion.ID === assertion.ID}) === -1
-    const manualIsNotFound = manualTable.findIndex(manualAssertion => {return manualAssertion.ID === assertion.ID}) === -1
-    if(isNotFound && manualIsNotFound) {
-        manualTable.push({"ID": assertion.ID, "Status": "null", "Assertion": assertion.Assertion, "Comment": ""})
-        needsReviewTable.push({"ID": assertion.ID, "Status": "null", "Assertion": assertion.Assertion, "Comment": ""})
+for (const assertion of assertionsTable) {
+    const isNotFound = preImplementedTable.findIndex(implementedAssertion => {
+        return implementedAssertion.ID === assertion.ID
+    }) === -1
+    const manualIsNotFound = manualTable.findIndex(manualAssertion => {
+        return manualAssertion.ID === assertion.ID
+    }) === -1
+    if (isNotFound && manualIsNotFound) {
+        manualTable.push({
+            "ID": assertion.ID,
+            "Status": "null",
+            "Description": assertion.Assertion,
+            "Comment": manualFlag
+        })
+        needsReviewTable.push({
+            "ID": assertion.ID,
+            "Status": "null",
+            "Description": assertion.Assertion,
+            "Comment": manualFlag
+        })
     }
 }
 

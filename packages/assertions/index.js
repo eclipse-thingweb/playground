@@ -253,7 +253,7 @@ function collectAssertionSchemas(assertionsDirectory, assertionsList, loadFuncti
  * @returns {string} csv formatted results
  */
 function resultsToCsv(results) {
-    const fields = ['ID', 'Status', 'Comment', 'Assertion']
+    const fields = ['ID', 'Status', 'Comment', 'Description']
     const json2csvParser = new Json2csvParser({
         fields
     })

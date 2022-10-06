@@ -3,7 +3,6 @@
     "description": "model: Provides a version indicator of the underlying TM. instance. MAY be included. Type: string.",
     "$schema ": "http://json-schema.org/draft/2019-09/schema#",
     "is-complex": false,
-    "also":["tm-versioning"],
     "type": "object",
     "properties": {
         "version": {
