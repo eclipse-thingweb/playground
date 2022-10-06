@@ -88,3 +88,4 @@
 "tm-tmRef-overwrite-process","null","The process to overwrite MUST follow the JSON Merge Patch algorithm as defined in [RFC7396] where the content of the referenced definition is patched with the new provided JSON name-value pairs.",""
 "tm-tmRef-overwrite-semantic-meaning","null","Similar to tm:extends and to keep the semantic meaning, definitions SHOULD NOT be overwritten in such a way that possible instance values are no longer valid compared to the origin referenced definition.",""
 "tm-tmRef2","null","Every time tm:ref is used, the referenced pre-definition and its dependencies (e.g., by context extension) MUST be assumed at the new defined definition.",""
+"tm-versioning-1","null","When the Thing Model definitions change over time, this SHOULD be reflected in the version container.",""
