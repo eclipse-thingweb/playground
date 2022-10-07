@@ -9,7 +9,7 @@
             "type": "object",
             "minProperties": 1,
             "additionalProperties": {
-                "$ref": "#/$defs/comboSecurity_element"
+                "$ref": "#/definitions/comboSecurity_element"
             }
         }
     },
@@ -18,7 +18,7 @@
     ],
     "additionalProperties": true,
 
-    "$defs": {
+    "definitions": {
         "comboSecurity_element": {
             "type": "object",
             "if": {

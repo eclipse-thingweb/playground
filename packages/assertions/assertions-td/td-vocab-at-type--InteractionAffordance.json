@@ -8,31 +8,31 @@
         "properties": {
             "type": "object",
             "additionalProperties": {
-                "$ref": "#/$defs/property_element"
+                "$ref": "#/definitions/property_element"
             }
         },
         "actions": {
             "type": "object",
             "additionalProperties": {
-                "$ref": "#/$defs/action_element"
+                "$ref": "#/definitions/action_element"
             }
         },
         "events": {
             "type": "object",
             "additionalProperties": {
-                "$ref": "#/$defs/event_element"
+                "$ref": "#/definitions/event_element"
             }
         }
     },
     "additionalProperties": true,
-    "$defs": {
+    "definitions": {
         "property_element": {
             "type": "object",
             "if": {
                 "required": ["@type"],
                 "properties": {
                     "@type": {
-                        "$ref": "#/$defs/type_declaration"
+                        "$ref": "#/definitions/type_declaration"
                     }
                 }
             },
@@ -46,7 +46,7 @@
                 "required": ["@type"],
                 "properties": {
                     "@type": {
-                        "$ref": "#/$defs/type_declaration"
+                        "$ref": "#/definitions/type_declaration"
                     }
                 }
             },
@@ -60,7 +60,7 @@
                 "required": ["@type"],
                 "properties": {
                     "@type": {
-                        "$ref": "#/$defs/type_declaration"
+                        "$ref": "#/definitions/type_declaration"
                     }
                 }
             },

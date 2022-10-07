@@ -16,6 +16,7 @@ module.exports.checkLinksRelTypeCount = coreAssertions.checkLinksRelTypeCount
 module.exports.security = coreAssertions.checkSecurity
 module.exports.checkUriSecurity = coreAssertions.checkUriSecurity
 module.exports.checkTypos = checkTypos
+module.exports.checkTmOptionalPointer = coreAssertions.checkTmOptionalPointer
 
 const jsonValidator = require('json-dup-key-validator')
 
@@ -526,7 +527,8 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             propUniqueness: null,
             multiLangConsistency: null,
             linksRelTypeCount: null,
-            readWriteOnly: null
+            readWriteOnly: null,
+            tmOptionalPointer: null
         }
 
         const detailComments = {
@@ -535,7 +537,8 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             propUniqueness: "Checking whether in one interaction pattern there are duplicate names, e.g. two properties called temp.",
             multiLangConsistency: "Checks whether all titles and descriptions have the same language fields.",
             linksRelTypeCount: "Checks whether rel:type is used more than once in the links array",
-            readWriteOnly: "Warns if a property has readOnly or writeOnly set to true conflicting with another property."
+            readWriteOnly: "Warns if a property has readOnly or writeOnly set to true conflicting with another property.",
+            tmOptionalPointer: "Checking whether tm:optional points to an actual affordance"
         }
 
         let tmJson
@@ -562,21 +565,6 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
 
             report.schema = "passed"
 
-            // ! No need to do defaults checking
-            // check with full schema
-            // if (checkDefaults) {
-            //     ajv.addSchema(fullTdSchema, 'fulltd')
-            //     const fullValid = ajv.validate('fulltd', tmJson)
-            //     if (fullValid) {
-            //         report.defaults = "passed"
-            //     }
-            //     else {
-            //         report.defaults = "warning"
-            //         logFunc("Optional validation failed:")
-            //         logFunc("> " + ajv.errorsText(filterErrorMessages(ajv.errors)))
-            //     }
-            // }
-
             // do additional checks
             checkEnumConst(tmJson)
             checkPropItems(tmJson)
@@ -592,6 +580,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             }
             details.multiLangConsistency = evalAssertion(coreAssertions.checkMultiLangConsistency(tmJson))
             details.linksRelTypeCount = evalAssertion(coreAssertions.checkLinksRelTypeCount(tmJson))
+            details.tmOptionalPointer = evalAssertion(coreAssertions.checkTmOptionalPointer(tmJson))
 
             // determine additional check state
             // passed + warning -> warning

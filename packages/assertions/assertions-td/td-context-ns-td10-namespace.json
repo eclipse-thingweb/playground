@@ -10,7 +10,7 @@
     ],
     "properties": {
       "@context": {
-        "$ref": "#/$defs/thing-context"
+        "$ref": "#/definitions/thing-context"
       }
     }
   },
@@ -18,7 +18,7 @@
     "const": "td-context-ns-td10-namespace=pass"
   },
   "additionalProperties": true,
-  "$defs": {
+  "definitions": {
     "thing-context-td-uri-v1": {
       "type": "string",
       "const": "https://www.w3.org/2019/wot/td/v1"
@@ -32,10 +32,10 @@
       "type": "array",
       "prefixItems": [
         {
-          "$ref": "$defs/thing-context-td-uri-v1"
+          "$ref": "definitions/thing-context-td-uri-v1"
         },
         {
-          "$ref": "$defs/thing-context-td-uri-v1.1"
+          "$ref": "definitions/thing-context-td-uri-v1.1"
         }
       ],
       "contains": {
@@ -46,7 +46,7 @@
       "additionalItems": {
         "anyOf": [
           {
-            "$ref": "$defs/anyUri"
+            "$ref": "definitions/anyUri"
           },
           {
             "type": "object"

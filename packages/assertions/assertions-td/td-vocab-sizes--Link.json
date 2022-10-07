@@ -8,12 +8,12 @@
         "links": {
             "type": "array",
             "items": {
-                "$ref": "#/$defs/link_element"
+                "$ref": "#/definitions/link_element"
             }
         }
     },
     "additionalProperties": true,
-    "$defs": {
+    "definitions": {
         "link_element": {
             "if": {
                 "type": "object",

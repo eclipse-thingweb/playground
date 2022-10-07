@@ -8,12 +8,12 @@
     "properties": {
         "actions": {
             "additionalProperties": {
-                "$ref": "#/$defs/action_element"
+                "$ref": "#/definitions/action_element"
             }
         }
     },
     "additionalProperties": true,
-    "$defs": {
+    "definitions": {
         "action_element": {
             "if": {
                 "type": "object",
