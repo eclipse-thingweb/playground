@@ -15,10 +15,7 @@ const mergeIdenticalResults = require("./util").mergeIdenticalResults
 
 
 // Imports from playground core
-// const checkUniqueness = require('@thing-description-playground/core').propUniqueness
-// const checkMultiLangConsistency = require("@thing-description-playground/core").multiLangConsistency
-// const checkSecurity = require("@thing-description-playground/core").security
-// const checkLinksRelTypeCount = require("@thing-description-playground/core").checkLinksRelTypeCount
+const checkTmOptionalPointer = require("@thing-description-playground/core").checkTmOptionalPointer
 const tmSchema = require("@thing-description-playground/core/tm-schema.json")
 const tmPlaceholderSchema = require("./assertions-tm/tm-placeholder.json")
 const tmRefSchema =  require("./assertions-tm/tm-tmRef1.json")
@@ -93,9 +90,7 @@ module.exports = validateTM
     }
 
     // additional checks
-    // results.push(...checkSecurity(tmJson))
-    // results.push(...checkMultiLangConsistency(tmJson))
-    // results.push(...checkLinksRelTypeCount(tmJson))
+    results.push(...checkTmOptionalPointer(tmJson))
 
     // Iterating through assertions
     for (let index = 0; index < assertions.length; index++) {

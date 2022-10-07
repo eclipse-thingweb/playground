@@ -133,7 +133,6 @@ function checkPropUniqueness(tdString) {
             const tdProperties = td.properties
             if (tdProperties.hasOwnProperty(interactionName)) {
                 // duplicate was at properties but that fails the td-unique identifiers as well
-                // console.log("at property");
                 results.push({
                     "ID": "td-properties_uniqueness",
                     "Status": "fail",
@@ -162,7 +161,6 @@ function checkPropUniqueness(tdString) {
             const tdActions = td.actions
             if (tdActions.hasOwnProperty(interactionName)) {
                 // duplicate was at actions but that fails the td-unique identifiers as well
-                // console.log("at action");
                 results.push({
                     "ID": "td-actions_uniqueness",
                     "Status": "fail",
@@ -189,7 +187,6 @@ function checkPropUniqueness(tdString) {
             const tdEvents = td.events
             if (tdEvents.hasOwnProperty(interactionName)) {
                 // duplicate was at events but that fails the td-unique identifiers as well
-                // console.log("at event");
                 results.push({
                     "ID": "td-events_uniqueness",
                     "Status": "fail",
@@ -787,7 +784,7 @@ function checkUriSecurity(td) {
                         if (curPropertyUriVariables.length>0){ // there are urivariables somewhere at least
                             // below is from https://stackoverflow.com/a/1885569/3806426
                             const filteredArray = curPropertyUriVariables.filter(value => securityUriVariables.includes(value))
-                            console.log(curPropertyUriVariables,"\n",securityUriVariables,"\n",filteredArray)
+                            // console.log(curPropertyUriVariables,"\n",securityUriVariables,"\n",filteredArray)
                             if(filteredArray.length>0){
                                 uriVariablesDistinctResult = "fail"
                             } else {
@@ -828,7 +825,7 @@ function checkUriSecurity(td) {
                         if (curActionUriVariables.length>0){ // there are urivariables somewhere at least
                             // below is from https://stackoverflow.com/a/1885569/3806426
                             const filteredArray = curActionUriVariables.filter(value => securityUriVariables.includes(value))
-                            console.log(curActionUriVariables,"\n",securityUriVariables,"\n",filteredArray)
+                            // console.log(curActionUriVariables,"\n",securityUriVariables,"\n",filteredArray)
                             if(filteredArray.length>0){
                                 uriVariablesDistinctResult = "fail"
                             } else {
@@ -869,7 +866,7 @@ function checkUriSecurity(td) {
                         if (curEventUriVariables.length>0){ // there are urivariables somewhere at least
                             // below is from https://stackoverflow.com/a/1885569/3806426
                             const filteredArray = curEventUriVariables.filter(value => securityUriVariables.includes(value))
-                            console.log(curEventUriVariables,"\n",securityUriVariables,"\n",filteredArray)
+                            // console.log(curEventUriVariables,"\n",securityUriVariables,"\n",filteredArray)
                             if(filteredArray.length>0){
                                 uriVariablesDistinctResult = "fail"
                             } else {
