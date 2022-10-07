@@ -28,7 +28,7 @@
 "td-default-qop","pass", ,"The value associated with member qop if not given MUST be assumed to have the default value auth."
 "td-default-readOnly","pass", ,"The value associated with member readOnly if not given MUST be assumed to have the default value false."
 "td-default-safe","pass", ,"The value associated with member safe if not given MUST be assumed to have the default value false."
-"td-default-success","not-impl", "being tracked with an issue" ,"."
+"td-default-success","not-impl","being tracked with an issue","The value associated with member success if not given MUST be assumed to have the default value false."
 "td-default-writeOnly","pass", ,"The value associated with member writeOnly if not given MUST be assumed to have the default value false."
 "td-expectedResponse-contentType","null", ,"If the content type of the expected response differs from the content type of the form, the Form instance MUST include a name-value pair with the name response."
 "td-expectedResponse-default-contentType","null", ,"If no response name-value pair is provided, it MUST be assumed that the content type of the response is equal to the content type assigned to the Form instance."
