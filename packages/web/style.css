@@ -321,6 +321,33 @@ i {
 	background-color: rgba(255, 255, 255, 1) ;
 }
 
+#visualized-popup {
+	position: fixed;
+	border-radius: 10px;
+	z-index: 99;
+	left: 2.5%;
+	top: 2.5%;
+	width: 95%;
+	height: 95%;
+	background-color: rgba(255, 255, 255, 1) ;
+}
+
+#visualized-popup .container-fluid > .row {
+	height: calc(100% - 30px);
+}
+
+#visualized-popup .container-fluid > .row [class^="col-"] {
+	height: calc(100% - 30px);
+	overflow: scroll;
+}
+
+#close-visualized-popup {
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 100;
+}
+
 .inner-gist-popup {
 	padding: 25px;
 	position: fixed;

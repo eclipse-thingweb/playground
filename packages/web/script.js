@@ -40,7 +40,6 @@ document.getElementById("box_auto_validate").addEventListener("change", () => {
 })
 
 document.getElementById("doc_type").addEventListener("change", () => {
-	document.getElementById("visualized").style.display = "none"
 	manualAssertionsLoaded = false
 	manualAssertions = []
 	docType = document.getElementById("doc_type").value
@@ -65,28 +64,16 @@ document.getElementById("doc_type").addEventListener("change", () => {
 })
 
 function visualize() {
-	document.getElementById("graph-vis").disabled = false;
-	document.getElementById("tree-vis").disabled = false;
-
-	document.getElementById("visualized").style.display = "block"
-	document.getElementById("td-editor").style.display = "none"
-	document.getElementById("tm-editor").style.display = "none"
-
 	let td;
 	try {
 		td = JSON.parse(window.editor.getValue());
-	} catch (_) { return; }
+	} catch (err) { 
+		alert(`Incorrect JSON: ${err}`);
+		return false;
+	 }
 
 	if (visType == 'graph') {
-		document.getElementById('visualized').innerHTML = `
-		<div>
-		  <button id="jvis-collapse-all" class="btn custom-btn" type="button">
-			<i class="or-up"></i> Collapse All
-		  </button>
-		  <button id="jvis-expand-all" class="btn custom-btn" type="button">
-			<i class="or-down"></i> Expand All
-		  </button>
-		</div>`;
+		document.getElementById('visualized').innerHTML = '';
 		jVis.jsonldVis(
 			td,
 			'#visualized',
@@ -99,29 +86,24 @@ function visualize() {
 	} else {
 		vVis.vegaVis('#visualized', td);
 	}
+
+	return true;
 }
 
-document.getElementById("visualize-toggle").addEventListener("change", (e) => {
-	if (e.target.checked) {
-		visualize();
-	} else {
-		document.getElementById("graph-vis").disabled = true;
-		document.getElementById("tree-vis").disabled = true;
-
-		// Since visualization is only possible for td (not tm)
-		// We show td-editor when visualize is turned off
-		document.getElementById("visualized").style.display = "none";
-		document.getElementById("td-editor").style.display = "block";
-		document.getElementById("tm-editor").style.display = "none";
-	}
-})
-
-document.querySelectorAll("#graph-vis, #tree-vis").forEach(el => {
-	el.addEventListener("change", (e) => {
+document.querySelectorAll('#graph-vis, #tree-vis').forEach(el => {
+	el.addEventListener('change', (e) => {
 		visType = e.target.id.split('-')[0];
 		visualize();
 	})
-})
+});
+
+document.getElementById("btn_visualize").addEventListener('click', () => {
+	if (visualize()) document.getElementById('visualized-popup-wrapper').style.display = 'block';
+});
+
+document.getElementById('close-visualized-popup').addEventListener('click', () => {
+	document.getElementById('visualized-popup-wrapper').style.display = 'none';
+});
 
 document.getElementById("btn_gistify").addEventListener("click", () => {
 	if (window.editor.getValue() === "") {
