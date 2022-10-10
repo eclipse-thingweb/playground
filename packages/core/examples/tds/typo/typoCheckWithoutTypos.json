@@ -42,5 +42,6 @@
                 "security": ["nosec_sc"]
             }]
         }
-    }
+    },
+    "typoCount": 0
 }

@@ -321,12 +321,12 @@ export function getExamplesList(docType){
                 "type": "invalid"
             },
             "TypoCheckWithoutTypos": {
-                "addr": "./node_modules/@thing-description-playground/core/examples/tds/valid/typoCheckWithoutTypos.json",
+                "addr": "./node_modules/@thing-description-playground/core/examples/tds/typo/typoCheckWithoutTypos.json",
                 "type": "valid"
             },
             "TypoCheckWithTypos": {
-                "addr": "./node_modules/@thing-description-playground/core/examples/tds/invalid/typoCheckWithTypos.json",
-                "type": "warning"
+                "addr": "./node_modules/@thing-description-playground/core/examples/tds/typo/typoCheckWithTypos.json",
+                "type": "valid"
             }
         }
         : {

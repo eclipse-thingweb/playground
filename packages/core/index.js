@@ -953,13 +953,12 @@ const PROPERTIES = "properties"
 const ADDITONAL_PROPERTIES = "additional_properties"
 const DATA_SCHEMA = "dataSchema"
 const PATH = "#/"
-const JSON_SCHEMA = require('./td-schema.json')
-const TYPO_LOOKUP_TABLE = createSchemaLookupTable(JSON_SCHEMA)
+const TYPO_LOOKUP_TABLE = createSchemaLookupTable(tdSchema)
 
 /**
  * Checks possible typos in a TD
  * @param {object} td The TD to apply typo check on
- * @returns List of possible typos
+ * @returns List of possible typos where the typo consists of string value of typo itself and the message, another string value, to be prompted to the user for the fix 
  */
  function checkTypos(td) {
     const typos = []
@@ -1061,7 +1060,7 @@ function findPathsInSchema(lookupTable, schema, path) {
             path = 'r' + path
         }
 
-        findPathsInSchema(getRefObjectOfSchema(JSON_SCHEMA, schema[REF]), path)
+        findPathsInSchema(getRefObjectOfSchema(tdSchema, schema[REF]), path)
         return
     }
 
@@ -1078,7 +1077,7 @@ function findPathsInSchema(lookupTable, schema, path) {
                         path = 'r' + path
                     }
 
-                    findPathsInSchema(getRefObjectOfSchema(JSON_SCHEMA, properties[key]), path)
+                    findPathsInSchema(getRefObjectOfSchema(tdSchema, properties[key]), path)
                     return
                 } else {
                     findPathsInSchema(properties[key], `${path}${key}/`)
@@ -1099,7 +1098,7 @@ function findPathsInSchema(lookupTable, schema, path) {
                         path = 'r' + path
                     }
 
-                    findPathsInSchema(getRefObjectOfSchema(JSON_SCHEMA, additionalProperties[key]), `${path}*/`)
+                    findPathsInSchema(getRefObjectOfSchema(tdSchema, additionalProperties[key]), `${path}*/`)
                     return
                 }
             }
@@ -1122,7 +1121,7 @@ function findPathsInSchema(lookupTable, schema, path) {
                         path = 'r' + path
                     }
 
-                    findPathsInSchema(getRefObjectOfSchema(JSON_SCHEMA, items[item]), path)
+                    findPathsInSchema(getRefObjectOfSchema(tdSchema, items[item]), path)
                     return
                 }
             }
@@ -1187,8 +1186,11 @@ function getRefObjectOfSchema(schema, ref) {
     return result
 }
 
+// Minimum similarity value to be able to say that two words are similar
 const SIMILARITY_THRESHOLD = 0.85
-const LENGTH_DIFFERENCE_THRESHOLD = 2
+
+// Maximum value of length difference between two words
+const MAX_LENGTH_DIFFERENCE = 2
 
 /**
  * Checks whether typo exists or not by comparing similarity of the two words
@@ -1197,7 +1199,7 @@ const LENGTH_DIFFERENCE_THRESHOLD = 2
  * @returns Boolean value that tell whether typo exists or not
  */
 function doesTypoExist(actual, desired) {
-  if (Math.abs(actual.length - desired.length) > LENGTH_DIFFERENCE_THRESHOLD) {
+  if (Math.abs(actual.length - desired.length) > MAX_LENGTH_DIFFERENCE) {
     return false
   }
 

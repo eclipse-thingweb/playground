@@ -1,9 +1,9 @@
 {
     "id2": "urn:typoCheck",
-    "x@context":"https://www.w3.org/2022/wot/td/v1.1",
+    "@context":"https://www.w3.org/2022/wot/td/v1.1",
     "title": "MyLampThing",
     "description":"Valid TD demonstrating how to use security in interaction level by overwriting the root level security",
-    "securityDefinitins": {
+    "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",
             "in": "header"
@@ -15,7 +15,7 @@
             "scheme": "nosec"
         }
     },
-    "securityuu": ["basic_sc"],
+    "security": ["basic_sc"],
     "propeRties": {
         "status" : {
             "type": "string",
@@ -42,5 +42,6 @@
                 "security": ["nosec_sc"]
             }]
         }
-    }
+    },
+    "typoCount": 4
 }
