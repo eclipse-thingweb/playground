@@ -1,6 +1,6 @@
 const fs = require("fs")
 const path = require("path")
-const { checkTypos } = require("../index")
+const checkTypos = require("../index").checkTypos
 const tdValidator = require("../index").tdValidator
 
 const rootDir = path.join("./", "examples", "tds")
