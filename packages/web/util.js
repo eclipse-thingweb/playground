@@ -525,8 +525,6 @@ export function findJSONLocationOfMonacoText(text, textModel) {
     const matches = textModel.findMatches(text, false, false, false, null, false)
 
     matches.forEach(match => {
-        console.log(match)
-        console.log("Match is full word:" + isMatchFullWord(match, textModel))
         findParentInRange(textModel, getEndPositionOfMatch(match))
     })
 }
@@ -579,9 +577,14 @@ function doesRightBracketExistInRange(textModel, startPosition, endPosition) {
     const prevMatchStartPosition = getStartPositionOfMatch(prevMatch)
     const nextMatchStartPosition = getStartPositionOfMatch(nextMatch)
 
-    return (prevMatchStartPosition.column === nextMatchStartPosition.column
-            && prevMatchStartPosition.lineNumber === nextMatchStartPosition.lineNumber) ? prevMatch : null
+    return (arePositionsSame(prevMatchStartPosition, nextMatchStartPosition)) ? prevMatch : null
 }
+
+function arePositionsSame(posA, posB) {
+    return (posA.column === posB.column && posA.lineNumber === posB.lineNumber)
+}
+
+let path = ''
 
 /**
  * Finds the parent object's key name
@@ -589,18 +592,45 @@ function doesRightBracketExistInRange(textModel, startPosition, endPosition) {
  * @param {Position} endPosition End position of the search
  */
 function findParentInRange(textModel, endPosition) {
+    console.log(endPosition)
     const leftBracketMatch = doesLeftBracketExistBefore(textModel, endPosition)
 
     if (leftBracketMatch) {
+        if (arePositionsSame(endPosition, getStartPositionOfMatch(leftBracketMatch))) {
+            path = "/" + path
+            console.log(path)
+            return
+        }
+
         const rightBracketMatch = doesRightBracketExistInRange(textModel, getStartPositionOfMatch(leftBracketMatch), endPosition)
 
-        console.log(rightBracketMatch)
         if (rightBracketMatch) {
             findParentInRange(textModel, getStartPositionOfMatch(leftBracketMatch))
         } else {
-            console.log('Found the parent!')
-            console.log(leftBracketMatch)
+            const key = findParentKey(textModel, getStartPositionOfMatch(leftBracketMatch))
+            path = path + "/" + key.value
+            findParentInRange(textModel, key.position)
         }
+    }
+}
+
+function findParentKey(textModel, endPosition) {
+    const lastQuoteMatch = textModel.findPreviousMatch('"', endPosition)
+
+    const endPositionOfKey = getStartPositionOfMatch(lastQuoteMatch)
+
+    const firstQuoteMatch = textModel.findPreviousMatch('"', endPositionOfKey)
+
+    const startPositionOfKey = getEndPositionOfMatch(firstQuoteMatch)
+
+    return {
+        value: textModel.getValueInRange({
+            startColumn: startPositionOfKey.column,
+            startLineNumber: startPositionOfKey.lineNumber,
+            endColumn: endPositionOfKey.column,
+            endLineNumber: endPositionOfKey.lineNumber
+        }),
+        position: startPositionOfKey
     }
 }
 
