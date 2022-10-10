@@ -111,3 +111,7 @@ The core validation report is an object, which contains three objects (as you ca
 
 [web]: https://github.com/thingweb/thingweb-playground/tree/master/packages/web
 [cli]: https://github.com/thingweb/thingweb-playground/tree/master/packages/cli
+
+## Test Usage
+
+Test Examples are located under examples directory. For typo examples you need to fill 'typoCount' field to that corresponds to the number of typos existing in the TD.  

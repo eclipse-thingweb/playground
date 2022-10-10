@@ -298,5 +298,5 @@ function markTypos(model) {
 		})
 	})
 
-	monaco.editor.setModelMarkers(model, 'owner', markers)
+	monaco.editor.setModelMarkers(model, 'typo', markers)
 }

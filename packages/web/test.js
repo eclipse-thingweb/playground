@@ -109,9 +109,27 @@ async function testVisualChromium(page) {
   await customShot("typo_check_without_typos")
   await page.screenshot({ path: `./test_results/chromium_typo_check_without_typos.png`, fullPage: true })
 
+  await page.evaluate(() => {
+    const markerCount = monaco.editor.getModelMarkers({owner: "typo"}).length
+    const typoCount = JSON.parse(window.tdEditor.getModel(monaco.Uri.parse("")).getValue())['typoCount']
+
+    if (markerCount !== typoCount) {
+      throw 'Typos markers are not equal to typo count!'
+    }
+  })
+
   await page.selectOption('#load_example', 'TypoCheckWithTypos')
   await customShot("typo_check_with_typos")
   await page.screenshot({ path: `./test_results/chromium_typo_check_with_typos.png`, fullPage: true })
+
+  await page.evaluate(() => {
+    const markerCount = monaco.editor.getModelMarkers({owner: "typo"}).length
+    const typoCount = JSON.parse(window.tdEditor.getModel(monaco.Uri.parse("")).getValue())['typoCount']
+
+    if (markerCount !== typoCount) {
+      throw 'Typos markers are not equal to typo count!'
+    }
+  })
 
   await page.evaluate(() => window.tdEditor.getModel(monaco.Uri.parse("")).setValue('{ "context": "Test" }'));
   await myWait(1000)
