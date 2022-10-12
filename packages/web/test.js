@@ -105,6 +105,45 @@ async function testVisualChromium(page) {
   await page.click('#load_example', {waitUntil: "networkidle"})
   await customShot("dropdown-examples")
 
+  await page.selectOption('#load_example', 'TypoCheckWithoutTypos')
+  await customShot("typo_check_without_typos")
+  await page.screenshot({ path: `./test_results/chromium_typo_check_without_typos.png`, fullPage: true })
+
+  await page.evaluate(() => {
+    const markerCount = monaco.editor.getModelMarkers({owner: "typo"}).length
+    const typoCount = JSON.parse(window.tdEditor.getModel(monaco.Uri.parse("")).getValue())['typoCount']
+
+    if (markerCount !== typoCount) {
+      throw 'Typos markers are not equal to typo count!'
+    }
+  })
+
+  await page.selectOption('#load_example', 'TypoCheckWithTypos')
+  await customShot("typo_check_with_typos")
+  await page.screenshot({ path: `./test_results/chromium_typo_check_with_typos.png`, fullPage: true })
+
+  await page.evaluate(() => {
+    const markerCount = monaco.editor.getModelMarkers({owner: "typo"}).length
+    const typoCount = JSON.parse(window.tdEditor.getModel(monaco.Uri.parse("")).getValue())['typoCount']
+
+    if (markerCount !== typoCount) {
+      throw 'Typos markers are not equal to typo count!'
+    }
+  })
+
+  await page.evaluate(() => window.tdEditor.getModel(monaco.Uri.parse("")).setValue('{ "context": "Test" }'));
+  await myWait(1000)
+  await customShot("typo_check_handwritten_typo_exists")
+  await page.screenshot({ path: `./test_results/chromium_typo_check_handwritten_typo_exists.png`, fullPage: true })
+
+  await page.evaluate(() =>
+    window.tdEditor.getModel(monaco.Uri.parse("")).setValue('{ "@context": "https://www.w3.org/2019/wot/td/v1" }')
+  );
+  await myWait(1000)
+  await customShot("typo_check_handwritten_typo_fixed")
+  await page.screenshot({ path: `./test_results/chromium_typo_check_handwritten_typo_fixed.png`, fullPage: true })
+
+
   await page.selectOption('#load_example', "SimpleTD")
   await customShot("td")
   await page.screenshot({ path: `./test_results/chromium_td.png` })

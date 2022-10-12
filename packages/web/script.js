@@ -202,9 +202,6 @@ document.getElementById("btn_aap_yaml").addEventListener("click", () => {
 document.getElementById("btn_defaults_add").addEventListener("click", util.addDefaults)
 document.getElementById("btn_defaults_remove").addEventListener("click", util.removeDefaults)
 
-
-
-
 //* *************************Monaco editor code*********************************////
 // Load monaco editor ACM
 require.config({ paths: { 'vs': './node_modules/monaco-editor/min/vs' }});
@@ -213,6 +210,10 @@ require(['vs/editor/editor.main'], window.tdEditor=function() {
 	const jsonCode = [].join('\n'); // Temporary initial Json
 	const modelUri = monaco.Uri.parse("a://b/foo.json"); // a made up unique URI for our model
 	const model = monaco.editor.createModel(jsonCode, "json", modelUri);
+
+	model.onDidChangeContent(() => {
+		markTypos(model)
+	});
 
 	fetch("./node_modules/@thing-description-playground/core/td-schema.json")
 	.then(res => res.json())
@@ -263,4 +264,39 @@ require(['vs/editor/editor.main'], async function () {
 	});
 
 	monaco.languages.json.jsonDefaults.setDiagnosticsOptions(jsonOptions);
-  });
+});
+
+/**
+ * Marks the possible typos on the editor
+ * @param {object} model The model that represents the loaded Monaco editor
+ */
+function markTypos(model) {
+	const markers = []
+
+	const typos = Validators.checkTypos(model.getValue())
+	const foundTypos = []
+
+	typos.forEach(typo => {
+		model.findMatches(typo.word, false, false, true, typo.word, false).forEach(result => {
+			foundTypos.push({
+				range: result.range,
+				message: typo.message
+			})
+		})
+	})
+
+	foundTypos.forEach(typo => {
+		const range = typo.range
+
+		markers.push({
+			message: typo.message,
+			severity: monaco.MarkerSeverity.Warning,
+			startLineNumber: range.startLineNumber,
+			startColumn: range.startColumn,
+			endLineNumber: range.endLineNumber,
+			endColumn: range.endColumn
+		})
+	})
+
+	monaco.editor.setModelMarkers(model, 'typo', markers)
+}
