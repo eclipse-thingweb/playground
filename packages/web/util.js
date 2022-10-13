@@ -516,6 +516,9 @@ export function clearLog() {
     hideValidationStatusTable()
 }
 
+// Monaco Location Pointer
+
+
 /**
  * Finds the location/path of the text in JSON from its Monaco Editor location
  * @param {string} text
@@ -524,20 +527,142 @@ export function clearLog() {
 export function findJSONLocationOfMonacoText(text, textModel) {
     const matches = textModel.findMatches(text, false, false, false, null, false)
 
+    let i = 1
     matches.forEach(match => {
-        findParentInRange(textModel, getEndPositionOfMatch(match))
+        searchParent(textModel, getEndPositionOfMatch(match))
+        console.log({
+            path,
+            range: match.range
+        })
+        path = ''
+        i++
     })
 }
 
-/**
- * Gets the start position of a match
- * @param {FindMatch} match
- * @returns The object contains the start column and line number of a match
- */
-function getStartPositionOfMatch(match) {
-    return {
-        column: match.range.startColumn,
-        lineNumber: match.range.startLineNumber
+let path = ''
+let parentKey = ''
+
+const QUOTE = '"'
+const LEFT_BRACKET = "{"
+const RIGHT_BRACKET = "}"
+const SEMICOLON = ":"
+const LEFT_SQUARE_BRACKET = "["
+const RIGHT_SQUARE_BRACKET = "]"
+const COMMA = ","
+
+/*
+{
+    "a": "hello",
+    "b": {
+        "c": "hello",
+        "x": [{"x": "s"}],
+        "d": [{"x": [], "y": []}, "a", ["a", {"x": "x"}], {"t": "a", "w": "hello"}]
+    },
+    "c": {}
+}
+*/
+
+function searchParent(textModel, position) {
+    const stack = []
+    let recordingParent = false
+    let isValue = true
+    let inArray = false
+    let countingComma = true
+    let commaCount = 0
+
+    for (let i = position.lineNumber; i > 0; i--) {
+        const currentColumnIndex = (i === position.lineNumber ? position.column : textModel.getLineLength(i)) - 1
+        const lineContent = textModel.getLineContent(i)
+        for (let j = currentColumnIndex; j >= 0; j--) {
+            const currentChar = lineContent[j]
+
+            if (recordingParent) {
+                if (currentChar === QUOTE) {
+                    if(stack[stack.length - 1] === QUOTE) {
+                        stack.pop()
+                        path = "/" + parentKey + path
+                        parentKey = ""
+                        recordingParent = false            
+                    } else {
+                        stack.push(currentChar)
+                        continue
+                    }
+                }
+
+                if (stack[stack.length - 1] === QUOTE) {
+                    parentKey = currentChar + parentKey
+                    continue
+                }
+            } else {
+                // decide whether it is time record parent key or not
+                if (currentChar === SEMICOLON) {
+                    recordingParent = isValue
+
+                    if (stack.length > 0) {
+                        const top = stack[stack.length - 1]
+
+                        if (top === LEFT_SQUARE_BRACKET) {
+                            inArray = true
+                            console.log(`it is a value. index: ${commaCount}`)
+                            parentKey = "/" + commaCount.toString()
+                            stack.pop()
+                            recordingParent = true
+                        }
+
+                        if (top === LEFT_BRACKET) {
+                            stack.pop()
+                            recordingParent = true
+                        }
+                    }                
+                }
+                
+                if (currentChar === LEFT_SQUARE_BRACKET) {
+                    isValue = false
+                    if (stack.length > 0) {
+                        if (stack[stack.length - 1] === RIGHT_SQUARE_BRACKET) {
+                            stack.pop()
+                            countingComma = true
+                        }
+                        
+                        if (stack[stack.length - 1] === LEFT_BRACKET) {
+                            stack.pop()
+                            stack.push(currentChar)
+                        }
+                    } else {
+                        commaCount = 0
+                        stack.push(currentChar)
+                    }
+                }
+
+                if (currentChar === LEFT_BRACKET) {
+                    isValue = false
+                    if (stack.length > 0 && stack[stack.length - 1] === RIGHT_BRACKET) {
+                        stack.pop()
+                        countingComma = true
+                    }  else {
+                        commaCount = 0
+                        stack.push(currentChar)
+                    }
+                }
+
+                if (currentChar === COMMA) {
+                    isValue = false
+                    if (stack.length <= 1) {
+                        commaCount++
+                    }
+                }
+
+                if (currentChar === RIGHT_SQUARE_BRACKET) {
+                    isValue = false
+                    stack.push(currentChar)
+                }
+
+                if (currentChar === RIGHT_BRACKET) {
+                    isValue = false
+                    stack.push(currentChar)
+                }
+            } 
+        }
     }
 }
 
@@ -551,114 +676,6 @@ function getEndPositionOfMatch(match) {
         column: match.range.endColumn,
         lineNumber: match.range.endLineNumber
     }
-}
-
-/**
- * Checks whether there is a left bracket or not before the position
- * @param {ITextModel} textModel Monaco editor text model  to be searched
- * @param {Position} endPosition End position of the search
- * @returns boolean
- */
-function doesLeftBracketExistBefore(textModel, endPosition) {
-    return textModel.findPreviousMatch('{', endPosition)
-}
-
-/**
- * Checks whethere there is a right bracket between the start position and the end position
- * @param {ITextModel} textModel Monaco editor text model to be searched
- * @param {*} startPosition Start position of the search
- * @param {*} endPosition End position of the search
- * @returns boolean
- */
-function doesRightBracketExistInRange(textModel, startPosition, endPosition) {
-    const prevMatch = textModel.findPreviousMatch('}', endPosition)
-    const nextMatch = textModel.findNextMatch('}', startPosition)
-
-    const prevMatchStartPosition = getStartPositionOfMatch(prevMatch)
-    const nextMatchStartPosition = getStartPositionOfMatch(nextMatch)
-
-    return (arePositionsSame(prevMatchStartPosition, nextMatchStartPosition)) ? prevMatch : null
-}
-
-function arePositionsSame(posA, posB) {
-    return (posA.column === posB.column && posA.lineNumber === posB.lineNumber)
-}
-
-let path = ''
-
-/**
- * Finds the parent object's key name
- * @param {ITextModel} textModel Monaco editor text model to be searched
- * @param {Position} endPosition End position of the search
- */
-function findParentInRange(textModel, endPosition) {
-    console.log(endPosition)
-    const leftBracketMatch = doesLeftBracketExistBefore(textModel, endPosition)
-
-    if (leftBracketMatch) {
-        if (arePositionsSame(endPosition, getStartPositionOfMatch(leftBracketMatch))) {
-            path = "/" + path
-            console.log(path)
-            return
-        }
-
-        const rightBracketMatch = doesRightBracketExistInRange(textModel, getStartPositionOfMatch(leftBracketMatch), endPosition)
-
-        if (rightBracketMatch) {
-            findParentInRange(textModel, getStartPositionOfMatch(leftBracketMatch))
-        } else {
-            const key = findParentKey(textModel, getStartPositionOfMatch(leftBracketMatch))
-            path = path + "/" + key.value
-            findParentInRange(textModel, key.position)
-        }
-    }
-}
-
-function findParentKey(textModel, endPosition) {
-    const lastQuoteMatch = textModel.findPreviousMatch('"', endPosition)
-
-    const endPositionOfKey = getStartPositionOfMatch(lastQuoteMatch)
-
-    const firstQuoteMatch = textModel.findPreviousMatch('"', endPositionOfKey)
-
-    const startPositionOfKey = getEndPositionOfMatch(firstQuoteMatch)
-
-    return {
-        value: textModel.getValueInRange({
-            startColumn: startPositionOfKey.column,
-            startLineNumber: startPositionOfKey.lineNumber,
-            endColumn: endPositionOfKey.column,
-            endLineNumber: endPositionOfKey.lineNumber
-        }),
-        position: startPositionOfKey
-    }
-}
-
-/**
- * Checks whether the searched text is full word in the model or not
- * @param {FindMatch} match
- * @param {ITextModel} textModel Monaco editor text model that word exists in
- * @returns boolean
- */
-function isMatchFullWord(match, textModel) {
-    const wordBeginning = textModel.findPreviousMatch('"',
-        {
-            column: match.range.startColumn,
-            lineNumber: match.range.startLineNumber
-        }
-    )
-    const wordEnding = textModel.findNextMatch('"',
-        {
-            column: match.range.endColumn, 
-            lineNumber: match.range.endLineNumber
-        }
-    )
-
-    return (match.range.startLineNumber === wordBeginning.range.startLineNumber
-                && match.range.startColumn - 1 === wordBeginning.range.startColumn) &&
-            (match.range.endLineNumber === wordEnding.range.endLineNumber
-                && match.range.endColumn + 1 === wordEnding.range.endColumn
-            )
 }
 
 /**
