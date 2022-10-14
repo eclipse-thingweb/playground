@@ -85,7 +85,26 @@ function visualize() {
 
 	} else {
 		vVis.vegaVis('#visualized', td);
+
+		// Move bindings to controls panel
+		// Needs to be run on the next iteration of the event loop
+		// Thus, wrapped with zero timeout
+		setTimeout(() => {
+			const $bindings = document.querySelector('form.vega-bindings');
+			const $wrapper = document.getElementById('vega-bindings-wrapper');
+			$wrapper.innerHTML = '';
+			$wrapper.appendChild($bindings);
+		}, 0);
 	}
+
+	// Alter visibility of related controls
+	document.querySelectorAll(`div[class*="controls-"]`).forEach(x => {
+		if (x.classList.contains(`controls-${visType}`) || x.classList.contains('controls-all')) {
+			x.style.display = 'block';
+		} else {
+			x.style.display = 'none';
+		}
+	});
 
 	return true;
 }
@@ -94,7 +113,7 @@ document.querySelectorAll('#graph-vis, #tree-vis').forEach(el => {
 	el.addEventListener('change', (e) => {
 		visType = e.target.id.split('-')[0];
 		visualize();
-	})
+	});
 });
 
 document.getElementById("btn_visualize").addEventListener('click', () => {

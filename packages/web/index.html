@@ -66,11 +66,10 @@
             <div id="visualized"></div>
           </div>
           <div class="col-4 h-100 border-left">
-            <div id="visualized-controls">
+            <div id="visualized-controls" class="mx-2">
 
-              <br>
-              <div>
-                Type:&nbsp;&nbsp;&nbsp;&nbsp;
+              <div class="controls-all mt-3">
+                <span class="d-inline-block mr-4">Type:</span>
                 <div class="custom-control custom-radio custom-control-inline">
                   <input type="radio" id="graph-vis" name="visType" class="custom-control-input" checked>
                   <label class="custom-control-label" for="graph-vis">Graph</label>
@@ -81,14 +80,25 @@
                 </div>
               </div>
 
-              <br>
-              <div>
-                <button id="jvis-collapse-all" class="btn custom-btn" type="button">
-                <i class="or-up"></i> Collapse All
-                </button>
-                <button id="jvis-expand-all" class="btn custom-btn" type="button">
-                <i class="or-down"></i> Expand All
-                </button>
+              <div class="controls-graph mt-4">
+                <div class="btn-group" role="group">
+                  <button type="button" class="btn custom-btn" id="vis-collapse-all"
+                    title="Collapse all nodes">Collapse All</button>
+                  <button type="button" class="btn custom-btn" id="vis-expand-all"
+                    title="Expand all nodes">Expand All</button>
+                </div>
+              </div>
+
+              <div id="vega-bindings-wrapper" class="controls-tree mt-3"></div>
+
+              <div class="controls-all mt-3">
+                <!-- <a href="#" target="_blank" download="visualization.svg">Save as SVG</a> -->
+                <div class="btn-group" role="group">
+                  <button type="button" class="btn custom-btn oap-btn" title="Save the TD visualization as an SVG/PNG file"
+                    disabled>Save As</button>
+                  <button type="button" class="btn custom-btn" id="vis-download-svg" title="Save the TD visualization as an SVG file">SVG</button>
+                  <button type="button" class="btn custom-btn" id="vis-download-png" title="Save the TD visualization as a PNG file">PNG</button>
+                </div>
               </div>
 
             </div>

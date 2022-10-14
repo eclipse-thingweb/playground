@@ -1,4 +1,4 @@
-export function vegaVis($container, td) {
+export async function vegaVis($container, td) {
 
     const treeData = [
         {
@@ -45,7 +45,7 @@ export function vegaVis($container, td) {
           { "name": "originX", "update": "width / 2" },
           { "name": "originY", "update": "height / 2" }
         ],
-      
+
         "data": [
           {
             "name": "tree",
@@ -103,7 +103,7 @@ export function vegaVis($container, td) {
             ]
           }
         ],
-      
+
         "scales": [
           {
             "name": "color",
@@ -113,7 +113,7 @@ export function vegaVis($container, td) {
             "zero": true
           }
         ],
-      
+
         "marks": [
           {
             "type": "path",
@@ -167,7 +167,7 @@ export function vegaVis($container, td) {
     function tdToVega(source, parent) {
         Object.keys(source).forEach((key, index) => {
             if (key === '@id' || key === '@context' || source[key] === null) return;
-    
+
             if (typeof source[key] === 'object' && !Array.isArray(source[key])) {
                 treeData.push(
                     {
@@ -176,9 +176,9 @@ export function vegaVis($container, td) {
                         parent: parent
                     }
                 );
-    
+
                 tdToVega(source[key], `${parent}_${index}`);
-    
+
             } else if (Array.isArray(source[key])) {
                 treeData.push(
                     {
@@ -187,7 +187,7 @@ export function vegaVis($container, td) {
                         parent: parent
                     }
                 );
-    
+
                 source[key].map((e, i) => {
                     if (typeof e === 'object') {
                         treeData.push(
@@ -207,7 +207,7 @@ export function vegaVis($container, td) {
                         });
                     }
                 });
-    
+
             } else {
                 treeData.push({
                     id: `${parent}_${index}`,
@@ -217,11 +217,16 @@ export function vegaVis($container, td) {
             }
         });
     }
-    
+
     tdToVega(td, treeData[0].id);
 
-    vegaEmbed(
+    const vegaResult = await vegaEmbed(
         $container,
-        conf
+        conf,
+        {
+          actions: false
+        }
     );
+
+    window.vegaResult = vegaResult;
 }

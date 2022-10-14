@@ -283,6 +283,6 @@ export function jsonldVis(jsonld, selector, config) {
 
   update(root);
 
-  document.getElementById('jvis-collapse-all').addEventListener('click', (_) => collapse(root, true));
-  document.getElementById('jvis-expand-all').addEventListener('click', (_) => expand(root, true));
+  document.getElementById('vis-collapse-all').addEventListener('click', (_) => collapse(root, true));
+  document.getElementById('vis-expand-all').addEventListener('click', (_) => expand(root, true));
 }
