@@ -518,29 +518,22 @@ export function clearLog() {
 
 // Monaco Location Pointer
 
-
 /**
  * Finds the location/path of the text in JSON from its Monaco Editor location
- * @param {string} text
- * @param {object} editor
+ * @param {string} The text/keyword which is searched on the editor
+ * @param {ITextModel} The text model of Monaco editor
  */
 export function findJSONLocationOfMonacoText(text, textModel) {
     const matches = textModel.findMatches(text, false, false, false, null, false)
+    const results = []
 
-    let i = 1
     matches.forEach(match => {
-        searchParent(textModel, getEndPositionOfMatch(match))
-        console.log({
-            path,
-            range: match.range
-        })
-        path = ''
-        i++
+        const path = searchPath(textModel, getEndPositionOfMatch(match))
+        results.push({ match, path })
     })
-}
 
-let path = ''
-let parentKey = ''
+    return results
+}
 
 const QUOTE = '"'
 const LEFT_BRACKET = "{"
@@ -550,24 +543,18 @@ const LEFT_SQUARE_BRACKET = "["
 const RIGHT_SQUARE_BRACKET = "]"
 const COMMA = ","
 
-/*
-{
-    "a": "hello",
-    "b": {
-        "c": "hello",
-        "x": [{"x": "s"}],
-        "d": [{"x": [], "y": []}, "a", ["a", {"x": "x"}], {"t": "a", "w": "hello"}]
-    },
-    "c": {}
-}
-*/
-
-function searchParent(textModel, position) {
+/**
+ * Looks for specific characters on the model to figure out the path of the position/search text
+ * @param {ITextModel} textModel The text model of Monaco Edtior
+ * @param {IPosition} position The position on Monaco editor which consists of column and line number
+ * @returns A string that is the path of the searched text. Search is done with the text's position on the editor
+ */
+function searchPath(textModel, position) {
+    let path = ''
+    let parentKey = ''
     const stack = []
     let recordingParent = false
     let isValue = true
-    let inArray = false
-    let countingComma = true
     let commaCount = 0
 
     for (let i = position.lineNumber; i > 0; i--) {
@@ -594,7 +581,6 @@ function searchParent(textModel, position) {
                     continue
                 }
             } else {
-                // decide whether it is time record parent key or not
                 if (currentChar === SEMICOLON) {
                     recordingParent = isValue
 
@@ -602,8 +588,6 @@ function searchParent(textModel, position) {
                         const top = stack[stack.length - 1]
 
                         if (top === LEFT_SQUARE_BRACKET) {
-                            inArray = true
-                            console.log(`it is a value. index: ${commaCount}`)
                             parentKey = "/" + commaCount.toString()
                             stack.pop()
                             recordingParent = true
@@ -615,7 +599,7 @@ function searchParent(textModel, position) {
                         }
                     }                
                 }
-                
+
                 if (currentChar === LEFT_SQUARE_BRACKET) {
                     isValue = false
                     if (stack.length > 0) {
@@ -664,6 +648,8 @@ function searchParent(textModel, position) {
             } 
         }
     }
+
+    return path
 }
 
 /**
@@ -680,11 +666,23 @@ function getEndPositionOfMatch(match) {
 
 /**
  * Finds the location of the text in Monaco Editor from its JSON location/path
- * @param {string} text
- * @param {string} jsonPath
- * @param {object} editor
-
+ * @param {string} jsonPath The JSON path of the searched text
+ * @param {string} text The text that is being searched
+ * @param {ITextModel} textModel The text model of Monaco editor
+ * @returns The location of the text on Monaco editor by describing its column and line number range
  */
-export function findMonacoLocationOfJSONText(text, jsonPath, editor) {
+export function findMonacoLocationOfJSONText(jsonPath, text, textModel) {
+    const results = findJSONLocationOfMonacoText(text, textModel)
+    let monacoLocation = {}
+    
+    if (results) {
+        results.forEach(result => {
+            if (jsonPath.localeCompare(result.path) === 0) {
+                monacoLocation = result.match.range
+                return
+            }
+        })
+    }
 
+    return monacoLocation
 }

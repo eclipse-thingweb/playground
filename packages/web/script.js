@@ -216,6 +216,7 @@ require(['vs/editor/editor.main'], window.tdEditor=function() {
 
 	model.onDidChangeContent(() => {
 		util.findJSONLocationOfMonacoText("hello", model)
+		console.log(util.findMonacoLocationOfJSONText('/x/y/z/a/0', "hello", model))
 	})
 
 	fetch("./node_modules/@thing-description-playground/core/td-schema.json")
