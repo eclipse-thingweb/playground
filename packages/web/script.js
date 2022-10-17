@@ -127,7 +127,18 @@ document.getElementById('close-visualized-popup').addEventListener('click', () =
 document.querySelectorAll('#vis-download-svg, #vis-download-png').forEach(el => {
 	el.addEventListener('click', async (e) => {
 		const idParts = e.target.id.split('-');
-		e.target.href = await window.vegaObj.view.toImageURL(idParts[idParts.length - 1]);
+		const format = idParts[idParts.length - 1];
+
+		if (visType === 'graph') {
+			e.preventDefault();
+			if (format === 'svg') {
+				downloadSvg(document.querySelector('#visualized svg'), 'td');
+			} else {
+				downloadPng(document.querySelector('#visualized svg'), 'td');
+			}
+		} else {
+			e.target.href = await window.vegaObj.view.toImageURL(format);
+		}
 	});
 });
 
