@@ -124,6 +124,13 @@ document.getElementById('close-visualized-popup').addEventListener('click', () =
 	document.getElementById('visualized-popup-wrapper').style.display = 'none';
 });
 
+document.querySelectorAll('#vis-download-svg, #vis-download-png').forEach(el => {
+	el.addEventListener('click', async (e) => {
+		const idParts = e.target.id.split('-');
+		e.target.href = await window.vegaObj.view.toImageURL(idParts[idParts.length - 1]);
+	});
+});
+
 document.getElementById("btn_gistify").addEventListener("click", () => {
 	if (window.editor.getValue() === "") {
 		alert("Please paste a TD before submission")

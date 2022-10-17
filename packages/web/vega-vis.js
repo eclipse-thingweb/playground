@@ -220,13 +220,11 @@ export async function vegaVis($container, td) {
 
     tdToVega(td, treeData[0].id);
 
-    const vegaResult = await vegaEmbed(
+    window.vegaObj = await vegaEmbed(
         $container,
         conf,
         {
           actions: false
         }
     );
-
-    window.vegaResult = vegaResult;
 }
