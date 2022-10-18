@@ -6,11 +6,11 @@
     "type": "object",
     "properties": {
         "description": {
-            "$ref": "#/$defs/description"
+            "$ref": "#/definitions/description"
         }
     },
     "required": ["description"],
-    "$defs": {
+    "definitions": {
         "description": {
             "type": "string"
         }

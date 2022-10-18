@@ -122,7 +122,7 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
                 results.push({
                     "ID": schema.title,
                     "Status": "not-impl",
-                    "Assertion": schema.description
+                    "Description": schema.description
                 })
                 if (schema.hasOwnProperty("also")) {
                     const otherAssertions = schema.also
@@ -145,14 +145,14 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
                         results.push({
                             "ID": schema.title,
                             "Status": result,
-                            "Assertion": schema.description
+                            "Description": schema.description
                         })
                     } else {
                         results.push({
                             "ID": schema.title,
                             "Status": result,
                             "Comment": validPayload.ajvObject.errorsText(),
-                            "Assertion": schema.description
+                            "Description": schema.description
                         })
                     }
                     if (schema.hasOwnProperty("also")) {
@@ -170,7 +170,7 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
                         "ID": schema.title,
                         "Status": "fail",
                         "Comment": "Make sure you validate your TD before",
-                        "Assertion": schema.description
+                        "Description": schema.description
                     })
 
                     if (schema.hasOwnProperty("also")) {
@@ -198,7 +198,7 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
                         results.push({
                             "ID": asser,
                             "Status": "pass",
-                            "Assertion": schema.description
+                            "Description": schema.description
                         })
                     })
                 }
@@ -212,7 +212,7 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
                         "ID": schema.title,
                         "Status": "not-impl",
                         "Comment": validPayload.ajvObject.errorsText(),
-                        "Assertion": schema.description
+                        "Description": schema.description
                     })
                     if (schema.hasOwnProperty("also")) {
                         const otherAssertions = schema.also
@@ -221,7 +221,7 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
                                 "ID": asser,
                                 "Status": "not-impl",
                                 "Comment": validPayload.ajvObject.errorsText(),
-                                "Assertion": schema.description
+                                "Description": schema.description
                             })
                         })
                     }
@@ -231,7 +231,7 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
                         "ID": schema.title,
                         "Status": "fail",
                         "Comment": validPayload.ajvObject.errorsText(),
-                        "Assertion": schema.description
+                        "Description": schema.description
                     })
                     if (schema.hasOwnProperty("also")) {
                         const otherAssertions = schema.also
@@ -240,7 +240,7 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
                                 "ID": asser,
                                 "Status": "fail",
                                 "Comment": validPayload.ajvObject.errorsText(),
-                                "Assertion": schema.description
+                                "Description": schema.description
                             })
                         })
                     }

@@ -593,9 +593,9 @@ function defaultManipulation() {
  */
 function extractName(pathLike) {
     // remove path if existing
-    console.log("Before: "+pathLike)
+    // console.log("Before: "+pathLike)
     pathLike = path.basename(pathLike)
-    console.log("After: "+pathLike)
+    // console.log("After: "+pathLike)
     // remove file ending if existing
     if (pathLike.indexOf(".") !== -1) {
         pathLike = pathLike.split(".")

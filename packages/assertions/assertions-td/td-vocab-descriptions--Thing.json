@@ -7,11 +7,11 @@
     "type": "object",
     "properties": {
         "descriptions": {
-            "$ref": "#/$defs/descriptions"
+            "$ref": "#/definitions/descriptions"
         }
     },
     "required": ["descriptions"],
-    "$defs": {
+    "definitions": {
         "descriptions": {
             "type": "object",
             "additionalProperties": {

@@ -8,12 +8,12 @@
         "actions": {
             "type": "object",
             "additionalProperties": {
-                "$ref": "#/$defs/action_element"
+                "$ref": "#/definitions/action_element"
             }
         }
     },
     "additionalProperties": true,
-    "$defs": {
+    "definitions": {
         "action_element": {
             "type": "object",
             "if": {
@@ -41,10 +41,10 @@
                     "type": "string"
                 },
                 "descriptions": {
-                    "$ref": "#/$defs/descriptions"
+                    "$ref": "#/definitions/descriptions"
                 },
                 "titles": {
-                    "$ref": "#/$defs/titles"
+                    "$ref": "#/definitions/titles"
                 },
                 "writeOnly": {
                     "type": "boolean"
@@ -55,7 +55,7 @@
                 "oneOf": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/$defs/dataSchema"
+                        "$ref": "#/definitions/dataSchema"
                     }
                 },
                 "unit": {
@@ -81,12 +81,12 @@
                 },
                 "items": {
                     "oneOf": [{
-                            "$ref": "#/$defs/dataSchema"
+                            "$ref": "#/definitions/dataSchema"
                         },
                         {
                             "type": "array",
                             "items": {
-                                "$ref": "#/$defs/dataSchema"
+                                "$ref": "#/definitions/dataSchema"
                             }
                         }
                     ]
@@ -111,7 +111,7 @@
                 },
                 "properties": {
                     "additionalProperties": {
-                        "$ref": "#/$defs/dataSchema"
+                        "$ref": "#/definitions/dataSchema"
                     }
                 },
                 "required": {

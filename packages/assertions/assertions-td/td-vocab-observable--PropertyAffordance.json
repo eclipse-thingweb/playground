@@ -9,12 +9,12 @@
         "properties": {
             "type": "object",
             "additionalProperties": {
-                "$ref": "#/$defs/property_element"
+                "$ref": "#/definitions/property_element"
             }
         }
     },
     "additionalProperties": true,
-    "$defs": {
+    "definitions": {
         "property_element": {
             "type": "object",
             "if": {

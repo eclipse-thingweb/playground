@@ -9,7 +9,7 @@
             "type": "object",
             "minProperties": 1,
             "additionalProperties": {
-                "$ref": "#/$defs/securityScheme"
+                "$ref": "#/definitions/securityScheme"
             }
         }
     },
@@ -17,7 +17,7 @@
         "securityDefinitions"
     ],
     "additionalProperties": true,
-    "$defs": {
+    "definitions": {
         "securityScheme": {
             "if": {
                     "type": "object",
@@ -26,7 +26,7 @@
                             "type": "string"
                         },
                         "proxy": {
-                            "$ref": "#/$defs/url"
+                            "$ref": "#/definitions/url"
                         },
                         "scheme": {
                             "type": "string",
@@ -35,13 +35,13 @@
                             ]
                         },
                         "authorization": {
-                            "$ref": "#/$defs/url"
+                            "$ref": "#/definitions/url"
                         },
                         "token": {
-                            "$ref": "#/$defs/url"
+                            "$ref": "#/definitions/url"
                         },
                         "refresh": {
-                            "$ref": "#/$defs/url"
+                            "$ref": "#/definitions/url"
                         },
                         "scopes": {
                             "type": "array",

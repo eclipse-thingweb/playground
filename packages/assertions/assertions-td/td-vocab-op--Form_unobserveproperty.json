@@ -6,36 +6,15 @@
     "also":["well-known-operation-types-only"],
     "type": "object",
     "properties": {
-        "forms": {
-            "type": "array",
-            "minItems": 1,
-            "items": {
-                "$ref": "#/$defs/form_element"
-            }
-        },
         "properties": {
             "type": "object",
             "additionalProperties": {
-                "$ref": "#/$defs/property_element"
-            }
-
-        },
-        "actions": {
-            "type": "object",
-            "additionalProperties": {
-                "$ref": "#/$defs/action_element"
-            }
-        },
-        "events": {
-            "type": "object",
-            "additionalProperties": {
-                "$ref": "#/$defs/event_element"
+                "$ref": "#/definitions/property_element"
             }
         }
-
     },
     "additionalProperties": true,
-    "$defs": {
+    "definitions": {
         "property_element": {
             "type": "object",
             "properties": {
@@ -43,39 +22,7 @@
                     "type": "array",
                     "minItems": 1,
                     "items": {
-                        "$ref": "#/$defs/form_element"
-                    }
-                }
-            },
-            "required": [
-                "forms"
-            ],
-            "additionalProperties": true
-        },
-        "action_element": {
-            "type": "object",
-            "properties": {
-                "forms": {
-                    "type": "array",
-                    "minItems": 1,
-                    "items": {
-                        "$ref": "#/$defs/form_element"
-                    }
-                }
-            },
-            "required": [
-                "forms"
-            ],
-            "additionalProperties": true
-        },
-        "event_element": {
-            "type": "object",
-            "properties": {
-                "forms": {
-                    "type": "array",
-                    "minItems": 1,
-                    "items": {
-                        "$ref": "#/$defs/form_element"
+                        "$ref": "#/definitions/form_element"
                     }
                 }
             },
@@ -98,11 +45,9 @@
                             },
                             {
                                 "type": "array",
-                                "items": {
+                                "contains": {
                                     "type": "string",
-                                    "enum": [
-                                        "unobserveproperty"
-                                    ]
+                                    "const": "unobserveproperty"
                                 }
                             }
                         ]
