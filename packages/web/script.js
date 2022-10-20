@@ -14,10 +14,6 @@ const results = []
 let autoValidate = false
 let docType = "td"
 let urlAddrObject
-const jsonOptions = {
-	validate: true,
-	schemas: []
-}
 
 const tdRelated = [];
 [].forEach.call(document.querySelectorAll('.td-related'), el => {
@@ -205,65 +201,53 @@ document.getElementById("btn_defaults_remove").addEventListener("click", util.re
 //* *************************Monaco editor code*********************************////
 // Load monaco editor ACM
 require.config({ paths: { 'vs': './node_modules/monaco-editor/min/vs' }});
-require(['vs/editor/editor.main'], window.tdEditor=function() {
-
-	const jsonCode = [].join('\n'); // Temporary initial Json
-	const modelUri = monaco.Uri.parse("a://b/foo.json"); // a made up unique URI for our model
-	const model = monaco.editor.createModel(jsonCode, "json", modelUri);
-
-	model.onDidChangeContent(() => {
-		markTypos(model)
-	});
-
-	fetch("./node_modules/@thing-description-playground/core/td-schema.json")
-	.then(res => res.json())
-	.then( json => {
-		const tdSchema=json;
-		jsonOptions['schemas'].push({
-			fileMatch: [modelUri.toString()], // associate with our model
-			schema: tdSchema
-		})
-
-		// configure the JSON language support with schemas and schema associations
-		monaco.languages.json.jsonDefaults.setDiagnosticsOptions(jsonOptions);
-
-		window.tdEditor=monaco.editor.create(document.getElementById("td-editor"), {
-			model,
-			contextmenu: false,
-			theme:"vs"
-		})
-
-		document.getElementById("curtain").style.display = "none"
-
-		model.onDidChangeContent(event => { // When text in the Editor changes
-			util.validate("auto", autoValidate, docType)
-		})
-
-		window.editor = window.tdEditor
-	}, err => {
-		console.error("loading TD schema for editor failed" + err)
-	})
-})
-
 require(['vs/editor/editor.main'], async function () {
+	// Create globally available TD editor
+	window.tdEditor = monaco.editor.create(document.getElementById('td-editor'), {
+		language: 'json'
+	  });
+
+	// Create globally available TM editor
 	window.tmEditor = monaco.editor.create(document.getElementById('tm-editor'), {
 	  language: 'json',
 	  // Without automaticLayout editor will not be built inside hidden div
 	  automaticLayout: true
 	});
 
-	window.tmEditor.getModel().onDidChangeContent(_ => {
-		util.validate("auto", autoValidate, docType)
+	window.editor = window.tdEditor;
+	document.getElementById('curtain').style.display = 'none';
+
+	const models = [
+		window.tdEditor.getModel(),
+		window.tmEditor.getModel()
+	];
+
+	models.forEach(model => {
+		model.onDidChangeContent(_ => {
+			markTypos(model);
+			util.validate('auto', autoValidate, docType);
+		});
 	});
 
-	const schema = await fetch("./node_modules/@thing-description-playground/core/tm-schema.json");
-	const schemaJson = await schema.json();
-	jsonOptions['schemas'].push({
-		fileMatch: [window.tmEditor.getModel().uri.toString()],
-		schema: schemaJson
-	});
+	const tdSchema = await (await fetch('./node_modules/@thing-description-playground/core/td-schema.json')).json();
+	const tmSchema = await (await fetch('./node_modules/@thing-description-playground/core/tm-schema.json')).json();
 
-	monaco.languages.json.jsonDefaults.setDiagnosticsOptions(jsonOptions);
+	// Configure JSON language support with schemas and schema associations
+	monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+		validate: true,
+		schemas: [
+			{
+				fileMatch: [models[0].uri.toString()],
+				schema: tdSchema,
+				uri: 'file:///td-schema.json'
+			},
+			{
+				fileMatch: [models[1].uri.toString()],
+				schema: tmSchema,
+				uri: 'file:///tm-schema.json'
+			}
+		]
+	});
 });
 
 /**
