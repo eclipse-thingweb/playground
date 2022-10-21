@@ -7,12 +7,15 @@
 
 import * as util from "./util.js"
 import * as config from "./config.js"
+import * as jVis from "./jsonld-vis.js"
+import * as vVis from "./vega-vis.js"
 
 let manualAssertions = []
 let manualAssertionsLoaded = false
 const results = []
 let autoValidate = false
 let docType = "td"
+let visType = "graph"
 let urlAddrObject
 
 const tdRelated = [];
@@ -55,6 +58,85 @@ document.getElementById("doc_type").addEventListener("change", () => {
 		document.getElementById("tm-editor").style.display = "none"
 	}
 })
+
+function visualize() {
+	let td;
+	try {
+		td = JSON.parse(window.editor.getValue());
+	} catch (err) { 
+		alert(`Incorrect JSON: ${err}`);
+		return false;
+	 }
+
+	if (visType == 'graph') {
+		document.getElementById('visualized').innerHTML = '';
+		jVis.jsonldVis(
+			td,
+			'#visualized',
+			{
+				maxLabelWidth: 200,
+				scalingFactor: 5
+			}
+		);
+
+	} else {
+		vVis.vegaVis('#visualized', td);
+
+		// Move bindings to controls panel
+		// Needs to be run on the next iteration of the event loop
+		// Thus, wrapped with zero timeout
+		setTimeout(() => {
+			const $bindings = document.querySelector('form.vega-bindings');
+			const $wrapper = document.getElementById('vega-bindings-wrapper');
+			$wrapper.innerHTML = '';
+			$wrapper.appendChild($bindings);
+		}, 0);
+	}
+
+	// Alter visibility of related controls
+	document.querySelectorAll(`div[class*="controls-"]`).forEach(x => {
+		if (x.classList.contains(`controls-${visType}`) || x.classList.contains('controls-all')) {
+			x.style.display = 'block';
+		} else {
+			x.style.display = 'none';
+		}
+	});
+
+	return true;
+}
+
+document.querySelectorAll('#graph-vis, #tree-vis').forEach(el => {
+	el.addEventListener('change', (e) => {
+		visType = e.target.id.split('-')[0];
+		visualize();
+	});
+});
+
+document.getElementById("btn_visualize").addEventListener('click', () => {
+	if (visualize()) document.getElementById('visualized-popup-wrapper').style.display = 'block';
+});
+
+document.getElementById('close-visualized-popup').addEventListener('click', () => {
+	document.getElementById('visualized-popup-wrapper').style.display = 'none';
+});
+
+document.querySelectorAll('#vis-download-svg, #vis-download-png').forEach(el => {
+	el.addEventListener('click', async (e) => {
+		const idParts = e.target.id.split('-');
+		const format = idParts[idParts.length - 1];
+
+		if (visType === 'graph') {
+			e.preventDefault();
+			if (format === 'svg') {
+				downloadSvg(document.querySelector('#visualized svg'), 'td');
+			} else {
+				downloadPng(document.querySelector('#visualized svg'), 'td');
+			}
+		} else {
+			e.target.href = await window.vegaObj.view.toImageURL(format);
+		}
+	});
+});
 
 document.getElementById("btn_gistify").addEventListener("click", () => {
 	if (window.editor.getValue() === "") {

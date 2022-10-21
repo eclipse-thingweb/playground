@@ -17,3 +17,6 @@ log.json
 
 # vscode
 .vscode
+
+# JetBrains IDEs
+.idea

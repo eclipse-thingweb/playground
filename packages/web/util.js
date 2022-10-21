@@ -418,9 +418,6 @@ function realValidator(body, docType, source) {
 
     const checkJsonLd = document.getElementById("box_jsonld_validate").checked
 
-    console.log(Validators.tdValidator)
-    console.log(Validators.tmValidator)
-
     const validator = (docType === "td") ? Validators.tdValidator : Validators.tmValidator
 
     validator(body, log, {checkDefaults: true, checkJsonLd})

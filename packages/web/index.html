@@ -6,6 +6,7 @@
   <link rel="shortcut icon" type="image/x-icon" href="./media/favlogo.png" />
   <link rel="stylesheet" type="text/css" href="node_modules/bootstrap-css-only/css/bootstrap.min.css" />
   <link rel="stylesheet" type="text/css" href="./style.css" />
+  <link rel="stylesheet" type="text/css" href="./jsonld-vis.css" />
 </head>
 
 <body>
@@ -56,6 +57,57 @@
     </div>
   </div>
 
+  <div id="visualized-popup-wrapper" class="curtain popup">
+    <div id="visualized-popup">
+      <button class="btn" id="close-visualized-popup">X</button>
+      <div class="container-fluid p-3">
+        <div class="row">
+          <div class="col-8 h-100">
+            <div id="visualized"></div>
+          </div>
+          <div class="col-4 h-100 border-left">
+            <div id="visualized-controls" class="mx-2">
+
+              <div class="controls-all mt-3">
+                <span class="d-inline-block mr-4">Type:</span>
+                <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" id="graph-vis" name="visType" class="custom-control-input" checked>
+                  <label class="custom-control-label" for="graph-vis">Graph</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" id="tree-vis" name="visType" class="custom-control-input">
+                  <label class="custom-control-label" for="tree-vis">Tree</label>
+                </div>
+              </div>
+
+              <div class="controls-graph mt-4">
+                <div class="btn-group" role="group">
+                  <button type="button" class="btn custom-btn" id="vis-collapse-all"
+                    title="Collapse all nodes">Collapse All</button>
+                  <button type="button" class="btn custom-btn" id="vis-expand-all"
+                    title="Expand all nodes">Expand All</button>
+                </div>
+              </div>
+
+              <div id="vega-bindings-wrapper" class="controls-tree mt-3"></div>
+
+              <div class="controls-all mt-3">
+                <!-- <a href="#" target="_blank" download="visualization.svg">Save as SVG</a> -->
+                <div class="btn-group" role="group">
+                  <button type="button" class="btn custom-btn oap-btn" title="Save the TD visualization as an SVG/PNG file"
+                    disabled>Save As</button>
+                  <a href="#" class="btn custom-btn" id="vis-download-svg" title="Save the TD visualization as an SVG file" download="td.svg">SVG</a>
+                  <a href="#" class="btn custom-btn" id="vis-download-png" title="Save the TD visualization as a PNG file" download="td.png">PNG</a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="curtain" class="curtain">
     <div id="curtain-text">Loading Environment. Please wait....</div>
     <img src="./media/loading.svg" class="loading-spinner" alt="Loading..." />
@@ -89,10 +141,8 @@
 
       <div class="row h-100">
         <div class="col-8">
-          <div id="td-editor">
-          </div>
-          <div id="tm-editor" style="display: none;">
-          </div>
+          <div id="td-editor"></div>
+          <div id="tm-editor" style="display: none;"></div>
         </div>
 
         <div class="col-4" id="side-panel">
@@ -188,6 +238,7 @@
                     <div class="btn-group" role="group">
                       <button type="button" class="btn custom-btn" id="btn_validate">Validate</button>
                       <button type="button" class="btn custom-btn" id="btn_clearLog">Clear Log</button>
+                      <button type="button" class="btn custom-btn" id="btn_visualize">Visualize</button>
                     </div>
 
                     <br>
@@ -270,6 +321,14 @@
   <script src="./node_modules/@thing-description-playground/td_to_openapi/dist/web-bundle.min.js"></script>
   <script src="./node_modules/@thing-description-playground/td_to_asyncapi/dist/web-bundle.min.js"></script>
   <script src="./node_modules/@thing-description-playground/defaults/dist/web-bundle.min.js"></script>
+  <!-- Ensure that d3 and d3-tip are added before loader.js,
+    otherwise throws an error, see https://github.com/microsoft/monaco-editor/issues/2283 -->
+  <!-- Also order matters for svg-crowbar, vega and vega-embed (relative to loader.js) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js" integrity="sha512-oJp0DdQuQQrRsKVly+Ww6fAN1GwJN7d1bi8UubpEbzDUh84WrJ2CFPBnT4LqBCcfqTcHR5OGXFFhaPe3g1/bzQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.6.7/d3-tip.min.js" integrity="sha512-d0MkreG3huSJjpMnjX8AaYzbn09Z4j5uUs/E9Eu/JNJYMXxo/YRONuB0sr0IzOszsqfC3Vxi4tHicoMC5QQF4A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega@5.22.1/build/vega.min.js" integrity="sha256-cx8BtoEWvBhaGWMiCWyjQnN0JMSZXEimZ09X68ln6cE=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.21.0/build/vega-embed.min.js" integrity="sha256-/XLqtIcBhAjhlmMOaz23UAXzBgQymz60D73+PfrK24w=" crossorigin="anonymous"></script>
+  <script src="./node_modules/svg-crowbar/dist/main.js"></script>
   <script src="./node_modules/monaco-editor/min/vs/loader.js"></script>
   <script type="module" src="./script.js"></script>
 
