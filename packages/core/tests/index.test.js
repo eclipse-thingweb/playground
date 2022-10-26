@@ -2,7 +2,9 @@
  * @file Calls the core validation with an hardcoded TD string as input
  * 		 to check whether the validation throws an error and allow manual
  * 		 checking of the result
- */const tdValidator = require("../index").tdValidator
+ */
+
+const { tdValidator, compress, decompress } = require("../index")
 
 const simpleTD = `{
 	"id": "urn:simple",
@@ -101,4 +103,8 @@ test("normal report generation", () => {
 	}, err => {
 		console.error(err)
 	})
+})
+
+test('test td (de)compression', () => {
+	expect(simpleTD).toEqual(decompress(compress(simpleTD)))
 })
