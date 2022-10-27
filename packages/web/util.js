@@ -558,7 +558,7 @@ const COMMA = ","
  * @returns A string that is the path of the searched text. Search is done with the text's position on the editor
  */
 function searchPath(textModel, position) {
-    let path = ''
+    let path = '/'
     let parentKey = ''
     const stack = []
     let recordingParent = false
@@ -605,7 +605,7 @@ function searchPath(textModel, position) {
                             stack.pop()
                             recordingParent = true
                         }
-                    }                
+                    }
                 }
 
                 if (currentChar === LEFT_SQUARE_BRACKET) {
@@ -613,9 +613,8 @@ function searchPath(textModel, position) {
                     if (stack.length > 0) {
                         if (stack[stack.length - 1] === RIGHT_SQUARE_BRACKET) {
                             stack.pop()
-                            countingComma = true
                         }
-                        
+
                         if (stack[stack.length - 1] === LEFT_BRACKET) {
                             stack.pop()
                             stack.push(currentChar)
@@ -630,7 +629,6 @@ function searchPath(textModel, position) {
                     isValue = false
                     if (stack.length > 0 && stack[stack.length - 1] === RIGHT_BRACKET) {
                         stack.pop()
-                        countingComma = true
                     }  else {
                         commaCount = 0
                         stack.push(currentChar)
@@ -682,7 +680,7 @@ function getEndPositionOfMatch(match) {
 export function findMonacoLocationOfJSONText(jsonPath, text, textModel) {
     const results = findJSONLocationOfMonacoText(text, textModel)
     let monacoLocation = {}
-    
+
     if (results) {
         results.forEach(result => {
             if (jsonPath.localeCompare(result.path) === 0) {

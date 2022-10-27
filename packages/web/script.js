@@ -10,7 +10,6 @@ import * as config from "./config.js"
 
 let manualAssertions = []
 let manualAssertionsLoaded = false
-const results = []
 let autoValidate = false
 let docType = "td"
 let urlAddrObject
@@ -212,8 +211,6 @@ require(['vs/editor/editor.main'], window.tdEditor=function() {
 	const model = monaco.editor.createModel(jsonCode, "json", modelUri);
 
 	model.onDidChangeContent(() => {
-		util.findJSONLocationOfMonacoText("hello", model)
-		console.log(util.findMonacoLocationOfJSONText('/x/y/z/a/0', "hello", model))
 		markTypos(model)
 	});
 
