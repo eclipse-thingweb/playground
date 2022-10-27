@@ -520,3 +520,23 @@ export function clearLog() {
 
     hideValidationStatusTable()
 }
+
+/**
+ * Save current TD/TM as a compressed string in URL fragment.
+ * @param {string} docType "td" or "tm"
+ */
+export async function save(docType) {
+    const data = docType + window.editor.getValue();
+    const compressed = Validators.compress(data);
+    window.location.hash = compressed;
+    await navigator.clipboard.writeText(window.location.href);
+    alert('The URL for saved data is copied to your clipboard, if not - simply copy the address bar.');
+}
+
+/**
+ * Given a URL fragment construct current value of an editor.
+ */
+export function getEditorValue(fragment) {
+    const data = Validators.decompress(fragment);
+    return data;
+}

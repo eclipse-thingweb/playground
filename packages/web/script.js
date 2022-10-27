@@ -242,6 +242,8 @@ document.getElementById("close_assertion_test_popup").addEventListener("click", 
 	document.getElementById("assertion_test_popup").style.display = "none"
 })
 
+document.getElementById('btn_save').addEventListener('click', () => util.save(docType))
+
 urlAddrObject = util.getExamplesList(docType);  // Fetching list of examples from the given array(in helperFunctions.js).
 util.populateExamples(urlAddrObject);  // Loading the examples given in list from their respective URLs
 
@@ -285,15 +287,18 @@ document.getElementById("btn_defaults_remove").addEventListener("click", util.re
 require.config({ paths: { 'vs': './node_modules/monaco-editor/min/vs' }});
 require(['vs/editor/editor.main'], async function () {
 	// Create globally available TD editor
+	const value = util.getEditorValue(window.location.hash.substring(1));
 	window.tdEditor = monaco.editor.create(document.getElementById('td-editor'), {
+		value: (value.substring(0, 2) === 'td') ? value.substring(2) : '',
 		language: 'json'
-	  });
+	});
 
 	// Create globally available TM editor
 	window.tmEditor = monaco.editor.create(document.getElementById('tm-editor'), {
-	  language: 'json',
-	  // Without automaticLayout editor will not be built inside hidden div
-	  automaticLayout: true
+		value: (value.substring(0, 2) === 'tm') ? value.substring(2) : '',
+		language: 'json',
+		// Without automaticLayout editor will not be built inside hidden div
+		automaticLayout: true
 	});
 
 	window.editor = window.tdEditor;
