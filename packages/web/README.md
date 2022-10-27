@@ -1,10 +1,10 @@
 # @thing-description-playground/**WEB**
 
-This package provides the web interface of the Web of Things Playground.
+This package provides the web interface of the Web of Things Thing Desciption Playground.
 It uses the functionality of the `core` package to validate Thing Descriptions and `assertions` to generate an assertion Test report.
 You can find more information about the Thingweb-Playground [here](https://github.com/thingweb/thingweb-playground).
 
-The gist submission backend (required to keep authentication private) is provided by the `gist_backend` package. *Note: the gist backend is not used anymore.*
+The TDs can be exported as URLs which can be copied anywhere and reopened here.
 
 ## License
 
