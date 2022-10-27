@@ -219,43 +219,6 @@ export function removeDefaults() {
 }
 
 /**
- * Post the gist to the backend
- * @param {string} name The name of the gist to submit
- * @param {string} description The description of the gist to submit
- * @param {string} content The TD to submit as gist
- */
-export function submitAsGist(name, description, content, url){
-    return new Promise( (res, rej) => {
-
-        fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({name, description, content})
-        }).then( reply => {
-            // check if gist creation was successful
-            if(reply.status === 201) {
-                reply.json().then( jsonReply => {
-                    // to get other resources of the created gist use jsonReply.location and fetch it from GitHub directly
-                    console.log(jsonReply.location)
-                    res(jsonReply.htmlUrl)
-                }, err => {rej("Request successful, but cannot json() reply: " + err)})
-            }
-            else {
-                reply.json().then( jsonReply => {
-                    rej("Problem reported by backend (Status:"+ reply.status + " " + reply.statusText + "): " + jsonReply.errors)
-                }, err => {
-                    rej("Cannot json() reply and problem reported by backend, status: " + reply.status + " " + reply.statusText)
-                })
-            }
-        }, err => {
-            rej("Problem fetching from backend: " + err)
-        })
-    })
-}
-
-/**
  * Toggles Validation Table view
  */
 export function toggleValidationStatusTable(){
@@ -530,7 +493,7 @@ export async function save(docType) {
     const compressed = Validators.compress(data);
     window.location.hash = compressed;
     await navigator.clipboard.writeText(window.location.href);
-    alert('The URL for saved data is copied to your clipboard, if not - simply copy the address bar.');
+    alert('The sharable URL is copied to your clipboard, if not - simply copy the address bar.');
 }
 
 /**

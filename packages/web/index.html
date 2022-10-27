@@ -37,26 +37,6 @@
     </div>
   </div>
 
-  <div id="gist_popup" class="curtain popup">
-    <div class="inner-gist-popup">
-      <button class="btn top-right btn-close" id="close_gist_popup">X</button>
-      <div>Submit your Thing Description as a Gist on GitHub</div>
-
-      <form>
-        <label for="textName">Name</label><br>
-        <input id="textName" type="text" maxlength="30">
-        <br>
-        <label for="textDescription">Description</label><br>
-        <textarea id="textDescription" type="text" maxlength="500"></textarea>
-      </form>
-      <p>Please be aware that your TD/TM is made publicly viewable!</p>
-      <button type="button" class="btn custom-btn" id="btn_gist">Submit Gist</button>
-      <span id="gistSuccess"></span><br>
-      <br>
-      <a id="gistLink" title="Open created Gist" target="_blank"></a>
-    </div>
-  </div>
-
   <div id="visualized-popup-wrapper" class="curtain popup">
     <div id="visualized-popup">
       <button class="btn" id="close-visualized-popup">X</button>
@@ -243,10 +223,9 @@
 
                     <br>
                     <div class="btn-group" role="group">
-                      <button type="button" class="btn custom-btn" id="btn_gistify"
-                        title="Stores the current TD/TM as a gist at Thingweb">Gistify</button>
+                      <button type="button" class="btn custom-btn" id="btn_save"
+                        title="Export your TD/TM document as a sharable link">Export as URL</button>
                       <button type="button" class="btn custom-btn" id="btn_assertion_popup">Assertion Test</button>
-                      <button type="button" class="btn custom-btn" id="btn_save">Save</button>
                     </div>
 
                     <br class="td-related">
