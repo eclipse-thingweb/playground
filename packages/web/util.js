@@ -538,5 +538,5 @@ export async function save(docType) {
  */
 export function getEditorValue(fragment) {
     const data = Validators.decompress(fragment);
-    return data;
+    return data || '';
 }
