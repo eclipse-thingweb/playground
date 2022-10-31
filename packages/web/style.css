@@ -348,40 +348,6 @@ i {
 	z-index: 100;
 }
 
-.inner-gist-popup {
-	padding: 25px;
-	position: fixed;
-	_position: absolute;
-	border-radius: 10px;
-	z-index: 99;
-	left: 20%;
-	top: 10%;
-	width: 50%;
-	height: 80%;
-	min-height: 540px;
-	background-color: rgba(255, 255, 255, 1) ;
-}
-
-.inner-gist-popup > form > label {
-	color: #555;
-}
-
-.inner-gist-popup > form > input,
-.inner-gist-popup > form > textarea {
-	border-radius: 5px;
-	width: 90%;
-	vertical-align: top;
-}
-
-#gistSuccess {
-	display: none;
-}
-
-#gistLink {
-	display: none;
-	margin-top: 20px;
-}
-
 .thead-dark > tr > th {
 	padding-left: 1em;
 }

@@ -6,7 +6,6 @@
  */
 
 import * as util from "./util.js"
-import * as config from "./config.js"
 import * as jVis from "./jsonld-vis.js"
 import * as vVis from "./vega-vis.js"
 
@@ -35,10 +34,15 @@ document.getElementById("box_auto_validate").addEventListener("change", () => {
 	autoValidate = document.getElementById("box_auto_validate").checked
 })
 
-document.getElementById("doc_type").addEventListener("change", () => {
-	manualAssertionsLoaded = false
-	manualAssertions = []
-	docType = document.getElementById("doc_type").value
+function onDocTypeChange(outsideValue) {
+	manualAssertionsLoaded = false;
+	manualAssertions = [];
+
+	if (outsideValue) {
+		document.getElementById("doc_type").value = outsideValue;
+	}
+
+	docType = document.getElementById("doc_type").value;
 	urlAddrObject = util.getExamplesList(docType);
 	util.populateExamples(urlAddrObject);
 
@@ -57,7 +61,9 @@ document.getElementById("doc_type").addEventListener("change", () => {
 		document.getElementById("td-editor").style.display = "block"
 		document.getElementById("tm-editor").style.display = "none"
 	}
-})
+}
+
+document.getElementById("doc_type").addEventListener("change", (_) => onDocTypeChange())
 
 function visualize() {
 	let td;
@@ -138,45 +144,6 @@ document.querySelectorAll('#vis-download-svg, #vis-download-png').forEach(el => 
 	});
 });
 
-document.getElementById("btn_gistify").addEventListener("click", () => {
-	if (window.editor.getValue() === "") {
-		alert("Please paste a TD before submission")
-	}
-	else {
-		document.getElementById("gist_popup").style.display = "block"
-	}
-})
-
-document.getElementById("btn_gist").addEventListener("click", () => {
-	let name = document.getElementById("textName").value
-	const description = document.getElementById("textDescription").value
-	const td = window.editor.getValue().replace(/\t/g, "    ") /* replace tabs with spaces */
-	if (name === "") {
-		name = "WoT Playground Gist"
-	}
-
-
-	util.submitAsGist(name, description, td, config.gistBackendUrl).then( gistLink => {
-		document.getElementById("gistSuccess").innerText = "Submission successful!"
-		document.getElementById("gistSuccess").style.color = "rgb(28, 184, 65)"
-		document.getElementById("gistSuccess").style.display = "inline"
-		document.getElementById("gistLink").href = gistLink
-		document.getElementById("gistLink").innerText = gistLink
-		document.getElementById("gistLink").style.display = "inline"
-	}, err => {
-		console.error(err)
-		document.getElementById("gistSuccess").style.color = "rgb(202, 60, 60)"
-		document.getElementById("gistSuccess").innerText = "Gist could not be submitted!"
-		document.getElementById("gistSuccess").style.display = "inline"
-	})
-})
-
-document.getElementById("close_gist_popup").addEventListener("click", () => {
-	document.getElementById("gist_popup").style.display = "none"
-	document.getElementById("gistSuccess").style.display = "none"
-	document.getElementById("gistLink").style.display = "none"
-})
-
 document.getElementById("btn_assertion_popup").addEventListener("click", () => {
 	if (!manualAssertionsLoaded) {
 		fetch(`./node_modules/@thing-description-playground/assertions/assertions-${docType}/manual.csv`)
@@ -242,6 +209,8 @@ document.getElementById("close_assertion_test_popup").addEventListener("click", 
 	document.getElementById("assertion_test_popup").style.display = "none"
 })
 
+document.getElementById('btn_save').addEventListener('click', () => util.save(docType))
+
 urlAddrObject = util.getExamplesList(docType);  // Fetching list of examples from the given array(in helperFunctions.js).
 util.populateExamples(urlAddrObject);  // Loading the examples given in list from their respective URLs
 
@@ -284,19 +253,31 @@ document.getElementById("btn_defaults_remove").addEventListener("click", util.re
 // Load monaco editor ACM
 require.config({ paths: { 'vs': './node_modules/monaco-editor/min/vs' }});
 require(['vs/editor/editor.main'], async function () {
+	// Determine new doc type and editor value if present as exported URL
+	const value = util.getEditorValue(window.location.hash.substring(1));
+	const newDocType = value.substring(0, 2);
+
+	if (newDocType !== docType) {
+		docType = newDocType;
+		onDocTypeChange(docType);
+	}
+
 	// Create globally available TD editor
 	window.tdEditor = monaco.editor.create(document.getElementById('td-editor'), {
-		language: 'json'
-	  });
+		value: (docType === 'td') ? value.substring(2) : '',
+		language: 'json',
+		// Without automaticLayout editor will not be built inside hidden div
+		automaticLayout: true
+	});
 
 	// Create globally available TM editor
 	window.tmEditor = monaco.editor.create(document.getElementById('tm-editor'), {
-	  language: 'json',
-	  // Without automaticLayout editor will not be built inside hidden div
-	  automaticLayout: true
+		value: (docType === 'tm') ? value.substring(2) : '',
+		language: 'json',
+		automaticLayout: true
 	});
 
-	window.editor = window.tdEditor;
+	window.editor = (docType === 'td') ? window.tdEditor : window.tmEditor;
 	document.getElementById('curtain').style.display = 'none';
 
 	const models = [

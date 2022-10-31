@@ -24,7 +24,8 @@
     "ajv-formats": "^2.1.1",
     "ajv-formats-draft2019": "^1.6.1",
     "json-dup-key-validator": "^1.0.3",
-    "jsonld": "^4.0.1"
+    "jsonld": "^4.0.1",
+    "lz-string": "^1.4.4"
   },
   "devDependencies": {
     "browserify": "^17.0.0",
