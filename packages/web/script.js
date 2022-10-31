@@ -34,10 +34,15 @@ document.getElementById("box_auto_validate").addEventListener("change", () => {
 	autoValidate = document.getElementById("box_auto_validate").checked
 })
 
-document.getElementById("doc_type").addEventListener("change", () => {
-	manualAssertionsLoaded = false
-	manualAssertions = []
-	docType = document.getElementById("doc_type").value
+function onDocTypeChange(outsideValue) {
+	manualAssertionsLoaded = false;
+	manualAssertions = [];
+
+	if (outsideValue) {
+		document.getElementById("doc_type").value = outsideValue;
+	}
+
+	docType = document.getElementById("doc_type").value;
 	urlAddrObject = util.getExamplesList(docType);
 	util.populateExamples(urlAddrObject);
 
@@ -56,7 +61,9 @@ document.getElementById("doc_type").addEventListener("change", () => {
 		document.getElementById("td-editor").style.display = "block"
 		document.getElementById("tm-editor").style.display = "none"
 	}
-})
+}
+
+document.getElementById("doc_type").addEventListener("change", (_) => onDocTypeChange())
 
 function visualize() {
 	let td;
@@ -246,22 +253,31 @@ document.getElementById("btn_defaults_remove").addEventListener("click", util.re
 // Load monaco editor ACM
 require.config({ paths: { 'vs': './node_modules/monaco-editor/min/vs' }});
 require(['vs/editor/editor.main'], async function () {
-	// Create globally available TD editor
+	// Determine new doc type and editor value if present as exported URL
 	const value = util.getEditorValue(window.location.hash.substring(1));
-	window.tdEditor = monaco.editor.create(document.getElementById('td-editor'), {
-		value: (value.substring(0, 2) === 'td') ? value.substring(2) : '',
-		language: 'json'
-	});
+	const newDocType = value.substring(0, 2);
 
-	// Create globally available TM editor
-	window.tmEditor = monaco.editor.create(document.getElementById('tm-editor'), {
-		value: (value.substring(0, 2) === 'tm') ? value.substring(2) : '',
+	if (newDocType !== docType) {
+		docType = newDocType;
+		onDocTypeChange(docType);
+	}
+
+	// Create globally available TD editor
+	window.tdEditor = monaco.editor.create(document.getElementById('td-editor'), {
+		value: (docType === 'td') ? value.substring(2) : '',
 		language: 'json',
 		// Without automaticLayout editor will not be built inside hidden div
 		automaticLayout: true
 	});
 
-	window.editor = window.tdEditor;
+	// Create globally available TM editor
+	window.tmEditor = monaco.editor.create(document.getElementById('tm-editor'), {
+		value: (docType === 'tm') ? value.substring(2) : '',
+		language: 'json',
+		automaticLayout: true
+	});
+
+	window.editor = (docType === 'td') ? window.tdEditor : window.tmEditor;
 	document.getElementById('curtain').style.display = 'none';
 
 	const models = [

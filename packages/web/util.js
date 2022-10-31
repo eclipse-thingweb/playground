@@ -489,7 +489,14 @@ export function clearLog() {
  * @param {string} docType "td" or "tm"
  */
 export async function save(docType) {
-    const data = docType + window.editor.getValue();
+    const value = window.editor.getValue();
+
+    if (!value) {
+        alert(`No ${docType.toUpperCase()} provided`);
+        return;
+    }
+
+    const data = docType + value;
     const compressed = Validators.compress(data);
     window.location.hash = compressed;
     await navigator.clipboard.writeText(window.location.href);
