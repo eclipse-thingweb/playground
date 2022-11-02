@@ -1,12 +1,17 @@
 const fs = require("fs")
 const path = require("path")
 const tdValidator = require("../index").tdValidator
+const tmValidator = require("../index").tmValidator
 
-const rootDir = path.join("./", "examples", "tds")
+const tdRootDir = path.join("./", "examples", "tds")
+const tmRootDir = path.join("./", "examples", "tms")
+const tdDirPath = path.join(tdRootDir, "valid")
+const tmDirPath = path.join(tmRootDir, "valid")
 
-const dirPath = path.join(rootDir, "valid")
-const fileNames = fs.readdirSync(dirPath)
-const refResult = {
+const tdFileNames = fs.readdirSync(tdDirPath)
+const tmFileNames = fs.readdirSync(tmDirPath)
+
+const tdRefResult = {
     report: {
         json: 'passed',
         schema: 'passed',
@@ -26,14 +31,48 @@ const refResult = {
     },
     detailComments: expect.any(Object)
 }
-fileNames.forEach( fileName => {
-    test(fileName, done => {
-    fs.readFile(path.join(dirPath, fileName), "utf-8", (err, tdToTest) => {
-            if (err) {done(err)}
-            tdValidator(tdToTest, ()=>{},{}).then( result => {
-                expect(result).toEqual(refResult)
-                done()
-            }, errTwo => {done(errTwo)})
+
+const tmRefResult = {
+    report: {
+        json: 'passed',
+        schema: 'passed',
+        defaults: null,
+        jsonld: 'passed',
+        additional: 'passed'
+    },
+    details: {
+        enumConst: 'passed',
+        propItems: 'passed',
+        propUniqueness: 'passed',
+        multiLangConsistency: 'passed',
+        linksRelTypeCount: 'passed',
+        readWriteOnly: 'passed',
+        tmOptionalPointer: 'passed'
+    },
+    detailComments: expect.any(Object)
+}
+
+for (const fileNames of [tdFileNames, tmFileNames]) {
+    let validator, dirPath, refResult
+    if (fileNames === tdFileNames) {
+        validator = tdValidator
+        dirPath = tdDirPath
+        refResult = tdRefResult
+    } else {
+        validator = tmValidator
+        dirPath = tmDirPath
+        refResult = tmRefResult
+    }
+
+    fileNames.forEach(fileName => {
+        test(fileName, done => {
+            fs.readFile(path.join(dirPath, fileName), "utf-8", (err, docToTest) => {
+                if (err) { done(err) }
+                validator(docToTest, () => { }, {}).then(result => {
+                    expect(result).toEqual(refResult)
+                    done()
+                }, errTwo => { done(errTwo) })
+            })
         })
     })
-})
+}
