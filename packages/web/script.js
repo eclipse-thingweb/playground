@@ -17,6 +17,8 @@ let docType = "td"
 let visType = "graph"
 let urlAddrObject
 
+handleEditorTabs()
+
 const tdRelated = [];
 [].forEach.call(document.querySelectorAll('.td-related'), el => {
 	tdRelated.push({"el": el, "display": el.style.display})
@@ -228,6 +230,39 @@ document.getElementById("btn_validate").addEventListener("click", () => {
 	util.validate("manual", undefined, docType)
 })
 
+function handleEditorTabs() {
+	const navButtons = document.getElementsByClassName('nav-link')
+
+	for (let i=0; i<navButtons.length; i++) {
+		navButtons[i].addEventListener("click", function () {
+			const currentButton = document.getElementsByClassName("nav-link active")
+			currentButton[0].className = currentButton[0].className.replace(" active", "")
+			this.className += " active"
+
+			const name = this.id.replace("-tab", "")
+			const tabPanes = document.getElementsByClassName("tab-pane")
+			for (let j=0; j<tabPanes.length; j++) {
+				if (name === tabPanes[j].id) {
+					tabPanes[j].className += " show active"
+				} else {
+					tabPanes[j].className = tabPanes[j].className.replace(" show active", "")
+				}
+			}
+
+			const editors = document.getElementsByClassName("editor")
+			for (let k=0; k<editors.length; k++) {
+				const editorName = `${name}-editor`
+				if (editorName === editors[k].id) {
+					editors[k].style.display = "block"
+					editors[k].style.height = '100%'
+				} else {
+					editors[k].style.display = "none"
+				}
+			}
+		})
+	}
+}
+
 document.getElementById("btn_clearLog").addEventListener("click", util.clearLog)
 
 document.getElementById("btn_oap_json").addEventListener("click", () => {
@@ -254,7 +289,6 @@ document.getElementById("btn_defaults_remove").addEventListener("click", util.re
 require.config({ paths: { 'vs': './node_modules/monaco-editor/min/vs' }});
 require(['vs/editor/editor.main'], async function () {
 	// Determine new doc type and editor value if present as exported URL
-	console.log(window.location.hash)
 	const value = util.getEditorValue(window.location.hash.substring(1));
 	const newDocType = value.substring(0, 2);
 
@@ -280,14 +314,14 @@ require(['vs/editor/editor.main'], async function () {
 
 	// Create globally available Open API editor
 	window.openApiEditor = monaco.editor.create(document.getElementById('open-api-editor'), {
-		value: (docType === 'openApi') ? value.substring(2) : '',
+		value: (docType === 'td') ? value.substring(2) : '',
 		language: 'json',
 		automaticLayout: true
 	});
 
 	// Create globally available Async API editor
-	window.asyncApiEditor = monaco.editor.create(document.getElementById('open-api-editor'), {
-		value: (docType === 'asyncApi') ? value.substring(2) : '',
+	window.asyncApiEditor = monaco.editor.create(document.getElementById('async-api-editor'), {
+		value: (docType === 'td') ? value.substring(2) : '',
 		language: 'json',
 		automaticLayout: true
 	});
@@ -302,6 +336,7 @@ require(['vs/editor/editor.main'], async function () {
 
 	models.forEach(model => {
 		model.onDidChangeContent(_ => {
+			// FIXME: markTypos should not run on tmEditor
 			markTypos(model);
 			util.validate('auto', autoValidate, docType);
 		});

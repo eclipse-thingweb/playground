@@ -165,7 +165,9 @@ export function generateOAP(fileType){
                 // console.log(openAPI[fileType])
                 const contentType = (fileType === "json" ? "application/json;" : "application/yaml;") + "charset=utf-8;"
                 const content = fileType === "json" ? JSON.stringify(openAPI[fileType], undefined, 4) : openAPI[fileType]
-                offerFileDownload("openapi." + fileType, content, contentType)
+                monaco.editor.setModelLanguage(window.openApiEditor.getModel(), fileType)
+                window.openApiEditor.getModel().setValue(content)
+                // offerFileDownload("openapi." + fileType, content, contentType)
             }, err => {rej("OpenAPI generation problem: " + err)})
         }
     })
@@ -191,7 +193,9 @@ export function generateAAP(fileType){
             tdToAsyncAPI(JSON.parse(tdToValidate)).then( asyncAPI => {
                 const contentType = (fileType === "json" ? "application/json;" : "application/yaml;") + "charset=utf-8;"
                 const content = fileType === "json" ? JSON.stringify(asyncAPI[fileType], undefined, 4) : asyncAPI[fileType]
-                offerFileDownload("asyncapi." + fileType, content, contentType)
+                monaco.editor.setModelLanguage(window.asyncApiEditor.getModel(), fileType)
+                window.asyncApiEditor.getModel().setValue(content)
+                // offerFileDownload("asyncapi." + fileType, content, contentType)
             }, err => {rej("AsyncAPI generation problem: " + err)})
         }
     })
