@@ -2,6 +2,7 @@ const jsonld = require("jsonld")
 const Ajv = require("ajv")
 const addFormats = require("ajv-formats")
 const apply = require('ajv-formats-draft2019')
+const lzs = require('lz-string')
 
 const coreAssertions = require("./shared")
 const tdSchema = require("./td-schema.json")
@@ -15,6 +16,8 @@ module.exports.multiLangConsistency = coreAssertions.checkMultiLangConsistency
 module.exports.checkLinksRelTypeCount = coreAssertions.checkLinksRelTypeCount
 module.exports.security = coreAssertions.checkSecurity
 module.exports.checkUriSecurity = coreAssertions.checkUriSecurity
+module.exports.compress = compress
+module.exports.decompress = decompress
 module.exports.checkTypos = checkTypos
 module.exports.checkTmOptionalPointer = coreAssertions.checkTmOptionalPointer
 
@@ -942,6 +945,24 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             return output
         }
     })
+}
+
+/**
+ * Transform an arbitrary string to another compressed URL-encoded string.
+ * @param {string} data String to compress.
+ * @returns {string} Compressed URL-encoded string.
+ */
+function compress(data) {
+    return lzs.compressToEncodedURIComponent(data);
+}
+
+/**
+ * Decompress a string compressed with the {@link compress} method.
+ * @param {string} data Compressed URL-encoded string.
+ * @returns {string} Original string.
+ */
+ function decompress(data) {
+    return lzs.decompressFromEncodedURIComponent(data);
 }
 
 // --------------------------------------------------

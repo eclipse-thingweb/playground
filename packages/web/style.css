@@ -321,38 +321,31 @@ i {
 	background-color: rgba(255, 255, 255, 1) ;
 }
 
-.inner-gist-popup {
-	padding: 25px;
+#visualized-popup {
 	position: fixed;
-	_position: absolute;
 	border-radius: 10px;
 	z-index: 99;
-	left: 20%;
-	top: 10%;
-	width: 50%;
-	height: 80%;
-	min-height: 540px;
+	left: 2.5%;
+	top: 2.5%;
+	width: 95%;
+	height: 95%;
 	background-color: rgba(255, 255, 255, 1) ;
 }
 
-.inner-gist-popup > form > label {
-	color: #555;
+#visualized-popup .container-fluid > .row {
+	height: calc(100% - 30px);
 }
 
-.inner-gist-popup > form > input,
-.inner-gist-popup > form > textarea {
-	border-radius: 5px;
-	width: 90%;
-	vertical-align: top;
+#visualized-popup .container-fluid > .row [class^="col-"] {
+	height: calc(100% - 30px);
+	overflow: scroll;
 }
 
-#gistSuccess {
-	display: none;
-}
-
-#gistLink {
-	display: none;
-	margin-top: 20px;
+#close-visualized-popup {
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 100;
 }
 
 .thead-dark > tr > th {

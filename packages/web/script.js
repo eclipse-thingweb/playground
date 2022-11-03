@@ -6,17 +6,15 @@
  */
 
 import * as util from "./util.js"
-import * as config from "./config.js"
+import * as jVis from "./jsonld-vis.js"
+import * as vVis from "./vega-vis.js"
 
 let manualAssertions = []
 let manualAssertionsLoaded = false
 let autoValidate = false
 let docType = "td"
+let visType = "graph"
 let urlAddrObject
-const jsonOptions = {
-	validate: true,
-	schemas: []
-}
 
 const tdRelated = [];
 [].forEach.call(document.querySelectorAll('.td-related'), el => {
@@ -35,10 +33,15 @@ document.getElementById("box_auto_validate").addEventListener("change", () => {
 	autoValidate = document.getElementById("box_auto_validate").checked
 })
 
-document.getElementById("doc_type").addEventListener("change", () => {
-	manualAssertionsLoaded = false
-	manualAssertions = []
-	docType = document.getElementById("doc_type").value
+function onDocTypeChange(outsideValue) {
+	manualAssertionsLoaded = false;
+	manualAssertions = [];
+
+	if (outsideValue) {
+		document.getElementById("doc_type").value = outsideValue;
+	}
+
+	docType = document.getElementById("doc_type").value;
 	urlAddrObject = util.getExamplesList(docType);
 	util.populateExamples(urlAddrObject);
 
@@ -57,46 +60,88 @@ document.getElementById("doc_type").addEventListener("change", () => {
 		document.getElementById("td-editor").style.display = "block"
 		document.getElementById("tm-editor").style.display = "none"
 	}
-})
+}
 
-document.getElementById("btn_gistify").addEventListener("click", () => {
-	if (window.editor.getValue() === "") {
-		alert("Please paste a TD before submission")
+document.getElementById("doc_type").addEventListener("change", (_) => onDocTypeChange())
+
+function visualize() {
+	let td;
+	try {
+		td = JSON.parse(window.editor.getValue());
+	} catch (err) { 
+		alert(`Incorrect JSON: ${err}`);
+		return false;
+	 }
+
+	if (visType == 'graph') {
+		document.getElementById('visualized').innerHTML = '';
+		jVis.jsonldVis(
+			td,
+			'#visualized',
+			{
+				maxLabelWidth: 200,
+				scalingFactor: 5
+			}
+		);
+
+	} else {
+		vVis.vegaVis('#visualized', td);
+
+		// Move bindings to controls panel
+		// Needs to be run on the next iteration of the event loop
+		// Thus, wrapped with zero timeout
+		setTimeout(() => {
+			const $bindings = document.querySelector('form.vega-bindings');
+			const $wrapper = document.getElementById('vega-bindings-wrapper');
+			$wrapper.innerHTML = '';
+			$wrapper.appendChild($bindings);
+		}, 0);
 	}
-	else {
-		document.getElementById("gist_popup").style.display = "block"
-	}
-})
 
-document.getElementById("btn_gist").addEventListener("click", () => {
-	let name = document.getElementById("textName").value
-	const description = document.getElementById("textDescription").value
-	const td = window.editor.getValue().replace(/\t/g, "    ") /* replace tabs with spaces */
-	if (name === "") {
-		name = "WoT Playground Gist"
-	}
+	// Alter visibility of related controls
+	document.querySelectorAll(`div[class*="controls-"]`).forEach(x => {
+		if (x.classList.contains(`controls-${visType}`) || x.classList.contains('controls-all')) {
+			x.style.display = 'block';
+		} else {
+			x.style.display = 'none';
+		}
+	});
 
+	return true;
+}
 
-	util.submitAsGist(name, description, td, config.gistBackendUrl).then( gistLink => {
-		document.getElementById("gistSuccess").innerText = "Submission successful!"
-		document.getElementById("gistSuccess").style.color = "rgb(28, 184, 65)"
-		document.getElementById("gistSuccess").style.display = "inline"
-		document.getElementById("gistLink").href = gistLink
-		document.getElementById("gistLink").innerText = gistLink
-		document.getElementById("gistLink").style.display = "inline"
-	}, err => {
-		console.error(err)
-		document.getElementById("gistSuccess").style.color = "rgb(202, 60, 60)"
-		document.getElementById("gistSuccess").innerText = "Gist could not be submitted!"
-		document.getElementById("gistSuccess").style.display = "inline"
-	})
-})
+document.querySelectorAll('#graph-vis, #tree-vis').forEach(el => {
+	el.addEventListener('change', (e) => {
+		visType = e.target.id.split('-')[0];
+		visualize();
+	});
+});
 
-document.getElementById("close_gist_popup").addEventListener("click", () => {
-	document.getElementById("gist_popup").style.display = "none"
-	document.getElementById("gistSuccess").style.display = "none"
-	document.getElementById("gistLink").style.display = "none"
-})
+document.getElementById("btn_visualize").addEventListener('click', () => {
+	if (visualize()) document.getElementById('visualized-popup-wrapper').style.display = 'block';
+});
+
+document.getElementById('close-visualized-popup').addEventListener('click', () => {
+	document.getElementById('visualized-popup-wrapper').style.display = 'none';
+});
+
+document.querySelectorAll('#vis-download-svg, #vis-download-png').forEach(el => {
+	el.addEventListener('click', async (e) => {
+		const idParts = e.target.id.split('-');
+		const format = idParts[idParts.length - 1];
+
+		if (visType === 'graph') {
+			e.preventDefault();
+			if (format === 'svg') {
+				downloadSvg(document.querySelector('#visualized svg'), 'td');
+			} else {
+				downloadPng(document.querySelector('#visualized svg'), 'td');
+			}
+		} else {
+			e.target.href = await window.vegaObj.view.toImageURL(format);
+		}
+	});
+});
 
 document.getElementById("btn_assertion_popup").addEventListener("click", () => {
 	if (!manualAssertionsLoaded) {
@@ -163,6 +208,8 @@ document.getElementById("close_assertion_test_popup").addEventListener("click", 
 	document.getElementById("assertion_test_popup").style.display = "none"
 })
 
+document.getElementById('btn_save').addEventListener('click', () => util.save(docType))
+
 urlAddrObject = util.getExamplesList(docType);  // Fetching list of examples from the given array(in helperFunctions.js).
 util.populateExamples(urlAddrObject);  // Loading the examples given in list from their respective URLs
 
@@ -204,65 +251,65 @@ document.getElementById("btn_defaults_remove").addEventListener("click", util.re
 //* *************************Monaco editor code*********************************////
 // Load monaco editor ACM
 require.config({ paths: { 'vs': './node_modules/monaco-editor/min/vs' }});
-require(['vs/editor/editor.main'], window.tdEditor=function() {
-
-	const jsonCode = [].join('\n'); // Temporary initial Json
-	const modelUri = monaco.Uri.parse("a://b/foo.json"); // a made up unique URI for our model
-	const model = monaco.editor.createModel(jsonCode, "json", modelUri);
-
-	model.onDidChangeContent(() => {
-		markTypos(model)
-	});
-
-	fetch("./node_modules/@thing-description-playground/core/td-schema.json")
-	.then(res => res.json())
-	.then( json => {
-		const tdSchema=json;
-		jsonOptions['schemas'].push({
-			fileMatch: [modelUri.toString()], // associate with our model
-			schema: tdSchema
-		})
-
-		// configure the JSON language support with schemas and schema associations
-		monaco.languages.json.jsonDefaults.setDiagnosticsOptions(jsonOptions);
-
-		window.tdEditor=monaco.editor.create(document.getElementById("td-editor"), {
-			model,
-			contextmenu: false,
-			theme:"vs"
-		})
-
-		document.getElementById("curtain").style.display = "none"
-
-		model.onDidChangeContent(event => { // When text in the Editor changes
-			util.validate("auto", autoValidate, docType)
-		})
-
-		window.editor = window.tdEditor
-	}, err => {
-		console.error("loading TD schema for editor failed" + err)
-	})
-})
-
 require(['vs/editor/editor.main'], async function () {
+	// Determine new doc type and editor value if present as exported URL
+	const value = util.getEditorValue(window.location.hash.substring(1));
+	const newDocType = value.substring(0, 2);
+
+	if (newDocType !== docType) {
+		docType = newDocType;
+		onDocTypeChange(docType);
+	}
+
+	// Create globally available TD editor
+	window.tdEditor = monaco.editor.create(document.getElementById('td-editor'), {
+		value: (docType === 'td') ? value.substring(2) : '',
+		language: 'json',
+		// Without automaticLayout editor will not be built inside hidden div
+		automaticLayout: true
+	});
+
+	// Create globally available TM editor
 	window.tmEditor = monaco.editor.create(document.getElementById('tm-editor'), {
-	  language: 'json',
-	  // Without automaticLayout editor will not be built inside hidden div
-	  automaticLayout: true
+		value: (docType === 'tm') ? value.substring(2) : '',
+		language: 'json',
+		automaticLayout: true
 	});
 
-	window.tmEditor.getModel().onDidChangeContent(_ => {
-		util.validate("auto", autoValidate, docType)
+	window.editor = (docType === 'td') ? window.tdEditor : window.tmEditor;
+	document.getElementById('curtain').style.display = 'none';
+
+	const models = [
+		window.tdEditor.getModel(),
+		window.tmEditor.getModel()
+	];
+
+	models.forEach(model => {
+		model.onDidChangeContent(_ => {
+			markTypos(model);
+			util.validate('auto', autoValidate, docType);
+		});
 	});
 
-	const schema = await fetch("./node_modules/@thing-description-playground/core/tm-schema.json");
-	const schemaJson = await schema.json();
-	jsonOptions['schemas'].push({
-		fileMatch: [window.tmEditor.getModel().uri.toString()],
-		schema: schemaJson
-	});
+	const tdSchema = await (await fetch('./node_modules/@thing-description-playground/core/td-schema.json')).json();
+	const tmSchema = await (await fetch('./node_modules/@thing-description-playground/core/tm-schema.json')).json();
 
-	monaco.languages.json.jsonDefaults.setDiagnosticsOptions(jsonOptions);
+	// Configure JSON language support with schemas and schema associations
+	monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+		validate: true,
+		schemas: [
+			{
+				fileMatch: [models[0].uri.toString()],
+				schema: tdSchema,
+				uri: 'file:///td-schema.json'
+			},
+			{
+				fileMatch: [models[1].uri.toString()],
+				schema: tmSchema,
+				uri: 'file:///tm-schema.json'
+			}
+		]
+	});
 });
 
 /**
