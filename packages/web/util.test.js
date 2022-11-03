@@ -1,6 +1,6 @@
 import { findJSONLocationOfMonacoText, findMonacoLocationOfJSONText } from "./util"
 
-const testCases = [
+const monacoPointerTestCases = [
     {
         textModel: {
             findMatches: jest.fn((
@@ -85,7 +85,7 @@ const testCases = [
 
 describe('Testing util.js', () => {
     describe('Testing findJSONLocationOfMonacoText', () => {
-        test.concurrent.each(testCases)('should find JSON location of Monaco text', t => {
+        test.concurrent.each(monacoPointerTestCases)('should find JSON location of Monaco text', t => {
             const results = findJSONLocationOfMonacoText(t.keyword, t.textModel)
 
             let pathFound = false
@@ -104,7 +104,7 @@ describe('Testing util.js', () => {
         })
     })
     describe('Testing findMonacoLocationOfJSONText', () => {
-        test.concurrent.each(testCases)('should find Monaco location of JSON text', t => {
+        test.concurrent.each(monacoPointerTestCases)('should find Monaco location of JSON text', t => {
             const result = findMonacoLocationOfJSONText(t.keywordPath, t.keyword, t.textModel)
 
             expect(result).not.toBe({})
