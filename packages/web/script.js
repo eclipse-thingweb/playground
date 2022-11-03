@@ -11,7 +11,6 @@ import * as vVis from "./vega-vis.js"
 
 let manualAssertions = []
 let manualAssertionsLoaded = false
-const results = []
 let autoValidate = false
 let docType = "td"
 let visType = "graph"

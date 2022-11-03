@@ -510,3 +510,172 @@ export function getEditorValue(fragment) {
     const data = Validators.decompress(fragment);
     return data || '';
 }
+
+// Monaco Location Pointer
+
+/**
+ * Finds the location/path of the text in JSON from its Monaco Editor location
+ * @param {string} The text/keyword which is searched on the editor
+ * @param {ITextModel} The text model of Monaco editor
+ */
+export function findJSONLocationOfMonacoText(text, textModel) {
+    const matches = textModel.findMatches(text, false, false, false, null, false)
+    const results = []
+
+    matches.forEach(match => {
+        const path = searchPath(textModel, getEndPositionOfMatch(match))
+        results.push({ match, path })
+    })
+
+    return results
+}
+
+const QUOTE = '"'
+const LEFT_BRACKET = "{"
+const RIGHT_BRACKET = "}"
+const SEMICOLON = ":"
+const LEFT_SQUARE_BRACKET = "["
+const RIGHT_SQUARE_BRACKET = "]"
+const COMMA = ","
+
+/**
+ * Looks for specific characters on the model to figure out the path of the position/search text
+ * @param {ITextModel} textModel The text model of Monaco Edtior
+ * @param {IPosition} position The position on Monaco editor which consists of column and line number
+ * @returns A string that is the path of the searched text. Search is done with the text's position on the editor
+ */
+function searchPath(textModel, position) {
+    let path = '/'
+    let parentKey = ''
+    const stack = []
+    let recordingParent = false
+    let isValue = true
+    let commaCount = 0
+
+    for (let i = position.lineNumber; i > 0; i--) {
+        const currentColumnIndex = (i === position.lineNumber ? position.column : textModel.getLineLength(i)) - 1
+        const lineContent = textModel.getLineContent(i)
+        for (let j = currentColumnIndex; j >= 0; j--) {
+            const currentChar = lineContent[j]
+
+            if (recordingParent) {
+                if (currentChar === QUOTE) {
+                    if(stack[stack.length - 1] === QUOTE) {
+                        stack.pop()
+                        path = "/" + parentKey + path
+                        parentKey = ""
+                        recordingParent = false            
+                    } else {
+                        stack.push(currentChar)
+                        continue
+                    }
+                }
+
+                if (stack[stack.length - 1] === QUOTE) {
+                    parentKey = currentChar + parentKey
+                    continue
+                }
+            } else {
+                if (currentChar === SEMICOLON) {
+                    recordingParent = isValue
+
+                    if (stack.length > 0) {
+                        const top = stack[stack.length - 1]
+
+                        if (top === LEFT_SQUARE_BRACKET) {
+                            parentKey = "/" + commaCount.toString()
+                            stack.pop()
+                            recordingParent = true
+                        }
+
+                        if (top === LEFT_BRACKET) {
+                            stack.pop()
+                            recordingParent = true
+                        }
+                    }
+                }
+
+                if (currentChar === LEFT_SQUARE_BRACKET) {
+                    isValue = false
+                    if (stack.length > 0) {
+                        if (stack[stack.length - 1] === RIGHT_SQUARE_BRACKET) {
+                            stack.pop()
+                        }
+
+                        if (stack[stack.length - 1] === LEFT_BRACKET) {
+                            stack.pop()
+                            stack.push(currentChar)
+                        }
+                    } else {
+                        commaCount = 0
+                        stack.push(currentChar)
+                    }
+                }
+
+                if (currentChar === LEFT_BRACKET) {
+                    isValue = false
+                    if (stack.length > 0 && stack[stack.length - 1] === RIGHT_BRACKET) {
+                        stack.pop()
+                    }  else {
+                        commaCount = 0
+                        stack.push(currentChar)
+                    }
+                }
+
+                if (currentChar === COMMA) {
+                    isValue = false
+                    if (stack.length <= 1) {
+                        commaCount++
+                    }
+                }
+
+                if (currentChar === RIGHT_SQUARE_BRACKET) {
+                    isValue = false
+                    stack.push(currentChar)
+                }
+
+                if (currentChar === RIGHT_BRACKET) {
+                    isValue = false
+                    stack.push(currentChar)
+                }
+            } 
+        }
+    }
+
+    return path
+}
+
+/**
+ * Gets the end position of a match
+ * @param {FindMatch} match
+ * @returns The object contains the end column and line number of a match
+ */
+function getEndPositionOfMatch(match) {
+    return {
+        column: match.range.endColumn,
+        lineNumber: match.range.endLineNumber
+    }
+}
+
+/**
+ * Finds the location of the text in Monaco Editor from its JSON location/path
+ * @param {string} jsonPath The JSON path of the searched text
+ * @param {string} text The text that is being searched
+ * @param {ITextModel} textModel The text model of Monaco editor
+ * @returns The location of the text on Monaco editor by describing its column and line number range
+ */
+export function findMonacoLocationOfJSONText(jsonPath, text, textModel) {
+    const results = findJSONLocationOfMonacoText(text, textModel)
+    let monacoLocation = {}
+
+    if (results) {
+        results.forEach(result => {
+            if (jsonPath.localeCompare(result.path) === 0) {
+                monacoLocation = result.match.range
+                return
+            }
+        })
+    }
+
+    return monacoLocation
+}
