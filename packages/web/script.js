@@ -254,6 +254,7 @@ document.getElementById("btn_defaults_remove").addEventListener("click", util.re
 require.config({ paths: { 'vs': './node_modules/monaco-editor/min/vs' }});
 require(['vs/editor/editor.main'], async function () {
 	// Determine new doc type and editor value if present as exported URL
+	console.log(window.location.hash)
 	const value = util.getEditorValue(window.location.hash.substring(1));
 	const newDocType = value.substring(0, 2);
 
@@ -273,6 +274,20 @@ require(['vs/editor/editor.main'], async function () {
 	// Create globally available TM editor
 	window.tmEditor = monaco.editor.create(document.getElementById('tm-editor'), {
 		value: (docType === 'tm') ? value.substring(2) : '',
+		language: 'json',
+		automaticLayout: true
+	});
+
+	// Create globally available Open API editor
+	window.openApiEditor = monaco.editor.create(document.getElementById('open-api-editor'), {
+		value: (docType === 'openApi') ? value.substring(2) : '',
+		language: 'json',
+		automaticLayout: true
+	});
+
+	// Create globally available Async API editor
+	window.asyncApiEditor = monaco.editor.create(document.getElementById('open-api-editor'), {
+		value: (docType === 'asyncApi') ? value.substring(2) : '',
 		language: 'json',
 		automaticLayout: true
 	});

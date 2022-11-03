@@ -121,8 +121,29 @@
 
       <div class="row h-100">
         <div class="col-8">
-          <div id="td-editor"></div>
-          <div id="tm-editor" style="display: none;"></div>
+          <ul class="nav nav-tabs" id="editorTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="td-tab" data-bs-toggle="tab" data-bs-target="#td" type="button" role="tab" aria-controls="td" aria-selected="true">TD/TM</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="open-api-tab" data-bs-toggle="tab" data-bs-target="#open-api" type="button" role="tab" aria-controls="open-api" aria-selected="false">Open API</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="async-api-tab" data-bs-toggle="tab" data-bs-target="#async-api" type="button" role="tab" aria-controls="async-api" aria-selected="false">Async API</button>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="td" role="tabpanel" aria-labelledby="td-tab">
+              <div id="td-editor"></div>
+              <div id="tm-editor" style="display: none;"></div>
+            </div>
+            <div class="tab-pane fade" id="open-api" role="tabpanel" aria-labelledby="open-api-tab">
+              <div id="open-api-editor" style="display: none;"></div>
+            </div>
+            <div class="tab-pane fade" id="async-api" role="tabpanel" aria-labelledby="async-api-tab">
+              <div id="async-api-editor" style="display: none;"></div>
+            </div>
+          </div>
         </div>
 
         <div class="col-4" id="side-panel">
