@@ -30,11 +30,14 @@ const jsonValidator = require('json-dup-key-validator')
  * @param {object} options additional options, which checks should be executed
  * @returns {Promise<object>} Results of the validation as {report, details, detailComments} object
  */
-function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }) {
-    return new Promise( (res, rej) => {
+function tdValidator(tdString, logFunc, {checkDefaults = true, checkJsonLd = true})
+{
+    return new Promise((res, rej) => {
 
         // check input
-        if (typeof tdString !== "string") {rej("Thing Description input should be a String")}
+        if (typeof tdString !== "string") {
+            rej("Thing Description input should be a String")
+        }
 
         if (checkDefaults === undefined) {
             checkDefaults = true
@@ -42,7 +45,9 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
         if (checkJsonLd === undefined) {
             checkJsonLd = true
         }
-        if (typeof logFunc !== "function") {rej("Expected logFunc to be a function")}
+        if (typeof logFunc !== "function") {
+            rej("Expected logFunc to be a function")
+        }
 
         // report that is returned by the function, possible values for every property:
         // null -> not tested, "passed", "failed", "warning"
@@ -73,16 +78,14 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             multiLangConsistency: "Checks whether all titles and descriptions have the same language fields.",
             linksRelTypeCount: "Checks whether rel:type is used more than once in the links array",
             readWriteOnly: "Warns if a property has readOnly or writeOnly set to true conflicting with another property.",
-            uriVariableSecurity: "Checks if the name of an APIKey security scheme with in:uri show up in href and does not \
-            conflict with normal uriVariables"
+            uriVariableSecurity: "Checks if the name of an APIKey security scheme with in:uri show up in href and does not conflict with normal uriVariables"
         }
 
         let tdJson
         try {
             tdJson = JSON.parse(tdString)
             report.json = "passed"
-        }
-        catch (err) {
+        } catch (err) {
             report.json = "failed"
             logFunc("X JSON validation failed:")
             logFunc(err)
@@ -91,8 +94,10 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
         }
 
         let ajv = new Ajv({strict: false}) // options can be passed, e.g. {allErrors: true}
-        ajv = addFormats(ajv) // ajv does not support formats by default anymore
+
+        // ajv = addFormats(ajv) // ajv does not support formats by default anymore
         ajv = apply(ajv) // new formats that include iri
+
 
         ajv.addSchema(tdSchema, 'td')
         const valid = ajv.validate('td', tdJson)
@@ -107,8 +112,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
                 const fullValid = ajv.validate('fulltd', tdJson)
                 if (fullValid) {
                     report.defaults = "passed"
-                }
-                else {
+                } else {
                     report.defaults = "warning"
                     logFunc("Optional validation failed:")
                     logFunc("> " + ajv.errorsText(filterErrorMessages(ajv.errors)))
@@ -123,8 +127,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             details.propUniqueness = evalAssertion(coreAssertions.checkPropUniqueness(tdString))
             if (details.propUniqueness === "passed") {
                 details.propUniqueness = checkSecPropUniqueness(tdString, tdJson)
-            }
-            else {
+            } else {
                 checkSecPropUniqueness(tdString, tdJson)
             }
             details.multiLangConsistency = evalAssertion(coreAssertions.checkMultiLangConsistency(tdJson))
@@ -135,11 +138,10 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             // passed + warning -> warning
             // passed AND OR warning + error -> error
             report.additional = "passed"
-            Object.keys(details).forEach( prop => {
+            Object.keys(details).forEach(prop => {
                 if (details[prop] === "warning" && report.additional === "passed") {
                     report.additional = "warning"
-                }
-                else if (details[prop] === "failed" && report.additional !== "failed") {
+                } else if (details[prop] === "failed" && report.additional !== "failed") {
                     report.additional = "failed"
                 }
             })
@@ -148,28 +150,27 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
 
             report.schema = "failed"
             logFunc("X JSON Schema validation failed:")
+            const ajvErrorDetails =  ajv.errorsText(filterErrorMessages(ajv.errors))
+            logFunc('> ' +ajvErrorDetails)
 
-            logFunc('> ' + ajv.errorsText(filterErrorMessages(ajv.errors)))
-
-            res({report, details, detailComments})
+            res({report, details, detailComments, ajvErrorDetails })
         }
 
         // json ld validation
-        if(checkJsonLd) {
+        if (checkJsonLd) {
             jsonld.toRDF(tdJson, {
                 format: 'application/nquads'
-            }).then( nquads => {
+            }).then(nquads => {
                 report.jsonld = "passed"
                 res({report, details, detailComments})
             }, err => {
-                report.jsonld =  "failed"
+                report.jsonld = "failed"
                 logFunc("X JSON-LD validation failed:")
                 logFunc("Hint: Make sure you have internet connection available.")
                 logFunc('> ' + err)
                 res({report, details, detailComments})
             })
-        }
-        else {
+        } else {
             res({report, details, detailComments})
         }
 
@@ -181,7 +182,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             details.enumConst = "passed"
             if (td.hasOwnProperty("properties")) {
                 // checking properties
-                tdProperties = Object.keys(td.properties)
+                let tdProperties = Object.keys(td.properties)
                 for (let i = 0; i < tdProperties.length; i++) {
                     const curPropertyName = tdProperties[i]
                     const curProperty = td.properties[curPropertyName]
@@ -195,7 +196,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             }
             // checking actions
             if (td.hasOwnProperty("actions")) {
-                tdActions = Object.keys(td.actions)
+                let tdActions = Object.keys(td.actions)
                 for (let i = 0; i < tdActions.length; i++) {
                     const curActionName = tdActions[i]
                     const curAction = td.actions[curActionName]
@@ -222,7 +223,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             }
             // checking events
             if (td.hasOwnProperty("events")) {
-                tdEvents = Object.keys(td.events)
+                let tdEvents = Object.keys(td.events)
                 for (let i = 0; i < tdEvents.length; i++) {
                     const curEventName = tdEvents[i]
                     const curEvent = td.events[curEventName]
@@ -246,7 +247,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
 
             if (td.hasOwnProperty("properties")) {
                 // checking properties
-                tdProperties = Object.keys(td.properties)
+                let tdProperties = Object.keys(td.properties)
                 for (let i = 0; i < tdProperties.length; i++) {
                     const curPropertyName = tdProperties[i]
                     const curProperty = td.properties[curPropertyName]
@@ -267,7 +268,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             }
             // checking actions
             if (td.hasOwnProperty("actions")) {
-                tdActions = Object.keys(td.actions)
+                let tdActions = Object.keys(td.actions)
                 for (let i = 0; i < tdActions.length; i++) {
                     const curActionName = tdActions[i]
                     const curAction = td.actions[curActionName]
@@ -306,7 +307,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             }
             // checking events
             if (td.hasOwnProperty("events")) {
-                tdEvents = Object.keys(td.events)
+                let tdEvents = Object.keys(td.events)
                 for (let i = 0; i < tdEvents.length; i++) {
                     const curEventName = tdEvents[i]
                     const curEvent = td.events[curEventName]
@@ -339,7 +340,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
 
             if (td.hasOwnProperty("properties")) {
                 // checking properties
-                tdProperties = Object.keys(td.properties)
+                let tdProperties = Object.keys(td.properties)
                 for (let i = 0; i < tdProperties.length; i++) {
                     const curPropertyName = tdProperties[i]
                     const curProperty = td.properties[curPropertyName]
@@ -355,22 +356,20 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
 
                         // check forms if op writeProperty is set
                         if (curProperty.hasOwnProperty("forms")) {
-                            for(const formElIndex in curProperty.forms) {
+                            for (const formElIndex in curProperty.forms) {
                                 if (curProperty.forms.hasOwnProperty(formElIndex)) {
                                     const formEl = curProperty.forms[formElIndex]
-                                    if(formEl.hasOwnProperty("op")) {
+                                    if (formEl.hasOwnProperty("op")) {
                                         if ((typeof formEl.op === "string" && formEl.op === "writeproperty") ||
-                                            (typeof formEl.op === "object" && formEl.op.some( el => (el === "writeproperty"))))
-                                        {
+                                            (typeof formEl.op === "object" && formEl.op.some(el => (el === "writeproperty")))) {
                                             details.readWriteOnly = "warning"
                                             logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                            '], readOnly is set but the op property contains "writeproperty"')
+                                                '], readOnly is set but the op property contains "writeproperty"')
                                         }
-                                    }
-                                    else {
+                                    } else {
                                         details.readWriteOnly = "warning"
                                         logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                        '], readOnly is set but a form op property defaults to ["writeproperty", "readproperty"]')
+                                            '], readOnly is set but a form op property defaults to ["writeproperty", "readproperty"]')
                                     }
                                 }
                             }
@@ -382,29 +381,25 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
 
                         // check forms if op readProperty is set
                         if (curProperty.hasOwnProperty("forms")) {
-                            for(const formElIndex in curProperty.forms) {
+                            for (const formElIndex in curProperty.forms) {
                                 if (curProperty.forms.hasOwnProperty(formElIndex)) {
                                     const formEl = curProperty.forms[formElIndex]
-                                    if(formEl.hasOwnProperty("op")) {
+                                    if (formEl.hasOwnProperty("op")) {
                                         if ((typeof formEl.op === "string" && formEl.op === "readproperty") ||
-                                            (typeof formEl.op === "object" && formEl.op.some( el => (el === "readproperty"))))
-                                        {
+                                            (typeof formEl.op === "object" && formEl.op.some(el => (el === "readproperty")))) {
                                             details.readWriteOnly = "warning"
                                             logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                            '], writeOnly is set but the op property contains "readproperty"')
+                                                '], writeOnly is set but the op property contains "readproperty"')
+                                        } else if ((typeof formEl.op === "string" && formEl.op === "observeproperty") ||
+                                            (typeof formEl.op === "object" && formEl.op.some(el => (el === "observeproperty")))) {
+                                            details.readWriteOnly = "warning"
+                                            logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
+                                                '], writeOnly is set but the op property contains "observeproperty"')
                                         }
-                                        else if ((typeof formEl.op === "string" && formEl.op === "observeproperty") ||
-                                                 (typeof formEl.op === "object" && formEl.op.some( el => (el === "observeproperty"))))
-                                                 {
-                                                    details.readWriteOnly = "warning"
-                                                    logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                                    '], writeOnly is set but the op property contains "observeproperty"')
-                                                 }
-                                    }
-                                    else {
+                                    } else {
                                         details.readWriteOnly = "warning"
                                         logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                        '], writeOnly is set but a form op property defaults to ["writeproperty", "readproperty"]')
+                                            '], writeOnly is set but a form op property defaults to ["writeproperty", "readproperty"]')
                                     }
                                 }
                             }
@@ -431,8 +426,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             try {
                 // checking whether there are securityDefinitions at all
                 jsonValidator.parse(tdStr, false)
-            }
-            catch (error) {
+            } catch (error) {
                 // there is a duplicate somewhere
 
                 // convert it into string to be able to process it
@@ -465,7 +459,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
          */
         function evalAssertion(results) {
             let out = "passed"
-            results.forEach( resultobj => {
+            results.forEach(resultobj => {
                 if (resultobj.Status === "fail") {
                     out = "failed"
                     logFunc("KO Error: Assertion: " + resultobj.ID)
@@ -483,16 +477,15 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
         function filterErrorMessages(errors) {
 
             const output = []
-            errors.forEach( el => {
-                if(!output.some(ce => (ce.dataPath === el.dataPath && ce.message === el.message))) {
-                  output.push(el)
+            errors.forEach(el => {
+                if (!output.some(ce => (ce.dataPath === el.dataPath && ce.message === el.message))) {
+                    output.push(el)
                 }
             })
             return output
         }
     })
 }
-
 /**
  * A function that provides the core functionality of the TD Playground.
  * @param {string} tmString The Thing Model to check as a string.
@@ -500,7 +493,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
  * @param {object} options additional options, which checks should be executed
  * @returns {Promise<object>} Results of the validation as {report, details, detailComments} object
  */
- function tmValidator(tmString, logFunc, { checkDefaults=true, checkJsonLd=true }) {
+function tmValidator(tmString, logFunc, { checkDefaults=true, checkJsonLd=true }) {
     return new Promise( (res, rej) => {
 
         // check input
@@ -635,7 +628,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             details.enumConst = "passed"
             if (tm.hasOwnProperty("properties")) {
                 // checking properties
-                tmProperties = Object.keys(tm.properties)
+                let tmProperties = Object.keys(tm.properties)
                 for (let i = 0; i < tmProperties.length; i++) {
                     const curPropertyName = tmProperties[i]
                     const curProperty = tm.properties[curPropertyName]
@@ -649,7 +642,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             }
             // checking actions
             if (tm.hasOwnProperty("actions")) {
-                tmActions = Object.keys(tm.actions)
+                let tmActions = Object.keys(tm.actions)
                 for (let i = 0; i < tmActions.length; i++) {
                     const curActionName = tmActions[i]
                     const curAction = tm.actions[curActionName]
@@ -676,7 +669,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             }
             // checking events
             if (tm.hasOwnProperty("events")) {
-                tmEvents = Object.keys(tm.events)
+                let tmEvents = Object.keys(tm.events)
                 for (let i = 0; i < tmEvents.length; i++) {
                     const curEventName = tmEvents[i]
                     const curEvent = tm.events[curEventName]
@@ -700,7 +693,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
 
             if (tm.hasOwnProperty("properties")) {
                 // checking properties
-                tmProperties = Object.keys(tm.properties)
+                let tmProperties = Object.keys(tm.properties)
                 for (let i = 0; i < tmProperties.length; i++) {
                     const curPropertyName = tmProperties[i]
                     const curProperty = tm.properties[curPropertyName]
@@ -721,7 +714,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             }
             // checking actions
             if (tm.hasOwnProperty("actions")) {
-                tmActions = Object.keys(tm.actions)
+                let tmActions = Object.keys(tm.actions)
                 for (let i = 0; i < tmActions.length; i++) {
                     const curActionName = tmActions[i]
                     const curAction = tm.actions[curActionName]
@@ -760,7 +753,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             }
             // checking events
             if (tm.hasOwnProperty("events")) {
-                tmEvents = Object.keys(tm.events)
+                let tmEvents = Object.keys(tm.events)
                 for (let i = 0; i < tmEvents.length; i++) {
                     const curEventName = tmEvents[i]
                     const curEvent = tm.events[curEventName]
@@ -793,7 +786,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
 
             if (tm.hasOwnProperty("properties")) {
                 // checking properties
-                tmProperties = Object.keys(tm.properties)
+                let tmProperties = Object.keys(tm.properties)
                 for (let i = 0; i < tmProperties.length; i++) {
                     const curPropertyName = tmProperties[i]
                     const curProperty = tm.properties[curPropertyName]
@@ -818,13 +811,13 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
                                         {
                                             details.readWriteOnly = "warning"
                                             logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                            '], readOnly is set but the op property contains "writeproperty"')
+                                                '], readOnly is set but the op property contains "writeproperty"')
                                         }
                                     }
                                     else {
                                         details.readWriteOnly = "warning"
                                         logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                        '], readOnly is set but a form op property defaults to ["writeproperty", "readproperty"]')
+                                            '], readOnly is set but a form op property defaults to ["writeproperty", "readproperty"]')
                                     }
                                 }
                             }
@@ -845,20 +838,20 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
                                         {
                                             details.readWriteOnly = "warning"
                                             logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                            '], writeOnly is set but the op property contains "readproperty"')
+                                                '], writeOnly is set but the op property contains "readproperty"')
                                         }
                                         else if ((typeof formEl.op === "string" && formEl.op === "observeproperty") ||
-                                                 (typeof formEl.op === "object" && formEl.op.some( el => (el === "observeproperty"))))
-                                                 {
-                                                    details.readWriteOnly = "warning"
-                                                    logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                                    '], writeOnly is set but the op property contains "observeproperty"')
-                                                 }
+                                            (typeof formEl.op === "object" && formEl.op.some( el => (el === "observeproperty"))))
+                                        {
+                                            details.readWriteOnly = "warning"
+                                            logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
+                                                '], writeOnly is set but the op property contains "observeproperty"')
+                                        }
                                     }
                                     else {
                                         details.readWriteOnly = "warning"
                                         logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                        '], writeOnly is set but a form op property defaults to ["writeproperty", "readproperty"]')
+                                            '], writeOnly is set but a form op property defaults to ["writeproperty", "readproperty"]')
                                     }
                                 }
                             }
@@ -901,7 +894,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
                 // finally get the interaction name
                 const securitySchemeName = restString.slice(0, endQuote)
 
-                if (td.securityDefinitions.hasOwnProperty(securitySchemeName)) {
+                if (tm.securityDefinitions.hasOwnProperty(securitySchemeName)) {
                     result = "failed"
                     logFunc("KO Error: The securityDefinitions contain a duplicate")
                 }
@@ -939,7 +932,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             const output = []
             errors.forEach( el => {
                 if(!output.some(ce => (ce.dataPath === el.dataPath && ce.message === el.message))) {
-                  output.push(el)
+                    output.push(el)
                 }
             })
             return output
@@ -961,7 +954,7 @@ function compress(data) {
  * @param {string} data Compressed URL-encoded string.
  * @returns {string} Original string.
  */
- function decompress(data) {
+function decompress(data) {
     return lzs.decompressFromEncodedURIComponent(data);
 }
 
@@ -979,9 +972,9 @@ const TYPO_LOOKUP_TABLE = createSchemaLookupTable(tdSchema)
 /**
  * Checks possible typos in a TD
  * @param {object} td The TD to apply typo check on
- * @returns List of possible typos where the typo consists of string value of typo itself and the message, another string value, to be prompted to the user for the fix 
+ * @returns List of possible typos where the typo consists of string value of typo itself and the message, another string value, to be prompted to the user for the fix
  */
- function checkTypos(td) {
+function checkTypos(td) {
     const typos = []
 
     const lookupTable = TYPO_LOOKUP_TABLE
@@ -1168,10 +1161,10 @@ function findPathsInSchema(lookupTable, schema, path) {
  * Stores the keys under a specific path
  * @param {Map} lookupTable The map that stores the paths in the schema
  * @param {string} path The path that is owner of the current keys
- * @param {Set} keys The set of keys that is going to be put 
+ * @param {Set} keys The set of keys that is going to be put
  */
 function putKeysToPath(lookupTable, path, keys) {
-    pathKeys = lookupTable.get(path)
+    let pathKeys = lookupTable.get(path)
 
     if (pathKeys) {
         const union = new Set(pathKeys)
@@ -1188,7 +1181,7 @@ function putKeysToPath(lookupTable, path, keys) {
 /**
  * Gets the reference object in the schema
  * @param {object} schema The object that represent the schema
- * @param {string} ref The reference value in the schema 
+ * @param {string} ref The reference value in the schema
  * @returns The reference object the ref maps to
  */
 function getRefObjectOfSchema(schema, ref) {
@@ -1220,12 +1213,12 @@ const MAX_LENGTH_DIFFERENCE = 2
  * @returns Boolean value that tell whether typo exists or not
  */
 function doesTypoExist(actual, desired) {
-  if (Math.abs(actual.length - desired.length) > MAX_LENGTH_DIFFERENCE) {
-    return false
-  }
+    if (Math.abs(actual.length - desired.length) > MAX_LENGTH_DIFFERENCE) {
+        return false
+    }
 
-  const similarity = calculateSimilarity(actual, desired)
-  return similarity > SIMILARITY_THRESHOLD && similarity !== 1.0
+    const similarity = calculateSimilarity(actual, desired)
+    return similarity > SIMILARITY_THRESHOLD && similarity !== 1.0
 }
 
 /**
@@ -1235,70 +1228,70 @@ function doesTypoExist(actual, desired) {
  * @returns Similarity of value the two inputs
  */
 function calculateSimilarity(actual, desired) {
-  let m = 0
+    let m = 0
 
-  if (actual.length === 0 || desired.length === 0) {
-    return 0
-  }
-
-  if (actual === desired) {
-    return 1
-  }
-
-  const range = Math.floor(Math.max(actual.length, desired.length) / 2) - 1
-  const actualMatches = new Array(actual.length)
-  const desiredMatches = new Array(desired.length)
-
-  // check lower and upper bounds to find the matches
-  for (let i = 0; i < actual.length; i++) {
-    const lowerBound = (i >= range) ? i - range : 0
-    const upperBound = (i + range <= desired.length) ? (i + range) : (desired.length - 1)
-
-    for (let j = lowerBound; j <= upperBound; j++) {
-      if (actualMatches[i] !== true && desiredMatches[j] !== true && actual[i] === desired[j]) {
-        m++
-        actualMatches[i] = desiredMatches[j] = true
-        break
-      }
+    if (actual.length === 0 || desired.length === 0) {
+        return 0
     }
-  }
 
-  if (m === 0) {
-    return 0
-  }
+    if (actual === desired) {
+        return 1
+    }
 
-  let k = 0
-  let transpositionCount = 0
+    const range = Math.floor(Math.max(actual.length, desired.length) / 2) - 1
+    const actualMatches = new Array(actual.length)
+    const desiredMatches = new Array(desired.length)
 
-  // count transpositions
-  for (let i = 0; i < actual.length; i++) {
-    if (actualMatches[i] === true) {
-      let j = 0
-      for (j = k; j < desired.length; j++) {
-        if (desiredMatches[j] === true) {
-          k = j + 1
-          break
+    // check lower and upper bounds to find the matches
+    for (let i = 0; i < actual.length; i++) {
+        const lowerBound = (i >= range) ? i - range : 0
+        const upperBound = (i + range <= desired.length) ? (i + range) : (desired.length - 1)
+
+        for (let j = lowerBound; j <= upperBound; j++) {
+            if (actualMatches[i] !== true && desiredMatches[j] !== true && actual[i] === desired[j]) {
+                m++
+                actualMatches[i] = desiredMatches[j] = true
+                break
+            }
         }
-      }
-
-      if (actual[i] !== desired[j]) {
-        transpositionCount++
-      }
-    }
-  }
-
-  let similarity = ( (m / actual.length) + (m / desired.length) + ((m - (transpositionCount / 2) ) / m)) / 3
-  let l = 0
-  const p = 0.1
-
-  // strengthen the similarity if the words start with same letters
-  if (similarity < 0.7) {
-    while (actual[l] === desired[l] && l < 4) {
-      l++
     }
 
-    similarity = similarity + l * p * (1 - similarity)
-  }
+    if (m === 0) {
+        return 0
+    }
 
-  return similarity
+    let k = 0
+    let transpositionCount = 0
+
+    // count transpositions
+    for (let i = 0; i < actual.length; i++) {
+        if (actualMatches[i] === true) {
+            let j = 0
+            for (j = k; j < desired.length; j++) {
+                if (desiredMatches[j] === true) {
+                    k = j + 1
+                    break
+                }
+            }
+
+            if (actual[i] !== desired[j]) {
+                transpositionCount++
+            }
+        }
+    }
+
+    let similarity = ( (m / actual.length) + (m / desired.length) + ((m - (transpositionCount / 2) ) / m)) / 3
+    let l = 0
+    const p = 0.1
+
+    // strengthen the similarity if the words start with same letters
+    if (similarity < 0.7) {
+        while (actual[l] === desired[l] && l < 4) {
+            l++
+        }
+
+        similarity = similarity + l * p * (1 - similarity)
+    }
+
+    return similarity
 }

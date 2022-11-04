@@ -1,7 +1,7 @@
- /**
-  * This file contains functions, which are required by the core package as
-  * well as by the assertions package
-  */
+/**
+ * This file contains functions, which are required by the core package as
+ * well as by the assertions package
+ */
 
 // A special JSON validator that is used only to check whether the given object has duplicate keys.
 // The standard library doesn't detect duplicate keys and overwrites the first one with the second one.
@@ -32,6 +32,7 @@ module.exports =  {
  * @return {object}
  **/
 const resolvePath = (object, path, defaultValue) => path
+    //eslint-disable-next-line
     .split(/[\.\[\]\'\"]/)
     .filter(p => p)
     .reduce((o, p) => o ? o[p] : defaultValue, object)
@@ -55,6 +56,7 @@ function checkPropUniqueness(tdString) {
         const td = JSON.parse(tdString)
 
         // no problem in interaction level
+        //eslint-disable-next-line
         let tdInteractions = []
 
         // checking whether there are properties at all, if not uniqueness is not impl
@@ -243,7 +245,7 @@ function checkSecurity(td) {
 
         if (td.hasOwnProperty("properties")) {
             // checking security in property level
-            tdProperties = Object.keys(td.properties)
+            let tdProperties = Object.keys(td.properties)
             for (let i = 0; i < tdProperties.length; i++) {
                 const curPropertyName = tdProperties[i]
                 const curProperty = td.properties[curPropertyName]
@@ -271,7 +273,7 @@ function checkSecurity(td) {
 
         if (td.hasOwnProperty("actions")) {
             // checking security in action level
-            tdActions = Object.keys(td.actions)
+            let tdActions = Object.keys(td.actions)
             for (let i = 0; i < tdActions.length; i++) {
                 const curActionName = tdActions[i]
                 const curAction = td.actions[curActionName]
@@ -300,7 +302,7 @@ function checkSecurity(td) {
 
         if (td.hasOwnProperty("events")) {
             // checking security in event level
-            tdEvents = Object.keys(td.events)
+            let tdEvents = Object.keys(td.events)
             for (let i = 0; i < tdEvents.length; i++) {
                 const curEventName = tdEvents[i]
                 const curEvent = td.events[curEventName]
@@ -377,6 +379,7 @@ function checkMultiLangConsistency(td) {
         const rootTitles = Object.keys(rootTitlesObject)
         multiLang.push(rootTitles)
         // checking for td-titles-descriptions
+        //eslint-disable-next-line
         isTdTitlesDescriptions.push({["root_title"]: isStringObjectKeyValue(td.title, rootTitlesObject)})
     }
 
@@ -386,6 +389,7 @@ function checkMultiLangConsistency(td) {
         multiLang.push(rootDescriptions)
         // check whether description exists in descriptions
         if (td.hasOwnProperty("description")) {
+            //eslint-disable-next-line
             isTdTitlesDescriptions.push({["root_description"]: isStringObjectKeyValue(td.description, rootDescriptionsObject)})
         }
     }
@@ -393,7 +397,7 @@ function checkMultiLangConsistency(td) {
     // checking inside each interaction
     if (td.hasOwnProperty("properties")) {
         // checking security in property level
-        tdProperties = Object.keys(td.properties)
+        let tdProperties = Object.keys(td.properties)
         for (let i = 0; i < tdProperties.length; i++) {
             const curPropertyName = tdProperties[i]
             const curProperty = td.properties[curPropertyName]
@@ -415,7 +419,7 @@ function checkMultiLangConsistency(td) {
                 // checking if description exists in descriptions
                 if (curProperty.hasOwnProperty("description")) {
                     isTdTitlesDescriptions.push({
-                    ["property_" + curPropertyName + "_desc"]: isStringObjectKeyValue(curProperty.description,curProperty.descriptions)
+                        ["property_" + curPropertyName + "_desc"]: isStringObjectKeyValue(curProperty.description,curProperty.descriptions)
                     })
                 }
             }
@@ -424,7 +428,7 @@ function checkMultiLangConsistency(td) {
 
     if (td.hasOwnProperty("actions")) {
         // checking security in action level
-        tdActions = Object.keys(td.actions)
+        let tdActions = Object.keys(td.actions)
         for (let i = 0; i < tdActions.length; i++) {
             const curActionName = tdActions[i]
             const curAction = td.actions[curActionName]
@@ -446,7 +450,7 @@ function checkMultiLangConsistency(td) {
                 // checking if description exists in descriptions
                 if (curAction.hasOwnProperty("description")) {
                     isTdTitlesDescriptions.push({
-                         ["action_" + curActionName + "_desc"]: isStringObjectKeyValue(curAction.description, curAction.descriptions)
+                        ["action_" + curActionName + "_desc"]: isStringObjectKeyValue(curAction.description, curAction.descriptions)
                     })
                 }
             }
@@ -456,7 +460,7 @@ function checkMultiLangConsistency(td) {
 
     if (td.hasOwnProperty("events")) {
         // checking security in event level
-        tdEvents = Object.keys(td.events)
+        let tdEvents = Object.keys(td.events)
         for (let i = 0; i < tdEvents.length; i++) {
             const curEventName = tdEvents[i]
             const curEvent = td.events[curEventName]
@@ -640,18 +644,18 @@ function isStringObjectKeyValue(searchedString, searchedObject){
  *
  * @param {Array<string>} myMultiLangArray The language array to check
  */
-function checkAzeri(myMultiLangArray){
-    for (let index = 0; index < myMultiLangArray.length; index++) {
-        const element = myMultiLangArray[index]
-        if (element ==="az"){
-            return "fail"
-        } else if ((element === "az-Latn") || (element === "az-Arab")){
-            return "pass"
-        }
-    }
-    // no azeri, so it is not implemented
-    return "not-impl"
-}
+// function checkAzeri(myMultiLangArray){
+//     for (let index = 0; index < myMultiLangArray.length; index++) {
+//         const element = myMultiLangArray[index]
+//         if (element ==="az"){
+//             return "fail"
+//         } else if ((element === "az-Latn") || (element === "az-Arab")){
+//             return "pass"
+//         }
+//     }
+//     // no azeri, so it is not implemented
+//     return "not-impl"
+// }
 
 // --------------------------------------------------
 
@@ -758,7 +762,7 @@ function checkUriSecurity(td) {
             }
             if (td.hasOwnProperty("properties")) {
                 // checking security in property level
-                tdProperties = Object.keys(td.properties)
+                let tdProperties = Object.keys(td.properties)
                 for (let i = 0; i < tdProperties.length; i++) {
                     const curPropertyName = tdProperties[i]
                     const curProperty = td.properties[curPropertyName]
@@ -779,7 +783,7 @@ function checkUriSecurity(td) {
                     }
                     // part for the check of td-security-uri-variables-distinct
                     if (curProperty.hasOwnProperty("uriVariables")){
-                        curPropertyUriVariables = Object.keys(curProperty.uriVariables)
+                        let curPropertyUriVariables = Object.keys(curProperty.uriVariables)
                         curPropertyUriVariables.push(...rootUriVariables)
                         if (curPropertyUriVariables.length>0){ // there are urivariables somewhere at least
                             // below is from https://stackoverflow.com/a/1885569/3806426
@@ -799,7 +803,7 @@ function checkUriSecurity(td) {
 
             if (td.hasOwnProperty("actions")) {
                 // checking security in property level
-                tdActions = Object.keys(td.actions)
+                let tdActions = Object.keys(td.actions)
                 for (let i = 0; i < tdActions.length; i++) {
                     const curActionName = tdActions[i]
                     const curAction = td.actions[curActionName]
@@ -820,7 +824,7 @@ function checkUriSecurity(td) {
                     }
                     // part for the check of td-security-uri-variables-distinct
                     if (curAction.hasOwnProperty("uriVariables")){
-                        curActionUriVariables = Object.keys(curAction.uriVariables)
+                        let curActionUriVariables = Object.keys(curAction.uriVariables)
                         curActionUriVariables.push(...rootUriVariables)
                         if (curActionUriVariables.length>0){ // there are urivariables somewhere at least
                             // below is from https://stackoverflow.com/a/1885569/3806426
@@ -840,7 +844,7 @@ function checkUriSecurity(td) {
 
             if (td.hasOwnProperty("events")) {
                 // checking security in property level
-                tdEvents = Object.keys(td.events)
+                let tdEvents = Object.keys(td.events)
                 for (let i = 0; i < tdEvents.length; i++) {
                     const curEventName = tdEvents[i]
                     const curEvent = td.events[curEventName]
@@ -861,7 +865,7 @@ function checkUriSecurity(td) {
                     }
                     // part for the check of td-security-uri-variables-distinct
                     if (curEvent.hasOwnProperty("uriVariables")){
-                        curEventUriVariables = Object.keys(curEvent.uriVariables)
+                        let curEventUriVariables = Object.keys(curEvent.uriVariables)
                         curEventUriVariables.push(...rootUriVariables)
                         if (curEventUriVariables.length>0){ // there are urivariables somewhere at least
                             // below is from https://stackoverflow.com/a/1885569/3806426
@@ -891,12 +895,12 @@ function checkUriSecurity(td) {
 
         }
 
-        // no security used non defined scheme, passed test
-        results.push({
-            "ID": "td-security-scheme-name",
-            "Status": "pass"
-        })
-        return results
+        // // no security used non defined scheme, passed test
+        // results.push({
+        //     "ID": "td-security-scheme-name",
+        //     "Status": "pass"
+        // })
+        // return results
 
     }
     return results
@@ -940,4 +944,4 @@ function checkTmOptionalPointer(td){
     }
 
     return results
- }
+}
