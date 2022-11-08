@@ -121,7 +121,7 @@ export function performAssertionTest(manualAssertions, docType){
  * @param {string} content The content of the csv file
  * @param {string} type The content-type to output, e.g., text/csv;charset=utf-8;
  */
-function offerFileDownload(fileName, content, type) {
+export function offerFileDownload(fileName, content, type) {
 
     const blob = new Blob([content], { type });
     if (navigator.msSaveBlob) { // IE 10+
@@ -162,12 +162,9 @@ export function generateOAP(fileType){
         }
         else {
             tdToOpenAPI(JSON.parse(tdToValidate)).then( openAPI => {
-                // console.log(openAPI[fileType])
-                const contentType = (fileType === "json" ? "application/json;" : "application/yaml;") + "charset=utf-8;"
                 const content = fileType === "json" ? JSON.stringify(openAPI[fileType], undefined, 4) : openAPI[fileType]
                 monaco.editor.setModelLanguage(window.openApiEditor.getModel(), fileType)
                 window.openApiEditor.getModel().setValue(content)
-                // offerFileDownload("openapi." + fileType, content, contentType)
             }, err => {rej("OpenAPI generation problem: " + err)})
         }
     })
@@ -191,11 +188,9 @@ export function generateAAP(fileType){
         }
         else {
             tdToAsyncAPI(JSON.parse(tdToValidate)).then( asyncAPI => {
-                const contentType = (fileType === "json" ? "application/json;" : "application/yaml;") + "charset=utf-8;"
                 const content = fileType === "json" ? JSON.stringify(asyncAPI[fileType], undefined, 4) : asyncAPI[fileType]
                 monaco.editor.setModelLanguage(window.asyncApiEditor.getModel(), fileType)
                 window.asyncApiEditor.getModel().setValue(content)
-                // offerFileDownload("asyncapi." + fileType, content, contentType)
             }, err => {rej("AsyncAPI generation problem: " + err)})
         }
     })
@@ -293,6 +288,22 @@ export function getExamplesList(docType){
             },
             "TypoCheckWithTypos": {
                 "addr": "./node_modules/@thing-description-playground/core/examples/tds/typo/typoCheckWithTypos.json",
+                "type": "valid"
+            },
+            "HttpAndMqtt": {
+                "addr": "./node_modules/@thing-description-playground/core/examples/tds/protocol-detection/httpAndMqtt.json",
+                "type": "valid"
+            },
+            "NoProtocol": {
+                "addr": "./node_modules/@thing-description-playground/core/examples/tds/protocol-detection/noProtocol.json",
+                "type": "valid"
+            },
+            "OnlyHttp": {
+                "addr": "./node_modules/@thing-description-playground/core/examples/tds/protocol-detection/onlyHttp.json",
+                "type": "valid"
+            },
+            "OnlyMqtt": {
+                "addr": "./node_modules/@thing-description-playground/core/examples/tds/protocol-detection/onlyMqtt.json",
                 "type": "valid"
             }
         }

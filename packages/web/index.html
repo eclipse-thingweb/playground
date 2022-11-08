@@ -5,6 +5,8 @@
   <title>Thing Description Playground - Validate your W3C Thing Description</title>
   <link rel="shortcut icon" type="image/x-icon" href="./media/favlogo.png" />
   <link rel="stylesheet" type="text/css" href="node_modules/bootstrap-css-only/css/bootstrap.min.css" />
+  <link href="./node_modules/bootstrap-switch-button/css/bootstrap-switch-button.min.css" rel="stylesheet">
+
   <link rel="stylesheet" type="text/css" href="./style.css" />
   <link rel="stylesheet" type="text/css" href="./jsonld-vis.css" />
 </head>
@@ -120,17 +122,34 @@
     <div class="wrapper h-100">
       <div class="row h-100">
         <div class="col-8">
-          <ul class="nav nav-tabs td-related" id="editorTab" role="tablist">
-            <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="td-tab" data-bs-toggle="tab" data-bs-target="#td" type="button" role="tab" aria-controls="td" aria-selected="true">TD</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="open-api-tab" data-bs-toggle="tab" data-bs-target="#open-api" type="button" role="tab" aria-controls="open-api" aria-selected="false">Open API</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="async-api-tab" data-bs-toggle="tab" data-bs-target="#async-api" type="button" role="tab" aria-controls="async-api" aria-selected="false">Async API</button>
-            </li>
-          </ul>
+          <div class="col-12 navcol">
+            <ul class="nav nav-tabs td-related" id="editorTab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="td-tab" data-bs-toggle="tab" data-bs-target="#td" type="button" role="tab" aria-controls="td" aria-selected="true">TD</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button hidden class="nav-link" id="open-api-tab" data-bs-toggle="tab" data-bs-target="#open-api" type="button" role="tab" aria-controls="open-api" aria-selected="false">Open API</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button hidden class="nav-link" id="async-api-tab" data-bs-toggle="tab" data-bs-target="#async-api" type="button" role="tab" aria-controls="async-api" aria-selected="false">Async API</button>
+              </li>
+              <div class="ml-auto">
+                <span>
+                  <p class="font-italic mr-auto" id="yaml-editor-info" style="display:inline" hidden>YAML not supported for TD yet.</p>
+                  <input class="onlyWithTd" id="json-yaml-checkbox" type="checkbox" data-size="sm" data-toggle="switchbutton"
+                  data-onlabel="JSON" data-offlabel="YAML"
+                  data-onstyle="info" data-offstyle="info" disabled checked>
+                </span>
+                <button type="button" id="editor-print-btn" class="btn btn-lg btn-info">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
+                    <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"></path>
+                    <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0   1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"></path>
+                  </svg>
+                </button>
+              </div>
+            </ul>
+          </div>
+          
           <div class="tab-content td-related" id="editorTabContent">
             <div class="tab-pane fade show active" id="td" role="tabpanel" aria-labelledby="td-tab">
               <div class="editor" id="td-editor"></div>
@@ -251,26 +270,6 @@
 
                     <br class="td-related">
                     <div class="btn-group td-related" role="group">
-                      <button type="button" class="btn custom-btn oap-btn"
-                        title="Download an OpenAPI instance of the Thing Description" disabled>OpenAPI</button>
-                      <button type="button" class="btn custom-btn" id="btn_oap_json"
-                        title="Download an OpenAPI instance of the TD as .json file">JSON</button>
-                      <button type="button" class="btn custom-btn" id="btn_oap_yaml"
-                        title="Download an OpenAPI instance of the TD as .yaml file">YAML</button>
-                    </div>
-
-                    <br class="td-related">
-                    <div class="btn-group td-related" role="group">
-                      <button type="button" class="btn custom-btn oap-btn"
-                        title="Download an AsyncAPI instance of the Thing Description" disabled>AsyncAPI</button>
-                      <button type="button" class="btn custom-btn" id="btn_aap_json"
-                        title="Download an AsyncAPI instance of the TD as .json file">JSON</button>
-                      <button type="button" class="btn custom-btn" id="btn_aap_yaml"
-                        title="Download an AsyncAPI instance of the TD as .yaml file">YAML</button>
-                    </div>
-
-                    <br class="td-related">
-                    <div class="btn-group td-related" role="group">
                       <button type="button" class="btn custom-btn oap-btn" title="Extend/reduce a TD by default values"
                         disabled>Defaults</button>
                       <button type="button" class="btn custom-btn" id="btn_defaults_add"
@@ -332,6 +331,8 @@
   <script src="./node_modules/svg-crowbar/dist/main.js"></script>
   <script src="./node_modules/monaco-editor/min/vs/loader.js"></script>
   <script type="module" src="./script.js"></script>
+  <script src="./node_modules/bootstrap-switch-button/dist/bootstrap-switch-button.min.js"></script>
+
 
 </body>
 

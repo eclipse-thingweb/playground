@@ -165,17 +165,40 @@ async function testVisualChromium(page) {
   assertionDownload.saveAs("./test_results/assertions.csv")
   await page.click("#close_assertion_test_popup")
 
+  await page.selectOption('#load_example', "HttpAndMqtt")
+  await customShot("http_and_mqtt_td_tab")
+
+  await page.click("#open-api-tab")
+  await customShot("http_and_mqtt_open_api_tab")
+
   const [openapiJsonDownload] = await Promise.all([
     page.waitForEvent("download"),
-    page.click("#btn_oap_json")
+    page.click("#editor-print-btn")
   ])
   openapiJsonDownload.saveAs("./test_results/openapi.json")
 
-  const [openapiYamlDownload] = await Promise.all([
+  await page.click("#async-api-tab")
+  await customShot("http_and_mqtt_async_api_tab")
+
+  await page.evaluate(() => {
+      document.getElementById("json-yaml-checkbox").switchButton('toggle')
+  })
+  await customShot("http_and_mqtt_async_api_tab_yaml")
+
+  const [asyncapiYamlDownload] = await Promise.all([
     page.waitForEvent("download"),
-    page.click("#btn_oap_yaml")
+    page.click("#editor-print-btn")
   ])
-  openapiYamlDownload.saveAs("./test_results/openapi.yaml")
+  asyncapiYamlDownload.saveAs("./test_results/asyncapi.yaml")
+
+  await page.selectOption('#load_example', "NoProtocol")
+  await customShot("NoProtocol")
+
+  await page.selectOption('#load_example', "OnlyHttp")
+  await customShot("OnlyHttp")
+
+  await page.selectOption('#load_example', "OnlyMqtt")
+  await customShot("OnlyMqtt")
 
   await page.click("#btn_clearLog")
   await myWait(300)

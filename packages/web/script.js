@@ -11,7 +11,6 @@ import * as vVis from "./vega-vis.js"
 
 let manualAssertions = []
 let manualAssertionsLoaded = false
-const results = []
 let autoValidate = false
 let docType = "td"
 let visType = "graph"
@@ -216,7 +215,10 @@ document.getElementById('btn_save').addEventListener('click', () => util.save(do
 urlAddrObject = util.getExamplesList(docType);  // Fetching list of examples from the given array(in helperFunctions.js).
 util.populateExamples(urlAddrObject);  // Loading the examples given in list from their respective URLs
 
-document.getElementById("load_example").addEventListener("change", e => {util.exampleSelectHandler(e, {urlAddrObject})})
+document.getElementById("load_example").addEventListener("change", e => {
+	document.getElementById('td-tab').click()
+	util.exampleSelectHandler(e, {urlAddrObject})
+})
 
 document.getElementById("editor_theme").addEventListener("change", () => {
 	window.monaco.editor.setTheme(document.getElementById("editor_theme").value);
@@ -230,6 +232,9 @@ document.getElementById("btn_validate").addEventListener("click", () => {
 	util.validate("manual", undefined, docType)
 })
 
+/**
+ * Implement functionality of the editor's nav tabs
+ */
 function handleEditorTabs() {
 	const navButtons = document.getElementsByClassName('nav-link')
 
@@ -241,6 +246,22 @@ function handleEditorTabs() {
 
 			const name = this.id.replace("-tab", "")
 			const tabPanes = document.getElementsByClassName("tab-pane")
+
+			window.editorToPrint = window.tdEditor
+			window.activeEditorTab = "td"
+
+			if (name === 'open-api') {
+				window.activeEditorTab = "open-api"
+				window.editorToPrint = window.openApiEditor
+				util.generateOAP(window.editorFormat)
+			}
+
+			if (name === 'async-api') {
+				window.activeEditorTab = "async-api"
+				window.editorToPrint = window.asyncApiEditor
+				util.generateAAP(window.editorFormat)
+			}
+
 			for (let j=0; j<tabPanes.length; j++) {
 				if (name === tabPanes[j].id) {
 					tabPanes[j].className += " show active"
@@ -265,24 +286,104 @@ function handleEditorTabs() {
 
 document.getElementById("btn_clearLog").addEventListener("click", util.clearLog)
 
-document.getElementById("btn_oap_json").addEventListener("click", () => {
-	util.generateOAP("json").catch(err => {alert(err)})
+document.getElementById("btn_defaults_add").addEventListener("click", () => {
+	document.getElementById('td-tab').click()
+	util.addDefaults()
+})
+document.getElementById("btn_defaults_remove").addEventListener("click", () => {
+	document.getElementById('td-tab').click()
+	util.removeDefaults()
 })
 
-document.getElementById("btn_oap_yaml").addEventListener("click", () => {
-	util.generateOAP("yaml").catch(err => {alert(err)})
+document.getElementById("json-yaml-checkbox").addEventListener('change', e => {
+  if (e.currentTarget.checked) {
+	document.getElementById("yaml-editor-info").hidden = true
+	window.editorFormat = "json"
+	util.generateOAP(window.editorFormat)
+	util.generateAAP(window.editorFormat)
+
+  } else {
+	document.getElementById("yaml-editor-info").hidden = false
+	window.editorFormat = "yaml"
+	util.generateOAP(window.editorFormat)
+	util.generateAAP(window.editorFormat)
+  }
 })
 
-document.getElementById("btn_aap_json").addEventListener("click", () => {
-	util.generateAAP("json").catch(err => {alert(err)})
+document.getElementById("editor-print-btn").addEventListener("click", () => {
+	const contentType = `application/${window.editorFormat};charset=utf-8;`
+
+	// Until TD supports YAML
+	if (window.editorToPrint === window.tdEditor) {
+		util.offerFileDownload(
+			`${window.activeEditorTab}.json`,
+			window.editorToPrint.getModel().getValue(),
+			contentType
+		)
+	} else {
+		util.offerFileDownload(
+			`${window.activeEditorTab}.${window.editorFormat}`,
+			window.editorToPrint.getModel().getValue(),
+			contentType
+		)
+	}
 })
 
-document.getElementById("btn_aap_yaml").addEventListener("click", () => {
-	util.generateAAP("yaml").catch(err => {alert(err)})
+document.getElementById("json-yaml-checkbox").addEventListener("click", e => {
+	if (e.currentTarget.checked) {
+		e.currentTarget.checked = false
+	} else {
+		e.currentTarget.checked = true
+	}
 })
 
-document.getElementById("btn_defaults_add").addEventListener("click", util.addDefaults)
-document.getElementById("btn_defaults_remove").addEventListener("click", util.removeDefaults)
+/**
+ * Activate html elements with class onlyWithTd
+ */
+function activateOnlyWithTdElements() {
+	document.querySelectorAll('.onlyWithTd').forEach(e => {
+		if (e.id === 'json-yaml-checkbox') {
+			e.parentElement.className = e.parentElement.className.replace(" disabled", "")
+		}
+
+		e.disabled = false
+	})
+}
+
+/**
+ * Disable html elements with class onlyWithTd
+ */
+function disableOnlyWithTdElements() {
+	document.querySelectorAll('.onlyWithTd').forEach(e => {
+		if (e.id === 'json-yaml-checkbox') {
+			e.parentElement.className += " disabled"
+		}
+
+		e.disabled = true
+	})
+}
+
+/**
+ * Enable Open/Async API elements according to the protocol schemes of a TD 
+ * @param {*} td TD to check protocols and do enabling accordingly
+ */
+function enableAPIConversionWithProtocol(td) {
+	const protocolSchemes = Validators.detectProtocolSchemes(td)
+
+	if (protocolSchemes) {
+		if (protocolSchemes.includes("http")) {
+			document.getElementById("open-api-tab").hidden = false
+		} else {
+			document.getElementById("open-api-tab").hidden = true
+		}
+
+		if (protocolSchemes.includes("mqtt")) {
+			document.getElementById("async-api-tab").hidden = false
+		} else {
+			document.getElementById("async-api-tab").hidden = true
+		}
+	}
+}
 
 //* *************************Monaco editor code*********************************////
 // Load monaco editor ACM
@@ -316,18 +417,23 @@ require(['vs/editor/editor.main'], async function () {
 	window.openApiEditor = monaco.editor.create(document.getElementById('open-api-editor'), {
 		value: (docType === 'td') ? value.substring(2) : '',
 		language: 'json',
-		automaticLayout: true
+		automaticLayout: true,
+		readOnly: true
 	});
 
 	// Create globally available Async API editor
 	window.asyncApiEditor = monaco.editor.create(document.getElementById('async-api-editor'), {
 		value: (docType === 'td') ? value.substring(2) : '',
 		language: 'json',
-		automaticLayout: true
+		automaticLayout: true,
+		readOnly: true
 	});
 
 	window.editor = (docType === 'td') ? window.tdEditor : window.tmEditor;
 	document.getElementById('curtain').style.display = 'none';
+
+	window.editorFormat = "json"
+	window.editorToPrint = window.tdEditor
 
 	const models = [
 		window.tdEditor.getModel(),
@@ -336,8 +442,18 @@ require(['vs/editor/editor.main'], async function () {
 
 	models.forEach(model => {
 		model.onDidChangeContent(_ => {
-			// FIXME: markTypos should not run on tmEditor
-			markTypos(model);
+
+			if (model === window.tdEditor.getModel()) {
+				markTypos(model);
+				enableAPIConversionWithProtocol(model.getValue())
+
+				if (model.getValue() === "") {
+					disableOnlyWithTdElements()
+				} else {
+					activateOnlyWithTdElements()
+				}
+			}
+
 			util.validate('auto', autoValidate, docType);
 		});
 	});
