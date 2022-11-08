@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@thing-description-playground/assertions": "^1.3.1",
-    "@thing-description-playground/core": "file:../core",
+    "@thing-description-playground/core": "^1.2.1",
     "@thing-description-playground/defaults": "^1.2.1",
     "@thing-description-playground/td_to_asyncapi": "^1.0.2",
     "@thing-description-playground/td_to_openapi": "^1.2.2",
