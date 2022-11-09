@@ -1306,7 +1306,7 @@ function calculateSimilarity(actual, desired) {
 
 /**
  * Detect protocl schemes of a TD
- * @param {object} td The TD to detect protocols of
+ * @param {string} td TD string to detect protocols of
  * return List of available protocol schemes
  */
 function detectProtocolSchemes(td) {

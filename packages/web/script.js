@@ -365,7 +365,7 @@ function disableOnlyWithTdElements() {
 
 /**
  * Enable Open/Async API elements according to the protocol schemes of a TD 
- * @param {*} td TD to check protocols and do enabling accordingly
+ * @param {string} td TD string to check protocols and do enabling accordingly
  */
 function enableAPIConversionWithProtocol(td) {
 	const protocolSchemes = Validators.detectProtocolSchemes(td)
