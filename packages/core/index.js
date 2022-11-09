@@ -1388,15 +1388,11 @@ function getHrefProtocol(href) {
         return ''
     }
 
-    let protocol
     const protocolsToSearchFor = ["http", "mqtt"]
 
-    protocolsToSearchFor.forEach(p => {
+    for (const p of protocolsToSearchFor) {
         if (href.startsWith(p) || href.startsWith(p + 's')) {
-            protocol = p
-            return
+            return p
         }
-    })
-
-    return protocol
+    }
 }
