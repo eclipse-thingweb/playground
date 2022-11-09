@@ -42,8 +42,46 @@ export async function vegaVis($container, td) {
               "options": ["line", "curve", "diagonal", "orthogonal"]
             }
           },
-          { "name": "originX", "update": "width / 2" },
-          { "name": "originY", "update": "height / 2" }
+          {
+            "name": "start",
+            "value": null,
+            "on": [
+              {
+                "events": "mousedown",
+                "update": "xy()"
+              }
+            ]
+          },
+          {
+            "name": "drag",
+            "value": null,
+            "on": [
+              {
+                "events": "[mousedown, window:mouseup] > window:mousemove",
+                "update": "xy()"
+              }
+            ]
+          },
+          {
+            "name": "originX",
+            "update": "width / 2",
+            "on": [
+              {
+                "events": { "signal": "drag" },
+                "update": "clamp((drag[0] - start[0]) / 10 + originX, 0, width)"
+              }
+            ]
+          },
+          {
+            "name": "originY",
+            "update": "height / 2",
+            "on": [
+              {
+                "events": { "signal": "drag" },
+                "update": "clamp((drag[1] - start[1]) / 10 + originY, 0, height)"
+              }
+            ]
+          }
         ],
 
         "data": [
