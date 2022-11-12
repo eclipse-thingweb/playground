@@ -23,6 +23,11 @@ const tdRelated = [];
 	tdRelated.push({"el": el, "display": el.style.display})
 })
 
+const tmRelated = [];
+[].forEach.call(document.querySelectorAll('.tm-related'), el => {
+	tmRelated.push({"el": el, "display": el.style.display})
+})
+
 document.getElementById("box_jsonld_validate").checked = true
 document.getElementById("box_reset_logging").checked = true
 
@@ -47,20 +52,28 @@ function onDocTypeChange(outsideValue) {
 	urlAddrObject = util.getExamplesList(docType);
 	util.populateExamples(urlAddrObject);
 
-	if (docType == 'tm') {
+	if (docType === 'tm') {
 		[].forEach.call(tdRelated, el => {
 			el["el"].style.display = "none"
-		})
+		});
+		[].forEach.call(tmRelated, el => {
+			el["el"].style.display = el["display"]
+		});
 		window.editor = window.tmEditor
 		document.getElementById("td-editor").style.display = "none"
 		document.getElementById("tm-editor").style.display = "block"
+		document.getElementById("tm-tab").click()
 	} else {
+		[].forEach.call(tmRelated, el => {
+			el["el"].style.display = "none"
+		});
 		[].forEach.call(tdRelated, el => {
 			el["el"].style.display = el["display"]
-		})
+		});
 		window.editor = window.tdEditor
 		document.getElementById("td-editor").style.display = "block"
 		document.getElementById("tm-editor").style.display = "none"
+		document.getElementById("td-tab").click()
 	}
 }
 
@@ -216,7 +229,9 @@ urlAddrObject = util.getExamplesList(docType);  // Fetching list of examples fro
 util.populateExamples(urlAddrObject);  // Loading the examples given in list from their respective URLs
 
 document.getElementById("load_example").addEventListener("change", e => {
-	document.getElementById('td-tab').click()
+	if (docType === 'td') {
+		document.getElementById('td-tab').click()
+	}
 	util.exampleSelectHandler(e, {urlAddrObject})
 })
 
@@ -247,17 +262,28 @@ function handleEditorTabs() {
 			const name = this.id.replace("-tab", "")
 			const tabPanes = document.getElementsByClassName("tab-pane")
 
-			window.editorToPrint = window.tdEditor
-			window.activeEditorTab = "td"
+			if (name === 'td') {
+				window.activeEditorTab = "td"
+				window.editorToPrint = window.tdEditor
+				document.getElementById('btn_save').disabled = false
+			}
+
+			if (name === 'tm') {
+				window.activeEditorTab = "tm"
+				window.editorToPrint = window.tmEditor
+				document.getElementById('btn_save').disabled = false
+			}
 
 			if (name === 'open-api') {
 				window.activeEditorTab = "open-api"
 				window.editorToPrint = window.openApiEditor
+				document.getElementById('btn_save').disabled = true
 				util.generateOAP(window.editorFormat)
 			}
 
 			if (name === 'async-api') {
 				window.activeEditorTab = "async-api"
+				document.getElementById('btn_save').disabled = true
 				window.editorToPrint = window.asyncApiEditor
 				util.generateAAP(window.editorFormat)
 			}
@@ -313,8 +339,8 @@ document.getElementById("json-yaml-checkbox").addEventListener('change', e => {
 document.getElementById("editor-print-btn").addEventListener("click", () => {
 	const contentType = `application/${window.editorFormat};charset=utf-8;`
 
-	// Until TD supports YAML
-	if (window.editorToPrint === window.tdEditor) {
+	// Until TD/TM supports YAML
+	if (window.editorToPrint === window.tdEditor || window.editorToPrint === window.tmEditor) {
 		util.offerFileDownload(
 			`${window.activeEditorTab}.json`,
 			window.editorToPrint.getModel().getValue(),
@@ -393,10 +419,8 @@ require(['vs/editor/editor.main'], async function () {
 	const value = util.getEditorValue(window.location.hash.substring(1));
 	const newDocType = value.substring(0, 2);
 
-	if (newDocType !== docType) {
-		docType = newDocType;
-		onDocTypeChange(docType);
-	}
+	docType = newDocType;
+	onDocTypeChange(docType);
 
 	// Create globally available TD editor
 	window.tdEditor = monaco.editor.create(document.getElementById('td-editor'), {
@@ -415,7 +439,6 @@ require(['vs/editor/editor.main'], async function () {
 
 	// Create globally available Open API editor
 	window.openApiEditor = monaco.editor.create(document.getElementById('open-api-editor'), {
-		value: (docType === 'td') ? value.substring(2) : '',
 		language: 'json',
 		automaticLayout: true,
 		readOnly: true
@@ -423,7 +446,6 @@ require(['vs/editor/editor.main'], async function () {
 
 	// Create globally available Async API editor
 	window.asyncApiEditor = monaco.editor.create(document.getElementById('async-api-editor'), {
-		value: (docType === 'td') ? value.substring(2) : '',
 		language: 'json',
 		automaticLayout: true,
 		readOnly: true
