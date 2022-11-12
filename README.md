@@ -1,4 +1,4 @@
-# Web of Things (W3C) - Thing Description Playground
+# W3C Web of Things - Thing Description Playground
 
 Try it online at [http://plugfest.thingweb.io/playground/](http://plugfest.thingweb.io/playground/)  
 
@@ -11,7 +11,8 @@ Try it online at [http://plugfest.thingweb.io/playground/](http://plugfest.thing
 There are different ways to use Playground:
 
 - Install all packages and their dependencies via `npm install` in the root directory. This script calls `lerna bootstrap`.
-- You can install the different packages from npm ([see below](./packages)) or in their respective directories.
+- You can install the different packages from npm ([see below](./packages)) or in their respective directories. Currently, npm packages are not using TD 1.1 features.
+
 ## Structure
 
 The structure of all Web of Things (WoT) Playground packages is shown here: ![packageStructure](images/playground-structure.png)  
