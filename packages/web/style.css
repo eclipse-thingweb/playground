@@ -333,11 +333,10 @@ i {
 }
 
 #visualized-popup .container-fluid > .row {
-	height: calc(100% - 30px);
+	height: 100%;
 }
 
 #visualized-popup .container-fluid > .row [class^="col-"] {
-	height: calc(100% - 30px);
 	overflow: scroll;
 }
 
