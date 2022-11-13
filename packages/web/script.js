@@ -87,16 +87,6 @@ function visualize() {
 
 	} else {
 		vVis.vegaVis('#visualized', td);
-
-		// Move bindings to controls panel
-		// Needs to be run on the next iteration of the event loop
-		// Thus, wrapped with zero timeout
-		setTimeout(() => {
-			const $bindings = document.querySelector('form.vega-bindings');
-			const $wrapper = document.getElementById('vega-bindings-wrapper');
-			$wrapper.innerHTML = '';
-			$wrapper.appendChild($bindings);
-		}, 0);
 	}
 
 	// Alter visibility of related controls
