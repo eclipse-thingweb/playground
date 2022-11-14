@@ -105,7 +105,7 @@ async function testVisualChromium(page) {
   await page.click('#load_example', {waitUntil: "networkidle"})
   await customShot("dropdown-examples")
 
-  await page.selectOption('#load_example', 'TypoCheckWithoutTypos')
+  await loadTestToEditor('TypoCheckWithoutTypos', page)
   await customShot("typo_check_without_typos")
   await page.screenshot({ path: `./test_results/chromium_typo_check_without_typos.png`, fullPage: true })
 
@@ -118,7 +118,7 @@ async function testVisualChromium(page) {
     }
   })
 
-  await page.selectOption('#load_example', 'TypoCheckWithTypos')
+  await loadTestToEditor('TypoCheckWithTypos', page)
   await customShot("typo_check_with_typos")
   await page.screenshot({ path: `./test_results/chromium_typo_check_with_typos.png`, fullPage: true })
 
@@ -156,16 +156,16 @@ async function testVisualChromium(page) {
   await page.screenshot({ path: `./test_results/chromium_lights.png` })
   await customShot("lights")
 
-  // await page.click("#btn_assertion_popup")
-  // await customShot("assertion-popup")
-  // const [assertionDownload] = await Promise.all([
-  //   page.waitForEvent("download"),
-  //   page.click("#btn_assertion")
-  // ])
-  // assertionDownload.saveAs("./test_results/assertions.csv")
-  // await page.click("#close_assertion_test_popup")
+  await page.click("#btn_assertion_popup")
+  await customShot("assertion-popup")
+  const [assertionDownload] = await Promise.all([
+    page.waitForEvent("download"),
+    page.click("#btn_assertion")
+  ])
+  assertionDownload.saveAs("./test_results/assertions.csv")
+  await page.click("#close_assertion_test_popup")
 
-  await page.selectOption('#load_example', "HttpAndMqtt")
+  await loadTestToEditor('HttpAndMqtt', page)
   await customShot("http_and_mqtt_td_tab")
 
   await page.click("#open-api-tab")
@@ -191,13 +191,13 @@ async function testVisualChromium(page) {
   ])
   asyncapiYamlDownload.saveAs("./test_results/asyncapi.yaml")
 
-  await page.selectOption('#load_example', "NoProtocol")
+  await loadTestToEditor('NoProtocol', page)
   await customShot("NoProtocol")
 
-  await page.selectOption('#load_example', "OnlyHttp")
+  await loadTestToEditor('OnlyHttp', page)
   await customShot("OnlyHttp")
 
-  await page.selectOption('#load_example', "OnlyMqtt")
+  await loadTestToEditor('OnlyMqtt', page)
   await customShot("OnlyMqtt")
 
   await page.click("#btn_clearLog")
@@ -246,4 +246,50 @@ function myWait(milliseconds){
       res()
     }, milliseconds)
   })
+}
+
+const testList = {
+  "TypoCheckWithoutTypos": {
+    "addr": "./node_modules/@thing-description-playground/core/tests/typo/typoCheckWithoutTypos.json"
+  },
+  "TypoCheckWithTypos": {
+      "addr": "./node_modules/@thing-description-playground/core/tests/typo/typoCheckWithTypos.json"
+  },
+  "HttpAndMqtt": {
+      "addr": "./node_modules/@thing-description-playground/core/tests/protocol-detection/httpAndMqtt.json"
+  },
+  "NoProtocol": {
+      "addr": "./node_modules/@thing-description-playground/core/tests/protocol-detection/noProtocol.json"
+  },
+  "OnlyHttp": {
+      "addr": "./node_modules/@thing-description-playground/core/tests/protocol-detection/onlyHttp.json"
+  },
+  "OnlyMqtt": {
+      "addr": "./node_modules/@thing-description-playground/core/tests/protocol-detection/onlyMqtt.json"
+  }
+}
+
+/**
+ * 
+ * @param {string} testName name of test file
+ * @param {object} page a playwright page
+ */
+async function loadTestToEditor(testName, page) {
+  const testAddr = testList[testName].addr
+  await page.evaluate(data => {
+    window.editor.setValue(JSON.stringify(data, null, '\t'))
+  }, getTestData(testAddr))
+}
+
+/**
+ * Fetch the test from the given address and return the JSON object
+ * @param {string} urlAddr url of the test to fetch
+ */
+function getTestData(urlAddr) {
+  try {
+    const data = fs.readFileSync(urlAddr);
+    return JSON.parse(data)
+  } catch(err) {
+    console.log(`Error while reading the file on address ${urlAddr}: ${err}`)
+  }
 }

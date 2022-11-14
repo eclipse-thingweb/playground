@@ -3,7 +3,7 @@ const path = require("path")
 const { detectProtocolSchemes } = require("../index")
 const tdValidator = require("../index").tdValidator
 
-const rootDir = path.join("./", "examples", "tds")
+const rootDir = path.join("./", "tests")
 
 const dirPath = path.join(rootDir, "protocol-detection")
 const fileNames = fs.readdirSync(dirPath)

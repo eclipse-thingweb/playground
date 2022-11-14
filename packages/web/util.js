@@ -281,30 +281,6 @@ export function getExamplesList(docType){
             "EmptySecurityDefs": {
                 "addr": "./node_modules/@thing-description-playground/core/examples/tds/invalid/emptySecDef.json",
                 "type": "invalid"
-            },
-            "TypoCheckWithoutTypos": {
-                "addr": "./node_modules/@thing-description-playground/core/examples/tds/typo/typoCheckWithoutTypos.json",
-                "type": "valid"
-            },
-            "TypoCheckWithTypos": {
-                "addr": "./node_modules/@thing-description-playground/core/examples/tds/typo/typoCheckWithTypos.json",
-                "type": "valid"
-            },
-            "HttpAndMqtt": {
-                "addr": "./node_modules/@thing-description-playground/core/examples/tds/protocol-detection/httpAndMqtt.json",
-                "type": "valid"
-            },
-            "NoProtocol": {
-                "addr": "./node_modules/@thing-description-playground/core/examples/tds/protocol-detection/noProtocol.json",
-                "type": "valid"
-            },
-            "OnlyHttp": {
-                "addr": "./node_modules/@thing-description-playground/core/examples/tds/protocol-detection/onlyHttp.json",
-                "type": "valid"
-            },
-            "OnlyMqtt": {
-                "addr": "./node_modules/@thing-description-playground/core/examples/tds/protocol-detection/onlyMqtt.json",
-                "type": "valid"
             }
         }
         : {
