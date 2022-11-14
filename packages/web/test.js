@@ -156,14 +156,14 @@ async function testVisualChromium(page) {
   await page.screenshot({ path: `./test_results/chromium_lights.png` })
   await customShot("lights")
 
-  await page.click("#btn_assertion_popup")
-  await customShot("assertion-popup")
-  const [assertionDownload] = await Promise.all([
-    page.waitForEvent("download"),
-    page.click("#btn_assertion")
-  ])
-  assertionDownload.saveAs("./test_results/assertions.csv")
-  await page.click("#close_assertion_test_popup")
+  // await page.click("#btn_assertion_popup")
+  // await customShot("assertion-popup")
+  // const [assertionDownload] = await Promise.all([
+  //   page.waitForEvent("download"),
+  //   page.click("#btn_assertion")
+  // ])
+  // assertionDownload.saveAs("./test_results/assertions.csv")
+  // await page.click("#close_assertion_test_popup")
 
   await page.selectOption('#load_example', "HttpAndMqtt")
   await customShot("http_and_mqtt_td_tab")
@@ -181,7 +181,7 @@ async function testVisualChromium(page) {
   await customShot("http_and_mqtt_async_api_tab")
 
   await page.evaluate(() => {
-      document.getElementById("json-yaml-checkbox").switchButton('toggle')
+      document.getElementById("yaml-format-btn").click()
   })
   await customShot("http_and_mqtt_async_api_tab_yaml")
 
