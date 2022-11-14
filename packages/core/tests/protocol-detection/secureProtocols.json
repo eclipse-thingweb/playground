@@ -17,5 +17,5 @@
             }]
         }
     },
-    "protocolSchemes": ["http", "mqtt"]
+    "protocolSchemes": ["https", "mqtts"]
 }

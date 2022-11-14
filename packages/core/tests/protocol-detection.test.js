@@ -34,7 +34,12 @@ fileNames.forEach( fileName => {
             tdValidator(tdToTest, ()=>{},{}).then( result => {
                 const tdJson = JSON.parse(tdToTest)
                 const protocolSchemes = tdJson.protocolSchemes
-                expect(detectProtocolSchemes(tdToTest)).toEqual(expect.arrayContaining(protocolSchemes))
+
+                if (protocolSchemes.length === 0) {
+                    expect(detectProtocolSchemes(tdToTest)).toEqual([])
+                } else {
+                    expect(detectProtocolSchemes(tdToTest)).toEqual(expect.arrayContaining(protocolSchemes))
+                }
                 done()
             }, errTwo => {done(errTwo)})
         })

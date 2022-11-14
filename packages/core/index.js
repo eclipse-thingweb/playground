@@ -1333,7 +1333,7 @@ function detectProtocolSchemes(td) {
         ...actionsProtocols,
         ...eventsProtocols,
          ...propertiesProtcols
-    ])]
+    ])].filter(p => p !== undefined)
 
     return protocolSchemes
 }
@@ -1385,14 +1385,8 @@ function detectProtocolInForms(forms) {
  */
 function getHrefProtocol(href) {
     if (!href) {
-        return ''
+        return
     }
 
-    const protocolsToSearchFor = ["http", "mqtt"]
-
-    for (const p of protocolsToSearchFor) {
-        if (href.startsWith(p) || href.startsWith(p + 's')) {
-            return p
-        }
-    }
+    return href.split(':')[0]
 }

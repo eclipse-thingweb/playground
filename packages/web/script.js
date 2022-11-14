@@ -426,13 +426,13 @@ function enableAPIConversionWithProtocol(td) {
 	const protocolSchemes = Validators.detectProtocolSchemes(td)
 
 	if (protocolSchemes) {
-		if (protocolSchemes.includes("http")) {
+		if (["http", "https"].some(p => protocolSchemes.includes(p))) {
 			document.getElementById("open-api-tab").hidden = false
 		} else {
 			document.getElementById("open-api-tab").hidden = true
 		}
 
-		if (protocolSchemes.includes("mqtt")) {
+		if (["mqtt", "mqtts"].some(p => protocolSchemes.includes(p))) {
 			document.getElementById("async-api-tab").hidden = false
 		} else {
 			document.getElementById("async-api-tab").hidden = true

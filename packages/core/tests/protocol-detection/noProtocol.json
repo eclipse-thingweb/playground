@@ -7,25 +7,8 @@
         "basic_sc": {"scheme": "basic","in":"header"}
     },
     "security": ["basic_sc"],
-    "properties": {
-        "status" : {
-            "type": "string",
-            "forms": [{"href": "coaps://mylamp.example.com/status"}]
-        }
-    },
-    "actions": {
-        "toggle" : {
-            "forms": [{"href": "coaps://mylamp.example.com/toggle"}]
-        }
-    },
-    "events":{
-        "overheating":{
-            "data": {"type": "string"},
-            "forms": [{
-                "href": "coaps://mylamp.example.com/oh",
-                "subprotocol": "longpoll"
-            }]
-        }
-    },
+    "properties": {},
+    "actions": {},
+    "events":{},
     "protocolSchemes": []
 }
