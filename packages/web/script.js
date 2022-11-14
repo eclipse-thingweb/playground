@@ -266,6 +266,8 @@ function handleEditorTabs() {
 				window.activeEditorTab = "td"
 				window.editorToPrint = window.tdEditor
 				document.getElementById('btn_save').disabled = false
+				document.getElementById("json-format-btn").click()
+				disableFormatButtons()
 			}
 
 			if (name === 'tm') {
@@ -279,6 +281,7 @@ function handleEditorTabs() {
 				window.editorToPrint = window.openApiEditor
 				document.getElementById('btn_save').disabled = true
 				util.generateOAP(window.editorFormat)
+				enableFormatButtons()
 			}
 
 			if (name === 'async-api') {
@@ -286,6 +289,7 @@ function handleEditorTabs() {
 				document.getElementById('btn_save').disabled = true
 				window.editorToPrint = window.asyncApiEditor
 				util.generateAAP(window.editorFormat)
+				enableFormatButtons()
 			}
 
 			for (let j=0; j<tabPanes.length; j++) {
@@ -321,21 +325,6 @@ document.getElementById("btn_defaults_remove").addEventListener("click", () => {
 	util.removeDefaults()
 })
 
-document.getElementById("json-yaml-checkbox").addEventListener('change', e => {
-  if (e.currentTarget.checked) {
-	document.getElementById("yaml-editor-info").hidden = true
-	window.editorFormat = "json"
-	util.generateOAP(window.editorFormat)
-	util.generateAAP(window.editorFormat)
-
-  } else {
-	document.getElementById("yaml-editor-info").hidden = false
-	window.editorFormat = "yaml"
-	util.generateOAP(window.editorFormat)
-	util.generateAAP(window.editorFormat)
-  }
-})
-
 document.getElementById("editor-print-btn").addEventListener("click", () => {
 	const contentType = `application/${window.editorFormat};charset=utf-8;`
 
@@ -355,11 +344,27 @@ document.getElementById("editor-print-btn").addEventListener("click", () => {
 	}
 })
 
-document.getElementById("json-yaml-checkbox").addEventListener("click", e => {
-	if (e.currentTarget.checked) {
-		e.currentTarget.checked = false
-	} else {
-		e.currentTarget.checked = true
+document.getElementById("json-format-btn").addEventListener("click", e => {
+	if (!e.currentTarget.classList.contains("active")) {
+		const button = document.getElementById('yaml-format-btn')
+		button.classList.toggle('active')
+		e.currentTarget.classList.toggle('active')
+
+		window.editorFormat = "json"
+		util.generateOAP(window.editorFormat)
+		util.generateAAP(window.editorFormat)
+	}
+})
+
+document.getElementById("yaml-format-btn").addEventListener("click", e => {
+	if (!e.currentTarget.classList.contains("active")) {
+		const button = document.getElementById('json-format-btn')
+		button.classList.toggle('active')
+		e.currentTarget.classList.toggle('active')
+
+		window.editorFormat = "yaml"
+		util.generateOAP(window.editorFormat)
+		util.generateAAP(window.editorFormat)
 	}
 })
 
@@ -368,10 +373,6 @@ document.getElementById("json-yaml-checkbox").addEventListener("click", e => {
  */
 function activateOnlyWithTdElements() {
 	document.querySelectorAll('.onlyWithTd').forEach(e => {
-		if (e.id === 'json-yaml-checkbox') {
-			e.parentElement.className = e.parentElement.className.replace(" disabled", "")
-		}
-
 		e.disabled = false
 	})
 }
@@ -381,12 +382,40 @@ function activateOnlyWithTdElements() {
  */
 function disableOnlyWithTdElements() {
 	document.querySelectorAll('.onlyWithTd').forEach(e => {
-		if (e.id === 'json-yaml-checkbox') {
-			e.parentElement.className += " disabled"
-		}
-
 		e.disabled = true
 	})
+}
+
+/**
+ * Enable format selection buttons
+ */
+function enableFormatButtons() {
+	const jsonBtn = document.getElementById('json-format-btn')
+	const yamlBtn = document.getElementById('yaml-format-btn')
+
+	if (jsonBtn.classList.contains('disabled')) {
+		jsonBtn.classList.toggle('disabled')
+	}
+
+	if (yamlBtn.classList.contains('disabled')) {
+		yamlBtn.classList.toggle('disabled')
+	}
+}
+
+/**
+ * Disable format selection buttons
+ */
+ function disableFormatButtons() {
+	const jsonBtn = document.getElementById('json-format-btn')
+	const yamlBtn = document.getElementById('yaml-format-btn')
+
+	if (!jsonBtn.classList.contains('disabled')) {
+		jsonBtn.classList.toggle('disabled')
+	}
+
+	if (!yamlBtn.classList.contains('disabled')) {
+		yamlBtn.classList.toggle('disabled')
+	}
 }
 
 /**
