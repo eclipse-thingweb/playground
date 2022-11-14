@@ -137,29 +137,31 @@
                 <button hidden class="nav-link" id="async-api-tab" data-bs-toggle="tab" data-bs-target="#async-api" type="button" role="tab" aria-controls="async-api" aria-selected="false">Async API</button>
               </li>
               <div class="ml-auto">
-                <div class="btn-group btn-group-toggle td-related">
-                  <label class="btn btn-info btn-sm active" id="json-format-btn">
-                    JSON
-                  </label>
-                  <label class="btn btn-info btn-sm" id="yaml-format-btn">
-                    YAML
-                  </label>
-                </div>
-
-                <div class="btn-group" role="group">
-                  <button type="button" id="btn_save" title="Export your TD/TM document as a sharable link" class="btn btn-lg btn-info">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
-                      <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/>
-                      <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/>
-                    </svg>
-                  </button>
-                  <button type="button" class="btn btn-info mr-0 ml-0 pr-0 pl-0" disabled></button>
-                  <button type="button" id="editor-print-btn" class="btn btn-lg btn-info">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
-                      <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-                      <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
-                    </svg>
-                  </button>
+                <div class="btn-toolbar" role="toolbar" aria-label="Toolbar for editors">
+                  <div class="btn-group btn-group-toggle mr-2 td-related">
+                    <button type="button" title="Convert editor content to JSON" class="btn btn-info btn-sm active" id="json-format-btn">
+                      JSON
+                    </button>
+                    <button type="button" title="Convert editor content to YAML" class="btn btn-info btn-sm" id="yaml-format-btn">
+                      YAML
+                    </button>
+                  </div>
+                  <p> </p>
+                  <div class="btn-group mr-2" role="group">
+                    <button type="button" id="btn_save" title="Export your TD/TM document as a sharable link" class="btn btn-lg btn-info">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
+                        <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/>
+                        <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/>
+                      </svg>
+                    </button>
+                    <button type="button" class="btn btn-info mr-0 ml-0 pr-0 pl-0" disabled></button>
+                    <button type="button" title="Download the content on the editor" id="editor-print-btn" class="btn btn-lg btn-info">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                      </svg>
+                    </button>
+                  </div>
                 </div>
               </div>
             </ul>
