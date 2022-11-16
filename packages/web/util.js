@@ -5,7 +5,6 @@
  * and offers a few utility functions.
  */
 
-
 /**
  * Fetch the TD from the given address and return the JSON object
  * @param {string} urlAddr url of the TD to fetch
@@ -145,14 +144,60 @@ export function offerFileDownload(fileName, content, type) {
 }
 
 /**
+ * Generates an TD instance from
+ * the TD in the Editor
+ * @param {"json"|"yaml"} fileType
+ */
+ export function generateTD(fileType){
+    return new Promise( (res, rej) => {
+        const tdToValidate=window.tdEditor.getValue()
+
+        if (tdToValidate === "") {
+            rej("No TD given to generate TD instance")
+        }
+        else if (fileType !== "json" && fileType !== "yaml") {
+            rej("Wrong content type required: " + fileType)
+        }
+        else {
+            let tdFormat
+
+            try {
+                JSON.parse(tdToValidate)
+                tdFormat = "json"
+            } catch (err) {
+                tdFormat = "yaml"
+            }
+
+            try {
+                let content
+
+                if (fileType === tdFormat) {
+                    content = tdToValidate
+                } else {
+                    content = fileType === "json"
+                        ? JSON.stringify(jsyaml.load(tdToValidate), undefined, 4)
+                        : jsyaml.dump(JSON.parse(tdToValidate))
+                }
+
+                monaco.editor.setModelLanguage(window.tdEditor.getModel(), fileType)
+                window.tdEditor.getModel().setValue(content)
+            } catch (err) {
+                rej("TD generation problem: " + err)
+            }
+        }
+    })
+}
+
+/**
  * Generates an OpenAPI instance from
- * the TD in the Editor and passes it
- * to the user as a download
+ * the TD in the Editor
  * @param {"json"|"yaml"} fileType
  */
 export function generateOAP(fileType){
     return new Promise( (res, rej) => {
-        const tdToValidate=window.editor.getValue()
+        const tdToValidate= window.editorFormat === "json"
+            ? window.editor.getValue()
+            : JSON.stringify(jsyaml.load(window.editor.getValue()))
 
         if (tdToValidate === "") {
             rej("No TD given to generate OpenAPI instance")
@@ -171,14 +216,15 @@ export function generateOAP(fileType){
 }
 
 /**
- * Get the current TD
- * Call the td_to_asyncapi package
- * and return an AsyncAPI instance
+ * Generates an AsyncAPI instance from
+ * the TD in the Editor
  * @param {"json"|"yaml"} fileType
  */
 export function generateAAP(fileType){
     return new Promise( (res, rej) => {
-        const tdToValidate=window.editor.getValue()
+        const tdToValidate= window.editorFormat === "json"
+            ? window.editor.getValue()
+            : JSON.stringify(jsyaml.load(window.editor.getValue()))
 
         if (tdToValidate === "") {
             rej("No TD given to generate AsyncAPI instance")

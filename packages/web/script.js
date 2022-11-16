@@ -264,21 +264,20 @@ function handleEditorTabs() {
 
 			if (name === 'td') {
 				window.activeEditorTab = "td"
-				window.editorToPrint = window.tdEditor
+				window.currentEditor = window.tdEditor
 				document.getElementById('btn_save').disabled = false
 				document.getElementById("json-format-btn").click()
-				disableFormatButtons()
 			}
 
 			if (name === 'tm') {
 				window.activeEditorTab = "tm"
-				window.editorToPrint = window.tmEditor
+				window.currentEditor = window.tmEditor
 				document.getElementById('btn_save').disabled = false
 			}
 
 			if (name === 'open-api') {
 				window.activeEditorTab = "open-api"
-				window.editorToPrint = window.openApiEditor
+				window.currentEditor = window.openApiEditor
 				document.getElementById('btn_save').disabled = true
 				util.generateOAP(window.editorFormat)
 				enableFormatButtons()
@@ -287,7 +286,7 @@ function handleEditorTabs() {
 			if (name === 'async-api') {
 				window.activeEditorTab = "async-api"
 				document.getElementById('btn_save').disabled = true
-				window.editorToPrint = window.asyncApiEditor
+				window.currentEditor = window.asyncApiEditor
 				util.generateAAP(window.editorFormat)
 				enableFormatButtons()
 			}
@@ -329,16 +328,16 @@ document.getElementById("editor-print-btn").addEventListener("click", () => {
 	const contentType = `application/${window.editorFormat};charset=utf-8;`
 
 	// Until TD/TM supports YAML
-	if (window.editorToPrint === window.tdEditor || window.editorToPrint === window.tmEditor) {
+	if (window.currentEditor === window.tdEditor || window.currentEditor === window.tmEditor) {
 		util.offerFileDownload(
 			`${window.activeEditorTab}.json`,
-			window.editorToPrint.getModel().getValue(),
+			window.currentEditor.getModel().getValue(),
 			contentType
 		)
 	} else {
 		util.offerFileDownload(
 			`${window.activeEditorTab}.${window.editorFormat}`,
-			window.editorToPrint.getModel().getValue(),
+			window.currentEditor.getModel().getValue(),
 			contentType
 		)
 	}
@@ -351,18 +350,31 @@ document.getElementById("json-format-btn").addEventListener("click", e => {
 		e.currentTarget.classList.toggle('active')
 
 		window.editorFormat = "json"
+		util.generateTD(window.editorFormat)
 		util.generateOAP(window.editorFormat)
 		util.generateAAP(window.editorFormat)
 	}
 })
 
+let yamlFormatBtnClickCount = 0
+
 document.getElementById("yaml-format-btn").addEventListener("click", e => {
 	if (!e.currentTarget.classList.contains("active")) {
+		if (yamlFormatBtnClickCount === 0 && window.currentEditor === window.tdEditor) {
+			alert('YAML conversion for TD is still experimental. '
+				+ 'If you want to convert your TD to YAML format, please click YAML button again.')
+			yamlFormatBtnClickCount++
+			e.currentTarget.blur()
+			return
+		}
+
+		yamlFormatBtnClickCount = 0
 		const button = document.getElementById('json-format-btn')
 		button.classList.toggle('active')
 		e.currentTarget.classList.toggle('active')
 
 		window.editorFormat = "yaml"
+		util.generateTD(window.editorFormat)
 		util.generateOAP(window.editorFormat)
 		util.generateAAP(window.editorFormat)
 	}
@@ -403,26 +415,14 @@ function enableFormatButtons() {
 }
 
 /**
- * Disable format selection buttons
- */
- function disableFormatButtons() {
-	const jsonBtn = document.getElementById('json-format-btn')
-	const yamlBtn = document.getElementById('yaml-format-btn')
-
-	if (!jsonBtn.classList.contains('disabled')) {
-		jsonBtn.classList.toggle('disabled')
-	}
-
-	if (!yamlBtn.classList.contains('disabled')) {
-		yamlBtn.classList.toggle('disabled')
-	}
-}
-
-/**
  * Enable Open/Async API elements according to the protocol schemes of a TD 
  * @param {string} td TD string to check protocols and do enabling accordingly
  */
 function enableAPIConversionWithProtocol(td) {
+	if (window.editorFormat === "yaml") {
+		td = JSON.stringify(jsyaml.load(td))
+	}
+
 	const protocolSchemes = Validators.detectProtocolSchemes(td)
 
 	if (protocolSchemes) {
@@ -484,7 +484,7 @@ require(['vs/editor/editor.main'], async function () {
 	document.getElementById('curtain').style.display = 'none';
 
 	window.editorFormat = "json"
-	window.editorToPrint = window.tdEditor
+	window.currentEditor = window.tdEditor
 
 	const models = [
 		window.tdEditor.getModel(),
