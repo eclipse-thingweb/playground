@@ -79,6 +79,7 @@ function visualize() {
 			td,
 			'#visualized',
 			{
+				h: document.getElementById('visualized-wrapper').offsetHeight,
 				maxLabelWidth: 200,
 				scalingFactor: 5
 			}
@@ -108,7 +109,10 @@ document.querySelectorAll('#graph-vis, #tree-vis').forEach(el => {
 });
 
 document.getElementById("btn_visualize").addEventListener('click', () => {
-	if (visualize()) document.getElementById('visualized-popup-wrapper').style.display = 'block';
+	document.getElementById('visualized-popup-wrapper').style.display = 'block';
+	if (!visualize()) {
+		document.getElementById('visualized-popup-wrapper').style.display = 'none';
+	}
 });
 
 document.getElementById('close-visualized-popup').addEventListener('click', () => {

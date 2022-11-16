@@ -10,8 +10,8 @@ export async function vegaVis($container, td) {
     const conf = {
         "$schema": "https://vega.github.io/schema/vega/v5.json",
         "description": "A radial tree visualization for a W3C Thing Description.",
-        "width": 800,
-        "height": 600,
+        "width": document.getElementById('visualized-wrapper').offsetWidth,
+        "height": document.getElementById('visualized-wrapper').offsetHeight,
         "padding": 5,
 
         "signals": [
