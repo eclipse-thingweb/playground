@@ -17,33 +17,107 @@ export async function vegaVis($container, td) {
         "signals": [
           {
             "name": "labels", "value": true,
-            "bind": {"input": "checkbox"}
+            "bind": {
+              "input": "checkbox",
+              "element": "#vega-bindings-wrapper"
+            }
           },
           {
             "name": "radius", "value": 280,
-            "bind": {"input": "range", "min": 20, "max": 600}
+            "bind": {
+              "input": "range",
+              "min": 20,
+              "max": 600,
+              "element": "#vega-bindings-wrapper"
+            }
           },
           {
             "name": "extent", "value": 360,
-            "bind": {"input": "range", "min": 0, "max": 360, "step": 1}
+            "bind": {
+              "input": "range",
+              "min": 0,
+              "max": 360,
+              "step": 1,
+              "element": "#vega-bindings-wrapper"
+            }
           },
           {
             "name": "rotate", "value": 0,
-            "bind": {"input": "range", "min": 0, "max": 360, "step": 1}
+            "bind": {
+              "input": "range",
+              "min": 0,
+              "max": 360,
+              "step": 1,
+              "element": "#vega-bindings-wrapper"
+            }
+          },
+          {
+            "name": "dragPrecision", "value": 15,
+            "bind": {
+              "input": "range",
+              "min": 1,
+              "max": 100,
+              "step": 1,
+              "name": "drag precision",
+              "element": "#vega-bindings-wrapper"
+            }
           },
           {
             "name": "layout", "value": "tidy",
-            "bind": {"input": "radio", "options": ["tidy", "cluster"]}
+            "bind": {
+              "input": "radio",
+              "options": ["tidy", "cluster"],
+              "element": "#vega-bindings-wrapper"
+            }
           },
           {
             "name": "links", "value": "line",
             "bind": {
               "input": "select",
-              "options": ["line", "curve", "diagonal", "orthogonal"]
+              "options": ["line", "curve", "diagonal", "orthogonal"],
+              "element": "#vega-bindings-wrapper"
             }
           },
-          { "name": "originX", "update": "width / 2" },
-          { "name": "originY", "update": "height / 2" }
+          {
+            "name": "start",
+            "value": null,
+            "on": [
+              {
+                "events": "mousedown",
+                "update": "xy()"
+              }
+            ]
+          },
+          {
+            "name": "drag",
+            "value": null,
+            "on": [
+              {
+                "events": "[mousedown, window:mouseup] > window:mousemove",
+                "update": "xy()"
+              }
+            ]
+          },
+          {
+            "name": "originX",
+            "update": "width / 2",
+            "on": [
+              {
+                "events": { "signal": "drag" },
+                "update": "clamp((drag[0] - start[0]) / dragPrecision + originX, 0, width)"
+              }
+            ]
+          },
+          {
+            "name": "originY",
+            "update": "height / 2",
+            "on": [
+              {
+                "events": { "signal": "drag" },
+                "update": "clamp((drag[1] - start[1]) / dragPrecision + originY, 0, height)"
+              }
+            ]
+          }
         ],
 
         "data": [
