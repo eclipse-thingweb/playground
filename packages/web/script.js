@@ -365,7 +365,7 @@ document.getElementById("yaml-format-btn").addEventListener("click", e => {
 				JSON.parse(window.editor.getModel().getValue())
 			}
 		} catch(err) {
-			alert('JSON is not valid!')
+			alert('TD is not a valid JSON!')
 			e.currentTarget.blur()
 			return
 		}
