@@ -150,7 +150,7 @@ export function offerFileDownload(fileName, content, type) {
  */
  export function generateTD(fileType){
     return new Promise( (res, rej) => {
-        const tdToValidate=window.tdEditor.getValue()
+        const tdToValidate = window.tdEditor.getValue()
 
         if (tdToValidate === "") {
             rej("No TD given to generate TD instance")
@@ -159,25 +159,10 @@ export function offerFileDownload(fileName, content, type) {
             rej("Wrong content type required: " + fileType)
         }
         else {
-            let tdFormat
-
             try {
-                JSON.parse(tdToValidate)
-                tdFormat = "json"
-            } catch (err) {
-                tdFormat = "yaml"
-            }
-
-            try {
-                let content
-
-                if (fileType === tdFormat) {
-                    content = tdToValidate
-                } else {
-                    content = fileType === "json"
-                        ? JSON.stringify(jsyaml.load(tdToValidate), undefined, 4)
-                        : jsyaml.dump(JSON.parse(tdToValidate))
-                }
+                const content = fileType === "json"
+                        ? JSON.stringify(JSON.parse(Validators.convertTDYamlToJson(tdToValidate)), undefined, 4)
+                        : Validators.convertTDJsonToYaml(tdToValidate)
 
                 monaco.editor.setModelLanguage(window.tdEditor.getModel(), fileType)
                 window.tdEditor.getModel().setValue(content)
@@ -195,9 +180,9 @@ export function offerFileDownload(fileName, content, type) {
  */
 export function generateOAP(fileType){
     return new Promise( (res, rej) => {
-        const tdToValidate= window.editorFormat === "json"
-            ? window.editor.getValue()
-            : JSON.stringify(jsyaml.load(window.editor.getValue()))
+        const tdToValidate = window.editorFormat === "json"
+             ? window.tdEditor.getValue()
+             : Validators.convertTDYamlToJson(window.tdEditor.getValue())
 
         if (tdToValidate === "") {
             rej("No TD given to generate OpenAPI instance")
@@ -222,9 +207,9 @@ export function generateOAP(fileType){
  */
 export function generateAAP(fileType){
     return new Promise( (res, rej) => {
-        const tdToValidate= window.editorFormat === "json"
-            ? window.editor.getValue()
-            : JSON.stringify(jsyaml.load(window.editor.getValue()))
+        const tdToValidate = window.editorFormat === "json"
+             ? window.tdEditor.getValue()
+             : Validators.convertTDYamlToJson(window.tdEditor.getValue())
 
         if (tdToValidate === "") {
             rej("No TD given to generate AsyncAPI instance")
@@ -380,7 +365,11 @@ export function exampleSelectHandler(e, obj) {
     else{
         const urlAddr=obj.urlAddrObject[document.getElementById("load_example").value].addr;
         getTdUrl(urlAddr).then( data => {
-            window.editor.setValue(JSON.stringify(data,null,'\t'))
+            if (window.editorFormat === 'json') {
+                window.editor.setValue(JSON.stringify(data,null,'\t'))
+            } else {
+                window.editor.setValue(Validators.convertTDJsonToYaml(JSON.stringify(data)))
+            }
         })
     }
 }
@@ -524,8 +513,9 @@ export function clearLog() {
 /**
  * Save current TD/TM as a compressed string in URL fragment.
  * @param {string} docType "td" or "tm"
+ * @param {string} format "json" or "yaml"
  */
-export async function save(docType) {
+export async function save(docType, format) {
     const value = window.editor.getValue();
 
     if (!value) {
@@ -533,7 +523,7 @@ export async function save(docType) {
         return;
     }
 
-    const data = docType + value;
+    const data = docType + format + value;
     const compressed = Validators.compress(data);
     window.location.hash = compressed;
     await navigator.clipboard.writeText(window.location.href);

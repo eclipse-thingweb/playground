@@ -200,6 +200,13 @@ async function testVisualChromium(page) {
   await loadTestToEditor('OnlyMqtt', page)
   await customShot("OnlyMqtt")
 
+  await page.click("#td-tab")
+  await customShot("td_tab_yaml")
+
+  await page.evaluate(() => {
+    document.getElementById("json-format-btn").click()
+  })
+
   await page.click("#btn_clearLog")
   await myWait(300)
   await customShot("cleared-log")

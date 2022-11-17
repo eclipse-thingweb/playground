@@ -223,7 +223,7 @@ document.getElementById("close_assertion_test_popup").addEventListener("click", 
 	document.getElementById("assertion_test_popup").style.display = "none"
 })
 
-document.getElementById('btn_save').addEventListener('click', () => util.save(docType))
+document.getElementById('btn_save').addEventListener('click', () => util.save(docType, window.editor.getModel().getLanguageId()))
 
 urlAddrObject = util.getExamplesList(docType);  // Fetching list of examples from the given array(in helperFunctions.js).
 util.populateExamples(urlAddrObject);  // Loading the examples given in list from their respective URLs
@@ -264,20 +264,19 @@ function handleEditorTabs() {
 
 			if (name === 'td') {
 				window.activeEditorTab = "td"
-				window.currentEditor = window.tdEditor
+				window.editor = window.tdEditor
 				document.getElementById('btn_save').disabled = false
-				document.getElementById("json-format-btn").click()
 			}
 
 			if (name === 'tm') {
 				window.activeEditorTab = "tm"
-				window.currentEditor = window.tmEditor
+				window.editor = window.tmEditor
 				document.getElementById('btn_save').disabled = false
 			}
 
 			if (name === 'open-api') {
 				window.activeEditorTab = "open-api"
-				window.currentEditor = window.openApiEditor
+				window.editor = window.openApiEditor
 				document.getElementById('btn_save').disabled = true
 				util.generateOAP(window.editorFormat)
 				enableFormatButtons()
@@ -286,7 +285,7 @@ function handleEditorTabs() {
 			if (name === 'async-api') {
 				window.activeEditorTab = "async-api"
 				document.getElementById('btn_save').disabled = true
-				window.currentEditor = window.asyncApiEditor
+				window.editor = window.asyncApiEditor
 				util.generateAAP(window.editorFormat)
 				enableFormatButtons()
 			}
@@ -328,16 +327,16 @@ document.getElementById("editor-print-btn").addEventListener("click", () => {
 	const contentType = `application/${window.editorFormat};charset=utf-8;`
 
 	// Until TD/TM supports YAML
-	if (window.currentEditor === window.tdEditor || window.currentEditor === window.tmEditor) {
+	if (window.editor === window.tdEditor || window.editor === window.tmEditor) {
 		util.offerFileDownload(
 			`${window.activeEditorTab}.json`,
-			window.currentEditor.getModel().getValue(),
+			window.editor.getModel().getValue(),
 			contentType
 		)
 	} else {
 		util.offerFileDownload(
 			`${window.activeEditorTab}.${window.editorFormat}`,
-			window.currentEditor.getModel().getValue(),
+			window.editor.getModel().getValue(),
 			contentType
 		)
 	}
@@ -348,6 +347,7 @@ document.getElementById("json-format-btn").addEventListener("click", e => {
 		const button = document.getElementById('yaml-format-btn')
 		button.classList.toggle('active')
 		e.currentTarget.classList.toggle('active')
+		enableJsonOnlyElements()
 
 		window.editorFormat = "json"
 		util.generateTD(window.editorFormat)
@@ -360,7 +360,18 @@ let yamlFormatBtnClickCount = 0
 
 document.getElementById("yaml-format-btn").addEventListener("click", e => {
 	if (!e.currentTarget.classList.contains("active")) {
-		if (yamlFormatBtnClickCount === 0 && window.currentEditor === window.tdEditor) {
+		try {
+			if (window.editor === window.tdEditor) {
+				JSON.parse(window.editor.getModel().getValue())
+			}
+		} catch(err) {
+			alert('JSON is not valid!')
+			e.currentTarget.blur()
+			return
+		}
+
+
+		if (yamlFormatBtnClickCount === 0 && window.editor === window.tdEditor) {
 			alert('YAML conversion for TD is still experimental. '
 				+ 'If you want to convert your TD to YAML format, please click YAML button again.')
 			yamlFormatBtnClickCount++
@@ -372,6 +383,7 @@ document.getElementById("yaml-format-btn").addEventListener("click", e => {
 		const button = document.getElementById('json-format-btn')
 		button.classList.toggle('active')
 		e.currentTarget.classList.toggle('active')
+		disableJsonOnlyElements()
 
 		window.editorFormat = "yaml"
 		util.generateTD(window.editorFormat)
@@ -381,19 +393,19 @@ document.getElementById("yaml-format-btn").addEventListener("click", e => {
 })
 
 /**
- * Activate html elements with class onlyWithTd
+ * Enable html elements with class jsonOnly
  */
-function activateOnlyWithTdElements() {
-	document.querySelectorAll('.onlyWithTd').forEach(e => {
+function enableJsonOnlyElements() {
+	document.querySelectorAll('.jsonOnly').forEach(e => {
 		e.disabled = false
 	})
 }
 
 /**
- * Disable html elements with class onlyWithTd
+ * Disable html elements with class jsonOnly
  */
-function disableOnlyWithTdElements() {
-	document.querySelectorAll('.onlyWithTd').forEach(e => {
+function disableJsonOnlyElements() {
+	document.querySelectorAll('.jsonOnly').forEach(e => {
 		e.disabled = true
 	})
 }
@@ -420,7 +432,7 @@ function enableFormatButtons() {
  */
 function enableAPIConversionWithProtocol(td) {
 	if (window.editorFormat === "yaml") {
-		td = JSON.stringify(jsyaml.load(td))
+		td = Validators.convertTDYamlToJson(td)
 	}
 
 	const protocolSchemes = Validators.detectProtocolSchemes(td)
@@ -447,21 +459,32 @@ require(['vs/editor/editor.main'], async function () {
 	// Determine new doc type and editor value if present as exported URL
 	const value = util.getEditorValue(window.location.hash.substring(1));
 	const newDocType = value.substring(0, 2);
+	window.editorFormat = value ? value.substring(2, 6) : "json"
+
+	if (window.editorFormat === 'yaml') {
+		const jsonBtn = document.getElementById('json-format-btn')
+		const yamlBtn = document.getElementById('yaml-format-btn')
+
+		jsonBtn.classList.toggle('active')
+		yamlBtn.classList.toggle('active')
+
+		disableJsonOnlyElements()
+	}
 
 	docType = newDocType;
 	onDocTypeChange(docType);
 
 	// Create globally available TD editor
 	window.tdEditor = monaco.editor.create(document.getElementById('td-editor'), {
-		value: (docType === 'td') ? value.substring(2) : '',
-		language: 'json',
+		value: (docType === 'td') ? value.substring(6) : '',
+		language: window.editorFormat,
 		// Without automaticLayout editor will not be built inside hidden div
 		automaticLayout: true
 	});
 
 	// Create globally available TM editor
 	window.tmEditor = monaco.editor.create(document.getElementById('tm-editor'), {
-		value: (docType === 'tm') ? value.substring(2) : '',
+		value: (docType === 'tm') ? value.substring(6) : '',
 		language: 'json',
 		automaticLayout: true
 	});
@@ -483,8 +506,9 @@ require(['vs/editor/editor.main'], async function () {
 	window.editor = (docType === 'td') ? window.tdEditor : window.tmEditor;
 	document.getElementById('curtain').style.display = 'none';
 
-	window.editorFormat = "json"
-	window.currentEditor = window.tdEditor
+	if (docType === 'td') {
+		enableAPIConversionWithProtocol(window.editor.getModel().getValue())
+	}
 
 	const models = [
 		window.tdEditor.getModel(),
@@ -497,12 +521,6 @@ require(['vs/editor/editor.main'], async function () {
 			if (model === window.tdEditor.getModel()) {
 				markTypos(model);
 				enableAPIConversionWithProtocol(model.getValue())
-
-				if (model.getValue() === "") {
-					disableOnlyWithTdElements()
-				} else {
-					activateOnlyWithTdElements()
-				}
 			}
 
 			util.validate('auto', autoValidate, docType);

@@ -3,6 +3,7 @@ const Ajv = require("ajv")
 const addFormats = require("ajv-formats")
 const apply = require('ajv-formats-draft2019')
 const lzs = require('lz-string')
+const jsYaml = require('js-yaml')
 
 const coreAssertions = require("./shared")
 const tdSchema = require("./td-schema.json")
@@ -21,6 +22,8 @@ module.exports.decompress = decompress
 module.exports.checkTypos = checkTypos
 module.exports.checkTmOptionalPointer = coreAssertions.checkTmOptionalPointer
 module.exports.detectProtocolSchemes = detectProtocolSchemes
+module.exports.convertTDJsonToYaml = convertTDJsonToYaml
+module.exports.convertTDYamlToJson = convertTDYamlToJson
 
 const jsonValidator = require('json-dup-key-validator')
 
@@ -993,7 +996,7 @@ const TYPO_LOOKUP_TABLE = createSchemaLookupTable(tdSchema)
     try {
         tdJson = JSON.parse(td)
     } catch(err) {
-        console.log("Error occurred while parsing JSON!")
+        console.log("checkTypos: Error occurred while parsing JSON!")
     }
 
     searchTypos(typos, tdJson, lookupTable, searchDepth, searchPath)
@@ -1315,7 +1318,7 @@ function detectProtocolSchemes(td) {
     try {
         tdJson = JSON.parse(td)
     } catch(err) {
-        console.log("Error occurred while parsing JSON!")
+        console.log("detectProtocolSchemes: Error occurred while parsing JSON!")
     }
 
     if (!tdJson) {
@@ -1389,4 +1392,38 @@ function getHrefProtocol(href) {
     }
 
     return href.split(':')[0]
+}
+
+/**
+ * Convert TD from json to yaml
+ * @param {string} td TD in json string form
+ * @returns TD in yaml string form
+ */
+function convertTDJsonToYaml(td) {
+    if (td === "") {
+        return
+    }
+
+    try {
+        return jsYaml.dump(JSON.parse(td))
+    } catch(err) {
+        console.log("TD generation problem: " + err)
+    }
+}
+
+/**
+ * Convert TD from json to yaml
+ * @param {string} td TD in yaml string from
+ * @returns TD in json string form
+ */
+function convertTDYamlToJson(td) {
+    if (td === "") {
+        return
+    }
+
+    try {
+        return JSON.stringify(jsYaml.load(td))
+    } catch (err) {
+        console.log("TD generation problem: " + err)
+    }
 }

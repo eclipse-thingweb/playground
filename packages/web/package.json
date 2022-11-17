@@ -27,7 +27,6 @@
     "@thing-description-playground/td_to_openapi": "^1.2.2",
     "bootstrap-css-only": "^4.4.1",
     "bootstrap-switch-button": "^1.1.0",
-    "js-yaml": "^4.1.0",
     "monaco-editor": "^0.34.0",
     "papaparse": "^5.3.2",
     "svg-crowbar": "^0.7.0"
