@@ -11,6 +11,7 @@ const jsonValidator = require('json-dup-key-validator')
 // This is used to validate if the multi language JSON keys are valid according to the BCP47 spec
 const bcp47pattern = /^(?:(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE)|(art-lojban|cel-gaulish|no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))$|^((?:[a-z]{2,3}(?:(?:-[a-z]{3}){1,3})?)|[a-z]{4}|[a-z]{5,8})(?:-([a-z]{4}))?(?:-([a-z]{2}|\d{3}))?((?:-(?:[\da-z]{5,8}|\d[\da-z]{3}))*)?((?:-[\da-wy-z](?:-[\da-z]{2,8})+)*)?(-x(?:-[\da-z]{1,8})+)?$|^(x(?:-[\da-z]{1,8})+)$/i // eslint-disable-line max-len
 
+const fetch = require("node-fetch");
 
 module.exports =  {
     checkPropUniqueness,
@@ -18,7 +19,8 @@ module.exports =  {
     checkMultiLangConsistency,
     checkLinksRelTypeCount,
     checkUriSecurity,
-    checkTmOptionalPointer
+    checkTmOptionalPointer,
+    tmOptional,
 }
 
 /**
@@ -941,3 +943,92 @@ function checkTmOptionalPointer(td){
 
     return results
  }
+
+
+ // ---------- Advanced TM Validation ----------
+
+/**
+ * Given a TD check it has all affrodances specified in the related TM
+ * except for those in the tm:optional field.
+ * @param {object} td A TD to check
+ */
+async function tmOptional(td) {
+    if (!td.links) return false;
+
+    let typeLink = td.links.filter(e => e.rel === 'type');
+    if (typeLink.length !== 1) return false;
+    typeLink = typeLink[0];
+
+    const tm = await (await fetch(typeLink.href)).json();
+
+    let tmAffordances = {};
+    for (const affordanceType of ['properties', 'actions', 'events']) {
+        tmAffordances[affordanceType] = {
+            all: Object.keys(tm[affordanceType] || {}),
+            optional: (tm['tm:optional'] || []).map(e => {
+                const x = e.split('/');
+                if (x[1] === affordanceType) return x[2];
+                return null;
+            }).filter(e => e),
+        };
+    }
+
+    // Check if arr2 is subset of arr1,
+    // i.e., all elements of arr2 are contained in arr1
+    const isSubset = (arr1, arr2) => arr2.every((e) => arr1.includes(e));
+
+    for (const affordanceType of ['properties', 'actions', 'events']) {
+        // Combine all and optional into one => required
+        const required = tmAffordances[affordanceType].all.filter(
+            e => !tmAffordances[affordanceType].optional.includes(e));
+
+        if (!isSubset(Object.keys(td[affordanceType]), required)) {
+            // Some required fields are missing
+            return false;
+        }
+    }
+
+    return true;
+}
+
+ const TD_TO_CHECK = {
+     "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "@type": "Thing",
+    "id": "urn:example:123-321-123-321",
+    "title": "MyLampThing",
+    "description": "My very lamp thingy.",
+	"version" : {"instance": "1.0.0", "model": "1.0.0" },
+	"links" : [{
+		"rel": "type",
+		"href": "http://127.0.0.1:5500/packages/core/TM_TO_CHECK.json",
+		"type": "application/tm+json"
+	}],
+    "securityDefinitions": {
+        "basic_sc": {"scheme": "basic", "in": "header"}
+    },
+    "security": "basic_sc",
+    "properties": {
+        "status": {
+            "type": "string",
+            "forms": [{"href": "https://mylamp.example.com/status"}]
+        }
+    },
+    "actions": {
+        "notToggle": {
+            "forms": [{"href": "https://mylamp.example.com/toggle"}]
+        }
+    },
+    "events": {
+        "notOverheating": {
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "https://mylamp.example.com/oh",
+                "subprotocol": "longpoll"
+            }]
+        }
+    }
+};
+
+(async () => {
+ console.log(await tmOptional(TD_TO_CHECK));
+})();
