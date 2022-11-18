@@ -438,16 +438,24 @@ function enableAPIConversionWithProtocol(td) {
 	const protocolSchemes = Validators.detectProtocolSchemes(td)
 
 	if (protocolSchemes) {
+		const openApiTab = document.getElementById("open-api-tab")
+
 		if (["http", "https"].some(p => protocolSchemes.includes(p))) {
-			document.getElementById("open-api-tab").hidden = false
+			openApiTab.disabled = false
+			openApiTab.title = ''
 		} else {
-			document.getElementById("open-api-tab").hidden = true
+			openApiTab.disabled = true
+			openApiTab.title = 'Please insert a TD which uses HTTP'
 		}
 
+		const asyncApiTab = document.getElementById("async-api-tab")
+
 		if (["mqtt", "mqtts"].some(p => protocolSchemes.includes(p))) {
-			document.getElementById("async-api-tab").hidden = false
+			asyncApiTab.disabled = false
+			asyncApiTab.title = ''
 		} else {
-			document.getElementById("async-api-tab").hidden = true
+			asyncApiTab.disabled = true
+			asyncApiTab.title = 'Please insert a TD which uses MQTT'
 		}
 	}
 }

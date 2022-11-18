@@ -365,10 +365,14 @@ export function exampleSelectHandler(e, obj) {
     else{
         const urlAddr=obj.urlAddrObject[document.getElementById("load_example").value].addr;
         getTdUrl(urlAddr).then( data => {
-            if (window.editorFormat === 'json') {
-                window.editor.setValue(JSON.stringify(data,null,'\t'))
+            if (window.editor === window.tdEditor) {
+                if (window.editorFormat === 'json') {
+                    window.editor.setValue(JSON.stringify(data,null,'\t'))
+                } else {
+                    window.editor.setValue(Validators.convertTDJsonToYaml(JSON.stringify(data)))
+                }
             } else {
-                window.editor.setValue(Validators.convertTDJsonToYaml(JSON.stringify(data)))
+                window.editor.setValue(JSON.stringify(data,null,'\t'))
             }
         })
     }
