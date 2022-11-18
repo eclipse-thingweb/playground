@@ -3,6 +3,7 @@ const Ajv = require("ajv")
 const addFormats = require("ajv-formats")
 const apply = require('ajv-formats-draft2019')
 const lzs = require('lz-string')
+const jsYaml = require('js-yaml')
 
 const coreAssertions = require("./shared")
 const tdSchema = require("./td-schema.json")
@@ -20,6 +21,9 @@ module.exports.compress = compress
 module.exports.decompress = decompress
 module.exports.checkTypos = checkTypos
 module.exports.checkTmOptionalPointer = coreAssertions.checkTmOptionalPointer
+module.exports.detectProtocolSchemes = detectProtocolSchemes
+module.exports.convertTDJsonToYaml = convertTDJsonToYaml
+module.exports.convertTDYamlToJson = convertTDYamlToJson
 
 const jsonValidator = require('json-dup-key-validator')
 
@@ -979,7 +983,7 @@ const TYPO_LOOKUP_TABLE = createSchemaLookupTable(tdSchema)
 /**
  * Checks possible typos in a TD
  * @param {object} td The TD to apply typo check on
- * @returns List of possible typos where the typo consists of string value of typo itself and the message, another string value, to be prompted to the user for the fix 
+ * @returns List of possible typos where the typo consists of string value of typo itself and the message, another string value, to be prompted to the user for the fix
  */
  function checkTypos(td) {
     const typos = []
@@ -992,7 +996,7 @@ const TYPO_LOOKUP_TABLE = createSchemaLookupTable(tdSchema)
     try {
         tdJson = JSON.parse(td)
     } catch(err) {
-        console.log("Error occurred while parsing JSON!")
+        console.log("checkTypos: Error occurred while parsing JSON!")
     }
 
     searchTypos(typos, tdJson, lookupTable, searchDepth, searchPath)
@@ -1168,7 +1172,7 @@ function findPathsInSchema(lookupTable, schema, path) {
  * Stores the keys under a specific path
  * @param {Map} lookupTable The map that stores the paths in the schema
  * @param {string} path The path that is owner of the current keys
- * @param {Set} keys The set of keys that is going to be put 
+ * @param {Set} keys The set of keys that is going to be put
  */
 function putKeysToPath(lookupTable, path, keys) {
     pathKeys = lookupTable.get(path)
@@ -1188,7 +1192,7 @@ function putKeysToPath(lookupTable, path, keys) {
 /**
  * Gets the reference object in the schema
  * @param {object} schema The object that represent the schema
- * @param {string} ref The reference value in the schema 
+ * @param {string} ref The reference value in the schema
  * @returns The reference object the ref maps to
  */
 function getRefObjectOfSchema(schema, ref) {
@@ -1301,4 +1305,125 @@ function calculateSimilarity(actual, desired) {
   }
 
   return similarity
+}
+
+/**
+ * Detect protocl schemes of a TD
+ * @param {string} td TD string to detect protocols of
+ * return List of available protocol schemes
+ */
+function detectProtocolSchemes(td) {
+    let tdJson
+
+    try {
+        tdJson = JSON.parse(td)
+    } catch(err) {
+        console.log("detectProtocolSchemes: Error occurred while parsing JSON!")
+    }
+
+    if (!tdJson) {
+        return []
+    }
+
+    const baseUriProtocol = getHrefProtocol(tdJson.base)
+    const thingProtocols = detectProtocolInForms(tdJson.forms)
+    const actionsProtocols = detectProtocolInAffordance(tdJson.actions)
+    const eventsProtocols = detectProtocolInAffordance(tdJson.events)
+    const propertiesProtcols = detectProtocolInAffordance(tdJson.properties)
+    const protocolSchemes = [... new Set([
+        baseUriProtocol,
+        ...thingProtocols,
+        ...actionsProtocols,
+        ...eventsProtocols,
+         ...propertiesProtcols
+    ])].filter(p => p !== undefined)
+
+    return protocolSchemes
+}
+
+/**
+ * Detect protocols in a TD affordance
+ * @param {object} affordance That belongs to a TD
+ * @returns List of protocol schemes
+ */
+function detectProtocolInAffordance(affordance) {
+    if (!affordance) {
+        return []
+    }
+
+    let protocolSchemes = []
+
+    for (const key in affordance) {
+        if (key) {
+            protocolSchemes = protocolSchemes.concat(detectProtocolInForms(affordance[key].forms))
+        }
+    }
+
+    return protocolSchemes
+}
+
+/**
+ * Detect protocols in a TD forms or a TD affordance forms
+ * @param {object} forms Forms field of a TD or a TD affordance
+ * @returns List of protocol schemes
+ */
+function detectProtocolInForms(forms) {
+    if (!forms) {
+        return []
+    }
+
+    const protocolSchemes = []
+
+    forms.forEach(form => {
+        protocolSchemes.push(getHrefProtocol(form.href))
+    })
+
+    return protocolSchemes
+}
+
+/**
+ * Get protocol used in href
+ * @param {string} href URI string
+ * @returns Protocol name
+ */
+function getHrefProtocol(href) {
+    if (!href) {
+        return
+    }
+
+    return href.split(':')[0]
+}
+
+/**
+ * Convert TD from json to yaml
+ * @param {string} td TD in json string form
+ * @returns TD in yaml string form
+ */
+function convertTDJsonToYaml(td) {
+    if (td === "") {
+        return
+    }
+
+    try {
+        return jsYaml.dump(JSON.parse(td))
+    } catch(err) {
+        console.log("TD generation problem: " + err)
+    }
+}
+
+/**
+ * Convert TD from json to yaml
+ * @param {string} td TD in yaml string from
+ * @returns TD in json string form
+ */
+function convertTDYamlToJson(td) {
+    if (td === "") {
+        return
+    }
+
+    try {
+        return JSON.stringify(jsYaml.load(td))
+    } catch (err) {
+        console.log("TD generation problem: " + err)
+    }
 }
