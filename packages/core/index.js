@@ -983,7 +983,8 @@ const TYPO_LOOKUP_TABLE = createSchemaLookupTable(tdSchema)
 /**
  * Checks possible typos in a TD
  * @param {object} td The TD to apply typo check on
- * @returns List of possible typos where the typo consists of string value of typo itself and the message, another string value, to be prompted to the user for the fix
+ * @returns List of possible typos where the typo consists of string value of typo itself and the message, another string value,
+ * to be prompted to the user for the fix
  */
  function checkTypos(td) {
     const typos = []
@@ -996,7 +997,7 @@ const TYPO_LOOKUP_TABLE = createSchemaLookupTable(tdSchema)
     try {
         tdJson = JSON.parse(td)
     } catch(err) {
-        console.log("checkTypos: Error occurred while parsing JSON!")
+        return typos
     }
 
     searchTypos(typos, tdJson, lookupTable, searchDepth, searchPath)
@@ -1318,10 +1319,6 @@ function detectProtocolSchemes(td) {
     try {
         tdJson = JSON.parse(td)
     } catch(err) {
-        console.log("detectProtocolSchemes: Error occurred while parsing JSON!")
-    }
-
-    if (!tdJson) {
         return []
     }
 
