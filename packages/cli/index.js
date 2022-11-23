@@ -348,7 +348,7 @@ function fileLoader(loc) {
  * handle arguments to call the core validation
  * and write outputs accordingly
  */
-function coreValidation() {
+function coreValidation(input) {
     let tdToCheck = ""
 
     if (!input) { input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds") }
@@ -529,7 +529,7 @@ function statResult(keyword, report) {
 /**
  * generate an openAPI instance from a TD provided as input
  */
-function openApiGeneration() {
+function openApiGeneration(input) {
     // input checks
     if (!input) { input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid", "simple.json") }
     if (!fs.lstatSync(input).isFile()) {
@@ -553,7 +553,7 @@ function openApiGeneration() {
     })
 }
 
-function asyncApiGeneration() {
+function asyncApiGeneration(input) {
     // input checks
     if (!input) { input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid", "simple.json") }
     if (!fs.lstatSync(input).isFile()) {
@@ -580,7 +580,7 @@ function asyncApiGeneration() {
 /**
  * add/remove defaults from
  */
-function defaultManipulation() {
+function defaultManipulation(input) {
     // input checks
     if (!input) { input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid", "simple.json") }
     if (!fs.lstatSync(input).isFile()) {
@@ -722,7 +722,7 @@ function tmAssertionReport(input) {
  * handle arguments to call the core validation
  * and write outputs accordingly
  */
-function tmCoreValidation() {
+function tmCoreValidation(input) {
     let tmToCheck = ""
 
     if (!input) { input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tms") }
