@@ -120,8 +120,8 @@ function tdValidator(tdString, logFunc, { checkDefaults = true, checkJsonLd = tr
 
             report.schema = "passed"
             suite.testCase()
-                .className('tdValidator')
-                .name('Schema Validation')
+                .className("tdValidator")
+                .name("Schema Validation")
                 .time((process.hrtime(start)[1] / 100000))
 
             // check with full schema
@@ -132,14 +132,14 @@ function tdValidator(tdString, logFunc, { checkDefaults = true, checkJsonLd = tr
                 if (fullValid) {
                     report.defaults = "passed"
                     suite.testCase()
-                        .className('tdValidator')
+                        .className("tdValidator")
                         .name("Defaults Validation")
                         .time((process.hrtime(start)[1] / 100000))
                 }
                 else {
                     report.defaults = "warning"
                     suite.testCase()
-                        .className('tdValidator')
+                        .className("tdValidator")
                         .name("Defaults Validation")
                         .time((process.hrtime(start)[1] / 100000))
                         .error(ajv.errorsText(filterErrorMessages(ajv.errors)))
@@ -179,18 +179,18 @@ function tdValidator(tdString, logFunc, { checkDefaults = true, checkJsonLd = tr
             })
             if (report.additional === "passed") {
                 suite.testCase()
-                    .className('tdValidator')
+                    .className("tdValidator")
                     .name("Additional Validation")
                     .time((process.hrtime(start)[1] / 100000))
             } else if (report.additional === "warning") {
                 suite.testCase()
-                    .className('tdValidator')
+                    .className("tdValidator")
                     .name("Additional Validation")
                     .time((process.hrtime(start)[1] / 100000))
                     .error("Warning!")
             } else {
                 suite.testCase()
-                    .className('tdValidator')
+                    .className("tdValidator")
                     .name("Additional Validation")
                     .time((process.hrtime(start)[1] / 100000))
                     .failure()
@@ -219,14 +219,14 @@ function tdValidator(tdString, logFunc, { checkDefaults = true, checkJsonLd = tr
             }).then(nquads => {
                 report.jsonld = "passed"
                 suite.testCase()
-                    .className('tdValidator')
+                    .className("tdValidator")
                     .name("JSON LD Validation")
                     .time((process.hrtime(start)[1] / 100000))
                 res({ report, details, detailComments })
             }, err => {
                 report.jsonld = "failed"
                 suite.testCase()
-                    .className('tdValidator')
+                    .className("tdValidator")
                     .name("JSON LD Validation")
                     .time((process.hrtime(start)[1] / 100000))
                     .failure(err)
@@ -617,8 +617,8 @@ function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = tr
             tmJson = JSON.parse(tmString)
             report.json = "passed"
             suite.testCase()
-                .className('tdValidator')
-                .name('JSON Validation')
+                .className("tdValidator")
+                .name("JSON Validation")
                 .time((process.hrtime(start)[1] / 100000))
         }
         catch (err) {
@@ -626,10 +626,10 @@ function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = tr
             logFunc('X JSON validation failed:')
             logFunc(err)
             suite.testCase()
-                .className('tdValidator')
-                .name('JSON Validation')
+                .className("tdValidator")
+                .name("JSON Validation")
                 .time((process.hrtime(start)[1] / 100000))
-                .failure('Not a valid JSON file')
+                .failure("Not a valid JSON file")
             res({ report, details, detailComments })
         }
 
@@ -645,8 +645,8 @@ function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = tr
 
             report.schema = "passed"
             suite.testCase()
-                .className('tdValidator')
-                .name('Schema Validation')
+                .className("tdValidator")
+                .name("Schema Validation")
                 .time((process.hrtime(start)[1] / 100000))
 
             // do additional checks
@@ -702,14 +702,14 @@ function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = tr
             }).then(nquads => {
                 report.jsonld = "passed"
                 suite.testCase()
-                    .className('tdValidator')
+                    .className("tdValidator")
                     .name("JSON LD Validation")
                     .time((process.hrtime(start)[1] / 100000))
                 res({ report, details, detailComments })
             }, err => {
                 report.jsonld = "failed"
                 suite.testCase()
-                    .className('tdValidator')
+                    .className("tdValidator")
                     .name("JSON LD Validation")
                     .time((process.hrtime(start)[1] / 100000))
                     .failure(err)
