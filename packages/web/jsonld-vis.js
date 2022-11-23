@@ -85,9 +85,17 @@ export function jsonldVis(jsonld, selector, config) {
           }
         );
       } else {
-        const d = (`${source[key]}`.length > maxLabelWidth / 9) ? {
+
+        const truncateValue = (value, limit) => {
+          value = value.slice(0, limit);
+          if (value.getDirection() === 'rtl') return `...${value}`;
+          return `${value}...`;
+        };
+
+        const limit = Math.floor(maxLabelWidth / 9);
+        const d = (`${source[key]}`.length > limit) ? {
           name: key,
-          value: source[key].slice(0, Math.floor(maxLabelWidth / 9)) + '...',
+          value: truncateValue(source[key], limit),
           valueExtended: source[key]
         } : {
           name: key,

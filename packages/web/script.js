@@ -17,6 +17,7 @@ let visType = "graph"
 let urlAddrObject
 
 handleEditorTabs()
+stringDirection.patch()
 
 const tdRelated = [];
 [].forEach.call(document.querySelectorAll('.td-related'), el => {
