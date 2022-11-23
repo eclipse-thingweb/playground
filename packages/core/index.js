@@ -182,6 +182,12 @@ function tdValidator(tdString, logFunc, { checkDefaults = true, checkJsonLd = tr
                     .className('tdValidator')
                     .name("Additional Validation")
                     .time((process.hrtime(start)[1] / 100000))
+            } else if (report.additional === "warning") {
+                suite.testCase()
+                    .className('tdValidator')
+                    .name("Additional Validation")
+                    .time((process.hrtime(start)[1] / 100000))
+                    .error("Warning!")
             } else {
                 suite.testCase()
                     .className('tdValidator')
@@ -558,7 +564,7 @@ function tdValidator(tdString, logFunc, { checkDefaults = true, checkJsonLd = tr
  * @param {object} options additional options, which checks should be executed
  * @returns {Promise<object>} Results of the validation as {report, details, detailComments} object
  */
-function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = true }) {
+function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = true }, suite) {
     return new Promise((res, rej) => {
 
         // check input
@@ -571,6 +577,9 @@ function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = tr
             checkJsonLd = true
         }
         if (typeof logFunc !== "function") { rej("Expected logFunc to be a function") }
+        if (suite === undefined) {
+            suite = builder.testSuite().name("tests")
+        }
 
         // report that is returned by the function, possible values for every property:
         // null -> not tested, "passed", "failed", "warning"
@@ -602,19 +611,29 @@ function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = tr
             tmOptionalPointer: "Checking whether tm:optional points to an actual affordance"
         }
 
+        let start = process.hrtime()
         let tmJson
         try {
             tmJson = JSON.parse(tmString)
             report.json = "passed"
+            suite.testCase()
+                .className('tdValidator')
+                .name('JSON Validation')
+                .time((process.hrtime(start)[1] / 100000))
         }
         catch (err) {
             report.json = "failed"
-            logFunc("X JSON validation failed:")
+            logFunc('X JSON validation failed:')
             logFunc(err)
-
+            suite.testCase()
+                .className('tdValidator')
+                .name('JSON Validation')
+                .time((process.hrtime(start)[1] / 100000))
+                .failure('Not a valid JSON file')
             res({ report, details, detailComments })
         }
 
+        start = process.hrtime()
         let ajv = new Ajv({ strict: false }) // options can be passed, e.g. {allErrors: true}
         ajv = addFormats(ajv) // ajv does not support formats by default anymore
         ajv = apply(ajv) // new formats that include iri
@@ -625,6 +644,10 @@ function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = tr
         if (valid) {
 
             report.schema = "passed"
+            suite.testCase()
+                .className('tdValidator')
+                .name('Schema Validation')
+                .time((process.hrtime(start)[1] / 100000))
 
             // do additional checks
             checkEnumConst(tmJson)
@@ -659,6 +682,11 @@ function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = tr
         } else {
 
             report.schema = "failed"
+            suite.testCase()
+                .className("tdValidator")
+                .name("Schema Validation")
+                .time((process.hrtime(start)[1] / 100000))
+                .failure(ajv.errorsText(filterErrorMessages(ajv.errors)))
             logFunc("X JSON Schema validation failed:")
 
             logFunc('> ' + ajv.errorsText(filterErrorMessages(ajv.errors)))
@@ -668,13 +696,23 @@ function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = tr
 
         // json ld validation
         if (checkJsonLd) {
+            start = process.hrtime()
             jsonld.toRDF(tmJson, {
                 format: 'application/nquads'
             }).then(nquads => {
                 report.jsonld = "passed"
+                suite.testCase()
+                    .className('tdValidator')
+                    .name("JSON LD Validation")
+                    .time((process.hrtime(start)[1] / 100000))
                 res({ report, details, detailComments })
             }, err => {
                 report.jsonld = "failed"
+                suite.testCase()
+                    .className('tdValidator')
+                    .name("JSON LD Validation")
+                    .time((process.hrtime(start)[1] / 100000))
+                    .failure(err)
                 logFunc("X JSON-LD validation failed:")
                 logFunc("Hint: Make sure you have internet connection available.")
                 logFunc('> ' + err)

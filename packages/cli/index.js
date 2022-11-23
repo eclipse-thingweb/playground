@@ -391,6 +391,9 @@ function coreValidation() {
                     console.log("\nValidity test NOT successful, ", validCount, "/", validNames.length, "passed the validity test")
                 }
             }, err => { console.error("\nValid TD Check broken! " + err) })
+            if (myArguments.junit) {
+                builder.writeTo("junit-tests.xml")
+            }
         }
 
         const invalidPath = path.join(input, "invalid")
@@ -429,6 +432,9 @@ function coreValidation() {
                     )
                 }
             }, err => { console.error("\nInvalid TD Check broken!" + err) })
+            if (myArguments.junit) {
+                builder.writeTo("junit-tests.xml")
+            }
         }
 
         const warnPath = path.join(input, "warning")
@@ -732,7 +738,8 @@ function tmCoreValidation() {
             validNames.forEach(el => {
                 if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                     tmToCheck = fs.readFileSync(path.join(validPath, el), "utf-8")
-                    const thisProm = tmValidator(tmToCheck, console.log, { checkDefaults: false })
+                    let suite = builder.testSuite().name(el)
+                    const thisProm = tmValidator(tmToCheck, console.log, { checkDefaults: false }, suite)
                         .then(result => {
                             if (statResult("failed", result.report)) {
                                 console.log(el, "was supposed to be valid but gave error")
@@ -758,6 +765,9 @@ function tmCoreValidation() {
                     console.log("\nValidity test NOT successful, ", validCount, "/", validNames.length, "passed the validity test")
                 }
             }, err => { console.error("\nValid TD Check broken! " + err) })
+            if (myArguments.junit) {
+                builder.writeTo("junit-tests.xml")
+            }
         }
 
         const invalidPath = path.join(input, "invalid")
@@ -769,7 +779,8 @@ function tmCoreValidation() {
             invalidNames.forEach(el => {
                 if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                     tmToCheck = fs.readFileSync(path.join(invalidPath, el), "utf-8")
-                    const thisProm = tmValidator(tmToCheck, console.log, { checkDefaults: false })
+                    let suite = builder.testSuite().name(el)
+                    const thisProm = tmValidator(tmToCheck, console.log, { checkDefaults: false }, suite)
                         .then(result => {
                             if (statResult("failed", result.report)) {
                                 invalidCount++
@@ -795,6 +806,9 @@ function tmCoreValidation() {
                     )
                 }
             }, err => { console.error("\nInvalid TD Check broken!" + err) })
+            if (myArguments.junit) {
+                builder.writeTo("junit-tests.xml")
+            }
         }
 
         const warnPath = path.join(input, "warning")
@@ -806,7 +820,8 @@ function tmCoreValidation() {
             warnNames.forEach(el => {
                 if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                     tmToCheck = fs.readFileSync(path.join(warnPath, el), "utf-8")
-                    const thisProm = tmValidator(tmToCheck, console.log, { checkDefaults: true })
+                    let suite = builder.testSuite().name(el)
+                    const thisProm = tmValidator(tmToCheck, console.log, { checkDefaults: true }, suite)
                         .then(result => {
                             if (statResult("failed", result.report)) {
                                 console.log(el, "was supposed to give a warning but gave error")
@@ -834,20 +849,25 @@ function tmCoreValidation() {
                     console.log("\nWarning test NOT successful, ", warnCount, "/", warnNames.length, "passed the warning test")
                 }
             }, err => { console.error("\nWarning TD Check broken!" + err) })
+            if (myArguments.junit) {
+                builder.writeTo("junit-tests.xml")
+            }
         }
 
         // check TDs contained in the directory
         fs.readdirSync(input).forEach(el => {
             if (el.endsWith(".json") || el.endsWith(".jsonld")) {
+                let suite = builder.testSuite().name(el)
                 tmToCheck = fs.readFileSync(path.join(input, el), "utf-8")
-                checkTm(tmToCheck)
+                checkTm(tmToCheck, suite)
             }
         })
 
     }
     else {
+        let suite = builder.testSuite().name(el)
         tmToCheck = fs.readFileSync(input, "utf-8")
-        checkTm(tmToCheck)
+        checkTm(tmToCheck, suite)
     }
 }
 
@@ -897,13 +917,16 @@ function assertTm(tms, type, tmsToMerge, manualAssertions, doneEventEmitter) {
  * subfunction of coreValidation
  * @param {*} tm
  */
-function checkTm(tm) {
+function checkTm(tm, suite) {
 
-    tmValidator(tm, console.log, { checkDefaults: myArguments.defaults, checkJsonLd: myArguments.jsonld })
+    tmValidator(tm, console.log, { checkDefaults: myArguments.defaults, checkJsonLd: myArguments.jsonld }, suite)
         .then(result => {
             console.log("OKAY \n")
             console.log("\n")
             console.log("--- Report ---\n", result, "\n--------------")
+            if (myArguments.junit) {
+                builder.writeTo("junit-tests.xml")
+            }
         }, err => {
             console.log("ERROR")
             console.error(err)
