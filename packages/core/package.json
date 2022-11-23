@@ -26,7 +26,8 @@
     "js-yaml": "^4.1.0",
     "json-dup-key-validator": "^1.0.3",
     "jsonld": "^4.0.1",
-    "lz-string": "^1.4.4"
+    "lz-string": "^1.4.4",
+    "junit-report-builder": "^3.0.1"
   },
   "devDependencies": {
     "browserify": "^17.0.0",

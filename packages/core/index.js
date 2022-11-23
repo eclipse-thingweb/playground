@@ -9,6 +9,7 @@ const coreAssertions = require("./shared")
 const tdSchema = require("./td-schema.json")
 const fullTdSchema = require("./td-schema-full.json")
 const tmSchema = require("./tm-schema.json")
+const builder = require('junit-report-builder')
 
 module.exports.tdValidator = tdValidator
 module.exports.tmValidator = tmValidator
@@ -34,11 +35,12 @@ const jsonValidator = require('json-dup-key-validator')
  * @param {object} options additional options, which checks should be executed
  * @returns {Promise<object>} Results of the validation as {report, details, detailComments} object
  */
-function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }) {
-    return new Promise( (res, rej) => {
+
+function tdValidator(tdString, logFunc, { checkDefaults = true, checkJsonLd = true }, suite) {
+    return new Promise((res, rej) => {
 
         // check input
-        if (typeof tdString !== "string") {rej("Thing Description input should be a String")}
+        if (typeof tdString !== "string") { rej("Thing Description input should be a String") }
 
         if (checkDefaults === undefined) {
             checkDefaults = true
@@ -46,7 +48,10 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
         if (checkJsonLd === undefined) {
             checkJsonLd = true
         }
-        if (typeof logFunc !== "function") {rej("Expected logFunc to be a function")}
+        if (typeof logFunc !== "function") { rej("Expected logFunc to be a function") }
+        if (suite === undefined) {
+            suite = builder.testSuite().name("tests")
+        }
 
         // report that is returned by the function, possible values for every property:
         // null -> not tested, "passed", "failed", "warning"
@@ -82,19 +87,29 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
         }
 
         let tdJson
+        let start = process.hrtime()
         try {
             tdJson = JSON.parse(tdString)
             report.json = "passed"
+            suite.testCase()
+                .className("tdValidator")
+                .name("JSON Validation")
+                .time((process.hrtime(start)[1] / 100000))
         }
         catch (err) {
             report.json = "failed"
             logFunc("X JSON validation failed:")
             logFunc(err)
-
-            res({report, details, detailComments})
+            suite.testCase()
+                .className("tdValidator")
+                .name("JSON Validation")
+                .time((process.hrtime(start)[1] / 100000))
+                .failure("Not a valid JSON file")
+            res({ report, details, detailComments })
         }
 
-        let ajv = new Ajv({strict: false}) // options can be passed, e.g. {allErrors: true}
+        start = process.hrtime()
+        let ajv = new Ajv({ strict: false }) // options can be passed, e.g. {allErrors: true}
         ajv = addFormats(ajv) // ajv does not support formats by default anymore
         ajv = apply(ajv) // new formats that include iri
 
@@ -104,22 +119,37 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
         if (valid) {
 
             report.schema = "passed"
+            suite.testCase()
+                .className('tdValidator')
+                .name('Schema Validation')
+                .time((process.hrtime(start)[1] / 100000))
 
             // check with full schema
             if (checkDefaults) {
+                start = process.hrtime()
                 ajv.addSchema(fullTdSchema, 'fulltd')
                 const fullValid = ajv.validate('fulltd', tdJson)
                 if (fullValid) {
                     report.defaults = "passed"
+                    suite.testCase()
+                        .className('tdValidator')
+                        .name("Defaults Validation")
+                        .time((process.hrtime(start)[1] / 100000))
                 }
                 else {
                     report.defaults = "warning"
+                    suite.testCase()
+                        .className('tdValidator')
+                        .name("Defaults Validation")
+                        .time((process.hrtime(start)[1] / 100000))
+                        .error(ajv.errorsText(filterErrorMessages(ajv.errors)))
                     logFunc("Optional validation failed:")
                     logFunc("> " + ajv.errorsText(filterErrorMessages(ajv.errors)))
                 }
             }
 
             // do additional checks
+            start = process.hrtime()
             checkEnumConst(tdJson)
             checkPropItems(tdJson)
             checkReadWriteOnly(tdJson)
@@ -139,7 +169,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             // passed + warning -> warning
             // passed AND OR warning + error -> error
             report.additional = "passed"
-            Object.keys(details).forEach( prop => {
+            Object.keys(details).forEach(prop => {
                 if (details[prop] === "warning" && report.additional === "passed") {
                     report.additional = "warning"
                 }
@@ -147,34 +177,61 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
                     report.additional = "failed"
                 }
             })
+            if (report.additional === "passed") {
+                suite.testCase()
+                    .className('tdValidator')
+                    .name("Additional Validation")
+                    .time((process.hrtime(start)[1] / 100000))
+            } else {
+                suite.testCase()
+                    .className('tdValidator')
+                    .name("Additional Validation")
+                    .time((process.hrtime(start)[1] / 100000))
+                    .failure()
+            }
 
         } else {
 
             report.schema = "failed"
+            suite.testCase()
+                .className("tdValidator")
+                .name("Schema Validation")
+                .time((process.hrtime(start)[1] / 100000))
+                .failure(ajv.errorsText(filterErrorMessages(ajv.errors)))
             logFunc("X JSON Schema validation failed:")
 
             logFunc('> ' + ajv.errorsText(filterErrorMessages(ajv.errors)))
 
-            res({report, details, detailComments})
+            res({ report, details, detailComments })
         }
 
         // json ld validation
-        if(checkJsonLd) {
+        if (checkJsonLd) {
+            start = process.hrtime()
             jsonld.toRDF(tdJson, {
                 format: 'application/nquads'
-            }).then( nquads => {
+            }).then(nquads => {
                 report.jsonld = "passed"
-                res({report, details, detailComments})
+                suite.testCase()
+                    .className('tdValidator')
+                    .name("JSON LD Validation")
+                    .time((process.hrtime(start)[1] / 100000))
+                res({ report, details, detailComments })
             }, err => {
-                report.jsonld =  "failed"
+                report.jsonld = "failed"
+                suite.testCase()
+                    .className('tdValidator')
+                    .name("JSON LD Validation")
+                    .time((process.hrtime(start)[1] / 100000))
+                    .failure(err)
                 logFunc("X JSON-LD validation failed:")
                 logFunc("Hint: Make sure you have internet connection available.")
                 logFunc('> ' + err)
-                res({report, details, detailComments})
+                res({ report, details, detailComments })
             })
         }
         else {
-            res({report, details, detailComments})
+            res({ report, details, detailComments })
         }
 
 
@@ -359,22 +416,21 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
 
                         // check forms if op writeProperty is set
                         if (curProperty.hasOwnProperty("forms")) {
-                            for(const formElIndex in curProperty.forms) {
+                            for (const formElIndex in curProperty.forms) {
                                 if (curProperty.forms.hasOwnProperty(formElIndex)) {
                                     const formEl = curProperty.forms[formElIndex]
-                                    if(formEl.hasOwnProperty("op")) {
+                                    if (formEl.hasOwnProperty("op")) {
                                         if ((typeof formEl.op === "string" && formEl.op === "writeproperty") ||
-                                            (typeof formEl.op === "object" && formEl.op.some( el => (el === "writeproperty"))))
-                                        {
+                                            (typeof formEl.op === "object" && formEl.op.some(el => (el === "writeproperty")))) {
                                             details.readWriteOnly = "warning"
                                             logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                            '], readOnly is set but the op property contains "writeproperty"')
+                                                '], readOnly is set but the op property contains "writeproperty"')
                                         }
                                     }
                                     else {
                                         details.readWriteOnly = "warning"
                                         logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                        '], readOnly is set but a form op property defaults to ["writeproperty", "readproperty"]')
+                                            '], readOnly is set but a form op property defaults to ["writeproperty", "readproperty"]')
                                     }
                                 }
                             }
@@ -386,29 +442,27 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
 
                         // check forms if op readProperty is set
                         if (curProperty.hasOwnProperty("forms")) {
-                            for(const formElIndex in curProperty.forms) {
+                            for (const formElIndex in curProperty.forms) {
                                 if (curProperty.forms.hasOwnProperty(formElIndex)) {
                                     const formEl = curProperty.forms[formElIndex]
-                                    if(formEl.hasOwnProperty("op")) {
+                                    if (formEl.hasOwnProperty("op")) {
                                         if ((typeof formEl.op === "string" && formEl.op === "readproperty") ||
-                                            (typeof formEl.op === "object" && formEl.op.some( el => (el === "readproperty"))))
-                                        {
+                                            (typeof formEl.op === "object" && formEl.op.some(el => (el === "readproperty")))) {
                                             details.readWriteOnly = "warning"
                                             logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                            '], writeOnly is set but the op property contains "readproperty"')
+                                                '], writeOnly is set but the op property contains "readproperty"')
                                         }
                                         else if ((typeof formEl.op === "string" && formEl.op === "observeproperty") ||
-                                                 (typeof formEl.op === "object" && formEl.op.some( el => (el === "observeproperty"))))
-                                                 {
-                                                    details.readWriteOnly = "warning"
-                                                    logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                                    '], writeOnly is set but the op property contains "observeproperty"')
-                                                 }
+                                            (typeof formEl.op === "object" && formEl.op.some(el => (el === "observeproperty")))) {
+                                            details.readWriteOnly = "warning"
+                                            logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
+                                                '], writeOnly is set but the op property contains "observeproperty"')
+                                        }
                                     }
                                     else {
                                         details.readWriteOnly = "warning"
                                         logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                        '], writeOnly is set but a form op property defaults to ["writeproperty", "readproperty"]')
+                                            '], writeOnly is set but a form op property defaults to ["writeproperty", "readproperty"]')
                                     }
                                 }
                             }
@@ -469,7 +523,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
          */
         function evalAssertion(results) {
             let out = "passed"
-            results.forEach( resultobj => {
+            results.forEach(resultobj => {
                 if (resultobj.Status === "fail") {
                     out = "failed"
                     logFunc("KO Error: Assertion: " + resultobj.ID)
@@ -487,9 +541,9 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
         function filterErrorMessages(errors) {
 
             const output = []
-            errors.forEach( el => {
-                if(!output.some(ce => (ce.dataPath === el.dataPath && ce.message === el.message))) {
-                  output.push(el)
+            errors.forEach(el => {
+                if (!output.some(ce => (ce.dataPath === el.dataPath && ce.message === el.message))) {
+                    output.push(el)
                 }
             })
             return output
@@ -504,11 +558,11 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
  * @param {object} options additional options, which checks should be executed
  * @returns {Promise<object>} Results of the validation as {report, details, detailComments} object
  */
- function tmValidator(tmString, logFunc, { checkDefaults=true, checkJsonLd=true }) {
-    return new Promise( (res, rej) => {
+function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = true }) {
+    return new Promise((res, rej) => {
 
         // check input
-        if (typeof tmString !== "string") {rej("Thing Model input should be a String")}
+        if (typeof tmString !== "string") { rej("Thing Model input should be a String") }
 
         if (checkDefaults === undefined) {
             checkDefaults = true
@@ -516,7 +570,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
         if (checkJsonLd === undefined) {
             checkJsonLd = true
         }
-        if (typeof logFunc !== "function") {rej("Expected logFunc to be a function")}
+        if (typeof logFunc !== "function") { rej("Expected logFunc to be a function") }
 
         // report that is returned by the function, possible values for every property:
         // null -> not tested, "passed", "failed", "warning"
@@ -558,10 +612,10 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             logFunc("X JSON validation failed:")
             logFunc(err)
 
-            res({report, details, detailComments})
+            res({ report, details, detailComments })
         }
 
-        let ajv = new Ajv({strict: false}) // options can be passed, e.g. {allErrors: true}
+        let ajv = new Ajv({ strict: false }) // options can be passed, e.g. {allErrors: true}
         ajv = addFormats(ajv) // ajv does not support formats by default anymore
         ajv = apply(ajv) // new formats that include iri
 
@@ -593,7 +647,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
             // passed + warning -> warning
             // passed AND OR warning + error -> error
             report.additional = "passed"
-            Object.keys(details).forEach( prop => {
+            Object.keys(details).forEach(prop => {
                 if (details[prop] === "warning" && report.additional === "passed") {
                     report.additional = "warning"
                 }
@@ -609,26 +663,26 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
 
             logFunc('> ' + ajv.errorsText(filterErrorMessages(ajv.errors)))
 
-            res({report, details, detailComments})
+            res({ report, details, detailComments })
         }
 
         // json ld validation
-        if(checkJsonLd) {
+        if (checkJsonLd) {
             jsonld.toRDF(tmJson, {
                 format: 'application/nquads'
-            }).then( nquads => {
+            }).then(nquads => {
                 report.jsonld = "passed"
-                res({report, details, detailComments})
+                res({ report, details, detailComments })
             }, err => {
-                report.jsonld =  "failed"
+                report.jsonld = "failed"
                 logFunc("X JSON-LD validation failed:")
                 logFunc("Hint: Make sure you have internet connection available.")
                 logFunc('> ' + err)
-                res({report, details, detailComments})
+                res({ report, details, detailComments })
             })
         }
         else {
-            res({report, details, detailComments})
+            res({ report, details, detailComments })
         }
 
 
@@ -813,22 +867,21 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
 
                         // check forms if op writeProperty is set
                         if (curProperty.hasOwnProperty("forms")) {
-                            for(const formElIndex in curProperty.forms) {
+                            for (const formElIndex in curProperty.forms) {
                                 if (curProperty.forms.hasOwnProperty(formElIndex)) {
                                     const formEl = curProperty.forms[formElIndex]
-                                    if(formEl.hasOwnProperty("op")) {
+                                    if (formEl.hasOwnProperty("op")) {
                                         if ((typeof formEl.op === "string" && formEl.op === "writeproperty") ||
-                                            (typeof formEl.op === "object" && formEl.op.some( el => (el === "writeproperty"))))
-                                        {
+                                            (typeof formEl.op === "object" && formEl.op.some(el => (el === "writeproperty")))) {
                                             details.readWriteOnly = "warning"
                                             logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                            '], readOnly is set but the op property contains "writeproperty"')
+                                                '], readOnly is set but the op property contains "writeproperty"')
                                         }
                                     }
                                     else {
                                         details.readWriteOnly = "warning"
                                         logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                        '], readOnly is set but a form op property defaults to ["writeproperty", "readproperty"]')
+                                            '], readOnly is set but a form op property defaults to ["writeproperty", "readproperty"]')
                                     }
                                 }
                             }
@@ -840,29 +893,27 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
 
                         // check forms if op readProperty is set
                         if (curProperty.hasOwnProperty("forms")) {
-                            for(const formElIndex in curProperty.forms) {
+                            for (const formElIndex in curProperty.forms) {
                                 if (curProperty.forms.hasOwnProperty(formElIndex)) {
                                     const formEl = curProperty.forms[formElIndex]
-                                    if(formEl.hasOwnProperty("op")) {
+                                    if (formEl.hasOwnProperty("op")) {
                                         if ((typeof formEl.op === "string" && formEl.op === "readproperty") ||
-                                            (typeof formEl.op === "object" && formEl.op.some( el => (el === "readproperty"))))
-                                        {
+                                            (typeof formEl.op === "object" && formEl.op.some(el => (el === "readproperty")))) {
                                             details.readWriteOnly = "warning"
                                             logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                            '], writeOnly is set but the op property contains "readproperty"')
+                                                '], writeOnly is set but the op property contains "readproperty"')
                                         }
                                         else if ((typeof formEl.op === "string" && formEl.op === "observeproperty") ||
-                                                 (typeof formEl.op === "object" && formEl.op.some( el => (el === "observeproperty"))))
-                                                 {
-                                                    details.readWriteOnly = "warning"
-                                                    logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                                    '], writeOnly is set but the op property contains "observeproperty"')
-                                                 }
+                                            (typeof formEl.op === "object" && formEl.op.some(el => (el === "observeproperty")))) {
+                                            details.readWriteOnly = "warning"
+                                            logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
+                                                '], writeOnly is set but the op property contains "observeproperty"')
+                                        }
                                     }
                                     else {
                                         details.readWriteOnly = "warning"
                                         logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                        '], writeOnly is set but a form op property defaults to ["writeproperty", "readproperty"]')
+                                            '], writeOnly is set but a form op property defaults to ["writeproperty", "readproperty"]')
                                     }
                                 }
                             }
@@ -923,7 +974,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
          */
         function evalAssertion(results) {
             let out = "passed"
-            results.forEach( resultobj => {
+            results.forEach(resultobj => {
                 if (resultobj.Status === "fail") {
                     out = "failed"
                     logFunc("KO Error: Assertion: " + resultobj.ID)
@@ -941,9 +992,9 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
         function filterErrorMessages(errors) {
 
             const output = []
-            errors.forEach( el => {
-                if(!output.some(ce => (ce.dataPath === el.dataPath && ce.message === el.message))) {
-                  output.push(el)
+            errors.forEach(el => {
+                if (!output.some(ce => (ce.dataPath === el.dataPath && ce.message === el.message))) {
+                    output.push(el)
                 }
             })
             return output
@@ -965,7 +1016,7 @@ function compress(data) {
  * @param {string} data Compressed URL-encoded string.
  * @returns {string} Original string.
  */
- function decompress(data) {
+function decompress(data) {
     return lzs.decompressFromEncodedURIComponent(data);
 }
 
@@ -986,7 +1037,7 @@ const TYPO_LOOKUP_TABLE = createSchemaLookupTable(tdSchema)
  * @returns List of possible typos where the typo consists of string value of typo itself and the message, another string value,
  * to be prompted to the user for the fix
  */
- function checkTypos(td) {
+function checkTypos(td) {
     const typos = []
 
     const lookupTable = TYPO_LOOKUP_TABLE
@@ -996,7 +1047,7 @@ const TYPO_LOOKUP_TABLE = createSchemaLookupTable(tdSchema)
 
     try {
         tdJson = JSON.parse(td)
-    } catch(err) {
+    } catch (err) {
         return typos
     }
 
@@ -1225,12 +1276,12 @@ const MAX_LENGTH_DIFFERENCE = 2
  * @returns Boolean value that tell whether typo exists or not
  */
 function doesTypoExist(actual, desired) {
-  if (Math.abs(actual.length - desired.length) > MAX_LENGTH_DIFFERENCE) {
-    return false
-  }
+    if (Math.abs(actual.length - desired.length) > MAX_LENGTH_DIFFERENCE) {
+        return false
+    }
 
-  const similarity = calculateSimilarity(actual, desired)
-  return similarity > SIMILARITY_THRESHOLD && similarity !== 1.0
+    const similarity = calculateSimilarity(actual, desired)
+    return similarity > SIMILARITY_THRESHOLD && similarity !== 1.0
 }
 
 /**
@@ -1240,72 +1291,72 @@ function doesTypoExist(actual, desired) {
  * @returns Similarity of value the two inputs
  */
 function calculateSimilarity(actual, desired) {
-  let m = 0
+    let m = 0
 
-  if (actual.length === 0 || desired.length === 0) {
-    return 0
-  }
-
-  if (actual === desired) {
-    return 1
-  }
-
-  const range = Math.floor(Math.max(actual.length, desired.length) / 2) - 1
-  const actualMatches = new Array(actual.length)
-  const desiredMatches = new Array(desired.length)
-
-  // check lower and upper bounds to find the matches
-  for (let i = 0; i < actual.length; i++) {
-    const lowerBound = (i >= range) ? i - range : 0
-    const upperBound = (i + range <= desired.length) ? (i + range) : (desired.length - 1)
-
-    for (let j = lowerBound; j <= upperBound; j++) {
-      if (actualMatches[i] !== true && desiredMatches[j] !== true && actual[i] === desired[j]) {
-        m++
-        actualMatches[i] = desiredMatches[j] = true
-        break
-      }
+    if (actual.length === 0 || desired.length === 0) {
+        return 0
     }
-  }
 
-  if (m === 0) {
-    return 0
-  }
+    if (actual === desired) {
+        return 1
+    }
 
-  let k = 0
-  let transpositionCount = 0
+    const range = Math.floor(Math.max(actual.length, desired.length) / 2) - 1
+    const actualMatches = new Array(actual.length)
+    const desiredMatches = new Array(desired.length)
 
-  // count transpositions
-  for (let i = 0; i < actual.length; i++) {
-    if (actualMatches[i] === true) {
-      let j = 0
-      for (j = k; j < desired.length; j++) {
-        if (desiredMatches[j] === true) {
-          k = j + 1
-          break
+    // check lower and upper bounds to find the matches
+    for (let i = 0; i < actual.length; i++) {
+        const lowerBound = (i >= range) ? i - range : 0
+        const upperBound = (i + range <= desired.length) ? (i + range) : (desired.length - 1)
+
+        for (let j = lowerBound; j <= upperBound; j++) {
+            if (actualMatches[i] !== true && desiredMatches[j] !== true && actual[i] === desired[j]) {
+                m++
+                actualMatches[i] = desiredMatches[j] = true
+                break
+            }
         }
-      }
-
-      if (actual[i] !== desired[j]) {
-        transpositionCount++
-      }
-    }
-  }
-
-  let similarity = ( (m / actual.length) + (m / desired.length) + ((m - (transpositionCount / 2) ) / m)) / 3
-  let l = 0
-  const p = 0.1
-
-  // strengthen the similarity if the words start with same letters
-  if (similarity < 0.7) {
-    while (actual[l] === desired[l] && l < 4) {
-      l++
     }
 
-    similarity = similarity + l * p * (1 - similarity)
-  }
+    if (m === 0) {
+        return 0
+    }
 
-  return similarity
+    let k = 0
+    let transpositionCount = 0
+
+    // count transpositions
+    for (let i = 0; i < actual.length; i++) {
+        if (actualMatches[i] === true) {
+            let j = 0
+            for (j = k; j < desired.length; j++) {
+                if (desiredMatches[j] === true) {
+                    k = j + 1
+                    break
+                }
+            }
+
+            if (actual[i] !== desired[j]) {
+                transpositionCount++
+            }
+        }
+    }
+
+    let similarity = ((m / actual.length) + (m / desired.length) + ((m - (transpositionCount / 2)) / m)) / 3
+    let l = 0
+    const p = 0.1
+
+    // strengthen the similarity if the words start with same letters
+    if (similarity < 0.7) {
+        while (actual[l] === desired[l] && l < 4) {
+            l++
+        }
+
+        similarity = similarity + l * p * (1 - similarity)
+    }
+
+    return similarity
 }
 
 /**
@@ -1318,7 +1369,7 @@ function detectProtocolSchemes(td) {
 
     try {
         tdJson = JSON.parse(td)
-    } catch(err) {
+    } catch (err) {
         return []
     }
 
@@ -1332,7 +1383,7 @@ function detectProtocolSchemes(td) {
         ...thingProtocols,
         ...actionsProtocols,
         ...eventsProtocols,
-         ...propertiesProtcols
+        ...propertiesProtcols
     ])].filter(p => p !== undefined)
 
     return protocolSchemes
@@ -1403,7 +1454,7 @@ function convertTDJsonToYaml(td) {
 
     try {
         return jsYaml.dump(JSON.parse(td))
-    } catch(err) {
+    } catch (err) {
         console.log("TD generation problem: " + err)
     }
 }
