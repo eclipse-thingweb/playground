@@ -678,6 +678,24 @@ function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = tr
                     report.additional = "failed"
                 }
             })
+            if (report.additional === "passed") {
+                suite.testCase()
+                    .className("tmValidator")
+                    .name("Additional Validation")
+                    .time((process.hrtime(start)[1] / 100000))
+            } else if (report.additional === "warning") {
+                suite.testCase()
+                    .className("tmValidator")
+                    .name("Additional Validation")
+                    .time((process.hrtime(start)[1] / 100000))
+                    .error("Warning!")
+            } else {
+                suite.testCase()
+                    .className("tmValidator")
+                    .name("Additional Validation")
+                    .time((process.hrtime(start)[1] / 100000))
+                    .failure()
+            }
 
         } else {
 
