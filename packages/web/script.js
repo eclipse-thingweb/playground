@@ -456,7 +456,7 @@ function enableAPIConversionWithProtocol(td) {
 
 //* *************************Monaco editor code*********************************////
 // Load monaco editor ACM
-require.config({ paths: { 'vs': '../.../../node_modules/monaco-editor/min/vs' }});
+require.config({ paths: { 'vs': '../../node_modules/monaco-editor/min/vs' }});
 require(['vs/editor/editor.main'], async function () {
 	// Determine new doc type and editor value if present as exported URL
 	const value = util.getEditorValue(window.location.hash.substring(1));
@@ -529,8 +529,8 @@ require(['vs/editor/editor.main'], async function () {
 		});
 	});
 
-	const tdSchema = await (await fetch('../.../../node_modules/@thing-description-playground/core/td-schema.json')).json();
-	const tmSchema = await (await fetch('../.../../node_modules/@thing-description-playground/core/tm-schema.json')).json();
+	const tdSchema = await (await fetch('../../node_modules/@thing-description-playground/core/td-schema.json')).json();
+	const tmSchema = await (await fetch('../../node_modules/@thing-description-playground/core/tm-schema.json')).json();
 
 	// Configure JSON language support with schemas and schema associations
 	monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
