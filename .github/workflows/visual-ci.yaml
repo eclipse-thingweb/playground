@@ -22,11 +22,8 @@ jobs:
         with:
             node-version: '16.x'
       
-      - name: Use lerna
-        run: npm install -g lerna
-      
-      - name: Bootstrap
-        run: lerna bootstrap --no-ci
+      - name: Install dependencies
+        run: npm install
       
       - name: Visual Test
         run: |

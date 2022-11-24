@@ -31,14 +31,11 @@ jobs:
         with:
             node-version: ${{ matrix.node-version }}
       
-      - name: Use lerna
-        run: npm install -g lerna
-      
-      - name: Bootstrap
-        run: lerna bootstrap --no-ci
+      - name: Install dependencies
+        run: npm install
       
       - name: Test
-        run: lerna run test --no-bail --stream
+        run: npm run test --workspaces --no-bail
         env:
           # avoid errors from gist_backend test
           TD_PLAYGROUND_LOGIN: exampleString

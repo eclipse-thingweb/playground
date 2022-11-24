@@ -257,22 +257,22 @@ function myWait(milliseconds){
 
 const testList = {
   "TypoCheckWithoutTypos": {
-    "addr": "./node_modules/@thing-description-playground/core/tests/typo/typoCheckWithoutTypos.json"
+    "addr": "../../node_modules/@thing-description-playground/core/tests/typo/typoCheckWithoutTypos.json"
   },
   "TypoCheckWithTypos": {
-      "addr": "./node_modules/@thing-description-playground/core/tests/typo/typoCheckWithTypos.json"
+      "addr": "../../node_modules/@thing-description-playground/core/tests/typo/typoCheckWithTypos.json"
   },
   "HttpAndMqtt": {
-      "addr": "./node_modules/@thing-description-playground/core/tests/protocol-detection/httpAndMqtt.json"
+      "addr": "../../node_modules/@thing-description-playground/core/tests/protocol-detection/httpAndMqtt.json"
   },
   "NoProtocol": {
-      "addr": "./node_modules/@thing-description-playground/core/tests/protocol-detection/noProtocol.json"
+      "addr": "../../node_modules/@thing-description-playground/core/tests/protocol-detection/noProtocol.json"
   },
   "OnlyHttp": {
-      "addr": "./node_modules/@thing-description-playground/core/tests/protocol-detection/onlyHttp.json"
+      "addr": "../../node_modules/@thing-description-playground/core/tests/protocol-detection/onlyHttp.json"
   },
   "OnlyMqtt": {
-      "addr": "./node_modules/@thing-description-playground/core/tests/protocol-detection/onlyMqtt.json"
+      "addr": "../../node_modules/@thing-description-playground/core/tests/protocol-detection/onlyMqtt.json"
   }
 }
 

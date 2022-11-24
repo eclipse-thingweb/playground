@@ -47,7 +47,7 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, doneEventEmit
         if (process !== undefined && process.release !== undefined && process.release.name === "node") {
             pathOffset = __dirname
         } else {
-            pathOffset = path.join("./node_modules", "@thing-description-playground", "assertions")
+            pathOffset = path.join("../../node_modules", "@thing-description-playground", "assertions")
         }
 
         // loading files
@@ -55,7 +55,8 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, doneEventEmit
         loadProm.push(collectAssertionSchemas(path.join(pathOffset, "./assertions-td"),
         path.join(pathOffset, "./assertions-td", "./tdAssertionList.json"), fileLoader))
 
-        loadProm.push(fileLoader(path.join(pathOffset, "./node_modules", "@thing-description-playground", "core", "td-schema.json")))
+        loadProm.push(fileLoader(path.join(pathOffset,
+            "../../node_modules", "@thing-description-playground", "core", "td-schema.json")))
         if (givenManual === undefined) {loadProm.push(fileLoader(path.join(pathOffset, "./assertions-td", "./manual.csv")))}
 
         Promise.all(loadProm).then( promResults => {
@@ -140,14 +141,14 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, doneEventEmit
         if (process !== undefined && process.release !== undefined && process.release.name === "node") {
             pathOffset = __dirname
         } else {
-            pathOffset = path.join("./node_modules", "@thing-description-playground", "assertions")
+            pathOffset = path.join("../../node_modules", "@thing-description-playground", "assertions")
         }
 
         // loading files
         const loadProm = []
         loadProm.push(collectAssertionSchemas(path.join(pathOffset, "./assertions-tm"),
         path.join(pathOffset, "./assertions-tm", "./tmAssertionList.json"), fileLoader))
-        loadProm.push(fileLoader(path.join(pathOffset, "./node_modules", "@thing-description-playground", "core", "tm-schema.json")))
+        loadProm.push(fileLoader(path.join(pathOffset, "../../node_modules", "@thing-description-playground", "core", "tm-schema.json")))
         if (givenManual === undefined) {loadProm.push(fileLoader(path.join(pathOffset, "./assertions-tm", "./manual.csv")))}
 
         Promise.all(loadProm).then( promResults => {

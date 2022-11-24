@@ -10,7 +10,8 @@ Try it online at [http://plugfest.thingweb.io/playground/](http://plugfest.thing
 
 There are different ways to use Playground:
 
-- Install all packages and their dependencies via `npm install` in the root directory. This script calls `lerna bootstrap`.
+- Update npm to the version 9.1.2 `npm install -g npm@9.1.2`
+- Install all packages and their dependencies via `npm install` in the root directory.
 - You can install the different packages from npm ([see below](./packages)) or in their respective directories. Currently, npm packages are not using TD 1.1 features.
 
 ## Structure
@@ -64,6 +65,8 @@ All packages are licensed under the MIT license. You find a copy of the License 
 
 ## Publish a new version
 
-1. Run `lerna bootstrap` to install dependencies among the packages, even if a package has never been published before. Make sure you have not increased the dependency versions yet, e.g., you have a new package *newExample* and the *oldExample* depends on it. The *newExample* is on version `0.0.0` (since you want to publish it as `1.0.0`) then in the *oldExample* package.json the dependency has to be on the same version (or lower) so `"dependencies" { newExample: "^0.0.0"}}`. **Otherwise lerna will not accept linking the local *newExample*.**
+This is deprecated, update this with npm workspaces version.
+
+~~1. Run `lerna bootstrap` to install dependencies among the packages, even if a package has never been published before. Make sure you have not increased the dependency versions yet, e.g., you have a new package *newExample* and the *oldExample* depends on it. The *newExample* is on version `0.0.0` (since you want to publish it as `1.0.0`) then in the *oldExample* package.json the dependency has to be on the same version (or lower) so `"dependencies" { newExample: "^0.0.0"}}`. **Otherwise lerna will not accept linking the local *newExample*.**
 2. If `lerna bootstrap` was successful you can now bump dependency versions (if required), e.g., you could now do `"dependencies" { newExample: "^1.0.0"}}` in the *oldExample* package.json.
-3. Run `lerna publish` to publish all new package versions. Lerna will then ask for every changed package whether it received a patch, minor or major update. In our example you should now select major for the *newExample* so that it will be published as `1.0.0` version. You should login to npm via `npm login` before doing this.
+3. Run `lerna publish` to publish all new package versions. Lerna will then ask for every changed package whether it received a patch, minor or major update. In our example you should now select major for the *newExample* so that it will be published as `1.0.0` version. You should login to npm via `npm login` before doing this.~~
