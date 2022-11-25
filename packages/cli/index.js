@@ -10,17 +10,18 @@
 const fs = require('fs')
 const path = require('path')
 const { tdValidator, tmValidator } = require('@thing-description-playground/core')
-const { tdAssertions, tmAssertions }= require('@thing-description-playground/assertions')
+const { tdAssertions, tmAssertions } = require('@thing-description-playground/assertions')
 const assertManualToJson = require('@thing-description-playground/assertions').manualToJson
 const assertMergeResults = require('@thing-description-playground/assertions').mergeResults
 const assertCheckCoverage = require('@thing-description-playground/assertions').checkCoverage
 const assertResultsToCsv = require('@thing-description-playground/assertions').resultsToCsv
-const {addDefaults, removeDefaults} = require('@thing-description-playground/defaults')
+const { addDefaults, removeDefaults } = require('@thing-description-playground/defaults')
 const tdToOAP = require('@thing-description-playground/td_to_openapi')
 const tdToAAP = require('@thing-description-playground/td_to_asyncapi')
 const commander = require('commander')
 const EventEmitter = require("events")
 const cliProgress = require('cli-progress')
+const builder = require('junit-report-builder')
 
 /** ================================================================================================
  *                                         CLI Configuration
@@ -28,26 +29,26 @@ const cliProgress = require('cli-progress')
 const program = new commander.Command()
 program
     .description('For TD Playground core validation you can call the Playground \n' +
-                    'validation with no input (example folder will be taken), \n'+
-                    'one or multiple Thing Descriptions (.json files), a folder with multiple Thing Descriptions, \n' +
-                    'or a Folder with "valid", "invalid" and "warning" subfolder, where all included TDs \n' +
-                    'will be checked whether they produce the expected validation result. \n' +
-                    'Use the -a parameter for assertions testing.')
+        'validation with no input (example folder will be taken), \n' +
+        'one or multiple Thing Descriptions (.json files), a folder with multiple Thing Descriptions, \n' +
+        'or a Folder with "valid", "invalid" and "warning" subfolder, where all included TDs \n' +
+        'will be checked whether they produce the expected validation result. \n' +
+        'Use the -a parameter for assertions testing.')
 
 
     .addOption(new commander.Option('-t, --type <type>',
-    'The type of JSON documents that are passed as inputs').choices(['TD', 'TM', 'AUTO']).default('TD'))
+        'The type of JSON documents that are passed as inputs').choices(['TD', 'TM', 'AUTO']).default('TD'))
     .option('-i, --input <pathToInputs...>',
-    'The files or the folders containing the files, which will be processed and/or validated', undefined)
+        'The files or the folders containing the files, which will be processed and/or validated', undefined)
     .option('-j, --no-jsonld', 'Turn off the JSON-LD validation (for example because internet connection is not available)')
     .option('-d, --no-defaults', 'Turn off the Full JSON Schema validation, which checks e.g. for default values being explicitly set')
     .option('-a, --assertions', 'Call the assertion report instead of the core validation, \n' +
-                                'if files with .csv ending are given as input merging assertion reports is done')
+        'if files with .csv ending are given as input merging assertion reports is done')
     .option('-o, --assertion-out <pathToOutput>',
-    'Path and filename of the generated assertions report (defaults to ./out/[.]assertionsTest[_$input]) \n' +
-                                    'Please notice that the folders you specify as target already have to exist.')
+        'Path and filename of the generated assertions report (defaults to ./out/[.]assertionsTest[_$input]) \n' +
+        'Please notice that the folders you specify as target already have to exist.')
     .option('-n, --assertion-no-merge',
-    'If multiple files where given as input, don\'t create a merged report, but create one for each')
+        'If multiple files where given as input, don\'t create a merged report, but create one for each')
     .option('-s, --assertion-to-std', 'Output the report(s) as stdout and don\'t write them to a file')
     .option('-c, --assertion-no-csv', 'Return assertion report(s) in JSON format instead of CSV')
     .option('-m, --assertion-manual <pathToManual>', 'Path and filename to manual.csv file')
@@ -58,11 +59,12 @@ program
     .option('--aap-yaml', 'Whether AsyncAPI should be written as YAML instead of json.')
     .option('--default-add', 'Whether the input TD should be extended by default values')
     .option('--default-rem', 'Whether the input TD should be reduced by default values')
+    .option('--junit', 'Outputs results as a JUnit XML in addition to basic reporting')
 
 const myArguments = program.parse().opts()
 
 // stop doing anything if all that is needed is merging two files
-if(myArguments.mergeOnly){
+if (myArguments.mergeOnly) {
     const fileArray = []
     const toMergeFilePaths = myArguments.mergeOnly
     myArguments.type = null
@@ -72,7 +74,7 @@ if(myArguments.mergeOnly){
         const fileJSON = assertManualToJson(fileCSV)
         fileArray.push(fileJSON)
     }
-    mergeReports(fileArray).then(element=>{
+    mergeReports(fileArray).then(element => {
     })
 
 } else {
@@ -80,18 +82,18 @@ if(myArguments.mergeOnly){
 }
 
 // assign / overwrite logging functions used
-const logFunc = myArguments.assertionToStd ? () => {} : console.log
-if (!myArguments.assertionToStd) {console.info = () => {}}
+const logFunc = myArguments.assertionToStd ? () => { } : console.log
+if (!myArguments.assertionToStd) { console.info = () => { } }
 
 // handle input argument
 let input = myArguments.input
-if( input && input.length === 1 ) input = input[0]
+if (input && input.length === 1) input = input[0]
 
 /** ================================================================================================
  *                                         Handling TDs
  *================================================================================================**/
 
-if(myArguments.type === 'TD') {
+if (myArguments.type === 'TD') {
     if (myArguments.assertions === true) {
         tdAssertionReport(input)
     }
@@ -113,8 +115,8 @@ if(myArguments.type === 'TD') {
  *                                         Handle TMs
  *================================================================================================**/
 
- if(myArguments.type === 'TM') {
-     console.log("Checking TMs...")
+if (myArguments.type === 'TM') {
+    console.log("Checking TMs...")
     if (myArguments.assertions === true) {
         console.log("Checking Assertions...")
         tmAssertionReport(input)
@@ -127,7 +129,7 @@ if(myArguments.type === 'TD') {
     }
 }
 
-if(myArguments.type === 'AUTO') {
+if (myArguments.type === 'AUTO') {
     console.error("Not implemented")
 }
 
@@ -145,8 +147,10 @@ function tdAssertionReport(input) {
     let numberOfFilesAssertion = 0
     let numberOfFilesMerge = 0
 
-    const bar = new cliProgress.SingleBar({clearOnComplete: true,
-        format: 'progress [{bar}] {percentage}% | TD Name: {tdName} | {value}/{total} \n'}, cliProgress.Presets.shades_classic)
+    const bar = new cliProgress.SingleBar({
+        clearOnComplete: true,
+        format: 'progress [{bar}] {percentage}% | TD Name: {tdName} | {value}/{total} \n'
+    }, cliProgress.Presets.shades_classic)
 
     let assertType
     // handle manual param
@@ -161,8 +165,8 @@ function tdAssertionReport(input) {
     if (typeof input === "object") {
         assertType = "list"
         // check given TDs
-        input.forEach( el => {
-            if(el.endsWith(".json") || el.endsWith(".jsonld")) {
+        input.forEach(el => {
+            if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                 tdsToCheck.push(fs.readFileSync(el))
                 numberOfFilesAssertion++
             }
@@ -178,8 +182,8 @@ function tdAssertionReport(input) {
     else if (fs.lstatSync(input).isDirectory()) {
         assertType = "dir"
         // check TDs contained in the directory
-        fs.readdirSync(input).forEach( el => {
-            if(el.endsWith(".json") || el.endsWith(".jsonld")) {
+        fs.readdirSync(input).forEach(el => {
+            if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                 tdsToCheck.push(fs.readFileSync(path.join(input, el)))
                 numberOfFilesAssertion++
             }
@@ -195,12 +199,12 @@ function tdAssertionReport(input) {
     else {
         // check single TD
         assertType = "file"
-        if(input.endsWith(".json") || input.endsWith(".jsonld")) {
+        if (input.endsWith(".json") || input.endsWith(".jsonld")) {
             tdsToCheck.push(fs.readFileSync(input))
             numberOfFilesAssertion++
         }
         else if (input.endsWith(".csv")) {
-            tdsToMerge.push(assertManualToJson(fs.readFileSync(input,"utf-8")))
+            tdsToMerge.push(assertManualToJson(fs.readFileSync(input, "utf-8")))
             numberOfFilesMerge++
         }
         else {
@@ -209,14 +213,14 @@ function tdAssertionReport(input) {
         }
     }
     const doneEventEmitter = new EventEmitter()
-    doneEventEmitter.on("start", tdName =>  { bar.increment(1, {tdName})})
+    doneEventEmitter.on("start", tdName => { bar.increment(1, { tdName }) })
 
     bar.start(numberOfFilesAssertion, 0)
     assertTd(tdsToCheck, assertType, tdsToMerge, manualAssertions, doneEventEmitter)
-    .then( () => {
-        bar.stop()
-        mergeReports(tdsToMerge)
-    })
+        .then(() => {
+            bar.stop()
+            mergeReports(tdsToMerge)
+        })
 }
 
 
@@ -226,22 +230,22 @@ function tdAssertionReport(input) {
  * @param {*} type "file", "list" or "dir" are valid types
  */
 function assertTd(tds, type, tdsToMerge, manualAssertions, doneEventEmitter) {
-    return new Promise( (res, rej) => {
+    return new Promise((res, rej) => {
         if (tds.length > 0) {
-            tdAssertions(tds, fileLoader, logFunc, manualAssertions, doneEventEmitter).then( results => {
+            tdAssertions(tds, fileLoader, logFunc, manualAssertions, doneEventEmitter).then(results => {
                 if (type === "file") {
                     outReport(results, "assertionsTest_", input)
                     res()
                 }
                 else if (type === "list" || type === "dir") {
                     if (myArguments.assertionNoMerge) {
-                        Object.keys(results.jsonResults).forEach( id => {
+                        Object.keys(results.jsonResults).forEach(id => {
                             outReport(results.jsonResults[id], "assertionsTest_", id)
                         })
                     }
                     else {
                         // Needed for batch assertions for folders with one file
-                        if(!results.merged) results = {"merged": results}
+                        if (!results.merged) results = { "merged": results }
 
                         outReport(results.merged, "assertionsTest")
                         if (tdsToMerge.length > 0) {
@@ -268,9 +272,9 @@ function assertTd(tds, type, tdsToMerge, manualAssertions, doneEventEmitter) {
  * @param {Array<object>} tds
  */
 function mergeReports(reports) {
-    return new Promise( (res, rej) => {
+    return new Promise((res, rej) => {
         if (reports.length > 1) {
-            assertMergeResults(reports).then( merged => {
+            assertMergeResults(reports).then(merged => {
                 assertCheckCoverage(merged, logFunc)
                 outReport(merged, "assertionsMerged")
                 res()
@@ -319,7 +323,7 @@ function outReport(data, pathFragment, id) {
 
         console.log(wholepath)
 
-        if(!myArguments.assertionOut && !fs.existsSync(path.join('.', 'out'))) {
+        if (!myArguments.assertionOut && !fs.existsSync(path.join('.', 'out'))) {
             fs.mkdirSync(path.join('.', 'out'))
         }
 
@@ -332,12 +336,12 @@ function outReport(data, pathFragment, id) {
  * @param {string} loc path to the file to read
  */
 function fileLoader(loc) {
-	return new Promise( (res, rej) => {
-		fs.readFile(loc, "utf8", (err, data) => {
-			if (err) {rej(err)}
-			else {res(data)}
-		})
-	})
+    return new Promise((res, rej) => {
+        fs.readFile(loc, "utf8", (err, data) => {
+            if (err) { rej(err) }
+            else { res(data) }
+        })
+    })
 }
 
 /**
@@ -347,8 +351,8 @@ function fileLoader(loc) {
 function coreValidation() {
     let tdToCheck = ""
 
-    if (!input) {input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds")}
-    if(fs.lstatSync(input).isDirectory()) {
+    if (!input) { input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds") }
+    if (fs.lstatSync(input).isDirectory()) {
 
         // check Valid, Invalid and Warning Subfolders
         const validPath = path.join(input, "valid")
@@ -357,25 +361,26 @@ function coreValidation() {
             const validNames = fs.readdirSync(validPath)
             let validCount = 0
             const checkPromises = []
-            validNames.forEach( el => {
+            validNames.forEach(el => {
                 if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                     tdToCheck = fs.readFileSync(path.join(validPath, el), "utf-8")
-                    const thisProm = tdValidator(tdToCheck, console.log, {checkDefaults: false})
-                    .then( result => {
-                        if (statResult("failed", result.report)) {
-                            console.log(el, "was supposed to be valid but gave error")
-                        } else if (statResult("warning", result.report)) {
-                            console.log(el, "was supposed to be valid but gave warning")
-                        } else {
-                            validCount++
-                        }
-                    }, err => {
-                        console.error("ERROR", err)
-                    })
+                    let suite = builder.testSuite().name(el)
+                    const thisProm = tdValidator(tdToCheck, console.log, { checkDefaults: false }, suite)
+                        .then(result => {
+                            if (statResult("failed", result.report)) {
+                                console.log(el, "was supposed to be valid but gave error")
+                            } else if (statResult("warning", result.report)) {
+                                console.log(el, "was supposed to be valid but gave warning")
+                            } else {
+                                validCount++
+                            }
+                        }, err => {
+                            console.error("ERROR", err)
+                        })
                     checkPromises.push(thisProm)
                 }
             })
-            Promise.all(checkPromises).then( () => {
+            Promise.all(checkPromises).then(() => {
                 if (validNames.length === 0) {
                     console.log("\nNo valid TD to check has been found")
                 }
@@ -385,7 +390,10 @@ function coreValidation() {
                 else {
                     console.log("\nValidity test NOT successful, ", validCount, "/", validNames.length, "passed the validity test")
                 }
-            }, err => {console.error("\nValid TD Check broken! " + err)})
+            }, err => { console.error("\nValid TD Check broken! " + err) })
+            if (myArguments.junit) {
+                builder.writeTo("junit-tests.xml")
+            }
         }
 
         const invalidPath = path.join(input, "invalid")
@@ -394,23 +402,24 @@ function coreValidation() {
             const invalidNames = fs.readdirSync(invalidPath)
             let invalidCount = 0
             const checkPromises = []
-            invalidNames.forEach( el => {
+            invalidNames.forEach(el => {
                 if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                     tdToCheck = fs.readFileSync(path.join(invalidPath, el), "utf-8")
-                    const thisProm = tdValidator(tdToCheck, console.log, {checkDefaults: false})
-                    .then( result => {
-                        if (statResult("failed", result.report)) {
-                            invalidCount++
-                        } else {
-                            console.log(el, "was supposed to be invalid but was not")
-                        }
-                    }, err => {
-                        console.error("ERROR", err)
-                    })
+                    let suite = builder.testSuite().name(el)
+                    const thisProm = tdValidator(tdToCheck, console.log, { checkDefaults: false }, suite)
+                        .then(result => {
+                            if (statResult("failed", result.report)) {
+                                invalidCount++
+                            } else {
+                                console.log(el, "was supposed to be invalid but was not")
+                            }
+                        }, err => {
+                            console.error("ERROR", err)
+                        })
                     checkPromises.push(thisProm)
                 }
             })
-            Promise.all(checkPromises).then( () => {
+            Promise.all(checkPromises).then(() => {
                 if (invalidNames.length === 0) {
                     console.log("\nNo invalid TD to check has been found")
                 }
@@ -420,9 +429,12 @@ function coreValidation() {
                 else {
                     console.log(
                         "\nInvalidity test NOT successful, ", invalidCount, "/", invalidNames.length, "passed the invalidity test"
-                        )
+                    )
                 }
-            }, err => {console.error("\nInvalid TD Check broken!" + err)})
+            }, err => { console.error("\nInvalid TD Check broken!" + err) })
+            if (myArguments.junit) {
+                builder.writeTo("junit-tests.xml")
+            }
         }
 
         const warnPath = path.join(input, "warning")
@@ -431,27 +443,28 @@ function coreValidation() {
             const warnNames = fs.readdirSync(warnPath)
             let warnCount = 0
             const checkPromises = []
-            warnNames.forEach( el => {
+            warnNames.forEach(el => {
                 if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                     tdToCheck = fs.readFileSync(path.join(warnPath, el), "utf-8")
-                    const thisProm = tdValidator(tdToCheck, console.log, {checkDefaults: true})
-                    .then( result => {
-                        if (statResult("failed", result.report)) {
-                            console.log(el, "was supposed to give a warning but gave error")
-                            // result.console.forEach( line => {console.log(line)} )
-                        } else if (statResult("warning", result.report)) {
-                            warnCount++
-                        } else {
-                            console.log(el, "was supposed to give a warning but passed all the tests")
-                            // result.console.forEach( line => {console.log(line)} )
-                        }
-                    }, err => {
-                        console.error("ERROR", err)
-                    })
+                    let suite = builder.testSuite().name(el)
+                    const thisProm = tdValidator(tdToCheck, console.log, { checkDefaults: true }, suite)
+                        .then(result => {
+                            if (statResult("failed", result.report)) {
+                                console.log(el, "was supposed to give a warning but gave error")
+                                // result.console.forEach( line => {console.log(line)} )
+                            } else if (statResult("warning", result.report)) {
+                                warnCount++
+                            } else {
+                                console.log(el, "was supposed to give a warning but passed all the tests")
+                                // result.console.forEach( line => {console.log(line)} )
+                            }
+                        }, err => {
+                            console.error("ERROR", err)
+                        })
                     checkPromises.push(thisProm)
                 }
             })
-            Promise.all(checkPromises).then( () => {
+            Promise.all(checkPromises).then(() => {
                 if (warnNames.length === 0) {
                     console.log("\nNo warning TD to check has been found")
                 }
@@ -461,21 +474,26 @@ function coreValidation() {
                 else {
                     console.log("\nWarning test NOT successful, ", warnCount, "/", warnNames.length, "passed the warning test")
                 }
-            }, err => {console.error("\nWarning TD Check broken!" + err)})
+            }, err => { console.error("\nWarning TD Check broken!" + err) })
+            if (myArguments.junit) {
+                builder.writeTo("junit-tests.xml")
+            }
         }
 
         // check TDs contained in the directory
-        fs.readdirSync(input).forEach( el => {
+        fs.readdirSync(input).forEach(el => {
             if (el.endsWith(".json") || el.endsWith(".jsonld")) {
+                let suite = builder.testSuite().name(el)
                 tdToCheck = fs.readFileSync(path.join(input, el), "utf-8")
-                checkTd(tdToCheck)
+                checkTd(tdToCheck, suite)
             }
         })
 
     }
     else {
+        let suite = builder.testSuite().name(input)
         tdToCheck = fs.readFileSync(input, "utf-8")
-        checkTd(tdToCheck)
+        checkTd(tdToCheck, suite)
     }
 }
 
@@ -483,17 +501,20 @@ function coreValidation() {
  * subfunction of coreValidation
  * @param {*} td
  */
-function checkTd(td) {
+function checkTd(td, suite) {
 
-    tdValidator(td, console.log,{checkDefaults: myArguments.defaults, checkJsonLd: myArguments.jsonld})
-    .then( result => {
-        console.log("OKAY \n")
-        console.log("\n")
-        console.log("--- Report ---\n", result, "\n--------------")
-    }, err => {
-        console.log("ERROR")
-        console.error(err)
-    })
+    tdValidator(td, console.log, { checkDefaults: myArguments.defaults, checkJsonLd: myArguments.jsonld }, suite)
+        .then(result => {
+            console.log("OKAY \n")
+            console.log("\n")
+            console.log("--- Report ---\n", result, "\n--------------")
+            if (myArguments.junit) {
+                builder.writeTo("junit-tests.xml")
+            }
+        }, err => {
+            console.log("ERROR")
+            console.error(err)
+        })
 }
 
 /**
@@ -502,7 +523,7 @@ function checkTd(td) {
  * @param {object} report Report object that will be inspected
  */
 function statResult(keyword, report) {
-    return Object.keys(report).some( el => (report[el] === keyword))
+    return Object.keys(report).some(el => (report[el] === keyword))
 }
 
 /**
@@ -510,17 +531,17 @@ function statResult(keyword, report) {
  */
 function openApiGeneration() {
     // input checks
-    if (!input) {input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid", "simple.json")}
+    if (!input) { input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid", "simple.json") }
     if (!fs.lstatSync(input).isFile()) {
         throw new Error("please provide one File as input for the OpenAPI instance generation")
     }
-    if(!fs.existsSync("./out")) {
+    if (!fs.existsSync("./out")) {
         fs.mkdirSync("./out")
     }
 
     // actual function call
     const tdToConvert = JSON.parse(fs.readFileSync(input, "utf-8"))
-    tdToOAP(tdToConvert).then( openApiInstance => {
+    tdToOAP(tdToConvert).then(openApiInstance => {
         const name = extractName(input)
         const outpath = path.join("./out", name + "_openapi")
         if (myArguments.oapYaml) {
@@ -534,17 +555,17 @@ function openApiGeneration() {
 
 function asyncApiGeneration() {
     // input checks
-    if (!input) {input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid", "simple.json")}
+    if (!input) { input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid", "simple.json") }
     if (!fs.lstatSync(input).isFile()) {
         throw new Error("please provide one File as input for the AsyncAPI instance generation")
     }
-    if(!fs.existsSync("./out")) {
+    if (!fs.existsSync("./out")) {
         fs.mkdirSync("./out")
     }
 
     // actual function call
     const tdToConvert = JSON.parse(fs.readFileSync(input, "utf-8"))
-    tdToAAP(tdToConvert).then( asyncApiInstance => {
+    tdToAAP(tdToConvert).then(asyncApiInstance => {
         const name = extractName(input)
         const outpath = path.join("./out", name + "_asyncapi")
         if (myArguments.aapYaml) {
@@ -561,11 +582,11 @@ function asyncApiGeneration() {
  */
 function defaultManipulation() {
     // input checks
-    if (!input) {input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid", "simple.json")}
+    if (!input) { input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid", "simple.json") }
     if (!fs.lstatSync(input).isFile()) {
         throw new Error("please provide one File as input for the OpenAPI instance generation")
     }
-    if(!fs.existsSync("./out")) {
+    if (!fs.existsSync("./out")) {
         fs.mkdirSync("./out")
     }
 
@@ -599,8 +620,8 @@ function extractName(pathLike) {
     // remove file ending if existing
     if (pathLike.indexOf(".") !== -1) {
         pathLike = pathLike.split(".")
-                            .slice(0,-1)
-                            .join(".")
+            .slice(0, -1)
+            .join(".")
     }
     return pathLike
 }
@@ -627,19 +648,19 @@ function tmAssertionReport(input) {
         manualAssertions = assertManualToJson(fs.readFileSync(myArguments.assertionManual, "utf-8"))
     }
 
-    if (input === undefined) {input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tms", "valid")}
+    if (input === undefined) { input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tms", "valid") }
 
     let numberOfFilesAssertion = 0
     let numberOfFilesMerge = 0
 
-    const bar = new cliProgress.SingleBar({format: 'progress [{bar}] {percentage}% | TM Name: {tmName} | {value}/{total} \n'},
-    cliProgress.Presets.shades_classic)
+    const bar = new cliProgress.SingleBar({ format: 'progress [{bar}] {percentage}% | TM Name: {tmName} | {value}/{total} \n' },
+        cliProgress.Presets.shades_classic)
 
     if (typeof input === "object") {
         assertType = "list"
         // check given TMs
-        input.forEach( el => {
-            if(el.endsWith(".json") || el.endsWith(".jsonld")) {
+        input.forEach(el => {
+            if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                 tmsToCheck.push(fs.readFileSync(el))
                 numberOfFilesAssertion++
             }
@@ -655,8 +676,8 @@ function tmAssertionReport(input) {
     else if (fs.lstatSync(input).isDirectory()) {
         assertType = "dir"
         // check TMs contained in the directory
-        fs.readdirSync(input).forEach( el => {
-            if(el.endsWith(".json") || el.endsWith(".jsonld")) {
+        fs.readdirSync(input).forEach(el => {
+            if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                 tmsToCheck.push(fs.readFileSync(path.join(input, el)))
                 numberOfFilesAssertion++
             }
@@ -672,12 +693,12 @@ function tmAssertionReport(input) {
     else {
         // check single TM
         assertType = "file"
-        if(input.endsWith(".json") || input.endsWith(".jsonld")) {
+        if (input.endsWith(".json") || input.endsWith(".jsonld")) {
             tmsToCheck.push(fs.readFileSync(input))
             numberOfFilesAssertion++
         }
         else if (input.endsWith(".csv")) {
-            tmsToMerge.push(assertManualToJson(fs.readFileSync(input,"utf-8")))
+            tmsToMerge.push(assertManualToJson(fs.readFileSync(input, "utf-8")))
             numberOfFilesMerge++
         }
         else {
@@ -686,14 +707,14 @@ function tmAssertionReport(input) {
         }
     }
     const doneEventEmitter = new EventEmitter()
-    doneEventEmitter.on("start", tmName =>  { bar.increment(1, {tmName})})
+    doneEventEmitter.on("start", tmName => { bar.increment(1, { tmName }) })
 
     bar.start(numberOfFilesAssertion, 0)
     assertTm(tmsToCheck, assertType, tmsToMerge, manualAssertions, doneEventEmitter)
-    .then( () => {
-        setTimeout(() => {bar.stop()}, 100)
-        mergeReports(tmsToMerge)
-    })
+        .then(() => {
+            setTimeout(() => { bar.stop() }, 100)
+            mergeReports(tmsToMerge)
+        })
 }
 
 
@@ -701,11 +722,11 @@ function tmAssertionReport(input) {
  * handle arguments to call the core validation
  * and write outputs accordingly
  */
- function tmCoreValidation() {
+function tmCoreValidation() {
     let tmToCheck = ""
 
-    if (!input) {input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tms")}
-    if(fs.lstatSync(input).isDirectory()) {
+    if (!input) { input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tms") }
+    if (fs.lstatSync(input).isDirectory()) {
 
         // check Valid, Invalid and Warning Subfolders
         const validPath = path.join(input, "valid")
@@ -714,25 +735,26 @@ function tmAssertionReport(input) {
             const validNames = fs.readdirSync(validPath)
             let validCount = 0
             const checkPromises = []
-            validNames.forEach( el => {
+            validNames.forEach(el => {
                 if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                     tmToCheck = fs.readFileSync(path.join(validPath, el), "utf-8")
-                    const thisProm = tmValidator(tmToCheck, console.log, {checkDefaults: false})
-                    .then( result => {
-                        if (statResult("failed", result.report)) {
-                            console.log(el, "was supposed to be valid but gave error")
-                        } else if (statResult("warning", result.report)) {
-                            console.log(el, "was supposed to be valid but gave warning")
-                        } else {
-                            validCount++
-                        }
-                    }, err => {
-                        console.error("ERROR", err)
-                    })
+                    let suite = builder.testSuite().name(el)
+                    const thisProm = tmValidator(tmToCheck, console.log, { checkDefaults: false }, suite)
+                        .then(result => {
+                            if (statResult("failed", result.report)) {
+                                console.log(el, "was supposed to be valid but gave error")
+                            } else if (statResult("warning", result.report)) {
+                                console.log(el, "was supposed to be valid but gave warning")
+                            } else {
+                                validCount++
+                            }
+                        }, err => {
+                            console.error("ERROR", err)
+                        })
                     checkPromises.push(thisProm)
                 }
             })
-            Promise.all(checkPromises).then( () => {
+            Promise.all(checkPromises).then(() => {
                 if (validNames.length === 0) {
                     console.log("\nNo valid TD to check has been found")
                 }
@@ -742,7 +764,10 @@ function tmAssertionReport(input) {
                 else {
                     console.log("\nValidity test NOT successful, ", validCount, "/", validNames.length, "passed the validity test")
                 }
-            }, err => {console.error("\nValid TD Check broken! " + err)})
+            }, err => { console.error("\nValid TD Check broken! " + err) })
+            if (myArguments.junit) {
+                builder.writeTo("junit-tests.xml")
+            }
         }
 
         const invalidPath = path.join(input, "invalid")
@@ -751,23 +776,24 @@ function tmAssertionReport(input) {
             const invalidNames = fs.readdirSync(invalidPath)
             let invalidCount = 0
             const checkPromises = []
-            invalidNames.forEach( el => {
+            invalidNames.forEach(el => {
                 if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                     tmToCheck = fs.readFileSync(path.join(invalidPath, el), "utf-8")
-                    const thisProm = tmValidator(tmToCheck, console.log, {checkDefaults: false})
-                    .then( result => {
-                        if (statResult("failed", result.report)) {
-                            invalidCount++
-                        } else {
-                            console.log(el, "was supposed to be invalid but was not")
-                        }
-                    }, err => {
-                        console.error("ERROR", err)
-                    })
+                    let suite = builder.testSuite().name(el)
+                    const thisProm = tmValidator(tmToCheck, console.log, { checkDefaults: false }, suite)
+                        .then(result => {
+                            if (statResult("failed", result.report)) {
+                                invalidCount++
+                            } else {
+                                console.log(el, "was supposed to be invalid but was not")
+                            }
+                        }, err => {
+                            console.error("ERROR", err)
+                        })
                     checkPromises.push(thisProm)
                 }
             })
-            Promise.all(checkPromises).then( () => {
+            Promise.all(checkPromises).then(() => {
                 if (invalidNames.length === 0) {
                     console.log("\nNo invalid TD to check has been found")
                 }
@@ -777,9 +803,12 @@ function tmAssertionReport(input) {
                 else {
                     console.log(
                         "\nInvalidity test NOT successful, ", invalidCount, "/", invalidNames.length, "passed the invalidity test"
-                        )
+                    )
                 }
-            }, err => {console.error("\nInvalid TD Check broken!" + err)})
+            }, err => { console.error("\nInvalid TD Check broken!" + err) })
+            if (myArguments.junit) {
+                builder.writeTo("junit-tests.xml")
+            }
         }
 
         const warnPath = path.join(input, "warning")
@@ -788,27 +817,28 @@ function tmAssertionReport(input) {
             const warnNames = fs.readdirSync(warnPath)
             let warnCount = 0
             const checkPromises = []
-            warnNames.forEach( el => {
+            warnNames.forEach(el => {
                 if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                     tmToCheck = fs.readFileSync(path.join(warnPath, el), "utf-8")
-                    const thisProm = tmValidator(tmToCheck, console.log, {checkDefaults: true})
-                    .then( result => {
-                        if (statResult("failed", result.report)) {
-                            console.log(el, "was supposed to give a warning but gave error")
-                            // result.console.forEach( line => {console.log(line)} )
-                        } else if (statResult("warning", result.report)) {
-                            warnCount++
-                        } else {
-                            console.log(el, "was supposed to give a warning but passed all the tests")
-                            // result.console.forEach( line => {console.log(line)} )
-                        }
-                    }, err => {
-                        console.error("ERROR", err)
-                    })
+                    let suite = builder.testSuite().name(el)
+                    const thisProm = tmValidator(tmToCheck, console.log, { checkDefaults: true }, suite)
+                        .then(result => {
+                            if (statResult("failed", result.report)) {
+                                console.log(el, "was supposed to give a warning but gave error")
+                                // result.console.forEach( line => {console.log(line)} )
+                            } else if (statResult("warning", result.report)) {
+                                warnCount++
+                            } else {
+                                console.log(el, "was supposed to give a warning but passed all the tests")
+                                // result.console.forEach( line => {console.log(line)} )
+                            }
+                        }, err => {
+                            console.error("ERROR", err)
+                        })
                     checkPromises.push(thisProm)
                 }
             })
-            Promise.all(checkPromises).then( () => {
+            Promise.all(checkPromises).then(() => {
                 if (warnNames.length === 0) {
                     console.log("\nNo warning TD to check has been found")
                 }
@@ -818,21 +848,26 @@ function tmAssertionReport(input) {
                 else {
                     console.log("\nWarning test NOT successful, ", warnCount, "/", warnNames.length, "passed the warning test")
                 }
-            }, err => {console.error("\nWarning TD Check broken!" + err)})
+            }, err => { console.error("\nWarning TD Check broken!" + err) })
+            if (myArguments.junit) {
+                builder.writeTo("junit-tests.xml")
+            }
         }
 
         // check TDs contained in the directory
-        fs.readdirSync(input).forEach( el => {
+        fs.readdirSync(input).forEach(el => {
             if (el.endsWith(".json") || el.endsWith(".jsonld")) {
+                let suite = builder.testSuite().name(el)
                 tmToCheck = fs.readFileSync(path.join(input, el), "utf-8")
-                checkTm(tmToCheck)
+                checkTm(tmToCheck, suite)
             }
         })
 
     }
     else {
+        let suite = builder.testSuite().name(el)
         tmToCheck = fs.readFileSync(input, "utf-8")
-        checkTm(tmToCheck)
+        checkTm(tmToCheck, suite)
     }
 }
 
@@ -841,23 +876,23 @@ function tmAssertionReport(input) {
  * @param {*} tms One or more td to do assertion testing
  * @param {*} type "file", "list" or "dir" are valid types
  */
- function assertTm(tms, type, tmsToMerge, manualAssertions, doneEventEmitter) {
-    return new Promise( (res, rej) => {
+function assertTm(tms, type, tmsToMerge, manualAssertions, doneEventEmitter) {
+    return new Promise((res, rej) => {
         if (tms.length > 0) {
-            tmAssertions(tms, fileLoader, logFunc, manualAssertions, doneEventEmitter).then( results => {
+            tmAssertions(tms, fileLoader, logFunc, manualAssertions, doneEventEmitter).then(results => {
                 if (type === "file") {
                     outReport(results, "tmAssertionsTest_", input)
                     res()
                 }
                 else if (type === "list" || type === "dir") {
                     if (myArguments.assertionNoMerge) {
-                        Object.keys(results.jsonResults).forEach( id => {
+                        Object.keys(results.jsonResults).forEach(id => {
                             outReport(results.jsonResults[id], "tmAssertionsTest_", id)
                         })
                     }
                     else {
                         // Needed for batch assertions for folders with one file
-                        if(!results.merged) results = {"merged": results}
+                        if (!results.merged) results = { "merged": results }
 
                         outReport(results.merged, "tmAssertionsTest")
                         if (tmsToMerge.length > 0) {
@@ -882,15 +917,18 @@ function tmAssertionReport(input) {
  * subfunction of coreValidation
  * @param {*} tm
  */
- function checkTm(tm) {
+function checkTm(tm, suite) {
 
-    tmValidator(tm, console.log,{checkDefaults: myArguments.defaults, checkJsonLd: myArguments.jsonld})
-    .then( result => {
-        console.log("OKAY \n")
-        console.log("\n")
-        console.log("--- Report ---\n", result, "\n--------------")
-    }, err => {
-        console.log("ERROR")
-        console.error(err)
-    })
+    tmValidator(tm, console.log, { checkDefaults: myArguments.defaults, checkJsonLd: myArguments.jsonld }, suite)
+        .then(result => {
+            console.log("OKAY \n")
+            console.log("\n")
+            console.log("--- Report ---\n", result, "\n--------------")
+            if (myArguments.junit) {
+                builder.writeTo("junit-tests.xml")
+            }
+        }, err => {
+            console.log("ERROR")
+            console.error(err)
+        })
 }

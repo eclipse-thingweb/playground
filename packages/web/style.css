@@ -248,7 +248,7 @@ footer p {
 	margin-bottom: 0px;
 }
 
-input, textarea {
+input, textarea, select {
 	margin-left: 20px;
 }
 
@@ -333,12 +333,12 @@ i {
 }
 
 #visualized-popup .container-fluid > .row {
-	height: calc(100% - 30px);
+	height: 100%;
 }
 
 #visualized-popup .container-fluid > .row [class^="col-"] {
-	height: calc(100% - 30px);
-	overflow: scroll;
+	overflow: auto;
+	max-height: 100%;
 }
 
 #close-visualized-popup {
@@ -346,6 +346,11 @@ i {
 	top: 0;
 	right: 0;
 	z-index: 100;
+}
+
+#visualized-controls .vega-bind-name {
+	min-width: 110px;
+	display: inline-block;
 }
 
 .thead-dark > tr > th {

@@ -3,7 +3,7 @@ const path = require("path")
 const checkTypos = require("../index").checkTypos
 const tdValidator = require("../index").tdValidator
 
-const rootDir = path.join("./", "examples", "tds")
+const rootDir = path.join("./", "tests")
 
 const dirPath = path.join(rootDir, "typo")
 const fileNames = fs.readdirSync(dirPath)

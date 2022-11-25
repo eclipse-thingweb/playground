@@ -40,16 +40,16 @@
   <div id="visualized-popup-wrapper" class="curtain popup">
     <div id="visualized-popup">
       <button class="btn" id="close-visualized-popup">X</button>
-      <div class="container-fluid p-3">
+      <div class="container-fluid p-3 h-100">
         <div class="row">
-          <div class="col-8 h-100">
+          <div class="col-9" id="visualized-wrapper">
             <div id="visualized"></div>
           </div>
-          <div class="col-4 h-100 border-left">
+          <div class="col-3 border-left">
             <div id="visualized-controls" class="mx-2">
 
               <div class="controls-all mt-3">
-                <span class="d-inline-block mr-4">Type:</span>
+                <span class="d-inline-block mr-3">Type:</span>
                 <div class="custom-control custom-radio custom-control-inline">
                   <input type="radio" id="graph-vis" name="visType" class="custom-control-input" checked>
                   <label class="custom-control-label" for="graph-vis">Graph</label>
@@ -118,11 +118,66 @@
       </div>
     </div>
     <div class="wrapper h-100">
-
       <div class="row h-100">
         <div class="col-8">
-          <div id="td-editor"></div>
-          <div id="tm-editor" style="display: none;"></div>
+          <div class="col-12 navcol">
+            <ul class="nav nav-tabs" id="editorTab" role="tablist">
+              <li class="nav-item td-related" role="presentation">
+                <button class="nav-link active" id="td-tab" data-bs-toggle="tab" data-bs-target="#td" type="button" role="tab" aria-controls="td" aria-selected="true">TD</button>
+              </li>
+              <li class="nav-item tm-related" role="presentation">
+                <button class="nav-link" id="tm-tab" data-bs-toggle="tab" data-bs-target="#tm" type="button" role="tab" aria-controls="tm" aria-selected="true">TM</button>
+              </li>
+              <li class="nav-item td-related" role="presentation">
+                <button class="nav-link" id="open-api-tab" data-bs-toggle="tab" data-bs-target="#open-api" type="button" role="tab" aria-controls="open-api" aria-selected="false">Open API</button>
+              </li>
+              <li class="nav-item td-related" role="presentation">
+                <button class="nav-link" id="async-api-tab" data-bs-toggle="tab" data-bs-target="#async-api" type="button" role="tab" aria-controls="async-api" aria-selected="false">Async API</button>
+              </li>
+              <div class="ml-auto">
+                <div class="btn-toolbar" role="toolbar" aria-label="Toolbar for editors">
+                  <div class="btn-group btn-group-toggle mr-2 td-related">
+                    <button type="button" title="Convert editor content to JSON" class="btn btn-info btn-sm active" id="json-format-btn">
+                      JSON
+                    </button>
+                    <button type="button" title="Convert editor content to YAML" class="btn btn-info btn-sm" id="yaml-format-btn">
+                      YAML
+                    </button>
+                  </div>
+                  <p> </p>
+                  <div class="btn-group mr-2" role="group">
+                    <button type="button" id="btn_save" title="Export your TD/TM document as a sharable link" class="btn btn-lg btn-info">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
+                        <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/>
+                        <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/>
+                      </svg>
+                    </button>
+                    <button type="button" class="btn btn-info mr-0 ml-0 pr-0 pl-0" disabled></button>
+                    <button type="button" title="Download the content on the editor" id="editor-print-btn" class="btn btn-lg btn-info">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </ul>
+          </div>
+          
+          <div class="tab-content td-related" id="editorTabContent">
+            <div class="tab-pane fade show active" id="td" role="tabpanel" aria-labelledby="td-tab">
+              <div class="editor" id="td-editor"></div>
+            </div>
+            <div class="tab-pane fade" id="open-api" role="tabpanel" aria-labelledby="open-api-tab">
+              <div class="editor" id="open-api-editor" style="display: none;"></div>
+            </div>
+            <div class="tab-pane fade" id="async-api" role="tabpanel" aria-labelledby="async-api-tab">
+              <div class="editor" id="async-api-editor" style="display: none;"></div>
+            </div>
+          </div>
+
+          <div class="editor tm-related" id="tm-editor"></div>
         </div>
 
         <div class="col-4" id="side-panel">
@@ -216,45 +271,23 @@
 
                     <br>
                     <div class="btn-group" role="group">
-                      <button type="button" class="btn custom-btn" id="btn_validate">Validate</button>
-                      <button type="button" class="btn custom-btn" id="btn_clearLog">Clear Log</button>
-                      <button type="button" class="btn custom-btn" id="btn_visualize">Visualize</button>
+                      <button type="button" class="btn custom-btn jsonOnly" id="btn_validate">Validate</button>
+                      <button type="button" class="btn custom-btn jsonOnly" id="btn_clearLog">Clear Log</button>
+                      <button type="button" class="btn custom-btn jsonOnly" id="btn_visualize">Visualize</button>
                     </div>
 
                     <br>
                     <div class="btn-group" role="group">
-                      <button type="button" class="btn custom-btn" id="btn_save"
-                        title="Export your TD/TM document as a sharable link">Export as URL</button>
-                      <button type="button" class="btn custom-btn" id="btn_assertion_popup">Assertion Test</button>
-                    </div>
-
-                    <br class="td-related">
-                    <div class="btn-group td-related" role="group">
-                      <button type="button" class="btn custom-btn oap-btn"
-                        title="Download an OpenAPI instance of the Thing Description" disabled>OpenAPI</button>
-                      <button type="button" class="btn custom-btn" id="btn_oap_json"
-                        title="Download an OpenAPI instance of the TD as .json file">JSON</button>
-                      <button type="button" class="btn custom-btn" id="btn_oap_yaml"
-                        title="Download an OpenAPI instance of the TD as .yaml file">YAML</button>
-                    </div>
-
-                    <br class="td-related">
-                    <div class="btn-group td-related" role="group">
-                      <button type="button" class="btn custom-btn oap-btn"
-                        title="Download an AsyncAPI instance of the Thing Description" disabled>AsyncAPI</button>
-                      <button type="button" class="btn custom-btn" id="btn_aap_json"
-                        title="Download an AsyncAPI instance of the TD as .json file">JSON</button>
-                      <button type="button" class="btn custom-btn" id="btn_aap_yaml"
-                        title="Download an AsyncAPI instance of the TD as .yaml file">YAML</button>
+                      <button type="button" class="btn custom-btn jsonOnly" id="btn_assertion_popup">Assertion Test</button>
                     </div>
 
                     <br class="td-related">
                     <div class="btn-group td-related" role="group">
                       <button type="button" class="btn custom-btn oap-btn" title="Extend/reduce a TD by default values"
                         disabled>Defaults</button>
-                      <button type="button" class="btn custom-btn" id="btn_defaults_add"
+                      <button type="button" class="btn custom-btn jsonOnly" id="btn_defaults_add"
                         title="Add every default value explicitly">Add</button>
-                      <button type="button" class="btn custom-btn" id="btn_defaults_remove"
+                      <button type="button" class="btn custom-btn jsonOnly" id="btn_defaults_remove"
                         title="Remove all explicitly stated default values">Remove</button>
                     </div>
 
@@ -287,6 +320,26 @@
 
   </div>
 
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <footer>
     <div class="footer-shape">
       <img src="./media/footer-shape.jpg">
@@ -309,9 +362,9 @@
   <script src="https://cdn.jsdelivr.net/npm/vega@5.22.1/build/vega.min.js" integrity="sha256-cx8BtoEWvBhaGWMiCWyjQnN0JMSZXEimZ09X68ln6cE=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.21.0/build/vega-embed.min.js" integrity="sha256-/XLqtIcBhAjhlmMOaz23UAXzBgQymz60D73+PfrK24w=" crossorigin="anonymous"></script>
   <script src="./node_modules/svg-crowbar/dist/main.js"></script>
+  <script src="./node_modules/string-direction/index.js"></script>
   <script src="./node_modules/monaco-editor/min/vs/loader.js"></script>
   <script type="module" src="./script.js"></script>
-
 </body>
 
 </html>

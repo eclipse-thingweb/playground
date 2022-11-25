@@ -20,3 +20,4 @@ log.json
 
 # JetBrains IDEs
 .idea
+junit-tests.xml

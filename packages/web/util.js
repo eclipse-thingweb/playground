@@ -5,7 +5,6 @@
  * and offers a few utility functions.
  */
 
-
 /**
  * Fetch the TD from the given address and return the JSON object
  * @param {string} urlAddr url of the TD to fetch
@@ -121,7 +120,7 @@ export function performAssertionTest(manualAssertions, docType){
  * @param {string} content The content of the csv file
  * @param {string} type The content-type to output, e.g., text/csv;charset=utf-8;
  */
-function offerFileDownload(fileName, content, type) {
+export function offerFileDownload(fileName, content, type) {
 
     const blob = new Blob([content], { type });
     if (navigator.msSaveBlob) { // IE 10+
@@ -145,14 +144,45 @@ function offerFileDownload(fileName, content, type) {
 }
 
 /**
+ * Generates an TD instance from
+ * the TD in the Editor
+ * @param {"json"|"yaml"} fileType
+ */
+ export function generateTD(fileType){
+    return new Promise( (res, rej) => {
+        const tdToValidate = window.tdEditor.getValue()
+
+        if (tdToValidate === "") {
+            rej("No TD given to generate TD instance")
+        }
+        else if (fileType !== "json" && fileType !== "yaml") {
+            rej("Wrong content type required: " + fileType)
+        }
+        else {
+            try {
+                const content = fileType === "json"
+                        ? JSON.stringify(JSON.parse(Validators.convertTDYamlToJson(tdToValidate)), undefined, 4)
+                        : Validators.convertTDJsonToYaml(tdToValidate)
+
+                monaco.editor.setModelLanguage(window.tdEditor.getModel(), fileType)
+                window.tdEditor.getModel().setValue(content)
+            } catch (err) {
+                rej("TD generation problem: " + err)
+            }
+        }
+    })
+}
+
+/**
  * Generates an OpenAPI instance from
- * the TD in the Editor and passes it
- * to the user as a download
+ * the TD in the Editor
  * @param {"json"|"yaml"} fileType
  */
 export function generateOAP(fileType){
     return new Promise( (res, rej) => {
-        const tdToValidate=window.editor.getValue()
+        const tdToValidate = window.editorFormat === "json"
+             ? window.tdEditor.getValue()
+             : Validators.convertTDYamlToJson(window.tdEditor.getValue())
 
         if (tdToValidate === "") {
             rej("No TD given to generate OpenAPI instance")
@@ -162,24 +192,24 @@ export function generateOAP(fileType){
         }
         else {
             tdToOpenAPI(JSON.parse(tdToValidate)).then( openAPI => {
-                // console.log(openAPI[fileType])
-                const contentType = (fileType === "json" ? "application/json;" : "application/yaml;") + "charset=utf-8;"
                 const content = fileType === "json" ? JSON.stringify(openAPI[fileType], undefined, 4) : openAPI[fileType]
-                offerFileDownload("openapi." + fileType, content, contentType)
+                monaco.editor.setModelLanguage(window.openApiEditor.getModel(), fileType)
+                window.openApiEditor.getModel().setValue(content)
             }, err => {rej("OpenAPI generation problem: " + err)})
         }
     })
 }
 
 /**
- * Get the current TD
- * Call the td_to_asyncapi package
- * and return an AsyncAPI instance
+ * Generates an AsyncAPI instance from
+ * the TD in the Editor
  * @param {"json"|"yaml"} fileType
  */
 export function generateAAP(fileType){
     return new Promise( (res, rej) => {
-        const tdToValidate=window.editor.getValue()
+        const tdToValidate = window.editorFormat === "json"
+             ? window.tdEditor.getValue()
+             : Validators.convertTDYamlToJson(window.tdEditor.getValue())
 
         if (tdToValidate === "") {
             rej("No TD given to generate AsyncAPI instance")
@@ -189,9 +219,9 @@ export function generateAAP(fileType){
         }
         else {
             tdToAsyncAPI(JSON.parse(tdToValidate)).then( asyncAPI => {
-                const contentType = (fileType === "json" ? "application/json;" : "application/yaml;") + "charset=utf-8;"
                 const content = fileType === "json" ? JSON.stringify(asyncAPI[fileType], undefined, 4) : asyncAPI[fileType]
-                offerFileDownload("asyncapi." + fileType, content, contentType)
+                monaco.editor.setModelLanguage(window.asyncApiEditor.getModel(), fileType)
+                window.asyncApiEditor.getModel().setValue(content)
             }, err => {rej("AsyncAPI generation problem: " + err)})
         }
     })
@@ -282,14 +312,6 @@ export function getExamplesList(docType){
             "EmptySecurityDefs": {
                 "addr": "./node_modules/@thing-description-playground/core/examples/tds/invalid/emptySecDef.json",
                 "type": "invalid"
-            },
-            "TypoCheckWithoutTypos": {
-                "addr": "./node_modules/@thing-description-playground/core/examples/tds/typo/typoCheckWithoutTypos.json",
-                "type": "valid"
-            },
-            "TypoCheckWithTypos": {
-                "addr": "./node_modules/@thing-description-playground/core/examples/tds/typo/typoCheckWithTypos.json",
-                "type": "valid"
             }
         }
         : {
@@ -343,7 +365,15 @@ export function exampleSelectHandler(e, obj) {
     else{
         const urlAddr=obj.urlAddrObject[document.getElementById("load_example").value].addr;
         getTdUrl(urlAddr).then( data => {
-            window.editor.setValue(JSON.stringify(data,null,'\t'))
+            if (window.editor === window.tdEditor) {
+                if (window.editorFormat === 'json') {
+                    window.editor.setValue(JSON.stringify(data,null,'\t'))
+                } else {
+                    window.editor.setValue(Validators.convertTDJsonToYaml(JSON.stringify(data)))
+                }
+            } else {
+                window.editor.setValue(JSON.stringify(data,null,'\t'))
+            }
         })
     }
 }
@@ -487,8 +517,9 @@ export function clearLog() {
 /**
  * Save current TD/TM as a compressed string in URL fragment.
  * @param {string} docType "td" or "tm"
+ * @param {string} format "json" or "yaml"
  */
-export async function save(docType) {
+export async function save(docType, format) {
     const value = window.editor.getValue();
 
     if (!value) {
@@ -496,7 +527,7 @@ export async function save(docType) {
         return;
     }
 
-    const data = docType + value;
+    const data = docType + format + value;
     const compressed = Validators.compress(data);
     window.location.hash = compressed;
     await navigator.clipboard.writeText(window.location.href);
@@ -509,4 +540,173 @@ export async function save(docType) {
 export function getEditorValue(fragment) {
     const data = Validators.decompress(fragment);
     return data || '';
+}
+
+// Monaco Location Pointer
+
+/**
+ * Finds the location/path of the text in JSON from its Monaco Editor location
+ * @param {string} The text/keyword which is searched on the editor
+ * @param {ITextModel} The text model of Monaco editor
+ */
+export function findJSONLocationOfMonacoText(text, textModel) {
+    const matches = textModel.findMatches(text, false, false, false, null, false)
+    const results = []
+
+    matches.forEach(match => {
+        const path = searchPath(textModel, getEndPositionOfMatch(match))
+        results.push({ match, path })
+    })
+
+    return results
+}
+
+const QUOTE = '"'
+const LEFT_BRACKET = "{"
+const RIGHT_BRACKET = "}"
+const SEMICOLON = ":"
+const LEFT_SQUARE_BRACKET = "["
+const RIGHT_SQUARE_BRACKET = "]"
+const COMMA = ","
+
+/**
+ * Looks for specific characters on the model to figure out the path of the position/search text
+ * @param {ITextModel} textModel The text model of Monaco Edtior
+ * @param {IPosition} position The position on Monaco editor which consists of column and line number
+ * @returns A string that is the path of the searched text. Search is done with the text's position on the editor
+ */
+function searchPath(textModel, position) {
+    let path = '/'
+    let parentKey = ''
+    const stack = []
+    let recordingParent = false
+    let isValue = true
+    let commaCount = 0
+
+    for (let i = position.lineNumber; i > 0; i--) {
+        const currentColumnIndex = (i === position.lineNumber ? position.column : textModel.getLineLength(i)) - 1
+        const lineContent = textModel.getLineContent(i)
+        for (let j = currentColumnIndex; j >= 0; j--) {
+            const currentChar = lineContent[j]
+
+            if (recordingParent) {
+                if (currentChar === QUOTE) {
+                    if(stack[stack.length - 1] === QUOTE) {
+                        stack.pop()
+                        path = "/" + parentKey + path
+                        parentKey = ""
+                        recordingParent = false            
+                    } else {
+                        stack.push(currentChar)
+                        continue
+                    }
+                }
+
+                if (stack[stack.length - 1] === QUOTE) {
+                    parentKey = currentChar + parentKey
+                    continue
+                }
+            } else {
+                if (currentChar === SEMICOLON) {
+                    recordingParent = isValue
+
+                    if (stack.length > 0) {
+                        const top = stack[stack.length - 1]
+
+                        if (top === LEFT_SQUARE_BRACKET) {
+                            parentKey = "/" + commaCount.toString()
+                            stack.pop()
+                            recordingParent = true
+                        }
+
+                        if (top === LEFT_BRACKET) {
+                            stack.pop()
+                            recordingParent = true
+                        }
+                    }
+                }
+
+                if (currentChar === LEFT_SQUARE_BRACKET) {
+                    isValue = false
+                    if (stack.length > 0) {
+                        if (stack[stack.length - 1] === RIGHT_SQUARE_BRACKET) {
+                            stack.pop()
+                        }
+
+                        if (stack[stack.length - 1] === LEFT_BRACKET) {
+                            stack.pop()
+                            stack.push(currentChar)
+                        }
+                    } else {
+                        commaCount = 0
+                        stack.push(currentChar)
+                    }
+                }
+
+                if (currentChar === LEFT_BRACKET) {
+                    isValue = false
+                    if (stack.length > 0 && stack[stack.length - 1] === RIGHT_BRACKET) {
+                        stack.pop()
+                    }  else {
+                        commaCount = 0
+                        stack.push(currentChar)
+                    }
+                }
+
+                if (currentChar === COMMA) {
+                    isValue = false
+                    if (stack.length <= 1) {
+                        commaCount++
+                    }
+                }
+
+                if (currentChar === RIGHT_SQUARE_BRACKET) {
+                    isValue = false
+                    stack.push(currentChar)
+                }
+
+                if (currentChar === RIGHT_BRACKET) {
+                    isValue = false
+                    stack.push(currentChar)
+                }
+            } 
+        }
+    }
+
+    return path
+}
+
+/**
+ * Gets the end position of a match
+ * @param {FindMatch} match
+ * @returns The object contains the end column and line number of a match
+ */
+function getEndPositionOfMatch(match) {
+    return {
+        column: match.range.endColumn,
+        lineNumber: match.range.endLineNumber
+    }
+}
+
+/**
+ * Finds the location of the text in Monaco Editor from its JSON location/path
+ * @param {string} jsonPath The JSON path of the searched text
+ * @param {string} text The text that is being searched
+ * @param {ITextModel} textModel The text model of Monaco editor
+ * @returns The location of the text on Monaco editor by describing its column and line number range
+ */
+export function findMonacoLocationOfJSONText(jsonPath, text, textModel) {
+    const results = findJSONLocationOfMonacoText(text, textModel)
+    let monacoLocation = {}
+
+    if (results) {
+        results.forEach(result => {
+            if (jsonPath.localeCompare(result.path) === 0) {
+                monacoLocation = result.match.range
+                return
+            }
+        })
+    }
+
+    return monacoLocation
 }

@@ -25,7 +25,8 @@
     "@thing-description-playground/td_to_asyncapi": "^1.0.2",
     "@thing-description-playground/td_to_openapi": "^1.2.2",
     "cli-progress": "^3.11.2",
-    "commander": "^9.4.0"
+    "commander": "^9.4.0",
+    "junit-report-builder": "^3.0.1"
   },
   "publishConfig": {
     "access": "public"
