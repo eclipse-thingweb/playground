@@ -137,7 +137,7 @@ if(myArguments.type === 'AUTO') {
 /**
  * handle manual & input param
  */
-function tdAssertionReport(input) {
+function tdAssertionReport(inputParam) {
     const tdsToCheck = []
     const tdsToMerge = []
     let manualAssertions
@@ -154,14 +154,14 @@ function tdAssertionReport(input) {
         manualAssertions = assertManualToJson(fs.readFileSync(myArguments.assertionManual, "utf-8"))
     }
 
-    if (input === undefined && !myArguments.mergeOnly) {
-        input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid")
+    if (inputParam === undefined && !myArguments.mergeOnly) {
+        inputParam = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid")
     }
 
-    if (typeof input === "object") {
+    if (typeof inputParam === "object") {
         assertType = "list"
         // check given TDs
-        input.forEach( el => {
+        inputParam.forEach( el => {
             if(el.endsWith(".json") || el.endsWith(".jsonld")) {
                 tdsToCheck.push(fs.readFileSync(el))
                 numberOfFilesAssertion++
@@ -175,31 +175,31 @@ function tdAssertionReport(input) {
             }
         })
     }
-    else if (fs.lstatSync(input).isDirectory()) {
+    else if (fs.lstatSync(inputParam).isDirectory()) {
         assertType = "dir"
         // check TDs contained in the directory
-        fs.readdirSync(input).forEach( el => {
+        fs.readdirSync(inputParam).forEach( el => {
             if(el.endsWith(".json") || el.endsWith(".jsonld")) {
-                tdsToCheck.push(fs.readFileSync(path.join(input, el)))
+                tdsToCheck.push(fs.readFileSync(path.join(inputParam, el)))
                 numberOfFilesAssertion++
             }
             else if (el.endsWith(".csv")) {
-                tdsToMerge.push(assertManualToJson(fs.readFileSync(path.join(input, el), "utf-8")))
+                tdsToMerge.push(assertManualToJson(fs.readFileSync(path.join(inputParam, el), "utf-8")))
                 numberOfFilesMerge++
             }
             else {
-                console.log("CANNOT HANDLE file in dir: ", path.join(input, el))
+                console.log("CANNOT HANDLE file in dir: ", path.join(inputParam, el))
             }
         })
     }
     else {
         // check single TD
         assertType = "file"
-        if(input.endsWith(".json") || input.endsWith(".jsonld")) {
-            tdsToCheck.push(fs.readFileSync(input))
+        if(inputParam.endsWith(".json") || inputParam.endsWith(".jsonld")) {
+            tdsToCheck.push(fs.readFileSync(inputParam))
             numberOfFilesAssertion++
         }
-        else if (input.endsWith(".csv")) {
+        else if (inputParam.endsWith(".csv")) {
             tdsToMerge.push(assertManualToJson(fs.readFileSync(input,"utf-8")))
             numberOfFilesMerge++
         }
@@ -616,7 +616,7 @@ function extractName(pathLike) {
  * @param {*} input
  * @returns
  */
-function tmAssertionReport(input) {
+function tmAssertionReport(inputParam) {
     const tmsToCheck = []
     const tmsToMerge = []
     let manualAssertions
@@ -627,7 +627,8 @@ function tmAssertionReport(input) {
         manualAssertions = assertManualToJson(fs.readFileSync(myArguments.assertionManual, "utf-8"))
     }
 
-    if (input === undefined) {input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tms", "valid")}
+    if (inputParam === undefined) {inputParam = path.join("node_modules", "@thing-description-playground", "core",
+    "examples", "tms", "valid")}
 
     let numberOfFilesAssertion = 0
     let numberOfFilesMerge = 0
@@ -635,10 +636,10 @@ function tmAssertionReport(input) {
     const bar = new cliProgress.SingleBar({format: 'progress [{bar}] {percentage}% | TM Name: {tmName} | {value}/{total} \n'},
     cliProgress.Presets.shades_classic)
 
-    if (typeof input === "object") {
+    if (typeof inputParam === "object") {
         assertType = "list"
         // check given TMs
-        input.forEach( el => {
+        inputParam.forEach( el => {
             if(el.endsWith(".json") || el.endsWith(".jsonld")) {
                 tmsToCheck.push(fs.readFileSync(el))
                 numberOfFilesAssertion++
@@ -652,12 +653,12 @@ function tmAssertionReport(input) {
             }
         })
     }
-    else if (fs.lstatSync(input).isDirectory()) {
+    else if (fs.lstatSync(inputParam).isDirectory()) {
         assertType = "dir"
         // check TMs contained in the directory
-        fs.readdirSync(input).forEach( el => {
+        fs.readdirSync(inputParam).forEach( el => {
             if(el.endsWith(".json") || el.endsWith(".jsonld")) {
-                tmsToCheck.push(fs.readFileSync(path.join(input, el)))
+                tmsToCheck.push(fs.readFileSync(path.join(inputParam, el)))
                 numberOfFilesAssertion++
             }
             else if (el.endsWith(".csv")) {
@@ -672,12 +673,12 @@ function tmAssertionReport(input) {
     else {
         // check single TM
         assertType = "file"
-        if(input.endsWith(".json") || input.endsWith(".jsonld")) {
-            tmsToCheck.push(fs.readFileSync(input))
+        if(inputParam.endsWith(".json") || inputParam.endsWith(".jsonld")) {
+            tmsToCheck.push(fs.readFileSync(inputParam))
             numberOfFilesAssertion++
         }
-        else if (input.endsWith(".csv")) {
-            tmsToMerge.push(assertManualToJson(fs.readFileSync(input,"utf-8")))
+        else if (inputParam.endsWith(".csv")) {
+            tmsToMerge.push(assertManualToJson(fs.readFileSync(inputParam,"utf-8")))
             numberOfFilesMerge++
         }
         else {

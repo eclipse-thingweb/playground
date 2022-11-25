@@ -1,32 +1,33 @@
+/* eslint-disable no-underscore-dangle */
 'use strict';
 
 export function jsonldVis(jsonld, selector, config) {
   if (!arguments.length) return jsonldVis;
   config = config || {};
 
-  var h = config.h || 600
-    , w = config.w || 800
-    , maxLabelWidth = config.maxLabelWidth || 250
-    , transitionDuration = config.transitionDuration || 750
-    , transitionEase = config.transitionEase || 'cubic-in-out'
-    , minRadius = config.minRadius || 5
-    , scalingFactor = config.scalingFactor || 2;
+  const h = config.h || 600
+  const w = config.w || 800
+  const maxLabelWidth = config.maxLabelWidth || 250
+  const transitionDuration = config.transitionDuration || 750
+  const transitionEase = config.transitionEase || 'cubic-in-out'
+  const minRadius = config.minRadius || 5
+  const scalingFactor = config.scalingFactor || 2
 
-  var i = 0;
+  let i = 0;
 
-  var tree = d3.layout.tree()
+  const tree = d3.layout.tree()
     .size([h, w]);
 
-  var diagonal = d3.svg.diagonal()
+  const diagonal = d3.svg.diagonal()
     .projection(function (d) { return [d.y, d.x]; });
 
-  var svg = d3.select(selector).append('svg')
+  const svg = d3.select(selector).append('svg')
     .attr('width', w)
     .attr('height', h)
     .append('g')
     .attr('transform', 'translate(' + maxLabelWidth + ',0)');
 
-  var tip = d3.tip()
+  const tip = d3.tip()
     .direction(function (d) {
       return d.children || d._children ? 'w' : 'e';
     })
@@ -40,17 +41,17 @@ export function jsonldVis(jsonld, selector, config) {
 
   svg.call(tip);
 
-  var treeData = {
-    name: jsonld['title'] || `_${Math.random().toString(10).slice(-7)}`,
+  const treeData = {
+    name: jsonld.title || `_${Math.random().toString(10).slice(-7)}`,
     isIdNode: true,
     isBlankNode: true,
     children: jsonldTree(jsonld)
   };
 
-  var root = treeData;
+  const root = treeData;
   root.x0 = h / 2;
   root.y0 = 0;
-  root.children.forEach((child) => collapse(child));
+  root.children.forEach(child => collapse(child));
 
   function changeSVGWidth(newWidth) {
     if (w !== newWidth) {
@@ -75,9 +76,9 @@ export function jsonldVis(jsonld, selector, config) {
         children.push(
           {
             name: key,
-            children: source[key].map((e, i) => {
+            children: source[key].map((e, j) => {
               if (typeof e === 'object') {
-                return { name: i, children: jsonldTree(e) };
+                return { name: j, children: jsonldTree(e) };
               } else {
                 return { name: e };
               }
@@ -102,15 +103,15 @@ export function jsonldVis(jsonld, selector, config) {
   }
 
   function update(source) {
-    var nodes = tree.nodes(root).reverse();
-    var links = tree.links(nodes);
+    const nodes = tree.nodes(root).reverse();
+    const links = tree.links(nodes);
 
     nodes.forEach(function (d) { d.y = d.depth * maxLabelWidth; });
 
-    var node = svg.selectAll('g.node')
+    const node = svg.selectAll('g.node')
       .data(nodes, function (d) { return d.id || (d.id = ++i); });
 
-    var nodeEnter = node.enter()
+    const nodeEnter = node.enter()
       .append('g')
       .attr('class', 'node')
       .attr('transform', function (d) { return 'translate(' + source.y0 + ',' + source.x0 + ')'; })
@@ -136,7 +137,7 @@ export function jsonldVis(jsonld, selector, config) {
 
     nodeEnter.append('text')
       .attr('x', function (d) {
-        var spacing = computeRadius(d) + 5;
+        const spacing = computeRadius(d) + 5;
         return d.children || d._children ? -spacing : spacing;
       })
       .attr('dy', '4')
@@ -144,13 +145,13 @@ export function jsonldVis(jsonld, selector, config) {
       .text(function (d) { return d.name + (d.value ? ': ' + d.value : ''); })
       .style('fill-opacity', 0);
 
-    var maxSpan = Math.max.apply(Math, nodes.map(function (d) { return d.y + maxLabelWidth; }));
+    const maxSpan = Math.max.apply(Math, nodes.map(function (d) { return d.y + maxLabelWidth; }));
     if (maxSpan + maxLabelWidth + 20 > w) {
       changeSVGWidth(maxSpan + maxLabelWidth);
       d3.select(selector).node().scrollLeft = source.y0;
     }
 
-    var nodeUpdate = node.transition()
+    const nodeUpdate = node.transition()
       .duration(transitionDuration)
       .ease(transitionEase)
       .attr('transform', function (d) { return 'translate(' + d.y + ',' + d.x + ')'; });
@@ -173,7 +174,7 @@ export function jsonldVis(jsonld, selector, config) {
 
     nodeUpdate.select('text').style('fill-opacity', 1);
 
-    var nodeExit = node.exit().transition()
+    const nodeExit = node.exit().transition()
       .duration(transitionDuration)
       .ease(transitionEase)
       .attr('transform', function (d) { return 'translate(' + source.y + ',' + source.x + ')'; })
@@ -182,13 +183,13 @@ export function jsonldVis(jsonld, selector, config) {
     nodeExit.select('circle').attr('r', 0);
     nodeExit.select('text').style('fill-opacity', 0);
 
-    var link = svg.selectAll('path.link')
+    const link = svg.selectAll('path.link')
       .data(links, function (d) { return d.target.id; });
 
     link.enter().insert('path', 'g')
       .attr('class', 'link')
       .attr('d', function (d) {
-        var o = { x: source.x0, y: source.y0 };
+        const o = { x: source.x0, y: source.y0 };
         return diagonal({ source: o, target: o });
       });
 
@@ -201,7 +202,7 @@ export function jsonldVis(jsonld, selector, config) {
       .duration(transitionDuration)
       .ease(transitionEase)
       .attr('d', function (d) {
-        var o = { x: source.x, y: source.y };
+        const o = { x: source.x, y: source.y };
         return diagonal({ source: o, target: o });
       })
       .remove();
@@ -221,7 +222,7 @@ export function jsonldVis(jsonld, selector, config) {
   }
 
   function numEndNodes(n) {
-    var num = 0;
+    let num = 0;
     if (n.children) {
       n.children.forEach(function (c) {
         num += numEndNodes(c);
@@ -260,7 +261,7 @@ export function jsonldVis(jsonld, selector, config) {
   function collapse(d, toUpdate = false) {
     if (d.children) {
       d._children = d.children;
-      d._children.forEach((child) => collapse(child));
+      d._children.forEach(child => collapse(child));
       d.children = null;
 
       if (toUpdate) {
@@ -272,10 +273,10 @@ export function jsonldVis(jsonld, selector, config) {
   function expand(d, toUpdate = false) {
     if (d._children) {
       d.children = d._children;
-      d.children.forEach((child) => expand(child));
+      d.children.forEach(child => expand(child));
       d._children = null;
     } else if (d.children) {
-      d.children.forEach((child) => expand(child));
+      d.children.forEach(child => expand(child));
     }
 
     if (toUpdate) update(d);
@@ -283,6 +284,6 @@ export function jsonldVis(jsonld, selector, config) {
 
   update(root);
 
-  document.getElementById('vis-collapse-all').addEventListener('click', (_) => collapse(root, true));
-  document.getElementById('vis-expand-all').addEventListener('click', (_) => expand(root, true));
+  document.getElementById('vis-collapse-all').addEventListener('click', _ => collapse(root, true));
+  document.getElementById('vis-expand-all').addEventListener('click', _ => expand(root, true));
 }
