@@ -364,7 +364,7 @@ function coreValidation() {
             validNames.forEach(el => {
                 if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                     tdToCheck = fs.readFileSync(path.join(validPath, el), "utf-8")
-                    let suite = builder.testSuite().name(el)
+                    const suite = builder.testSuite().name(el)
                     const thisProm = tdValidator(tdToCheck, console.log, { checkDefaults: false }, suite)
                         .then(result => {
                             if (statResult("failed", result.report)) {
@@ -405,7 +405,7 @@ function coreValidation() {
             invalidNames.forEach(el => {
                 if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                     tdToCheck = fs.readFileSync(path.join(invalidPath, el), "utf-8")
-                    let suite = builder.testSuite().name(el)
+                    const suite = builder.testSuite().name(el)
                     const thisProm = tdValidator(tdToCheck, console.log, { checkDefaults: false }, suite)
                         .then(result => {
                             if (statResult("failed", result.report)) {
@@ -446,7 +446,7 @@ function coreValidation() {
             warnNames.forEach(el => {
                 if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                     tdToCheck = fs.readFileSync(path.join(warnPath, el), "utf-8")
-                    let suite = builder.testSuite().name(el)
+                    const suite = builder.testSuite().name(el)
                     const thisProm = tdValidator(tdToCheck, console.log, { checkDefaults: true }, suite)
                         .then(result => {
                             if (statResult("failed", result.report)) {
@@ -483,7 +483,7 @@ function coreValidation() {
         // check TDs contained in the directory
         fs.readdirSync(input).forEach(el => {
             if (el.endsWith(".json") || el.endsWith(".jsonld")) {
-                let suite = builder.testSuite().name(el)
+                const suite = builder.testSuite().name(el)
                 tdToCheck = fs.readFileSync(path.join(input, el), "utf-8")
                 checkTd(tdToCheck, suite)
             }
@@ -491,7 +491,7 @@ function coreValidation() {
 
     }
     else {
-        let suite = builder.testSuite().name(input)
+        const suite = builder.testSuite().name(input)
         tdToCheck = fs.readFileSync(input, "utf-8")
         checkTd(tdToCheck, suite)
     }
@@ -531,7 +531,8 @@ function statResult(keyword, report) {
  */
 function openApiGeneration() {
     // input checks
-    if (!input) { input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid", "simple.json") }
+    if (!input) { input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds",
+     "valid", "simple.json") }
     if (!fs.lstatSync(input).isFile()) {
         throw new Error("please provide one File as input for the OpenAPI instance generation")
     }
@@ -555,7 +556,8 @@ function openApiGeneration() {
 
 function asyncApiGeneration() {
     // input checks
-    if (!input) { input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid", "simple.json") }
+    if (!input) { input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds",
+     "valid", "simple.json") }
     if (!fs.lstatSync(input).isFile()) {
         throw new Error("please provide one File as input for the AsyncAPI instance generation")
     }
@@ -582,7 +584,8 @@ function asyncApiGeneration() {
  */
 function defaultManipulation() {
     // input checks
-    if (!input) { input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid", "simple.json") }
+    if (!input) { input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds",
+     "valid", "simple.json") }
     if (!fs.lstatSync(input).isFile()) {
         throw new Error("please provide one File as input for the OpenAPI instance generation")
     }
@@ -739,7 +742,7 @@ function tmCoreValidation() {
             validNames.forEach(el => {
                 if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                     tmToCheck = fs.readFileSync(path.join(validPath, el), "utf-8")
-                    let suite = builder.testSuite().name(el)
+                    const suite = builder.testSuite().name(el)
                     const thisProm = tmValidator(tmToCheck, console.log, { checkDefaults: false }, suite)
                         .then(result => {
                             if (statResult("failed", result.report)) {
@@ -780,7 +783,7 @@ function tmCoreValidation() {
             invalidNames.forEach(el => {
                 if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                     tmToCheck = fs.readFileSync(path.join(invalidPath, el), "utf-8")
-                    let suite = builder.testSuite().name(el)
+                    const suite = builder.testSuite().name(el)
                     const thisProm = tmValidator(tmToCheck, console.log, { checkDefaults: false }, suite)
                         .then(result => {
                             if (statResult("failed", result.report)) {
@@ -821,7 +824,7 @@ function tmCoreValidation() {
             warnNames.forEach(el => {
                 if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                     tmToCheck = fs.readFileSync(path.join(warnPath, el), "utf-8")
-                    let suite = builder.testSuite().name(el)
+                    const suite = builder.testSuite().name(el)
                     const thisProm = tmValidator(tmToCheck, console.log, { checkDefaults: true }, suite)
                         .then(result => {
                             if (statResult("failed", result.report)) {
@@ -858,7 +861,7 @@ function tmCoreValidation() {
         // check TDs contained in the directory
         fs.readdirSync(input).forEach(el => {
             if (el.endsWith(".json") || el.endsWith(".jsonld")) {
-                let suite = builder.testSuite().name(el)
+                const suite = builder.testSuite().name(el)
                 tmToCheck = fs.readFileSync(path.join(input, el), "utf-8")
                 checkTm(tmToCheck, suite)
             }
@@ -866,7 +869,7 @@ function tmCoreValidation() {
 
     }
     else {
-        let suite = builder.testSuite().name(el)
+        const suite = builder.testSuite().name(el)
         tmToCheck = fs.readFileSync(input, "utf-8")
         checkTm(tmToCheck, suite)
     }

@@ -93,10 +93,10 @@ export function jsonldVis(jsonld, selector, config) {
           return `${value}...`;
         };
 
-        const limit = Math.floor(maxLabelWidth / 9);
-        const d = (`${source[key]}`.length > limit) ? {
+        const stringLimit = Math.floor(maxLabelWidth / 9);
+        const d = (`${source[key]}`.length > stringLimit) ? {
           name: key,
-          value: truncateValue(source[key], limit),
+          value: truncateValue(source[key], stringLimit),
           valueExtended: source[key]
         } : {
           name: key,
