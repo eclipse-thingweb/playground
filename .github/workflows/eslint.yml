@@ -39,8 +39,44 @@ jobs:
         run: lerna run lint
         continue-on-error: true
 
-      - name: Upload core analysis results to GitHub
+      - name: Upload assertions analysis results to GitHub
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: packages/core/eslint-results.sarif
+          sarif_file: packages/assertions/eslint-results.sarif
+          wait-for-processing: true
+          
+      - name: Upload cli analysis results to GitHub
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: packages/cli/eslint-results.sarif
+          wait-for-processing: true
+
+      - name: Upload defaults analysis results to GitHub
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: packages/defaults/eslint-results.sarif
+          wait-for-processing: true
+
+      - name: Upload gist_backend analysis results to GitHub
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: packages/gist_backend/eslint-results.sarif
+          wait-for-processing: true
+
+      - name: Upload td_to_asyncapi analysis results to GitHub
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: packages/td_to_asyncapi/eslint-results.sarif
+          wait-for-processing: true
+
+      - name: Upload td_to_openAPI analysis results to GitHub
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: packages/td_to_openAPI/eslint-results.sarif
+          wait-for-processing: true
+
+      - name: Upload web analysis results to GitHub
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: packages/web/eslint-results.sarif
           wait-for-processing: true
