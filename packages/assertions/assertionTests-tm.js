@@ -309,13 +309,13 @@ function checkTMVocabulary(tmJson) {
  * @param {Array<{"ID": string, "Status": string}>} results
  */
 
-function validateTmPlaceholder(obj, logFunc, results) {
+function validateTmPlaceholder(tmObj, logFunc, results) {
 
     let FOUND_TM_PLACEHOLDER = false
 
     const tmpResults = []
     let validPayload = null
-    checkObjContainsTmPlaceholder(obj, logFunc)
+    checkObjContainsTmPlaceholder(tmObj, logFunc)
     let otherAssertion = []
     if(tmPlaceholderSchema.also && tmPlaceholderSchema.also.length >= 1) otherAssertion = tmPlaceholderSchema.also
 
@@ -406,12 +406,12 @@ function validateTmPlaceholder(obj, logFunc, results) {
  * @param {function} logFunc
  * @param {Array<{"ID": string, "Status": string}>} results
  */
-function validateTmRef(obj, logFunc, results) {
+function validateTmRef(tmObj, logFunc, results) {
 
     const tmpResults = []
     let FOUND_TM_REF = false
 
-    let validPayload = checkObjContainsTmRef(obj, logFunc)
+    let validPayload = checkObjContainsTmRef(tmObj, logFunc)
     let otherAssertion = []
     if(tmRefSchema.also && tmRefSchema.also.length >= 1) otherAssertion = tmRefSchema.also
 
@@ -472,6 +472,7 @@ function validateTmRef(obj, logFunc, results) {
      * @param {function} logFunc
      * @returns {{valid: boolean, ajvObject: object} | null} true if validation passes, else false
      */
+     // eslint-disable-next-line no-shadow
      function checkObjContainsTmRef(obj, logFunc) {
 
         for(const key in obj) {
