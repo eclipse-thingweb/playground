@@ -30,7 +30,7 @@ module.exports = validateTM
  * @param {Buffer} tmData Buffer of the TM data, has to be utf8 encoded (e.g. by fs.readFileSync(file.json) )
  * @param {Array<object>} assertions An array containing all assertion objects (already parsed)
  * @param {Array<object>} manualAssertions An array containing all manual assertions
- * @param {Function} logFunc Logging function
+ * @param {Function} loggingFunction Logging function, needed to differentiate between web and cli
  */
  function validateTM(tmData, assertions, manualAssertions, loggingFunction) {
 
@@ -305,17 +305,16 @@ function checkTMVocabulary(tmJson) {
 /**
  * A script for validating tm-placeholder
  * @param {object} obj
- * @param {function} logFunc
  * @param {Array<{"ID": string, "Status": string}>} results
  */
 
-function validateTmPlaceholder(tmObj, logFunc, results) {
+function validateTmPlaceholder(tmObj, results) {
 
     let FOUND_TM_PLACEHOLDER = false
 
     const tmpResults = []
     let validPayload = null
-    checkObjContainsTmPlaceholder(tmObj, logFunc)
+    checkObjContainsTmPlaceholder(tmObj)
     let otherAssertion = []
     if(tmPlaceholderSchema.also && tmPlaceholderSchema.also.length >= 1) otherAssertion = tmPlaceholderSchema.also
 
@@ -373,7 +372,6 @@ function validateTmPlaceholder(tmObj, logFunc, results) {
     /**
      *
      * @param {object} obj
-     * @param {function} logFunc
      * @returns {{valid: boolean, ajvObject: object} | null} true if validation passes, else false
      */
      function checkObjContainsTmPlaceholder(obj) {
@@ -469,17 +467,17 @@ function validateTmRef(tmObj, logFunc, results) {
     /**
      *
      * @param {object} obj
-     * @param {function} logFunc
+     * @param {function} logFuncLow
      * @returns {{valid: boolean, ajvObject: object} | null} true if validation passes, else false
      */
      // eslint-disable-next-line no-shadow
-     function checkObjContainsTmRef(obj, logFunc) {
+     function checkObjContainsTmRef(obj, logFuncLow) {
 
         for(const key in obj) {
             if(Object.prototype.hasOwnProperty.call(obj, key)) {
                 if(key === "tm:ref") {
                     FOUND_TM_REF = true
-                    const result = validate(obj, tmRefSchema, logFunc)
+                    const result = validate(obj, tmRefSchema, logFuncLow)
                     tmpResults.push(result)
                 }
                 if(typeof obj[key] == "object") {
