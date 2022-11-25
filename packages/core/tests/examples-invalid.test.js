@@ -74,7 +74,7 @@ const refResultAdd = {
 }
 
 for (const fileNames of [tdFileNames, tmFileNames]) {
-    let validator, dirPath, refResult
+    let validator; let dirPath; let refResult
     if (fileNames === tdFileNames) {
         validator = tdValidator
         dirPath = tdDirPath

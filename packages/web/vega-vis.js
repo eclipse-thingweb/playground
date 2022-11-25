@@ -3,8 +3,8 @@ export async function vegaVis($container, td) {
     const treeData = [
         {
             id: '0',
-            name: td['title'],
-            parent: null,
+            name: td.title,
+            parent: null
         }
     ];
     const conf = {
@@ -247,7 +247,7 @@ export async function vegaVis($container, td) {
                     {
                         id: `${parent}_${index}`,
                         name: key,
-                        parent: parent
+                        parent
                     }
                 );
 
@@ -258,7 +258,7 @@ export async function vegaVis($container, td) {
                     {
                         id: `${parent}_${index}`,
                         name: key,
-                        parent: parent
+                        parent
                     }
                 );
 
@@ -277,7 +277,7 @@ export async function vegaVis($container, td) {
                         treeData.push({
                             id: `${parent}_${index}_${i}`,
                             name: e,
-                            parent: `${parent}_${index}`,
+                            parent: `${parent}_${index}`
                         });
                     }
                 });
@@ -286,7 +286,7 @@ export async function vegaVis($container, td) {
                 treeData.push({
                     id: `${parent}_${index}`,
                     name: key,
-                    parent: parent
+                    parent
                 });
             }
         });

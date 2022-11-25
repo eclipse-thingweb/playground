@@ -21,12 +21,12 @@ stringDirection.patch()
 
 const tdRelated = [];
 [].forEach.call(document.querySelectorAll('.td-related'), el => {
-	tdRelated.push({"el": el, "display": el.style.display})
+	tdRelated.push({el, "display": el.style.display})
 })
 
 const tmRelated = [];
 [].forEach.call(document.querySelectorAll('.tm-related'), el => {
-	tmRelated.push({"el": el, "display": el.style.display})
+	tmRelated.push({el, "display": el.style.display})
 })
 
 document.getElementById("box_jsonld_validate").checked = true
@@ -55,10 +55,10 @@ function onDocTypeChange(outsideValue) {
 
 	if (docType === 'tm') {
 		[].forEach.call(tdRelated, el => {
-			el["el"].style.display = "none"
+			el.el.style.display = "none"
 		});
 		[].forEach.call(tmRelated, el => {
-			el["el"].style.display = el["display"]
+			el.el.style.display = el.display
 		});
 		window.editor = window.tmEditor
 		document.getElementById("td-editor").style.display = "none"
@@ -66,10 +66,10 @@ function onDocTypeChange(outsideValue) {
 		document.getElementById("tm-tab").click()
 	} else {
 		[].forEach.call(tmRelated, el => {
-			el["el"].style.display = "none"
+			el.el.style.display = "none"
 		});
 		[].forEach.call(tdRelated, el => {
-			el["el"].style.display = el["display"]
+			el.el.style.display = el.display
 		});
 		window.editor = window.tdEditor
 		document.getElementById("td-editor").style.display = "block"
@@ -78,18 +78,18 @@ function onDocTypeChange(outsideValue) {
 	}
 }
 
-document.getElementById("doc_type").addEventListener("change", (_) => onDocTypeChange())
+document.getElementById("doc_type").addEventListener("change", _ => onDocTypeChange())
 
 function visualize() {
 	let td;
 	try {
 		td = JSON.parse(window.editor.getValue());
-	} catch (err) { 
+	} catch (err) {
 		alert(`Incorrect JSON: ${err}`);
 		return false;
 	 }
 
-	if (visType == 'graph') {
+	if (visType === 'graph') {
 		document.getElementById('visualized').innerHTML = '';
 		jVis.jsonldVis(
 			td,
@@ -118,7 +118,7 @@ function visualize() {
 }
 
 document.querySelectorAll('#graph-vis, #tree-vis').forEach(el => {
-	el.addEventListener('change', (e) => {
+	el.addEventListener('change', e => {
 		visType = e.target.id.split('-')[0];
 		visualize();
 	});
@@ -136,7 +136,7 @@ document.getElementById('close-visualized-popup').addEventListener('click', () =
 });
 
 document.querySelectorAll('#vis-download-svg, #vis-download-png').forEach(el => {
-	el.addEventListener('click', async (e) => {
+	el.addEventListener('click', async e => {
 		const idParts = e.target.id.split('-');
 		const format = idParts[idParts.length - 1];
 
@@ -185,7 +185,7 @@ document.getElementById("btn_assertion_popup").addEventListener("click", () => {
 			manualAssertions.push(singleAssertionJSON)
 		}
 
-		if (manualAssertions.length == 0) {
+		if (manualAssertions.length === 0) {
 			document.getElementById("manual_assertion_table_body").innerHTML = ''
 		}
 
@@ -422,7 +422,7 @@ function enableFormatButtons() {
 }
 
 /**
- * Enable Open/Async API elements according to the protocol schemes of a TD 
+ * Enable Open/Async API elements according to the protocol schemes of a TD
  * @param {string} td TD string to check protocols and do enabling accordingly
  */
 function enableAPIConversionWithProtocol(td) {

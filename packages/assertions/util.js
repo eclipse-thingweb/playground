@@ -2,7 +2,7 @@
 
 const Ajv = require("ajv")
 const addFormats = require("ajv-formats")
-const apply = require('ajv-formats-draft2019');
+const apply = require('ajv-formats-draft2019')
 
 module.exports = {
     validate,
@@ -30,7 +30,7 @@ module.exports = {
     ajv = addFormats(ajv) // ajv does not support formats by default anymore
     ajv = apply(ajv) // new formats that include iri
     ajv.addSchema(schema, "assertion")
-    ajv.addVocabulary(['is-complex', 'also']);
+    ajv.addVocabulary(['is-complex', 'also'])
 
     return {valid: ajv.validate("assertion", jsonData), ajvObject: ajv}
 }

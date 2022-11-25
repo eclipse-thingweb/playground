@@ -19,7 +19,8 @@
     "testAll": "node testAll.js",
     "bundle": "npx browserify ./index.js -s tdToAsyncAPI -o ./dist/web-bundle.js && npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
     "updateExamples": "node ./examples/updateExamples.js",
-    "prepare": "npm run bundle"
+    "prepare": "npm run bundle",
+    "lint": "npx eslint . --config .eslintrc.json --ext .js,.jsx,.ts,.tsx --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif"
   },
   "dependencies": {
     "@asyncapi/parser": "^1.15.1",
@@ -31,7 +32,8 @@
     "browserify-shim": "^3.8.15",
     "eslint": "^8.22.0",
     "jest": "^28.1.3",
-    "terser": "^5.14.2"
+    "terser": "^5.14.2",
+    "@microsoft/eslint-formatter-sarif": "^2.1.7"
   },
   "publishConfig": {
     "access": "public"
