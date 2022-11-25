@@ -30,6 +30,7 @@
     "bootstrap-switch-button": "^1.1.0",
     "monaco-editor": "^0.34.0",
     "papaparse": "^5.3.2",
+    "string-direction": "^0.1.2",
     "svg-crowbar": "^0.7.0"
   },
   "devDependencies": {

@@ -78,5 +78,7 @@ processStack.add("node ./index.js -p", "OpenAPI JSON generation", () => existsSy
 processStack.add("node ./index.js -p --oap-yaml", "OpenAPI YAML generation", () => existsSync("./out/simple_openapi.yaml"))
 processStack.add("node ./index.js --async-api", "AsyncAPI JSON generation", () => existsSync("./out/simple_asyncapi.json"))
 processStack.add("node ./index.js --async-api --aap-yaml", "AsyncAPI YAML generation", () => existsSync("./out/simple_asyncapi.yaml"))
+// test for junit output
+processStack.add("node ./index.js --junit", "JUnit output testing", () => existsSync("junit-tests.xml"))
 
 processStack.evaluate()

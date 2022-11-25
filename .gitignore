@@ -23,3 +23,6 @@ log.json
 
 # linting results
 eslint-results.sarif
+
+# junit test results
+junit-tests.xml
