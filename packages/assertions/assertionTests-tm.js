@@ -32,7 +32,7 @@ module.exports = validateTM
  * @param {Array<object>} manualAssertions An array containing all manual assertions
  * @param {Function} logFunc Logging function
  */
- function validateTM(tmData, assertions, manualAssertions, logFunc) {
+ function validateTM(tmData, assertions, manualAssertions, loggingFunction) {
 
     // a JSON file that will be returned containing the result for each assertion as a JSON Object
     let results = []
@@ -72,7 +72,7 @@ module.exports = validateTM
     try {
         results.push(...checkTMVocabulary(tmJson))
     } catch (error) {
-        logFunc({
+        loggingFunction({
             "ID": error,
             "Status": "fail"
         })
@@ -98,18 +98,18 @@ module.exports = validateTM
 
         const schema = curAssertion
         if(schema.title === "tm-placeholder") {
-            validateTmPlaceholder(tmJson, logFunc, results)
+            validateTmPlaceholder(tmJson, loggingFunction, results)
             continue
         }
 
         if(schema.title === "tm-tmRef1") {
-            validateTmRef(tmJson, logFunc, results)
+            validateTmRef(tmJson, loggingFunction, results)
             continue
         }
 
         // Validation starts here
 
-        const validPayload = validate(tmJson, schema, logFunc)
+        const validPayload = validate(tmJson, schema, loggingFunction)
 
         /*
             TODO: when is implemented?
