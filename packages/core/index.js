@@ -957,7 +957,7 @@ function tdValidator(tdString, logFunc, { checkDefaults=true, checkJsonLd=true }
  * @returns {string} Compressed URL-encoded string.
  */
 function compress(data) {
-    return lzs.compressToEncodedURIComponent(data);
+    return lzs.compressToEncodedURIComponent(data)
 }
 
 /**
@@ -966,7 +966,7 @@ function compress(data) {
  * @returns {string} Original string.
  */
  function decompress(data) {
-    return lzs.decompressFromEncodedURIComponent(data);
+    return lzs.decompressFromEncodedURIComponent(data)
 }
 
 // --------------------------------------------------
@@ -983,7 +983,8 @@ const TYPO_LOOKUP_TABLE = createSchemaLookupTable(tdSchema)
 /**
  * Checks possible typos in a TD
  * @param {object} td The TD to apply typo check on
- * @returns List of possible typos where the typo consists of string value of typo itself and the message, another string value, to be prompted to the user for the fix
+ * @returns List of possible typos where the typo consists of string value of typo itself and the message,
+ * another string value, to be prompted to the user for the fix
  */
  function checkTypos(td) {
     const typos = []
@@ -1089,7 +1090,7 @@ function findPathsInSchema(lookupTable, schema, path) {
         return
     }
 
-    if (schema['type'] === 'object') {
+    if (schema.type === 'object') {
         const properties = schema[PROPERTIES]
         for (const key in properties) {
             if (properties.hasOwnProperty(key)) {
@@ -1132,8 +1133,8 @@ function findPathsInSchema(lookupTable, schema, path) {
         putKeysToPath(lookupTable, path, keys)
     }
 
-    if (schema['type'] === 'array') {
-        const items = schema['items']
+    if (schema.type === 'array') {
+        const items = schema.items
 
         for (const item in items) {
             if (items.hasOwnProperty(item)) {
