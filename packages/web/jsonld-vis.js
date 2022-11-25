@@ -29,10 +29,10 @@ export function jsonldVis(jsonld, selector, config) {
 
   const tip = d3.tip()
     .direction(function (d) {
-      return d.children || d._children ? 'w' : 'e';
+      return d.children || d.privChildren ? 'w' : 'e';
     })
     .offset(function (d) {
-      return d.children || d._children ? [0, -3] : [0, 3];
+      return d.children || d.privChildren ? [0, -3] : [0, 3];
     })
     .attr('class', 'd3-tip')
     .html(function (d) {
@@ -135,9 +135,9 @@ export function jsonldVis(jsonld, selector, config) {
       })
       .style('fill', function (d) {
         if (d.isIdNode) {
-          return d._children ? '#F5D76E' : 'white';
+          return d.privChildren ? '#F5D76E' : 'white';
         } else {
-          return d._children ? '#86E2D5' : 'white';
+          return d.privChildren ? '#86E2D5' : 'white';
         }
       })
       .on('mouseover', function (d) { if (d.valueExtended) tip.show(d); })
@@ -146,10 +146,10 @@ export function jsonldVis(jsonld, selector, config) {
     nodeEnter.append('text')
       .attr('x', function (d) {
         const spacing = computeRadius(d) + 5;
-        return d.children || d._children ? -spacing : spacing;
+        return d.children || d.privChildren ? -spacing : spacing;
       })
       .attr('dy', '4')
-      .attr('text-anchor', function (d) { return d.children || d._children ? 'end' : 'start'; })
+      .attr('text-anchor', function (d) { return d.children || d.privChildren ? 'end' : 'start'; })
       .text(function (d) { return d.name + (d.value ? ': ' + d.value : ''); })
       .style('fill-opacity', 0);
 
@@ -174,9 +174,9 @@ export function jsonldVis(jsonld, selector, config) {
       })
       .style('fill', function (d) {
         if (d.isIdNode) {
-          return d._children ? '#F5D76E' : 'white';
+          return d.privChildren ? '#F5D76E' : 'white';
         } else {
-          return d._children ? '#86E2D5' : 'white';
+          return d.privChildren ? '#86E2D5' : 'white';
         }
       });
 
@@ -222,7 +222,7 @@ export function jsonldVis(jsonld, selector, config) {
   }
 
   function computeRadius(d) {
-    if (d.children || d._children) {
+    if (d.children || d.privChildren) {
       return minRadius + (numEndNodes(d) / scalingFactor);
     } else {
       return minRadius;
@@ -235,8 +235,8 @@ export function jsonldVis(jsonld, selector, config) {
       n.children.forEach(function (c) {
         num += numEndNodes(c);
       });
-    } else if (n._children) {
-      n._children.forEach(function (c) {
+    } else if (n.privChildren) {
+      n.privChildren.forEach(function (c) {
         num += numEndNodes(c);
       });
     } else {
@@ -247,11 +247,11 @@ export function jsonldVis(jsonld, selector, config) {
 
   function click(d) {
     if (d.children) {
-      d._children = d.children;
+      d.privChildren = d.children;
       d.children = null;
     } else {
-      d.children = d._children;
-      d._children = null;
+      d.children = d.privChildren;
+      d.privChildren = null;
     }
 
     update(d);
@@ -259,7 +259,7 @@ export function jsonldVis(jsonld, selector, config) {
     // fast-forward blank nodes
     if (d.children) {
       d.children.forEach(function (child) {
-        if (child.isBlankNode && child._children) {
+        if (child.isBlankNode && child.privChildren) {
           click(child);
         }
       });
@@ -268,8 +268,8 @@ export function jsonldVis(jsonld, selector, config) {
 
   function collapse(d, toUpdate = false) {
     if (d.children) {
-      d._children = d.children;
-      d._children.forEach(child => collapse(child));
+      d.privChildren = d.children;
+      d.privChildren.forEach(child => collapse(child));
       d.children = null;
 
       if (toUpdate) {
@@ -279,10 +279,10 @@ export function jsonldVis(jsonld, selector, config) {
   }
 
   function expand(d, toUpdate = false) {
-    if (d._children) {
-      d.children = d._children;
+    if (d.privChildren) {
+      d.children = d.privChildren;
       d.children.forEach(child => expand(child));
-      d._children = null;
+      d.privChildren = null;
     } else if (d.children) {
       d.children.forEach(child => expand(child));
     }
