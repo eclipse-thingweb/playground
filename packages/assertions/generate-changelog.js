@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 /* eslint-disable max-classes-per-file */
 /** ===================================================================================================
  * ?                                ABOUT
@@ -44,7 +43,8 @@ class Change {
             case "renamed":
                 return `- \`${this.additionalParam}\` was renamed to \`${this.assertionID}\``
             case "line-change":
-                return `- \`${this.assertionID}\` was moved from Line ${this.additionalParam.oldline+1} to ${this.additionalParam.newline+1}`
+                return `- \`${this.assertionID}\` was moved from Line` +
+                `${this.additionalParam.oldline+1} to ${this.additionalParam.newline+1}`
             case "description":
                 return `- \`${this.assertionID}\` -> \`"${this.additionalParam}"\``
         }
