@@ -19,7 +19,8 @@ const csvjson = require('csvjson')
 const {
     readFileSync,
     writeFileSync,
-    existsSync
+    existsSync,
+    fstat
 } = require('fs')
 const path = require("path")
 
@@ -102,17 +103,20 @@ const changeLogs = new Changelog()
  *========================================================================**/
 const helpMessage =
     `
-Usage: node generate-changelog.js [oldCsvPath] [newCsvPath]
+Usage: node generate-changelog.js <old CSV path> <new CSV path> [output path]
+
+Output path is optional. If not specified, the Markdown will be printed to the terminal instead.
 
 node generate-changelog.js [-h|--help] displays this message.
 `
 
 const myArgs = process.argv.slice(2)
 
-if (myArgs.length <= 1 || myArgs.length > 2) { console.log(helpMessage); return -1 }
+if (myArgs.length <= 1 || myArgs.length > 3) { console.log(helpMessage); return -1 }
 else {
     oldCsvPath = myArgs[0].trim()
     newCsvPath = myArgs[1].trim()
+    outputPath = myArgs[2].trim()
 
     /* Normalizing paths */
     oldCsvPath = oldCsvPath.split(path.win32.sep)
@@ -122,6 +126,10 @@ else {
     newCsvPath = newCsvPath.split(path.win32.sep)
     if (newCsvPath.length === 1) { newCsvPath = newCsvPath[0].split(path.posix.sep) }
     newCsvPath = path.join(...newCsvPath)
+
+    outputPath = outputPath.split(path.win32.sep)
+    if (outputPath.length === 1) { outputPath = outputPath[0].split(path.posix.sep) }
+    outputPath = path.join(...outputPath)
 
     /* Check paths exist*/
     if (!existsSync(oldCsvPath)) throw new Error("Given path for 'oldCsvPath' does not exist")
@@ -133,6 +141,9 @@ else {
 
     if (path.extname(newCsvPath) !== ".csv")
         throw new Error("The path 'newCsvPath' does not point to a csv file. Make sure that the file has the extension name '.csv'")
+
+    if (path.extname(outputPath) !== ".md")
+     outputPath += ".md"
 
     /** ========================================================================
      *                           Read and Parse CSV
@@ -153,13 +164,14 @@ else {
     oldCsvTable = csvjson.toObject(oldCsv, csvParserOptions)
     newCsvTable = csvjson.toObject(newCsv, csvParserOptions)
 
-    // newCsvTable.forEach(inspectNewAssertion)
-    // oldCsvTable.forEach(inspectOldAssertion)
-
     for(const newAssertion of newCsvTable) {inspectNewAssertion(newAssertion)}
     for(const oldAssertion of oldCsvTable) {inspectOldAssertion(oldAssertion)}
 
-    changeLogs.printLogToConsole()
+    if(outputPath) {
+        writeFileSync(outputPath, changeLogs.getLogMarkDownString())
+    } else {
+        changeLogs.printLogToConsole()
+    }
 }
 
 function inspectOldAssertion(oldAssertion) {
