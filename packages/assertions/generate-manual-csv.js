@@ -9,7 +9,6 @@ const {
     writeFileSync
 } = require('fs')
 const path = require("path")
-// const assert = require('node:assert').strict
 
 const csvGenerator = new Json2CsvParser({
     fields: ["ID", "Status", "Comment", "Description"]
