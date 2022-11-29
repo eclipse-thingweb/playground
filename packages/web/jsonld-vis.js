@@ -206,7 +206,8 @@ export function jsonldVis(jsonld, selector, config) {
       return getDirectionSymbol('ltr') + source[key];
     }
 
-    let direction, lang;
+    let direction;
+    let lang;
     let context = jsonld['@context'];
 
     if (!Array.isArray(context)) {
