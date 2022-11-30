@@ -45,7 +45,7 @@ export function jsonldVis(jsonld, selector, config) {
     name: jsonld.title || `_${Math.random().toString(10).slice(-7)}`,
     isIdNode: true,
     isBlankNode: true,
-    children: jsonldTree(jsonld)
+    children: jsonldTree(jsonld, null)
   };
 
   const root = treeData;
@@ -59,7 +59,7 @@ export function jsonldVis(jsonld, selector, config) {
     }
   }
 
-  function getDirectedValue(source, key) {
+  function getDirectedValue(source, key, parentKey) {
     const LRI = '\u2066';
     const RLI = '\u2067';
     const TABLE = {
@@ -196,11 +196,11 @@ export function jsonldVis(jsonld, selector, config) {
 
     const getDirectionSymbol = dir => (dir === 'ltr') ? LRI : RLI;
 
-    if (!['title', 'description'].includes(key) && !['titles', 'descriptions'].includes(source)) {
-      return getDirectionSymbol(source[key].getDirection()) + source[key];
+    if (!['title', 'description'].includes(key) && !['titles', 'descriptions'].includes(parentKey)) {
+      return getDirectionSymbol(source[key].toString().getDirection()) + source[key];
     }
 
-    if (source === 'titles' || source === 'descriptions') {
+    if (parentKey === 'titles' || parentKey === 'descriptions') {
       const dir = TABLE[key];
       if (dir) return getDirectionSymbol(dir) + source[key];
       return getDirectionSymbol('ltr') + source[key];
@@ -233,7 +233,7 @@ export function jsonldVis(jsonld, selector, config) {
     return getDirectionSymbol(source[key].getDirection()) + source[key];
   }
 
-  function jsonldTree(source) {
+  function jsonldTree(source, parentKey) {
     const children = [];
 
     Object.keys(source).forEach(key => {
@@ -243,7 +243,7 @@ export function jsonldVis(jsonld, selector, config) {
         children.push(
           {
             name: key,
-            children: jsonldTree(source[key])
+            children: jsonldTree(source[key], key)
           }
         );
       } else if (Array.isArray(source[key])) {
@@ -252,7 +252,7 @@ export function jsonldVis(jsonld, selector, config) {
             name: key,
             children: source[key].map((e, j) => {
               if (typeof e === 'object') {
-                return { name: j, children: jsonldTree(e) };
+                return { name: j, children: jsonldTree(e, j) };
               } else {
                 return { name: e };
               }
@@ -263,11 +263,11 @@ export function jsonldVis(jsonld, selector, config) {
         const stringLimit = Math.floor(maxLabelWidth / 9);
         const d = (`${source[key]}`.length > stringLimit) ? {
           name: key,
-          value: getDirectedValue(source, key).slice(0, stringLimit) + '...',
-          valueExtended: getDirectedValue(source, key)
+          value: getDirectedValue(source, key, parentKey).slice(0, stringLimit) + '...',
+          valueExtended: getDirectedValue(source, key, parentKey)
         } : {
           name: key,
-          value: source[key]
+          value: getDirectedValue(source, key, parentKey)
         };
 
         children.push(d);
