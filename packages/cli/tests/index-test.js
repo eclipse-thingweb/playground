@@ -80,5 +80,13 @@ processStack.add("node ./index.js --async-api", "AsyncAPI JSON generation", () =
 processStack.add("node ./index.js --async-api --aap-yaml", "AsyncAPI YAML generation", () => existsSync("./out/simple_asyncapi.yaml"))
 // test for junit output
 processStack.add("node ./index.js --junit", "JUnit output testing", () => existsSync("junit-tests.xml"))
+// test multiple inputs
+processStack.add("node ./index.js -i node_modules/@thing-description-playground/core/examples/tds/ node_modules/@thing-description-playground/core/examples/tds/", "Check multiple inputs", sOut => (
+    sOut.search("Warning test successful") !== -1 &&
+    sOut.search("Invalidity test successful") !== -1 &&
+    sOut.search("Validity test successful") !== -1 &&
+    sOut.search("Warning test successful") !== -1 &&
+    sOut.search("Invalidity test successful") !== -1 &&
+    sOut.search("Validity test successful") !== -1))
 
 processStack.evaluate()
