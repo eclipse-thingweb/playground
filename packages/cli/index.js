@@ -39,7 +39,7 @@ program
     .addOption(new commander.Option('-t, --type <type>',
         'The type of JSON documents that are passed as inputs').choices(['TD', 'TM', 'AUTO']).default('TD'))
     .option('-i, --input <pathToInputs...>',
-        'The files or the folders containing the files, which will be processed and/or validated', undefined)
+        'The files or the folders containing the files, which will be processed and/or validated. Multiple inputs can be provided.', undefined)
     .option('-j, --no-jsonld', 'Turn off the JSON-LD validation (for example because internet connection is not available)')
     .option('-d, --no-defaults', 'Turn off the Full JSON Schema validation, which checks e.g. for default values being explicitly set')
     .option('-a, --assertions', 'Call the assertion report instead of the core validation, \n' +
