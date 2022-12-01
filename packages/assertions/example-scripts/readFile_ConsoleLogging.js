@@ -2,9 +2,10 @@
 const tdAsserter = require("../index").tdAssertions
 const fs = require("fs")
 const path = require("path")
+const corePath = require.resolve("@thing-description-playground/core")
 
 // Reads file in as Buffer
-simpleTD = fs.readFileSync(path.join(__dirname, "./", "node_modules", "@thing-description-playground", "core", "examples", "tds", "valid", "simple.json"))
+simpleTD = fs.readFileSync(path.join(path.dirname(corePath), "examples", "tds", "valid", "simple.json"))
 
 function fileLoad(loc) {
 	return new Promise( (res, rej) => {
