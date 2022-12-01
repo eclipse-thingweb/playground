@@ -111,9 +111,10 @@ async function testVisualChromium(page) {
 
   await page.evaluate(() => {
     const markerCount = monaco.editor.getModelMarkers({owner: "typo"}).length
-    const typoCount = JSON.parse(window.tdEditor.getModel(monaco.Uri.parse("")).getValue())['typoCount']
+    const typoCount = JSON.parse(window.tdEditor.getModel(monaco.Uri.parse("")).getValue()).typoCount
 
     if (markerCount !== typoCount) {
+      // eslint-disable-next-line no-throw-literal
       throw 'Typos markers are not equal to typo count!'
     }
   })
@@ -124,9 +125,10 @@ async function testVisualChromium(page) {
 
   await page.evaluate(() => {
     const markerCount = monaco.editor.getModelMarkers({owner: "typo"}).length
-    const typoCount = JSON.parse(window.tdEditor.getModel(monaco.Uri.parse("")).getValue())['typoCount']
+    const typoCount = JSON.parse(window.tdEditor.getModel(monaco.Uri.parse("")).getValue()).typoCount
 
     if (markerCount !== typoCount) {
+      // eslint-disable-next-line no-throw-literal
       throw 'Typos markers are not equal to typo count!'
     }
   })
@@ -277,7 +279,7 @@ const testList = {
 }
 
 /**
- * 
+ *
  * @param {string} testName name of test file
  * @param {object} page a playwright page
  */

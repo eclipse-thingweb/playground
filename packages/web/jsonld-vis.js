@@ -1,37 +1,38 @@
+/* eslint-disable no-underscore-dangle */
 'use strict';
 
 export function jsonldVis(jsonld, selector, config) {
   if (!arguments.length) return jsonldVis;
   config = config || {};
 
-  var h = config.h || 600
-    , w = config.w || 800
-    , maxLabelWidth = config.maxLabelWidth || 250
-    , transitionDuration = config.transitionDuration || 750
-    , transitionEase = config.transitionEase || 'cubic-in-out'
-    , minRadius = config.minRadius || 5
-    , scalingFactor = config.scalingFactor || 2;
+  const h = config.h || 600
+  const w = config.w || 800
+  const maxLabelWidth = config.maxLabelWidth || 250
+  const transitionDuration = config.transitionDuration || 750
+  const transitionEase = config.transitionEase || 'cubic-in-out'
+  const minRadius = config.minRadius || 5
+  const scalingFactor = config.scalingFactor || 2
 
-  var i = 0;
+  let i = 0;
 
-  var tree = d3.layout.tree()
+  const tree = d3.layout.tree()
     .size([h, w]);
 
-  var diagonal = d3.svg.diagonal()
+  const diagonal = d3.svg.diagonal()
     .projection(function (d) { return [d.y, d.x]; });
 
-  var svg = d3.select(selector).append('svg')
+  const svg = d3.select(selector).append('svg')
     .attr('width', w)
     .attr('height', h)
     .append('g')
     .attr('transform', 'translate(' + maxLabelWidth + ',0)');
 
-  var tip = d3.tip()
+  const tip = d3.tip()
     .direction(function (d) {
-      return d.children || d._children ? 'w' : 'e';
+      return d.children || d.privChildren ? 'w' : 'e';
     })
     .offset(function (d) {
-      return d.children || d._children ? [0, -3] : [0, 3];
+      return d.children || d.privChildren ? [0, -3] : [0, 3];
     })
     .attr('class', 'd3-tip')
     .html(function (d) {
@@ -40,17 +41,17 @@ export function jsonldVis(jsonld, selector, config) {
 
   svg.call(tip);
 
-  var treeData = {
-    name: jsonld['title'] || `_${Math.random().toString(10).slice(-7)}`,
+  const treeData = {
+    name: jsonld.title || `_${Math.random().toString(10).slice(-7)}`,
     isIdNode: true,
     isBlankNode: true,
     children: jsonldTree(jsonld)
   };
 
-  var root = treeData;
+  const root = treeData;
   root.x0 = h / 2;
   root.y0 = 0;
-  root.children.forEach((child) => collapse(child));
+  root.children.forEach(child => collapse(child));
 
   function changeSVGWidth(newWidth) {
     if (w !== newWidth) {
@@ -75,9 +76,9 @@ export function jsonldVis(jsonld, selector, config) {
         children.push(
           {
             name: key,
-            children: source[key].map((e, i) => {
+            children: source[key].map((e, j) => {
               if (typeof e === 'object') {
-                return { name: i, children: jsonldTree(e) };
+                return { name: j, children: jsonldTree(e) };
               } else {
                 return { name: e };
               }
@@ -92,10 +93,10 @@ export function jsonldVis(jsonld, selector, config) {
           return `${value}...`;
         };
 
-        const limit = Math.floor(maxLabelWidth / 9);
-        const d = (`${source[key]}`.length > limit) ? {
+        const stringLimit = Math.floor(maxLabelWidth / 9);
+        const d = (`${source[key]}`.length > stringLimit) ? {
           name: key,
-          value: truncateValue(source[key], limit),
+          value: truncateValue(source[key], stringLimit),
           valueExtended: source[key]
         } : {
           name: key,
@@ -110,15 +111,15 @@ export function jsonldVis(jsonld, selector, config) {
   }
 
   function update(source) {
-    var nodes = tree.nodes(root).reverse();
-    var links = tree.links(nodes);
+    const nodes = tree.nodes(root).reverse();
+    const links = tree.links(nodes);
 
     nodes.forEach(function (d) { d.y = d.depth * maxLabelWidth; });
 
-    var node = svg.selectAll('g.node')
+    const node = svg.selectAll('g.node')
       .data(nodes, function (d) { return d.id || (d.id = ++i); });
 
-    var nodeEnter = node.enter()
+    const nodeEnter = node.enter()
       .append('g')
       .attr('class', 'node')
       .attr('transform', function (d) { return 'translate(' + source.y0 + ',' + source.x0 + ')'; })
@@ -134,9 +135,9 @@ export function jsonldVis(jsonld, selector, config) {
       })
       .style('fill', function (d) {
         if (d.isIdNode) {
-          return d._children ? '#F5D76E' : 'white';
+          return d.privChildren ? '#F5D76E' : 'white';
         } else {
-          return d._children ? '#86E2D5' : 'white';
+          return d.privChildren ? '#86E2D5' : 'white';
         }
       })
       .on('mouseover', function (d) { if (d.valueExtended) tip.show(d); })
@@ -144,21 +145,21 @@ export function jsonldVis(jsonld, selector, config) {
 
     nodeEnter.append('text')
       .attr('x', function (d) {
-        var spacing = computeRadius(d) + 5;
-        return d.children || d._children ? -spacing : spacing;
+        const spacing = computeRadius(d) + 5;
+        return d.children || d.privChildren ? -spacing : spacing;
       })
       .attr('dy', '4')
-      .attr('text-anchor', function (d) { return d.children || d._children ? 'end' : 'start'; })
+      .attr('text-anchor', function (d) { return d.children || d.privChildren ? 'end' : 'start'; })
       .text(function (d) { return d.name + (d.value ? ': ' + d.value : ''); })
       .style('fill-opacity', 0);
 
-    var maxSpan = Math.max.apply(Math, nodes.map(function (d) { return d.y + maxLabelWidth; }));
+    const maxSpan = Math.max.apply(Math, nodes.map(function (d) { return d.y + maxLabelWidth; }));
     if (maxSpan + maxLabelWidth + 20 > w) {
       changeSVGWidth(maxSpan + maxLabelWidth);
       d3.select(selector).node().scrollLeft = source.y0;
     }
 
-    var nodeUpdate = node.transition()
+    const nodeUpdate = node.transition()
       .duration(transitionDuration)
       .ease(transitionEase)
       .attr('transform', function (d) { return 'translate(' + d.y + ',' + d.x + ')'; });
@@ -173,15 +174,15 @@ export function jsonldVis(jsonld, selector, config) {
       })
       .style('fill', function (d) {
         if (d.isIdNode) {
-          return d._children ? '#F5D76E' : 'white';
+          return d.privChildren ? '#F5D76E' : 'white';
         } else {
-          return d._children ? '#86E2D5' : 'white';
+          return d.privChildren ? '#86E2D5' : 'white';
         }
       });
 
     nodeUpdate.select('text').style('fill-opacity', 1);
 
-    var nodeExit = node.exit().transition()
+    const nodeExit = node.exit().transition()
       .duration(transitionDuration)
       .ease(transitionEase)
       .attr('transform', function (d) { return 'translate(' + source.y + ',' + source.x + ')'; })
@@ -190,13 +191,13 @@ export function jsonldVis(jsonld, selector, config) {
     nodeExit.select('circle').attr('r', 0);
     nodeExit.select('text').style('fill-opacity', 0);
 
-    var link = svg.selectAll('path.link')
+    const link = svg.selectAll('path.link')
       .data(links, function (d) { return d.target.id; });
 
     link.enter().insert('path', 'g')
       .attr('class', 'link')
       .attr('d', function (d) {
-        var o = { x: source.x0, y: source.y0 };
+        const o = { x: source.x0, y: source.y0 };
         return diagonal({ source: o, target: o });
       });
 
@@ -209,7 +210,7 @@ export function jsonldVis(jsonld, selector, config) {
       .duration(transitionDuration)
       .ease(transitionEase)
       .attr('d', function (d) {
-        var o = { x: source.x, y: source.y };
+        const o = { x: source.x, y: source.y };
         return diagonal({ source: o, target: o });
       })
       .remove();
@@ -221,7 +222,7 @@ export function jsonldVis(jsonld, selector, config) {
   }
 
   function computeRadius(d) {
-    if (d.children || d._children) {
+    if (d.children || d.privChildren) {
       return minRadius + (numEndNodes(d) / scalingFactor);
     } else {
       return minRadius;
@@ -229,13 +230,13 @@ export function jsonldVis(jsonld, selector, config) {
   }
 
   function numEndNodes(n) {
-    var num = 0;
+    let num = 0;
     if (n.children) {
       n.children.forEach(function (c) {
         num += numEndNodes(c);
       });
-    } else if (n._children) {
-      n._children.forEach(function (c) {
+    } else if (n.privChildren) {
+      n.privChildren.forEach(function (c) {
         num += numEndNodes(c);
       });
     } else {
@@ -246,11 +247,11 @@ export function jsonldVis(jsonld, selector, config) {
 
   function click(d) {
     if (d.children) {
-      d._children = d.children;
+      d.privChildren = d.children;
       d.children = null;
     } else {
-      d.children = d._children;
-      d._children = null;
+      d.children = d.privChildren;
+      d.privChildren = null;
     }
 
     update(d);
@@ -258,7 +259,7 @@ export function jsonldVis(jsonld, selector, config) {
     // fast-forward blank nodes
     if (d.children) {
       d.children.forEach(function (child) {
-        if (child.isBlankNode && child._children) {
+        if (child.isBlankNode && child.privChildren) {
           click(child);
         }
       });
@@ -267,8 +268,8 @@ export function jsonldVis(jsonld, selector, config) {
 
   function collapse(d, toUpdate = false) {
     if (d.children) {
-      d._children = d.children;
-      d._children.forEach((child) => collapse(child));
+      d.privChildren = d.children;
+      d.privChildren.forEach(child => collapse(child));
       d.children = null;
 
       if (toUpdate) {
@@ -278,12 +279,12 @@ export function jsonldVis(jsonld, selector, config) {
   }
 
   function expand(d, toUpdate = false) {
-    if (d._children) {
-      d.children = d._children;
-      d.children.forEach((child) => expand(child));
-      d._children = null;
+    if (d.privChildren) {
+      d.children = d.privChildren;
+      d.children.forEach(child => expand(child));
+      d.privChildren = null;
     } else if (d.children) {
-      d.children.forEach((child) => expand(child));
+      d.children.forEach(child => expand(child));
     }
 
     if (toUpdate) update(d);
@@ -291,6 +292,6 @@ export function jsonldVis(jsonld, selector, config) {
 
   update(root);
 
-  document.getElementById('vis-collapse-all').addEventListener('click', (_) => collapse(root, true));
-  document.getElementById('vis-expand-all').addEventListener('click', (_) => expand(root, true));
+  document.getElementById('vis-collapse-all').addEventListener('click', _ => collapse(root, true));
+  document.getElementById('vis-expand-all').addEventListener('click', _ => expand(root, true));
 }

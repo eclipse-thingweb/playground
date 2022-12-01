@@ -60,6 +60,7 @@ program
     .option('--default-add', 'Whether the input TD should be extended by default values')
     .option('--default-rem', 'Whether the input TD should be reduced by default values')
     .option('--junit', 'Outputs results as a JUnit XML in addition to basic reporting')
+    .option('--test', 'Flag used for unit tests')
 
 const myArguments = program.parse().opts()
 
@@ -86,28 +87,33 @@ const logFunc = myArguments.assertionToStd ? () => { } : console.log
 if (!myArguments.assertionToStd) { console.info = () => { } }
 
 // handle input argument
-let input = myArguments.input
-if (input && input.length === 1) input = input[0]
+let inputArray = myArguments.input
+if (inputArray === undefined) {
+    inputArray = ["default"]
+
+}
 
 /** ================================================================================================
  *                                         Handling TDs
  *================================================================================================**/
 
 if (myArguments.type === 'TD') {
-    if (myArguments.assertions === true) {
-        tdAssertionReport(input)
-    }
-    else if (myArguments.openApi === true) {
-        openApiGeneration()
-    }
-    else if (myArguments.asyncApi === true) {
-        asyncApiGeneration()
-    }
-    else if (myArguments.defaultAdd === true || myArguments.defaultRem === true) {
-        defaultManipulation()
-    }
-    else {
-        coreValidation()
+    for (input of inputArray) {
+        if (myArguments.assertions === true) {
+            tdAssertionReport(input)
+        }
+        else if (myArguments.openApi === true) {
+            openApiGeneration(input)
+        }
+        else if (myArguments.asyncApi === true) {
+            asyncApiGeneration(input)
+        }
+        else if (myArguments.defaultAdd === true || myArguments.defaultRem === true) {
+            defaultManipulation(input)
+        }
+        else {
+            coreValidation(input)
+        }
     }
 }
 
@@ -117,15 +123,17 @@ if (myArguments.type === 'TD') {
 
 if (myArguments.type === 'TM') {
     console.log("Checking TMs...")
-    if (myArguments.assertions === true) {
-        console.log("Checking Assertions...")
-        tmAssertionReport(input)
-    }
-    else if (myArguments.defaultAdd === true || myArguments.defaultRem === true) {
-        defaultManipulation()
-    }
-    else {
-        tmCoreValidation()
+    for (input of inputArray) {
+        if (myArguments.assertions === true) {
+            console.log("Checking Assertions...")
+            tmAssertionReport(input)
+        }
+        else if (myArguments.defaultAdd === true || myArguments.defaultRem === true) {
+            defaultManipulation(input)
+        }
+        else {
+            tmCoreValidation(input)
+        }
     }
 }
 
@@ -139,7 +147,7 @@ if (myArguments.type === 'AUTO') {
 /**
  * handle manual & input param
  */
-function tdAssertionReport(input) {
+function tdAssertionReport(inputParam) {
     const tdsToCheck = []
     const tdsToMerge = []
     let manualAssertions
@@ -158,14 +166,14 @@ function tdAssertionReport(input) {
         manualAssertions = assertManualToJson(fs.readFileSync(myArguments.assertionManual, "utf-8"))
     }
 
-    if (input === undefined && !myArguments.mergeOnly) {
-        input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid")
+    if (inputParam === "default" && !myArguments.mergeOnly) {
+        inputParam = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid")
     }
 
-    if (typeof input === "object") {
+    if (typeof inputParam === "object") {
         assertType = "list"
         // check given TDs
-        input.forEach(el => {
+        inputParam.forEach(el => {
             if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                 tdsToCheck.push(fs.readFileSync(el))
                 numberOfFilesAssertion++
@@ -179,31 +187,31 @@ function tdAssertionReport(input) {
             }
         })
     }
-    else if (fs.lstatSync(input).isDirectory()) {
+    else if (fs.lstatSync(inputParam).isDirectory()) {
         assertType = "dir"
         // check TDs contained in the directory
-        fs.readdirSync(input).forEach(el => {
+        fs.readdirSync(inputParam).forEach(el => {
             if (el.endsWith(".json") || el.endsWith(".jsonld")) {
-                tdsToCheck.push(fs.readFileSync(path.join(input, el)))
+                tdsToCheck.push(fs.readFileSync(path.join(inputParam, el)))
                 numberOfFilesAssertion++
             }
             else if (el.endsWith(".csv")) {
-                tdsToMerge.push(assertManualToJson(fs.readFileSync(path.join(input, el), "utf-8")))
+                tdsToMerge.push(assertManualToJson(fs.readFileSync(path.join(inputParam, el), "utf-8")))
                 numberOfFilesMerge++
             }
             else {
-                console.log("CANNOT HANDLE file in dir: ", path.join(input, el))
+                console.log("CANNOT HANDLE file in dir: ", path.join(inputParam, el))
             }
         })
     }
     else {
         // check single TD
         assertType = "file"
-        if (input.endsWith(".json") || input.endsWith(".jsonld")) {
-            tdsToCheck.push(fs.readFileSync(input))
+        if (inputParam.endsWith(".json") || inputParam.endsWith(".jsonld")) {
+            tdsToCheck.push(fs.readFileSync(inputParam))
             numberOfFilesAssertion++
         }
-        else if (input.endsWith(".csv")) {
+        else if (inputParam.endsWith(".csv")) {
             tdsToMerge.push(assertManualToJson(fs.readFileSync(input, "utf-8")))
             numberOfFilesMerge++
         }
@@ -351,7 +359,7 @@ function fileLoader(loc) {
 function coreValidation(input) {
     let tdToCheck = ""
 
-    if (!input) { input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds") }
+    if (input === "default") { input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds") }
     if (fs.lstatSync(input).isDirectory()) {
 
         // check Valid, Invalid and Warning Subfolders
@@ -364,7 +372,7 @@ function coreValidation(input) {
             validNames.forEach(el => {
                 if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                     tdToCheck = fs.readFileSync(path.join(validPath, el), "utf-8")
-                    let suite = builder.testSuite().name(el)
+                    const suite = builder.testSuite().name(el)
                     const thisProm = tdValidator(tdToCheck, console.log, { checkDefaults: false }, suite)
                         .then(result => {
                             if (statResult("failed", result.report)) {
@@ -405,7 +413,7 @@ function coreValidation(input) {
             invalidNames.forEach(el => {
                 if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                     tdToCheck = fs.readFileSync(path.join(invalidPath, el), "utf-8")
-                    let suite = builder.testSuite().name(el)
+                    const suite = builder.testSuite().name(el)
                     const thisProm = tdValidator(tdToCheck, console.log, { checkDefaults: false }, suite)
                         .then(result => {
                             if (statResult("failed", result.report)) {
@@ -446,7 +454,7 @@ function coreValidation(input) {
             warnNames.forEach(el => {
                 if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                     tdToCheck = fs.readFileSync(path.join(warnPath, el), "utf-8")
-                    let suite = builder.testSuite().name(el)
+                    const suite = builder.testSuite().name(el)
                     const thisProm = tdValidator(tdToCheck, console.log, { checkDefaults: true }, suite)
                         .then(result => {
                             if (statResult("failed", result.report)) {
@@ -483,7 +491,7 @@ function coreValidation(input) {
         // check TDs contained in the directory
         fs.readdirSync(input).forEach(el => {
             if (el.endsWith(".json") || el.endsWith(".jsonld")) {
-                let suite = builder.testSuite().name(el)
+                const suite = builder.testSuite().name(el)
                 tdToCheck = fs.readFileSync(path.join(input, el), "utf-8")
                 checkTd(tdToCheck, suite)
             }
@@ -491,7 +499,7 @@ function coreValidation(input) {
 
     }
     else {
-        let suite = builder.testSuite().name(input)
+        const suite = builder.testSuite().name(input)
         tdToCheck = fs.readFileSync(input, "utf-8")
         checkTd(tdToCheck, suite)
     }
@@ -531,7 +539,8 @@ function statResult(keyword, report) {
  */
 function openApiGeneration(input) {
     // input checks
-    if (!input) { input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid", "simple.json") }
+    if (input === "default") { input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds",
+     "valid", "simple.json") }
     if (!fs.lstatSync(input).isFile()) {
         throw new Error("please provide one File as input for the OpenAPI instance generation")
     }
@@ -555,7 +564,8 @@ function openApiGeneration(input) {
 
 function asyncApiGeneration(input) {
     // input checks
-    if (!input) { input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid", "simple.json") }
+    if (input === "default") { input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds",
+    "valid", "simple.json") }
     if (!fs.lstatSync(input).isFile()) {
         throw new Error("please provide one File as input for the AsyncAPI instance generation")
     }
@@ -582,7 +592,8 @@ function asyncApiGeneration(input) {
  */
 function defaultManipulation(input) {
     // input checks
-    if (!input) { input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid", "simple.json") }
+    if (input === "default") { input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds",
+    "valid", "simple.json") }
     if (!fs.lstatSync(input).isFile()) {
         throw new Error("please provide one File as input for the OpenAPI instance generation")
     }
@@ -637,7 +648,7 @@ function extractName(pathLike) {
  * @param {*} input
  * @returns
  */
-function tmAssertionReport(input) {
+function tmAssertionReport(inputParam) {
     const tmsToCheck = []
     const tmsToMerge = []
     let manualAssertions
@@ -648,7 +659,10 @@ function tmAssertionReport(input) {
         manualAssertions = assertManualToJson(fs.readFileSync(myArguments.assertionManual, "utf-8"))
     }
 
-    if (input === undefined) { input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tms", "valid") }
+    if (inputParam === "default") {
+        inputParam = path.join("node_modules", "@thing-description-playground", "core",
+            "examples", "tms", "valid")
+    }
 
     let numberOfFilesAssertion = 0
     let numberOfFilesMerge = 0
@@ -656,10 +670,10 @@ function tmAssertionReport(input) {
     const bar = new cliProgress.SingleBar({ format: 'progress [{bar}] {percentage}% | TM Name: {tmName} | {value}/{total} \n' },
         cliProgress.Presets.shades_classic)
 
-    if (typeof input === "object") {
+    if (typeof inputParam === "object") {
         assertType = "list"
         // check given TMs
-        input.forEach(el => {
+        inputParam.forEach(el => {
             if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                 tmsToCheck.push(fs.readFileSync(el))
                 numberOfFilesAssertion++
@@ -673,32 +687,32 @@ function tmAssertionReport(input) {
             }
         })
     }
-    else if (fs.lstatSync(input).isDirectory()) {
+    else if (fs.lstatSync(inputParam).isDirectory()) {
         assertType = "dir"
         // check TMs contained in the directory
-        fs.readdirSync(input).forEach(el => {
+        fs.readdirSync(inputParam).forEach(el => {
             if (el.endsWith(".json") || el.endsWith(".jsonld")) {
-                tmsToCheck.push(fs.readFileSync(path.join(input, el)))
+                tmsToCheck.push(fs.readFileSync(path.join(inputParam, el)))
                 numberOfFilesAssertion++
             }
             else if (el.endsWith(".csv")) {
-                tmsToMerge.push(assertManualToJson(fs.readFileSync(path.join(input, el), "utf-8")))
+                tmsToMerge.push(assertManualToJson(fs.readFileSync(path.join(inputParam, el), "utf-8")))
                 numberOfFilesMerge++
             }
             else {
-                console.log("CANNOT HANDLE file in dir: ", path.join(input, el))
+                console.log("CANNOT HANDLE file in dir: ", path.join(inputParam, el))
             }
         })
     }
     else {
         // check single TM
         assertType = "file"
-        if (input.endsWith(".json") || input.endsWith(".jsonld")) {
-            tmsToCheck.push(fs.readFileSync(input))
+        if (inputParam.endsWith(".json") || inputParam.endsWith(".jsonld")) {
+            tmsToCheck.push(fs.readFileSync(inputParam))
             numberOfFilesAssertion++
         }
-        else if (input.endsWith(".csv")) {
-            tmsToMerge.push(assertManualToJson(fs.readFileSync(input, "utf-8")))
+        else if (inputParam.endsWith(".csv")) {
+            tmsToMerge.push(assertManualToJson(fs.readFileSync(inputParam, "utf-8")))
             numberOfFilesMerge++
         }
         else {
@@ -725,7 +739,7 @@ function tmAssertionReport(input) {
 function tmCoreValidation(input) {
     let tmToCheck = ""
 
-    if (!input) { input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tms") }
+    if (input === "default") { input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tms") }
     if (fs.lstatSync(input).isDirectory()) {
 
         // check Valid, Invalid and Warning Subfolders
@@ -738,7 +752,7 @@ function tmCoreValidation(input) {
             validNames.forEach(el => {
                 if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                     tmToCheck = fs.readFileSync(path.join(validPath, el), "utf-8")
-                    let suite = builder.testSuite().name(el)
+                    const suite = builder.testSuite().name(el)
                     const thisProm = tmValidator(tmToCheck, console.log, { checkDefaults: false }, suite)
                         .then(result => {
                             if (statResult("failed", result.report)) {
@@ -779,7 +793,7 @@ function tmCoreValidation(input) {
             invalidNames.forEach(el => {
                 if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                     tmToCheck = fs.readFileSync(path.join(invalidPath, el), "utf-8")
-                    let suite = builder.testSuite().name(el)
+                    const suite = builder.testSuite().name(el)
                     const thisProm = tmValidator(tmToCheck, console.log, { checkDefaults: false }, suite)
                         .then(result => {
                             if (statResult("failed", result.report)) {
@@ -820,7 +834,7 @@ function tmCoreValidation(input) {
             warnNames.forEach(el => {
                 if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                     tmToCheck = fs.readFileSync(path.join(warnPath, el), "utf-8")
-                    let suite = builder.testSuite().name(el)
+                    const suite = builder.testSuite().name(el)
                     const thisProm = tmValidator(tmToCheck, console.log, { checkDefaults: true }, suite)
                         .then(result => {
                             if (statResult("failed", result.report)) {
@@ -857,7 +871,7 @@ function tmCoreValidation(input) {
         // check TDs contained in the directory
         fs.readdirSync(input).forEach(el => {
             if (el.endsWith(".json") || el.endsWith(".jsonld")) {
-                let suite = builder.testSuite().name(el)
+                const suite = builder.testSuite().name(el)
                 tmToCheck = fs.readFileSync(path.join(input, el), "utf-8")
                 checkTm(tmToCheck, suite)
             }
@@ -865,7 +879,7 @@ function tmCoreValidation(input) {
 
     }
     else {
-        let suite = builder.testSuite().name(el)
+        const suite = builder.testSuite().name(el)
         tmToCheck = fs.readFileSync(input, "utf-8")
         checkTm(tmToCheck, suite)
     }

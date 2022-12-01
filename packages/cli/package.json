@@ -16,7 +16,8 @@
   "main": "index.js",
   "scripts": {
     "test": "node ./tests/index-test.js",
-    "start": "node ./index.js"
+    "start": "node ./index.js",
+    "lint": "npx eslint . --config .eslintrc.json --ext .js,.jsx,.ts,.tsx --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif"
   },
   "dependencies": {
     "@thing-description-playground/assertions": "^1.3.1",
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "@types/commander": "^2.12.2",
-    "eslint": "^8.22.0"
+    "eslint": "^8.22.0",
+    "@microsoft/eslint-formatter-sarif": "^2.1.7"
   }
 }
