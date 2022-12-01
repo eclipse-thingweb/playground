@@ -4,6 +4,9 @@ const validateTM = require("./assertionTests-tm")
 const checkCoverage = require("./checkCoverage")
 const mergeResults = require("./mergeResults")
 
+const assertionsPath = require.resolve("@thing-description-playground/assertions")
+const corePath = require.resolve("@thing-description-playground/core")
+
 // JSON to CSV and vice versa libraries
 const Json2csvParser = require('json2csv').Parser
 const csvjson = require('csvjson')
@@ -47,7 +50,7 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, doneEventEmit
         if (process !== undefined && process.release !== undefined && process.release.name === "node") {
             pathOffset = __dirname
         } else {
-            pathOffset = path.join("../../node_modules", "@thing-description-playground", "assertions")
+            pathOffset = path.dirname(assertionsPath)
         }
 
         // loading files
@@ -55,8 +58,7 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, doneEventEmit
         loadProm.push(collectAssertionSchemas(path.join(pathOffset, "./assertions-td"),
         path.join(pathOffset, "./assertions-td", "./tdAssertionList.json"), fileLoader))
 
-        loadProm.push(fileLoader(path.join(pathOffset,
-            "../../node_modules", "@thing-description-playground", "core", "td-schema.json")))
+        loadProm.push(fileLoader(path.join(path.dirname(corePath), "td-schema.json")))
         if (givenManual === undefined) {loadProm.push(fileLoader(path.join(pathOffset, "./assertions-td", "./manual.csv")))}
 
         Promise.all(loadProm).then( promResults => {
@@ -141,14 +143,14 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, doneEventEmit
         if (process !== undefined && process.release !== undefined && process.release.name === "node") {
             pathOffset = __dirname
         } else {
-            pathOffset = path.join("../../node_modules", "@thing-description-playground", "assertions")
+            pathOffset = path.dirname(assertionsPath)
         }
 
         // loading files
         const loadProm = []
         loadProm.push(collectAssertionSchemas(path.join(pathOffset, "./assertions-tm"),
         path.join(pathOffset, "./assertions-tm", "./tmAssertionList.json"), fileLoader))
-        loadProm.push(fileLoader(path.join(pathOffset, "../../node_modules", "@thing-description-playground", "core", "tm-schema.json")))
+        loadProm.push(fileLoader(path.join(path.dirname(corePath), "tm-schema.json")))
         if (givenManual === undefined) {loadProm.push(fileLoader(path.join(pathOffset, "./assertions-tm", "./manual.csv")))}
 
         Promise.all(loadProm).then( promResults => {

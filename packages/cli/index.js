@@ -21,6 +21,7 @@ const tdToAAP = require('@thing-description-playground/td_to_asyncapi')
 const commander = require('commander')
 const EventEmitter = require("events")
 const cliProgress = require('cli-progress')
+const corePath = require.resolve('@thing-description-playground/core')
 
 /** ================================================================================================
  *                                         CLI Configuration
@@ -155,7 +156,7 @@ function tdAssertionReport(input) {
     }
 
     if (input === undefined && !myArguments.mergeOnly) {
-        input = path.join("../../node_modules", "@thing-description-playground", "core", "examples", "tds", "valid")
+        input = path.join(path.dirname(corePath), "examples", "tds", "valid")
     }
 
     if (typeof input === "object") {
@@ -347,7 +348,7 @@ function fileLoader(loc) {
 function coreValidation() {
     let tdToCheck = ""
 
-    if (!input) {input = path.join("../../node_modules", "@thing-description-playground", "core", "examples", "tds")}
+    if (!input) {input = path.join(path.dirname(corePath), "examples", "tds")}
     if(fs.lstatSync(input).isDirectory()) {
 
         // check Valid, Invalid and Warning Subfolders
@@ -510,8 +511,7 @@ function statResult(keyword, report) {
  */
 function openApiGeneration() {
     // input checks
-    if (!input) {input = path.join("../../node_modules",
-        "@thing-description-playground", "core", "examples", "tds", "valid", "simple.json")}
+    if (!input) {input = path.join(path.dirname(corePath), "examples", "tds", "valid", "simple.json")}
     if (!fs.lstatSync(input).isFile()) {
         throw new Error("please provide one File as input for the OpenAPI instance generation")
     }
@@ -535,8 +535,7 @@ function openApiGeneration() {
 
 function asyncApiGeneration() {
     // input checks
-    if (!input) {input = path.join("../../node_modules",
-        "@thing-description-playground", "core", "examples", "tds", "valid", "simple.json")}
+    if (!input) {input = path.join(path.dirname(corePath), "examples", "tds", "valid", "simple.json")}
     if (!fs.lstatSync(input).isFile()) {
         throw new Error("please provide one File as input for the AsyncAPI instance generation")
     }
@@ -563,8 +562,7 @@ function asyncApiGeneration() {
  */
 function defaultManipulation() {
     // input checks
-    if (!input) {input = path.join("../../node_modules",
-    "@thing-description-playground", "core", "examples", "tds", "valid", "simple.json")}
+    if (!input) {input = path.join(path.dirname(corePath), "examples", "tds", "valid", "simple.json")}
     if (!fs.lstatSync(input).isFile()) {
         throw new Error("please provide one File as input for the OpenAPI instance generation")
     }
@@ -630,8 +628,7 @@ function tmAssertionReport(input) {
         manualAssertions = assertManualToJson(fs.readFileSync(myArguments.assertionManual, "utf-8"))
     }
 
-    if (input === undefined) {input = path.join("../../node_modules",
-        "@thing-description-playground", "core", "examples", "tms", "valid")}
+    if (input === undefined) {input = path.join(path.dirname(corePath), "examples", "tms", "valid")}
 
     let numberOfFilesAssertion = 0
     let numberOfFilesMerge = 0
@@ -708,7 +705,7 @@ function tmAssertionReport(input) {
  function tmCoreValidation() {
     let tmToCheck = ""
 
-    if (!input) {input = path.join("../../node_modules", "@thing-description-playground", "core", "examples", "tms")}
+    if (!input) {input = path.join(path.dirname(corePath), "examples", "tms")}
     if(fs.lstatSync(input).isDirectory()) {
 
         // check Valid, Invalid and Warning Subfolders
