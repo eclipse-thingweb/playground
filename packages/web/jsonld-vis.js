@@ -45,7 +45,7 @@ export function jsonldVis(jsonld, selector, config) {
     name: jsonld.title || `_${Math.random().toString(10).slice(-7)}`,
     isIdNode: true,
     isBlankNode: true,
-    children: jsonldTree(jsonld)
+    children: jsonldTree(jsonld, null)
   };
 
   const root = treeData;
@@ -59,7 +59,181 @@ export function jsonldVis(jsonld, selector, config) {
     }
   }
 
-  function jsonldTree(source) {
+  function getDirectedValue(source, key, parentKey) {
+    const LRI = '\u2066';
+    const RLI = '\u2067';
+    const TABLE = {
+      ar: 'rtl',
+      fa: 'rtl',
+      ps: 'rtl',
+      ur: 'rtl',
+      hy: 'ltr',
+      as: 'ltr',
+      bn: 'ltr',
+      zb: 'ltr',
+      ab: 'ltr',
+      be: 'ltr',
+      bg: 'ltr',
+      kk: 'ltr',
+      mk: 'ltr',
+      ru: 'ltr',
+      uk: 'ltr',
+      hi: 'ltr',
+      mr: 'ltr',
+      ne: 'ltr',
+      ko: 'ltr',
+      ma: 'ltr',
+      am: 'ltr',
+      ti: 'ltr',
+      ka: 'ltr',
+      el: 'ltr',
+      gu: 'ltr',
+      pa: 'ltr',
+      he: 'rtl',
+      iw: 'rtl',
+      yi: 'rtl',
+      ja: 'ltr',
+      km: 'ltr',
+      kn: 'ltr',
+      lo: 'ltr',
+      af: 'ltr',
+      ay: 'ltr',
+      bs: 'ltr',
+      ca: 'ltr',
+      ch: 'ltr',
+      cs: 'ltr',
+      cy: 'ltr',
+      da: 'ltr',
+      de: 'ltr',
+      en: 'ltr',
+      eo: 'ltr',
+      es: 'ltr',
+      et: 'ltr',
+      eu: 'ltr',
+      fi: 'ltr',
+      fj: 'ltr',
+      fo: 'ltr',
+      fr: 'ltr',
+      fy: 'ltr',
+      ga: 'ltr',
+      gl: 'ltr',
+      gn: 'ltr',
+      gv: 'ltr',
+      hr: 'ltr',
+      ht: 'ltr',
+      hu: 'ltr',
+      id: 'ltr',
+      in: 'ltr',
+      is: 'ltr',
+      it: 'ltr',
+      kl: 'ltr',
+      la: 'ltr',
+      lb: 'ltr',
+      ln: 'ltr',
+      lt: 'ltr',
+      lv: 'ltr',
+      mg: 'ltr',
+      mh: 'ltr',
+      mo: 'ltr',
+      ms: 'ltr',
+      mt: 'ltr',
+      na: 'ltr',
+      nb: 'ltr',
+      nd: 'ltr',
+      nl: 'ltr',
+      nn: 'ltr',
+      no: 'ltr',
+      nr: 'ltr',
+      ny: 'ltr',
+      om: 'ltr',
+      pl: 'ltr',
+      pt: 'ltr',
+      qu: 'ltr',
+      rm: 'ltr',
+      rn: 'ltr',
+      ro: 'ltr',
+      rw: 'ltr',
+      sg: 'ltr',
+      sk: 'ltr',
+      sl: 'ltr',
+      sm: 'ltr',
+      so: 'ltr',
+      sq: 'ltr',
+      ss: 'ltr',
+      st: 'ltr',
+      sv: 'ltr',
+      sw: 'ltr',
+      tl: 'ltr',
+      tn: 'ltr',
+      to: 'ltr',
+      tr: 'ltr',
+      ts: 'ltr',
+      ve: 'ltr',
+      vi: 'ltr',
+      xh: 'ltr',
+      zu: 'ltr',
+      ds: 'ltr',
+      gs: 'ltr',
+      hs: 'ltr',
+      me: 'ltr',
+      ni: 'ltr',
+      ns: 'ltr',
+      te: 'ltr',
+      tk: 'ltr',
+      tm: 'ltr',
+      tp: 'ltr',
+      tv: 'ltr',
+      ml: 'ltr',
+      my: 'ltr',
+      nq: 'ltr',
+      or: 'ltr',
+      si: 'ltr',
+      ta: 'ltr',
+      dv: 'rtl',
+      th: 'ltr',
+      dz: 'ltr'
+    };
+
+    const getDirectionSymbol = dir => (dir === 'ltr') ? LRI : RLI;
+
+    if (!['title', 'description'].includes(key) && !['titles', 'descriptions'].includes(parentKey)) {
+      return getDirectionSymbol(source[key].toString().getDirection()) + source[key];
+    }
+
+    if (parentKey === 'titles' || parentKey === 'descriptions') {
+      const dir = TABLE[key];
+      if (dir) return getDirectionSymbol(dir) + source[key];
+      return getDirectionSymbol('ltr') + source[key];
+    }
+
+    let direction;
+    let lang;
+    let context = jsonld['@context'];
+
+    if (!Array.isArray(context)) {
+      context = [context];
+    }
+
+    context.forEach(e => {
+      if (typeof e === 'object') {
+        if (e['@direction']) direction = e['@direction'];
+        if (e['@language']) lang = e['@language'];
+      }
+    });
+
+    if (key === 'title' || key === 'description') {
+      if (direction) return getDirectionSymbol(direction) + source[key];
+      if (lang) {
+        const dir = TABLE[lang];
+        if (dir) return getDirectionSymbol(dir) + source[key];
+        return getDirectionSymbol('ltr') + source[key];
+      }
+    }
+
+    return getDirectionSymbol(source[key].getDirection()) + source[key];
+  }
+
+  function jsonldTree(source, parentKey) {
     const children = [];
 
     Object.keys(source).forEach(key => {
@@ -69,7 +243,7 @@ export function jsonldVis(jsonld, selector, config) {
         children.push(
           {
             name: key,
-            children: jsonldTree(source[key])
+            children: jsonldTree(source[key], key)
           }
         );
       } else if (Array.isArray(source[key])) {
@@ -78,7 +252,7 @@ export function jsonldVis(jsonld, selector, config) {
             name: key,
             children: source[key].map((e, j) => {
               if (typeof e === 'object') {
-                return { name: j, children: jsonldTree(e) };
+                return { name: j, children: jsonldTree(e, j) };
               } else {
                 return { name: e };
               }
@@ -86,21 +260,14 @@ export function jsonldVis(jsonld, selector, config) {
           }
         );
       } else {
-
-        const truncateValue = (value, limit) => {
-          value = value.slice(0, limit);
-          if (value.getDirection() === 'rtl') return `...${value}`;
-          return `${value}...`;
-        };
-
         const stringLimit = Math.floor(maxLabelWidth / 9);
         const d = (`${source[key]}`.length > stringLimit) ? {
           name: key,
-          value: truncateValue(source[key], stringLimit),
-          valueExtended: source[key]
+          value: getDirectedValue(source, key, parentKey).slice(0, stringLimit) + '...',
+          valueExtended: getDirectedValue(source, key, parentKey)
         } : {
           name: key,
-          value: source[key]
+          value: getDirectedValue(source, key, parentKey)
         };
 
         children.push(d);
