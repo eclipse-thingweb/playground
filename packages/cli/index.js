@@ -60,7 +60,6 @@ program
     .option('--default-add', 'Whether the input TD should be extended by default values')
     .option('--default-rem', 'Whether the input TD should be reduced by default values')
     .option('--junit', 'Outputs results as a JUnit XML in addition to basic reporting')
-    .option('--test', 'Flag used for unit tests')
 
 const myArguments = program.parse().opts()
 
