@@ -201,7 +201,10 @@ export function jsonldVis(jsonld, selector, config) {
     }
 
     if (parentKey === 'titles' || parentKey === 'descriptions') {
-      const dir = TABLE[key];
+      // Language tags can be compound like ar-EG or en-US, split when needed
+      // Also, we ignore the case for language tags
+      const lookupKey = (key.includes('-')) ? key.split('-')[0] : key.toLowerCase();
+      const dir = TABLE[lookupKey];
       if (dir) return getDirectionSymbol(dir) + source[key];
       return getDirectionSymbol('ltr') + source[key];
     }
@@ -224,7 +227,8 @@ export function jsonldVis(jsonld, selector, config) {
     if (key === 'title' || key === 'description') {
       if (direction) return getDirectionSymbol(direction) + source[key];
       if (lang) {
-        const dir = TABLE[lang];
+        const lookupKey = (lang.includes('-')) ? lang.split('-')[0] : lang.toLowerCase();
+        const dir = TABLE[lookupKey];
         if (dir) return getDirectionSymbol(dir) + source[key];
         return getDirectionSymbol('ltr') + source[key];
       }
