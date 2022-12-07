@@ -586,7 +586,7 @@ function searchPath(textModel, position) {
                         stack.pop()
                         path = "/" + parentKey + path
                         parentKey = ""
-                        recordingParent = false            
+                        recordingParent = false
                     } else {
                         stack.push(currentChar)
                         continue
@@ -660,7 +660,7 @@ function searchPath(textModel, position) {
                     isValue = false
                     stack.push(currentChar)
                 }
-            } 
+            }
         }
     }
 

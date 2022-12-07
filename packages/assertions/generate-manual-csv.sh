@@ -13,6 +13,9 @@ TMNAME="MinimalThingModel.json"
 echo -e "* ${Blue}Initialization${NC}"
 mkdir ${OUTPATH}/.tmp
 
+echo -e "* ${Blue}Get current manual.csv from TD Repo${NC}"
+curl -s https://raw.githubusercontent.com/w3c/wot-thing-description/main/testing/manual.csv -o ${OUTPATH}/"oldManual.csv"
+
 echo -e "* ${Blue}Generating implemented TD Assertions${NC}"
 node ${CLIPATH} -a -i $(pwd)/${INPATH}/${TDNAME} -o ${TMPPATH}
 
@@ -33,5 +36,8 @@ rm -r ${OUTPATH}/.tmp
 
 echo -e "* ${Blue}Calling node script for manual.csv generation${NC}"
 node generate-manual-csv.js
+
+echo -e "* ${Blue}Generate change-log of manual.csv${NC}"
+node generate-changelog.js ${OUTPATH}/"oldManual.csv" ${OUTPATH}/"manual.csv" ${OUTPATH}/"changelog.md"
 
 

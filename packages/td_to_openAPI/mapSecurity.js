@@ -195,7 +195,7 @@ function genOapDefinition(tdDefinition) {
         break
 
         case "combo":
-            // todo  Implement combo security scheme 
+            // todo  Implement combo security scheme
             // if (tdDefinition.allOf) {
             //     oapDefinition.type = "allOf"
             //     oapDefinition.secdef = tdDefinition.allOf

@@ -34,7 +34,7 @@ fileNames.forEach( fileName => {
             tdValidator(tdToTest, ()=>{},{}).then( result => {
                 expect(result).toEqual(refResult)
                 const tdJson = JSON.parse(tdToTest)
-                const typoCount = tdJson['typoCount']
+                const typoCount = tdJson.typoCount
                 expect(checkTypos(tdToTest).length).toEqual(typoCount)
                 done()
             }, errTwo => {done(errTwo)})

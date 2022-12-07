@@ -430,7 +430,7 @@ function checkContentTypeDifference(td){
  * @returns {{"ID": tm-compose-name-collision,"Status": "not-impl OR pass"}}
  */
  function checkInstanceNameCollision(td){
-    let ajv = new Ajv({strict: false})
+    const ajv = new Ajv({strict: false})
 
     // check that if a TM is referenced
     const ifTMused = ajv.validate({
@@ -448,10 +448,10 @@ function checkContentTypeDifference(td){
                 }
             }
         }
-    },td);
+    },td)
 
     if (ifTMused){ // only valid when a tm is used for a TD
-        let affordanceNames = []
+        const affordanceNames = []
         // checking inside each interaction
         if (td.hasOwnProperty("properties")) {
             // checking security in property level

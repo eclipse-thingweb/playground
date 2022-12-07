@@ -30,9 +30,9 @@ module.exports = validateTM
  * @param {Buffer} tmData Buffer of the TM data, has to be utf8 encoded (e.g. by fs.readFileSync(file.json) )
  * @param {Array<object>} assertions An array containing all assertion objects (already parsed)
  * @param {Array<object>} manualAssertions An array containing all manual assertions
- * @param {Function} logFunc Logging function
+ * @param {Function} loggingFunction Logging function, needed to differentiate between web and cli
  */
- function validateTM(tmData, assertions, manualAssertions, logFunc) {
+ function validateTM(tmData, assertions, manualAssertions, loggingFunction) {
 
     // a JSON file that will be returned containing the result for each assertion as a JSON Object
     let results = []
@@ -72,7 +72,7 @@ module.exports = validateTM
     try {
         results.push(...checkTMVocabulary(tmJson))
     } catch (error) {
-        logFunc({
+        loggingFunction({
             "ID": error,
             "Status": "fail"
         })
@@ -98,18 +98,18 @@ module.exports = validateTM
 
         const schema = curAssertion
         if(schema.title === "tm-placeholder") {
-            validateTmPlaceholder(tmJson, logFunc, results)
+            validateTmPlaceholder(tmJson, loggingFunction, results)
             continue
         }
 
         if(schema.title === "tm-tmRef1") {
-            validateTmRef(tmJson, logFunc, results)
+            validateTmRef(tmJson, loggingFunction, results)
             continue
         }
 
         // Validation starts here
 
-        const validPayload = validate(tmJson, schema, logFunc)
+        const validPayload = validate(tmJson, schema, loggingFunction)
 
         /*
             TODO: when is implemented?
@@ -305,17 +305,16 @@ function checkTMVocabulary(tmJson) {
 /**
  * A script for validating tm-placeholder
  * @param {object} obj
- * @param {function} logFunc
  * @param {Array<{"ID": string, "Status": string}>} results
  */
 
-function validateTmPlaceholder(obj, logFunc, results) {
+function validateTmPlaceholder(tmObj, results) {
 
     let FOUND_TM_PLACEHOLDER = false
 
     const tmpResults = []
     let validPayload = null
-    checkObjContainsTmPlaceholder(obj, logFunc)
+    checkObjContainsTmPlaceholder(tmObj)
     let otherAssertion = []
     if(tmPlaceholderSchema.also && tmPlaceholderSchema.also.length >= 1) otherAssertion = tmPlaceholderSchema.also
 
@@ -373,7 +372,6 @@ function validateTmPlaceholder(obj, logFunc, results) {
     /**
      *
      * @param {object} obj
-     * @param {function} logFunc
      * @returns {{valid: boolean, ajvObject: object} | null} true if validation passes, else false
      */
      function checkObjContainsTmPlaceholder(obj) {
@@ -406,12 +404,12 @@ function validateTmPlaceholder(obj, logFunc, results) {
  * @param {function} logFunc
  * @param {Array<{"ID": string, "Status": string}>} results
  */
-function validateTmRef(obj, logFunc, results) {
+function validateTmRef(tmObj, logFunc, results) {
 
     const tmpResults = []
     let FOUND_TM_REF = false
 
-    let validPayload = checkObjContainsTmRef(obj, logFunc)
+    let validPayload = checkObjContainsTmRef(tmObj, logFunc)
     let otherAssertion = []
     if(tmRefSchema.also && tmRefSchema.also.length >= 1) otherAssertion = tmRefSchema.also
 
@@ -469,16 +467,17 @@ function validateTmRef(obj, logFunc, results) {
     /**
      *
      * @param {object} obj
-     * @param {function} logFunc
+     * @param {function} logFuncLow
      * @returns {{valid: boolean, ajvObject: object} | null} true if validation passes, else false
      */
-     function checkObjContainsTmRef(obj, logFunc) {
+     // eslint-disable-next-line no-shadow
+     function checkObjContainsTmRef(obj, logFuncLow) {
 
         for(const key in obj) {
             if(Object.prototype.hasOwnProperty.call(obj, key)) {
                 if(key === "tm:ref") {
                     FOUND_TM_REF = true
-                    const result = validate(obj, tmRefSchema, logFunc)
+                    const result = validate(obj, tmRefSchema, logFuncLow)
                     tmpResults.push(result)
                 }
                 if(typeof obj[key] == "object") {
