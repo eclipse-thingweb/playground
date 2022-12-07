@@ -10,6 +10,7 @@ const fs = require("fs")
 const handler = require("serve-handler")
 const http = require("http")
 const path = require("path")
+const corePath = require.resolve("@thing-description-playground/core")
 
 const arg = process.argv[2]
 const options = (arg === "-d" || arg === "--debug") ? {headless: false, slowMo: 200} : {}
@@ -257,22 +258,22 @@ function myWait(milliseconds){
 
 const testList = {
   "TypoCheckWithoutTypos": {
-    "addr": "../../node_modules/@thing-description-playground/core/tests/typo/typoCheckWithoutTypos.json"
+    "addr": path.dirname(corePath) + "/tests/typo/typoCheckWithoutTypos.json"
   },
   "TypoCheckWithTypos": {
-      "addr": "../../node_modules/@thing-description-playground/core/tests/typo/typoCheckWithTypos.json"
+    "addr": path.dirname(corePath) + "/tests/typo/typoCheckWithTypos.json"
   },
   "HttpAndMqtt": {
-      "addr": "../../node_modules/@thing-description-playground/core/tests/protocol-detection/httpAndMqtt.json"
+    "addr": path.dirname(corePath) + "/tests/protocol-detection/httpAndMqtt.json"
   },
   "NoProtocol": {
-      "addr": "../../node_modules/@thing-description-playground/core/tests/protocol-detection/noProtocol.json"
+    "addr": path.dirname(corePath) + "/tests/protocol-detection/noProtocol.json"
   },
   "OnlyHttp": {
-      "addr": "../../node_modules/@thing-description-playground/core/tests/protocol-detection/onlyHttp.json"
+    "addr": path.dirname(corePath) + "/tests/protocol-detection/onlyHttp.json"
   },
   "OnlyMqtt": {
-      "addr": "../../node_modules/@thing-description-playground/core/tests/protocol-detection/onlyMqtt.json"
+    "addr": path.dirname(corePath) + "/tests/protocol-detection/onlyMqtt.json"
   }
 }
 

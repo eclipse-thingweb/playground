@@ -2,11 +2,5 @@
   "name": "root",
   "workspaces": [
     "./packages/*"
-  ],
-  "scripts": {
-    "postinstall": "mkdir ./temp_modules && cp -L -r ./node_modules/* ./temp_modules  && rm -r ./temp_modules/@thing-description-playground/web && mkdir ./packages/web/node_modules && cp -L -r ./temp_modules/* ./packages/web/node_modules && rm -r temp_modules"
-  },
-  "devDependencies": {
-    "lerna": "^6.0.1"
-  }
+  ]
 }

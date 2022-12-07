@@ -8,6 +8,12 @@
 import * as util from "./util.js"
 import * as jVis from "./jsonld-vis.js"
 import * as vVis from "./vega-vis.js"
+import "bootstrap-css-only/css/bootstrap.min.css"
+import "./style.css"
+import "./jsonld-vis.css"
+
+import * as Validators from "@thing-description-playground/core"
+import * as monaco from "monaco-editor"
 
 let manualAssertions = []
 let manualAssertionsLoaded = false
@@ -152,22 +158,22 @@ document.querySelectorAll('#vis-download-svg, #vis-download-png').forEach(el => 
 	});
 });
 
+const tdAssertions = require("@thing-description-playground/assertions/assertions-td/manual.csv");
+const tmAssertions = require("@thing-description-playground/assertions/assertions-tm/manual.csv");
+
 document.getElementById("btn_assertion_popup").addEventListener("click", () => {
 	if (!manualAssertionsLoaded) {
-		fetch(`./node_modules/@thing-description-playground/assertions/assertions-${docType}/manual.csv`)
-		.then( res => {
-			if (res.ok) {
-				return res.text()
-			} else {
-				throw new Error("Could not fetch manual assertions: \n Status:" +
-								res.status + " " + res.statusText + "\n Text: " + res.text())
-			}
-		})
-		.then( text => {
-			fetchManualAssertions(text)
-			manualAssertionsLoaded = true
-			document.getElementById("assertion_test_popup").style.display = "block"
-		})
+		let assertions;
+
+		if (docType === "td") {
+			assertions = tdAssertions;
+		} else {
+			assertions = tmAssertions;
+		}
+
+		fetchManualAssertions(assertions)
+		manualAssertionsLoaded = true
+		document.getElementById("assertion_test_popup").style.display = "block"
 	} else {
 		document.getElementById("assertion_test_popup").style.display = "block"
 	}
@@ -176,15 +182,14 @@ document.getElementById("btn_assertion_popup").addEventListener("click", () => {
 		For the given CSV data of assertions, it parses them uses Papa library
 		and pushes them as JSON objects in an array
 	*/
-	function fetchManualAssertions(allText) {
-		const assertionData = Papa.parse(allText).data;
+	function fetchManualAssertions(assertionData) {
 		for (let index = 1; index < assertionData.length; index++) { // 1 and not 0 since the 0th is the header
 			const element = assertionData[index]
 			const singleAssertionJSON = {"ID":element[0],"Status":element[1],"Comment":element[2],"Description":element[3]}
 			manualAssertions.push(singleAssertionJSON)
 		}
 
-		if (manualAssertions.length == 0) {
+		if (manualAssertions.length === 0) {
 			document.getElementById("manual_assertion_table_body").innerHTML = ''
 		}
 
@@ -226,7 +231,7 @@ document.getElementById("load_example").addEventListener("change", e => {
 	if (docType === 'td') {
 		document.getElementById('td-tab').click()
 	}
-	util.exampleSelectHandler(e, {urlAddrObject})
+	util.exampleSelectHandler(e, {urlAddrObject}) 
 })
 
 document.getElementById("editor_theme").addEventListener("change", () => {
@@ -456,8 +461,7 @@ function enableAPIConversionWithProtocol(td) {
 
 //* *************************Monaco editor code*********************************////
 // Load monaco editor ACM
-require.config({ paths: { 'vs': './node_modules/monaco-editor/min/vs' }});
-require(['vs/editor/editor.main'], async function () {
+require(['monaco-editor'], async function () {
 	// Determine new doc type and editor value if present as exported URL
 	const value = util.getEditorValue(window.location.hash.substring(1));
 	const newDocType = value.substring(0, 2);
@@ -529,8 +533,8 @@ require(['vs/editor/editor.main'], async function () {
 		});
 	});
 
-	const tdSchema = await (await fetch('./node_modules/@thing-description-playground/core/td-schema.json')).json();
-	const tmSchema = await (await fetch('./node_modules/@thing-description-playground/core/tm-schema.json')).json();
+	const tdSchema = require("@thing-description-playground/core/td-schema.json");
+	const tmSchema = require("@thing-description-playground/core/tm-schema.json");
 
 	// Configure JSON language support with schemas and schema associations
 	monaco.languages.json.jsonDefaults.setDiagnosticsOptions({

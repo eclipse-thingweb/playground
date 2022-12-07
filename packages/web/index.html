@@ -4,9 +4,6 @@
   <meta charset="utf-8">
   <title>Thing Description Playground - Validate your W3C Thing Description</title>
   <link rel="shortcut icon" type="image/x-icon" href="./media/favlogo.png" />
-  <link rel="stylesheet" type="text/css" href="./node_modules/bootstrap-css-only/css/bootstrap.min.css" />
-  <link rel="stylesheet" type="text/css" href="./style.css" />
-  <link rel="stylesheet" type="text/css" href="./jsonld-vis.css" />
 </head>
 
 <body>
@@ -20,7 +17,7 @@
 
         <thead class="thead-dark">
           <tr>
-            <th scope="col">#</th>
+            <th scope="col">#</th>  
             <th scope="col">Assertion ID</th>
             <th scope="col" class="statcol">Status</th>
             <th scope="col">Description</th>
@@ -348,12 +345,6 @@
       <p id="copynotice">Copyrights © 2022 Part of the Thingweb project.</p>
     </div>
   </footer>
-  <script src="./node_modules/papaparse/papaparse.js"></script>
-  <script src="./node_modules/@thing-description-playground/core/dist/web-bundle.min.js"></script>
-  <script src="./node_modules/@thing-description-playground/assertions/dist/web-bundle.min.js"></script>
-  <script src="./node_modules/@thing-description-playground/td_to_openapi/dist/web-bundle.min.js"></script>
-  <script src="./node_modules/@thing-description-playground/td_to_asyncapi/dist/web-bundle.min.js"></script>
-  <script src="./node_modules/@thing-description-playground/defaults/dist/web-bundle.min.js"></script>
   <!-- Ensure that d3 and d3-tip are added before loader.js,
     otherwise throws an error, see https://github.com/microsoft/monaco-editor/issues/2283 -->
   <!-- Also order matters for svg-crowbar, vega and vega-embed (relative to loader.js) -->
@@ -361,9 +352,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.6.7/d3-tip.min.js" integrity="sha512-d0MkreG3huSJjpMnjX8AaYzbn09Z4j5uUs/E9Eu/JNJYMXxo/YRONuB0sr0IzOszsqfC3Vxi4tHicoMC5QQF4A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega@5.22.1/build/vega.min.js" integrity="sha256-cx8BtoEWvBhaGWMiCWyjQnN0JMSZXEimZ09X68ln6cE=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.21.0/build/vega-embed.min.js" integrity="sha256-/XLqtIcBhAjhlmMOaz23UAXzBgQymz60D73+PfrK24w=" crossorigin="anonymous"></script>
-  <script src="./node_modules/svg-crowbar/dist/main.js"></script>
-  <script src="./node_modules/monaco-editor/min/vs/loader.js"></script>
-  <script type="module" src="./script.js"></script>
+  <script src="./src/bundle.js"></script>
 </body>
 
 </html>

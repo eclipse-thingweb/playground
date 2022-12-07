@@ -5,6 +5,14 @@
  * and offers a few utility functions.
  */
 
+import * as Validators from "@thing-description-playground/core"
+import * as Assertions from "@thing-description-playground/assertions"
+import * as tdToAsyncAPI from "@thing-description-playground/td_to_asyncapi"
+import * as tdToOpenAPI from "@thing-description-playground/td_to_openapi"
+import * as tdDefaults from "@thing-description-playground/defaults"
+import * as monaco from "monaco-editor"
+import { examples } from "./examples"
+
 /**
  * Fetch the TD from the given address and return the JSON object
  * @param {string} urlAddr url of the TD to fetch
@@ -282,69 +290,53 @@ export function getExamplesList(docType){
     return (docType === 'td')
         ? {
             "SimpleTDWithDefaults": {
-                "addr": "../../node_modules/@thing-description-playground/core/examples/tds/valid/simpleWithDefaults.json",
                 "type": "valid"
             },
             "MultipleOpWithDefaults": {
-                "addr": "../../node_modules/@thing-description-playground/core/examples/tds/valid/formOpArrayWithDefaults.json",
                 "type": "valid"
             },
             "SimpleTD": {
-                "addr": "../../node_modules/@thing-description-playground/core/examples/tds/valid/simple.json",
                 "type": "warning"
             },
             "MultipleOp": {
-                "addr": "../../node_modules/@thing-description-playground/core/examples/tds/valid/formOpArray.json",
                 "type": "warning"
             },
             "EnumConstContradiction": {
-                "addr": "../../node_modules/@thing-description-playground/core/examples/tds/warning/enumConst.json",
                 "type": "warning"
             },
             "ArrayWithNoItems": {
-                "addr": "../../node_modules/@thing-description-playground/core/examples/tds/warning/arrayNoItems.json",
                 "type": "warning"
             },
             "InvalidOperation": {
-                "addr": "../../node_modules/@thing-description-playground/core/examples/tds/invalid/invalidOp.json",
                 "type": "invalid"
             },
             "EmptySecurityDefs": {
-                "addr": "../../node_modules/@thing-description-playground/core/examples/tds/invalid/emptySecDef.json",
                 "type": "invalid"
             }
         }
         : {
             "Placeholder": {
-                "addr": "../../node_modules/@thing-description-playground/core/examples/tms/valid/placeholder.json",
                 "type": "valid"
             },
             "Reference": {
-                "addr": "../../node_modules/@thing-description-playground/core/examples/tms/valid/ref.json",
                 "type": "valid"
             },
             "Extend": {
-                "addr": "../../node_modules/@thing-description-playground/core/examples/tms/valid/extend.json",
                 "type": "valid"
             },
             "Affordances": {
-                "addr": "../../node_modules/@thing-description-playground/core/examples/tms/valid/affordances.json",
                 "type": "valid"
             },
             "AbsentContext": {
-                "addr": "../../node_modules/@thing-description-playground/core/examples/tms/invalid/absent_context.json",
                 "type": "invalid"
             },
             "AbsentTM": {
-                "addr": "../../node_modules/@thing-description-playground/core/examples/tms/invalid/absent_tm.json",
                 "type": "invalid"
             },
             "NoCurlyBracket": {
-                "addr": "../../node_modules/@thing-description-playground/core/examples/tms/invalid/no_curly_bracket.json",
                 "type": "invalid"
             },
             "SingleCurlyBracket": {
-                "addr": "../../node_modules/@thing-description-playground/core/examples/tms/invalid/single_curly_bracket.json",
                 "type": "invalid"
             }
         }
@@ -363,18 +355,17 @@ export function exampleSelectHandler(e, obj) {
         window.editor.setValue("")
     }
     else{
-        const urlAddr=obj.urlAddrObject[document.getElementById("load_example").value].addr;
-        getTdUrl(urlAddr).then( data => {
-            if (window.editor === window.tdEditor) {
-                if (window.editorFormat === 'json') {
-                    window.editor.setValue(JSON.stringify(data,null,'\t'))
-                } else {
-                    window.editor.setValue(Validators.convertTDJsonToYaml(JSON.stringify(data)))
-                }
-            } else {
+        const exampleName = document.getElementById("load_example").value
+        const data = examples[exampleName]
+        if (window.editor === window.tdEditor) {
+            if (window.editorFormat === 'json') {
                 window.editor.setValue(JSON.stringify(data,null,'\t'))
+            } else {
+                window.editor.setValue(Validators.convertTDJsonToYaml(JSON.stringify(data)))
             }
-        })
+        } else {
+            window.editor.setValue(JSON.stringify(data,null,'\t'))
+        }
     }
 }
 
