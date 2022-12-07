@@ -7,13 +7,14 @@ module.exports = {
     resolve: {
         fallback: {
             "buffer": require.resolve('buffer/'),
+            "fs": false,
             "http": false,
             "https": false,
             "stream": false,
             "path": false
         }
     },
-    "mode": "none", 
+    "mode": "none",
     "entry": "./script.js",
     "output": {
         "path": __dirname + '/out/',
@@ -22,7 +23,7 @@ module.exports = {
     "module": {
         "rules": [ {
             "test": /\.css$/,
-            "use": [ "style-loader", "css-loader" ],
+            "use": [ "style-loader", "css-loader" ]
         },
         {
             "test": /\.js$/,
