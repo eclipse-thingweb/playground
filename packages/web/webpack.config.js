@@ -6,16 +6,17 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 module.exports = {
     resolve: {
         fallback: {
-          "http": false,
-          "https": false,
-          "stream": false,
-          "path": false,
+            "buffer": require.resolve('buffer/'),
+            "http": false,
+            "https": false,
+            "stream": false,
+            "path": false
         }
     },
     "mode": "none", 
     "entry": "./script.js",
     "output": {
-        "path": __dirname + '/src/',
+        "path": __dirname + '/out/',
         "filename": "bundle.js"
     },
     "module": {
@@ -41,6 +42,9 @@ module.exports = {
     plugins: [
         new webpack.ProvidePlugin({
             process: 'process/browser'
+        }),
+        new webpack.ProvidePlugin({
+            Buffer: ['buffer', 'Buffer']
         }),
         new MonacoWebpackPlugin(),
         new MiniCssExtractPlugin()

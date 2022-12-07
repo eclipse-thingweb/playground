@@ -15,6 +15,8 @@ import "./jsonld-vis.css"
 import * as Validators from "@thing-description-playground/core"
 import * as monaco from "monaco-editor"
 
+window.monaco = monaco
+
 let manualAssertions = []
 let manualAssertionsLoaded = false
 let autoValidate = false
