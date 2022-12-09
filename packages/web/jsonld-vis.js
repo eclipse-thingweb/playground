@@ -234,7 +234,7 @@ export function jsonldVis(jsonld, selector, config) {
       }
     }
 
-    return getDirectionSymbol(source[key].getDirection()) + source[key];
+    return getDirectionSymbol(source[key].toString().getDirection()) + source[key];
   }
 
   function jsonldTree(source, parentKey) {
