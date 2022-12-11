@@ -91,17 +91,17 @@ function tdValidator(tdString, logFunc, { checkDefaults = true, checkJsonLd = tr
         try {
             tdJson = JSON.parse(tdString)
             report.json = "passed"
-            let end = Date.now()
+            const end = Date.now()
             suite.testCase()
                 .className("tdValidator")
                 .name("JSON Validation")
-                .time(end - start);
+                .time(end - start)
         }
         catch (err) {
             report.json = "failed"
             logFunc("X JSON validation failed:")
             logFunc(err)
-            let end = Date.now()
+            const end = Date.now()
             suite.testCase()
                 .className("tdValidator")
                 .name("JSON Validation")
@@ -134,7 +134,7 @@ function tdValidator(tdString, logFunc, { checkDefaults = true, checkJsonLd = tr
                 const fullValid = ajv.validate('fulltd', tdJson)
                 if (fullValid) {
                     report.defaults = "passed"
-                    let end = Date.now()
+                    end = Date.now()
                     suite.testCase()
                         .className("tdValidator")
                         .name("Defaults Validation")
@@ -142,7 +142,7 @@ function tdValidator(tdString, logFunc, { checkDefaults = true, checkJsonLd = tr
                 }
                 else {
                     report.defaults = "warning"
-                    let end = Date.now()
+                    end = Date.now()
                     suite.testCase()
                         .className("tdValidator")
                         .name("Defaults Validation")
@@ -205,7 +205,7 @@ function tdValidator(tdString, logFunc, { checkDefaults = true, checkJsonLd = tr
         } else {
 
             report.schema = "failed"
-            let end = Date.now()
+            const end = Date.now()
             suite.testCase()
                 .className("tdValidator")
                 .name("Schema Validation")
@@ -225,7 +225,7 @@ function tdValidator(tdString, logFunc, { checkDefaults = true, checkJsonLd = tr
                 format: 'application/nquads'
             }).then(nquads => {
                 report.jsonld = "passed"
-                let end = Date.now()
+                const end = Date.now()
                 suite.testCase()
                     .className("tdValidator")
                     .name("JSON LD Validation")
@@ -233,7 +233,7 @@ function tdValidator(tdString, logFunc, { checkDefaults = true, checkJsonLd = tr
                 res({ report, details, detailComments })
             }, err => {
                 report.jsonld = "failed"
-                let end = Date.now()
+                const end = Date.now()
                 suite.testCase()
                     .className("tdValidator")
                     .name("JSON LD Validation")
@@ -625,7 +625,7 @@ function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = tr
         try {
             tmJson = JSON.parse(tmString)
             report.json = "passed"
-            let end = Date.now()
+            const end = Date.now()
             suite.testCase()
                 .className("tdValidator")
                 .name("JSON Validation")
@@ -635,7 +635,7 @@ function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = tr
             report.json = "failed"
             logFunc('X JSON validation failed:')
             logFunc(err)
-            let end = Date.now()
+            const end = Date.now()
             suite.testCase()
                 .className("tdValidator")
                 .name("JSON Validation")
@@ -712,7 +712,7 @@ function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = tr
         } else {
 
             report.schema = "failed"
-            let end = Date.now()
+            const end = Date.now()
             suite.testCase()
                 .className("tdValidator")
                 .name("Schema Validation")
@@ -732,7 +732,7 @@ function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = tr
                 format: 'application/nquads'
             }).then(nquads => {
                 report.jsonld = "passed"
-                let end = Date.now()
+                const end = Date.now()
                 suite.testCase()
                     .className("tdValidator")
                     .name("JSON LD Validation")
@@ -740,7 +740,7 @@ function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = tr
                 res({ report, details, detailComments })
             }, err => {
                 report.jsonld = "failed"
-                let end = Date.now()
+                const end = Date.now()
                 suite.testCase()
                     .className("tdValidator")
                     .name("JSON LD Validation")
