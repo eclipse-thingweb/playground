@@ -3,7 +3,7 @@ const fs = require("fs")
 
 const simpleTD = JSON.stringify({
     "id": "urn:basic",
-    "@context": ["https://www.w3.org/2022/wot/td/v1.1"], 
+    "@context": ["https://www.w3.org/2022/wot/td/v1.1"],
     "@type" : "tm:ThingModel",
     "title": "Smart Lamp Control with Dimming",
     "links" : [{
