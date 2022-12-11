@@ -1,4 +1,4 @@
-"ID","Status","Comment","Description"
+"ID","Status","Comment","Assertion"
 "thing-model-td-generation-processor-extends","null","not testable with Assertion Tester","If used, links element entry with ""rel"":""tm:extends"" MUST be removed from the current Partial TD"
 "thing-model-td-generation-processor-forms","null","not testable with Assertion Tester","Missing communication and/or security metadata details MUST be completed in the Thing Description instance based on Section and/or ."
 "thing-model-td-generation-processor-imports","null","not testable with Assertion Tester","Copy all definitions from the input Thing Model to the resulting Partial TD instance. If used, the extension and imports feature MUST be resolved and represented in the Partial TD instance according to ."
