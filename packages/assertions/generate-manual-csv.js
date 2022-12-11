@@ -11,7 +11,7 @@ const {
 const path = require("path")
 
 const csvGenerator = new Json2CsvParser({
-    fields: ["ID", "Status", "Comment", "Description"]
+    fields: ["ID", "Status", "Comment", "Assertion"]
 })
 const mainPath = path.join("assertions-csv")
 const assertionsPath = path.join("assertions-csv", "assertions.csv")
@@ -51,7 +51,7 @@ for (let iteration = 0; iteration < iterations; iteration++) {
     if (isNotFound) {
         oldAssertionsTable.push({
             "ID": preImplementedTable[index].ID,
-            "Description": preImplementedTable[index].Assertion,
+            "Assertion": preImplementedTable[index].Assertion,
             "Comment": manualFlag
         })
         preImplementedTable.splice(index, 1)
@@ -75,7 +75,7 @@ for (let iteration = 0; iteration < iterations; iteration++) {
         manualTable.push({
             "ID": preImplementedTable[index].ID,
             "Status": "null",
-            "Description": preImplementedTable[index].Assertion,
+            "Assertion": preImplementedTable[index].Assertion,
             "Comment": manualFlag
         })
         preImplementedTable.splice(index, 1)
@@ -97,13 +97,13 @@ for (const assertion of assertionsTable) {
         manualTable.push({
             "ID": assertion.ID,
             "Status": "null",
-            "Description": assertion.Assertion,
+            "Assertion": assertion.Assertion,
             "Comment": manualFlag
         })
         needsReviewTable.push({
             "ID": assertion.ID,
             "Status": "null",
-            "Description": assertion.Assertion,
+            "Assertion": assertion.Assertion,
             "Comment": manualFlag
         })
     }
