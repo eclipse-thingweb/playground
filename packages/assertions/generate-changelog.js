@@ -1,13 +1,4 @@
 /* eslint-disable max-classes-per-file */
-/** ===================================================================================================
- * ?                                ABOUT
- * @author         :  Fady Salama
- * @email          :  fadytawfik11@gmail.com
- * @repo           :  https://github.com/thingweb/thingweb-playground
- * @createdOn      :  02.11.2022
- * @description    :  A script that takes 2 assertion.csv files and generates a difference as changelog
- *===================================================================================================== **/
-
 
 /** ========================================================================
  *                           Includes and Globals
