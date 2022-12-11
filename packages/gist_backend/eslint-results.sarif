@@ -1,0 +1,39 @@
+{
+  "version": "2.1.0",
+  "$schema": "http://json.schemastore.org/sarif-2.1.0-rtm.5",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "ESLint",
+          "informationUri": "https://eslint.org",
+          "rules": [],
+          "version": "8.22.0"
+        }
+      },
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/gist_backend/config.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/gist_backend/real-test.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/gist_backend/server.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/gist_backend/test.js"
+          }
+        }
+      ],
+      "results": []
+    }
+  ]
+}

@@ -1,0 +1,166 @@
+{
+  "version": "2.1.0",
+  "$schema": "http://json.schemastore.org/sarif-2.1.0-rtm.5",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "ESLint",
+          "informationUri": "https://eslint.org",
+          "rules": [
+            {
+              "id": "no-trailing-spaces",
+              "helpUri": "https://eslint.org/docs/rules/no-trailing-spaces",
+              "properties": {},
+              "shortDescription": {
+                "text": "Disallow trailing whitespace at the end of lines"
+              }
+            },
+            {
+              "id": "max-classes-per-file",
+              "helpUri": "https://eslint.org/docs/rules/max-classes-per-file",
+              "properties": {},
+              "shortDescription": {
+                "text": "Enforce a maximum number of classes per file"
+              }
+            }
+          ],
+          "version": "8.22.0"
+        }
+      },
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/assertions/assertionTests-td.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/assertions/assertionTests-tm.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/assertions/checkCoverage.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/assertions/example-scripts/manualCSV_noLogging.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/assertions/example-scripts/multipleInput.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/assertions/example-scripts/readFile_ConsoleLogging.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/assertions/example-scripts/simple.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/assertions/example-scripts/simpleTM.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/assertions/generate-changelog.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/assertions/generate-manual-csv.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/assertions/index.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/assertions/mergeResults.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/assertions/tests/index-test.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/assertions/update-list.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/assertions/util.js"
+          }
+        }
+      ],
+      "results": [
+        {
+          "level": "error",
+          "message": {
+            "text": "Trailing spaces not allowed."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/eko/git/thingweb-playground/packages/assertions/example-scripts/simpleTM.js",
+                  "index": 7
+                },
+                "region": {
+                  "startLine": 6,
+                  "startColumn": 57,
+                  "endLine": 6,
+                  "endColumn": 58
+                }
+              }
+            }
+          ],
+          "ruleId": "no-trailing-spaces",
+          "ruleIndex": 0
+        },
+        {
+          "level": "error",
+          "message": {
+            "text": "File has too many classes (2). Maximum allowed is 1."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/eko/git/thingweb-playground/packages/assertions/generate-changelog.js",
+                  "index": 8
+                },
+                "region": {
+                  "startLine": 16,
+                  "startColumn": 1,
+                  "endLine": 230,
+                  "endColumn": 2
+                }
+              }
+            }
+          ],
+          "ruleId": "max-classes-per-file",
+          "ruleIndex": 1,
+          "suppressions": [
+            {
+              "kind": "inSource",
+              "justification": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

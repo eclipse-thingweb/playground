@@ -1,13 +1,4 @@
 /* eslint-disable max-classes-per-file */
-/** ===================================================================================================
- * ?                                ABOUT
- * @author         :  Fady Salama
- * @email          :  fadytawfik11@gmail.com
- * @repo           :  https://github.com/thingweb/thingweb-playground
- * @createdOn      :  02.11.2022
- * @description    :  A script that takes 2 assertion.csv files and generates a difference as changelog
- *===================================================================================================== **/
-
 
 /** ========================================================================
  *                           Includes and Globals
@@ -192,7 +183,7 @@ function inspectNewAssertion(newAssertion) {
     const notFound = (oldAssertionIndex === -1)
     if (notFound) {
         const sameDescriptionIndex = oldCsvTable.findIndex(assertion => {
-            return newAssertion.Description === assertion.Description
+            return newAssertion.Assertion === assertion.Assertion
         })
 
         const sameDescriptionFound = (sameDescriptionIndex !== -1)
@@ -215,15 +206,15 @@ function inspectNewAssertion(newAssertion) {
             changeLogs.addLog(newAssertion.ID, "line-change", {oldline: oldAssertionIndex, newline: newAssertionIndex})
 
         // Check description changes
-        if(newAssertion.Description !== oldCsvTable[oldAssertionIndex].Description){
-            // Descriptions are not strictly equal, but maybe the change is only in punctuation
+        if(newAssertion.Assertion !== oldCsvTable[oldAssertionIndex].Assertion){
+            // Assertion Descriptions are not strictly equal, but maybe the change is only in punctuation
             // Remove punctuation then check again
-            const newDes =  newAssertion.Description.replace(/[^\w\s\']|_/g, "").replace(/\s+/g, " ").trim()
-            const oldDesc =  newAssertion.Description.replace(/[^\w\s\']|_/g, "").replace(/\s+/g, " ").trim()
+            const newDes =  newAssertion.Assertion.replace(/[^\w\s\']|_/g, "").replace(/\s+/g, " ").trim()
+            const oldDesc =  newAssertion.Assertion.replace(/[^\w\s\']|_/g, "").replace(/\s+/g, " ").trim()
 
             // todo  Should we hint at the punctuation changes? Should we fix oldCVS punctuation?
             if(newDes !== oldDesc) {
-                changeLogs.addLog(newAssertion.ID, "description", newAssertion.Description)
+                changeLogs.addLog(newAssertion.ID, "description", newAssertion.Assertion)
             }
         }
     }

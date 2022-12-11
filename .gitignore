@@ -22,7 +22,7 @@ log.json
 .idea
 
 # linting results
-eslint-results.sarif
+# eslint-results.sarif
 
 # junit test results
 junit-tests.xml

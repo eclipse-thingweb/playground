@@ -1,0 +1,244 @@
+{
+  "version": "2.1.0",
+  "$schema": "http://json.schemastore.org/sarif-2.1.0-rtm.5",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "ESLint",
+          "informationUri": "https://eslint.org",
+          "rules": [
+            {
+              "id": "max-len",
+              "helpUri": "https://eslint.org/docs/rules/max-len",
+              "properties": {},
+              "shortDescription": {
+                "text": "Enforce a maximum line length"
+              }
+            }
+          ],
+          "version": "8.22.0"
+        }
+      },
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/core/examples/scripts/failingTd.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/core/examples/scripts/multipleFiles.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/core/examples/scripts/readFile.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/core/examples/scripts/simple.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/core/index.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/core/jest.config.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/core/shared.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/core/tests/examples-invalid.test.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/core/tests/examples-valid.test.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/core/tests/examples-warning.test.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/core/tests/index.test.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/core/tests/protocol-detection.test.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/core/tests/typo.test.js"
+          }
+        }
+      ],
+      "results": [
+        {
+          "level": "warning",
+          "message": {
+            "text": "This line has a length of 504. Maximum allowed is 135."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/eko/git/thingweb-playground/packages/core/shared.js",
+                  "index": 6
+                },
+                "region": {
+                  "startLine": 12,
+                  "startColumn": 1,
+                  "endLine": 12,
+                  "endColumn": 505
+                }
+              }
+            }
+          ],
+          "ruleId": "max-len",
+          "ruleIndex": 0,
+          "suppressions": [
+            {
+              "kind": "inSource",
+              "justification": ""
+            }
+          ]
+        },
+        {
+          "level": "warning",
+          "message": {
+            "text": "This line has a length of 707. Maximum allowed is 135."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/eko/git/thingweb-playground/packages/core/tests/index.test.js",
+                  "index": 10
+                },
+                "region": {
+                  "startLine": 169,
+                  "startColumn": 1,
+                  "endLine": 169,
+                  "endColumn": 705
+                }
+              }
+            }
+          ],
+          "ruleId": "max-len",
+          "ruleIndex": 0,
+          "suppressions": [
+            {
+              "kind": "inSource",
+              "justification": ""
+            }
+          ]
+        },
+        {
+          "level": "warning",
+          "message": {
+            "text": "This line has a length of 717. Maximum allowed is 135."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/eko/git/thingweb-playground/packages/core/tests/index.test.js",
+                  "index": 10
+                },
+                "region": {
+                  "startLine": 171,
+                  "startColumn": 1,
+                  "endLine": 171,
+                  "endColumn": 715
+                }
+              }
+            }
+          ],
+          "ruleId": "max-len",
+          "ruleIndex": 0,
+          "suppressions": [
+            {
+              "kind": "inSource",
+              "justification": ""
+            }
+          ]
+        },
+        {
+          "level": "warning",
+          "message": {
+            "text": "This line has a length of 540. Maximum allowed is 135."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/eko/git/thingweb-playground/packages/core/tests/index.test.js",
+                  "index": 10
+                },
+                "region": {
+                  "startLine": 178,
+                  "startColumn": 1,
+                  "endLine": 178,
+                  "endColumn": 538
+                }
+              }
+            }
+          ],
+          "ruleId": "max-len",
+          "ruleIndex": 0,
+          "suppressions": [
+            {
+              "kind": "inSource",
+              "justification": ""
+            }
+          ]
+        },
+        {
+          "level": "warning",
+          "message": {
+            "text": "This line has a length of 550. Maximum allowed is 135."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/eko/git/thingweb-playground/packages/core/tests/index.test.js",
+                  "index": 10
+                },
+                "region": {
+                  "startLine": 180,
+                  "startColumn": 1,
+                  "endLine": 180,
+                  "endColumn": 548
+                }
+              }
+            }
+          ],
+          "ruleId": "max-len",
+          "ruleIndex": 0,
+          "suppressions": [
+            {
+              "kind": "inSource",
+              "justification": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
