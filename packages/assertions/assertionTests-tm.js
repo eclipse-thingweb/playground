@@ -98,12 +98,12 @@ module.exports = validateTM
 
         const schema = curAssertion
         if(schema.title === "tm-placeholder") {
-            validateTmPlaceholder(tmJson, loggingFunction, results)
+            results.push(...validateTmPlaceholder(tmJson, loggingFunction))
             continue
         }
 
         if(schema.title === "tm-tmRef1") {
-            validateTmRef(tmJson, loggingFunction, results)
+            results.push(...validateTmRef(tmJson, loggingFunction))
             continue
         }
 
@@ -305,16 +305,16 @@ function checkTMVocabulary(tmJson) {
 /**
  * A script for validating tm-placeholder
  * @param {object} obj
- * @param {Array<{"ID": string, "Status": string}>} results
+ * @returns {array} results array
  */
 
 function validateTmPlaceholder(tmObj, results) {
-
+    const scopedResults = []
     let FOUND_TM_PLACEHOLDER = false
 
     const tmpResults = []
     let validPayload = null
-    checkObjContainsTmPlaceholder(tmObj)
+    checkObjContainsTmPlaceholder(tmObj) // this internally sets FOUND_TM_PLACEHOLDER
     let otherAssertion = []
     if(tmPlaceholderSchema.also && tmPlaceholderSchema.also.length >= 1) otherAssertion = tmPlaceholderSchema.also
 
@@ -326,29 +326,28 @@ function validateTmPlaceholder(tmObj, results) {
         // if no fail was found, return a valid result
         validPayload = tmpResults[0]
     }
-
     if(FOUND_TM_PLACEHOLDER) {
         if(validPayload && validPayload.valid) {
-            results.push({
+            scopedResults.push({
                 "ID": "tm-placeholder",
                 "Status": "pass"
             })
 
             for(const asser of otherAssertion) {
-                results.push({
+                scopedResults.push({
                     "ID": asser,
                     "Status": "pass"
                 })
             }
         } else if (validPayload && validPayload.valid === false) {
-            results.push({
+            scopedResults.push({
                 "ID": "tm-placeholder",
                 "Status": "fail",
                 "Comment": validPayload.ajvObject.errorsText()
             })
 
             for(const asser of otherAssertion) {
-                results.push({
+                scopedResults.push({
                     "ID": asser,
                     "Status": "fail",
                     "Comment": validPayload.ajvObject.errorsText()
@@ -356,21 +355,22 @@ function validateTmPlaceholder(tmObj, results) {
             }
         }
     } else {
-        results.push({
+        scopedResults.push({
             "ID": "tm-placeholder",
             "Status": "not-impl"
         })
 
         for(const asser of otherAssertion) {
-            results.push({
+            scopedResults.push({
                 "ID": asser,
                 "Status": "not-impl"
             })
         }
     }
+    return scopedResults
 
     /**
-     *
+     * In addition to checking the assertion for the placeholder, this internally sets FOUND_TM_PLACEHOLDER
      * @param {object} obj
      * @returns {{valid: boolean, ajvObject: object} | null} true if validation passes, else false
      */
@@ -402,9 +402,10 @@ function validateTmPlaceholder(tmObj, results) {
  * A script for validating tm-tmRef-1
  * @param {object} obj
  * @param {function} logFunc
- * @param {Array<{"ID": string, "Status": string}>} results
+ * @returns {array} results array
  */
-function validateTmRef(tmObj, logFunc, results) {
+function validateTmRef(tmObj, logFunc) {
+    const scopedResults = []
 
     const tmpResults = []
     let FOUND_TM_REF = false
@@ -424,26 +425,26 @@ function validateTmRef(tmObj, logFunc, results) {
 
     if(FOUND_TM_REF) {
         if(validPayload && validPayload.valid) {
-            results.push({
+            scopedResults.push({
                 "ID": "tm-tmRef1",
                 "Status": "pass"
             })
 
             for(const asser of otherAssertion) {
-                results.push({
+                scopedResults.push({
                     "ID": asser,
                     "Status": "pass"
                 })
             }
         } else if (validPayload && !validPayload.valid) {
-            results.push({
+            scopedResults.push({
                 "ID": "tm-tmRef1",
                 "Status": "fail",
                 "Comment": validPayload.ajvObject.errorsText()
             })
 
             for(const asser of otherAssertion) {
-                results.push({
+                scopedResults.push({
                     "ID": asser,
                     "Status": "fail",
                     "Comment": validPayload.ajvObject.errorsText()
@@ -451,18 +452,20 @@ function validateTmRef(tmObj, logFunc, results) {
             }
         }
     } else {
-        results.push({
+        scopedResults.push({
             "ID": "tm-tmRef1",
             "Status": "not-impl"
         })
 
         for(const asser of otherAssertion) {
-            results.push({
+            scopedResults.push({
                 "ID": asser,
                 "Status": "not-impl"
             })
         }
     }
+
+    return scopedResults
 
     /**
      *
