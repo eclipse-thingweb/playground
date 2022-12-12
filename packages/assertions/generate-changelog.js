@@ -46,11 +46,13 @@ class Changelog {
     constructor() {
         this.log = {}
         this.logString = ""
+        this.numberOfChanges = 0
     }
 
     addLog(assertionID, changeType, additionalParam) {
         if(!this.log[changeType]) this.log[changeType] = []
         this.log[changeType].push(new Change(assertionID, changeType, additionalParam))
+        this.numberOfChanges++
     }
 
     getLogMarkDownString() {
@@ -61,6 +63,10 @@ class Changelog {
 [Old CSV Path](${oldCsvPath})  
 [New CSV Path](${newCsvPath})
 `
+        if(this.numberOfChanges === 0) {
+            this.logString += `\nThere are no changes between both files\n`
+            return this.logString
+        }
         for(const changeType of CHANGE_TYPES) {
             if(this.log[changeType]) {
                 this.logString +=
