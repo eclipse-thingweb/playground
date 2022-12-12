@@ -19,8 +19,7 @@ const defaultLookup = {
         op: ["subscribeevent", "unsubscribeevent"]
     },
     AdditionalExpectedResponse: {
-        success: false,
-        contentType: "application/json"
+        success: false
     },
     DataSchema: {
         readOnly: false,
@@ -58,6 +57,7 @@ const defaultClasses = {
     formPropertyAffordance: "Form-PropertyAffordance",
     formActionAffordance: "Form-ActionAffordance",
     formEventAffordance: "Form-EventAffordance",
+    additionalExpectedResponse: "AdditionalExpectedResponse",
     dataSchema: "DataSchema",
     propertyAffordance: "PropertyAffordance",
     actionAffordance: "ActionAffordance",
