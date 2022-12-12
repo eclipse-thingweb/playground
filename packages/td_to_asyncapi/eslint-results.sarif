@@ -1,0 +1,69 @@
+{
+  "version": "2.1.0",
+  "$schema": "http://json.schemastore.org/sarif-2.1.0-rtm.5",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "ESLint",
+          "informationUri": "https://eslint.org",
+          "rules": [],
+          "version": "8.22.0"
+        }
+      },
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/td_to_asyncapi/examples/updateExamples.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/td_to_asyncapi/index.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/td_to_asyncapi/src/definitions.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/td_to_asyncapi/src/genChannels.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/td_to_asyncapi/src/genRoot.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/td_to_asyncapi/src/utils.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/td_to_asyncapi/tests/genChannels.test.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/td_to_asyncapi/tests/genRoot.test.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/td_to_asyncapi/tests/index.test.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/td_to_asyncapi/tests/utils.test.js"
+          }
+        }
+      ],
+      "results": []
+    }
+  ]
+}

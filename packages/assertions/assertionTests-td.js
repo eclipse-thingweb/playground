@@ -122,7 +122,7 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
                 results.push({
                     "ID": schema.title,
                     "Status": "not-impl",
-                    "Description": schema.description
+                    "Assertion": schema.description
                 })
                 if (schema.hasOwnProperty("also")) {
                     const otherAssertions = schema.also
@@ -145,14 +145,14 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
                         results.push({
                             "ID": schema.title,
                             "Status": result,
-                            "Description": schema.description
+                            "Assertion": schema.description
                         })
                     } else {
                         results.push({
                             "ID": schema.title,
                             "Status": result,
                             "Comment": validPayload.ajvObject.errorsText(),
-                            "Description": schema.description
+                            "Assertion": schema.description
                         })
                     }
                     if (schema.hasOwnProperty("also")) {
@@ -170,7 +170,7 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
                         "ID": schema.title,
                         "Status": "fail",
                         "Comment": "Make sure you validate your TD before",
-                        "Description": schema.description
+                        "Assertion": schema.description
                     })
 
                     if (schema.hasOwnProperty("also")) {
@@ -198,7 +198,7 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
                         results.push({
                             "ID": asser,
                             "Status": "pass",
-                            "Description": schema.description
+                            "Assertion": schema.description
                         })
                     })
                 }
@@ -212,7 +212,7 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
                         "ID": schema.title,
                         "Status": "not-impl",
                         "Comment": validPayload.ajvObject.errorsText(),
-                        "Description": schema.description
+                        "Assertion": schema.description
                     })
                     if (schema.hasOwnProperty("also")) {
                         const otherAssertions = schema.also
@@ -221,7 +221,7 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
                                 "ID": asser,
                                 "Status": "not-impl",
                                 "Comment": validPayload.ajvObject.errorsText(),
-                                "Description": schema.description
+                                "Assertion": schema.description
                             })
                         })
                     }
@@ -231,7 +231,7 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
                         "ID": schema.title,
                         "Status": "fail",
                         "Comment": validPayload.ajvObject.errorsText(),
-                        "Description": schema.description
+                        "Assertion": schema.description
                     })
                     if (schema.hasOwnProperty("also")) {
                         const otherAssertions = schema.also
@@ -240,7 +240,7 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
                                 "ID": asser,
                                 "Status": "fail",
                                 "Comment": validPayload.ajvObject.errorsText(),
-                                "Description": schema.description
+                                "Assertion": schema.description
                             })
                         })
                     }
@@ -430,7 +430,7 @@ function checkContentTypeDifference(td){
  * @returns {{"ID": tm-compose-name-collision,"Status": "not-impl OR pass"}}
  */
  function checkInstanceNameCollision(td){
-    let ajv = new Ajv({strict: false})
+    const ajv = new Ajv({strict: false})
 
     // check that if a TM is referenced
     const ifTMused = ajv.validate({
@@ -448,10 +448,10 @@ function checkContentTypeDifference(td){
                 }
             }
         }
-    },td);
+    },td)
 
     if (ifTMused){ // only valid when a tm is used for a TD
-        let affordanceNames = []
+        const affordanceNames = []
         // checking inside each interaction
         if (td.hasOwnProperty("properties")) {
             // checking security in property level

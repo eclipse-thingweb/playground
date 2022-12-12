@@ -725,9 +725,9 @@ function checkUriSecurity(td) {
         const securityDefinitionsObject = td.securityDefinitions
         const securityDefinitionsNames = Object.keys(securityDefinitionsObject)
 
-        const securityUriVariables = [];
+        const securityUriVariables = []
         for (let index = 0; index < securityDefinitionsNames.length; index++) {
-            const curSecurityDefinition = securityDefinitionsObject[securityDefinitionsNames[index]];
+            const curSecurityDefinition = securityDefinitionsObject[securityDefinitionsNames[index]]
             if (curSecurityDefinition.scheme === "apikey"){
                 if (curSecurityDefinition.hasOwnProperty("in")){
                     if (curSecurityDefinition.in === "uri"){
@@ -754,7 +754,7 @@ function checkUriSecurity(td) {
         } else {
             let uriVariablesResult = "not-impl"
             let uriVariablesDistinctResult = "not-impl"
-            let rootUriVariables = [];
+            let rootUriVariables = []
             if (td.hasOwnProperty("uriVariables")) {
                 rootUriVariables = Object.keys(td.uriVariables)
             }
@@ -932,7 +932,7 @@ function checkTmOptionalPointer(td){
                     "Comment": ""
                 })
             }
-        });
+        })
     } else {
         results.push({
             "ID": "tm-tmOptional-resolver",

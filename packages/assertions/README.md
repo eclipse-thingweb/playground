@@ -62,6 +62,21 @@ You can use this package to integrate TD assertion testing in your own Browser/N
 
 For more details, please read the [README.md](assertions-csv/README.md) under `assertions-csv` folder
 
+### CSV change-log generation
+
+* [generate-changelog.js](./generate-changelog.js) a JavaScript script that takes an old assertions CSV and a new assertions CSV as and generates a change-log in Markdown as an output.  
+For usage run:
+
+```bash
+node generate-changelog.js <old CSV path> <new CSV path> [output path]
+```
+
+Output path is optional. If not specified, the Markdown will be printed to the terminal instead. So it is possible to also pipe the result:
+
+```bash
+node generate-changelog.js <old CSV path> <new CSV path> > [output path]
+```
+
 ## License
 
 Licensed under the MIT license, see [License](../../LICENSE.md).

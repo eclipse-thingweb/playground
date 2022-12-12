@@ -1,0 +1,63 @@
+{
+  "version": "2.1.0",
+  "$schema": "http://json.schemastore.org/sarif-2.1.0-rtm.5",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "ESLint",
+          "informationUri": "https://eslint.org",
+          "rules": [
+            {
+              "id": "max-len",
+              "helpUri": "https://eslint.org/docs/rules/max-len",
+              "properties": {},
+              "shortDescription": {
+                "text": "Enforce a maximum line length"
+              }
+            }
+          ],
+          "version": "8.28.0"
+        }
+      },
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/cli/index.js"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///home/eko/git/thingweb-playground/packages/cli/tests/index-test.js"
+          }
+        }
+      ],
+      "results": [
+        {
+          "level": "warning",
+          "message": {
+            "text": "This line has a length of 143. Maximum allowed is 135."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///home/eko/git/thingweb-playground/packages/cli/index.js",
+                  "index": 0
+                },
+                "region": {
+                  "startLine": 42,
+                  "startColumn": 1,
+                  "endLine": 42,
+                  "endColumn": 144
+                }
+              }
+            }
+          ],
+          "ruleId": "max-len",
+          "ruleIndex": 0
+        }
+      ]
+    }
+  ]
+}

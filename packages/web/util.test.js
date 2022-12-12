@@ -57,8 +57,8 @@ const monacoPointerTestCases = [
                 captureMatches,
                 limitResultCount
             ) => { return [{ range: { endColumn: 77, endLineNumber: 1, startColumn: 71, startLineNumber: 1}}]}),
-            getLineContent: jest.fn(i => { 
-                return '{"x": [{"y": "y", "z": ["a", "b", "c"]}, {"y": "y", "z": ["a", "b", {"target": "a"}]}]}' 
+            getLineContent: jest.fn(i => {
+                return '{"x": [{"y": "y", "z": ["a", "b", "c"]}, {"y": "y", "z": ["a", "b", {"target": "a"}]}]}'
             })
         },
         keyword: 'target',

@@ -32,8 +32,9 @@ This tool checks which assertions are satisfied by a given Thing Description(s).
 * Install the package with npm `npm install @thing-description-playground/cli` (or clone repo and install the package with `npm install`)
 * Change to `cli` directory
 * For single TD: Run 'node index.js an_example_TD_location -a'. E.g. `node index.js -i ./node_modules/@thing-description-playground/core/examples/tds/valid/JsonLdThing.json -a`
-  * You can specify the output location and filename with the -o argument, e.g. `node index.js inputTD.json -o outputResult -a`
-* For a directory with **only** TDs: Run 'node index.js a_directory_location'. E.g. `node index.js ./node_modules/@thing-description-playground/core/examples/tds/valid/`
+  * You can specify the output location and filename with the -o argument, e.g. `node index.js -i inputTD.json -o outputResult -a`
+* For multiple TDs or Directories, multiple inputs can be given after the input flag, e.g. `node index.js -i inputTD.json secondTD.json tdFolder/`
+* For a directory with **only** TDs: Run 'node index.js a_directory_location'. E.g. `node index.js -i ./node_modules/@thing-description-playground/core/examples/tds/valid/`
 * The result(s) are found in the './out' merged into one report (unless the `--assertion-no-merge` parameter -n is set, then a report for every Td is created)
   * By default there will be a .csv file, with the --assertions-nocsv parameter -c there will be a .json file. The .csv version has the format required by the implementation report and the .json version is provided for using the results in other tools, such as merging the results.
   * The result can be pass, fail or not-impl
@@ -55,7 +56,8 @@ This tool checks which assertions are satisfied by a given Thing Description(s).
   * A TD in `invalid` directory should be invalid, giving an error in at least one check
   * A TD in `warning` directory should give at least one warning in a check but should be valid at the same time
 * And all TDs located directly in the `./myDir` folder
-Even though it is not recommended, mixing TDs locate directly in the directory and subdirectories of the above structure, is possible.
+* For multiple TDs or Directories, multiple inputs can be given after the input flag, e.g. `node index.js -i inputTD.json secondTD.json tdFolder/`
+Even though it is not recommended, mixing TDs located directly in the directory and subdirectories of the above structure, is possible.
 
 ## Validation Report
 
@@ -109,6 +111,7 @@ The core validation report is an object, which contains three objects (as you ca
                 'a Thing Description (.json file), a folder with multiple Thing Descriptions, \n' +
                 'or a Folder with "valid", "invalid" and "warning" subfolder, where all included TDs \n' +
                 'will be checked whether they produce the expected validation result.' +
+                'Multiple inputs can also be provided after using the input flag' +
                 'Use the -a parameter for assertions testing.'
 },
 '--type -t *': {
@@ -118,7 +121,7 @@ The core validation report is an object, which contains three objects (as you ca
 },
 '--input -i *': {
     type: 'string',
-    description: 'The file or the folder containing the files, which will be validated.'
+    description: 'The file or the folder containing the files, which will be validated. Multiple inputs can be provided.'
 },
 '--nojsonld -j': {
     type: 'boolean',

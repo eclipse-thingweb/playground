@@ -20,3 +20,9 @@ log.json
 
 # JetBrains IDEs
 .idea
+
+# linting results
+# eslint-results.sarif
+
+# junit test results
+junit-tests.xml

@@ -29,4 +29,4 @@ This folder contains all files related to automated generation of the assertions
 
 * Review [old.csv](manual.csv) and make sure to fix the names of these assertions or remove them if applicable.
   
-* Review [needsReview.csv](needsReview.csv) to and make sure that all assertions that need to be verified manually are copied to the TD [manual.csv](../assertions-td/manual.csv) and the TM [manual.csv](../assertions-tm/manual.csv) respectively.
+* Review [needsReview.csv](needsReview.csv) and decide which assertions can be implemented and which will be verified manually. Make sure that all assertions that need to be verified manually are copied to the TD [manual.csv](../assertions-td/manual.csv) and the TM [manual.csv](../assertions-tm/manual.csv) respectively.

@@ -17,22 +17,25 @@
   "scripts": {
     "test": "jest",
     "bundle": "npx browserify ./index.js -s Validators -o ./dist/web-bundle.js && npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
-    "prepare": "npm run bundle"
+    "prepare": "npm run bundle",
+    "lint": "npx eslint . --config .eslintrc.json --ext .js,.jsx,.ts,.tsx --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif"
   },
   "dependencies": {
     "ajv": "^8.11.0",
     "ajv-formats": "^2.1.1",
     "ajv-formats-draft2019": "^1.6.1",
+    "js-yaml": "^4.1.0",
     "json-dup-key-validator": "^1.0.3",
     "jsonld": "^4.0.1",
     "lz-string": "^1.4.4",
-    "node-fetch": "^2.6.7"
+    "junit-report-builder": "^3.0.1"
   },
   "devDependencies": {
     "browserify": "^17.0.0",
     "eslint": "^8.22.0",
     "jest": "^28.1.3",
-    "terser": "^5.14.2"
+    "terser": "^5.14.2",
+    "@microsoft/eslint-formatter-sarif": "^2.1.7"
   },
   "publishConfig": {
     "access": "public"

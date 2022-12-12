@@ -1,0 +1,21 @@
+{
+    "id": "urn:simple",
+    "@context":"https://www.w3.org/2022/wot/td/v1.1",
+    "title": "MyLampThing",
+    "description":"Valid TD copied from the spec's first example",
+    "securityDefinitions": {
+        "basic_sc": {"scheme": "basic","in":"header"}
+    },
+    "security": ["basic_sc"],
+    "base": "mqtts://mylamp.example.com/status",
+    "events":{
+        "overheating":{
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "https://mylamp.example.com/oh",
+                "subprotocol": "longpoll"
+            }]
+        }
+    },
+    "protocolSchemes": ["https", "mqtts"]
+}
