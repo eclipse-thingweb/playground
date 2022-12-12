@@ -16,7 +16,7 @@ const path = require("path")
 
 const CHANGE_TYPES = ["added", "removed", "renamed", "line-change", "description"]
 
-let oldCsvTable; let newCsvTable; let oldCsvPath; let newCsvPath
+let oldCsvTable; let newCsvTable; let oldCsvPath; let newCsvPath; let outputPath
 
 class Change {
     constructor(assertionID, changeType, additionalParam) {
@@ -46,11 +46,13 @@ class Changelog {
     constructor() {
         this.log = {}
         this.logString = ""
+        this.numberOfChanges = 0
     }
 
     addLog(assertionID, changeType, additionalParam) {
         if(!this.log[changeType]) this.log[changeType] = []
         this.log[changeType].push(new Change(assertionID, changeType, additionalParam))
+        this.numberOfChanges++
     }
 
     getLogMarkDownString() {
@@ -61,6 +63,10 @@ class Changelog {
 [Old CSV Path](${oldCsvPath})  
 [New CSV Path](${newCsvPath})
 `
+        if(this.numberOfChanges === 0) {
+            this.logString += `\nThere are no changes between both files\n`
+            return this.logString
+        }
         for(const changeType of CHANGE_TYPES) {
             if(this.log[changeType]) {
                 this.logString +=
@@ -107,7 +113,7 @@ if (myArgs.length <= 1 || myArgs.length > 3) { console.log(helpMessage); return 
 else {
     oldCsvPath = myArgs[0].trim()
     newCsvPath = myArgs[1].trim()
-    outputPath = myArgs[2].trim()
+    if(myArgs[2]) outputPath = myArgs[2].trim()
 
     /* Normalizing paths */
     oldCsvPath = oldCsvPath.split(path.win32.sep)
@@ -118,9 +124,11 @@ else {
     if (newCsvPath.length === 1) { newCsvPath = newCsvPath[0].split(path.posix.sep) }
     newCsvPath = path.join(...newCsvPath)
 
-    outputPath = outputPath.split(path.win32.sep)
-    if (outputPath.length === 1) { outputPath = outputPath[0].split(path.posix.sep) }
-    outputPath = path.join(...outputPath)
+    if(outputPath) {
+        outputPath = outputPath.split(path.win32.sep)
+        if (outputPath.length === 1) { outputPath = outputPath[0].split(path.posix.sep) }
+        outputPath = path.join(...outputPath)
+    }
 
     /* Check paths exist*/
     if (!existsSync(oldCsvPath)) throw new Error("Given path for 'oldCsvPath' does not exist")
@@ -133,7 +141,7 @@ else {
     if (path.extname(newCsvPath) !== ".csv")
         throw new Error("The path 'newCsvPath' does not point to a csv file. Make sure that the file has the extension name '.csv'")
 
-    if (path.extname(outputPath) !== ".md")
+    if (outputPath && path.extname(outputPath) !== ".md")
      outputPath += ".md"
 
     /** ========================================================================
