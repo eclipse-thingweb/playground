@@ -50,8 +50,8 @@ body {
 	overflow-y: scroll;
 }
 
-#td-editor, #tm-editor {
-	height: 100%;
+#td-editor, #tm-editor, #open-api-editor, #async-api {
+	max-height: 100vh;
 	width: auto;
 }
 
