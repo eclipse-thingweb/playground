@@ -19,7 +19,7 @@ const defaultLookup = {
         op: ["subscribeevent", "unsubscribeevent"]
     },
     AdditionalExpectedResponse: {
-        success: false
+        additionalResponses: [{ success: false, contentType: "application/json" }]
     },
     DataSchema: {
         readOnly: false,

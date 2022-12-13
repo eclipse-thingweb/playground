@@ -38,13 +38,7 @@ function sharedDefaults(td, cbOneObject, cbDataSchema) {
             if (interaction.forms) {
                 interaction.forms.forEach( form => {
                     cbOneObject(form, interactionTypes[interactionType], interaction)
-                    const additionalExpectedResponse = defaultClasses.additionalExpectedResponse
-
-                    if (form.contentType) {
-                        additionalExpectedResponse.contentType = form.contentType
-                    }
-
-                    cbOneObject(form, additionalExpectedResponse)
+                    cbOneObject(form, defaultClasses.additionalExpectedResponse)
                 })
             }
         })
@@ -52,13 +46,7 @@ function sharedDefaults(td, cbOneObject, cbDataSchema) {
     if (td.forms) {
         td.forms.forEach( form => {
             cbOneObject(form, defaultClasses.form)
-            const additionalExpectedResponse = defaultClasses.additionalExpectedResponse
-
-            if (form.contentType) {
-                additionalExpectedResponse.contentType = form.contentType
-            }
-
-            cbOneObject(form, additionalExpectedResponse)
+            cbOneObject(form, defaultClasses.additionalExpectedResponse)
         })
     }
 
