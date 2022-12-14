@@ -92,13 +92,13 @@ This is a Node.js based tool.
 
 ## Script based Assertion Tester
 
-TODO: Update these numbers
+365 out of 454 assertions of the TD specification can be tested with this tool.
 
-297 out of 349 assertions of the TD specification can be tested with this tool.
+This tool checks which assertions are satisfied by a given Thing Description(s). 
+The assertions are modeled as JSON Schema or as scripts.
+'assertions-td' and `assertions-tm` has the JSON Schema assertions.
 
-This tool checks which assertions are satisfied by a given Thing Description(s). The assertions are modeled as JSON Schema or as scripts. 'AssertionTester/Assertions' has the JSON Schema assertions.
-
-To use the assertion testing via the command line please use the `cli` package.
+To use the assertion testing via the command line, please use the `cli` package.
 
 **WARNING**: If you see an error like `ajv.errors[0].params.allowedValue` this very probably means that your TD is not valid at a specific point. Scroll up to see the precise error message
 
@@ -133,6 +133,7 @@ After adding the function, you should do the following:
 4. In the assertions package, adding it to the imports at the [assertionTests.js](https://github.com/thingweb/thingweb-playground/blob/master/packages/assertions/assertionTests.js)
 5. In the same file, calling it whenever needed. The other ones are done at around line 80.
 6. Adding it to the expected results of the tests (refResults) at the core package.
+
 ## Known Bugs
 
 * td-json-open assertion exists multiple times, [see issue 124](https://github.com/thingweb/thingweb-playground/issues/124)

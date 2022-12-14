@@ -2,22 +2,76 @@
     "title": "tm-tmRef1",
     "description": "The tm:ref value MUST follow the pattern: file location as URI [RFC3986](Section 4.1)), followed by # character, and followed by JSON Pointer [RFC6901] definition.",
     "$schema ": "https://json-schema.org/draft/2019-09/schema#",
-    "is-complex":false,
+    "is-complex":true,
     "also": ["tm-placeholder-retyping","tm-tmRef-usecase"],
     "type": "object",
     "properties": {
-        "tm:ref": {
-            "$ref": "#/definitions/tm_ref"
-        } 
+        "properties": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/property_element"
+            }
+        },
+        "actions": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/action_element"
+            }
+        },
+        "events": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/definitions/event_element"
+            }
+        }
     },
-    "required": [
-        "tm:ref"
-    ],
     "additionalProperties": true,
     "definitions": {
         "tm_ref": {
             "type": "string",
             "pattern": "^([a-zA-Z][a-zA-Z0-9+\\-.]*:[^\\s]*)(#(?:\/(?:[a-zA-Z0-9_\\-.!$&'()*+,;:=@]|%[0-9a-f]{2}|~0|~1)*)*)$"
+        },
+        "property_element": {
+            "type": "object",
+            "if": {
+                "required": ["tm:ref"],
+                "properties": {
+                    "tm:ref": {
+                        "$ref": "#/definitions/tm_ref"
+                    }
+                }
+            },
+            "then": {
+                "const": "tm-tmRef1=pass"
+            }
+        },
+        "action_element": {
+            "type": "object",
+            "if": {
+                "required": ["tm:ref"],
+                "properties": {
+                    "tm:ref": {
+                        "$ref": "#/definitions/tm_ref"
+                    }
+                }
+            },
+            "then": {
+                "const": "tm-tmRef1=pass"
+            }
+        },
+        "event_element": {
+            "type": "object",
+            "if": {
+                "required": ["tm:ref"],
+                "properties": {
+                    "tm:ref": {
+                        "$ref": "#/definitions/tm_ref"
+                    }
+                }
+            },
+            "then": {
+                "const": "tm-tmRef1=pass"
+            }
         }
     }
 }
