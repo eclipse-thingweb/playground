@@ -29,7 +29,7 @@
   "definitions": {
     "tm_ref": {
       "type": "string",
-      "pattern": "^([a-zA-Z][a-zA-Z0-9+\\-.]*:[^\\s]*)(#(?:/(?:[a-zA-Z0-9_\\-.!$&'()*+,;:=@]|%[0-9a-f]{2}|~0|~1)*)*)$"
+      "format": "uri-reference"
     },
     "property_element": {
       "type": "object",
@@ -248,19 +248,19 @@
       }
     },
     "description": {
-        "type": "string"
+      "type": "string"
     },
     "title": {
-        "type": "string"
+      "type": "string"
     },
     "descriptions": {
-        "type": "object"
+      "type": "object"
     },
     "titles": {
-        "type": "object"
+      "type": "object"
     },
     "url": {
-        "type": "string"
+      "type": "string"
     }
   }
 }
