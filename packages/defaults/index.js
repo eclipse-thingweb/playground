@@ -62,20 +62,6 @@ function extendOneObject(target, type, parentInteraction) {
                 }
             }
         }
-        // additionalResponses case
-        else if (cType === "AdditionalExpectedResponse") {
-            const defaultSource = defaultLookup[cType]
-
-            if (cTarget.contentType) {
-                defaultSource.additionalResponses[0].contentType = cTarget.contentType
-            }
-
-            Object.keys(defaultSource).forEach( key => {
-                if (cTarget[key] === undefined) {
-                    cTarget[key] = defaultSource[key]
-                }
-            })
-        }
         // default behavior
         else {
             const defaultSource = defaultLookup[cType]
@@ -120,7 +106,6 @@ function reduceOneObject(target, type, parentInteraction) {
             const defaultSource = defaultLookup[cType]
             Object.keys(defaultSource).forEach( key => {
                 if (objEquality(cTarget[key], defaultSource[key])) {
-                    console.log(`Key: ${key}`)
                     delete cTarget[key]
                 }
             })
