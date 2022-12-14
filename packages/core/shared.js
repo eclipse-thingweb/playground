@@ -739,7 +739,6 @@ function checkUriSecurity(td) {
                 }
             }
         }
-
         if (securityUriVariables.length === 0){ // we could not find any
             results.push({
                 "ID": "td-security-in-uri-variable",
@@ -796,6 +795,12 @@ function checkUriSecurity(td) {
                                 }
                             }
                         } // otherwise not-impl stays
+                    } else {
+                        // even if there are no urivariables in affordances, the security urivariables is distinct
+                        // fixes https://github.com/thingweb/thingweb-playground/issues/422
+                        if (uriVariablesDistinctResult !== "fail"){
+                            uriVariablesDistinctResult = "pass"
+                        }
                     }
                 }
             }
@@ -836,7 +841,13 @@ function checkUriSecurity(td) {
                                     uriVariablesDistinctResult = "pass"
                                 }
                             }
-                        } // otherwise not-impl stays
+                        }  else {
+                            // even if there are no urivariables in affordances, the security urivariables is distinct
+                            // fixes https://github.com/thingweb/thingweb-playground/issues/422
+                            if (uriVariablesDistinctResult !== "fail"){
+                                uriVariablesDistinctResult = "pass"
+                            }
+                        }
                     }
                 }
             }
@@ -877,7 +888,13 @@ function checkUriSecurity(td) {
                                     uriVariablesDistinctResult = "pass"
                                 }
                             }
-                        } // otherwise not-impl stays
+                        }  else {
+                            // even if there are no urivariables in affordances, the security urivariables is distinct
+                            // fixes https://github.com/thingweb/thingweb-playground/issues/422
+                            if (uriVariablesDistinctResult !== "fail"){
+                                uriVariablesDistinctResult = "pass"
+                            }
+                        }
                     }
                 }
             }

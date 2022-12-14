@@ -65,6 +65,11 @@ function extendOneObject(target, type, parentInteraction) {
         // default behavior
         else {
             const defaultSource = defaultLookup[cType]
+
+            if (cType === "AdditionalExpectedResponse" && cParent.contentType) {
+                defaultSource.contentType = cParent.contentType
+            }
+
             Object.keys(defaultSource).forEach( key => {
                 if (cTarget[key] === undefined) {
                     cTarget[key] = defaultSource[key]
@@ -104,6 +109,11 @@ function reduceOneObject(target, type, parentInteraction) {
         }
         else {
             const defaultSource = defaultLookup[cType]
+
+            if (cType === "AdditionalExpectedResponse" && cParent.contentType) {
+                defaultSource.contentType = cParent.contentType
+            }
+
             Object.keys(defaultSource).forEach( key => {
                 if (objEquality(cTarget[key], defaultSource[key])) {
                     delete cTarget[key]
