@@ -484,4 +484,33 @@ describe("module tests", () => {
         removeDefaults(td)
         expect(td).toEqual(refTd)
     })
+
+    test("AdditionalExpectedResponse", () => {
+        const td = {
+            properties: {
+                temperature: {
+                    observable: false,
+                    forms: [{
+                        href:"asdf",
+                        contentType: "application/json",
+                        additionalResponses: [{ success: false, contentType: "application/json" }]
+                    }]
+                }
+            }
+        }
+        const refTd = {
+            properties: {
+                temperature: {
+                    forms: [
+                        {
+                            href:"asdf",
+                            additionalResponses: [{}]
+                        }
+                    ]
+                }
+            }
+        }
+        removeDefaults(td)
+        expect(td).toEqual(refTd)
+    })
 })

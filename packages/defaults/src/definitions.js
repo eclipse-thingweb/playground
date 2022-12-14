@@ -58,6 +58,7 @@ const defaultClasses = {
     formPropertyAffordance: "Form-PropertyAffordance",
     formActionAffordance: "Form-ActionAffordance",
     formEventAffordance: "Form-EventAffordance",
+    additionalExpectedResponse: "AdditionalExpectedResponse",
     dataSchema: "DataSchema",
     propertyAffordance: "PropertyAffordance",
     actionAffordance: "ActionAffordance",
