@@ -40,8 +40,8 @@ function sharedDefaults(td, cbOneObject, cbDataSchema) {
                     cbOneObject(form, interactionTypes[interactionType], interaction)
 
                     if (form.additionalResponses) {
-                        form.additionalResponses.forEach( response => {
-                            cbOneObject(response, defaultClasses.additionalExpectedResponse)
+                        form.additionalResponses.forEach(response => {
+                            cbOneObject(response, defaultClasses.additionalExpectedResponse, form)
                         })
                     }
                 })
@@ -53,8 +53,8 @@ function sharedDefaults(td, cbOneObject, cbDataSchema) {
             cbOneObject(form, defaultClasses.form)
 
             if (form.additionalResponses) {
-                form.additionalResponses.forEach( response => {
-                    cbOneObject(response, defaultClasses.additionalExpectedResponse)
+                form.additionalResponses.forEach(response => {
+                    cbOneObject(response, defaultClasses.additionalExpectedResponse, form)
                 })
             }
         })

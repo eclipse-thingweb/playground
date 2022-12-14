@@ -493,7 +493,7 @@ describe("module tests", () => {
                     forms: [{
                         href:"asdf",
                         contentType: "application/json",
-                        additionalResponses: [{ success: false }]
+                        additionalResponses: [{ success: false, contentType: "application/json" }]
                     }]
                 }
             }

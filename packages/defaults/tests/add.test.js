@@ -403,6 +403,7 @@ describe("module tests", () => {
                     forms: [
                         {
                             href:"asdf",
+                            contentType: "text/html",
                             additionalResponses: [{}]
                         }
                     ]
@@ -418,8 +419,8 @@ describe("module tests", () => {
                     forms: [{
                         href:"asdf",
                         op: "writeproperty",
-                        contentType: "application/json",
-                        additionalResponses: [{ success: false }]
+                        contentType: "text/html",
+                        additionalResponses: [{ success: false, contentType: "text/html" }]
                     }]
                 }
             }
