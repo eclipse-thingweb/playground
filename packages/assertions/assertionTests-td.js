@@ -18,6 +18,7 @@ const checkMultiLangConsistency = require("@thing-description-playground/core").
 const checkSecurity = require("@thing-description-playground/core").security
 const checkLinksRelTypeCount = require("@thing-description-playground/core").checkLinksRelTypeCount
 const checkUriSecurity = require("@thing-description-playground/core").checkUriSecurity
+const checkLinkedAffordances = require("@thing-description-playground/core").checkLinkedAffordances
 
 const tdSchema = require("@thing-description-playground/core/td-schema.json")
 
@@ -33,7 +34,7 @@ module.exports = validateTD
  * @param {Array<object>} manualAssertions An array containing all manual assertions
  * @param {Function} logFunc Logging function
  */
-function validateTD(tdData, assertions, manualAssertions, logFunc) {
+async function validateTD(tdData, assertions, manualAssertions, logFunc) {
 
     // a JSON file that will be returned containing the result for each assertion as a JSON Object
     let results = []
@@ -97,6 +98,7 @@ function validateTD(tdData, assertions, manualAssertions, logFunc) {
     results.push(...checkMultiLangConsistency(tdJson))
     results.push(...checkLinksRelTypeCount(tdJson))
     results.push(...checkUriSecurity(tdJson))
+    results.push(...(await checkLinkedAffordances(tdJson)))
 
     // Iterating through assertions
     for (let index = 0; index < assertions.length; index++) {

@@ -27,15 +27,16 @@
     "js-yaml": "^4.1.0",
     "json-dup-key-validator": "^1.0.3",
     "jsonld": "^4.0.1",
+    "junit-report-builder": "^3.0.1",
     "lz-string": "^1.4.4",
-    "junit-report-builder": "^3.0.1"
+    "node-fetch": "^2.6.7"
   },
   "devDependencies": {
+    "@microsoft/eslint-formatter-sarif": "^2.1.7",
     "browserify": "^17.0.0",
     "eslint": "^8.22.0",
     "jest": "^28.1.3",
-    "terser": "^5.14.2",
-    "@microsoft/eslint-formatter-sarif": "^2.1.7"
+    "terser": "^5.14.2"
   },
   "publishConfig": {
     "access": "public"

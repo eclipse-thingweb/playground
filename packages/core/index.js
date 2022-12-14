@@ -22,6 +22,7 @@ module.exports.compress = compress
 module.exports.decompress = decompress
 module.exports.checkTypos = checkTypos
 module.exports.checkTmOptionalPointer = coreAssertions.checkTmOptionalPointer
+module.exports.checkLinkedAffordances = coreAssertions.checkLinkedAffordances
 module.exports.detectProtocolSchemes = detectProtocolSchemes
 module.exports.convertTDJsonToYaml = convertTDJsonToYaml
 module.exports.convertTDYamlToJson = convertTDYamlToJson
@@ -37,7 +38,7 @@ const jsonValidator = require('json-dup-key-validator')
  */
 
 function tdValidator(tdString, logFunc, { checkDefaults = true, checkJsonLd = true }, suite) {
-    return new Promise((res, rej) => {
+    return new Promise(async (res, rej) => {
 
         // check input
         if (typeof tdString !== "string") { rej("Thing Description input should be a String") }
@@ -71,7 +72,8 @@ function tdValidator(tdString, logFunc, { checkDefaults = true, checkJsonLd = tr
             multiLangConsistency: null,
             linksRelTypeCount: null,
             readWriteOnly: null,
-            uriVariableSecurity: null
+            uriVariableSecurity: null,
+            linkedAffordances: null
         }
 
         const detailComments = {
@@ -83,7 +85,8 @@ function tdValidator(tdString, logFunc, { checkDefaults = true, checkJsonLd = tr
             linksRelTypeCount: "Checks whether rel:type is used more than once in the links array",
             readWriteOnly: "Warns if a property has readOnly or writeOnly set to true conflicting with another property.",
             uriVariableSecurity: "Checks if the name of an APIKey security scheme with in:uri show up in href and does not \
-            conflict with normal uriVariables"
+            conflict with normal uriVariables",
+            linkedAffordances: "Check if TD has all affordances required by linked TM"
         }
 
         let tdJson
@@ -169,6 +172,7 @@ function tdValidator(tdString, logFunc, { checkDefaults = true, checkJsonLd = tr
             details.multiLangConsistency = evalAssertion(coreAssertions.checkMultiLangConsistency(tdJson))
             details.linksRelTypeCount = evalAssertion(coreAssertions.checkLinksRelTypeCount(tdJson))
             details.uriVariableSecurity = evalAssertion(coreAssertions.checkUriSecurity(tdJson))
+            details.linkedAffordances = evalAssertion(await coreAssertions.checkLinkedAffordances(tdJson))
 
             // determine additional check state
             // passed + warning -> warning
