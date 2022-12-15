@@ -99,6 +99,7 @@ test("normal td report generation", () => {
 			},
 			details: {
 				enumConst: 'passed',
+				linkedAffordances: 'passed',
 				propItems: 'passed',
 				security: 'passed',
 				propUniqueness: 'passed',
@@ -109,6 +110,7 @@ test("normal td report generation", () => {
 			},
 			detailComments: {
 				enumConst: expect.any(String),
+				linkedAffordances: expect.any(String),
 				propItems: expect.any(String),
 				security: expect.any(String),
 				propUniqueness: expect.any(String),

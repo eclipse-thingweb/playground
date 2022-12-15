@@ -21,6 +21,7 @@ const tdRefResult = {
     },
     details: {
         enumConst: null,
+        linkedAffordances: null,
         propItems: null,
         security: null,
         propUniqueness: null,
@@ -62,6 +63,7 @@ const refResultAdd = {
     },
     details: {
         enumConst: expect.stringMatching(/failed|passed/),
+        linkedAffordances: expect.stringMatching(/failed|passed/),
         propItems: expect.stringMatching(/failed|passed/),
         security: expect.stringMatching(/failed|passed/),
         propUniqueness: expect.stringMatching(/failed|passed/),

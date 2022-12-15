@@ -984,11 +984,17 @@ async function checkLinkedAffordances(td) {
     }
 
     let typeLink = td.links.filter(e => e.rel === 'type');
-    if (typeLink.length !== 1) {
+    if (typeLink.length > 1) {
         return [{
             ID: ASSERTION_NAME,
             Status: 'fail',
             Comment: 'td does not link to exactly one tm'
+        }];
+    } else if (typeLink.length < 1) {
+        return [{
+            ID: ASSERTION_NAME,
+            Status: 'pass',
+            Comment: 'td does not link to tm'
         }];
     }
     typeLink = typeLink[0];
@@ -1027,7 +1033,7 @@ async function checkLinkedAffordances(td) {
     if (!result.success) {
         return [{
             ID: ASSERTION_NAME,
-            Status: 'fail',
+            Status: 'warning',
             Comment: result.error
         }];
     }
