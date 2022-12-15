@@ -42,6 +42,7 @@ program
         'The files or the folders containing the files, which will be processed and/or validated. Multiple inputs can be provided.', undefined)
     .option('-j, --no-jsonld', 'Turn off the JSON-LD validation (for example because internet connection is not available)')
     .option('-d, --no-defaults', 'Turn off the Full JSON Schema validation, which checks e.g. for default values being explicitly set')
+    .option('--no-tm-conformance', 'Turn off TD to TM conformance checks (applicable when TD links to TM)')
     .option('-a, --assertions', 'Call the assertion report instead of the core validation, \n' +
         'if files with .csv ending are given as input merging assertion reports is done')
     .option('-o, --assertion-out <pathToOutput>',
@@ -510,7 +511,11 @@ function coreValidation(input) {
  */
 function checkTd(td, suite) {
 
-    tdValidator(td, console.log, { checkDefaults: myArguments.defaults, checkJsonLd: myArguments.jsonld }, suite)
+    tdValidator(td, console.log, {
+        checkDefaults: myArguments.defaults,
+        checkJsonLd: myArguments.jsonld,
+        checkTmConformance: myArguments.tmConformance
+        }, suite)
         .then(result => {
             console.log("OKAY \n")
             console.log("\n")

@@ -37,7 +37,9 @@ const jsonValidator = require('json-dup-key-validator')
  * @returns {Promise<object>} Results of the validation as {report, details, detailComments} object
  */
 
-function tdValidator(tdString, logFunc, { checkDefaults = true, checkJsonLd = true }, suite) {
+function tdValidator(tdString, logFunc,
+    { checkDefaults = true, checkJsonLd = true, checkTmConformance = true },
+    suite) {
     return new Promise(async (res, rej) => {
 
         // check input
@@ -172,7 +174,9 @@ function tdValidator(tdString, logFunc, { checkDefaults = true, checkJsonLd = tr
             details.multiLangConsistency = evalAssertion(coreAssertions.checkMultiLangConsistency(tdJson))
             details.linksRelTypeCount = evalAssertion(coreAssertions.checkLinksRelTypeCount(tdJson))
             details.uriVariableSecurity = evalAssertion(coreAssertions.checkUriSecurity(tdJson))
-            details.linkedAffordances = evalAssertion(await coreAssertions.checkLinkedAffordances(tdJson))
+            if (checkTmConformance) {
+                details.linkedAffordances = evalAssertion(await coreAssertions.checkLinkedAffordances(tdJson))
+            }
 
             // determine additional check state
             // passed + warning -> warning
