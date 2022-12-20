@@ -972,30 +972,38 @@ function checkTmOptionalPointer(td){
  * @param {object} td - TD to check
  */
 async function checkLinkedAffordances(td) {
-    // TODO: What's the assertion name?
-    const ASSERTION_NAME = 'TODO_NAME_HERE';
+    const ASSERTION_REQUIRED = 'thing-model-td-generation-processor-type';
+    const ASSERTION_OPTIONAL = 'thing-model-td-generation-processor-optional';
 
     if (!td.links) {
-        return [{
-            ID: ASSERTION_NAME,
-            Status: 'pass',
-            Comment: 'td does not link to tm'
-        }];
+        return [
+            {
+                ID: ASSERTION_REQUIRED,
+                Status: 'not-impl',
+                Comment: 'td does not link to tm'
+            },
+            {
+                ID: ASSERTION_OPTIONAL,
+                Status: 'not-impl',
+                Comment: 'td does not link to tm'
+            }
+        ];
     }
 
     let typeLink = td.links.filter(e => e.rel === 'type');
-    if (typeLink.length > 1) {
-        return [{
-            ID: ASSERTION_NAME,
-            Status: 'fail',
-            Comment: 'td does not link to exactly one tm'
-        }];
-    } else if (typeLink.length < 1) {
-        return [{
-            ID: ASSERTION_NAME,
-            Status: 'pass',
-            Comment: 'td does not link to tm'
-        }];
+    if (typeLink.length !== 1) {
+        return [
+            {
+                ID: ASSERTION_REQUIRED,
+                Status: 'not-impl',
+                Comment: 'td does not link to tm or links to more than one tm'
+            },
+            {
+                ID: ASSERTION_OPTIONAL,
+                Status: 'not-impl',
+                Comment: 'td does not link to tm or links to more than one tm'
+            }
+        ];
     }
     typeLink = typeLink[0];
 
@@ -1013,7 +1021,7 @@ async function checkLinkedAffordances(td) {
         }
     }
 
-    const networkFetcher = async (url) => {
+    const httpFetcher = async (url) => {
         try {
             return {
                 'success': true,
@@ -1027,15 +1035,23 @@ async function checkLinkedAffordances(td) {
         }
     }
 
-    const fetcher = (typeLink.href.startsWith('file://')) ? fileFetcher : networkFetcher;
+    // TODO: Add support for other network protocols, e.g., MQTT
+    const fetcher = (typeLink.href.startsWith('file://')) ? fileFetcher : httpFetcher;
     const result = await fetcher(typeLink.href);
 
     if (!result.success) {
-        return [{
-            ID: ASSERTION_NAME,
-            Status: 'warning',
-            Comment: result.error
-        }];
+        return [
+            {
+                ID: ASSERTION_REQUIRED,
+                Status: 'warning',
+                Comment: result.error
+            },
+            {
+                ID: ASSERTION_OPTIONAL,
+                Status: 'warning',
+                Comment: result.error
+            }
+        ];
     }
 
     const tm = result.data;
@@ -1053,25 +1069,69 @@ async function checkLinkedAffordances(td) {
 
     // Check if arr2 is subset of arr1,
     // i.e., all elements of arr2 are contained in arr1
-    const isSubset = (arr1, arr2) => arr2.every((e) => arr1.includes(e));
+    const isSubset = (arr1, arr2) => arr2.every(e => arr1.includes(e));
 
+    // Check if arr1 and arr2 have any intersection
+    const haveIntersection = (arr1, arr2) => arr1.some(e => arr2.includes(e));
+
+    const results = [];
+    const requiredAssertion = false;
+    const optionalAssertion = false;
     for (const affordanceType of ['properties', 'actions', 'events']) {
         // Combine all and optional into one => required
         const required = tmAffordances[affordanceType].all.filter(
             e => !tmAffordances[affordanceType].optional.includes(e));
 
-        if (!isSubset(Object.keys(td[affordanceType]), required)) {
-            return [{
-                ID: ASSERTION_NAME,
+        if (!isSubset(Object.keys(td[affordanceType]), required) && !requiredAssertion) {
+            requiredAssertion = true;
+            results.push({
+                ID: ASSERTION_REQUIRED,
                 Status: 'fail',
                 Comment: 'some required affordances are missing'
-            }];
+            });
         }
+
+        const optional = tmAffordances[affordanceType].optional;
+        if (haveIntersection(Object.keys(td[affordanceType]), optional) && !optionalAssertion) {
+            optionalAssertion = true;
+            results.push({
+                ID: ASSERTION_OPTIONAL,
+                Status: 'pass',
+                Comment: ''
+            });
+        }
+
+        if (requiredAssertion && optionalAssertion) break;
     }
 
-    return [{
-        ID: ASSERTION_NAME,
-        Status: 'pass',
-        Comment: ''
-    }];
+    if (!requiredAssertion && !optionalAssertion) {
+        return [
+            {
+                ID: ASSERTION_REQUIRED,
+                Status: 'pass',
+                Comment: ''
+            },
+            {
+                ID: ASSERTION_OPTIONAL,
+                Status: 'not-impl',
+                Comment: ''
+            }
+        ];
+    }
+
+    if (requiredAssertion) {
+        results.push({
+            ID: ASSERTION_OPTIONAL,
+            Status: 'not-impl',
+            Comment: ''
+        });
+    } else {
+        results.unshift({
+            ID: ASSERTION_REQUIRED,
+            Status: 'pass',
+            Comment: ''
+        });
+    }
+
+    return results;
 }
