@@ -1075,14 +1075,14 @@ async function checkLinkedAffordances(td) {
     const haveIntersection = (arr1, arr2) => arr1.some(e => arr2.includes(e));
 
     const results = [];
-    const requiredAssertion = false;
-    const optionalAssertion = false;
+    let requiredAssertion = false;
+    let optionalAssertion = false;
     for (const affordanceType of ['properties', 'actions', 'events']) {
         // Combine all and optional into one => required
         const required = tmAffordances[affordanceType].all.filter(
             e => !tmAffordances[affordanceType].optional.includes(e));
 
-        if (!isSubset(Object.keys(td[affordanceType]), required) && !requiredAssertion) {
+        if (!isSubset(Object.keys(td[affordanceType] || {}), required) && !requiredAssertion) {
             requiredAssertion = true;
             results.push({
                 ID: ASSERTION_REQUIRED,
@@ -1092,7 +1092,7 @@ async function checkLinkedAffordances(td) {
         }
 
         const optional = tmAffordances[affordanceType].optional;
-        if (haveIntersection(Object.keys(td[affordanceType]), optional) && !optionalAssertion) {
+        if (haveIntersection(Object.keys(td[affordanceType] || {}), optional) && !optionalAssertion) {
             optionalAssertion = true;
             results.push({
                 ID: ASSERTION_OPTIONAL,
