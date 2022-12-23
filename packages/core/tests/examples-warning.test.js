@@ -16,7 +16,7 @@ const refResult = {
     },
     details: {
         enumConst: expect.stringMatching(/warning|passed/),
-        linkedAffordances: expect.stringMatching(/warning|passed/),
+        linkedAffordances: 'not-impl',
         propItems: expect.stringMatching(/warning|passed/),
         security: expect.stringMatching(/warning|passed/),
         propUniqueness: expect.stringMatching(/warning|passed/),

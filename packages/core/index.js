@@ -175,7 +175,7 @@ function tdValidator(tdString, logFunc,
             details.linksRelTypeCount = evalAssertion(coreAssertions.checkLinksRelTypeCount(tdJson))
             details.uriVariableSecurity = evalAssertion(coreAssertions.checkUriSecurity(tdJson))
             if (checkTmConformance) {
-                details.linkedAffordances = evalAssertion(await coreAssertions.checkLinkedAffordances(tdJson))
+                details.linkedAffordances = evalAssertion(await coreAssertions.checkLinkedAffordances(tdJson), false)
             }
 
             // determine additional check state
@@ -539,18 +539,22 @@ function tdValidator(tdString, logFunc,
 
         /**
          * Evaluates whether an assertion function contains a failed check
-         * Whether assertions are not-implemented or passed does not matter
+         * Whether assertions are not-implemented/passed or return warning
+         * matters depending on the failOnly flag
          * Logs the comment
          * @param {Array} results Array of objects with props "ID", "Status" and optionally "Comment"
-         * @returns "passed" if no check failed, "failed" if one or more checks failed
+         * @returns string status like passed/fail/warning/not-impl
          */
-        function evalAssertion(results) {
+        function evalAssertion(results, failOnly = true) {
             let out = "passed"
             results.forEach(resultobj => {
                 if (resultobj.Status === "fail") {
                     out = "failed"
                     logFunc("KO Error: Assertion: " + resultobj.ID)
                     logFunc(resultobj.Comment)
+                } else if (!failOnly && resultobj.Status !== "pass") {
+                    out = resultobj.Status
+                    logFunc(`Assertion: ${resultobj.ID}: ${resultobj.Status} => ${resultobj.Comment}`)
                 }
             })
             return out

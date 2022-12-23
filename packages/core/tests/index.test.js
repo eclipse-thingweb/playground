@@ -99,7 +99,7 @@ test("normal td report generation", () => {
 			},
 			details: {
 				enumConst: 'passed',
-				linkedAffordances: 'passed',
+				linkedAffordances: 'not-impl',
 				propItems: 'passed',
 				security: 'passed',
 				propUniqueness: 'passed',
