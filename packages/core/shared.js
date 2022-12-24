@@ -13,6 +13,7 @@ const bcp47pattern = /^(?:(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-kl
 
 const fetch = require('node-fetch');
 const fs = require('fs');
+const jsonDiff = require('json-diff');
 
 module.exports =  {
     checkPropUniqueness,
@@ -965,6 +966,72 @@ function checkTmOptionalPointer(td){
 
  // ---------- Advanced TM Validation ----------
 
+async function fetchLinkedTm(td) {
+    if (!td.links) {
+        return {
+            success: false,
+            status: 'not-impl',
+            comment: 'td does not link to tm'
+        };
+    }
+
+    let typeLink = td.links.filter(e => e.rel === 'type');
+    if (typeLink.length !== 1) {
+        return {
+            success: false,
+            status: 'not-impl',
+            comment: 'td does not link to tm or links to more than one tm'
+        };
+    }
+    typeLink = typeLink[0];
+
+    const fileFetcher = async (url) => {
+        try {
+            return {
+                success: true,
+                data: JSON.parse(fs.readFileSync(url.split('file://')[1]))
+            };
+        } catch {
+            return {
+                success: false,
+                error: 'make sure you are not using file:// links inside non-browser environment'
+            };
+        }
+    }
+
+    const httpFetcher = async (url) => {
+        try {
+            return {
+                success: true,
+                data: await (await fetch(url)).json()
+            };
+        } catch {
+            return {
+                success: false,
+                error: 'make sure related tm is valid JSON and is not under CORS'
+            };
+        }
+    }
+
+    // TODO: Add support for other network protocols, e.g., MQTT
+    const fetcher = (typeLink.href.startsWith('file://')) ? fileFetcher : httpFetcher;
+    const result = await fetcher(typeLink.href);
+
+    if (!result.success) {
+        return {
+            success: false,
+            status: 'warning',
+            comment: result.error
+        };
+    }
+
+    return {
+        success: true,
+        tm: result.data
+    };
+}
+
+
 /**
  * Given a TD check it has all affrodances specified in the related TM
  * except for those in the tm:optional field.
@@ -975,86 +1042,23 @@ async function checkLinkedAffordances(td) {
     const ASSERTION_REQUIRED = 'thing-model-td-generation-processor-type';
     const ASSERTION_OPTIONAL = 'thing-model-td-generation-processor-optional';
 
-    if (!td.links) {
+    const tmResult = fetchLinkedTm(td);
+    if (!tmResult.success) {
         return [
             {
                 ID: ASSERTION_REQUIRED,
-                Status: 'not-impl',
-                Comment: 'td does not link to tm'
+                Status: tmResult.status,
+                Comment: tmResult.comment
             },
             {
                 ID: ASSERTION_OPTIONAL,
-                Status: 'not-impl',
-                Comment: 'td does not link to tm'
+                Status: tmResult.status,
+                Comment: tmResult.comment
             }
         ];
     }
 
-    let typeLink = td.links.filter(e => e.rel === 'type');
-    if (typeLink.length !== 1) {
-        return [
-            {
-                ID: ASSERTION_REQUIRED,
-                Status: 'not-impl',
-                Comment: 'td does not link to tm or links to more than one tm'
-            },
-            {
-                ID: ASSERTION_OPTIONAL,
-                Status: 'not-impl',
-                Comment: 'td does not link to tm or links to more than one tm'
-            }
-        ];
-    }
-    typeLink = typeLink[0];
-
-    const fileFetcher = async (url) => {
-        try {
-            return {
-                'success': true,
-                'data': JSON.parse(fs.readFileSync(url.split('file://')[1]))
-            };
-        } catch {
-            return {
-                'success': false,
-                'error': 'make sure you are not using file:// links inside non-browser environment'
-            };
-        }
-    }
-
-    const httpFetcher = async (url) => {
-        try {
-            return {
-                'success': true,
-                'data': await (await fetch(url)).json()
-            };
-        } catch {
-            return {
-                'success': false,
-                'error': 'make sure related tm is valid JSON and is not under CORS'
-            };
-        }
-    }
-
-    // TODO: Add support for other network protocols, e.g., MQTT
-    const fetcher = (typeLink.href.startsWith('file://')) ? fileFetcher : httpFetcher;
-    const result = await fetcher(typeLink.href);
-
-    if (!result.success) {
-        return [
-            {
-                ID: ASSERTION_REQUIRED,
-                Status: 'warning',
-                Comment: result.error
-            },
-            {
-                ID: ASSERTION_OPTIONAL,
-                Status: 'warning',
-                Comment: result.error
-            }
-        ];
-    }
-
-    const tm = result.data;
+    const tm = tmResult.tm;
     const tmAffordances = {};
     for (const affordanceType of ['properties', 'actions', 'events']) {
         tmAffordances[affordanceType] = {
@@ -1134,4 +1138,63 @@ async function checkLinkedAffordances(td) {
     }
 
     return results;
+}
+
+/**
+ * Given a TD check that its structure corresponds to the one imposed by the linked TM.
+ *
+ * @param {object} td - TD to check
+ */
+async function checkLinkedStructure(td) {
+    // TODO: What's the assertion name?
+    const ASSERTION_NAME = 'MY_COOL_ASSERTION';
+
+    const tmResult = await fetchLinkedTm(td);
+    if (!tmResult.success) {
+        return [
+            {
+                ID: ASSERTION_NAME,
+                Status: tmResult.status,
+                Comment: tmResult.comment
+            }
+        ];
+    }
+
+    const tm = tmResult.tm;
+    const diff = jsonDiff.diff(tm, td, { keysOnly: true });
+    const missingKeys = [];
+
+    const iterate = (obj, path = '') => {
+        for (const key of Object.keys(obj)) {
+            const newPath = `${path}/${key.split('__deleted')[0]}`;
+
+            if (key.endsWith('__deleted') && !key.startsWith('tm:')) {
+                if (tm['tm:optional'] && tm['tm:optional'].includes(newPath)) {
+                    continue;
+                }
+
+                missingKeys.push(newPath);
+            }
+            if (typeof obj[key] === 'object') iterate(obj[key], newPath);
+        }
+    };
+
+    iterate(diff);
+    if (missingKeys.length > 0) {
+        return [
+            {
+                ID: ASSERTION_NAME,
+                Status: 'fail',
+                Comment: missingKeys.join(', ') + ' - imposed by tm but missing'
+            }
+        ];
+    }
+
+    return [
+        {
+            ID: ASSERTION_NAME,
+            Status: 'pass',
+            Comment: ''
+        }
+    ];
 }
