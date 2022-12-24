@@ -23,6 +23,7 @@ module.exports.decompress = decompress
 module.exports.checkTypos = checkTypos
 module.exports.checkTmOptionalPointer = coreAssertions.checkTmOptionalPointer
 module.exports.checkLinkedAffordances = coreAssertions.checkLinkedAffordances
+module.exports.checkLinkedStructure = coreAssertions.checkLinkedStructure
 module.exports.detectProtocolSchemes = detectProtocolSchemes
 module.exports.convertTDJsonToYaml = convertTDJsonToYaml
 module.exports.convertTDYamlToJson = convertTDYamlToJson
@@ -75,7 +76,8 @@ function tdValidator(tdString, logFunc,
             linksRelTypeCount: null,
             readWriteOnly: null,
             uriVariableSecurity: null,
-            linkedAffordances: null
+            linkedAffordances: null,
+            linkedStructure: null
         }
 
         const detailComments = {
@@ -88,7 +90,8 @@ function tdValidator(tdString, logFunc,
             readWriteOnly: "Warns if a property has readOnly or writeOnly set to true conflicting with another property.",
             uriVariableSecurity: "Checks if the name of an APIKey security scheme with in:uri show up in href and does not \
             conflict with normal uriVariables",
-            linkedAffordances: "Check if TD has all affordances required by linked TM"
+            linkedAffordances: "Check if TD has all affordances required by linked TM",
+            linkedStructure: "Check if TD structure corresponds to the one imposed by linked TM"
         }
 
         let tdJson
@@ -176,6 +179,7 @@ function tdValidator(tdString, logFunc,
             details.uriVariableSecurity = evalAssertion(coreAssertions.checkUriSecurity(tdJson))
             if (checkTmConformance) {
                 details.linkedAffordances = evalAssertion(await coreAssertions.checkLinkedAffordances(tdJson), false)
+                details.linkedStructure = evalAssertion(await coreAssertions.checkLinkedStructure(tdJson), false)
             }
 
             // determine additional check state
@@ -554,7 +558,8 @@ function tdValidator(tdString, logFunc,
                     logFunc(resultobj.Comment)
                 } else if (!failOnly && resultobj.Status !== "pass") {
                     out = resultobj.Status
-                    logFunc(`Assertion: ${resultobj.ID}: ${resultobj.Status} => ${resultobj.Comment}`)
+                    logFunc(`Assertion: ${resultobj.ID}: ${
+                        resultobj.Status}${(resultobj.Comment) ? ' => ' + resultobj.Comment : ''}`)
                 }
             })
             return out

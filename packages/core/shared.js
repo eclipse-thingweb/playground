@@ -22,7 +22,8 @@ module.exports =  {
     checkLinksRelTypeCount,
     checkUriSecurity,
     checkTmOptionalPointer,
-    checkLinkedAffordances
+    checkLinkedAffordances,
+    checkLinkedStructure
 }
 
 /**
@@ -1042,7 +1043,7 @@ async function checkLinkedAffordances(td) {
     const ASSERTION_REQUIRED = 'thing-model-td-generation-processor-type';
     const ASSERTION_OPTIONAL = 'thing-model-td-generation-processor-optional';
 
-    const tmResult = fetchLinkedTm(td);
+    const tmResult = await fetchLinkedTm(td);
     if (!tmResult.success) {
         return [
             {
