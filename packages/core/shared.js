@@ -11,6 +11,8 @@ const jsonValidator = require('json-dup-key-validator')
 // This is used to validate if the multi language JSON keys are valid according to the BCP47 spec
 const bcp47pattern = /^(?:(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE)|(art-lojban|cel-gaulish|no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))$|^((?:[a-z]{2,3}(?:(?:-[a-z]{3}){1,3})?)|[a-z]{4}|[a-z]{5,8})(?:-([a-z]{4}))?(?:-([a-z]{2}|\d{3}))?((?:-(?:[\da-z]{5,8}|\d[\da-z]{3}))*)?((?:-[\da-wy-z](?:-[\da-z]{2,8})+)*)?(-x(?:-[\da-z]{1,8})+)?$|^(x(?:-[\da-z]{1,8})+)$/i // eslint-disable-line max-len
 
+const fetch = require('node-fetch');
+const fs = require('fs');
 
 module.exports =  {
     checkPropUniqueness,
@@ -18,7 +20,8 @@ module.exports =  {
     checkMultiLangConsistency,
     checkLinksRelTypeCount,
     checkUriSecurity,
-    checkTmOptionalPointer
+    checkTmOptionalPointer,
+    checkLinkedAffordances
 }
 
 /**
@@ -958,3 +961,177 @@ function checkTmOptionalPointer(td){
 
     return results
  }
+
+
+ // ---------- Advanced TM Validation ----------
+
+/**
+ * Given a TD check it has all affrodances specified in the related TM
+ * except for those in the tm:optional field.
+ *
+ * @param {object} td - TD to check
+ */
+async function checkLinkedAffordances(td) {
+    const ASSERTION_REQUIRED = 'thing-model-td-generation-processor-type';
+    const ASSERTION_OPTIONAL = 'thing-model-td-generation-processor-optional';
+
+    if (!td.links) {
+        return [
+            {
+                ID: ASSERTION_REQUIRED,
+                Status: 'not-impl',
+                Comment: 'td does not link to tm'
+            },
+            {
+                ID: ASSERTION_OPTIONAL,
+                Status: 'not-impl',
+                Comment: 'td does not link to tm'
+            }
+        ];
+    }
+
+    let typeLink = td.links.filter(e => e.rel === 'type');
+    if (typeLink.length !== 1) {
+        return [
+            {
+                ID: ASSERTION_REQUIRED,
+                Status: 'not-impl',
+                Comment: 'td does not link to tm or links to more than one tm'
+            },
+            {
+                ID: ASSERTION_OPTIONAL,
+                Status: 'not-impl',
+                Comment: 'td does not link to tm or links to more than one tm'
+            }
+        ];
+    }
+    typeLink = typeLink[0];
+
+    const fileFetcher = async (url) => {
+        try {
+            return {
+                'success': true,
+                'data': JSON.parse(fs.readFileSync(url.split('file://')[1]))
+            };
+        } catch {
+            return {
+                'success': false,
+                'error': 'make sure you are not using file:// links inside non-browser environment'
+            };
+        }
+    }
+
+    const httpFetcher = async (url) => {
+        try {
+            return {
+                'success': true,
+                'data': await (await fetch(url)).json()
+            };
+        } catch {
+            return {
+                'success': false,
+                'error': 'make sure related tm is valid JSON and is not under CORS'
+            };
+        }
+    }
+
+    // TODO: Add support for other network protocols, e.g., MQTT
+    const fetcher = (typeLink.href.startsWith('file://')) ? fileFetcher : httpFetcher;
+    const result = await fetcher(typeLink.href);
+
+    if (!result.success) {
+        return [
+            {
+                ID: ASSERTION_REQUIRED,
+                Status: 'warning',
+                Comment: result.error
+            },
+            {
+                ID: ASSERTION_OPTIONAL,
+                Status: 'warning',
+                Comment: result.error
+            }
+        ];
+    }
+
+    const tm = result.data;
+    const tmAffordances = {};
+    for (const affordanceType of ['properties', 'actions', 'events']) {
+        tmAffordances[affordanceType] = {
+            all: Object.keys(tm[affordanceType] || {}),
+            optional: (tm['tm:optional'] || []).map(e => {
+                const x = e.split('/');
+                if (x[1] === affordanceType) return x[2];
+                return null;
+            }).filter(e => e),
+        };
+    }
+
+    // Check if arr2 is subset of arr1,
+    // i.e., all elements of arr2 are contained in arr1
+    const isSubset = (arr1, arr2) => arr2.every(e => arr1.includes(e));
+
+    // Check if arr1 and arr2 have any intersection
+    const haveIntersection = (arr1, arr2) => arr1.some(e => arr2.includes(e));
+
+    const results = [];
+    let requiredAssertion = false;
+    let optionalAssertion = false;
+    for (const affordanceType of ['properties', 'actions', 'events']) {
+        // Combine all and optional into one => required
+        const required = tmAffordances[affordanceType].all.filter(
+            e => !tmAffordances[affordanceType].optional.includes(e));
+
+        if (!isSubset(Object.keys(td[affordanceType] || {}), required) && !requiredAssertion) {
+            requiredAssertion = true;
+            results.push({
+                ID: ASSERTION_REQUIRED,
+                Status: 'fail',
+                Comment: 'some required affordances are missing'
+            });
+        }
+
+        const optional = tmAffordances[affordanceType].optional;
+        if (haveIntersection(Object.keys(td[affordanceType] || {}), optional) && !optionalAssertion) {
+            optionalAssertion = true;
+            results.push({
+                ID: ASSERTION_OPTIONAL,
+                Status: 'pass',
+                Comment: ''
+            });
+        }
+
+        if (requiredAssertion && optionalAssertion) break;
+    }
+
+    if (!requiredAssertion && !optionalAssertion) {
+        return [
+            {
+                ID: ASSERTION_REQUIRED,
+                Status: 'pass',
+                Comment: ''
+            },
+            {
+                ID: ASSERTION_OPTIONAL,
+                Status: 'not-impl',
+                Comment: ''
+            }
+        ];
+    }
+
+    if (requiredAssertion) {
+        results.push({
+            ID: ASSERTION_OPTIONAL,
+            Status: 'not-impl',
+            Comment: ''
+        });
+    } else {
+        results.unshift({
+            ID: ASSERTION_REQUIRED,
+            Status: 'pass',
+            Comment: ''
+        });
+    }
+
+    return results;
+}

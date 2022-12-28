@@ -3,7 +3,7 @@
   * @param {object} jsonResults assertion reports
   * @param {Function} logFunc function to log the stats
   */
- function checkCoverage(jsonResults, logFunc) {
+ async function checkCoverage(jsonResults, logFunc) {
 
     if (logFunc === undefined) {logFunc = console.log}
 
@@ -13,6 +13,7 @@
     let notImplCount = 0
     let totalCount = 0
 
+    jsonResults = await jsonResults
     jsonResults.forEach(curResult => {
         if (curResult.Status === "fail") {
             failCount++

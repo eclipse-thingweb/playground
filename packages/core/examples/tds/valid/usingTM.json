@@ -9,13 +9,6 @@
         }
     },
     "security": "basic_sc",
-    "links": [
-        {
-            "rel": "type",
-            "href": "./SmartVentilator.tm.jsonld",
-            "type": "application/tm+json"
-        }
-    ],
     "properties": {
         "status": {
             "type": "string",
@@ -128,5 +121,25 @@
                 }
             ]
         }
-    }
+    },
+        "links": [
+            {
+                "rel": "type",
+                "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/packages/core/examples/tms/valid/optional.json",
+                "type": "application/td+json"
+            }
+        ],
+        "events": {
+            "overheating": {
+                "data": {
+                    "type": "string"
+                },
+                "forms": [
+                    {
+                        "href": "https://mylamp.example.com/oh",
+                        "subprotocol": "longpoll"
+                    }
+                ]
+            }
+        }
 }

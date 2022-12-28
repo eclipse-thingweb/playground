@@ -17,7 +17,20 @@
 		"model" : "1.0.0" },
 	"links" : [{
 		"rel" : "type",
-		"href" : "http://example.com/ThingModelPool/Pump",
+		"href" : "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/packages/core/examples/tms/valid/optional.json",
 		"type": "application/td+json"
-	}]
+	}],
+    "events": {
+        "overheating": {
+            "data": {
+                "type": "string"
+            },
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/oh",
+                    "subprotocol": "longpoll"
+                }
+            ]
+        }
+    }
 }
