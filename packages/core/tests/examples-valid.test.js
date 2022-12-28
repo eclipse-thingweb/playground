@@ -17,11 +17,11 @@ const tdRefResult = {
         schema: 'passed',
         defaults: expect.stringMatching(/warning|passed/),
         jsonld: 'passed',
-        additional: expect.stringMatching(/warning|passed/),
+        additional: expect.stringMatching(/warning|passed/)
     },
     details: {
         enumConst: 'passed',
-        linkedAffordances: expect.stringMatching(/warning|not-impl/),
+        linkedAffordances: expect.stringMatching(/warning|not-impl|pass/),
         propItems: 'passed',
         security: 'passed',
         propUniqueness: 'passed',

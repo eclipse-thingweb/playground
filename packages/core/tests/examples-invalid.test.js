@@ -63,7 +63,7 @@ const refResultAdd = {
     },
     details: {
         enumConst: expect.stringMatching(/failed|passed/),
-        linkedAffordances: 'not-impl',
+        linkedAffordances: expect.stringMatching(/warning|not-impl|pass|failed/),
         propItems: expect.stringMatching(/failed|passed/),
         security: expect.stringMatching(/failed|passed/),
         propUniqueness: expect.stringMatching(/failed|passed/),
