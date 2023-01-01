@@ -978,10 +978,14 @@ async function fetchLinkedTm(td) {
 
     let typeLink = td.links.filter(e => e.rel === 'type');
     if (typeLink.length !== 1) {
-        return {
+        return (typeLink.length < 1) ? {
             success: false,
             status: 'not-impl',
-            comment: 'td does not link to tm or links to more than one tm'
+            comment: 'td does not link to tm'
+        } : {
+            success: false,
+            status: 'fail',
+            comment: 'td links to more than one tm'
         };
     }
     typeLink = typeLink[0];
@@ -1148,7 +1152,7 @@ async function checkLinkedAffordances(td) {
  */
 async function checkLinkedStructure(td) {
     // TODO: What's the assertion name?
-    const ASSERTION_NAME = 'MY_COOL_ASSERTION';
+    const ASSERTION_NAME = 'thing-model-td-generation-processor-imports';
 
     const tmResult = await fetchLinkedTm(td);
     if (!tmResult.success) {
@@ -1169,7 +1173,8 @@ async function checkLinkedStructure(td) {
         for (const key of Object.keys(obj)) {
             const newPath = `${path}/${key.split('__deleted')[0]}`;
 
-            if (key.endsWith('__deleted') && !key.startsWith('tm:')) {
+            // TODO: @type case is not that trivial
+            if (key.endsWith('__deleted') && !key.startsWith('tm:') && !key.startsWith('@type')) {
                 if (tm['tm:optional'] && tm['tm:optional'].includes(newPath)) {
                     continue;
                 }

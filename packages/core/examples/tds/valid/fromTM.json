@@ -1,5 +1,6 @@
 {
-    "@context":"https://www.w3.org/2022/wot/td/v1.1",
+    "$comment": "example 57 of the spec",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",
@@ -7,27 +8,78 @@
             "name": "myParameter"
         }
     },
-    "security": ["basic_sc"],
+    "security": [
+        "basic_sc"
+    ],
     "@type": "Thing",
-	"title": "SmartPumpFromTM",
-	"description": "Basic Usage of TD using a TM",
-	"id": "urn:smart:device:wot:pump:instance:1",
-	"version" : {
+    "title": "SmartPumpFromTM",
+    "description": "Basic Usage of TD using a TM",
+    "id": "urn:smart:device:wot:pump:instance:1",
+    "version": {
         "instance": "1.0.0",
-		"model" : "1.0.0" },
-	"links" : [{
-		"rel" : "type",
-		"href" : "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/packages/core/examples/tms/valid/optional.json",
-		"type": "application/td+json"
-	}],
+        "model": "1.0.0"
+    },
+    "links": [
+        {
+            "rel": "type",
+            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/packages/core/examples/tms/valid/optional.json",
+            "type": "application/td+json"
+        }
+    ],
+    "properties": {
+        "status": {
+            "description": "current status of the lamp (on|off)",
+            "type": "string",
+            "readOnly": true,
+            "writeOnly": false,
+            "observable": true,
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status",
+                    "contentType": "application/json",
+                    "op": [
+                        "readproperty",
+                        "observeproperty",
+                        "unobserveproperty"
+                    ]
+                }
+            ]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "description": "Turn the lamp on or off",
+            "safe": false,
+            "idempotent": false,
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/toggle",
+                    "contentType": "application/json",
+                    "op": [
+                        "invokeaction",
+                        "cancelaction",
+                        "queryaction"
+                    ]
+                }
+            ]
+        }
+    },
     "events": {
         "overheating": {
+            "description": "Lamp reaches a critical temperature (overheating)",
             "data": {
-                "type": "string"
+                "type": "string",
+                "readOnly": true,
+                "writeOnly": false
             },
             "forms": [
                 {
                     "href": "https://mylamp.example.com/oh",
+                    "contentType": "application/json",
+                    "op": [
+                        "subscribeevent",
+                        "unsubscribeevent"
+                    ],
                     "subprotocol": "longpoll"
                 }
             ]
