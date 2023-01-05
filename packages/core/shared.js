@@ -1151,7 +1151,6 @@ async function checkLinkedAffordances(td) {
  * @param {object} td - TD to check
  */
 async function checkLinkedStructure(td) {
-    // TODO: What's the assertion name?
     const ASSERTION_NAME = 'thing-model-td-generation-processor-imports';
 
     const tmResult = await fetchLinkedTm(td);
