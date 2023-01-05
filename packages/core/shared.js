@@ -1172,7 +1172,7 @@ async function checkLinkedStructure(td) {
         for (const key of Object.keys(obj)) {
             const newPath = `${path}/${key.split('__deleted')[0]}`;
 
-            // TODO: @type case is not that trivial
+            // TODO: @type case is not that trivial since tm:ThingModel should be removed but other items of the array should NOT be removed
             if (key.endsWith('__deleted') && !key.startsWith('tm:') && !key.startsWith('@type')) {
                 if (tm['tm:optional'] && tm['tm:optional'].includes(newPath)) {
                     continue;
