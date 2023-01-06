@@ -25,6 +25,7 @@
     "ajv-formats": "^2.1.1",
     "ajv-formats-draft2019": "^1.6.1",
     "js-yaml": "^4.1.0",
+    "json-diff": "^1.0.0",
     "json-dup-key-validator": "^1.0.3",
     "jsonld": "^4.0.1",
     "junit-report-builder": "^3.0.1",

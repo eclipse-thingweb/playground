@@ -373,7 +373,7 @@ function coreValidation(input) {
                 if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                     tdToCheck = fs.readFileSync(path.join(validPath, el), "utf-8")
                     const suite = builder.testSuite().name(el)
-                    const thisProm = tdValidator(tdToCheck, console.log, { checkDefaults: false }, suite)
+                    const thisProm = tdValidator(tdToCheck, console.log, { checkDefaults: false, checkTmConformance: false }, suite)
                         .then(result => {
                             if (statResult("failed", result.report)) {
                                 console.log(el, "was supposed to be valid but gave error")

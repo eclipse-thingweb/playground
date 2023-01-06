@@ -22,6 +22,7 @@ const tdRefResult = {
     details: {
         enumConst: 'passed',
         linkedAffordances: expect.stringMatching(/warning|not-impl|pass/),
+        linkedStructure: expect.stringMatching(/not-impl|pass/),
         propItems: 'passed',
         security: 'passed',
         propUniqueness: 'passed',

@@ -1,4 +1,6 @@
 {
+    "id": "urn:required",
+    "$comment": "example 57 of the spec",
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "title": "Smart Ventilator",
     "description":"Demonstrating the use adding _name onto affordances when using a TM",
@@ -12,6 +14,7 @@
     "properties": {
         "status": {
             "type": "string",
+            "description": "current status of the lamp (on|off)",
             "readOnly":true,
             "writeOnly": false,
             "observable":false,
@@ -131,6 +134,7 @@
         ],
         "events": {
             "overheating": {
+                "description": "Lamp reaches a critical temperature (overheating)",
                 "data": {
                     "type": "string"
                 },

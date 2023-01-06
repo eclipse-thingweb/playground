@@ -19,6 +19,7 @@ const checkSecurity = require("@thing-description-playground/core").security
 const checkLinksRelTypeCount = require("@thing-description-playground/core").checkLinksRelTypeCount
 const checkUriSecurity = require("@thing-description-playground/core").checkUriSecurity
 const checkLinkedAffordances = require("@thing-description-playground/core").checkLinkedAffordances
+const checkLinkedStructure = require("@thing-description-playground/core").checkLinkedStructure
 
 const tdSchema = require("@thing-description-playground/core/td-schema.json")
 
@@ -99,6 +100,7 @@ async function validateTD(tdData, assertions, manualAssertions, logFunc) {
     results.push(...checkLinksRelTypeCount(tdJson))
     results.push(...checkUriSecurity(tdJson))
     results.push(...(await checkLinkedAffordances(tdJson)))
+    results.push(...(await checkLinkedStructure(tdJson)))
 
     // Iterating through assertions
     for (let index = 0; index < assertions.length; index++) {
