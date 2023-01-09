@@ -20,6 +20,12 @@ function mapSecurity(tdDefinitions, tdSecurity) {
         security.push({})
     }
 
+    for (const key in securitySchemes) {
+        if (key.includes("combo_sc")) {
+            delete securitySchemes[key]
+        }
+    }
+
     return {securitySchemes, security}
 }
 
@@ -86,25 +92,64 @@ function mapFormSecurity(tdDefinitions, tdSecurity, tdFormScopes) {
  * @param {object} tdScopes the found scopes as map {string: string[]}
  */
 function mapSecurityString(tdSecurity, oapSecuritySchemes, tdScopes) {
-    const oapSecurity = {}
     const oapSecurityContainer = []
+
     if (typeof tdSecurity === "string") {tdSecurity = [tdSecurity]}
 
     if (typeof tdSecurity === "object") {
         tdSecurity.forEach( tdSecurityKey => {
-            // get scopes
-            let thisScopes = []
-            if (tdScopes[tdSecurityKey] !== undefined) {thisScopes = tdScopes[tdSecurityKey]}
+            let oapSecurity = {}
+            const securityObject = oapSecuritySchemes[tdSecurityKey]
 
-            const supportedSchemes = Object.keys(oapSecuritySchemes)
-            if (supportedSchemes.some( supportedScheme => (supportedScheme === tdSecurityKey))) {
-                oapSecurity[tdSecurityKey] = thisScopes
+            if (securityObject.type === "allOf") {
+                securityObject.secdef.forEach( def => {
+                    // get scopes
+                    let thisScopes = []
+                    if (tdScopes[def] !== undefined) {thisScopes = tdScopes[def]}
+
+                    const supportedSchemes = Object.keys(oapSecuritySchemes)
+
+                    if (supportedSchemes.some( supportedScheme => (supportedScheme === def))) {
+                        oapSecurity[def] = thisScopes
+                    }
+                })
+
+                if (Object.keys(oapSecurity).length > 0) {
+                    oapSecurityContainer.push(oapSecurity)
+                }
+            } else if (securityObject.type === "oneOf") {
+                securityObject.secdef.forEach( def => {
+                    oapSecurity = {}
+                    // get scopes
+                    let thisScopes = []
+                    if (tdScopes[def] !== undefined) {thisScopes = tdScopes[def]}
+
+                    const supportedSchemes = Object.keys(oapSecuritySchemes)
+
+                    if (supportedSchemes.some( supportedScheme => (supportedScheme === def))) {
+                        oapSecurity[def] = thisScopes
+                    }
+
+                    if (Object.keys(oapSecurity).length > 0) {
+                        oapSecurityContainer.push(oapSecurity)
+                    }
+                })
+            } else {
+                // get scopes
+                let thisScopes = []
+                if (tdScopes[tdSecurityKey] !== undefined) {thisScopes = tdScopes[tdSecurityKey]}
+
+                const supportedSchemes = Object.keys(oapSecuritySchemes)
+
+                if (supportedSchemes.some( supportedScheme => (supportedScheme === tdSecurityKey))) {
+                    oapSecurity[tdSecurityKey] = thisScopes
+                }
+
+                if (Object.keys(oapSecurity).length > 0) {
+                    oapSecurityContainer.push(oapSecurity)
+                }
             }
         })
-    }
-
-    if (Object.keys(oapSecurity).length > 0) {
-        oapSecurityContainer.push(oapSecurity)
     }
 
     return oapSecurityContainer
@@ -196,13 +241,13 @@ function genOapDefinition(tdDefinition) {
 
         case "combo":
             // todo  Implement combo security scheme
-            // if (tdDefinition.allOf) {
-            //     oapDefinition.type = "allOf"
-            //     oapDefinition.secdef = tdDefinition.allOf
-            // } else {
-            //     oapDefinition.type = "oneOf"
-            //     oapDefinition.secdef = tdDefinition.oneOf
-            // }
+            if (tdDefinition.allOf) {
+                oapDefinition.type = "allOf"
+                oapDefinition.secdef = tdDefinition.allOf
+            } else {
+                oapDefinition.type = "oneOf"
+                oapDefinition.secdef = tdDefinition.oneOf
+            }
         break
 
 
