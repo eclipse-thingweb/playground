@@ -101,7 +101,7 @@ function mapSecurityString(tdSecurity, oapSecuritySchemes, tdScopes) {
             let oapSecurity = {}
             const securityObject = oapSecuritySchemes[tdSecurityKey]
 
-            if (securityObject.type === "allOf") {
+            if (securityObject && securityObject.type === "allOf") {
                 securityObject.secdef.forEach( def => {
                     // get scopes
                     let thisScopes = []
@@ -117,7 +117,7 @@ function mapSecurityString(tdSecurity, oapSecuritySchemes, tdScopes) {
                 if (Object.keys(oapSecurity).length > 0) {
                     oapSecurityContainer.push(oapSecurity)
                 }
-            } else if (securityObject.type === "oneOf") {
+            } else if (securityObject && securityObject.type === "oneOf") {
                 securityObject.secdef.forEach( def => {
                     oapSecurity = {}
                     // get scopes
