@@ -54,6 +54,46 @@ const basicOap = {
     scopes: {}
 }
 
+const comboAllOfOap = {
+    securitySchemes: {
+        "basic_sc": {
+            type: "http",
+            scheme: "basic"
+        },
+        "basic_sc2": {
+            type: "http",
+            scheme: "basic"
+        },
+        "combo_sc": {
+            type: "allOf",
+            secdef: [
+                "basic_sc",
+                "basic_sc2"
+            ]
+        }
+    }
+}
+
+const comboOneOfOap = {
+    securitySchemes: {
+        "basic_sc": {
+            type: "http",
+            scheme: "basic"
+        },
+        "basic_sc2": {
+            type: "http",
+            scheme: "basic"
+        },
+        "combo_sc": {
+            type: "oneOf",
+            secdef: [
+                "basic_sc",
+                "basic_sc2"
+            ]
+        }
+    }
+}
+
 const noSecDefinitions = {
     "nosec_sc": {
         scheme: "nosec"
@@ -70,6 +110,18 @@ describe("mapSecurity unit tests", () => {
             const computed2 = mapSecurityString("oauth2_sc", oauth2Oap.securitySchemes, {"oauth2_sc":["limited"]})
             expect(computed).toEqual(result)
             expect(computed2).toEqual(result)
+        })
+
+        test("comboAllOf", () => {
+            const result = [{"basic_sc": [], "basic_sc2": []}]
+            const computed = mapSecurityString("combo_sc", comboAllOfOap.securitySchemes, {})
+            expect(computed).toEqual(result)
+        })
+
+        test("comboOneOf", () => {
+            const result = [{"basic_sc": []}, {"basic_sc2": []}]
+            const computed = mapSecurityString("combo_sc", comboOneOfOap.securitySchemes, {})
+            expect(computed).toEqual(result)
         })
     })
 
