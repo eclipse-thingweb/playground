@@ -387,6 +387,10 @@ document.getElementById("yaml-format-btn").addEventListener("click", e => {
 	}
 })
 
+document.getElementById("btn_formatDocument").addEventListener("click", e => {
+	formatDocument()
+})
+
 /**
  * Enable html elements with class jsonOnly
  */
@@ -453,6 +457,10 @@ function enableAPIConversionWithProtocol(td) {
 			asyncApiTab.title = 'Please insert a TD which uses MQTT'
 		}
 	}
+}
+
+function formatDocument() {
+	window.editor.getAction('editor.action.formatDocument').run();
 }
 
 //* *************************Monaco editor code*********************************////
