@@ -9,7 +9,8 @@ const playwright = require('playwright')
 const fs = require("fs")
 const handler = require("serve-handler")
 const http = require("http")
-const path = require("path")
+const path = require("path");
+const assert = require('node:assert');
 
 const arg = process.argv[2]
 const options = (arg === "-d" || arg === "--debug") ? {headless: false, slowMo: 200} : {}
@@ -109,29 +110,23 @@ async function testVisualChromium(page) {
   await customShot("typo_check_without_typos")
   await page.screenshot({ path: `./test_results/chromium_typo_check_without_typos.png`, fullPage: true })
 
-  await page.evaluate(() => {
+  assert(await page.evaluate(() => {
     const markerCount = monaco.editor.getModelMarkers({owner: "typo"}).length
     const typoCount = JSON.parse(window.tdEditor.getModel(monaco.Uri.parse("")).getValue()).typoCount
 
-    if (markerCount !== typoCount) {
-      // eslint-disable-next-line no-throw-literal
-      throw 'Typos markers are not equal to typo count!'
-    }
-  })
+    return markerCount === typoCount
+  }), 'Typos markers are not equal to typo count!')
 
   await loadTestToEditor('TypoCheckWithTypos', page)
   await customShot("typo_check_with_typos")
   await page.screenshot({ path: `./test_results/chromium_typo_check_with_typos.png`, fullPage: true })
 
-  await page.evaluate(() => {
+  assert(await page.evaluate(() => {
     const markerCount = monaco.editor.getModelMarkers({owner: "typo"}).length
     const typoCount = JSON.parse(window.tdEditor.getModel(monaco.Uri.parse("")).getValue()).typoCount
 
-    if (markerCount !== typoCount) {
-      // eslint-disable-next-line no-throw-literal
-      throw 'Typos markers are not equal to typo count!'
-    }
-  })
+    return markerCount === typoCount
+  }), 'Typos markers are not equal to typo count!')
 
   await page.evaluate(() => window.tdEditor.getModel(monaco.Uri.parse("")).setValue('{ "context": "Test" }'));
   await myWait(1000)
