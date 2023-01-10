@@ -522,10 +522,10 @@ require(['vs/editor/editor.main'], async function () {
 		model.onDidChangeContent(_ => {
 
 			if (model === window.tdEditor.getModel()) {
-				markTypos(model);
 				enableAPIConversionWithProtocol(model.getValue())
 			}
 
+			markTypos(model);
 			util.validate('auto', autoValidate, docType);
 		});
 	});
