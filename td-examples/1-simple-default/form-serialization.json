@@ -1,0 +1,8 @@
+{
+    "forms": [{
+        "op": "writeproperty",
+        "href": "http://mytemp.example.com:5683/temp",
+        "contentType": "application/json",
+        "htv:methodName": "POST"
+    }]
+}

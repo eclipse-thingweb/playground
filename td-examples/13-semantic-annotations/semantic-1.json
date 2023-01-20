@@ -1,0 +1,38 @@
+{
+    "@context": [
+        "https://www.w3.org/2022/wot/td/v1.1",
+        { "saref": "https://w3id.org/saref#" }
+    ],
+    "id": "urn:uuid:300f4c4b-ca6b-484a-88cf-fd5224a9a61d",
+    "title": "MyLampThing",
+    "@type": "saref:LightSwitch",
+    "securityDefinitions": {
+        "basic_sc": {"scheme": "basic", "in": "header"}
+    },
+    "security": "basic_sc",
+    "properties": {
+        "status": {
+            "@type": "saref:OnOffState",
+            "type": "string",
+            "forms": [{
+                "href": "https://mylamp.example.com/status"
+            }]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "@type": "saref:ToggleCommand",
+            "forms": [{
+                "href": "https://mylamp.example.com/toggle"
+            }]
+        }
+    },
+    "events": {
+        "overheating": {
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "https://mylamp.example.com/oh"
+            }]
+        }
+    }
+}

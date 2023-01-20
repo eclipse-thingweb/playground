@@ -1,0 +1,18 @@
+{
+    "@context": "http://www.w3.org/ns/td",
+    "title": "uriVariables in href structure",
+    "properties": {
+        "weather": {
+            "uriVariables": {
+                "city": {
+                    "type": "string",
+                    "description": "City name to find the weather information for" 
+                }
+            },
+            "forms": [{
+                "href": "http://example.org/weather/{city}",
+                "htv:methodName": "GET"
+            }]
+        }
+    }
+}

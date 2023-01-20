@@ -1,0 +1,31 @@
+
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "id": "urn:uuid:014139c9-b267-4db5-9c61-cc2d2bfc217d",
+    "title": "MyLampThing",
+    "description": "The contentType member is used to assign a media type [RFC2046] including media type parameters as attribute-value pairs separated by a ; character",
+    "securityDefinitions": {
+        "basic_sc": {"scheme": "basic", "in": "header"}
+    },
+    "security": "basic_sc",
+    "properties": {
+        "status": {
+            "type": "string",
+            "forms": [{"href": "https://mylamp.example.com/status"}]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "forms": [{"href": "https://mylamp.example.com/toggle"}]
+        }
+    },
+    "events": {
+        "overheating": {
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "https://mylamp.example.com/oh",
+                "subprotocol": "longpoll"
+            }]
+        }
+    }
+}

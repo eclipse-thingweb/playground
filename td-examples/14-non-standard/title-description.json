@@ -1,0 +1,31 @@
+{
+    "@context": [
+        "https://www.w3.org/2022/wot/td/v1.1",
+        { "@language": "en" }
+    ],
+    "title": "My Lamp Thing",
+    "description": "This is a TD description for a smart lamp",
+    "properties": {
+        "status": {
+            "description": "Current Status of the lamp",
+            "type": "string",
+            "forms": [{"href": "https://mylamp.example.com/status"}]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "description": "Turn the lamp on or off",
+            "forms": [{"href": "https://mylamp.example.com/toggle"}]
+        }
+    },
+    "events": {
+        "overheating": {
+            "description": "Lamp reaches a critical temperature (overheating)",
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "https://mylamp.example.com/oh",
+                "subprotocol": "longpoll"
+            }]
+        }
+    }
+}

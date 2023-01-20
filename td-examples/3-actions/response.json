@@ -1,0 +1,18 @@
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "title": "MyCameraThing",
+    "description": "In some use cases, the form metadata of the Interaction Affordance not only describes the request, but also provides metadata for the expected response. The response must be a JSON object and contain a contentType",
+    "actions": {
+        "takePhoto": {
+            "forms": [{
+                "op": "invokeaction",
+                "href": "http://camera.example.com/api/snapshot",
+                "contentType": "application/json",
+                "response": {
+                    "contentType": "image/jpeg"
+                }
+            }]
+        }
+    }
+}
