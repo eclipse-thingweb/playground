@@ -490,28 +490,32 @@ require(['vs/editor/editor.main'], async function () {
 		value: (docType === 'td') ? value.substring(6) : '',
 		language: window.editorFormat,
 		// Without automaticLayout editor will not be built inside hidden div
-		automaticLayout: true
+		automaticLayout: true,
+		formatOnPaste: true
 	});
 
 	// Create globally available TM editor
 	window.tmEditor = monaco.editor.create(document.getElementById('tm-editor'), {
 		value: (docType === 'tm') ? value.substring(6) : '',
 		language: 'json',
-		automaticLayout: true
+		automaticLayout: true,
+		formatOnPaste: true
 	});
 
 	// Create globally available Open API editor
 	window.openApiEditor = monaco.editor.create(document.getElementById('open-api-editor'), {
 		language: 'json',
 		automaticLayout: true,
-		readOnly: true
+		readOnly: true,
+		formatOnPaste: true
 	});
 
 	// Create globally available Async API editor
 	window.asyncApiEditor = monaco.editor.create(document.getElementById('async-api-editor'), {
 		language: 'json',
 		automaticLayout: true,
-		readOnly: true
+		readOnly: true,
+		formatOnPaste: true
 	});
 
 	window.editor = (docType === 'td') ? window.tdEditor : window.tmEditor;
@@ -526,9 +530,10 @@ require(['vs/editor/editor.main'], async function () {
 		window.tmEditor.getModel()
 	];
 
+	formatDocument()
+
 	models.forEach(model => {
 		model.onDidChangeContent(_ => {
-
 			if (model === window.tdEditor.getModel()) {
 				enableAPIConversionWithProtocol(model.getValue())
 			}
@@ -566,30 +571,27 @@ require(['vs/editor/editor.main'], async function () {
 function markTypos(model) {
 	const markers = []
 
-	const typos = Validators.checkTypos(model.getValue())
-	const foundTypos = []
+	JsonSpellChecker.configure()
+	const typos = JsonSpellChecker.checkTypos(model.getValue())
 
 	typos.forEach(typo => {
-		model.findMatches(typo.word, false, false, true, typo.word, false).forEach(result => {
-			foundTypos.push({
-				range: result.range,
-				message: typo.message
-			})
-		})
-	})
-
-	foundTypos.forEach(typo => {
-		const range = typo.range
-
 		markers.push({
 			message: typo.message,
 			severity: monaco.MarkerSeverity.Warning,
-			startLineNumber: range.startLineNumber,
-			startColumn: range.startColumn,
-			endLineNumber: range.endLineNumber,
-			endColumn: range.endColumn
+			startLineNumber: typo.startLineNumber,
+			startColumn: typo.startColumn,
+			endLineNumber: typo.endLineNumber,
+			endColumn: typo.endColumn
 		})
 	})
 
+	monaco.languages.registerCodeActionProvider('json', {
+		provideCodeActions: (_model, range, context, token) =>{
+			return {
+				actions: () => [],
+				dispose: () => {}
+			}
+		}
+	})
 	monaco.editor.setModelMarkers(model, 'typo', markers)
 }

@@ -367,12 +367,12 @@ export function exampleSelectHandler(e, obj) {
         getTdUrl(urlAddr).then( data => {
             if (window.editor === window.tdEditor) {
                 if (window.editorFormat === 'json') {
-                    window.editor.setValue(JSON.stringify(data,null,'\t'))
+                    window.editor.setValue(JSON.stringify(data,null,4))
                 } else {
                     window.editor.setValue(Validators.convertTDJsonToYaml(JSON.stringify(data)))
                 }
             } else {
-                window.editor.setValue(JSON.stringify(data,null,'\t'))
+                window.editor.setValue(JSON.stringify(data,null,4))
             }
         })
     }
