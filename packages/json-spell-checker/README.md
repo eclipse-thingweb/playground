@@ -32,7 +32,7 @@ You can use the functionality of this package by:
   <script src="./node_modules/@thing-description-playground/json-spell-checker/dist/web-bundle.min.js"></script>
   ```
 
-* First configure your spell checker using (similarityThreshold should be between 0 and 1 and try to set maxLengthDifference low to use the tool faster):
+* First configure your spell checker using (similarityThreshold should be between 0 and 1 and try to set maxLengthDifference low in case you need quick typo evaluation):
 ```javascript
 jsonSpellChecker.configure(yourSchema, similarityThreshold, maxLengthDifference)
 ```
