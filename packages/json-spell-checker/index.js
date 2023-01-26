@@ -30,29 +30,29 @@ function configure(schema = SCHEMA, similarityThreshold = SIMILARITY_THRESHOLD, 
 }
 
 /**
- * Checks possible typos in a TD
- * @param {object} td The TD to apply typo check on
+ * Checks possible typos in a stringified JSON
+ * @param {object} json The JSON to apply typo check on
  * @returns List of possible typos where the typo consists of string value of typo itself and the message,
  * another string value, to be prompted to the user for the fix
  */
-function checkTypos(td) {
+function checkTypos(json) {
     const typos = []
 
     const lookupTable = TYPO_LOOKUP_TABLE
     const searchDepth = 1
     const searchPath = PATH
-    let tdJson = {}
+    let parsedJson = {}
 
     try {
-        tdJson = JSON.parse(td)
+        parsedJson = JSON.parse(json)
     } catch (err) {
         return typos
     }
 
-    searchTypos(typos, tdJson, lookupTable, searchDepth, searchPath, searchPath)
+    searchTypos(typos, parsedJson, lookupTable, searchDepth, searchPath, searchPath)
     
-    const mappedTd = jsonMap.parse(td)
-    const pointers = mappedTd.pointers
+    const mappedJson = jsonMap.parse(json)
+    const pointers = mappedJson.pointers
     
     typos.forEach(typo => {
         const pointer = pointers[typo.path.substr(1, typo.path.length - 2)]
@@ -72,31 +72,31 @@ function checkTypos(td) {
 /**
  * Searching typos on a specific path and depth
  * @param {Array} typos The list that typo objects are stored
- * @param {object} tdJson JSON object of the TD
+ * @param {object} json The JSON to apply typo check on
  * @param {Map} lookupTable The map that stores paths and their available word list according to their path depth
  * @param {integer} searchDepth The integer that decides the depth of the typo check search
  * @param {string} searchPath The string that decided the path of the typo check search
  */
-function searchTypos(typos, tdJson, lookupTable, searchDepth, searchPath, realPath) {
-    if (typeof tdJson !== 'object') {
+function searchTypos(typos, json, lookupTable, searchDepth, searchPath, realPath) {
+    if (typeof json !== 'object') {
         return
     }
 
-    for (const key in tdJson) {
+    for (const key in json) {
         const pathMap = lookupTable.get(searchDepth)
         const wordSet = pathMap.get(searchPath)
 
         if (!wordSet) {
             if (!searchPath.endsWith('*/')) {
-                searchTypos(typos, tdJson[key], lookupTable, searchDepth + 1, searchPath + '*/', realPath + `${key}/`)
+                searchTypos(typos, json[key], lookupTable, searchDepth + 1, searchPath + '*/', realPath + `${key}/`)
                 continue
             } else {
                 continue
             }
         }
 
-        if (tdJson.hasOwnProperty(key)) { 
-            searchTypos(typos, tdJson[key], lookupTable, searchDepth + 1, searchPath + `${key}/`, realPath + `${key}/`)
+        if (json.hasOwnProperty(key)) { 
+            searchTypos(typos, json[key], lookupTable, searchDepth + 1, searchPath + `${key}/`, realPath + `${key}/`)
 
             if (!wordSet || wordSet.has(key)) {
                 continue
@@ -121,7 +121,7 @@ function searchTypos(typos, tdJson, lookupTable, searchDepth, searchPath, realPa
 /**
  * Creates a lookup table using JSON schema
  * @param {object} jsonSchema JSON Schema to create a lookup table from
- * @returns The map that constructs lookup table for typo check using TD Schema
+ * @returns The map that constructs lookup table for typo check using JSON Schema
  */
 function createSchemaLookupTable(jsonSchema) {
     const lookupTable = new Map()
@@ -166,6 +166,7 @@ function findPathsInSchema(schema, path, references, lookupTable) {
         }
 
         if (references.includes(schema[REF])) {
+            // Add 'r'  to the path, so in future we could check for recursive ref paths
             path = 'r' + path
         }
 
@@ -183,6 +184,7 @@ function findPathsInSchema(schema, path, references, lookupTable) {
                     }
 
                     if (references.includes(properties[key])) {
+                        // Add 'r'  to the path, so in future we could check for recursive ref paths
                         path = 'r' + path
                     }
 
@@ -220,6 +222,7 @@ function findPathsInSchema(schema, path, references, lookupTable) {
                     }
 
                     if (references.includes(patternProperties[key])) {
+                        // Add 'r'  to the path, so in future we could check for recursive ref paths
                         path = 'r' + path
                     }
 
@@ -244,6 +247,7 @@ function findPathsInSchema(schema, path, references, lookupTable) {
                     }
 
                     if (references.includes(items[item])) {
+                        // Add 'r'  to the path, so in future we could check for recursive ref paths
                         path = 'r' + path
                     }
 
@@ -313,8 +317,8 @@ function getRefObjectOfSchema(schema, ref) {
 
 /**
  * Checks whether typo exists or not by comparing similarity of the two words
- * @param {string} actual The property name of the TD entered by user
- * @param {string} desired The desired property name that is retrieved from TD Schema
+ * @param {string} actual The property name of the JSON entered by user
+ * @param {string} desired The desired property name that is retrieved from JSON Schema
  * @returns Boolean value that tell whether typo exists or not
  */
 function doesTypoExist(actual, desired) {
@@ -328,8 +332,8 @@ function doesTypoExist(actual, desired) {
 
 /**
  * Similarity of words calculated using Jaro-Winkler algorithm
- * @param {string} actual The property name of the TD entered by user
- * @param {string} desired The desired propert name that is retrieved from TD Schema
+ * @param {string} actual The property name of the JSON entered by user
+ * @param {string} desired The desired propert name that is retrieved from JSON Schema
  * @returns Similarity of value the two inputs
  */
 function calculateSimilarity(actual, desired) {
