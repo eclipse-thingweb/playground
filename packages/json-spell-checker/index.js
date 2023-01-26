@@ -14,7 +14,7 @@ let SCHEMA = require('./examples/schema/td-schema.json')
 let SIMILARITY_THRESHOLD = 0.85
 // Maximum value of length difference between two words
 let MAX_LENGTH_DIFFERENCE = 2
-let TYPO_LOOKUP_TABLE = {}
+let TYPO_LOOKUP_TABLE = createSchemaLookupTable(SCHEMA)
 
 
 /**
@@ -58,6 +58,7 @@ function checkTypos(td) {
         const pointer = pointers[typo.path.substr(1, typo.path.length - 2)]
 
         if (pointer) {
+            // Every pointer get plus 1 because indexes start from 0
             typo.startLineNumber = pointer.key.line + 1
             typo.endLineNumber = pointer.keyEnd.line + 1
             typo.startColumn = (pointer.key.column + 1) + 1

@@ -1,8 +1,8 @@
 const  { describe, test, expect, beforeAll } = require('@jest/globals')
 const tdSchema = require('./examples/schema/td-schema.json')
-const tdExample = require('./examples/td/td-example.json')
+const tdExample = require('./examples/json/td-example.json')
 const openApiSchema = require('./examples/schema/open-api-schema.json')
-const openApiExample = require('./examples/open-api/open-api-example.json')
+const openApiExample = require('./examples/json/open-api-example.json')
 const jsonSpellChecker = require('./index')
 
 describe('checkTypos', () => {

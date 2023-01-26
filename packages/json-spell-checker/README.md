@@ -49,6 +49,10 @@ jsonSpellChecker.checkTypos(stringifiedJsonFile)
 
 The [index.js](./index.js) file contains the main validation functionality and exports the modules functionalities.  
 
+## Examples
+
+* There are also examples provided in the [examples-scripts folder](./examples/scripts/) to demonstrate the usage of this package. 
+
 ## Test Usage
 
 Test Examples are located under examples directory. 
