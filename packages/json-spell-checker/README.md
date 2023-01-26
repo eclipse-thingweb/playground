@@ -1,6 +1,6 @@
 # @thing-description-playground/**JSON-SPELL-CHECKER**
 
-This package provides spell checking support for given JSON schemas.
+This package provides spell-checking support for JSON files when a JSON Schema is given.
 You can find more information about the Thingweb-Playground [here](https://github.com/thingweb/thingweb-playground).
 
 Limitations:  
