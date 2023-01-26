@@ -585,13 +585,5 @@ function markTypos(model) {
 		})
 	})
 
-	monaco.languages.registerCodeActionProvider('json', {
-		provideCodeActions: (_model, range, context, token) =>{
-			return {
-				actions: () => [],
-				dispose: () => {}
-			}
-		}
-	})
 	monaco.editor.setModelMarkers(model, 'typo', markers)
 }
