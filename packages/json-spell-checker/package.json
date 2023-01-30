@@ -1,0 +1,30 @@
+{
+  "name": "@thing-description-playground/json-spell-checker",
+  "author": "TUM ESI <esi@ei.tum.de> (https://www.ei.tum.de/en/esi/home/)",
+  "license": "MIT",
+  "version": "1.0.0",
+  "description": "Checks the spelling of a JSON file depending on the JSON schema",
+  "homepage": "https://github.com/thingweb/thingweb-playground#readme",
+  "bugs": {
+    "url": "https://github.com/thingweb/thingweb-playground/issues"
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thingweb/thingweb-playground.git",
+    "directory": "packages/json-spell-checker"
+  },
+  "scripts": {
+    "test": "jest",
+    "bundle": "npx browserify ./index.js -s JsonSpellChecker -o ./dist/web-bundle.js && npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
+    "prepare": "npm run bundle",
+    "lint": "npx eslint . --config .eslintrc.json --ext .js,.jsx,.ts,.tsx --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif"
+  },
+  "dependencies": {
+    "json-source-map": "^0.6.1"
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.3.1",
+    "jest": "^29.3.1"
+  }
+}

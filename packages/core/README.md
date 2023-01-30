@@ -115,5 +115,5 @@ The core validation report is an object, which contains three objects (as you ca
 ## Test Usage
 
 Test Examples are located under examples directory. 
-For typo examples you need to fill 'typoCount' field that corresponds to the number of typos existing in the TD.  
+For examples you need to fill 'typoCount' field that corresponds to the number of typos existing in the TD.  
 For protocol detection examples you need to fill 'protocolSchemes' field that corresponds to the protocols TD uses.
