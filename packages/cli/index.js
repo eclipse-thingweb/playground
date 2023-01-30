@@ -240,7 +240,7 @@ function tdAssertionReport(inputParam) {
 function assertTd(tds, type, tdsToMerge, manualAssertions, doneEventEmitter) {
     return new Promise((res, rej) => {
         if (tds.length > 0) {
-            tdAssertions(tds, fileLoader, logFunc, manualAssertions, doneEventEmitter).then(results => {
+            tdAssertions(tds, fileLoader, logFunc, manualAssertions, doneEventEmitter).then( async (results) => {
                 if (type === "file") {
                     outReport(results, "assertionsTest_", input)
                     res()
@@ -265,7 +265,7 @@ function assertTd(tds, type, tdsToMerge, manualAssertions, doneEventEmitter) {
                 else {
                     rej("unknown assertion type")
                 }
-            })
+            });
         }
         else {
             res()
@@ -519,7 +519,7 @@ function checkTd(td, suite) {
         .then(result => {
             console.log("OKAY \n")
             console.log("\n")
-            console.log("--- Report ---\n", result, "\n--------------")
+            console.log("--- Report ",JSON.parse(td).title,"---\n", result, "\n--------------")
             if (myArguments.junit) {
                 builder.writeTo("junit-tests.xml")
             }
@@ -941,7 +941,7 @@ function checkTm(tm, suite) {
         .then(result => {
             console.log("OKAY \n")
             console.log("\n")
-            console.log("--- Report ---\n", result, "\n--------------")
+            console.log("--- Report ",JSON.parse(td).title,"---\n", result, "\n--------------")
             if (myArguments.junit) {
                 builder.writeTo("junit-tests.xml")
             }
