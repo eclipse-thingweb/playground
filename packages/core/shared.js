@@ -141,7 +141,7 @@ function checkPropUniqueness(tdString) {
                 results.push({
                     "ID": "td-properties_uniqueness",
                     "Status": "fail",
-                    "Comment": "duplicate property names"
+                    "Comment": "duplicate property names at "+td.title
                 })
                 // since JSON.parse removes duplicates, we replace the duplicate name with duplicateName
                 tdString = tdString.replace(interactionName, "duplicateName")
@@ -169,7 +169,7 @@ function checkPropUniqueness(tdString) {
                 results.push({
                     "ID": "td-actions_uniqueness",
                     "Status": "fail",
-                    "Comment": "duplicate action names"
+                    "Comment": "duplicate action names at "+td.title
                 })
                 // since JSON.parse removes duplicates, we replace the duplicate name with duplicateName
                 tdString = tdString.replace(interactionName, "duplicateName")
@@ -195,7 +195,7 @@ function checkPropUniqueness(tdString) {
                 results.push({
                     "ID": "td-events_uniqueness",
                     "Status": "fail",
-                    "Comment": "duplicate event names"
+                    "Comment": "duplicate event names at "+td.title
                 })
                 // since JSON.parse removes duplicates, we replace the duplicate name with duplicateName
                 tdString = tdString.replace(interactionName, "duplicateName")
@@ -241,7 +241,7 @@ function checkSecurity(td) {
             results.push({
                 "ID": "td-security-scheme-name",
                 "Status": "fail",
-                "Comment": "used a non defined security scheme in root level"
+                "Comment": "used a non defined security scheme in root level at "+td.title
             })
             return results
         }
@@ -265,7 +265,7 @@ function checkSecurity(td) {
                             results.push({
                                 "ID": "td-security-scheme-name",
                                 "Status": "fail",
-                                "Comment": "used a non defined security scheme in a property form"
+                                "Comment": "used a non defined security scheme in a property form at "+td.title
                             })
                             return results
                         }
@@ -293,7 +293,7 @@ function checkSecurity(td) {
                             results.push({
                                 "ID": "td-security-scheme-name",
                                 "Status": "fail",
-                                "Comment": "used a non defined security scheme in an action form"
+                                "Comment": "used a non defined security scheme in an action form at "+td.title
                             })
                             return results
                         }
@@ -322,7 +322,7 @@ function checkSecurity(td) {
                             results.push({
                                 "ID": "td-security-scheme-name",
                                 "Status": "fail",
-                                "Comment": "used a non defined security scheme in an event form"
+                                "Comment": "used a non defined security scheme in an event form at "+td.title
                             })
                             return results
                         }
@@ -499,7 +499,7 @@ function checkMultiLangConsistency(td) {
         results.push({
             "ID": "td-multi-languages-consistent",
             "Status": "fail",
-            "Comment": "not all multilang objects have same language tags"
+            "Comment": "not all multilang objects have same language tags at "+td.title
         })
     }
 
@@ -524,7 +524,7 @@ function checkMultiLangConsistency(td) {
         results.push({
             "ID": "td-multilanguage-language-tag",
             "Status": "fail",
-            "Comment":isBCP47+" is not a BCP47 tag"
+            "Comment":isBCP47+" is not a BCP47 tag at "+td.title
         })
     }
 
@@ -556,7 +556,7 @@ function checkMultiLangConsistency(td) {
             results.push({
                 "ID": "td-titles-descriptions",
                 "Status": "fail",
-                "Comment": elementName+" is not on the multilang object at the same level"
+                "Comment": elementName+" is not on the multilang object at the same level at "+td.title
             })
             return results
         }
@@ -698,7 +698,7 @@ function checkLinksRelTypeCount(td){
             results.push({
                 "ID": "tm-rel-type-maximum",
                 "Status": "fail",
-                "Comment": "too many rel:type in links array"
+                "Comment": "too many rel:type in links array at "+td.title
             })
         }
     } else {
@@ -943,7 +943,7 @@ function checkTmOptionalPointer(td){
                 results.push({
                     "ID": "tm-tmOptional-resolver",
                     "Status": "fail",
-                    "Comment": "tm:optional does not resolve to an affordance"
+                    "Comment": "tm:optional does not resolve to an affordance at "+td.title
                 })
             } else {
                 results.push({
@@ -985,7 +985,7 @@ async function fetchLinkedTm(td) {
         } : {
             success: false,
             status: 'fail',
-            comment: 'td links to more than one tm'
+            comment: 'td links to more than one tm at ' + td.title
         };
     }
     typeLink = typeLink[0];
@@ -1096,7 +1096,7 @@ async function checkLinkedAffordances(td) {
             results.push({
                 ID: ASSERTION_REQUIRED,
                 Status: 'fail',
-                Comment: 'some required affordances are missing'
+                Comment: 'some required affordances are missing at '+td.title
             });
         }
 
@@ -1190,7 +1190,7 @@ async function checkLinkedStructure(td) {
             {
                 ID: ASSERTION_NAME,
                 Status: 'fail',
-                Comment: missingKeys.join(', ') + ' - imposed by tm but missing'
+                Comment: missingKeys.join(', ') + ' - imposed by tm but missing at '+td.title
             }
         ];
     }

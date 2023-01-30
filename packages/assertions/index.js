@@ -31,7 +31,7 @@ module.exports.collectAssertionSchemas = collectAssertionSchemas
  * @param {object} givenManual OPT JSON object of the manual assertions
  * @param {EventEmitter} doneEventEmitter
  */
-function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, doneEventEmitter) {
+async function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, doneEventEmitter) {
     return new Promise( (res, rej) => {
 
         // parameter handling
@@ -67,7 +67,7 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, doneEventEmit
                                         givenManual
 
             const jsonResults = {}
-            tdStrings.forEach( tdToValidate => {
+            tdStrings.forEach( async (tdToValidate) => {
                 // check if id exists, use it for name if it does, title + some rand number otherwise
                 let tdName = ""
                 if ("id" in JSON.parse(tdToValidate)){
@@ -95,13 +95,16 @@ function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, doneEventEmit
 
             if (tdNames.length > 1) {
                 const resultAr = []
-                Object.keys(jsonResults).forEach( id => {
+                Object.keys(jsonResults).forEach( async (id) => {
                     resultAr.push(jsonResults[id])
                 })
-                mergeResults(resultAr).then( merged => {
-                    checkCoverage(merged, logFunc)
-                    res({jsonResults, merged})
-                }, err => {rej("merging failed: " + err)})
+                Promise.all(resultAr).then((values) => {
+                    const newArray = values
+                    mergeResults(newArray).then( merged => {
+                        checkCoverage(merged, logFunc)
+                        res({jsonResults, merged})
+                    }, err => {rej("merging failed: " + err)})
+                });
             }
             else {
                 const merged = jsonResults[tdNames[0]]

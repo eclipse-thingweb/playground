@@ -36,186 +36,95 @@ module.exports = validateTD
  * @param {Function} logFunc Logging function
  */
 async function validateTD(tdData, assertions, manualAssertions, logFunc) {
+    return new Promise(async (res, rej) => {
+        // a JSON file that will be returned containing the result for each assertion as a JSON Object
+        let results = []
+        // !!! uses console info on purpose, to be able to deactivate it, without overwriting console.log !!!
+        // console.info("=================================================================")
+        // it is commented out to make sure that the output to std is also a valid csv file
 
-    // a JSON file that will be returned containing the result for each assertion as a JSON Object
-    let results = []
-    // !!! uses console info on purpose, to be able to deactivate it, without overwriting console.log !!!
-    // console.info("=================================================================")
-    // it is commented out to make sure that the output to std is also a valid csv file
-
-    // check whether it is a valid JSON
-    let tdJson
-    try {
-        tdJson = JSON.parse(tdData)
-        // results.push({
-        //     "ID": "td-json-open",
-        //     "Status": "pass"
-        // })
-    } catch (error) {
-        throw new Error("td-json-open")
-    }
-
-    // check whether it is a valid UTF-8
-    if (isUtf8(tdData)) {
-        results.push({
-            "ID": "td-json-open_utf-8",
-            "Status": "pass"
-        })
-    } else {
-        throw new Error("td-json-open_utf-8")
-    }
-
-    // checking whether two interactions of the same interaction affordance type have the same names
-    // This requires to use the string version of the TD that will be passed down to the jsonvalidator library
-    const tdDataString = tdData.toString()
-
-
-    // Normal TD Schema validation but this allows us to test multiple assertions at once
-    try {
-        results.push(...checkVocabulary(tdJson))
-    } catch (error) {
-        logFunc({
-            "ID": error,
-            "Status": "fail"
-        })
-        let logName = "" // this will be id and or title
-        if (tdJson.hasOwnProperty("title") && (tdJson.hasOwnProperty("id"))) {
-            logName = "title: "+tdJson.title + " id: " +tdJson.id
-        } else if (tdJson.hasOwnProperty("title")) {
-            logName = "title: " + tdJson.title
-        } else if (tdJson.hasOwnProperty("id")) {
-            logName = "id: " + tdJson.id
-        } else { // if no id or title present, put the whole td as string
-            logName = JSON.stringify(tdJson) + "\n"
+        // check whether it is a valid JSON
+        let tdJson
+        try {
+            tdJson = JSON.parse(tdData)
+            // results.push({
+            //     "ID": "td-json-open",
+            //     "Status": "pass"
+            // })
+        } catch (error) {
+            throw new Error("td-json-open")
         }
-        throw new Error(logName+" : Invalid TD")
-    }
 
-    // additional checks
-    results.push(...checkUniqueness(tdDataString))
-    results.push(checkContentTypeDifference(tdJson))
-    results.push(checkInstanceNameCollision(tdJson))
-    results.push(...checkSecurity(tdJson))
-    results.push(...checkMultiLangConsistency(tdJson))
-    results.push(...checkLinksRelTypeCount(tdJson))
-    results.push(...checkUriSecurity(tdJson))
-    results.push(...(await checkLinkedAffordances(tdJson)))
-    results.push(...(await checkLinkedStructure(tdJson)))
-
-    // Iterating through assertions
-    for (let index = 0; index < assertions.length; index++) {
-        const curAssertion = assertions[index]
-
-        const schema = curAssertion
-
-        // Validation starts here
-
-        const validPayload = validate(tdJson, schema, logFunc)
-
-        /*
-            TODO: when is implemented?
-            If valid then it is not implemented
-            if error says not-impl then it is not implemented
-            If somehow error says fail then it is failed
-
-            Output is structured as follows:
-            [main assertion]:[sub assertion if exists]=[result]
-        */
-        if (schema["is-complex"]) {
-            if (validPayload.valid) {
-                results.push({
-                    "ID": schema.title,
-                    "Status": "not-impl",
-                    "Assertion": schema.description
-                })
-                if (schema.hasOwnProperty("also")) {
-                    const otherAssertions = schema.also
-                    otherAssertions.forEach(function (asser) {
-                        results.push({
-                            "ID": asser,
-                            "Status": "not-impl"
-                        })
-                    })
-                }
-
-            } else {
-                try {
-                    const output = validPayload.ajvObject.errors[0].params.allowedValue
-
-                    const resultStart = output.indexOf("=")
-                    const result = output.slice(resultStart + 1)
-
-                    if (result === "pass") {
-                        results.push({
-                            "ID": schema.title,
-                            "Status": result,
-                            "Assertion": schema.description
-                        })
-                    } else {
-                        results.push({
-                            "ID": schema.title,
-                            "Status": result,
-                            "Comment": validPayload.ajvObject.errorsText(),
-                            "Assertion": schema.description
-                        })
-                    }
-                    if (schema.hasOwnProperty("also")) {
-                        const otherAssertions = schema.also
-                        otherAssertions.forEach(function (asser) {
-                            results.push({
-                                "ID": asser,
-                                "Status": result
-                            })
-                        })
-                    }
-                    // there was some other error, so it is fail
-                } catch (error1) {
-                    results.push({
-                        "ID": schema.title,
-                        "Status": "fail",
-                        "Comment": "Make sure you validate your TD before",
-                        "Assertion": schema.description
-                    })
-
-                    if (schema.hasOwnProperty("also")) {
-                        const otherAssertions = schema.also
-                        otherAssertions.forEach(function (asser) {
-                            results.push({
-                                "ID": asser,
-                                "Status": "fail",
-                                "Comment": "Make sure you validate your TD before"
-                            })
-                        })
-                    }
-                }
-            }
-
+        // check whether it is a valid UTF-8
+        if (isUtf8(tdData)) {
+            results.push({
+                "ID": "td-json-open_utf-8",
+                "Status": "pass"
+            })
         } else {
-            if (validPayload.valid) {
-                results.push({
-                    "ID": schema.title,
-                    "Status": "pass"
-                })
-                if (schema.hasOwnProperty("also")) {
-                    const otherAssertions = schema.also
-                    otherAssertions.forEach(function (asser) {
-                        results.push({
-                            "ID": asser,
-                            "Status": "pass",
-                            "Assertion": schema.description
-                        })
-                    })
-                }
-            } else {
-                // failed because a required is not implemented
-                if (validPayload.ajvObject.errorsText().indexOf("required") > -1 ||
-                    validPayload.ajvObject.errorsText().indexOf("must be")||
-                    validPayload.ajvObject.errorsText().indexOf("must match")) {
-                    // failed because it doesnt have required key which is a non implemented feature
+            throw new Error("td-json-open_utf-8")
+        }
+
+        // checking whether two interactions of the same interaction affordance type have the same names
+        // This requires to use the string version of the TD that will be passed down to the jsonvalidator library
+        const tdDataString = tdData.toString()
+
+
+        // Normal TD Schema validation but this allows us to test multiple assertions at once
+        try {
+            results.push(...checkVocabulary(tdJson))
+        } catch (error) {
+            logFunc({
+                "ID": error,
+                "Status": "fail"
+            })
+            let logName = "" // this will be id and or title
+            if (tdJson.hasOwnProperty("title") && (tdJson.hasOwnProperty("id"))) {
+                logName = "title: "+tdJson.title + " id: " +tdJson.id
+            } else if (tdJson.hasOwnProperty("title")) {
+                logName = "title: " + tdJson.title
+            } else if (tdJson.hasOwnProperty("id")) {
+                logName = "id: " + tdJson.id
+            } else { // if no id or title present, put the whole td as string
+                logName = JSON.stringify(tdJson) + "\n"
+            }
+            throw new Error(logName+" : Invalid TD")
+        }
+
+        // additional checks
+        results.push(...checkUniqueness(tdDataString))
+        results.push(checkContentTypeDifference(tdJson))
+        results.push(checkInstanceNameCollision(tdJson))
+        results.push(...checkSecurity(tdJson))
+        results.push(...checkMultiLangConsistency(tdJson))
+        results.push(...checkLinksRelTypeCount(tdJson))
+        results.push(...checkUriSecurity(tdJson))
+        results.push(...(await checkLinkedAffordances(tdJson)))
+        results.push(...(await checkLinkedStructure(tdJson)))
+
+        // Iterating through assertions
+        for (let index = 0; index < assertions.length; index++) {
+            const curAssertion = assertions[index]
+
+            const schema = curAssertion
+
+            // Validation starts here
+
+            const validPayload = validate(tdJson, schema, logFunc)
+
+            /*
+                If valid then it is not implemented
+                if error says not-impl then it is not implemented
+                If somehow error says fail then it is failed
+
+                Output is structured as follows:
+                [main assertion]:[sub assertion if exists]=[result]
+            */
+            if (schema["is-complex"]) {
+                if (validPayload.valid) {
                     results.push({
                         "ID": schema.title,
                         "Status": "not-impl",
-                        "Comment": validPayload.ajvObject.errorsText(),
                         "Assertion": schema.description
                     })
                     if (schema.hasOwnProperty("also")) {
@@ -223,57 +132,148 @@ async function validateTD(tdData, assertions, manualAssertions, logFunc) {
                         otherAssertions.forEach(function (asser) {
                             results.push({
                                 "ID": asser,
-                                "Status": "not-impl",
+                                "Status": "not-impl"
+                            })
+                        })
+                    }
+
+                } else {
+                    try {
+                        const output = validPayload.ajvObject.errors[0].params.allowedValue
+
+                        const resultStart = output.indexOf("=")
+                        const result = output.slice(resultStart + 1)
+
+                        if (result === "pass") {
+                            results.push({
+                                "ID": schema.title,
+                                "Status": result,
+                                "Assertion": schema.description
+                            })
+                        } else {
+                            results.push({
+                                "ID": schema.title,
+                                "Status": result,
                                 "Comment": validPayload.ajvObject.errorsText(),
+                                "Assertion": schema.description
+                            })
+                        }
+                        if (schema.hasOwnProperty("also")) {
+                            const otherAssertions = schema.also
+                            otherAssertions.forEach(function (asser) {
+                                results.push({
+                                    "ID": asser,
+                                    "Status": result
+                                })
+                            })
+                        }
+                        // there was some other error, so it is fail
+                    } catch (error1) {
+                        results.push({
+                            "ID": schema.title,
+                            "Status": "fail",
+                            "Comment": "Make sure you validate your TD before",
+                            "Assertion": schema.description
+                        })
+
+                        if (schema.hasOwnProperty("also")) {
+                            const otherAssertions = schema.also
+                            otherAssertions.forEach(function (asser) {
+                                results.push({
+                                    "ID": asser,
+                                    "Status": "fail",
+                                    "Comment": "Make sure you validate your TD before"
+                                })
+                            })
+                        }
+                    }
+                }
+
+            } else {
+                if (validPayload.valid) {
+                    results.push({
+                        "ID": schema.title,
+                        "Status": "pass"
+                    })
+                    if (schema.hasOwnProperty("also")) {
+                        const otherAssertions = schema.also
+                        otherAssertions.forEach(function (asser) {
+                            results.push({
+                                "ID": asser,
+                                "Status": "pass",
                                 "Assertion": schema.description
                             })
                         })
                     }
                 } else {
-                    // failed because of some other reason
-                    results.push({
-                        "ID": schema.title,
-                        "Status": "fail",
-                        "Comment": validPayload.ajvObject.errorsText(),
-                        "Assertion": schema.description
-                    })
-                    if (schema.hasOwnProperty("also")) {
-                        const otherAssertions = schema.also
-                        otherAssertions.forEach(function (asser) {
-                            results.push({
-                                "ID": asser,
-                                "Status": "fail",
-                                "Comment": validPayload.ajvObject.errorsText(),
-                                "Assertion": schema.description
-                            })
+                    // failed because a required is not implemented
+                    if (validPayload.ajvObject.errorsText().indexOf("required") > -1 ||
+                        validPayload.ajvObject.errorsText().indexOf("must be")||
+                        validPayload.ajvObject.errorsText().indexOf("must match")) {
+                        // failed because it doesnt have required key which is a non implemented feature
+                        results.push({
+                            "ID": schema.title,
+                            "Status": "not-impl",
+                            "Comment": validPayload.ajvObject.errorsText(),
+                            "Assertion": schema.description
                         })
+                        if (schema.hasOwnProperty("also")) {
+                            const otherAssertions = schema.also
+                            otherAssertions.forEach(function (asser) {
+                                results.push({
+                                    "ID": asser,
+                                    "Status": "not-impl",
+                                    "Comment": validPayload.ajvObject.errorsText(),
+                                    "Assertion": schema.description
+                                })
+                            })
+                        }
+                    } else {
+                        // failed because of some other reason
+                        results.push({
+                            "ID": schema.title,
+                            "Status": "fail",
+                            "Comment": validPayload.ajvObject.errorsText(),
+                            "Assertion": schema.description
+                        })
+                        if (schema.hasOwnProperty("also")) {
+                            const otherAssertions = schema.also
+                            otherAssertions.forEach(function (asser) {
+                                results.push({
+                                    "ID": asser,
+                                    "Status": "fail",
+                                    "Comment": validPayload.ajvObject.errorsText(),
+                                    "Assertion": schema.description
+                                })
+                            })
+                        }
                     }
                 }
             }
         }
-    }
 
-    results = mergeIdenticalResults(results)
-    results = createParents(results)
+        results = mergeIdenticalResults(results)
+        results = createParents(results)
 
 
-    // sort according to the ID in each item
-    orderedResults = results.sort(function (a, b) {
-        const idA = a.ID
-        const idB = b.ID
-        if (idA < idB) {
-            return -1
-        }
-        if (idA > idB) {
-            return 1
-        }
+        // sort according to the ID in each item
+        orderedResults = results.sort(function (a, b) {
+            const idA = a.ID
+            const idB = b.ID
+            if (idA < idB) {
+                return -1
+            }
+            if (idA > idB) {
+                return 1
+            }
 
-        // if ids are equal
-        return 0
-    })
+            // if ids are equal
+            return 0
+        })
 
-    results = orderedResults.concat(manualAssertions)
-    return results
+        results = orderedResults.concat(manualAssertions)
+        res(results)
+    });
 }
 
 /**
