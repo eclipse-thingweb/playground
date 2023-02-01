@@ -5,8 +5,8 @@
         "https://www.w3.org/2022/wot/td/v1.1"
     ],
     "@type": "tm:ThingModel",
-    "title": "Valid Model 11",
-    "description": "Lamp Thing Description Model",
+    "title": "Smart Lamp",
+    "description": "Basic usage of TD and TM together",
     "tm:optional": [
         "/properties/status",
         "/actions/toggle"
