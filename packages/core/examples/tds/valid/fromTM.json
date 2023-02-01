@@ -1,6 +1,8 @@
 {
     "$comment": "example 57 of the spec",
-    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "@context": [
+        "https://www.w3.org/2022/wot/td/v1.1"
+    ],
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",
@@ -12,8 +14,8 @@
         "basic_sc"
     ],
     "@type": "Thing",
-    "title": "SmartPumpFromTM",
-    "description": "Basic Usage of TD using a TM",
+    "title": "Smart Lamp",
+    "description": "Basic usage of TD and TM together",
     "id": "urn:smart:device:wot:pump:instance:1",
     "version": {
         "instance": "1.0.0",

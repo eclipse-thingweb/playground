@@ -1,9 +1,11 @@
 {
     "id": "urn:required",
     "$comment": "example 57 of the spec",
-    "@context": "https://www.w3.org/2022/wot/td/v1.1",
-    "title": "Smart Ventilator",
-    "description":"Demonstrating the use adding _name onto affordances when using a TM",
+    "@context": [
+        "https://www.w3.org/2022/wot/td/v1.1"
+    ],
+    "title": "Smart Lamp",
+    "description":"Basic usage of TD and TM together",
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",
