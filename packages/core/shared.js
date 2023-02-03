@@ -1165,10 +1165,13 @@ async function checkLinkedStructure(td) {
     }
 
     const tm = tmResult.tm;
-    const diff = jsonDiff.diff(tm, td, { keysOnly: true });
-    const missingKeys = [];
+    const diff = jsonDiff.diff(tm, td);
 
-    const iterate = (obj, path = '') => {
+    // We first check that keys imposed by tm are contained in td
+    // Then we check if values of tm keys diverge in td
+
+    const missingKeys = [];
+    const checkKeys = (obj, path = '') => {
         for (const key of Object.keys(obj)) {
             const newPath = `${path}/${key.split('__deleted')[0]}`;
 
@@ -1180,17 +1183,59 @@ async function checkLinkedStructure(td) {
 
                 missingKeys.push(newPath);
             }
-            if (typeof obj[key] === 'object') iterate(obj[key], newPath);
+            if (typeof obj[key] === 'object') checkKeys(obj[key], newPath);
         }
     };
 
-    iterate(diff);
-    if (missingKeys.length > 0) {
+    const diffValues = [];
+    let skipNext = false;
+    const checkValues = (obj, path = '') => {
+        for (const key of Object.keys(obj)) {
+            if (!key.endsWith('__added') && !key.endsWith('__deleted') &&
+                !key.startsWith('tm:') && key !== '@type' && key !== '$comment' &&
+                key !== 'id' && key !== 'version') {
+// Currently, keys that start with `tm:`, `@type`, `$comment`, `id` and `version` are ignored in the value checks.
+                if (skipNext) {
+                    skipNext = false;
+                    continue;
+                }
+
+                if (key == '__new' || key == '__old') {
+                    if (/{{2}[ -~]+}{2}/.test(obj['__old'].toString())) {
+                        continue;
+                    }
+
+                    diffValues.push(path);
+                    skipNext = true;
+                    continue;
+                }
+
+                const newPath = `${path}/${key.split('__')[0]}`;
+                if (typeof obj[key] === 'object') checkValues(obj[key], newPath);
+            }
+        }
+    };
+
+    checkKeys(diff);
+    checkValues(diff);
+
+    if (missingKeys.length > 0 || diffValues.length > 0) {
+        let comment;
+        if (missingKeys.length > 0 && diffValues.length > 0) {
+            comment = `${missingKeys.join(', ')} - imposed by tm but missing at ${td.title}\n`;
+            comment += 'In addition, '
+            comment += `values of TM keys diverge: ${diffValues.join(', ')}`;
+        } else if (missingKeys.length > 0) {
+            comment = `${missingKeys.join(', ')} - imposed by tm but missing at ${td.title}`;
+        } else {
+            comment = `Values of TM keys diverge at ${td.title}: ${diffValues.join(', ')}`;
+        }
+
         return [
             {
                 ID: ASSERTION_NAME,
                 Status: 'fail',
-                Comment: missingKeys.join(', ') + ' - imposed by tm but missing at '+td.title
+                Comment: comment
             }
         ];
     }
