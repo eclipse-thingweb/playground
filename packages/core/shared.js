@@ -1194,7 +1194,7 @@ async function checkLinkedStructure(td) {
             if (!key.endsWith('__added') && !key.endsWith('__deleted') &&
                 !key.startsWith('tm:') && key !== '@type' && key !== '$comment' &&
                 key !== 'id' && key !== 'version') {
-
+// Currently, keys that start with `tm:`, `@type`, `$comment`, `id` and `version` are ignored in the value checks.
                 if (skipNext) {
                     skipNext = false;
                     continue;
