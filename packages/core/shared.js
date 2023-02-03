@@ -1192,7 +1192,7 @@ async function checkLinkedStructure(td) {
     const checkValues = (obj, path = '') => {
         for (const key of Object.keys(obj)) {
             if (!key.endsWith('__added') && !key.endsWith('__deleted') &&
-                !key.startsWith('tm:') && !key.startsWith('@type') &&
+                !key.startsWith('tm:') && key !== '@type' && key !== '$comment' &&
                 key !== 'id' && key !== 'version') {
 
                 if (skipNext) {
