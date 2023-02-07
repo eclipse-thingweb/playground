@@ -60,13 +60,6 @@ jobs:
           category: defaults
           wait-for-processing: true
 
-      - name: Upload gist_backend analysis results to GitHub
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: packages/gist_backend/eslint-results.sarif
-          category: gist_backend
-          wait-for-processing: true
-
       - name: Upload td_to_asyncapi analysis results to GitHub
         uses: github/codeql-action/upload-sarif@v2
         with:
