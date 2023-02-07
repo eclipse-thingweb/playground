@@ -3,7 +3,7 @@
 Try it online at [http://plugfest.thingweb.io/playground/](http://plugfest.thingweb.io/playground/)  
 
 [![GitHub license](https://img.shields.io/github/license/thingweb/thingweb-playground)](./LICENSE.md)
-[![GitHub testing](https://img.shields.io/github/workflow/status/thingweb/thingweb-playground/Default%20CI%20%26%20CD%20Pipeline)](https://github.com/thingweb/thingweb-playground/actions)
+[![Default CI & CD Pipeline](https://github.com/thingweb/thingweb-playground/actions/workflows/ci-cd.yaml/badge.svg)](https://github.com/thingweb/thingweb-playground/actions/workflows/ci-cd.yaml)
 [![CodeQL](https://github.com/thingweb/thingweb-playground/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/thingweb/thingweb-playground/actions/workflows/codeql-analysis.yml)
 
 ## Installation
