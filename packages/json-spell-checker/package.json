@@ -2,7 +2,7 @@
   "name": "@thing-description-playground/json-spell-checker",
   "author": "TUM ESI <esi@ei.tum.de> (https://www.ei.tum.de/en/esi/home/)",
   "license": "MIT",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Checks the spelling of a JSON file depending on the JSON schema",
   "homepage": "https://github.com/thingweb/thingweb-playground#readme",
   "bugs": {

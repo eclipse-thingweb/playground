@@ -26,7 +26,7 @@
     "@thing-description-playground/defaults": "^1.2.1",
     "@thing-description-playground/td_to_asyncapi": "^1.0.2",
     "@thing-description-playground/td_to_openapi": "^1.2.2",
-    "@thing-description-playground/json-spell-checker": "^1.0.0",
+    "@thing-description-playground/json-spell-checker": "^0.0.0",
     "bootstrap-css-only": "^4.4.1",
     "bootstrap-switch-button": "^1.1.0",
     "monaco-editor": "^0.34.0",
