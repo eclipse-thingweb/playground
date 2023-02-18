@@ -5,11 +5,12 @@
         "https://www.w3.org/2022/wot/td/v1.1"
     ],
     "@type": "tm:ThingModel",
-    "title": "Valid Model 6",
+    "title": "The title",
+    "description": "The description",
     "links": [
         {
             "rel": "tm:extends",
-            "href": "http://example.com/BasicOnOffTM",
+            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/packages/core/examples/tms/valid/version.json",
             "type": "application/td+json"
         }
     ],
