@@ -1035,21 +1035,29 @@ async function fetchLinkedTm(td) {
     // Recursively resolve all other tms using node-wot td-tools
 
     const ThingModelHelpers = new (require("@node-wot/td-tools")).ThingModelHelpers();
-    const tm = result.data;
 
     // The tm resolver expects values for placeholders
     // However, we don't know (and don't need) them at this moment
     // Fool the resolver by providing the same placeholders as values for placeholders :D
     const map = {};
-    for (const match of (JSON.stringify(tm).match(/{{.*?}}/g) || [])) {
+    for (const match of (JSON.stringify(result.data).match(/{{.*?}}/g) || [])) {
         const key = match.substring(2, match.length - 2);
         map[key] = match;
     }
 
-    return {
-        success: true,
-        tm: (await ThingModelHelpers.getPartialTDs(tm, {map}))[0]
-    };
+    try {
+        const tm = await ThingModelHelpers.getPartialTDs(result.data, {map});
+        return {
+            success: true,
+            tm: tm[0]
+        };
+    } catch (err) {
+        return {
+            success: false,
+            status: 'warning',
+            comment: err
+        };
+    }
 }
 
 

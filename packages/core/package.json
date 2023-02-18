@@ -21,7 +21,7 @@
     "lint": "npx eslint . --config .eslintrc.json --ext .js,.jsx,.ts,.tsx --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif"
   },
   "dependencies": {
-    "@node-wot/td-tools": "~0.8.4",
+    "@node-wot/td-tools": "file:../../../thingweb.node-wot/packages/td-tools",
     "ajv": "^8.11.0",
     "ajv-formats": "^2.1.1",
     "ajv-formats-draft2019": "^1.6.1",
