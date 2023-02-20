@@ -1,0 +1,25 @@
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "@type": "Thing",
+    "id": "urn:example:123-321-123-321",
+    "title": "MyLampThing",
+    "description": "My very lamp thingy.",
+    "version": {
+        "instance": "1.0.0",
+        "model": "1.0.0"
+    },
+    "links": [
+        {
+            "rel": "type",
+            "href": "https://example.com/models/colored-lamp-1.0.0.tm.jsonld",
+            "type": "application/tm+json"
+        }
+    ],
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": "basic_sc"
+}
