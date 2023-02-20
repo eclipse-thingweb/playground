@@ -31,6 +31,7 @@ const tmRelated = [];
 
 document.getElementById("box_jsonld_validate").checked = true
 document.getElementById("box_reset_logging").checked = true
+document.getElementById("box_check_tm_conformance").checked = true
 
 document.getElementById("validation_table_head").addEventListener("click", ()=>{
 	util.toggleValidationStatusTable()
@@ -55,7 +56,7 @@ function onDocTypeChange(outsideValue) {
 
 	if (docType === 'tm') {
 		[].forEach.call(tdRelated, el => {
-			el.el.style.display = "none"
+			el.el.style.setProperty("display", "none", 'important')
 		});
 		[].forEach.call(tmRelated, el => {
 			el.el.style.display = el.display
@@ -66,7 +67,7 @@ function onDocTypeChange(outsideValue) {
 		document.getElementById("tm-tab").click()
 	} else {
 		[].forEach.call(tmRelated, el => {
-			el.el.style.display = "none"
+			el.el.style.setProperty("display", "none", 'important')
 		});
 		[].forEach.call(tdRelated, el => {
 			el.el.style.display = el.display
