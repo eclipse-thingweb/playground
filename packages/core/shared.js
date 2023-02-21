@@ -1030,10 +1030,34 @@ async function fetchLinkedTm(td) {
         };
     }
 
-    return {
-        success: true,
-        tm: result.data
-    };
+    // At this point we have the direct tm
+    // But it can relate to other tms as well
+    // Recursively resolve all other tms using node-wot td-tools
+
+    const ThingModelHelpers = new (require("@node-wot/td-tools")).ThingModelHelpers();
+
+    // The tm resolver expects values for placeholders
+    // However, we don't know (and don't need) them at this moment
+    // Fool the resolver by providing the same placeholders as values for placeholders :D
+    const map = {};
+    for (const match of (JSON.stringify(result.data).match(/{{.*?}}/g) || [])) {
+        const key = match.substring(2, match.length - 2);
+        map[key] = match;
+    }
+
+    try {
+        const tm = await ThingModelHelpers.getPartialTDs(result.data, {map});
+        return {
+            success: true,
+            tm: tm[0]
+        };
+    } catch (err) {
+        return {
+            success: false,
+            status: 'warning',
+            comment: err
+        };
+    }
 }
 
 
@@ -1191,17 +1215,20 @@ async function checkLinkedStructure(td) {
     let skipNext = false;
     const checkValues = (obj, path = '') => {
         for (const key of Object.keys(obj)) {
+            // Currently, keys that start with `tm:` or equal to `@type`, `$comment`, `id`,
+            // `version` and `links` are ignored in the value checks
+
             if (!key.endsWith('__added') && !key.endsWith('__deleted') &&
                 !key.startsWith('tm:') && key !== '@type' && key !== '$comment' &&
-                key !== 'id' && key !== 'version') {
-// Currently, keys that start with `tm:`, `@type`, `$comment`, `id` and `version` are ignored in the value checks.
+                key !== 'id' && key !== 'version' && key !== 'links') {
+
                 if (skipNext) {
                     skipNext = false;
                     continue;
                 }
 
                 if (key == '__new' || key == '__old') {
-                    if (/{{2}[ -~]+}{2}/.test(obj['__old'].toString())) {
+                    if (/{{.*?}}/.test(obj['__old'].toString())) {
                         continue;
                     }
 
