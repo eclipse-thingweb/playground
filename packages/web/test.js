@@ -10,6 +10,7 @@ const fs = require("fs")
 const handler = require("serve-handler")
 const http = require("http")
 const path = require("path")
+const assert = require('node:assert')
 
 const arg = process.argv[2]
 const options = (arg === "-d" || arg === "--debug") ? {headless: false, slowMo: 200} : {}
@@ -22,14 +23,14 @@ const testDir = "./test_results"
 const server = http.createServer((request, response) => {
   // You pass two more arguments for config and middleware
   // More details here: https://github.com/vercel/serve-handler#options
-  return handler(request, response);
+  return handler(request, response)
 })
 
 /* ################### */
 /*      MAIN           */
 server.listen(port, () => {
-  console.log("Running siteTest at " + fullHost);
-});
+  console.log("Running siteTest at " + fullHost)
+})
 testVisual()
 /* ################### */
 
@@ -109,42 +110,46 @@ async function testVisualChromium(page) {
   await customShot("typo_check_without_typos")
   await page.screenshot({ path: `./test_results/chromium_typo_check_without_typos.png`, fullPage: true })
 
-  await page.evaluate(() => {
+  assert(await page.evaluate(() => {
     const markerCount = monaco.editor.getModelMarkers({owner: "typo"}).length
     const typoCount = JSON.parse(window.tdEditor.getModel(monaco.Uri.parse("")).getValue()).typoCount
 
-    if (markerCount !== typoCount) {
-      // eslint-disable-next-line no-throw-literal
-      throw 'Typos markers are not equal to typo count!'
-    }
-  })
+    return markerCount === typoCount
+  }), 'Typos markers are not equal to typo count!')
 
   await loadTestToEditor('TypoCheckWithTypos', page)
   await customShot("typo_check_with_typos")
   await page.screenshot({ path: `./test_results/chromium_typo_check_with_typos.png`, fullPage: true })
 
-  await page.evaluate(() => {
+  assert(await page.evaluate(() => {
     const markerCount = monaco.editor.getModelMarkers({owner: "typo"}).length
     const typoCount = JSON.parse(window.tdEditor.getModel(monaco.Uri.parse("")).getValue()).typoCount
 
-    if (markerCount !== typoCount) {
-      // eslint-disable-next-line no-throw-literal
-      throw 'Typos markers are not equal to typo count!'
-    }
-  })
+    return markerCount === typoCount
+  }), 'Typos markers are not equal to typo count!')
 
-  await page.evaluate(() => window.tdEditor.getModel(monaco.Uri.parse("")).setValue('{ "context": "Test" }'));
+  await page.evaluate(() => window.tdEditor.getModel(monaco.Uri.parse("")).setValue('{ "context": "Test" }'))
   await myWait(1000)
   await customShot("typo_check_handwritten_typo_exists")
   await page.screenshot({ path: `./test_results/chromium_typo_check_handwritten_typo_exists.png`, fullPage: true })
 
   await page.evaluate(() =>
     window.tdEditor.getModel(monaco.Uri.parse("")).setValue('{ "@context": "https://www.w3.org/2019/wot/td/v1" }')
-  );
+  )
   await myWait(1000)
   await customShot("typo_check_handwritten_typo_fixed")
   await page.screenshot({ path: `./test_results/chromium_typo_check_handwritten_typo_fixed.png`, fullPage: true })
 
+  await page.evaluate(() => window.tdEditor.getModel(monaco.Uri.parse(""))
+    .setValue('{ "@context": "https://www.w3.org/2019/wot/td/v1", "@type": [] }'))
+  await myWait(1000)
+  await customShot("unformatted_document")
+  await page.screenshot({ path: `./test_results/chromium_unformatted_document.png`, fullPage: true })
+
+  await page.click("#btn_formatDocument")
+  await myWait(1000)
+  await customShot("formatted_document")
+  await page.screenshot({ path: `./test_results/chromium_formatted_document.png`, fullPage: true })
 
   await page.selectOption('#load_example', "SimpleTD")
   await customShot("td")
@@ -296,7 +301,7 @@ async function loadTestToEditor(testName, page) {
  */
 function getTestData(urlAddr) {
   try {
-    const data = fs.readFileSync(urlAddr);
+    const data = fs.readFileSync(urlAddr)
     return JSON.parse(data)
   } catch(err) {
     console.log(`Error while reading the file on address ${urlAddr}: ${err}`)

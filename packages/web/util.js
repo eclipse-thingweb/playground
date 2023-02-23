@@ -367,12 +367,12 @@ export function exampleSelectHandler(e, obj) {
         getTdUrl(urlAddr).then( data => {
             if (window.editor === window.tdEditor) {
                 if (window.editorFormat === 'json') {
-                    window.editor.setValue(JSON.stringify(data,null,'\t'))
+                    window.editor.setValue(JSON.stringify(data,null,4))
                 } else {
                     window.editor.setValue(Validators.convertTDJsonToYaml(JSON.stringify(data)))
                 }
             } else {
-                window.editor.setValue(JSON.stringify(data,null,'\t'))
+                window.editor.setValue(JSON.stringify(data,null,4))
             }
         })
     }
@@ -410,10 +410,11 @@ function realValidator(body, docType, source) {
     if (source === "manual") {log("------- New Validation Started -------")}
 
     const checkJsonLd = document.getElementById("box_jsonld_validate").checked
+    const checkTmConformance = document.getElementById("box_check_tm_conformance").checked
 
     const validator = (docType === "td") ? Validators.tdValidator : Validators.tmValidator
 
-    validator(body, log, {checkDefaults: true, checkJsonLd})
+    validator(body, log, {checkDefaults: true, checkJsonLd, checkTmConformance})
     .then( result => {
         let resultStatus = "success"
 

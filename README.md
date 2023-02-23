@@ -3,7 +3,7 @@
 Try it online at [http://plugfest.thingweb.io/playground/](http://plugfest.thingweb.io/playground/)  
 
 [![GitHub license](https://img.shields.io/github/license/thingweb/thingweb-playground)](./LICENSE.md)
-[![GitHub testing](https://img.shields.io/github/workflow/status/thingweb/thingweb-playground/Default%20CI%20%26%20CD%20Pipeline)](https://github.com/thingweb/thingweb-playground/actions)
+[![Default CI & CD Pipeline](https://github.com/thingweb/thingweb-playground/actions/workflows/ci-cd.yaml/badge.svg)](https://github.com/thingweb/thingweb-playground/actions/workflows/ci-cd.yaml)
 [![CodeQL](https://github.com/thingweb/thingweb-playground/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/thingweb/thingweb-playground/actions/workflows/codeql-analysis.yml)
 
 ## Installation
@@ -11,7 +11,7 @@ Try it online at [http://plugfest.thingweb.io/playground/](http://plugfest.thing
 There are different ways to use Playground:
 
 - Install all packages and their dependencies via `npm install` in the root directory. This script calls `lerna bootstrap`.
-- You can install the different packages from npm ([see below](./packages)) or in their respective directories. Currently, npm packages are not using TD 1.1 features.
+- You can install the different packages from npm ([see below](./packages)) or in their respective directories.
 
 ## Structure
 
@@ -29,7 +29,6 @@ The packages in this repository ([here](./packages)), which you find on NPM unde
 * You can use the `cli` package to test one/multiple TDs via the command line or execute assertion testing with it. The cli for the playground can be found [here](./packages/cli/) or [on NPM](https://www.npmjs.com/package/@thing-description-playground/cli).
 * You can use the `core` package as an API to validate TDs in your own packages. The core package can be found [here](./packages/core/) or [on NPM](https://www.npmjs.com/package/@thing-description-playground/core).
 * You can use the `defaults` package to add/remove explicitly stated default values in a TD. The default package can be found [here](./packages/defaults/) or [on NPM](https://www.npmjs.com/package/@thing-description-playground/defaults).
-* You can use the `gist_backend` package to host a backend for the gist-submission functionality of the browser version of the playground. The package can be found [here](./packages/gist_backend) or [on NPM](https://www.npmjs.com/package/@thing-description-playground/gist_backend).
 * You can use the `td_to_openAPI` package to create an openAPI instance from a Thing Description. The package can be found [here](./packages/td_to_openAPI) or [on NPM](https://www.npmjs.com/package/@thing-description-playground/td_to_openapi).
 * You can use the `web` package to host/adapt your own browser version of the WoT playground. The web package can be found [here](./packages/web/) or [on NPM](https://www.npmjs.com/package/@thing-description-playground/web).
 

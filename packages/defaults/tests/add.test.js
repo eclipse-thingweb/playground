@@ -393,4 +393,39 @@ describe("module tests", () => {
         addDefaults(td)
         expect(td).toEqual(refTd)
     })
+
+    test("AdditionalExpectedResponse", () => {
+        const td = {
+            properties: {
+                temperature: {
+                    writeOnly: true,
+                    readOnly: false,
+                    forms: [
+                        {
+                            href:"asdf",
+                            contentType: "text/html",
+                            additionalResponses: [{}]
+                        }
+                    ]
+                }
+            }
+        }
+        const refTd = {
+            properties: {
+                temperature: {
+                    readOnly: false,
+                    writeOnly: true,
+                    observable: false,
+                    forms: [{
+                        href:"asdf",
+                        op: "writeproperty",
+                        contentType: "text/html",
+                        additionalResponses: [{ success: false, contentType: "text/html" }]
+                    }]
+                }
+            }
+        }
+        addDefaults(td)
+        expect(td).toEqual(refTd)
+    })
 })

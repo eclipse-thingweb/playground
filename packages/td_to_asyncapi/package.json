@@ -2,7 +2,7 @@
   "name": "@thing-description-playground/td_to_asyncapi",
   "author": "TUM ESI <esi@ei.tum.de> (https://www.ei.tum.de/en/esi/home/)",
   "license": "MIT",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Provides AsyncAPI instance generation for Thing Descriptions in the Web of Things - Thing Description Playground.",
   "homepage": "https://github.com/thingweb/thingweb-playground#readme",
   "bugs": {
@@ -24,18 +24,19 @@
   },
   "dependencies": {
     "@asyncapi/parser": "^1.15.1",
-    "@thing-description-playground/defaults": "^1.2.1",
+    "@thing-description-playground/defaults": "^1.3.0",
     "json-to-pretty-yaml": "^1.2.2"
   },
   "devDependencies": {
+    "@microsoft/eslint-formatter-sarif": "^2.1.7",
     "browserify": "^17.0.0",
     "browserify-shim": "^3.8.15",
     "eslint": "^8.22.0",
     "jest": "^28.1.3",
-    "terser": "^5.14.2",
-    "@microsoft/eslint-formatter-sarif": "^2.1.7"
+    "terser": "^5.14.2"
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "gitHead": "e518a8268a302f82c90ed2d44d8a9ed96675bc50"
 }

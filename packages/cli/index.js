@@ -42,6 +42,7 @@ program
         'The files or the folders containing the files, which will be processed and/or validated. Multiple inputs can be provided.', undefined)
     .option('-j, --no-jsonld', 'Turn off the JSON-LD validation (for example because internet connection is not available)')
     .option('-d, --no-defaults', 'Turn off the Full JSON Schema validation, which checks e.g. for default values being explicitly set')
+    .option('--no-tm-conformance', 'Turn off TD to TM conformance checks (applicable when TD links to TM)')
     .option('-a, --assertions', 'Call the assertion report instead of the core validation, \n' +
         'if files with .csv ending are given as input merging assertion reports is done')
     .option('-o, --assertion-out <pathToOutput>',
@@ -239,7 +240,7 @@ function tdAssertionReport(inputParam) {
 function assertTd(tds, type, tdsToMerge, manualAssertions, doneEventEmitter) {
     return new Promise((res, rej) => {
         if (tds.length > 0) {
-            tdAssertions(tds, fileLoader, logFunc, manualAssertions, doneEventEmitter).then(results => {
+            tdAssertions(tds, fileLoader, logFunc, manualAssertions, doneEventEmitter).then( async (results) => {
                 if (type === "file") {
                     outReport(results, "assertionsTest_", input)
                     res()
@@ -264,7 +265,7 @@ function assertTd(tds, type, tdsToMerge, manualAssertions, doneEventEmitter) {
                 else {
                     rej("unknown assertion type")
                 }
-            })
+            });
         }
         else {
             res()
@@ -372,7 +373,7 @@ function coreValidation(input) {
                 if (el.endsWith(".json") || el.endsWith(".jsonld")) {
                     tdToCheck = fs.readFileSync(path.join(validPath, el), "utf-8")
                     const suite = builder.testSuite().name(el)
-                    const thisProm = tdValidator(tdToCheck, console.log, { checkDefaults: false }, suite)
+                    const thisProm = tdValidator(tdToCheck, console.log, { checkDefaults: false, checkTmConformance: false }, suite)
                         .then(result => {
                             if (statResult("failed", result.report)) {
                                 console.log(el, "was supposed to be valid but gave error")
@@ -510,11 +511,15 @@ function coreValidation(input) {
  */
 function checkTd(td, suite) {
 
-    tdValidator(td, console.log, { checkDefaults: myArguments.defaults, checkJsonLd: myArguments.jsonld }, suite)
+    tdValidator(td, console.log, {
+        checkDefaults: myArguments.defaults,
+        checkJsonLd: myArguments.jsonld,
+        checkTmConformance: myArguments.tmConformance
+        }, suite)
         .then(result => {
             console.log("OKAY \n")
             console.log("\n")
-            console.log("--- Report ---\n", result, "\n--------------")
+            console.log("--- Report ",JSON.parse(td).title,"---\n", result, "\n--------------")
             if (myArguments.junit) {
                 builder.writeTo("junit-tests.xml")
             }
@@ -936,7 +941,7 @@ function checkTm(tm, suite) {
         .then(result => {
             console.log("OKAY \n")
             console.log("\n")
-            console.log("--- Report ---\n", result, "\n--------------")
+            console.log("--- Report ",JSON.parse(td).title,"---\n", result, "\n--------------")
             if (myArguments.junit) {
                 builder.writeTo("junit-tests.xml")
             }

@@ -252,17 +252,29 @@
                     </select>
                     <br><br>
 
-                    <input type="checkbox" id="box_auto_validate" value="boxautoval">
-                    <label for="box_auto_validate">Auto Validate</label>
+                    <ul class="list-unstyled">
+                      <li class="d-inline-block mr-4">
+                        <input type="checkbox" id="box_auto_validate" value="boxautoval" class="m-0">
+                        <label for="box_auto_validate" class="mb-0">Auto Validate</label>
+                      </li>
+                      <li class="d-inline-block">
+                        <input type="checkbox" id="box_reset_logging" value="boxreslog" class="m-0">
+                        <label class="tooltipline mb-0" for="box_reset_logging" title="Reset Logging for every new Validation">Reset Logging</label>
+                      </li>
+                    </ul>
 
-                    <input type="checkbox" id="box_jsonld_validate" value="boxjsonld">
-                    <label for="box_jsonld_validate">Validate JSON-LD</label>
+                    <ul class="list-unstyled">
+                      <li class="d-inline-block mr-3">
+                        <input type="checkbox" id="box_jsonld_validate" value="boxjsonld" class="m-0">
+                        <label for="box_jsonld_validate">Validate JSON-LD</label>
+                      </li>
+                      <li class="d-inline-block td-related">
+                        <input type="checkbox" id="box_check_tm_conformance" value="boxtmconf" class="m-0">
+                        <label class="tooltipline" for="box_check_tm_conformance" title="Check if TD conforms to structure imposed by linked TM">Check TM Conformance</label>
+                      </li>
+                    </ul>
 
-                    <input type="checkbox" id="box_reset_logging" value="boxreslog">
-                    <label class="tooltipline" for="box_reset_logging"
-                      title="Reset Logging for every new Validation">Reset Logging</label>
-
-                    <br><br>
+                    <br>
                     <label for="doc_type">Document Type</label>
                     <select id="doc_type" class="btn btn-info dropdown-toggle btn-sm">
                       <option class="btn-info" value="td">Thing Description</option>
@@ -273,11 +285,12 @@
                     <div class="btn-group" role="group">
                       <button type="button" class="btn custom-btn jsonOnly" id="btn_validate">Validate</button>
                       <button type="button" class="btn custom-btn jsonOnly" id="btn_clearLog">Clear Log</button>
-                      <button type="button" class="btn custom-btn jsonOnly" id="btn_visualize">Visualize</button>
+                      <button type="button" title="Format the JSON document with pretty printing" class="btn custom-btn jsonOnly" id="btn_formatDocument">Format Document</button>
                     </div>
 
                     <br>
                     <div class="btn-group" role="group">
+                      <button type="button" class="btn custom-btn jsonOnly" id="btn_visualize">Visualize</button>
                       <button type="button" class="btn custom-btn jsonOnly" id="btn_assertion_popup">Assertion Test</button>
                     </div>
 
@@ -354,6 +367,7 @@
   <script src="./node_modules/@thing-description-playground/td_to_openapi/dist/web-bundle.min.js"></script>
   <script src="./node_modules/@thing-description-playground/td_to_asyncapi/dist/web-bundle.min.js"></script>
   <script src="./node_modules/@thing-description-playground/defaults/dist/web-bundle.min.js"></script>
+  <script src="./node_modules/@thing-description-playground/json-spell-checker/dist/web-bundle.min.js"></script>
   <!-- Ensure that d3 and d3-tip are added before loader.js,
     otherwise throws an error, see https://github.com/microsoft/monaco-editor/issues/2283 -->
   <!-- Also order matters for svg-crowbar, vega and vega-embed (relative to loader.js) -->

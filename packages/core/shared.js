@@ -11,6 +11,9 @@ const jsonValidator = require('json-dup-key-validator')
 // This is used to validate if the multi language JSON keys are valid according to the BCP47 spec
 const bcp47pattern = /^(?:(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE)|(art-lojban|cel-gaulish|no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))$|^((?:[a-z]{2,3}(?:(?:-[a-z]{3}){1,3})?)|[a-z]{4}|[a-z]{5,8})(?:-([a-z]{4}))?(?:-([a-z]{2}|\d{3}))?((?:-(?:[\da-z]{5,8}|\d[\da-z]{3}))*)?((?:-[\da-wy-z](?:-[\da-z]{2,8})+)*)?(-x(?:-[\da-z]{1,8})+)?$|^(x(?:-[\da-z]{1,8})+)$/i // eslint-disable-line max-len
 
+const fetch = require('node-fetch');
+const fs = require('fs');
+const jsonDiff = require('json-diff');
 
 module.exports =  {
     checkPropUniqueness,
@@ -18,7 +21,9 @@ module.exports =  {
     checkMultiLangConsistency,
     checkLinksRelTypeCount,
     checkUriSecurity,
-    checkTmOptionalPointer
+    checkTmOptionalPointer,
+    checkLinkedAffordances,
+    checkLinkedStructure
 }
 
 /**
@@ -136,7 +141,7 @@ function checkPropUniqueness(tdString) {
                 results.push({
                     "ID": "td-properties_uniqueness",
                     "Status": "fail",
-                    "Comment": "duplicate property names"
+                    "Comment": "duplicate property names at "+td.title
                 })
                 // since JSON.parse removes duplicates, we replace the duplicate name with duplicateName
                 tdString = tdString.replace(interactionName, "duplicateName")
@@ -164,7 +169,7 @@ function checkPropUniqueness(tdString) {
                 results.push({
                     "ID": "td-actions_uniqueness",
                     "Status": "fail",
-                    "Comment": "duplicate action names"
+                    "Comment": "duplicate action names at "+td.title
                 })
                 // since JSON.parse removes duplicates, we replace the duplicate name with duplicateName
                 tdString = tdString.replace(interactionName, "duplicateName")
@@ -190,7 +195,7 @@ function checkPropUniqueness(tdString) {
                 results.push({
                     "ID": "td-events_uniqueness",
                     "Status": "fail",
-                    "Comment": "duplicate event names"
+                    "Comment": "duplicate event names at "+td.title
                 })
                 // since JSON.parse removes duplicates, we replace the duplicate name with duplicateName
                 tdString = tdString.replace(interactionName, "duplicateName")
@@ -236,7 +241,7 @@ function checkSecurity(td) {
             results.push({
                 "ID": "td-security-scheme-name",
                 "Status": "fail",
-                "Comment": "used a non defined security scheme in root level"
+                "Comment": "used a non defined security scheme in root level at "+td.title
             })
             return results
         }
@@ -260,7 +265,7 @@ function checkSecurity(td) {
                             results.push({
                                 "ID": "td-security-scheme-name",
                                 "Status": "fail",
-                                "Comment": "used a non defined security scheme in a property form"
+                                "Comment": "used a non defined security scheme in a property form at "+td.title
                             })
                             return results
                         }
@@ -288,7 +293,7 @@ function checkSecurity(td) {
                             results.push({
                                 "ID": "td-security-scheme-name",
                                 "Status": "fail",
-                                "Comment": "used a non defined security scheme in an action form"
+                                "Comment": "used a non defined security scheme in an action form at "+td.title
                             })
                             return results
                         }
@@ -317,7 +322,7 @@ function checkSecurity(td) {
                             results.push({
                                 "ID": "td-security-scheme-name",
                                 "Status": "fail",
-                                "Comment": "used a non defined security scheme in an event form"
+                                "Comment": "used a non defined security scheme in an event form at "+td.title
                             })
                             return results
                         }
@@ -494,7 +499,7 @@ function checkMultiLangConsistency(td) {
         results.push({
             "ID": "td-multi-languages-consistent",
             "Status": "fail",
-            "Comment": "not all multilang objects have same language tags"
+            "Comment": "not all multilang objects have same language tags at "+td.title
         })
     }
 
@@ -519,7 +524,7 @@ function checkMultiLangConsistency(td) {
         results.push({
             "ID": "td-multilanguage-language-tag",
             "Status": "fail",
-            "Comment":isBCP47+" is not a BCP47 tag"
+            "Comment":isBCP47+" is not a BCP47 tag at "+td.title
         })
     }
 
@@ -551,7 +556,7 @@ function checkMultiLangConsistency(td) {
             results.push({
                 "ID": "td-titles-descriptions",
                 "Status": "fail",
-                "Comment": elementName+" is not on the multilang object at the same level"
+                "Comment": elementName+" is not on the multilang object at the same level at "+td.title
             })
             return results
         }
@@ -693,7 +698,7 @@ function checkLinksRelTypeCount(td){
             results.push({
                 "ID": "tm-rel-type-maximum",
                 "Status": "fail",
-                "Comment": "too many rel:type in links array"
+                "Comment": "too many rel:type in links array at "+td.title
             })
         }
     } else {
@@ -736,7 +741,6 @@ function checkUriSecurity(td) {
                 }
             }
         }
-
         if (securityUriVariables.length === 0){ // we could not find any
             results.push({
                 "ID": "td-security-in-uri-variable",
@@ -793,6 +797,12 @@ function checkUriSecurity(td) {
                                 }
                             }
                         } // otherwise not-impl stays
+                    } else {
+                        // even if there are no urivariables in affordances, the security urivariables is distinct
+                        // fixes https://github.com/thingweb/thingweb-playground/issues/422
+                        if (uriVariablesDistinctResult !== "fail"){
+                            uriVariablesDistinctResult = "pass"
+                        }
                     }
                 }
             }
@@ -833,7 +843,13 @@ function checkUriSecurity(td) {
                                     uriVariablesDistinctResult = "pass"
                                 }
                             }
-                        } // otherwise not-impl stays
+                        }  else {
+                            // even if there are no urivariables in affordances, the security urivariables is distinct
+                            // fixes https://github.com/thingweb/thingweb-playground/issues/422
+                            if (uriVariablesDistinctResult !== "fail"){
+                                uriVariablesDistinctResult = "pass"
+                            }
+                        }
                     }
                 }
             }
@@ -874,7 +890,13 @@ function checkUriSecurity(td) {
                                     uriVariablesDistinctResult = "pass"
                                 }
                             }
-                        } // otherwise not-impl stays
+                        }  else {
+                            // even if there are no urivariables in affordances, the security urivariables is distinct
+                            // fixes https://github.com/thingweb/thingweb-playground/issues/422
+                            if (uriVariablesDistinctResult !== "fail"){
+                                uriVariablesDistinctResult = "pass"
+                            }
+                        }
                     }
                 }
             }
@@ -921,7 +943,7 @@ function checkTmOptionalPointer(td){
                 results.push({
                     "ID": "tm-tmOptional-resolver",
                     "Status": "fail",
-                    "Comment": "tm:optional does not resolve to an affordance"
+                    "Comment": "tm:optional does not resolve to an affordance at "+td.title
                 })
             } else {
                 results.push({
@@ -941,3 +963,315 @@ function checkTmOptionalPointer(td){
 
     return results
  }
+
+
+ // ---------- Advanced TM Validation ----------
+
+async function fetchLinkedTm(td) {
+    if (!td.links) {
+        return {
+            success: false,
+            status: 'not-impl',
+            comment: 'td does not link to tm'
+        };
+    }
+
+    let typeLink = td.links.filter(e => e.rel === 'type');
+    if (typeLink.length !== 1) {
+        return (typeLink.length < 1) ? {
+            success: false,
+            status: 'not-impl',
+            comment: 'td does not link to tm'
+        } : {
+            success: false,
+            status: 'fail',
+            comment: 'td links to more than one tm at ' + td.title
+        };
+    }
+    typeLink = typeLink[0];
+
+    const fileFetcher = async (url) => {
+        try {
+            return {
+                success: true,
+                data: JSON.parse(fs.readFileSync(url.split('file://')[1]))
+            };
+        } catch {
+            return {
+                success: false,
+                error: 'make sure you are not using file:// links inside non-browser environment'
+            };
+        }
+    }
+
+    const httpFetcher = async (url) => {
+        try {
+            return {
+                success: true,
+                data: await (await fetch(url)).json()
+            };
+        } catch {
+            return {
+                success: false,
+                error: 'make sure related tm is valid JSON and is not under CORS'
+            };
+        }
+    }
+
+    // TODO: Add support for other network protocols, e.g., MQTT
+    const fetcher = (typeLink.href.startsWith('file://')) ? fileFetcher : httpFetcher;
+    const result = await fetcher(typeLink.href);
+
+    if (!result.success) {
+        return {
+            success: false,
+            status: 'warning',
+            comment: result.error
+        };
+    }
+
+    // At this point we have the direct tm
+    // But it can relate to other tms as well
+    // Recursively resolve all other tms using node-wot td-tools
+
+    const ThingModelHelpers = new (require("@node-wot/td-tools")).ThingModelHelpers();
+
+    // The tm resolver expects values for placeholders
+    // However, we don't know (and don't need) them at this moment
+    // Fool the resolver by providing the same placeholders as values for placeholders :D
+    const map = {};
+    for (const match of (JSON.stringify(result.data).match(/{{.*?}}/g) || [])) {
+        const key = match.substring(2, match.length - 2);
+        map[key] = match;
+    }
+
+    try {
+        const tm = await ThingModelHelpers.getPartialTDs(result.data, {map});
+        return {
+            success: true,
+            tm: tm[0]
+        };
+    } catch (err) {
+        return {
+            success: false,
+            status: 'warning',
+            comment: err
+        };
+    }
+}
+
+
+/**
+ * Given a TD check it has all affrodances specified in the related TM
+ * except for those in the tm:optional field.
+ *
+ * @param {object} td - TD to check
+ */
+async function checkLinkedAffordances(td) {
+    const ASSERTION_REQUIRED = 'thing-model-td-generation-processor-type';
+    const ASSERTION_OPTIONAL = 'thing-model-td-generation-processor-optional';
+
+    const tmResult = await fetchLinkedTm(td);
+    if (!tmResult.success) {
+        return [
+            {
+                ID: ASSERTION_REQUIRED,
+                Status: tmResult.status,
+                Comment: tmResult.comment
+            },
+            {
+                ID: ASSERTION_OPTIONAL,
+                Status: tmResult.status,
+                Comment: tmResult.comment
+            }
+        ];
+    }
+
+    const tm = tmResult.tm;
+    const tmAffordances = {};
+    for (const affordanceType of ['properties', 'actions', 'events']) {
+        tmAffordances[affordanceType] = {
+            all: Object.keys(tm[affordanceType] || {}),
+            optional: (tm['tm:optional'] || []).map(e => {
+                const x = e.split('/');
+                if (x[1] === affordanceType) return x[2];
+                return null;
+            }).filter(e => e),
+        };
+    }
+
+    // Check if arr2 is subset of arr1,
+    // i.e., all elements of arr2 are contained in arr1
+    const isSubset = (arr1, arr2) => arr2.every(e => arr1.includes(e));
+
+    // Check if arr1 and arr2 have any intersection
+    const haveIntersection = (arr1, arr2) => arr1.some(e => arr2.includes(e));
+
+    const results = [];
+    let requiredAssertion = false;
+    let optionalAssertion = false;
+    for (const affordanceType of ['properties', 'actions', 'events']) {
+        // Combine all and optional into one => required
+        const required = tmAffordances[affordanceType].all.filter(
+            e => !tmAffordances[affordanceType].optional.includes(e));
+
+        if (!isSubset(Object.keys(td[affordanceType] || {}), required) && !requiredAssertion) {
+            requiredAssertion = true;
+            results.push({
+                ID: ASSERTION_REQUIRED,
+                Status: 'fail',
+                Comment: 'some required affordances are missing at '+td.title
+            });
+        }
+
+        const optional = tmAffordances[affordanceType].optional;
+        if (haveIntersection(Object.keys(td[affordanceType] || {}), optional) && !optionalAssertion) {
+            optionalAssertion = true;
+            results.push({
+                ID: ASSERTION_OPTIONAL,
+                Status: 'pass',
+                Comment: ''
+            });
+        }
+
+        if (requiredAssertion && optionalAssertion) break;
+    }
+
+    if (!requiredAssertion && !optionalAssertion) {
+        return [
+            {
+                ID: ASSERTION_REQUIRED,
+                Status: 'pass',
+                Comment: ''
+            },
+            {
+                ID: ASSERTION_OPTIONAL,
+                Status: 'not-impl',
+                Comment: ''
+            }
+        ];
+    }
+
+    if (requiredAssertion) {
+        results.push({
+            ID: ASSERTION_OPTIONAL,
+            Status: 'not-impl',
+            Comment: ''
+        });
+    } else {
+        results.unshift({
+            ID: ASSERTION_REQUIRED,
+            Status: 'pass',
+            Comment: ''
+        });
+    }
+
+    return results;
+}
+
+/**
+ * Given a TD check that its structure corresponds to the one imposed by the linked TM.
+ *
+ * @param {object} td - TD to check
+ */
+async function checkLinkedStructure(td) {
+    const ASSERTION_NAME = 'thing-model-td-generation-processor-imports';
+
+    const tmResult = await fetchLinkedTm(td);
+    if (!tmResult.success) {
+        return [
+            {
+                ID: ASSERTION_NAME,
+                Status: tmResult.status,
+                Comment: tmResult.comment
+            }
+        ];
+    }
+
+    const tm = tmResult.tm;
+    const diff = jsonDiff.diff(tm, td);
+
+    // We first check that keys imposed by tm are contained in td
+    // Then we check if values of tm keys diverge in td
+
+    const missingKeys = [];
+    const checkKeys = (obj, path = '') => {
+        for (const key of Object.keys(obj)) {
+            const newPath = `${path}/${key.split('__deleted')[0]}`;
+
+            // TODO: @type case is not that trivial since tm:ThingModel should be removed but other items of the array should NOT be removed
+            if (key.endsWith('__deleted') && !key.startsWith('tm:') && !key.startsWith('@type')) {
+                if (tm['tm:optional'] && tm['tm:optional'].includes(newPath)) {
+                    continue;
+                }
+
+                missingKeys.push(newPath);
+            }
+            if (typeof obj[key] === 'object') checkKeys(obj[key], newPath);
+        }
+    };
+
+    const diffValues = [];
+    let skipNext = false;
+    const checkValues = (obj, path = '') => {
+        for (const key of Object.keys(obj)) {
+            // Currently, keys that start with `tm:` or equal to `@type`, `$comment`, `id`,
+            // `version` and `links` are ignored in the value checks
+
+            if (!key.endsWith('__added') && !key.endsWith('__deleted') &&
+                !key.startsWith('tm:') && key !== '@type' && key !== '$comment' &&
+                key !== 'id' && key !== 'version' && key !== 'links') {
+
+                if (skipNext) {
+                    skipNext = false;
+                    continue;
+                }
+
+                if (key == '__new' || key == '__old') {
+                    if (/{{.*?}}/.test(obj['__old'].toString())) {
+                        continue;
+                    }
+
+                    diffValues.push(path);
+                    skipNext = true;
+                    continue;
+                }
+
+                const newPath = `${path}/${key.split('__')[0]}`;
+                if (typeof obj[key] === 'object') checkValues(obj[key], newPath);
+            }
+        }
+    };
+
+    checkKeys(diff);
+    checkValues(diff);
+
+    if (missingKeys.length > 0 || diffValues.length > 0) {
+        let comment;
+        if (missingKeys.length > 0 && diffValues.length > 0) {
+            comment = `${missingKeys.join(', ')} - imposed by tm but missing at ${td.title}\n`;
+            comment += 'In addition, '
+            comment += `values of TM keys diverge: ${diffValues.join(', ')}`;
+        } else if (missingKeys.length > 0) {
+            comment = `${missingKeys.join(', ')} - imposed by tm but missing at ${td.title}`;
+        } else {
+            comment = `Values of TM keys diverge at ${td.title}: ${diffValues.join(', ')}`;
+        }
+
+        return [
+            {
+                ID: ASSERTION_NAME,
+                Status: 'fail',
+                Comment: comment
+            }
+        ];
+    }
+
+    return [
+        {
+            ID: ASSERTION_NAME,
+            Status: 'pass',
+            Comment: ''
+        }
+    ];
+}

@@ -1,7 +1,11 @@
 {
-    "@context": "https://www.w3.org/2022/wot/td/v1.1",
-    "title": "Smart Ventilator",
-    "description":"Demonstrating the use adding _name onto affordances when using a TM",
+    "id": "urn:required",
+    "$comment": "example 57 of the spec",
+    "@context": [
+        "https://www.w3.org/2022/wot/td/v1.1"
+    ],
+    "title": "Smart Lamp",
+    "description":"Basic usage of TD and TM together",
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",
@@ -9,16 +13,10 @@
         }
     },
     "security": "basic_sc",
-    "links": [
-        {
-            "rel": "type",
-            "href": "./SmartVentilator.tm.jsonld",
-            "type": "application/tm+json"
-        }
-    ],
     "properties": {
         "status": {
             "type": "string",
+            "description": "current status of the lamp (on|off)",
             "readOnly":true,
             "writeOnly": false,
             "observable":false,
@@ -128,5 +126,26 @@
                 }
             ]
         }
-    }
+    },
+        "links": [
+            {
+                "rel": "type",
+                "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/packages/core/examples/tms/valid/optional.json",
+                "type": "application/td+json"
+            }
+        ],
+        "events": {
+            "overheating": {
+                "description": "Lamp reaches a critical temperature (overheating)",
+                "data": {
+                    "type": "string"
+                },
+                "forms": [
+                    {
+                        "href": "https://mylamp.example.com/oh",
+                        "subprotocol": "longpoll"
+                    }
+                ]
+            }
+        }
 }

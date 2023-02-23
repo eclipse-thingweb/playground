@@ -2,7 +2,7 @@
   "name": "@thing-description-playground/cli",
   "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
   "license": "MIT",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "description": "Provides a Command Line Interface for the Web of Things - Thing Description Playground.",
   "homepage": "https://github.com/thingweb/thingweb-playground#readme",
   "bugs": {
@@ -20,11 +20,11 @@
     "lint": "npx eslint . --config .eslintrc.json --ext .js,.jsx,.ts,.tsx --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif"
   },
   "dependencies": {
-    "@thing-description-playground/assertions": "^1.3.1",
-    "@thing-description-playground/core": "^1.2.1",
-    "@thing-description-playground/defaults": "^1.2.1",
-    "@thing-description-playground/td_to_asyncapi": "^1.0.2",
-    "@thing-description-playground/td_to_openapi": "^1.2.2",
+    "@thing-description-playground/assertions": "^1.4.0",
+    "@thing-description-playground/core": "^1.3.0",
+    "@thing-description-playground/defaults": "^1.3.0",
+    "@thing-description-playground/td_to_asyncapi": "^1.1.0",
+    "@thing-description-playground/td_to_openapi": "^1.3.0",
     "cli-progress": "^3.11.2",
     "commander": "^9.4.0",
     "junit-report-builder": "^3.0.1"
@@ -33,8 +33,9 @@
     "access": "public"
   },
   "devDependencies": {
+    "@microsoft/eslint-formatter-sarif": "^2.1.7",
     "@types/commander": "^2.12.2",
-    "eslint": "^8.22.0",
-    "@microsoft/eslint-formatter-sarif": "^2.1.7"
-  }
+    "eslint": "^8.22.0"
+  },
+  "gitHead": "e518a8268a302f82c90ed2d44d8a9ed96675bc50"
 }

@@ -1,23 +1,266 @@
 {
-    "title": "tm-tmRef1",
-    "description": "The tm:ref value MUST follow the pattern: file location as URI [RFC3986](Section 4.1)), followed by # character, and followed by JSON Pointer [RFC6901] definition.",
-    "$schema ": "https://json-schema.org/draft/2019-09/schema#",
-    "is-complex":false,
-    "also": ["tm-placeholder-retyping","tm-tmRef-usecase"],
-    "type": "object",
+  "title": "tm-tmRef1",
+  "description": "The tm:ref value MUST follow the pattern: file location as URI [RFC3986](Section 4.1)), followed by # character, and followed by JSON Pointer [RFC6901] definition.",
+  "$schema ": "https://json-schema.org/draft/2019-09/schema#",
+  "is-complex": true,
+  "also": ["tm-placeholder-retyping", "tm-tmRef-usecase"],
+  "type": "object",
+  "properties": {
     "properties": {
-        "tm:ref": {
-            "$ref": "#/definitions/tm_ref"
-        } 
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/property_element"
+      }
     },
-    "required": [
-        "tm:ref"
-    ],
-    "additionalProperties": true,
-    "definitions": {
-        "tm_ref": {
-            "type": "string",
-            "pattern": "^([a-zA-Z][a-zA-Z0-9+\\-.]*:[^\\s]*)(#(?:\/(?:[a-zA-Z0-9_\\-.!$&'()*+,;:=@]|%[0-9a-f]{2}|~0|~1)*)*)$"
-        }
+    "actions": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/action_element"
+      }
+    },
+    "events": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/event_element"
+      }
     }
+  },
+  "additionalProperties": true,
+  "definitions": {
+    "tm_ref": {
+      "type": "string",
+      "format": "uri-reference"
+    },
+    "property_element": {
+      "type": "object",
+      "if": {
+        "required": ["tm:ref"],
+        "properties": {
+          "tm:ref": {
+            "$ref": "#/definitions/tm_ref"
+          }
+        }
+      },
+      "then": {
+        "const": "tm-tmRef1=pass"
+      },
+      "else": {
+        "type": "object",
+        "if": {
+          "required": ["tm:ref"],
+          "properties": {
+            "tm:ref": {
+              "$ref": "#/definitions/tm_ref"
+            }
+          }
+        },
+        "then": {
+          "const": "tm-tmRef1=pass"
+        },
+        "else": {
+          "properties": {
+            "properties": {
+              "additionalProperties": {
+                "$ref": "#/definitions/dataSchema"
+              }
+            },
+            "uriVariables": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/definitions/dataSchema"
+              }
+            },
+            "oneOf": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/dataSchema"
+              }
+            },
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/definitions/dataSchema"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/dataSchema"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "action_element": {
+      "type": "object",
+      "if": {
+        "required": ["tm:ref"],
+        "properties": {
+          "tm:ref": {
+            "$ref": "#/definitions/tm_ref"
+          }
+        }
+      },
+      "then": {
+        "const": "tm-tmRef1=pass"
+      },
+      "else": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "$ref": "#/definitions/dataSchema"
+          },
+          "output": {
+            "$ref": "#/definitions/dataSchema"
+          }
+        }
+      }
+    },
+    "event_element": {
+      "type": "object",
+      "if": {
+        "required": ["tm:ref"],
+        "properties": {
+          "tm:ref": {
+            "$ref": "#/definitions/tm_ref"
+          }
+        }
+      },
+      "then": {
+        "const": "tm-tmRef1=pass"
+      },
+      "else": {
+        "type": "object",
+        "properties": {
+          "subscription": {
+            "$ref": "#/definitions/dataSchema"
+          },
+          "data": {
+            "$ref": "#/definitions/dataSchema"
+          },
+          "cancellation": {
+            "$ref": "#/definitions/dataSchema"
+          }
+        }
+      }
+    },
+    "dataSchema": {
+      "type": "object",
+      "if": {
+        "required": ["tm:ref"],
+        "properties": {
+          "tm:ref": {
+            "$ref": "#/definitions/tm_ref"
+          }
+        }
+      },
+      "then": {
+        "const": "tm-tmRef1=pass"
+      },
+      "else": {
+        "properties": {
+          "description": {
+            "$ref": "#/definitions/description"
+          },
+          "title": {
+            "$ref": "#/definitions/title"
+          },
+          "descriptions": {
+            "$ref": "#/definitions/descriptions"
+          },
+          "titles": {
+            "$ref": "#/definitions/titles"
+          },
+          "writeOnly": {
+            "type": "boolean"
+          },
+          "readOnly": {
+            "type": "boolean"
+          },
+          "oneOf": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/dataSchema"
+            }
+          },
+          "unit": {
+            "type": "string"
+          },
+          "enum": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "const": {},
+          "type": {
+            "type": "string",
+            "enum": [
+              "boolean",
+              "integer",
+              "number",
+              "string",
+              "object",
+              "array",
+              "null"
+            ]
+          },
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/dataSchema"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/dataSchema"
+                }
+              }
+            ]
+          },
+          "maxItems": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "minItems": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "minimum": {
+            "type": "number"
+          },
+          "maximum": {
+            "type": "number"
+          },
+          "properties": {
+            "additionalProperties": {
+              "$ref": "#/definitions/dataSchema"
+            }
+          },
+          "required": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "description": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "descriptions": {
+      "type": "object"
+    },
+    "titles": {
+      "type": "object"
+    },
+    "url": {
+      "type": "string"
+    }
+  }
 }

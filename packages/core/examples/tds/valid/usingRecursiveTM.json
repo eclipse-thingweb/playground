@@ -1,0 +1,118 @@
+{
+    "id": "urn:required",
+    "$comment": "example 57 of the spec",
+    "@context": [
+        "https://www.w3.org/2022/wot/td/v1.1"
+    ],
+    "title": "The title",
+    "description": "The description",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": "basic_sc",
+    "properties": {
+        "status": {
+            "type": "string",
+            "description": "current status of the lamp (on|off)",
+            "readOnly": true,
+            "writeOnly": false,
+            "observable": false,
+            "enum": [
+                "on_value",
+                "off_value",
+                "error_value"
+            ],
+            "forms": [
+                {
+                    "op": "readproperty",
+                    "href": "http://127.0.13.232:4563/status",
+                    "contentType": "application/json"
+                }
+            ]
+        },
+        "dim": {
+            "type": "integer",
+            "readOnly": true,
+            "writeOnly": false,
+            "observable": false,
+            "minimum": 0,
+            "maximum": 100,
+            "forms": [
+                {
+                    "op": "readproperty",
+                    "href": "http://127.0.13.232:4563/dim",
+                    "contentType": "application/json"
+                }
+            ]
+        }
+    },
+    "actions": {
+        "led_fadeIn": {
+            "title": "fadeIn",
+            "safe": true,
+            "idempotent": true,
+            "input": {
+                "type": "number",
+                "description": "fadeIn in ms",
+                "readOnly": true,
+                "writeOnly": false,
+                "observable": false
+            },
+            "forms": [
+                {
+                    "op": "invokeaction",
+                    "href": "http://127.0.13.211:4563/fadeIn",
+                    "contentType": "application/json"
+                }
+            ]
+        },
+        "led_fadeOut": {
+            "title": "fadeOut",
+            "safe": true,
+            "idempotent": true,
+            "input": {
+                "type": "number",
+                "description": "fadeOut in ms",
+                "readOnly": true,
+                "writeOnly": false,
+                "observable": false
+            },
+            "forms": [
+                {
+                    "op": "invokeaction",
+                    "href": "http://127.0.13.211:4563/fadeOut",
+                    "contentType": "application/json"
+                }
+            ]
+        }
+    },
+    "links": [
+        {
+            "rel": "type",
+            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/packages/core/examples/tms/valid/extend.json",
+            "type": "application/td+json"
+        }
+    ],
+    "events": {
+        "overheating": {
+            "description": "Lamp reaches a critical temperature (overheating)",
+            "data": {
+                "type": "string",
+                "readOnly": true,
+                "writeOnly": false,
+                "observable": false
+            },
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/oh",
+                    "subprotocol": "longpoll",
+                    "contentType": "application/json",
+                    "op": ["subscribeevent"]
+                }
+            ]
+        }
+    }
+}

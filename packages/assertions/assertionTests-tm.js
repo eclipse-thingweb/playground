@@ -494,7 +494,7 @@ function validateTmRef(tmObj, logFunc) {
                 if(result && !result.valid) return result
             }
             // if no fail was found, return a valid result
-            return results[0]
+            return scopedResults[0]
         }
         return null
     }

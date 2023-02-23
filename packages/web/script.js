@@ -31,6 +31,7 @@ const tmRelated = [];
 
 document.getElementById("box_jsonld_validate").checked = true
 document.getElementById("box_reset_logging").checked = true
+document.getElementById("box_check_tm_conformance").checked = true
 
 document.getElementById("validation_table_head").addEventListener("click", ()=>{
 	util.toggleValidationStatusTable()
@@ -55,7 +56,7 @@ function onDocTypeChange(outsideValue) {
 
 	if (docType === 'tm') {
 		[].forEach.call(tdRelated, el => {
-			el.el.style.display = "none"
+			el.el.style.setProperty("display", "none", 'important')
 		});
 		[].forEach.call(tmRelated, el => {
 			el.el.style.display = el.display
@@ -66,7 +67,7 @@ function onDocTypeChange(outsideValue) {
 		document.getElementById("tm-tab").click()
 	} else {
 		[].forEach.call(tmRelated, el => {
-			el.el.style.display = "none"
+			el.el.style.setProperty("display", "none", 'important')
 		});
 		[].forEach.call(tdRelated, el => {
 			el.el.style.display = el.display
@@ -387,6 +388,10 @@ document.getElementById("yaml-format-btn").addEventListener("click", e => {
 	}
 })
 
+document.getElementById("btn_formatDocument").addEventListener("click", e => {
+	formatDocument()
+})
+
 /**
  * Enable html elements with class jsonOnly
  */
@@ -455,6 +460,10 @@ function enableAPIConversionWithProtocol(td) {
 	}
 }
 
+function formatDocument() {
+	window.editor.getAction('editor.action.formatDocument').run();
+}
+
 //* *************************Monaco editor code*********************************////
 // Load monaco editor ACM
 require.config({ paths: { 'vs': './node_modules/monaco-editor/min/vs' }});
@@ -482,28 +491,32 @@ require(['vs/editor/editor.main'], async function () {
 		value: (docType === 'td') ? value.substring(6) : '',
 		language: window.editorFormat,
 		// Without automaticLayout editor will not be built inside hidden div
-		automaticLayout: true
+		automaticLayout: true,
+		formatOnPaste: true
 	});
 
 	// Create globally available TM editor
 	window.tmEditor = monaco.editor.create(document.getElementById('tm-editor'), {
 		value: (docType === 'tm') ? value.substring(6) : '',
 		language: 'json',
-		automaticLayout: true
+		automaticLayout: true,
+		formatOnPaste: true
 	});
 
 	// Create globally available Open API editor
 	window.openApiEditor = monaco.editor.create(document.getElementById('open-api-editor'), {
 		language: 'json',
 		automaticLayout: true,
-		readOnly: true
+		readOnly: true,
+		formatOnPaste: true
 	});
 
 	// Create globally available Async API editor
 	window.asyncApiEditor = monaco.editor.create(document.getElementById('async-api-editor'), {
 		language: 'json',
 		automaticLayout: true,
-		readOnly: true
+		readOnly: true,
+		formatOnPaste: true
 	});
 
 	window.editor = (docType === 'td') ? window.tdEditor : window.tmEditor;
@@ -518,14 +531,15 @@ require(['vs/editor/editor.main'], async function () {
 		window.tmEditor.getModel()
 	];
 
+	formatDocument()
+
 	models.forEach(model => {
 		model.onDidChangeContent(_ => {
-
 			if (model === window.tdEditor.getModel()) {
-				markTypos(model);
 				enableAPIConversionWithProtocol(model.getValue())
 			}
 
+			markTypos(model);
 			util.validate('auto', autoValidate, docType);
 		});
 	});
@@ -558,28 +572,17 @@ require(['vs/editor/editor.main'], async function () {
 function markTypos(model) {
 	const markers = []
 
-	const typos = Validators.checkTypos(model.getValue())
-	const foundTypos = []
+	JsonSpellChecker.configure()
+	const typos = JsonSpellChecker.checkTypos(model.getValue())
 
 	typos.forEach(typo => {
-		model.findMatches(typo.word, false, false, true, typo.word, false).forEach(result => {
-			foundTypos.push({
-				range: result.range,
-				message: typo.message
-			})
-		})
-	})
-
-	foundTypos.forEach(typo => {
-		const range = typo.range
-
 		markers.push({
 			message: typo.message,
 			severity: monaco.MarkerSeverity.Warning,
-			startLineNumber: range.startLineNumber,
-			startColumn: range.startColumn,
-			endLineNumber: range.endLineNumber,
-			endColumn: range.endColumn
+			startLineNumber: typo.startLineNumber,
+			startColumn: typo.startColumn,
+			endLineNumber: typo.endLineNumber,
+			endColumn: typo.endColumn
 		})
 	})
 
