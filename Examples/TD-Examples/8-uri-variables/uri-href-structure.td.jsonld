@@ -1,6 +1,7 @@
 {
-    "@context": "http://www.w3.org/ns/td",
-    "title": "uriVariables in href structure",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "title": "MyWeatherThing",
+    "description": "As defined in [RFC6570], uriVariables can be used for replacing the href structure",
     "properties": {
         "weather": {
             "uriVariables": {
@@ -12,6 +13,20 @@
             "forms": [{
                 "href": "http://example.org/weather/{city}",
                 "htv:methodName": "GET"
+            }]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "forms": [{"href": "http://example.org/toggle"}]
+        }
+    },
+    "events": {
+        "lowbatterie": {
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "http://example.org/lb",
+                "subprotocol": "longpoll"
             }]
         }
     }

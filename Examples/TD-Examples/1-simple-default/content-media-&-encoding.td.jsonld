@@ -1,19 +1,25 @@
+
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:014139c9-b267-4db5-9c61-cc2d2bfc217d",
     "title": "MyCameraThing",
-    "description": "The contentType member is used to assign a media type [RFC2046] including media type parameters as attribute-value pairs separated by a ; character",
+    "description": "In some cases binary data is embedded in text-based values, e.g., a JSON string-based value embeds a base64 encoded image. The terms contentMediaType and contentEncoding can be used to clarify the context and encoding format of such name-value pairs.",
     "securityDefinitions": {
         "basic_sc": {"scheme": "basic", "in": "header"}
     },
     "security": "basic_sc",
     "properties": {
-        "status": {
-            "type": "string",
-            "forms": [{
-                "href": "https://mycamera.example.com/status",
-                "contentType": "application/json" 
-            }]
+        "image": { 
+	        "description": "Provides latest image", 
+	        "type": "string",
+	        "contentMediaType": "image/png",
+	        "contentEncoding": "base64",
+	        "forms": [{ 
+			    "op": "readproperty", 
+			    "href": "http://camera.example.com/lastPicture", 
+			    "cov:methodName": "GET",
+			    "contentType": "application/json" 
+		    }] 
         }
     },
     "actions": {
@@ -36,5 +42,3 @@
         }
     }
 }
-
-

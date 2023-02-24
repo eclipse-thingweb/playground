@@ -1,6 +1,7 @@
 {
     "@context": "http://www.w3.org/ns/td",
-    "title": "Combined uriVariables in href structure",
+    "title": "MyWeatherThing",
+    "description": "Combined dynamic uriVariables and uriVariables in href structure",
     "properties": {
         "weather": {
             "uriVariables": {
@@ -17,6 +18,20 @@
             "forms": [{
                 "href": "http://example.org/weather/{city}/{?unit}",
                 "htv:methodName": "GET"
+            }]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "forms": [{"href": "http://example.org/toggle"}]
+        }
+    },
+    "events": {
+        "lowbatterie": {
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "http://example.org/lb",
+                "subprotocol": "longpoll"
             }]
         }
     }

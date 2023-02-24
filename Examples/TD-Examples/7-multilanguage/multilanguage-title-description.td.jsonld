@@ -11,7 +11,7 @@
         "zh-Hans": "我的东西", 
         "zh-Hant": "我的東西"
     },
-    "description": "Menschenlesbare Informationen.",
+    "description": "TD instances may also combine the use of title and description with titles and descriptions. title and description are seeing as the default text",
     "descriptions": {
         "en": "Human readable information.",
         "de": "Menschenlesbare Informationen.",

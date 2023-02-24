@@ -2,6 +2,7 @@
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
     "title": "MyLampThing",
+    "description": "OAuth 2.0 makes use of scopes. These are identifiers that may appear in tokens and must match with corresponding identifiers in a resource to allow access to that resource",
     "securityDefinitions": {
         "oauth2_sc": {
             "scheme": "oauth2",

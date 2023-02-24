@@ -2,7 +2,7 @@
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
     "title": "Electric Motor 1",
-    "description": "A Thing refers to a group in which it is collected with the collection value",
+    "description": "A Thing can also refer to a group in which it is collected with the collection value",
     "base": "coaps://motor1.example.com",
     "securityDefinitions": {
         "basic_sc": {"scheme": "basic", "in": "header"}
@@ -12,5 +12,25 @@
         "rel": "collection",
         "href": "coaps://drive.example.com",
         "type": " application/td+json"
-    }]
+    }],
+    "properties": {
+        "status": {
+            "type": "string",
+            "forms": [{"href": "https://motor1.example.com/status"}]
+        }
+    },
+    "actions": {
+        "On": {
+            "forms": [{"href": "https://motor1.example.com/on"}]
+        }
+    },
+    "events": {
+        "overheating": {
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "https://motor1.example.com/oh",
+                "subprotocol": "longpoll"
+            }]
+        }
+    }
 }

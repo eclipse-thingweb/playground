@@ -8,13 +8,7 @@
         "zh-Hans": "我的东西", 
         "zh-Hant": "我的東西"
     },
-    "descriptions": {
-        "en": "Human readable information.",
-        "de": "Menschenlesbare Informationen.",
-        "ja": "人間が読むことができる情報",
-        "zh-Hans": "人们可阅读的信息", 
-        "zh-Hant": "人們可閱讀的資訊"
-    },
+    "description": "A TD can contain multiple languages, where the name is a valid language tag as defined by [BCP47] and the value is a human-readable string in the language indicated by the tag",
     "properties": {
         "on": {
             "titles": {

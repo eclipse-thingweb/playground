@@ -1,0 +1,57 @@
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "title": "MyCarThing",
+    "description": "The message received from the Thing as part of an Interaction Affordance can differ due to different reasons. Such reasons could be error cases or alternative responses for a valid response. In these cases, additionalResponses terms can be used to describe this behavior",
+    "securityDefinitions": {
+        "basic_sc": {"scheme": "basic", "in": "header"}
+    },
+    "security": "basic_sc",
+    "schemaDefinitions": {
+        "actionErrorPayload": {
+          "type": "object",
+          "properties": {
+            "reason": {
+              "type": "string",
+              "enum": ["cold","hot","maintenance"]
+            },
+            "timeStamp": {
+              "description": "UNIX time in numbers indicating when the error happened",
+              "type": "number"
+            }
+          }
+        }
+    },
+    "properties": {
+        "status": {
+            "type": "string",
+            "forms": [{"href": "https://mycar.example.com/api/status"}]
+        }
+    },
+    "actions": {
+        "startEngine": {
+            "output": {
+              "type": "string"
+            },
+            "forms": [{
+                "op": "invokeaction",
+                "href": "http://mycar.example.com/api/engine",
+                "contentType": "application/json",
+                "additionalResponses": [{
+                    "success": false,
+                    "contentType": "application/json",
+                    "schema": "actionErrorPayload"
+                }]
+            }]
+        }
+    },
+    "events": {
+        "overheating": {
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "https://mycar.example.com/api/oh",
+                "subprotocol": "longpoll"
+            }]
+        }
+    }
+}

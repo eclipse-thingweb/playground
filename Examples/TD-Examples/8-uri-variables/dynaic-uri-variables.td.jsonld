@@ -1,6 +1,7 @@
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
-    "title": "uriVariables",
+    "title": "MyMapThing",
+    "description": "href may also carry a URI that contains dynamic variables",
     "properties": {
         "weather": {
             "uriVariables": {
@@ -16,8 +17,22 @@
                     "description": "Longitude for the desired location in the world" }
             },
             "forms": [{
-              "href": "http://example.org/weather/{?lat,long}",
+              "href": "http://mymap.example.org/weather/{?lat,long}",
               "htv:methodName": "GET"
+            }]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "forms": [{"href": "http://mymap.example.org/toggle"}]
+        }
+    },
+    "events": {
+        "lowbatterie": {
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "http://mymap.example.org/toggle",
+                "subprotocol": "longpoll"
             }]
         }
     }

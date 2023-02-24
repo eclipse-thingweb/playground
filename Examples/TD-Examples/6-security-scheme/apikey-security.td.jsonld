@@ -2,6 +2,7 @@
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
     "title": "MyLampThing",
+    "description": "API key can be included in the request to the Thing in different ways. One way it can be used, is as a URI template where the API key should be replaced in the URI when sending an HTTPS request",
     "securityDefinitions": {
         "apikey_key": {
             "scheme": "apikey",

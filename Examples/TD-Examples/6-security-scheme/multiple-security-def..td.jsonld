@@ -2,6 +2,7 @@
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
     "title": "MyLampThing",
+    "description": "A TD can also have multiple security definitions",
     "securityDefinitions": {
         "basic_sc": {"scheme": "basic"},
         "nosec_sc": {"scheme": "nosec"}

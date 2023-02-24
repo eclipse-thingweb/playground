@@ -2,6 +2,7 @@
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
     "title": "MyLampThing",
+    "description": "All name-value pairs of a Map of ActionAffordance instances MUST be serialized as members of the JSON object that results from serializing the Map",
     "securityDefinitions": {
         "basic_sc": {"scheme": "basic", "in": "header"}
     },

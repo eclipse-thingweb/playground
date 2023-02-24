@@ -2,6 +2,7 @@
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
     "title": "MyLampThing",
+    "description": "The version member is intended as container for additional application- and/or device-specific version information based on TD Context Extensions",
     "version": { "instance": "1.2.1" },
     "securityDefinitions": {
         "basic_sc": {"scheme": "basic", "in": "header"}

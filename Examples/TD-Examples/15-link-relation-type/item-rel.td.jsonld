@@ -16,5 +16,25 @@
         "rel": "item",
         "href": "coaps://motor2.example.com",
         "type": " application/td+json"
-    }]
+    }],
+    "properties": {
+        "status": {
+            "type": "string",
+            "forms": [{"href": "https://myelectricdrice.example.com/status"}]
+        }
+    },
+    "actions": {
+        "On": {
+            "forms": [{"href": "https://myelectricdrice.example.com/on"}]
+        }
+    },
+    "events": {
+        "overheating": {
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "https://myelectricdrice.example.com/oh",
+                "subprotocol": "longpoll"
+            }]
+        }
+    }
 }
