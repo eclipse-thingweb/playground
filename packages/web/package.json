@@ -2,7 +2,7 @@
   "name": "@thing-description-playground/web",
   "author": "TUM ESI <esi@ei.tum.de> (https://www.ei.tum.de/en/esi/home/)",
   "license": "MIT",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Provides a browser GUI for the Web of Things - Thing Description Playground.",
   "homepage": "https://github.com/thingweb/thingweb-playground#readme",
   "bugs": {
@@ -21,12 +21,12 @@
     "lint": "npx eslint . --config .eslintrc.json --ext .js,.jsx,.ts,.tsx --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif"
   },
   "dependencies": {
-    "@thing-description-playground/assertions": "^1.4.0",
-    "@thing-description-playground/core": "^1.3.0",
-    "@thing-description-playground/defaults": "^1.3.0",
-    "@thing-description-playground/json-spell-checker": "^1.0.0",
-    "@thing-description-playground/td_to_asyncapi": "^1.1.0",
-    "@thing-description-playground/td_to_openapi": "^1.3.0",
+    "@thing-description-playground/assertions": "^1.5.0",
+    "@thing-description-playground/core": "^1.4.0",
+    "@thing-description-playground/defaults": "^1.4.0",
+    "@thing-description-playground/json-spell-checker": "^1.0.1",
+    "@thing-description-playground/td_to_asyncapi": "^1.1.1",
+    "@thing-description-playground/td_to_openapi": "^1.3.1",
     "bootstrap-css-only": "^4.4.1",
     "bootstrap-switch-button": "^1.1.0",
     "monaco-editor": "^0.34.0",
