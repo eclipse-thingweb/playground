@@ -1,0 +1,7 @@
+package-lock.json
+**/dist
+coverage
+.nyc_output
+**/out
+packages/td_to_openAPI/examples/openapi.yaml
+packages/td_to_asyncapi/examples/asyncapi.yaml
