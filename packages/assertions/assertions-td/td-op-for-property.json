@@ -25,9 +25,7 @@
                     }
                 }
             },
-            "required": [
-                "forms"
-            ],
+            "required": ["forms"],
             "additionalProperties": true
         },
         "form_element_property": {
@@ -38,33 +36,22 @@
                         "$ref": "#/definitions/url"
                     },
                     "op": {
-                        "oneOf": [{
+                        "oneOf": [
+                            {
                                 "type": "string",
-                                "enum": [
-                                    "readproperty",
-                                    "writeproperty",
-                                    "observeproperty",
-                                    "unobserveproperty"
-                                ]
+                                "enum": ["readproperty", "writeproperty", "observeproperty", "unobserveproperty"]
                             },
                             {
                                 "type": "array",
                                 "items": {
                                     "type": "string",
-                                    "enum": [
-                                        "readproperty",
-                                        "writeproperty",
-                                        "observeproperty",
-                                        "unobserveproperty"
-                                    ]
+                                    "enum": ["readproperty", "writeproperty", "observeproperty", "unobserveproperty"]
                                 }
                             }
                         ]
                     }
                 },
-                "required": [
-                    "href", "op"
-                ]
+                "required": ["href", "op"]
             },
             "then": {
                 "const": "td-op-for-property=pass"

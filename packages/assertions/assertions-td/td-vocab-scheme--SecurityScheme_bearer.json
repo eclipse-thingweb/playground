@@ -3,7 +3,7 @@
     "description": "scheme: Identification of security mechanism being configured. MUST be included. Type: string bearer.",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "is-complex": true,
-    "also":["td-security-binding"],
+    "also": ["td-security-binding"],
     "type": "object",
     "properties": {
         "securityDefinitions": {
@@ -14,9 +14,7 @@
             }
         }
     },
-    "required": [
-        "securityDefinitions"
-    ],
+    "required": ["securityDefinitions"],
     "additionalProperties": true,
     "definitions": {
         "securityScheme": {
@@ -25,9 +23,7 @@
                 "properties": {
                     "scheme": {
                         "type": "string",
-                        "enum": [
-                            "bearer"
-                        ]
+                        "enum": ["bearer"]
                     }
                 },
                 "required": ["scheme"]

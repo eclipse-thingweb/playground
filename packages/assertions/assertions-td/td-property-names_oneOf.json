@@ -16,9 +16,7 @@
         "property_element": {
             "type": "object",
             "if": {
-                "required": [
-                    "oneOf"
-                ]
+                "required": ["oneOf"]
             },
             "then": {
                 "const": "td-property-names_oneOf=pass"

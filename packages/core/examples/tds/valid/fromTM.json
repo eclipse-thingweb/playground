@@ -1,8 +1,6 @@
 {
     "$comment": "example 57 of the spec",
-    "@context": [
-        "https://www.w3.org/2022/wot/td/v1.1"
-    ],
+    "@context": ["https://www.w3.org/2022/wot/td/v1.1"],
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",
@@ -10,9 +8,7 @@
             "name": "myParameter"
         }
     },
-    "security": [
-        "basic_sc"
-    ],
+    "security": ["basic_sc"],
     "@type": "Thing",
     "title": "Smart Lamp",
     "description": "Basic usage of TD and TM together",
@@ -39,11 +35,7 @@
                 {
                     "href": "https://mylamp.example.com/status",
                     "contentType": "application/json",
-                    "op": [
-                        "readproperty",
-                        "observeproperty",
-                        "unobserveproperty"
-                    ]
+                    "op": ["readproperty", "observeproperty", "unobserveproperty"]
                 }
             ]
         }
@@ -57,11 +49,7 @@
                 {
                     "href": "https://mylamp.example.com/toggle",
                     "contentType": "application/json",
-                    "op": [
-                        "invokeaction",
-                        "cancelaction",
-                        "queryaction"
-                    ]
+                    "op": ["invokeaction", "cancelaction", "queryaction"]
                 }
             ]
         }
@@ -78,10 +66,7 @@
                 {
                     "href": "https://mylamp.example.com/oh",
                     "contentType": "application/json",
-                    "op": [
-                        "subscribeevent",
-                        "unsubscribeevent"
-                    ],
+                    "op": ["subscribeevent", "unsubscribeevent"],
                     "subprotocol": "longpoll"
                 }
             ]

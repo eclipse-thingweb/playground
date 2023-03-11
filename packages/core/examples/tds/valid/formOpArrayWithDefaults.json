@@ -1,6 +1,6 @@
 {
     "id": "urn:formOpArrayWithDefaults",
-    "@context":"https://www.w3.org/2022/wot/td/v1.1",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "title": "MyLampThing",
     "description": "Valid TD demonstrating how to use multiple forms with different op",
     "securityDefinitions": {
@@ -17,9 +17,10 @@
             "minimum": -64,
             "maximum": 64,
             "observable": true,
-            "readOnly":false,
-            "writeOnly":false,
-            "forms": [{
+            "readOnly": false,
+            "writeOnly": false,
+            "forms": [
+                {
                     "href": "http://example.org:9191/api/brightness",
                     "op": ["readproperty"],
                     "contentType": "application/json"
@@ -47,20 +48,23 @@
             ]
         },
         "simple": {
-            "readOnly":true,
-            "writeOnly":false,
-            "observable":false,
-            "forms": [{
-                "href": "http://example.org:9191/api/simple1",
-                "contentType": "application/json",
-                "op": "readproperty"
-            }]
+            "readOnly": true,
+            "writeOnly": false,
+            "observable": false,
+            "forms": [
+                {
+                    "href": "http://example.org:9191/api/simple1",
+                    "contentType": "application/json",
+                    "op": "readproperty"
+                }
+            ]
         },
         "simple2": {
-            "readOnly":false,
-            "writeOnly":false,
-            "observable":false,
-            "forms": [{
+            "readOnly": false,
+            "writeOnly": false,
+            "observable": false,
+            "forms": [
+                {
                     "href": "http://example.org:9191/api/simple2",
                     "op": ["readproperty"],
                     "contentType": "application/json"
@@ -80,31 +84,35 @@
                 }
             ]
         }
-
     },
     "actions": {
         "toggle": {
             "safe": false,
             "idempotent": false,
-            "forms": [{
-                "href": "https://mylamp.example.com/toggle",
-                "op": ["invokeaction"],
-                "contentType": "application/json"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/toggle",
+                    "op": ["invokeaction"],
+                    "contentType": "application/json"
+                }
+            ]
         },
         "simple3": {
             "safe": false,
             "idempotent": false,
-            "forms": [{
-                "href": "https://mylamp.example.com/toggle",
-                "contentType": "application/json",
-                "op": "invokeaction"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/toggle",
+                    "contentType": "application/json",
+                    "op": "invokeaction"
+                }
+            ]
         },
         "simple4": {
             "safe": false,
             "idempotent": false,
-            "forms": [{
+            "forms": [
+                {
                     "href": "https://mylamp.example.com/toggle",
                     "op": ["invokeaction"],
                     "contentType": "application/json"
@@ -121,33 +129,38 @@
         "overheating": {
             "data": {
                 "type": "string",
-                "readOnly":true,
-                "writeOnly":false,
-                "observable":false
+                "readOnly": true,
+                "writeOnly": false,
+                "observable": false
             },
-            "forms": [{
-                "href": "https://mylamp.example.com/oh",
-                "subprotocol": "longpoll",
-                "op": ["subscribeevent"],
-                "contentType": "application/json"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/oh",
+                    "subprotocol": "longpoll",
+                    "op": ["subscribeevent"],
+                    "contentType": "application/json"
+                }
+            ]
         },
         "simple5": {
-            "forms": [{
-                "href": "https://mylamp.example.com/oh",
-                "subprotocol": "longpoll",
-                "contentType": "application/json",
-                "op": "subscribeevent"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/oh",
+                    "subprotocol": "longpoll",
+                    "contentType": "application/json",
+                    "op": "subscribeevent"
+                }
+            ]
         },
         "simple6": {
             "data": {
                 "type": "string",
-                "readOnly":true,
-                "writeOnly":false,
-                "observable":false
+                "readOnly": true,
+                "writeOnly": false,
+                "observable": false
             },
-            "forms": [{
+            "forms": [
+                {
                     "href": "https://mylamp.example.com/oh",
                     "subprotocol": "longpoll",
                     "op": ["subscribeevent"],

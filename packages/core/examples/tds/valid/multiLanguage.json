@@ -1,6 +1,6 @@
 {
     "id": "urn:multilanguage",
-    "@context":"https://www.w3.org/2022/wot/td/v1.1",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "title": "MyLampThing",
     "titles": {
         "en": "MyLampThing",
@@ -32,8 +32,8 @@
                 "zh-Hant": "人們可閱讀的資訊",
                 "az-Latn": "Lampa Thing"
             },
-            "proxy":"http://myproxy.com/lampProxy",
-            "@type":"superSecure:1024bitpassword"
+            "proxy": "http://myproxy.com/lampProxy",
+            "@type": "superSecure:1024bitpassword"
         }
     },
     "security": ["basic_sc"],
@@ -58,14 +58,18 @@
                 "az-Latn": "Lampa Thing"
             },
             "type": "boolean",
-            "forms": [{
-                "href": "https://mylamp.example.com/status"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status"
+                }
+            ]
         },
         "simple": {
-            "forms": [{
-                "href": "https://mylamp.example.com/simples"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/simples"
+                }
+            ]
         }
     },
     "actions": {
@@ -106,22 +110,23 @@
                         "type": "number"
                     }
                 },
-                "required": [
-                    "to",
-                    "duration"
-                ]
+                "required": ["to", "duration"]
             },
             "output": {
                 "type": "string"
             },
-            "forms": [{
-                "href": "http://mytemp.example.com:5683/fade"
-            }]
+            "forms": [
+                {
+                    "href": "http://mytemp.example.com:5683/fade"
+                }
+            ]
         },
         "simple2": {
-            "forms": [{
-                "href": "https://mylamp.example.com/simple2"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/simple2"
+                }
+            ]
         }
     },
     "events": {
@@ -144,14 +149,18 @@
                 "zh-Hant": "人們可閱讀的資訊",
                 "az-Latn": "Lampa Thing"
             },
-            "forms": [{
-                "href": "http://mytemp.example.com:5683/fade"
-            }]
+            "forms": [
+                {
+                    "href": "http://mytemp.example.com:5683/fade"
+                }
+            ]
         }
     },
     "simple3": {
-        "forms": [{
-            "href": "https://mylamp.example.com/simple3"
-        }]
+        "forms": [
+            {
+                "href": "https://mylamp.example.com/simple3"
+            }
+        ]
     }
 }

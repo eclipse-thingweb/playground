@@ -1,21 +1,23 @@
 {
     "id": "urn:psk",
-    "@context":"https://www.w3.org/2022/wot/td/v1.1",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "title": "MyLampThing",
     "description": "Valid TD copied from the spec's first example",
     "securityDefinitions": {
         "psk_sc": {
             "scheme": "psk",
-            "identity":"preshared identity"
+            "identity": "preshared identity"
         }
     },
     "security": ["psk_sc"],
     "properties": {
         "status": {
             "type": "string",
-            "forms": [{
-                "href": "https://mylamp.example.com/status"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status"
+                }
+            ]
         }
     }
 }

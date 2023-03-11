@@ -1,40 +1,41 @@
- /**
-  * Outputs statistics about a given assertion report
-  * @param {object} jsonResults assertion reports
-  * @param {Function} logFunc function to log the stats
-  */
- async function checkCoverage(jsonResults, logFunc) {
+/**
+ * Outputs statistics about a given assertion report
+ * @param {object} jsonResults assertion reports
+ * @param {Function} logFunc function to log the stats
+ */
+async function checkCoverage(jsonResults, logFunc) {
+    if (logFunc === undefined) {
+        logFunc = console.log;
+    }
 
-    if (logFunc === undefined) {logFunc = console.log}
+    let passCount = 0;
+    let failCount = 0;
+    let nullCount = 0;
+    let notImplCount = 0;
+    let totalCount = 0;
 
-    let passCount = 0
-    let failCount = 0
-    let nullCount = 0
-    let notImplCount = 0
-    let totalCount = 0
-
-    jsonResults = await jsonResults
-    jsonResults.forEach(curResult => {
+    jsonResults = await jsonResults;
+    jsonResults.forEach((curResult) => {
         if (curResult.Status === "fail") {
-            failCount++
+            failCount++;
         }
         if (curResult.Status === "pass") {
-            passCount++
+            passCount++;
         }
         if (curResult.Status === "null") {
-            nullCount++
+            nullCount++;
         }
         if (curResult.Status === "not-impl") {
-            notImplCount++
+            notImplCount++;
         }
-        totalCount++
-    })
+        totalCount++;
+    });
 
-    logFunc("Failed Assertions:", failCount)
-    logFunc("Not-Implemented Assertions:", notImplCount)
-    logFunc("Not Tested Assertions:",nullCount)
-    logFunc("Passed Assertions:",passCount)
-    logFunc("Total Assertions",totalCount)
- }
+    logFunc("Failed Assertions:", failCount);
+    logFunc("Not-Implemented Assertions:", notImplCount);
+    logFunc("Not Tested Assertions:", nullCount);
+    logFunc("Passed Assertions:", passCount);
+    logFunc("Total Assertions", totalCount);
+}
 
- module.exports = checkCoverage
+module.exports = checkCoverage;

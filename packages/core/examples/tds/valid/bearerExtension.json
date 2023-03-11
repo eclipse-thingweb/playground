@@ -26,58 +26,68 @@
     "properties": {
         "one": {
             "type": "string",
-            "forms": [{
-                "href": "/properties/one",
-                "contentType": "text/plain; charset=UTF-8"
-            }]
+            "forms": [
+                {
+                    "href": "/properties/one",
+                    "contentType": "text/plain; charset=UTF-8"
+                }
+            ]
         },
         "other": {
             "type": "string",
-            "forms": [{
-                "op": [
-                    "readproperty",
-                    "writeproperty"
-                ],
-                "href": "/properties/other",
-                "contentType": "text/plain; charset=UTF-8"
-            }]
+            "forms": [
+                {
+                    "op": ["readproperty", "writeproperty"],
+                    "href": "/properties/other",
+                    "contentType": "text/plain; charset=UTF-8"
+                }
+            ]
         },
         "unsecure": {
             "type": "string",
             "readOnly": true,
-            "forms": [{
-                "security": "useless",
-                "op": "readproperty",
-                "href": "/properties/unsecure",
-                "contentType": "text/plain; charset=UTF-8"
-            }]
+            "forms": [
+                {
+                    "security": "useless",
+                    "op": "readproperty",
+                    "href": "/properties/unsecure",
+                    "contentType": "text/plain; charset=UTF-8"
+                }
+            ]
         },
         "secure": {
             "type": "string",
             "readOnly": true,
-            "forms": [{
-                "security": "useful",
-                "op": "readproperty",
-                "href": "/properties/secure",
-                "contentType": "text/plain; charset=UTF-8"
-            }]
+            "forms": [
+                {
+                    "security": "useful",
+                    "op": "readproperty",
+                    "href": "/properties/secure",
+                    "contentType": "text/plain; charset=UTF-8"
+                }
+            ]
         }
     },
-    "forms": [{
-        "op": "readallproperties",
-        "href": "/properties/",
-        "htv:method": "GET"
-    }, {
-        "op": "writeallproperties",
-        "href": "/properties/",
-        "htv:method": "PUT"
-    }, {
-        "op": "readmultipleproperties",
-        "href": "/properties/",
-        "htv:method": "POST"
-    }, {
-        "op": "writemultipleproperties",
-        "href": "/properties/",
-        "htv:method": "PATCH"
-    }]
+    "forms": [
+        {
+            "op": "readallproperties",
+            "href": "/properties/",
+            "htv:method": "GET"
+        },
+        {
+            "op": "writeallproperties",
+            "href": "/properties/",
+            "htv:method": "PUT"
+        },
+        {
+            "op": "readmultipleproperties",
+            "href": "/properties/",
+            "htv:method": "POST"
+        },
+        {
+            "op": "writemultipleproperties",
+            "href": "/properties/",
+            "htv:method": "PATCH"
+        }
+    ]
 }

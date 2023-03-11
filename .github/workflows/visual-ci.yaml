@@ -1,40 +1,39 @@
 name: Visual Testing Pipeline
 
 on:
-  pull_request:
-    paths-ignore:
-    - '**.md'
-    - '**.png'
-    - '**.drawio'
-    - '**.xlsx'
+    pull_request:
+        paths-ignore:
+            - "**.md"
+            - "**.png"
+            - "**.drawio"
+            - "**.xlsx"
 
 jobs:
-  setup-and-visual-test:
+    setup-and-visual-test:
+        runs-on: ubuntu-latest
 
-    runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      
-      - name: Use Node.js 16
-        uses: actions/setup-node@v1
-        with:
-            node-version: '16.x'
-      
-      - name: Use lerna
-        run: npm install -g lerna
-      
-      - name: Bootstrap
-        run: lerna bootstrap --no-ci
-      
-      - name: Visual Test
-        run: |
-          cd ./packages/web
-          npm test
-      
-      - name: Upload test screenshots
-        uses: actions/upload-artifact@v2
-        with:
-          name: playwright screenshots and downloads
-          path: packages/web/test_results
+            - name: Use Node.js 16
+              uses: actions/setup-node@v1
+              with:
+                  node-version: "16.x"
+
+            - name: Use lerna
+              run: npm install -g lerna
+
+            - name: Bootstrap
+              run: lerna bootstrap --no-ci
+
+            - name: Visual Test
+              run: |
+                  cd ./packages/web
+                  npm test
+
+            - name: Upload test screenshots
+              uses: actions/upload-artifact@v2
+              with:
+                  name: playwright screenshots and downloads
+                  path: packages/web/test_results

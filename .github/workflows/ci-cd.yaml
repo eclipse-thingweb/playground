@@ -1,60 +1,58 @@
 name: Default CI & CD Pipeline
 
-on: 
-  push:
-    paths-ignore:
-    - '**.md'
-    - '**.png'
-    - '**.drawio'
-    - '**.xlsx'
-  pull_request:
-    paths-ignore:
-    - '**.md'
-    - '**.png'
-    - '**.drawio'
-    - '**.xlsx'
+on:
+    push:
+        paths-ignore:
+            - "**.md"
+            - "**.png"
+            - "**.drawio"
+            - "**.xlsx"
+    pull_request:
+        paths-ignore:
+            - "**.md"
+            - "**.png"
+            - "**.drawio"
+            - "**.xlsx"
 jobs:
-  setup-and-test:
-    
-    runs-on: ubuntu-latest
+    setup-and-test:
+        runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [16.x, 18.x]
+        strategy:
+            matrix:
+                node-version: [16.x, 18.x]
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-            node-version: ${{ matrix.node-version }}
-      
-      - name: Use lerna
-        run: npm install -g lerna
-      
-      - name: Bootstrap
-        run: lerna bootstrap --no-ci
-      
-      - name: Test
-        run: lerna run test --no-bail --stream
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
 
-  deploy-via-ssh:
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v1
+              with:
+                  node-version: ${{ matrix.node-version }}
 
-    runs-on: ubuntu-latest
+            - name: Use lerna
+              run: npm install -g lerna
 
-    needs: setup-and-test
+            - name: Bootstrap
+              run: lerna bootstrap --no-ci
 
-    if: ${{ github.ref == 'refs/heads/master' && github.event_name == 'push' && github.repository_owner == 'thingweb' }}
+            - name: Test
+              run: lerna run test --no-bail --stream
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+    deploy-via-ssh:
+        runs-on: ubuntu-latest
 
-      - name: Run remote commands script
-        run: ./.github/scripts/deploy-web.sh
-        shell: bash
-        env:
-          SSH_PASS: ${{ secrets.SSH_PASS }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
+        needs: setup-and-test
+
+        if: ${{ github.ref == 'refs/heads/master' && github.event_name == 'push' && github.repository_owner == 'thingweb' }}
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            - name: Run remote commands script
+              run: ./.github/scripts/deploy-web.sh
+              shell: bash
+              env:
+                  SSH_PASS: ${{ secrets.SSH_PASS }}
+                  SSH_HOST: ${{ secrets.SSH_HOST }}

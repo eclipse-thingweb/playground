@@ -13,52 +13,48 @@
             }
         }
     },
-    "required": [
-        "securityDefinitions"
-    ],
+    "required": ["securityDefinitions"],
     "additionalProperties": true,
     "definitions": {
         "securityScheme": {
             "if": {
-                "oneOf": [{
-                    "type": "object",
-                    "properties": {
-                        "description": {
-                            "type": "string"
-                        },
-                        "proxy": {
-                            "$ref": "#/definitions/url"
-                        },
-                        "scheme": {
-                            "type": "string",
-                            "enum": [
-                                "oauth2"
-                            ]
-                        },
-                        "authorization": {
-                            "$ref": "#/definitions/url"
-                        },
-                        "token": {
-                            "$ref": "#/definitions/url"
-                        },
-                        "refresh": {
-                            "$ref": "#/definitions/url"
-                        },
-                        "scopes": {
-                            "type": "array",
-                            "items": {
+                "oneOf": [
+                    {
+                        "type": "object",
+                        "properties": {
+                            "description": {
                                 "type": "string"
+                            },
+                            "proxy": {
+                                "$ref": "#/definitions/url"
+                            },
+                            "scheme": {
+                                "type": "string",
+                                "enum": ["oauth2"]
+                            },
+                            "authorization": {
+                                "$ref": "#/definitions/url"
+                            },
+                            "token": {
+                                "$ref": "#/definitions/url"
+                            },
+                            "refresh": {
+                                "$ref": "#/definitions/url"
+                            },
+                            "scopes": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "flow": {
+                                "type": "string",
+                                "enum": ["code"]
                             }
                         },
-                        "flow": {
-                            "type": "string",
-                            "enum": ["code"]
-                        }
-                    },
-                    "required": [
-                        "scheme","refresh"
-                    ]
-                }]
+                        "required": ["scheme", "refresh"]
+                    }
+                ]
             },
             "then": {
                 "const": "td-vocab-refresh--OAuth2SecurityScheme=pass"

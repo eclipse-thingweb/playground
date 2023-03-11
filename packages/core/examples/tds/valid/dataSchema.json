@@ -1,6 +1,6 @@
 {
     "id": "urn:dataSchema",
-    "@context":"https://www.w3.org/2022/wot/td/v1.1",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "title": "MyLampThing",
     "description": "Valid TD copied from the spec's first example",
     "securityDefinitions": {
@@ -14,9 +14,11 @@
     "properties": {
         "status0": {
             "type": "null",
-            "forms": [{
-                "href": "https://mylamp.example.com/status0"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status0"
+                }
+            ]
         },
         "status": {
             "type": "number",
@@ -25,23 +27,29 @@
             "unit": "complicatedTemperatureUnit",
             "readOnly": false,
             "writeOnly": false,
-            "forms": [{
-                "href": "https://mylamp.example.com/status"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status"
+                }
+            ]
         },
         "status2": {
             "type": "number",
             "enum": [1.2, 3.22],
-            "forms": [{
-                "href": "https://mylamp.example.com/status2"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status2"
+                }
+            ]
         },
         "status3": {
             "type": "number",
             "const": 1.2,
-            "forms": [{
-                "href": "https://mylamp.example.com/status3"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status3"
+                }
+            ]
         },
         "status4": {
             "type": "array",
@@ -50,29 +58,36 @@
             },
             "minItems": 1,
             "maxItems": 5,
-            "forms": [{
-                "href": "https://mylamp.example.com/status4"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status4"
+                }
+            ]
         },
         "status5": {
-            "oneOf": [{
-                "type": "array",
-                "items": {
-                    "type": "number"
+            "oneOf": [
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    },
+                    "minItems": 1,
+                    "maxItems": 5
                 },
-                "minItems": 1,
-                "maxItems": 5
-            }, {
-                "type": "array",
-                "items": {
-                    "type": "number"
-                },
-                "minItems": 6,
-                "maxItems": 10
-            }],
-            "forms": [{
-                "href": "https://mylamp.example.com/status5"
-            }]
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    },
+                    "minItems": 6,
+                    "maxItems": 10
+                }
+            ],
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status5"
+                }
+            ]
         },
         "status6": {
             "description": "something",
@@ -83,31 +98,38 @@
                 }
             },
             "required": ["wow"],
-            "forms": [{
-                "href": "https://mylamp.example.com/status6"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status6"
+                }
+            ]
         },
         "status7": {
             "description": "something",
             "type": "string",
             "format": "email",
-            "forms": [{
-                "href": "https://mylamp.example.com/status6"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status6"
+                }
+            ]
         },
         "status8": {
             "type": "array",
-            "items": [{
+            "items": [
+                {
                     "type": "number"
                 },
                 {
                     "type": "string",
-                    "format":"date-time"
+                    "format": "date-time"
                 }
             ],
-            "forms": [{
-                "href": "https://mylamp.example.com/status5"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status5"
+                }
+            ]
         }
     },
     "actions": {
@@ -132,14 +154,18 @@
                 },
                 "required": ["test1"]
             },
-            "forms": [{
-                "href": "https://mylamp.example.com/toggle"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/toggle"
+                }
+            ]
         },
         "toggle2": {
-            "forms": [{
-                "href": "https://mylamp.example.com/toggle2"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/toggle2"
+                }
+            ]
         }
     },
     "events": {
@@ -152,16 +178,20 @@
                 "minItems": 4,
                 "maxItems": 6
             },
-            "forms": [{
-                "href": "https://mylamp.example.com/oh",
-                "subprotocol": "longpoll"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/oh",
+                    "subprotocol": "longpoll"
+                }
+            ]
         },
         "overheating2": {
-            "forms": [{
-                "href": "https://mylamp.example.com/oh2",
-                "subprotocol": "longpoll"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/oh2",
+                    "subprotocol": "longpoll"
+                }
+            ]
         }
     }
 }

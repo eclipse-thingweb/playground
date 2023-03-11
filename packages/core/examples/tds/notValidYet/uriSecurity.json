@@ -1,6 +1,6 @@
 {
     "id": "urn:uriSecurity",
-    "@context":"https://www.w3.org/2022/wot/td/v1.1",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "title": "MyLampThing",
     "securityDefinitions": {
         "apikey_key": {
@@ -15,51 +15,59 @@
         },
         "apikey_combo": {
             "scheme": "combo",
-            "allOf": ["apikey_key","apikey_id"]
+            "allOf": ["apikey_key", "apikey_id"]
         }
     },
     "security": "apikey_combo",
-    "uriVariables":{
-        "unused":{
-            "type":"string"
+    "uriVariables": {
+        "unused": {
+            "type": "string"
         }
     },
     "properties": {
         "weather": {
             "uriVariables": {
-                "lat": { 
-                    "type": "number", 
-                    "minimum": 0, 
-                    "maximum": 90, 
-                    "description": "Latitude for the desired location in the world" },
-                "long": { 
-                    "type": "number", 
-                    "minimum": -180, 
-                    "maximum": 180, 
-                    "description": "Longitude for the desired location in the world" }
+                "lat": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 90,
+                    "description": "Latitude for the desired location in the world"
+                },
+                "long": {
+                    "type": "number",
+                    "minimum": -180,
+                    "maximum": 180,
+                    "description": "Longitude for the desired location in the world"
+                }
             },
-            "forms": [{
-                "href": "https://example.com/{secClientID}/status/{secKey}/{?lat,long}"
-            }]
+            "forms": [
+                {
+                    "href": "https://example.com/{secClientID}/status/{secKey}/{?lat,long}"
+                }
+            ]
         }
     },
     "actions": {
         "weather": {
             "uriVariables": {
-                "lat": { 
-                    "type": "number", 
-                    "minimum": 0, 
-                    "maximum": 90, 
-                    "description": "Latitude for the desired location in the world" },
-                "long": { 
-                    "type": "number", 
-                    "minimum": -180, 
-                    "maximum": 180, 
-                    "description": "Longitude for the desired location in the world" }
+                "lat": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 90,
+                    "description": "Latitude for the desired location in the world"
+                },
+                "long": {
+                    "type": "number",
+                    "minimum": -180,
+                    "maximum": 180,
+                    "description": "Longitude for the desired location in the world"
+                }
             },
-            "forms": [{
-                "href": "https://example.com/{secClientID}/status/{secKey}/{?lat,long}"
-            }]
+            "forms": [
+                {
+                    "href": "https://example.com/{secClientID}/status/{secKey}/{?lat,long}"
+                }
+            ]
         }
     }
 }

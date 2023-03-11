@@ -1,39 +1,39 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600");
 
 svg {
-  border: none;
+    border: none;
 }
 
 .node {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .node text {
-  font-size: 12px;
-  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, sans-serif;
-  fill: #333333;
+    font-size: 12px;
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, sans-serif;
+    fill: #333333;
 }
 
 .d3-tip {
-  font-size: 14px;
-  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, sans-serif;
-  color: #333333;
-  border: 1px solid #CCCCCC;
-  border-radius: 5px;
-  padding: 10px 20px;
-  max-width: 300px;
-  word-wrap: break-word;
-  background-color: rgba(255, 255, 255, 0.9);
-  text-align: left;
-  z-index: 110;
+    font-size: 14px;
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, sans-serif;
+    color: #333333;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    padding: 10px 20px;
+    max-width: 300px;
+    word-wrap: break-word;
+    background-color: rgba(255, 255, 255, 0.9);
+    text-align: left;
+    z-index: 110;
 }
 
 .link {
-  fill: none;
-  stroke: #DADFE1;
-  stroke-width: 1px;
+    fill: none;
+    stroke: #dadfe1;
+    stroke-width: 1px;
 }
 
 #visualized {
-  overflow: auto;
+    overflow: auto;
 }

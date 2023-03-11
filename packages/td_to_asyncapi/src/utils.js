@@ -4,34 +4,34 @@
  * @returns {object} An AsyncAPI Schema instance
  */
 function dataToAsyncSchema(source) {
+    if (source === undefined) {
+        return;
+    }
+    const target = {};
+    const tdCustoms = ["@type", "titles", "descriptions", "unit"];
+    const commons = ["title", "type", "description", "const", "oneOf", "enum", "readOnly", "writeOnly", "format"];
 
-    if (source === undefined) {return }
-    const target = {}
-    const tdCustoms = ["@type", "titles", "descriptions", "unit"]
-    const commons = ["title", "type", "description", "const", "oneOf", "enum", "readOnly", "writeOnly", "format"]
+    copySpecExtensions(tdCustoms, source, target);
 
-    copySpecExtensions(tdCustoms, source, target)
-
-    commons.forEach( commonKey => {
+    commons.forEach((commonKey) => {
         if (source[commonKey] !== undefined) {
-            target[commonKey] = source[commonKey]
+            target[commonKey] = source[commonKey];
         }
-    })
+    });
 
     // recursively parse oneOf subschemas
     if (source.oneOf !== undefined) {
-        target.oneOf = []
-        source.oneOf.forEach( subschema => {
-            const newAsyncSchema = dataToAsyncSchema(subschema)
-            target.oneOf.push(newAsyncSchema)
-        })
+        target.oneOf = [];
+        source.oneOf.forEach((subschema) => {
+            const newAsyncSchema = dataToAsyncSchema(subschema);
+            target.oneOf.push(newAsyncSchema);
+        });
     }
 
     if (Object.keys(target).length === 0) {
-        return undefined
-    }
-    else {
-        return target
+        return undefined;
+    } else {
+        return target;
     }
 }
 
@@ -45,16 +45,15 @@ function dataToAsyncSchema(source) {
  * @param {object} target Mostly an subObject of the AsyncAPI instance to create
  */
 function copySpecExtensions(keys, source, target) {
-    keys.forEach( key => {
+    keys.forEach((key) => {
         if (source[key] !== undefined) {
             if (key.startsWith("@")) {
-                target["x-AT-" + key.slice(1)] = source[key]
-            }
-            else {
-                target["x-" + key] = source[key]
+                target["x-AT-" + key.slice(1)] = source[key];
+            } else {
+                target["x-" + key] = source[key];
             }
         }
-    })
+    });
 }
 
 /**
@@ -64,17 +63,19 @@ function copySpecExtensions(keys, source, target) {
  * e.g., `{server: "http://example.com", channel: "/asdf/1"}`
  */
 function extractChannel(link) {
-    let server; let channel
+    let server;
+    let channel;
     if (link.search("://") !== -1) {
-        const [protocol, sLink] = link.split("://")
-        server = protocol + "://" + sLink.split("/").shift()
-        channel = "/" + sLink.split("/").slice(1).join("/")
+        const [protocol, sLink] = link.split("://");
+        server = protocol + "://" + sLink.split("/").shift();
+        channel = "/" + sLink.split("/").slice(1).join("/");
+    } else {
+        channel = link;
+        if (!channel.startsWith("/")) {
+            channel = "/" + channel;
+        }
     }
-    else {
-        channel = link
-        if (!channel.startsWith("/")) {channel = "/" + channel}
-    }
-    return {channel, server}
+    return { channel, server };
 }
 
-module.exports = { dataToAsyncSchema, extractChannel, copySpecExtensions }
+module.exports = { dataToAsyncSchema, extractChannel, copySpecExtensions };

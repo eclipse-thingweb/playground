@@ -1,4 +1,4 @@
-const {defaultLookup} = require("./definitions")
+const { defaultLookup } = require("./definitions");
 
 /**
  * Applies the specified callback to every element of an object
@@ -8,10 +8,10 @@ const {defaultLookup} = require("./definitions")
  */
 function forEvery(obj, callback) {
     if (typeof obj === "object" && !Array.isArray(obj)) {
-        Object.keys(obj).forEach( key => {
-            const element = obj[key]
-            callback(element)
-        })
+        Object.keys(obj).forEach((key) => {
+            const element = obj[key];
+            callback(element);
+        });
     }
 }
 
@@ -25,25 +25,21 @@ function forEvery(obj, callback) {
  */
 function objEquality(objA, objB) {
     if (typeof objA !== "object" || typeof objB !== "object") {
-        return (objA === objB)
-    }
-    else {
+        return objA === objB;
+    } else {
         // order shouldn't matter for an array
         if (Array.isArray(objA) && Array.isArray(objB)) {
             return (
-                objA.every(elA => objB.some(elB => objEquality(elA, elB)))
-                &&
-                objB.every(elB => objA.some(elA => objEquality(elA, elB)))
-            )
-        }
-        else {
+                objA.every((elA) => objB.some((elB) => objEquality(elA, elB))) &&
+                objB.every((elB) => objA.some((elA) => objEquality(elA, elB)))
+            );
+        } else {
             return (
-                Object.keys(objA).every( keyA => (objB[keyA] && objEquality(objA[keyA], objB[keyA])))
-                &&
-                Object.keys(objB).every( keyB => (objA[keyB] && objEquality(objA[keyB], objB[keyB])))
-            )
+                Object.keys(objA).every((keyA) => objB[keyA] && objEquality(objA[keyA], objB[keyA])) &&
+                Object.keys(objB).every((keyB) => objA[keyB] && objEquality(objA[keyB], objB[keyB]))
+            );
         }
     }
 }
 
-module.exports = {forEvery, objEquality}
+module.exports = { forEvery, objEquality };

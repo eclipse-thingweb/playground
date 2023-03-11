@@ -16,9 +16,7 @@
         "property_element": {
             "type": "object",
             "if": {
-                "required": [
-                    "minItems"
-                ]
+                "required": ["minItems"]
             },
             "then": {
                 "const": "td-property-names_minItems=pass"

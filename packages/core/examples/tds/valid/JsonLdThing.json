@@ -1,8 +1,8 @@
 {
-    "@context":"https://www.w3.org/2022/wot/td/v1.1",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:jsonld",
     "title": "MyLampThing",
-    "description":"TD demonstrating the @context field as with the TD vocabulary URI",
+    "description": "TD demonstrating the @context field as with the TD vocabulary URI",
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",
@@ -13,30 +13,36 @@
     "properties": {
         "status": {
             "type": "string",
-            "forms": [{
-                "href": "https://mylamp.example.com/status",
-                "htv:methodName": "GET",
-                "contentType": "application/json"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status",
+                    "htv:methodName": "GET",
+                    "contentType": "application/json"
+                }
+            ]
         }
     },
     "actions": {
         "toggle": {
-            "forms": [{
-                "href": "https://mylamp.example.com/toggle",
-                "htv:methodName": "POST",
-                "contentType": "application/json"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/toggle",
+                    "htv:methodName": "POST",
+                    "contentType": "application/json"
+                }
+            ]
         }
     },
     "events": {
         "overheating": {
-            "data":{"type": "string"},
-            "forms": [{
-                "href": "https://mylamp.example.com/oh",
-                "subprotocol": "longpoll",
-                "contentType": "application/json"
-            }]
+            "data": { "type": "string" },
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/oh",
+                    "subprotocol": "longpoll",
+                    "contentType": "application/json"
+                }
+            ]
         }
     }
 }

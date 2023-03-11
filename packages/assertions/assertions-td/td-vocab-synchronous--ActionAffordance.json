@@ -22,9 +22,7 @@
                         "type": "boolean"
                     }
                 },
-                "required": [
-                    "synchronous"
-                ],
+                "required": ["synchronous"],
                 "additionalProperties": true
             },
             "then": {
@@ -69,18 +67,11 @@
                 "const": {},
                 "type": {
                     "type": "string",
-                    "enum": [
-                        "boolean",
-                        "integer",
-                        "number",
-                        "string",
-                        "object",
-                        "array",
-                        "null"
-                    ]
+                    "enum": ["boolean", "integer", "number", "string", "object", "array", "null"]
                 },
                 "items": {
-                    "oneOf": [{
+                    "oneOf": [
+                        {
                             "$ref": "#/definitions/dataSchema"
                         },
                         {
@@ -92,16 +83,12 @@
                     ]
                 },
                 "maxItems": {
-
                     "type": "integer",
                     "minimum": 0
-
                 },
                 "minItems": {
-
                     "type": "integer",
                     "minimum": 0
-
                 },
                 "minimum": {
                     "type": "number"

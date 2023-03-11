@@ -13,9 +13,7 @@
             }
         }
     },
-    "required": [
-        "securityDefinitions"
-    ],
+    "required": ["securityDefinitions"],
     "additionalProperties": true,
     "definitions": {
         "securityScheme": {
@@ -30,9 +28,7 @@
                     },
                     "scheme": {
                         "type": "string",
-                        "enum": [
-                            "bearer"
-                        ]
+                        "enum": ["bearer"]
                     },
                     "authorization": {
                         "$ref": "#/definitions/url"
@@ -42,7 +38,7 @@
                     },
                     "format": {
                         "type": "string",
-                        "not":{
+                        "not": {
                             "enum": ["jwt", "jwe", "jws"]
                         }
                     },
@@ -54,9 +50,7 @@
                         "type": "string"
                     }
                 },
-                "required": [
-                    "scheme","format"
-                ]
+                "required": ["scheme", "format"]
             },
             "then": {
                 "const": "td-security-bearer-format-extensions_format=pass"

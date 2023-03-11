@@ -13,9 +13,7 @@
             }
         }
     },
-    "required": [
-        "securityDefinitions"
-    ],
+    "required": ["securityDefinitions"],
     "additionalProperties": true,
     "definitions": {
         "securityScheme": {
@@ -24,20 +22,18 @@
                 "properties": {
                     "scheme": {
                         "type": "string",
-                        "enum": [
-                            "apikey","basic","bearer","digest"
-                        ]
+                        "enum": ["apikey", "basic", "bearer", "digest"]
                     },
                     "in": {
                         "type": "string",
                         "enum": ["body"]
                     },
-                    "name":{
-                        "type":"string",
-                        "format":"json-pointer"
+                    "name": {
+                        "type": "string",
+                        "format": "json-pointer"
                     }
                 },
-                "required": ["in", "scheme","name"]
+                "required": ["in", "scheme", "name"]
             },
             "then": {
                 "const": "sec-body-name-json-pointer=pass"

@@ -1,47 +1,47 @@
 {
-  "name": "@thing-description-playground/core",
-  "author": "TUM ESI <esi@ei.tum.de> (https://www.ei.tum.de/en/esi/home/)",
-  "license": "MIT",
-  "version": "1.4.0",
-  "description": "Provides the validation functionality for the Web of Things - Thing Description Playground.",
-  "homepage": "https://github.com/thingweb/thingweb-playground#readme",
-  "bugs": {
-    "url": "https://github.com/thingweb/thingweb-playground/issues"
-  },
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/thingweb/thingweb-playground.git",
-    "directory": "packages/core"
-  },
-  "scripts": {
-    "test": "jest",
-    "bundle": "npx browserify ./index.js -s Validators -o ./dist/web-bundle.js && npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
-    "prepare": "npm run bundle",
-    "lint": "npx eslint . --config .eslintrc.json --ext .js,.jsx,.ts,.tsx --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif"
-  },
-  "dependencies": {
-    "@node-wot/td-tools": "^0.8.4",
-    "ajv": "^8.11.0",
-    "ajv-formats": "^2.1.1",
-    "ajv-formats-draft2019": "^1.6.1",
-    "js-yaml": "^4.1.0",
-    "json-diff": "^1.0.0",
-    "json-dup-key-validator": "^1.0.3",
-    "jsonld": "^4.0.1",
-    "junit-report-builder": "^3.0.1",
-    "lz-string": "^1.4.4",
-    "node-fetch": "^2.6.7"
-  },
-  "devDependencies": {
-    "@microsoft/eslint-formatter-sarif": "^2.1.7",
-    "browserify": "^17.0.0",
-    "eslint": "^8.22.0",
-    "jest": "^28.1.3",
-    "terser": "^5.14.2"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "gitHead": "370e099b807034ad22e3a604f4340c82c0a47c30"
+    "name": "@thing-description-playground/core",
+    "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
+    "license": "EPL-2.0 OR W3C-20150513",
+    "version": "1.4.0",
+    "description": "Provides the validation functionality for the Web of Things - Thing Description Playground.",
+    "homepage": "https://github.com/eclipse/thingweb.td-playground#readme",
+    "bugs": {
+        "url": "https://github.com/eclipse/thingweb.td-playground/issues"
+    },
+    "main": "index.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/eclipse/thingweb.td-playground.git",
+        "directory": "packages/core"
+    },
+    "scripts": {
+        "test": "jest",
+        "bundle": "npx browserify ./index.js -s Validators -o ./dist/web-bundle.js && npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
+        "prepare": "npm run bundle",
+        "lint": "npx eslint . --config .eslintrc.json --ext .js,.jsx,.ts,.tsx --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif"
+    },
+    "dependencies": {
+        "@node-wot/td-tools": "^0.8.4",
+        "ajv": "^8.11.0",
+        "ajv-formats": "^2.1.1",
+        "ajv-formats-draft2019": "^1.6.1",
+        "js-yaml": "^4.1.0",
+        "json-diff": "^1.0.0",
+        "json-dup-key-validator": "^1.0.3",
+        "jsonld": "^4.0.1",
+        "junit-report-builder": "^3.0.1",
+        "lz-string": "^1.4.4",
+        "node-fetch": "^2.6.7"
+    },
+    "devDependencies": {
+        "@microsoft/eslint-formatter-sarif": "^2.1.7",
+        "browserify": "^17.0.0",
+        "eslint": "^8.22.0",
+        "jest": "^28.1.3",
+        "terser": "^5.14.2"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "gitHead": "370e099b807034ad22e3a604f4340c82c0a47c30"
 }

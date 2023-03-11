@@ -14,9 +14,7 @@
             }
         }
     },
-    "required": [
-        "securityDefinitions"
-    ],
+    "required": ["securityDefinitions"],
     "additionalProperties": true,
     "definitions": {
         "securityScheme": {
@@ -31,9 +29,7 @@
                     },
                     "scheme": {
                         "type": "string",
-                        "enum": [
-                            "oauth2"
-                        ]
+                        "enum": ["oauth2"]
                     },
                     "token": {
                         "$ref": "#/definitions/url"
@@ -42,7 +38,8 @@
                         "$ref": "#/definitions/url"
                     },
                     "scopes": {
-                        "oneOf": [{
+                        "oneOf": [
+                            {
                                 "type": "array",
                                 "items": {
                                     "type": "string"
@@ -55,12 +52,10 @@
                     },
                     "flow": {
                         "type": "string",
-                        "const":"client"
+                        "const": "client"
                     }
                 },
-                "required": [
-                    "scheme", "flow", "token"
-                ],
+                "required": ["scheme", "flow", "token"],
                 "not": {
                     "required": ["authorization"]
                 }

@@ -1,9 +1,7 @@
 {
     "id": "urn:mqtt",
     "$comment": "example 56 of the spec. Valid Model 10",
-    "@context": [
-        "https://www.w3.org/2022/wot/td/v1.1"
-    ],
+    "@context": ["https://www.w3.org/2022/wot/td/v1.1"],
     "@type": "tm:ThingModel",
     "title": "Thermostate No. {{THERMOSTATE_NUMBER}}",
     "base": "mqtt://{{MQTT_BROKER_ADDRESS}}",

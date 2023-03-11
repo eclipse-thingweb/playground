@@ -1,6 +1,6 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
-    "@context":"https://www.w3.org/2022/wot/td/v1.1",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "title": "MyLampThing",
     "description": "Invalid TD due the an empty enum in data schema",
     "securityDefinitions": {
@@ -12,11 +12,13 @@
     "security": ["basic_sc"],
     "properties": {
         "status": {
-            "enum": ["statusValue1","statusValue2"],
-            "const":"noYouActuallyHaveOnly1Status",
-            "forms": [{
-                "href": "https://mylamp.example.com/status"
-            }]
+            "enum": ["statusValue1", "statusValue2"],
+            "const": "noYouActuallyHaveOnly1Status",
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status"
+                }
+            ]
         }
     }
 }

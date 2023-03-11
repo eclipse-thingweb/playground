@@ -1,33 +1,33 @@
-const jsonld = require("jsonld")
-const Ajv = require("ajv")
-const addFormats = require("ajv-formats")
-const apply = require('ajv-formats-draft2019')
-const lzs = require('lz-string')
-const jsYaml = require('js-yaml')
+const jsonld = require("jsonld");
+const Ajv = require("ajv");
+const addFormats = require("ajv-formats");
+const apply = require("ajv-formats-draft2019");
+const lzs = require("lz-string");
+const jsYaml = require("js-yaml");
 
-const coreAssertions = require("./shared")
-const tdSchema = require("./td-schema.json")
-const fullTdSchema = require("./td-schema-full.json")
-const tmSchema = require("./tm-schema.json")
-const builder = require('junit-report-builder')
+const coreAssertions = require("./shared");
+const tdSchema = require("./td-schema.json");
+const fullTdSchema = require("./td-schema-full.json");
+const tmSchema = require("./tm-schema.json");
+const builder = require("junit-report-builder");
 
-module.exports.tdValidator = tdValidator
-module.exports.tmValidator = tmValidator
-module.exports.propUniqueness = coreAssertions.checkPropUniqueness
-module.exports.multiLangConsistency = coreAssertions.checkMultiLangConsistency
-module.exports.checkLinksRelTypeCount = coreAssertions.checkLinksRelTypeCount
-module.exports.security = coreAssertions.checkSecurity
-module.exports.checkUriSecurity = coreAssertions.checkUriSecurity
-module.exports.compress = compress
-module.exports.decompress = decompress
-module.exports.checkTmOptionalPointer = coreAssertions.checkTmOptionalPointer
-module.exports.checkLinkedAffordances = coreAssertions.checkLinkedAffordances
-module.exports.checkLinkedStructure = coreAssertions.checkLinkedStructure
-module.exports.detectProtocolSchemes = detectProtocolSchemes
-module.exports.convertTDJsonToYaml = convertTDJsonToYaml
-module.exports.convertTDYamlToJson = convertTDYamlToJson
+module.exports.tdValidator = tdValidator;
+module.exports.tmValidator = tmValidator;
+module.exports.propUniqueness = coreAssertions.checkPropUniqueness;
+module.exports.multiLangConsistency = coreAssertions.checkMultiLangConsistency;
+module.exports.checkLinksRelTypeCount = coreAssertions.checkLinksRelTypeCount;
+module.exports.security = coreAssertions.checkSecurity;
+module.exports.checkUriSecurity = coreAssertions.checkUriSecurity;
+module.exports.compress = compress;
+module.exports.decompress = decompress;
+module.exports.checkTmOptionalPointer = coreAssertions.checkTmOptionalPointer;
+module.exports.checkLinkedAffordances = coreAssertions.checkLinkedAffordances;
+module.exports.checkLinkedStructure = coreAssertions.checkLinkedStructure;
+module.exports.detectProtocolSchemes = detectProtocolSchemes;
+module.exports.convertTDJsonToYaml = convertTDJsonToYaml;
+module.exports.convertTDYamlToJson = convertTDYamlToJson;
 
-const jsonValidator = require('json-dup-key-validator')
+const jsonValidator = require("json-dup-key-validator");
 
 /**
  * A function that provides the core functionality of the TD Playground.
@@ -37,23 +37,29 @@ const jsonValidator = require('json-dup-key-validator')
  * @returns {Promise<object>} Results of the validation as {report, details, detailComments} object
  */
 
-function tdValidator(tdString, logFunc,
+function tdValidator(
+    tdString,
+    logFunc,
     { checkDefaults = true, checkJsonLd = true, checkTmConformance = true },
-    suite) {
+    suite
+) {
     return new Promise(async (res, rej) => {
-
         // check input
-        if (typeof tdString !== "string") { rej("Thing Description input should be a String") }
+        if (typeof tdString !== "string") {
+            rej("Thing Description input should be a String");
+        }
 
         if (checkDefaults === undefined) {
-            checkDefaults = true
+            checkDefaults = true;
         }
         if (checkJsonLd === undefined) {
-            checkJsonLd = true
+            checkJsonLd = true;
         }
-        if (typeof logFunc !== "function") { rej("Expected logFunc to be a function") }
+        if (typeof logFunc !== "function") {
+            rej("Expected logFunc to be a function");
+        }
         if (suite === undefined) {
-            suite = builder.testSuite().name("tests")
+            suite = builder.testSuite().name("tests");
         }
 
         // report that is returned by the function, possible values for every property:
@@ -63,8 +69,8 @@ function tdValidator(tdString, logFunc,
             schema: null,
             defaults: null,
             jsonld: null,
-            additional: null
-        }
+            additional: null,
+        };
         // changing the two following objects implies adjusting the tests accordingly
         const details = {
             enumConst: null,
@@ -76,252 +82,273 @@ function tdValidator(tdString, logFunc,
             readWriteOnly: null,
             uriVariableSecurity: null,
             linkedAffordances: null,
-            linkedStructure: null
-        }
+            linkedStructure: null,
+        };
 
         const detailComments = {
             enumConst: "Checking whether a data schema has enum and const at the same time.",
             propItems: "Checking whether a data schema has an object but not properties or array but no items.",
             security: "Check if used Security definitions are properly defined previously.",
-            propUniqueness: "Checking whether in one interaction pattern there are duplicate names, e.g. two properties called temp.",
+            propUniqueness:
+                "Checking whether in one interaction pattern there are duplicate names, e.g. two properties called temp.",
             multiLangConsistency: "Checks whether all titles and descriptions have the same language fields.",
             linksRelTypeCount: "Checks whether rel:type is used more than once in the links array",
-            readWriteOnly: "Warns if a property has readOnly or writeOnly set to true conflicting with another property.",
-            uriVariableSecurity: "Checks if the name of an APIKey security scheme with in:uri show up in href and does not \
+            readWriteOnly:
+                "Warns if a property has readOnly or writeOnly set to true conflicting with another property.",
+            uriVariableSecurity:
+                "Checks if the name of an APIKey security scheme with in:uri show up in href and does not \
             conflict with normal uriVariables",
             linkedAffordances: "Check if TD has all affordances required by linked TM",
-            linkedStructure: "Check if TD structure corresponds to the one imposed by linked TM"
-        }
+            linkedStructure: "Check if TD structure corresponds to the one imposed by linked TM",
+        };
 
-        let tdJson
-        let start = Date.now()
+        let tdJson;
+        let start = Date.now();
         try {
-            tdJson = JSON.parse(tdString)
-            report.json = "passed"
-            const end = Date.now()
-            suite.testCase()
+            tdJson = JSON.parse(tdString);
+            report.json = "passed";
+            const end = Date.now();
+            suite
+                .testCase()
+                .className("tdValidator")
+                .name("JSON Validation")
+                .time(end - start);
+        } catch (err) {
+            report.json = "failed";
+            logFunc("X JSON validation failed:");
+            logFunc(err);
+            const end = Date.now();
+            suite
+                .testCase()
                 .className("tdValidator")
                 .name("JSON Validation")
                 .time(end - start)
-        }
-        catch (err) {
-            report.json = "failed"
-            logFunc("X JSON validation failed:")
-            logFunc(err)
-            const end = Date.now()
-            suite.testCase()
-                .className("tdValidator")
-                .name("JSON Validation")
-                .time(end - start)
-                .failure("Not a valid JSON file")
-            res({ report, details, detailComments })
+                .failure("Not a valid JSON file");
+            res({ report, details, detailComments });
         }
 
-        start = Date.now()
-        let ajv = new Ajv({ strict: false }) // options can be passed, e.g. {allErrors: true}
-        ajv = addFormats(ajv) // ajv does not support formats by default anymore
-        ajv = apply(ajv) // new formats that include iri
+        start = Date.now();
+        let ajv = new Ajv({ strict: false }); // options can be passed, e.g. {allErrors: true}
+        ajv = addFormats(ajv); // ajv does not support formats by default anymore
+        ajv = apply(ajv); // new formats that include iri
 
-        ajv.addSchema(tdSchema, 'td')
-        const valid = ajv.validate('td', tdJson)
+        ajv.addSchema(tdSchema, "td");
+        const valid = ajv.validate("td", tdJson);
         // used to be var valid = ajv.validate('td', e.detail);
         if (valid) {
-
-            report.schema = "passed"
-            let end = Date.now()
-            suite.testCase()
+            report.schema = "passed";
+            let end = Date.now();
+            suite
+                .testCase()
                 .className("tdValidator")
                 .name("Schema Validation")
-                .time(end - start)
+                .time(end - start);
 
             // check with full schema
             if (checkDefaults) {
-                start = Date.now()
-                ajv.addSchema(fullTdSchema, 'fulltd')
-                const fullValid = ajv.validate('fulltd', tdJson)
+                start = Date.now();
+                ajv.addSchema(fullTdSchema, "fulltd");
+                const fullValid = ajv.validate("fulltd", tdJson);
                 if (fullValid) {
-                    report.defaults = "passed"
-                    end = Date.now()
-                    suite.testCase()
+                    report.defaults = "passed";
+                    end = Date.now();
+                    suite
+                        .testCase()
+                        .className("tdValidator")
+                        .name("Defaults Validation")
+                        .time(end - start);
+                } else {
+                    report.defaults = "warning";
+                    end = Date.now();
+                    suite
+                        .testCase()
                         .className("tdValidator")
                         .name("Defaults Validation")
                         .time(end - start)
-                }
-                else {
-                    report.defaults = "warning"
-                    end = Date.now()
-                    suite.testCase()
-                        .className("tdValidator")
-                        .name("Defaults Validation")
-                        .time(end - start)
-                        .error(ajv.errorsText(filterErrorMessages(ajv.errors)))
-                    logFunc("Optional validation failed:")
-                    logFunc("> " + ajv.errorsText(filterErrorMessages(ajv.errors)))
+                        .error(ajv.errorsText(filterErrorMessages(ajv.errors)));
+                    logFunc("Optional validation failed:");
+                    logFunc("> " + ajv.errorsText(filterErrorMessages(ajv.errors)));
                 }
             }
 
             // do additional checks
-            start = Date.now()
-            checkEnumConst(tdJson)
-            checkPropItems(tdJson)
-            checkReadWriteOnly(tdJson)
-            details.security = evalAssertion(coreAssertions.checkSecurity(tdJson))
-            details.propUniqueness = evalAssertion(coreAssertions.checkPropUniqueness(tdString))
+            start = Date.now();
+            checkEnumConst(tdJson);
+            checkPropItems(tdJson);
+            checkReadWriteOnly(tdJson);
+            details.security = evalAssertion(coreAssertions.checkSecurity(tdJson));
+            details.propUniqueness = evalAssertion(coreAssertions.checkPropUniqueness(tdString));
             if (details.propUniqueness === "passed") {
-                details.propUniqueness = checkSecPropUniqueness(tdString, tdJson)
+                details.propUniqueness = checkSecPropUniqueness(tdString, tdJson);
+            } else {
+                checkSecPropUniqueness(tdString, tdJson);
             }
-            else {
-                checkSecPropUniqueness(tdString, tdJson)
-            }
-            details.multiLangConsistency = evalAssertion(coreAssertions.checkMultiLangConsistency(tdJson))
-            details.linksRelTypeCount = evalAssertion(coreAssertions.checkLinksRelTypeCount(tdJson))
-            details.uriVariableSecurity = evalAssertion(coreAssertions.checkUriSecurity(tdJson))
+            details.multiLangConsistency = evalAssertion(coreAssertions.checkMultiLangConsistency(tdJson));
+            details.linksRelTypeCount = evalAssertion(coreAssertions.checkLinksRelTypeCount(tdJson));
+            details.uriVariableSecurity = evalAssertion(coreAssertions.checkUriSecurity(tdJson));
             if (checkTmConformance) {
-                details.linkedAffordances = evalAssertion(await coreAssertions.checkLinkedAffordances(tdJson), false)
-                details.linkedStructure = evalAssertion(await coreAssertions.checkLinkedStructure(tdJson), false)
+                details.linkedAffordances = evalAssertion(await coreAssertions.checkLinkedAffordances(tdJson), false);
+                details.linkedStructure = evalAssertion(await coreAssertions.checkLinkedStructure(tdJson), false);
             }
 
             // determine additional check state
             // passed + warning -> warning
             // passed AND OR warning + error -> error
-            report.additional = "passed"
-            Object.keys(details).forEach(prop => {
+            report.additional = "passed";
+            Object.keys(details).forEach((prop) => {
                 if (details[prop] === "warning" && report.additional === "passed") {
-                    report.additional = "warning"
+                    report.additional = "warning";
+                } else if (details[prop] === "failed" && report.additional !== "failed") {
+                    report.additional = "failed";
                 }
-                else if (details[prop] === "failed" && report.additional !== "failed") {
-                    report.additional = "failed"
-                }
-            })
-            end = Date.now()
+            });
+            end = Date.now();
             if (report.additional === "passed") {
-                suite.testCase()
+                suite
+                    .testCase()
                     .className("tdValidator")
                     .name("Additional Validation")
-                    .time(end - start)
+                    .time(end - start);
             } else if (report.additional === "warning") {
-                suite.testCase()
+                suite
+                    .testCase()
                     .className("tdValidator")
                     .name("Additional Validation")
                     .time(end - start)
-                    .error("Warning!")
+                    .error("Warning!");
             } else {
-                suite.testCase()
+                suite
+                    .testCase()
                     .className("tdValidator")
                     .name("Additional Validation")
                     .time(end - start)
-                    .failure()
+                    .failure();
             }
-
         } else {
-
-            report.schema = "failed"
-            const end = Date.now()
-            suite.testCase()
+            report.schema = "failed";
+            const end = Date.now();
+            suite
+                .testCase()
                 .className("tdValidator")
                 .name("Schema Validation")
                 .time(end - start)
-                .failure(ajv.errorsText(filterErrorMessages(ajv.errors)))
-            logFunc("X JSON Schema validation failed:")
+                .failure(ajv.errorsText(filterErrorMessages(ajv.errors)));
+            logFunc("X JSON Schema validation failed:");
 
-            logFunc('> ' + ajv.errorsText(filterErrorMessages(ajv.errors)))
+            logFunc("> " + ajv.errorsText(filterErrorMessages(ajv.errors)));
 
-            res({ report, details, detailComments })
+            res({ report, details, detailComments });
         }
 
         // json ld validation
         if (checkJsonLd) {
-            start = Date.now()
-            jsonld.toRDF(tdJson, {
-                format: 'application/nquads'
-            }).then(nquads => {
-                report.jsonld = "passed"
-                const end = Date.now()
-                suite.testCase()
-                    .className("tdValidator")
-                    .name("JSON LD Validation")
-                    .time(end - start)
-                res({ report, details, detailComments })
-            }, err => {
-                report.jsonld = "failed"
-                const end = Date.now()
-                suite.testCase()
-                    .className("tdValidator")
-                    .name("JSON LD Validation")
-                    .time(end - start)
-                    .failure(err)
-                logFunc("X JSON-LD validation failed:")
-                logFunc("Hint: Make sure you have internet connection available.")
-                logFunc('> ' + err)
-                res({ report, details, detailComments })
-            })
+            start = Date.now();
+            jsonld
+                .toRDF(tdJson, {
+                    format: "application/nquads",
+                })
+                .then(
+                    (nquads) => {
+                        report.jsonld = "passed";
+                        const end = Date.now();
+                        suite
+                            .testCase()
+                            .className("tdValidator")
+                            .name("JSON LD Validation")
+                            .time(end - start);
+                        res({ report, details, detailComments });
+                    },
+                    (err) => {
+                        report.jsonld = "failed";
+                        const end = Date.now();
+                        suite
+                            .testCase()
+                            .className("tdValidator")
+                            .name("JSON LD Validation")
+                            .time(end - start)
+                            .failure(err);
+                        logFunc("X JSON-LD validation failed:");
+                        logFunc("Hint: Make sure you have internet connection available.");
+                        logFunc("> " + err);
+                        res({ report, details, detailComments });
+                    }
+                );
+        } else {
+            res({ report, details, detailComments });
         }
-        else {
-            res({ report, details, detailComments })
-        }
-
 
         // ************ functions ***************
 
         /** checking whether a data schema has enum and const at the same and displaying a warning in case there are */
         function checkEnumConst(td) {
-            details.enumConst = "passed"
+            details.enumConst = "passed";
             if (td.hasOwnProperty("properties")) {
                 // checking properties
-                tdProperties = Object.keys(td.properties)
+                tdProperties = Object.keys(td.properties);
                 for (let i = 0; i < tdProperties.length; i++) {
-                    const curPropertyName = tdProperties[i]
-                    const curProperty = td.properties[curPropertyName]
+                    const curPropertyName = tdProperties[i];
+                    const curProperty = td.properties[curPropertyName];
                     if (curProperty.hasOwnProperty("enum") && curProperty.hasOwnProperty("const")) {
-                        details.enumConst = "warning"
-                        logFunc('! Warning: In property ' + curPropertyName +
-                            ' enum and const are used at the same time, the values in enum' +
-                            ' can never be valid in the received JSON value')
+                        details.enumConst = "warning";
+                        logFunc(
+                            "! Warning: In property " +
+                                curPropertyName +
+                                " enum and const are used at the same time, the values in enum" +
+                                " can never be valid in the received JSON value"
+                        );
                     }
                 }
             }
             // checking actions
             if (td.hasOwnProperty("actions")) {
-                tdActions = Object.keys(td.actions)
+                tdActions = Object.keys(td.actions);
                 for (let i = 0; i < tdActions.length; i++) {
-                    const curActionName = tdActions[i]
-                    const curAction = td.actions[curActionName]
+                    const curActionName = tdActions[i];
+                    const curAction = td.actions[curActionName];
                     if (curAction.hasOwnProperty("input")) {
-                        const curInput = curAction.input
+                        const curInput = curAction.input;
                         if (curInput.hasOwnProperty("enum") && curInput.hasOwnProperty("const")) {
-                            details.enumConst = "warning"
-                            logFunc('! Warning: In the input of action ' + curActionName +
-                                ' enum and const are used at the same time, the values in enum can' +
-                                ' never be valid in the received JSON value')
+                            details.enumConst = "warning";
+                            logFunc(
+                                "! Warning: In the input of action " +
+                                    curActionName +
+                                    " enum and const are used at the same time, the values in enum can" +
+                                    " never be valid in the received JSON value"
+                            );
                         }
                     }
                     if (curAction.hasOwnProperty("output")) {
-                        const curOutput = curAction.output
+                        const curOutput = curAction.output;
                         if (curOutput.hasOwnProperty("enum") && curOutput.hasOwnProperty("const")) {
-                            details.enumConst = "warning"
-                            logFunc('! Warning: In the output of action ' + curActionName +
-                                ' enum and const are used at the same time, the values in enum can' +
-                                ' never be valid in the received JSON value')
-
+                            details.enumConst = "warning";
+                            logFunc(
+                                "! Warning: In the output of action " +
+                                    curActionName +
+                                    " enum and const are used at the same time, the values in enum can" +
+                                    " never be valid in the received JSON value"
+                            );
                         }
                     }
                 }
             }
             // checking events
             if (td.hasOwnProperty("events")) {
-                tdEvents = Object.keys(td.events)
+                tdEvents = Object.keys(td.events);
                 for (let i = 0; i < tdEvents.length; i++) {
-                    const curEventName = tdEvents[i]
-                    const curEvent = td.events[curEventName]
+                    const curEventName = tdEvents[i];
+                    const curEvent = td.events[curEventName];
                     if (curEvent.hasOwnProperty("enum") && curEvent.hasOwnProperty("const")) {
-                        details.enumConst = "warning"
-                        logFunc('! Warning: In event ' + curEventName +
-                            ' enum and const are used at the same time, the' +
-                            ' values in enum can never be valid in the received JSON value')
+                        details.enumConst = "warning";
+                        logFunc(
+                            "! Warning: In event " +
+                                curEventName +
+                                " enum and const are used at the same time, the" +
+                                " values in enum can never be valid in the received JSON value"
+                        );
                     }
                 }
             }
-            return
+            return;
         }
 
         /**
@@ -329,63 +356,81 @@ function tdValidator(tdString, logFunc,
          * @param {object} td The TD under test
          */
         function checkPropItems(td) {
-            details.propItems = "passed"
+            details.propItems = "passed";
 
             if (td.hasOwnProperty("properties")) {
                 // checking properties
-                tdProperties = Object.keys(td.properties)
+                tdProperties = Object.keys(td.properties);
                 for (let i = 0; i < tdProperties.length; i++) {
-                    const curPropertyName = tdProperties[i]
-                    const curProperty = td.properties[curPropertyName]
+                    const curPropertyName = tdProperties[i];
+                    const curProperty = td.properties[curPropertyName];
 
                     if (curProperty.hasOwnProperty("type")) {
-                        if ((curProperty.type === "object") && !(curProperty.hasOwnProperty("properties"))) {
-                            details.propItems = "warning"
-                            logFunc('! Warning: In property ' + curPropertyName +
-                                ', the type is object but its properties are not specified')
+                        if (curProperty.type === "object" && !curProperty.hasOwnProperty("properties")) {
+                            details.propItems = "warning";
+                            logFunc(
+                                "! Warning: In property " +
+                                    curPropertyName +
+                                    ", the type is object but its properties are not specified"
+                            );
                         }
-                        if ((curProperty.type === "array") && !(curProperty.hasOwnProperty("items"))) {
-                            details.propItems = "warning"
-                            logFunc('! Warning: In property ' + curPropertyName +
-                                ', the type is array but its items are not specified')
+                        if (curProperty.type === "array" && !curProperty.hasOwnProperty("items")) {
+                            details.propItems = "warning";
+                            logFunc(
+                                "! Warning: In property " +
+                                    curPropertyName +
+                                    ", the type is array but its items are not specified"
+                            );
                         }
                     }
                 }
             }
             // checking actions
             if (td.hasOwnProperty("actions")) {
-                tdActions = Object.keys(td.actions)
+                tdActions = Object.keys(td.actions);
                 for (let i = 0; i < tdActions.length; i++) {
-                    const curActionName = tdActions[i]
-                    const curAction = td.actions[curActionName]
+                    const curActionName = tdActions[i];
+                    const curAction = td.actions[curActionName];
 
                     if (curAction.hasOwnProperty("input")) {
-                        const curInput = curAction.input
+                        const curInput = curAction.input;
                         if (curInput.hasOwnProperty("type")) {
-                            if ((curInput.type === "object") && !(curInput.hasOwnProperty("properties"))) {
-                                details.propItems = "warning"
-                                logFunc('! Warning: In the input of action ' + curActionName +
-                                    ', the type is object but its properties are not specified')
+                            if (curInput.type === "object" && !curInput.hasOwnProperty("properties")) {
+                                details.propItems = "warning";
+                                logFunc(
+                                    "! Warning: In the input of action " +
+                                        curActionName +
+                                        ", the type is object but its properties are not specified"
+                                );
                             }
-                            if ((curInput.type === "array") && !(curInput.hasOwnProperty("items"))) {
-                                details.propItems = "warning"
-                                logFunc('! Warning: In the output of action ' + curActionName +
-                                    ', the type is array but its items are not specified')
+                            if (curInput.type === "array" && !curInput.hasOwnProperty("items")) {
+                                details.propItems = "warning";
+                                logFunc(
+                                    "! Warning: In the output of action " +
+                                        curActionName +
+                                        ", the type is array but its items are not specified"
+                                );
                             }
                         }
                     }
                     if (curAction.hasOwnProperty("output")) {
-                        const curOutput = curAction.output
+                        const curOutput = curAction.output;
                         if (curOutput.hasOwnProperty("type")) {
-                            if ((curOutput.type === "object") && !(curOutput.hasOwnProperty("properties"))) {
-                                details.propItems = "warning"
-                                logFunc('! Warning: In the output of action ' + curActionName +
-                                    ', the type is object but its properties are not specified')
+                            if (curOutput.type === "object" && !curOutput.hasOwnProperty("properties")) {
+                                details.propItems = "warning";
+                                logFunc(
+                                    "! Warning: In the output of action " +
+                                        curActionName +
+                                        ", the type is object but its properties are not specified"
+                                );
                             }
-                            if ((curOutput.type === "array") && !(curOutput.hasOwnProperty("items"))) {
-                                details.propItems = "warning"
-                                logFunc('! Warning: In the output of action ' + curActionName +
-                                    ', the type is array but its items are not specified')
+                            if (curOutput.type === "array" && !curOutput.hasOwnProperty("items")) {
+                                details.propItems = "warning";
+                                logFunc(
+                                    "! Warning: In the output of action " +
+                                        curActionName +
+                                        ", the type is array but its items are not specified"
+                                );
                             }
                         }
                     }
@@ -393,28 +438,32 @@ function tdValidator(tdString, logFunc,
             }
             // checking events
             if (td.hasOwnProperty("events")) {
-                tdEvents = Object.keys(td.events)
+                tdEvents = Object.keys(td.events);
                 for (let i = 0; i < tdEvents.length; i++) {
-                    const curEventName = tdEvents[i]
-                    const curEvent = td.events[curEventName]
+                    const curEventName = tdEvents[i];
+                    const curEvent = td.events[curEventName];
 
                     if (curEvent.hasOwnProperty("type")) {
-                        if ((curEvent.type === "object") && !(curEvent.hasOwnProperty("properties"))) {
-                            details.propItems = "warning"
-                            logFunc('! Warning: In event ' + curEventName +
-                                ', the type is object but its properties are not specified')
+                        if (curEvent.type === "object" && !curEvent.hasOwnProperty("properties")) {
+                            details.propItems = "warning";
+                            logFunc(
+                                "! Warning: In event " +
+                                    curEventName +
+                                    ", the type is object but its properties are not specified"
+                            );
                         }
-                        if ((curEvent.type === "array") && !(curEvent.hasOwnProperty("items"))) {
-                            details.propItems = "warning"
-                            logFunc('! Warning: In event ' + curEventName +
-                                ', the type is array but its items are not specified')
-
+                        if (curEvent.type === "array" && !curEvent.hasOwnProperty("items")) {
+                            details.propItems = "warning";
+                            logFunc(
+                                "! Warning: In event " +
+                                    curEventName +
+                                    ", the type is array but its items are not specified"
+                            );
                         }
                     }
-
                 }
             }
-            return
+            return;
         }
 
         /**
@@ -422,41 +471,56 @@ function tdValidator(tdString, logFunc,
          * @param {object} td The TD under test
          */
         function checkReadWriteOnly(td) {
-            details.readWriteOnly = "passed"
+            details.readWriteOnly = "passed";
 
             if (td.hasOwnProperty("properties")) {
                 // checking properties
-                tdProperties = Object.keys(td.properties)
+                tdProperties = Object.keys(td.properties);
                 for (let i = 0; i < tdProperties.length; i++) {
-                    const curPropertyName = tdProperties[i]
-                    const curProperty = td.properties[curPropertyName]
+                    const curPropertyName = tdProperties[i];
+                    const curProperty = td.properties[curPropertyName];
 
                     // if readOnly is set
                     if (curProperty.hasOwnProperty("readOnly") && curProperty.readOnly === true) {
                         // check if both readOnly and writeOnly are true
                         if (curProperty.hasOwnProperty("writeOnly") && curProperty.writeOnly === true) {
-                            details.readWriteOnly = "warning"
-                            logFunc('! Warning: In property ' + curPropertyName +
-                                ', both readOnly and writeOnly are set to true!')
+                            details.readWriteOnly = "warning";
+                            logFunc(
+                                "! Warning: In property " +
+                                    curPropertyName +
+                                    ", both readOnly and writeOnly are set to true!"
+                            );
                         }
 
                         // check forms if op writeProperty is set
                         if (curProperty.hasOwnProperty("forms")) {
                             for (const formElIndex in curProperty.forms) {
                                 if (curProperty.forms.hasOwnProperty(formElIndex)) {
-                                    const formEl = curProperty.forms[formElIndex]
+                                    const formEl = curProperty.forms[formElIndex];
                                     if (formEl.hasOwnProperty("op")) {
-                                        if ((typeof formEl.op === "string" && formEl.op === "writeproperty") ||
-                                            (typeof formEl.op === "object" && formEl.op.some(el => (el === "writeproperty")))) {
-                                            details.readWriteOnly = "warning"
-                                            logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                                '], readOnly is set but the op property contains "writeproperty"')
+                                        if (
+                                            (typeof formEl.op === "string" && formEl.op === "writeproperty") ||
+                                            (typeof formEl.op === "object" &&
+                                                formEl.op.some((el) => el === "writeproperty"))
+                                        ) {
+                                            details.readWriteOnly = "warning";
+                                            logFunc(
+                                                "! Warning: In property " +
+                                                    curPropertyName +
+                                                    " in forms[" +
+                                                    formElIndex +
+                                                    '], readOnly is set but the op property contains "writeproperty"'
+                                            );
                                         }
-                                    }
-                                    else {
-                                        details.readWriteOnly = "warning"
-                                        logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                            '], readOnly is set but a form op property defaults to ["writeproperty", "readproperty"]')
+                                    } else {
+                                        details.readWriteOnly = "warning";
+                                        logFunc(
+                                            "! Warning: In property " +
+                                                curPropertyName +
+                                                " in forms[" +
+                                                formElIndex +
+                                                '], readOnly is set but a form op property defaults to ["writeproperty", "readproperty"]'
+                                        );
                                     }
                                 }
                             }
@@ -465,30 +529,48 @@ function tdValidator(tdString, logFunc,
 
                     // if writeOnly is set
                     if (curProperty.hasOwnProperty("writeOnly") && curProperty.writeOnly === true) {
-
                         // check forms if op readProperty is set
                         if (curProperty.hasOwnProperty("forms")) {
                             for (const formElIndex in curProperty.forms) {
                                 if (curProperty.forms.hasOwnProperty(formElIndex)) {
-                                    const formEl = curProperty.forms[formElIndex]
+                                    const formEl = curProperty.forms[formElIndex];
                                     if (formEl.hasOwnProperty("op")) {
-                                        if ((typeof formEl.op === "string" && formEl.op === "readproperty") ||
-                                            (typeof formEl.op === "object" && formEl.op.some(el => (el === "readproperty")))) {
-                                            details.readWriteOnly = "warning"
-                                            logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                                '], writeOnly is set but the op property contains "readproperty"')
+                                        if (
+                                            (typeof formEl.op === "string" && formEl.op === "readproperty") ||
+                                            (typeof formEl.op === "object" &&
+                                                formEl.op.some((el) => el === "readproperty"))
+                                        ) {
+                                            details.readWriteOnly = "warning";
+                                            logFunc(
+                                                "! Warning: In property " +
+                                                    curPropertyName +
+                                                    " in forms[" +
+                                                    formElIndex +
+                                                    '], writeOnly is set but the op property contains "readproperty"'
+                                            );
+                                        } else if (
+                                            (typeof formEl.op === "string" && formEl.op === "observeproperty") ||
+                                            (typeof formEl.op === "object" &&
+                                                formEl.op.some((el) => el === "observeproperty"))
+                                        ) {
+                                            details.readWriteOnly = "warning";
+                                            logFunc(
+                                                "! Warning: In property " +
+                                                    curPropertyName +
+                                                    " in forms[" +
+                                                    formElIndex +
+                                                    '], writeOnly is set but the op property contains "observeproperty"'
+                                            );
                                         }
-                                        else if ((typeof formEl.op === "string" && formEl.op === "observeproperty") ||
-                                            (typeof formEl.op === "object" && formEl.op.some(el => (el === "observeproperty")))) {
-                                            details.readWriteOnly = "warning"
-                                            logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                                '], writeOnly is set but the op property contains "observeproperty"')
-                                        }
-                                    }
-                                    else {
-                                        details.readWriteOnly = "warning"
-                                        logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                            '], writeOnly is set but a form op property defaults to ["writeproperty", "readproperty"]')
+                                    } else {
+                                        details.readWriteOnly = "warning";
+                                        logFunc(
+                                            "! Warning: In property " +
+                                                curPropertyName +
+                                                " in forms[" +
+                                                formElIndex +
+                                                '], writeOnly is set but a form op property defaults to ["writeproperty", "readproperty"]'
+                                        );
                                     }
                                 }
                             }
@@ -496,9 +578,12 @@ function tdValidator(tdString, logFunc,
 
                         // check if observable is also set
                         if (curProperty.hasOwnProperty("observable") && curProperty.observable === true) {
-                            details.readWriteOnly = "warning"
-                            logFunc('! Warning: In property ' + curPropertyName +
-                                ', both writeOnly and observable are set to true!')
+                            details.readWriteOnly = "warning";
+                            logFunc(
+                                "! Warning: In property " +
+                                    curPropertyName +
+                                    ", both writeOnly and observable are set to true!"
+                            );
                         }
                     }
                 }
@@ -510,34 +595,32 @@ function tdValidator(tdString, logFunc,
          * @param {object} tdStr The TD under test as string
          */
         function checkSecPropUniqueness(tdStr, td) {
-
-            let result = "passed"
+            let result = "passed";
             try {
                 // checking whether there are securityDefinitions at all
-                jsonValidator.parse(tdStr, false)
-            }
-            catch (error) {
+                jsonValidator.parse(tdStr, false);
+            } catch (error) {
                 // there is a duplicate somewhere
 
                 // convert it into string to be able to process it
                 // error is of form = Error: Syntax error: duplicated keys "overheating" near ting": {
-                const errorString = error.toString()
+                const errorString = error.toString();
                 // to get the name, we need to remove the quotes around it
-                const startQuote = errorString.indexOf('"')
+                const startQuote = errorString.indexOf('"');
                 // slice to remove the part before the quote
-                const restString = errorString.slice(startQuote + 1)
+                const restString = errorString.slice(startQuote + 1);
                 // find where the interaction name ends
-                const endQuote = restString.indexOf('"')
+                const endQuote = restString.indexOf('"');
                 // finally get the interaction name
-                const securitySchemeName = restString.slice(0, endQuote)
+                const securitySchemeName = restString.slice(0, endQuote);
 
                 if (td.securityDefinitions.hasOwnProperty(securitySchemeName)) {
-                    result = "failed"
-                    logFunc("KO Error: The securityDefinitions contain a duplicate")
+                    result = "failed";
+                    logFunc("KO Error: The securityDefinitions contain a duplicate");
                 }
             }
 
-            return result
+            return result;
         }
 
         /**
@@ -549,19 +632,22 @@ function tdValidator(tdString, logFunc,
          * @returns string status like passed/fail/warning/not-impl
          */
         function evalAssertion(results, failOnly = true) {
-            let out = "passed"
-            results.forEach(resultobj => {
+            let out = "passed";
+            results.forEach((resultobj) => {
                 if (resultobj.Status === "fail") {
-                    out = "failed"
-                    logFunc("KO Error: Assertion: " + resultobj.ID)
-                    logFunc(resultobj.Comment)
+                    out = "failed";
+                    logFunc("KO Error: Assertion: " + resultobj.ID);
+                    logFunc(resultobj.Comment);
                 } else if (!failOnly && resultobj.Status !== "pass") {
-                    out = resultobj.Status
-                    logFunc(`Assertion: ${resultobj.ID}: ${
-                        resultobj.Status}${(resultobj.Comment) ? ' => ' + resultobj.Comment : ''}`)
+                    out = resultobj.Status;
+                    logFunc(
+                        `Assertion: ${resultobj.ID}: ${resultobj.Status}${
+                            resultobj.Comment ? " => " + resultobj.Comment : ""
+                        }`
+                    );
                 }
-            })
-            return out
+            });
+            return out;
         }
 
         /**
@@ -570,16 +656,15 @@ function tdValidator(tdString, logFunc,
          * @param {ajv.ErrorObject[]} errors
          */
         function filterErrorMessages(errors) {
-
-            const output = []
-            errors.forEach(el => {
-                if (!output.some(ce => (ce.dataPath === el.dataPath && ce.message === el.message))) {
-                    output.push(el)
+            const output = [];
+            errors.forEach((el) => {
+                if (!output.some((ce) => ce.dataPath === el.dataPath && ce.message === el.message)) {
+                    output.push(el);
                 }
-            })
-            return output
+            });
+            return output;
         }
-    })
+    });
 }
 
 /**
@@ -591,19 +676,22 @@ function tdValidator(tdString, logFunc,
  */
 function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = true }, suite) {
     return new Promise((res, rej) => {
-
         // check input
-        if (typeof tmString !== "string") { rej("Thing Model input should be a String") }
+        if (typeof tmString !== "string") {
+            rej("Thing Model input should be a String");
+        }
 
         if (checkDefaults === undefined) {
-            checkDefaults = true
+            checkDefaults = true;
         }
         if (checkJsonLd === undefined) {
-            checkJsonLd = true
+            checkJsonLd = true;
         }
-        if (typeof logFunc !== "function") { rej("Expected logFunc to be a function") }
+        if (typeof logFunc !== "function") {
+            rej("Expected logFunc to be a function");
+        }
         if (suite === undefined) {
-            suite = builder.testSuite().name("tests")
+            suite = builder.testSuite().name("tests");
         }
 
         // report that is returned by the function, possible values for every property:
@@ -613,8 +701,8 @@ function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = tr
             schema: null,
             defaults: null,
             jsonld: null,
-            additional: null
-        }
+            additional: null,
+        };
         // changing the two following objects implies adjusting the tests accordingly
         const details = {
             enumConst: null,
@@ -623,217 +711,237 @@ function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = tr
             multiLangConsistency: null,
             linksRelTypeCount: null,
             readWriteOnly: null,
-            tmOptionalPointer: null
-        }
+            tmOptionalPointer: null,
+        };
 
         const detailComments = {
             enumConst: "Checking whether a data schema has enum and const at the same time.",
             propItems: "Checking whether a data schema has an object but not properties or array but no items.",
-            propUniqueness: "Checking whether in one interaction pattern there are duplicate names, e.g. two properties called temp.",
+            propUniqueness:
+                "Checking whether in one interaction pattern there are duplicate names, e.g. two properties called temp.",
             multiLangConsistency: "Checks whether all titles and descriptions have the same language fields.",
             linksRelTypeCount: "Checks whether rel:type is used more than once in the links array",
-            readWriteOnly: "Warns if a property has readOnly or writeOnly set to true conflicting with another property.",
-            tmOptionalPointer: "Checking whether tm:optional points to an actual affordance"
-        }
+            readWriteOnly:
+                "Warns if a property has readOnly or writeOnly set to true conflicting with another property.",
+            tmOptionalPointer: "Checking whether tm:optional points to an actual affordance",
+        };
 
-        let start = Date.now()
-        let tmJson
+        let start = Date.now();
+        let tmJson;
         try {
-            tmJson = JSON.parse(tmString)
-            report.json = "passed"
-            const end = Date.now()
-            suite.testCase()
+            tmJson = JSON.parse(tmString);
+            report.json = "passed";
+            const end = Date.now();
+            suite
+                .testCase()
+                .className("tdValidator")
+                .name("JSON Validation")
+                .time(end - start);
+        } catch (err) {
+            report.json = "failed";
+            logFunc("X JSON validation failed:");
+            logFunc(err);
+            const end = Date.now();
+            suite
+                .testCase()
                 .className("tdValidator")
                 .name("JSON Validation")
                 .time(end - start)
-        }
-        catch (err) {
-            report.json = "failed"
-            logFunc('X JSON validation failed:')
-            logFunc(err)
-            const end = Date.now()
-            suite.testCase()
-                .className("tdValidator")
-                .name("JSON Validation")
-                .time(end - start)
-                .failure("Not a valid JSON file")
-            res({ report, details, detailComments })
+                .failure("Not a valid JSON file");
+            res({ report, details, detailComments });
         }
 
-        start = Date.now()
-        let ajv = new Ajv({ strict: false }) // options can be passed, e.g. {allErrors: true}
-        ajv = addFormats(ajv) // ajv does not support formats by default anymore
-        ajv = apply(ajv) // new formats that include iri
+        start = Date.now();
+        let ajv = new Ajv({ strict: false }); // options can be passed, e.g. {allErrors: true}
+        ajv = addFormats(ajv); // ajv does not support formats by default anymore
+        ajv = apply(ajv); // new formats that include iri
 
-        ajv.addSchema(tmSchema, 'tm')
-        const valid = ajv.validate('tm', tmJson)
+        ajv.addSchema(tmSchema, "tm");
+        const valid = ajv.validate("tm", tmJson);
         // used to be var valid = ajv.validate('td', e.detail);
         if (valid) {
-            report.schema = "passed"
-            let end = Date.now()
-            suite.testCase()
+            report.schema = "passed";
+            let end = Date.now();
+            suite
+                .testCase()
                 .className("tdValidator")
                 .name("Schema Validation")
-                .time(end-start)
+                .time(end - start);
 
             // do additional checks
-            checkEnumConst(tmJson)
-            checkPropItems(tmJson)
-            checkReadWriteOnly(tmJson)
+            checkEnumConst(tmJson);
+            checkPropItems(tmJson);
+            checkReadWriteOnly(tmJson);
             // ! no need to do security checking
             // details.security = evalAssertion(coreAssertions.checkSecurity(tmJson))
-            details.propUniqueness = evalAssertion(coreAssertions.checkPropUniqueness(tmString))
+            details.propUniqueness = evalAssertion(coreAssertions.checkPropUniqueness(tmString));
             if (details.propUniqueness === "passed") {
-                details.propUniqueness = checkSecPropUniqueness(tmString, tmJson)
+                details.propUniqueness = checkSecPropUniqueness(tmString, tmJson);
+            } else {
+                checkSecPropUniqueness(tmString, tmJson);
             }
-            else {
-                checkSecPropUniqueness(tmString, tmJson)
-            }
-            details.multiLangConsistency = evalAssertion(coreAssertions.checkMultiLangConsistency(tmJson))
-            details.linksRelTypeCount = evalAssertion(coreAssertions.checkLinksRelTypeCount(tmJson))
-            details.tmOptionalPointer = evalAssertion(coreAssertions.checkTmOptionalPointer(tmJson))
+            details.multiLangConsistency = evalAssertion(coreAssertions.checkMultiLangConsistency(tmJson));
+            details.linksRelTypeCount = evalAssertion(coreAssertions.checkLinksRelTypeCount(tmJson));
+            details.tmOptionalPointer = evalAssertion(coreAssertions.checkTmOptionalPointer(tmJson));
 
             // determine additional check state
             // passed + warning -> warning
             // passed AND OR warning + error -> error
-            report.additional = "passed"
-            Object.keys(details).forEach(prop => {
+            report.additional = "passed";
+            Object.keys(details).forEach((prop) => {
                 if (details[prop] === "warning" && report.additional === "passed") {
-                    report.additional = "warning"
+                    report.additional = "warning";
+                } else if (details[prop] === "failed" && report.additional !== "failed") {
+                    report.additional = "failed";
                 }
-                else if (details[prop] === "failed" && report.additional !== "failed") {
-                    report.additional = "failed"
-                }
-            })
-            end = Date.now()
+            });
+            end = Date.now();
             if (report.additional === "passed") {
-                suite.testCase()
+                suite
+                    .testCase()
                     .className("tmValidator")
                     .name("Additional Validation")
-                    .time(end-start)
+                    .time(end - start);
             } else if (report.additional === "warning") {
-                suite.testCase()
+                suite
+                    .testCase()
                     .className("tmValidator")
                     .name("Additional Validation")
-                    .time(end-start)
-                    .error("Warning!")
+                    .time(end - start)
+                    .error("Warning!");
             } else {
-                suite.testCase()
+                suite
+                    .testCase()
                     .className("tmValidator")
                     .name("Additional Validation")
-                    .time(end-start)
-                    .failure()
+                    .time(end - start)
+                    .failure();
             }
-
         } else {
-
-            report.schema = "failed"
-            const end = Date.now()
-            suite.testCase()
+            report.schema = "failed";
+            const end = Date.now();
+            suite
+                .testCase()
                 .className("tdValidator")
                 .name("Schema Validation")
-                .time(end-start)
-                .failure(ajv.errorsText(filterErrorMessages(ajv.errors)))
-            logFunc("X JSON Schema validation failed:")
+                .time(end - start)
+                .failure(ajv.errorsText(filterErrorMessages(ajv.errors)));
+            logFunc("X JSON Schema validation failed:");
 
-            logFunc('> ' + ajv.errorsText(filterErrorMessages(ajv.errors)))
+            logFunc("> " + ajv.errorsText(filterErrorMessages(ajv.errors)));
 
-            res({ report, details, detailComments })
+            res({ report, details, detailComments });
         }
 
         // json ld validation
         if (checkJsonLd) {
-            start = Date.now()
-            jsonld.toRDF(tmJson, {
-                format: 'application/nquads'
-            }).then(nquads => {
-                report.jsonld = "passed"
-                const end = Date.now()
-                suite.testCase()
-                    .className("tdValidator")
-                    .name("JSON LD Validation")
-                    .time(end-start)
-                res({ report, details, detailComments })
-            }, err => {
-                report.jsonld = "failed"
-                const end = Date.now()
-                suite.testCase()
-                    .className("tdValidator")
-                    .name("JSON LD Validation")
-                    .time(end-start)
-                    .failure(err)
-                logFunc("X JSON-LD validation failed:")
-                logFunc("Hint: Make sure you have internet connection available.")
-                logFunc('> ' + err)
-                res({ report, details, detailComments })
-            })
+            start = Date.now();
+            jsonld
+                .toRDF(tmJson, {
+                    format: "application/nquads",
+                })
+                .then(
+                    (nquads) => {
+                        report.jsonld = "passed";
+                        const end = Date.now();
+                        suite
+                            .testCase()
+                            .className("tdValidator")
+                            .name("JSON LD Validation")
+                            .time(end - start);
+                        res({ report, details, detailComments });
+                    },
+                    (err) => {
+                        report.jsonld = "failed";
+                        const end = Date.now();
+                        suite
+                            .testCase()
+                            .className("tdValidator")
+                            .name("JSON LD Validation")
+                            .time(end - start)
+                            .failure(err);
+                        logFunc("X JSON-LD validation failed:");
+                        logFunc("Hint: Make sure you have internet connection available.");
+                        logFunc("> " + err);
+                        res({ report, details, detailComments });
+                    }
+                );
+        } else {
+            res({ report, details, detailComments });
         }
-        else {
-            res({ report, details, detailComments })
-        }
-
 
         // ************ functions ***************
 
         /** checking whether a data schema has enum and const at the same and displaying a warning in case there are */
         function checkEnumConst(tm) {
-            details.enumConst = "passed"
+            details.enumConst = "passed";
             if (tm.hasOwnProperty("properties")) {
                 // checking properties
-                tmProperties = Object.keys(tm.properties)
+                tmProperties = Object.keys(tm.properties);
                 for (let i = 0; i < tmProperties.length; i++) {
-                    const curPropertyName = tmProperties[i]
-                    const curProperty = tm.properties[curPropertyName]
+                    const curPropertyName = tmProperties[i];
+                    const curProperty = tm.properties[curPropertyName];
                     if (curProperty.hasOwnProperty("enum") && curProperty.hasOwnProperty("const")) {
-                        details.enumConst = "warning"
-                        logFunc('! Warning: In property ' + curPropertyName +
-                            ' enum and const are used at the same time, the values in enum' +
-                            ' can never be valid in the received JSON value')
+                        details.enumConst = "warning";
+                        logFunc(
+                            "! Warning: In property " +
+                                curPropertyName +
+                                " enum and const are used at the same time, the values in enum" +
+                                " can never be valid in the received JSON value"
+                        );
                     }
                 }
             }
             // checking actions
             if (tm.hasOwnProperty("actions")) {
-                tmActions = Object.keys(tm.actions)
+                tmActions = Object.keys(tm.actions);
                 for (let i = 0; i < tmActions.length; i++) {
-                    const curActionName = tmActions[i]
-                    const curAction = tm.actions[curActionName]
+                    const curActionName = tmActions[i];
+                    const curAction = tm.actions[curActionName];
                     if (curAction.hasOwnProperty("input")) {
-                        const curInput = curAction.input
+                        const curInput = curAction.input;
                         if (curInput.hasOwnProperty("enum") && curInput.hasOwnProperty("const")) {
-                            details.enumConst = "warning"
-                            logFunc('! Warning: In the input of action ' + curActionName +
-                                ' enum and const are used at the same time, the values in enum can' +
-                                ' never be valid in the received JSON value')
+                            details.enumConst = "warning";
+                            logFunc(
+                                "! Warning: In the input of action " +
+                                    curActionName +
+                                    " enum and const are used at the same time, the values in enum can" +
+                                    " never be valid in the received JSON value"
+                            );
                         }
                     }
                     if (curAction.hasOwnProperty("output")) {
-                        const curOutput = curAction.output
+                        const curOutput = curAction.output;
                         if (curOutput.hasOwnProperty("enum") && curOutput.hasOwnProperty("const")) {
-                            details.enumConst = "warning"
-                            logFunc('! Warning: In the output of action ' + curActionName +
-                                ' enum and const are used at the same time, the values in enum can' +
-                                ' never be valid in the received JSON value')
-
+                            details.enumConst = "warning";
+                            logFunc(
+                                "! Warning: In the output of action " +
+                                    curActionName +
+                                    " enum and const are used at the same time, the values in enum can" +
+                                    " never be valid in the received JSON value"
+                            );
                         }
                     }
                 }
             }
             // checking events
             if (tm.hasOwnProperty("events")) {
-                tmEvents = Object.keys(tm.events)
+                tmEvents = Object.keys(tm.events);
                 for (let i = 0; i < tmEvents.length; i++) {
-                    const curEventName = tmEvents[i]
-                    const curEvent = tm.events[curEventName]
+                    const curEventName = tmEvents[i];
+                    const curEvent = tm.events[curEventName];
                     if (curEvent.hasOwnProperty("enum") && curEvent.hasOwnProperty("const")) {
-                        details.enumConst = "warning"
-                        logFunc('! Warning: In event ' + curEventName +
-                            ' enum and const are used at the same time, the' +
-                            ' values in enum can never be valid in the received JSON value')
+                        details.enumConst = "warning";
+                        logFunc(
+                            "! Warning: In event " +
+                                curEventName +
+                                " enum and const are used at the same time, the" +
+                                " values in enum can never be valid in the received JSON value"
+                        );
                     }
                 }
             }
-            return
+            return;
         }
 
         /**
@@ -841,63 +949,81 @@ function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = tr
          * @param {object} tm The TD under test
          */
         function checkPropItems(tm) {
-            details.propItems = "passed"
+            details.propItems = "passed";
 
             if (tm.hasOwnProperty("properties")) {
                 // checking properties
-                tmProperties = Object.keys(tm.properties)
+                tmProperties = Object.keys(tm.properties);
                 for (let i = 0; i < tmProperties.length; i++) {
-                    const curPropertyName = tmProperties[i]
-                    const curProperty = tm.properties[curPropertyName]
+                    const curPropertyName = tmProperties[i];
+                    const curProperty = tm.properties[curPropertyName];
 
                     if (curProperty.hasOwnProperty("type")) {
-                        if ((curProperty.type === "object") && !(curProperty.hasOwnProperty("properties"))) {
-                            details.propItems = "warning"
-                            logFunc('! Warning: In property ' + curPropertyName +
-                                ', the type is object but its properties are not specified')
+                        if (curProperty.type === "object" && !curProperty.hasOwnProperty("properties")) {
+                            details.propItems = "warning";
+                            logFunc(
+                                "! Warning: In property " +
+                                    curPropertyName +
+                                    ", the type is object but its properties are not specified"
+                            );
                         }
-                        if ((curProperty.type === "array") && !(curProperty.hasOwnProperty("items"))) {
-                            details.propItems = "warning"
-                            logFunc('! Warning: In property ' + curPropertyName +
-                                ', the type is array but its items are not specified')
+                        if (curProperty.type === "array" && !curProperty.hasOwnProperty("items")) {
+                            details.propItems = "warning";
+                            logFunc(
+                                "! Warning: In property " +
+                                    curPropertyName +
+                                    ", the type is array but its items are not specified"
+                            );
                         }
                     }
                 }
             }
             // checking actions
             if (tm.hasOwnProperty("actions")) {
-                tmActions = Object.keys(tm.actions)
+                tmActions = Object.keys(tm.actions);
                 for (let i = 0; i < tmActions.length; i++) {
-                    const curActionName = tmActions[i]
-                    const curAction = tm.actions[curActionName]
+                    const curActionName = tmActions[i];
+                    const curAction = tm.actions[curActionName];
 
                     if (curAction.hasOwnProperty("input")) {
-                        const curInput = curAction.input
+                        const curInput = curAction.input;
                         if (curInput.hasOwnProperty("type")) {
-                            if ((curInput.type === "object") && !(curInput.hasOwnProperty("properties"))) {
-                                details.propItems = "warning"
-                                logFunc('! Warning: In the input of action ' + curActionName +
-                                    ', the type is object but its properties are not specified')
+                            if (curInput.type === "object" && !curInput.hasOwnProperty("properties")) {
+                                details.propItems = "warning";
+                                logFunc(
+                                    "! Warning: In the input of action " +
+                                        curActionName +
+                                        ", the type is object but its properties are not specified"
+                                );
                             }
-                            if ((curInput.type === "array") && !(curInput.hasOwnProperty("items"))) {
-                                details.propItems = "warning"
-                                logFunc('! Warning: In the output of action ' + curActionName +
-                                    ', the type is array but its items are not specified')
+                            if (curInput.type === "array" && !curInput.hasOwnProperty("items")) {
+                                details.propItems = "warning";
+                                logFunc(
+                                    "! Warning: In the output of action " +
+                                        curActionName +
+                                        ", the type is array but its items are not specified"
+                                );
                             }
                         }
                     }
                     if (curAction.hasOwnProperty("output")) {
-                        const curOutput = curAction.output
+                        const curOutput = curAction.output;
                         if (curOutput.hasOwnProperty("type")) {
-                            if ((curOutput.type === "object") && !(curOutput.hasOwnProperty("properties"))) {
-                                details.propItems = "warning"
-                                logFunc('! Warning: In the output of action ' + curActionName +
-                                    ', the type is object but its properties are not specified')
+                            if (curOutput.type === "object" && !curOutput.hasOwnProperty("properties")) {
+                                details.propItems = "warning";
+                                logFunc(
+                                    "! Warning: In the output of action " +
+                                        curActionName +
+                                        ", the type is object but its properties are not specified"
+                                );
                             }
-                            if ((curOutput.type === "array") && !(curOutput.hasOwnProperty("items"))) {
-                                details.propItems = "warning"
-                                logFunc('! Warning: In the output of action ' + curActionName +
-                                    ', the type is array but its items are not specified')
+                            if (curOutput.type === "array" && !curOutput.hasOwnProperty("items")) {
+                                details.propItems = "warning";
+                                logFunc(
+                                    "! Warning: In the output of action " +
+                                        curActionName +
+                                        ", the type is array but its items are not specified"
+                                );
                             }
                         }
                     }
@@ -905,28 +1031,32 @@ function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = tr
             }
             // checking events
             if (tm.hasOwnProperty("events")) {
-                tmEvents = Object.keys(tm.events)
+                tmEvents = Object.keys(tm.events);
                 for (let i = 0; i < tmEvents.length; i++) {
-                    const curEventName = tmEvents[i]
-                    const curEvent = tm.events[curEventName]
+                    const curEventName = tmEvents[i];
+                    const curEvent = tm.events[curEventName];
 
                     if (curEvent.hasOwnProperty("type")) {
-                        if ((curEvent.type === "object") && !(curEvent.hasOwnProperty("properties"))) {
-                            details.propItems = "warning"
-                            logFunc('! Warning: In event ' + curEventName +
-                                ', the type is object but its properties are not specified')
+                        if (curEvent.type === "object" && !curEvent.hasOwnProperty("properties")) {
+                            details.propItems = "warning";
+                            logFunc(
+                                "! Warning: In event " +
+                                    curEventName +
+                                    ", the type is object but its properties are not specified"
+                            );
                         }
-                        if ((curEvent.type === "array") && !(curEvent.hasOwnProperty("items"))) {
-                            details.propItems = "warning"
-                            logFunc('! Warning: In event ' + curEventName +
-                                ', the type is array but its items are not specified')
-
+                        if (curEvent.type === "array" && !curEvent.hasOwnProperty("items")) {
+                            details.propItems = "warning";
+                            logFunc(
+                                "! Warning: In event " +
+                                    curEventName +
+                                    ", the type is array but its items are not specified"
+                            );
                         }
                     }
-
                 }
             }
-            return
+            return;
         }
 
         /**
@@ -934,41 +1064,56 @@ function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = tr
          * @param {object} tm The TD under test
          */
         function checkReadWriteOnly(tm) {
-            details.readWriteOnly = "passed"
+            details.readWriteOnly = "passed";
 
             if (tm.hasOwnProperty("properties")) {
                 // checking properties
-                tmProperties = Object.keys(tm.properties)
+                tmProperties = Object.keys(tm.properties);
                 for (let i = 0; i < tmProperties.length; i++) {
-                    const curPropertyName = tmProperties[i]
-                    const curProperty = tm.properties[curPropertyName]
+                    const curPropertyName = tmProperties[i];
+                    const curProperty = tm.properties[curPropertyName];
 
                     // if readOnly is set
                     if (curProperty.hasOwnProperty("readOnly") && curProperty.readOnly === true) {
                         // check if both readOnly and writeOnly are true
                         if (curProperty.hasOwnProperty("writeOnly") && curProperty.writeOnly === true) {
-                            details.readWriteOnly = "warning"
-                            logFunc('! Warning: In property ' + curPropertyName +
-                                ', both readOnly and writeOnly are set to true!')
+                            details.readWriteOnly = "warning";
+                            logFunc(
+                                "! Warning: In property " +
+                                    curPropertyName +
+                                    ", both readOnly and writeOnly are set to true!"
+                            );
                         }
 
                         // check forms if op writeProperty is set
                         if (curProperty.hasOwnProperty("forms")) {
                             for (const formElIndex in curProperty.forms) {
                                 if (curProperty.forms.hasOwnProperty(formElIndex)) {
-                                    const formEl = curProperty.forms[formElIndex]
+                                    const formEl = curProperty.forms[formElIndex];
                                     if (formEl.hasOwnProperty("op")) {
-                                        if ((typeof formEl.op === "string" && formEl.op === "writeproperty") ||
-                                            (typeof formEl.op === "object" && formEl.op.some(el => (el === "writeproperty")))) {
-                                            details.readWriteOnly = "warning"
-                                            logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                                '], readOnly is set but the op property contains "writeproperty"')
+                                        if (
+                                            (typeof formEl.op === "string" && formEl.op === "writeproperty") ||
+                                            (typeof formEl.op === "object" &&
+                                                formEl.op.some((el) => el === "writeproperty"))
+                                        ) {
+                                            details.readWriteOnly = "warning";
+                                            logFunc(
+                                                "! Warning: In property " +
+                                                    curPropertyName +
+                                                    " in forms[" +
+                                                    formElIndex +
+                                                    '], readOnly is set but the op property contains "writeproperty"'
+                                            );
                                         }
-                                    }
-                                    else {
-                                        details.readWriteOnly = "warning"
-                                        logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                            '], readOnly is set but a form op property defaults to ["writeproperty", "readproperty"]')
+                                    } else {
+                                        details.readWriteOnly = "warning";
+                                        logFunc(
+                                            "! Warning: In property " +
+                                                curPropertyName +
+                                                " in forms[" +
+                                                formElIndex +
+                                                '], readOnly is set but a form op property defaults to ["writeproperty", "readproperty"]'
+                                        );
                                     }
                                 }
                             }
@@ -977,30 +1122,48 @@ function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = tr
 
                     // if writeOnly is set
                     if (curProperty.hasOwnProperty("writeOnly") && curProperty.writeOnly === true) {
-
                         // check forms if op readProperty is set
                         if (curProperty.hasOwnProperty("forms")) {
                             for (const formElIndex in curProperty.forms) {
                                 if (curProperty.forms.hasOwnProperty(formElIndex)) {
-                                    const formEl = curProperty.forms[formElIndex]
+                                    const formEl = curProperty.forms[formElIndex];
                                     if (formEl.hasOwnProperty("op")) {
-                                        if ((typeof formEl.op === "string" && formEl.op === "readproperty") ||
-                                            (typeof formEl.op === "object" && formEl.op.some(el => (el === "readproperty")))) {
-                                            details.readWriteOnly = "warning"
-                                            logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                                '], writeOnly is set but the op property contains "readproperty"')
+                                        if (
+                                            (typeof formEl.op === "string" && formEl.op === "readproperty") ||
+                                            (typeof formEl.op === "object" &&
+                                                formEl.op.some((el) => el === "readproperty"))
+                                        ) {
+                                            details.readWriteOnly = "warning";
+                                            logFunc(
+                                                "! Warning: In property " +
+                                                    curPropertyName +
+                                                    " in forms[" +
+                                                    formElIndex +
+                                                    '], writeOnly is set but the op property contains "readproperty"'
+                                            );
+                                        } else if (
+                                            (typeof formEl.op === "string" && formEl.op === "observeproperty") ||
+                                            (typeof formEl.op === "object" &&
+                                                formEl.op.some((el) => el === "observeproperty"))
+                                        ) {
+                                            details.readWriteOnly = "warning";
+                                            logFunc(
+                                                "! Warning: In property " +
+                                                    curPropertyName +
+                                                    " in forms[" +
+                                                    formElIndex +
+                                                    '], writeOnly is set but the op property contains "observeproperty"'
+                                            );
                                         }
-                                        else if ((typeof formEl.op === "string" && formEl.op === "observeproperty") ||
-                                            (typeof formEl.op === "object" && formEl.op.some(el => (el === "observeproperty")))) {
-                                            details.readWriteOnly = "warning"
-                                            logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                                '], writeOnly is set but the op property contains "observeproperty"')
-                                        }
-                                    }
-                                    else {
-                                        details.readWriteOnly = "warning"
-                                        logFunc('! Warning: In property ' + curPropertyName + " in forms[" + formElIndex +
-                                            '], writeOnly is set but a form op property defaults to ["writeproperty", "readproperty"]')
+                                    } else {
+                                        details.readWriteOnly = "warning";
+                                        logFunc(
+                                            "! Warning: In property " +
+                                                curPropertyName +
+                                                " in forms[" +
+                                                formElIndex +
+                                                '], writeOnly is set but a form op property defaults to ["writeproperty", "readproperty"]'
+                                        );
                                     }
                                 }
                             }
@@ -1008,9 +1171,12 @@ function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = tr
 
                         // check if observable is also set
                         if (curProperty.hasOwnProperty("observable") && curProperty.observable === true) {
-                            details.readWriteOnly = "warning"
-                            logFunc('! Warning: In property ' + curPropertyName +
-                                ', both writeOnly and observable are set to true!')
+                            details.readWriteOnly = "warning";
+                            logFunc(
+                                "! Warning: In property " +
+                                    curPropertyName +
+                                    ", both writeOnly and observable are set to true!"
+                            );
                         }
                     }
                 }
@@ -1022,34 +1188,32 @@ function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = tr
          * @param {object} tmStr The TD under test as string
          */
         function checkSecPropUniqueness(tmStr, tm) {
-
-            let result = "passed"
+            let result = "passed";
             try {
                 // checking whether there are securityDefinitions at all
-                jsonValidator.parse(tmStr, false)
-            }
-            catch (error) {
+                jsonValidator.parse(tmStr, false);
+            } catch (error) {
                 // there is a duplicate somewhere
 
                 // convert it into string to be able to process it
                 // error is of form = Error: Syntax error: duplicated keys "overheating" near ting": {
-                const errorString = error.toString()
+                const errorString = error.toString();
                 // to get the name, we need to remove the quotes around it
-                const startQuote = errorString.indexOf('"')
+                const startQuote = errorString.indexOf('"');
                 // slice to remove the part before the quote
-                const restString = errorString.slice(startQuote + 1)
+                const restString = errorString.slice(startQuote + 1);
                 // find where the interaction name ends
-                const endQuote = restString.indexOf('"')
+                const endQuote = restString.indexOf('"');
                 // finally get the interaction name
-                const securitySchemeName = restString.slice(0, endQuote)
+                const securitySchemeName = restString.slice(0, endQuote);
 
                 if (td.securityDefinitions.hasOwnProperty(securitySchemeName)) {
-                    result = "failed"
-                    logFunc("KO Error: The securityDefinitions contain a duplicate")
+                    result = "failed";
+                    logFunc("KO Error: The securityDefinitions contain a duplicate");
                 }
             }
 
-            return result
+            return result;
         }
 
         /**
@@ -1060,15 +1224,15 @@ function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = tr
          * @returns "passed" if no check failed, "failed" if one or more checks failed
          */
         function evalAssertion(results) {
-            let out = "passed"
-            results.forEach(resultobj => {
+            let out = "passed";
+            results.forEach((resultobj) => {
                 if (resultobj.Status === "fail") {
-                    out = "failed"
-                    logFunc("KO Error: Assertion: " + resultobj.ID)
-                    logFunc(resultobj.Comment)
+                    out = "failed";
+                    logFunc("KO Error: Assertion: " + resultobj.ID);
+                    logFunc(resultobj.Comment);
                 }
-            })
-            return out
+            });
+            return out;
         }
 
         /**
@@ -1077,16 +1241,15 @@ function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = tr
          * @param {ajv.ErrorObject[]} errors
          */
         function filterErrorMessages(errors) {
-
-            const output = []
-            errors.forEach(el => {
-                if (!output.some(ce => (ce.dataPath === el.dataPath && ce.message === el.message))) {
-                    output.push(el)
+            const output = [];
+            errors.forEach((el) => {
+                if (!output.some((ce) => ce.dataPath === el.dataPath && ce.message === el.message)) {
+                    output.push(el);
                 }
-            })
-            return output
+            });
+            return output;
         }
-    })
+    });
 }
 
 /**
@@ -1095,7 +1258,7 @@ function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = tr
  * @returns {string} Compressed URL-encoded string.
  */
 function compress(data) {
-    return lzs.compressToEncodedURIComponent(data)
+    return lzs.compressToEncodedURIComponent(data);
 }
 
 /**
@@ -1104,7 +1267,7 @@ function compress(data) {
  * @returns {string} Original string.
  */
 function decompress(data) {
-    return lzs.decompressFromEncodedURIComponent(data)
+    return lzs.decompressFromEncodedURIComponent(data);
 }
 
 /**
@@ -1113,28 +1276,30 @@ function decompress(data) {
  * return List of available protocol schemes
  */
 function detectProtocolSchemes(td) {
-    let tdJson
+    let tdJson;
 
     try {
-        tdJson = JSON.parse(td)
+        tdJson = JSON.parse(td);
     } catch (err) {
-        return []
+        return [];
     }
 
-    const baseUriProtocol = getHrefProtocol(tdJson.base)
-    const thingProtocols = detectProtocolInForms(tdJson.forms)
-    const actionsProtocols = detectProtocolInAffordance(tdJson.actions)
-    const eventsProtocols = detectProtocolInAffordance(tdJson.events)
-    const propertiesProtcols = detectProtocolInAffordance(tdJson.properties)
-    const protocolSchemes = [... new Set([
-        baseUriProtocol,
-        ...thingProtocols,
-        ...actionsProtocols,
-        ...eventsProtocols,
-        ...propertiesProtcols
-    ])].filter(p => p !== undefined)
+    const baseUriProtocol = getHrefProtocol(tdJson.base);
+    const thingProtocols = detectProtocolInForms(tdJson.forms);
+    const actionsProtocols = detectProtocolInAffordance(tdJson.actions);
+    const eventsProtocols = detectProtocolInAffordance(tdJson.events);
+    const propertiesProtcols = detectProtocolInAffordance(tdJson.properties);
+    const protocolSchemes = [
+        ...new Set([
+            baseUriProtocol,
+            ...thingProtocols,
+            ...actionsProtocols,
+            ...eventsProtocols,
+            ...propertiesProtcols,
+        ]),
+    ].filter((p) => p !== undefined);
 
-    return protocolSchemes
+    return protocolSchemes;
 }
 
 /**
@@ -1144,18 +1309,18 @@ function detectProtocolSchemes(td) {
  */
 function detectProtocolInAffordance(affordance) {
     if (!affordance) {
-        return []
+        return [];
     }
 
-    let protocolSchemes = []
+    let protocolSchemes = [];
 
     for (const key in affordance) {
         if (key) {
-            protocolSchemes = protocolSchemes.concat(detectProtocolInForms(affordance[key].forms))
+            protocolSchemes = protocolSchemes.concat(detectProtocolInForms(affordance[key].forms));
         }
     }
 
-    return protocolSchemes
+    return protocolSchemes;
 }
 
 /**
@@ -1165,16 +1330,16 @@ function detectProtocolInAffordance(affordance) {
  */
 function detectProtocolInForms(forms) {
     if (!forms) {
-        return []
+        return [];
     }
 
-    const protocolSchemes = []
+    const protocolSchemes = [];
 
-    forms.forEach(form => {
-        protocolSchemes.push(getHrefProtocol(form.href))
-    })
+    forms.forEach((form) => {
+        protocolSchemes.push(getHrefProtocol(form.href));
+    });
 
-    return protocolSchemes
+    return protocolSchemes;
 }
 
 /**
@@ -1184,10 +1349,10 @@ function detectProtocolInForms(forms) {
  */
 function getHrefProtocol(href) {
     if (!href) {
-        return
+        return;
     }
 
-    return href.split(':')[0]
+    return href.split(":")[0];
 }
 
 /**
@@ -1197,13 +1362,13 @@ function getHrefProtocol(href) {
  */
 function convertTDJsonToYaml(td) {
     if (td === "") {
-        return
+        return;
     }
 
     try {
-        return jsYaml.dump(JSON.parse(td))
+        return jsYaml.dump(JSON.parse(td));
     } catch (err) {
-        console.log("TD generation problem: " + err)
+        console.log("TD generation problem: " + err);
     }
 }
 
@@ -1214,12 +1379,12 @@ function convertTDJsonToYaml(td) {
  */
 function convertTDYamlToJson(td) {
     if (td === "") {
-        return
+        return;
     }
 
     try {
-        return JSON.stringify(jsYaml.load(td))
+        return JSON.stringify(jsYaml.load(td));
     } catch (err) {
-        console.log("TD generation problem: " + err)
+        console.log("TD generation problem: " + err);
     }
 }

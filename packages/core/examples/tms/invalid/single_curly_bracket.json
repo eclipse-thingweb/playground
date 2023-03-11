@@ -1,8 +1,8 @@
 {
     "id": "urn:single:curly",
-    "$comment":"single curly bracket",
-    "@context": ["https://www.w3.org/2022/wot/td/v1.1"], 
-    "@type" : "tm:ThingModel",
+    "$comment": "single curly bracket",
+    "@context": ["https://www.w3.org/2022/wot/td/v1.1"],
+    "@type": "tm:ThingModel",
     "title": "Invalid model 3",
     "securityDefinitions": {
         "example_sc": {

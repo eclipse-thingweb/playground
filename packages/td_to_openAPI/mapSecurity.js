@@ -3,7 +3,7 @@
  * thus they are just not converted if not given/other format
  */
 
-module.exports = {mapSecurity, mapSecurityString, mapSecurityDefinitions, hasNoSec, mapFormSecurity}
+module.exports = { mapSecurity, mapSecurityString, mapSecurityDefinitions, hasNoSec, mapFormSecurity };
 
 /**
  * Convert the TD security Definitions and Security to
@@ -12,21 +12,20 @@ module.exports = {mapSecurity, mapSecurityString, mapSecurityDefinitions, hasNoS
  * @param {string|string[]} tdSecurity security scheme names that apply per default
  */
 function mapSecurity(tdDefinitions, tdSecurity) {
-
-    const {securitySchemes, scopes} = mapSecurityDefinitions(tdDefinitions)
-    const security = mapSecurityString(tdSecurity, securitySchemes, scopes)
+    const { securitySchemes, scopes } = mapSecurityDefinitions(tdDefinitions);
+    const security = mapSecurityString(tdSecurity, securitySchemes, scopes);
 
     if (security.length === 0 && hasNoSec(tdDefinitions, tdSecurity)) {
-        security.push({})
+        security.push({});
     }
 
     for (const key in securitySchemes) {
         if (key.includes("combo_sc")) {
-            delete securitySchemes[key]
+            delete securitySchemes[key];
         }
     }
 
-    return {securitySchemes, security}
+    return { securitySchemes, security };
 }
 
 /**
@@ -37,52 +36,52 @@ function mapSecurity(tdDefinitions, tdSecurity) {
  * @param {string|string[]|undefined} tdFormScopes oauth2 scopes that apply to this form
  */
 function mapFormSecurity(tdDefinitions, tdSecurity, tdFormScopes) {
-
-    const {securitySchemes, scopes} = mapSecurityDefinitions(tdDefinitions)
-    let oapScopes = scopes
-    if (typeof tdFormScopes === "string") {tdFormScopes = [tdFormScopes]}
+    const { securitySchemes, scopes } = mapSecurityDefinitions(tdDefinitions);
+    let oapScopes = scopes;
+    if (typeof tdFormScopes === "string") {
+        tdFormScopes = [tdFormScopes];
+    }
 
     if (typeof tdFormScopes === "object") {
-
-        const scopeSecurities = []
+        const scopeSecurities = [];
         // filter TD scopes that are not supported by the conversion
-        oapScopes = {}
+        oapScopes = {};
 
-        Object.keys(scopes).forEach( supportedSecurity => {
-            scopeSecurities.push(supportedSecurity)
-            const addScope = tdFormScopes.find( tdFormScope => (
-                scopes[supportedSecurity].some( supportedScope => (supportedScope === tdFormScope))
-            ))
+        Object.keys(scopes).forEach((supportedSecurity) => {
+            scopeSecurities.push(supportedSecurity);
+            const addScope = tdFormScopes.find((tdFormScope) =>
+                scopes[supportedSecurity].some((supportedScope) => supportedScope === tdFormScope)
+            );
             if (addScope !== undefined) {
                 if (oapScopes[supportedSecurity] === undefined) {
-                    oapScopes[supportedSecurity] = [addScope]
-                }
-                else {
-                    oapScopes[supportedSecurity].push(addScope)
+                    oapScopes[supportedSecurity] = [addScope];
+                } else {
+                    oapScopes[supportedSecurity].push(addScope);
                 }
             }
-        })
+        });
 
         // add security scheme names if only a scope was given in the TD
-        scopeSecurities.forEach( scopeSecurity => {
-            if (typeof tdSecurity === "string") {tdSecurity = [tdSecurity]}
+        scopeSecurities.forEach((scopeSecurity) => {
+            if (typeof tdSecurity === "string") {
+                tdSecurity = [tdSecurity];
+            }
             if (typeof tdSecurity === "object") {
-                if (!tdSecurity.some(tdSecString => (tdSecString === scopeSecurity))) {
-                    tdSecurity.push(scopeSecurity)
+                if (!tdSecurity.some((tdSecString) => tdSecString === scopeSecurity)) {
+                    tdSecurity.push(scopeSecurity);
                 }
+            } else if (tdSecurity === undefined) {
+                tdSecurity = scopeSecurities;
             }
-            else if (tdSecurity === undefined) {
-                tdSecurity = scopeSecurities
-            }
-        })
+        });
     }
-    const security = mapSecurityString(tdSecurity, securitySchemes, oapScopes)
+    const security = mapSecurityString(tdSecurity, securitySchemes, oapScopes);
 
     if (security.length === 0 && hasNoSec(tdDefinitions, tdSecurity)) {
-        security.push({})
+        security.push({});
     }
 
-    return {security}
+    return { security };
 }
 
 /**
@@ -92,67 +91,75 @@ function mapFormSecurity(tdDefinitions, tdSecurity, tdFormScopes) {
  * @param {object} tdScopes the found scopes as map {string: string[]}
  */
 function mapSecurityString(tdSecurity, oapSecuritySchemes, tdScopes) {
-    const oapSecurityContainer = []
+    const oapSecurityContainer = [];
 
-    if (typeof tdSecurity === "string") {tdSecurity = [tdSecurity]}
+    if (typeof tdSecurity === "string") {
+        tdSecurity = [tdSecurity];
+    }
 
     if (typeof tdSecurity === "object") {
-        tdSecurity.forEach( tdSecurityKey => {
-            let oapSecurity = {}
-            const securityObject = oapSecuritySchemes[tdSecurityKey]
+        tdSecurity.forEach((tdSecurityKey) => {
+            let oapSecurity = {};
+            const securityObject = oapSecuritySchemes[tdSecurityKey];
 
             if (securityObject && securityObject.type === "allOf") {
-                securityObject.secdef.forEach( def => {
+                securityObject.secdef.forEach((def) => {
                     // get scopes
-                    let thisScopes = []
-                    if (tdScopes[def] !== undefined) {thisScopes = tdScopes[def]}
-
-                    const supportedSchemes = Object.keys(oapSecuritySchemes)
-
-                    if (supportedSchemes.some( supportedScheme => (supportedScheme === def))) {
-                        oapSecurity[def] = thisScopes
+                    let thisScopes = [];
+                    if (tdScopes[def] !== undefined) {
+                        thisScopes = tdScopes[def];
                     }
-                })
+
+                    const supportedSchemes = Object.keys(oapSecuritySchemes);
+
+                    if (supportedSchemes.some((supportedScheme) => supportedScheme === def)) {
+                        oapSecurity[def] = thisScopes;
+                    }
+                });
 
                 if (Object.keys(oapSecurity).length > 0) {
-                    oapSecurityContainer.push(oapSecurity)
+                    oapSecurityContainer.push(oapSecurity);
                 }
             } else if (securityObject && securityObject.type === "oneOf") {
-                securityObject.secdef.forEach( def => {
-                    oapSecurity = {}
+                securityObject.secdef.forEach((def) => {
+                    oapSecurity = {};
                     // get scopes
-                    let thisScopes = []
-                    if (tdScopes[def] !== undefined) {thisScopes = tdScopes[def]}
+                    let thisScopes = [];
+                    if (tdScopes[def] !== undefined) {
+                        thisScopes = tdScopes[def];
+                    }
 
-                    const supportedSchemes = Object.keys(oapSecuritySchemes)
+                    const supportedSchemes = Object.keys(oapSecuritySchemes);
 
-                    if (supportedSchemes.some( supportedScheme => (supportedScheme === def))) {
-                        oapSecurity[def] = thisScopes
+                    if (supportedSchemes.some((supportedScheme) => supportedScheme === def)) {
+                        oapSecurity[def] = thisScopes;
                     }
 
                     if (Object.keys(oapSecurity).length > 0) {
-                        oapSecurityContainer.push(oapSecurity)
+                        oapSecurityContainer.push(oapSecurity);
                     }
-                })
+                });
             } else {
                 // get scopes
-                let thisScopes = []
-                if (tdScopes[tdSecurityKey] !== undefined) {thisScopes = tdScopes[tdSecurityKey]}
+                let thisScopes = [];
+                if (tdScopes[tdSecurityKey] !== undefined) {
+                    thisScopes = tdScopes[tdSecurityKey];
+                }
 
-                const supportedSchemes = Object.keys(oapSecuritySchemes)
+                const supportedSchemes = Object.keys(oapSecuritySchemes);
 
-                if (supportedSchemes.some( supportedScheme => (supportedScheme === tdSecurityKey))) {
-                    oapSecurity[tdSecurityKey] = thisScopes
+                if (supportedSchemes.some((supportedScheme) => supportedScheme === tdSecurityKey)) {
+                    oapSecurity[tdSecurityKey] = thisScopes;
                 }
 
                 if (Object.keys(oapSecurity).length > 0) {
-                    oapSecurityContainer.push(oapSecurity)
+                    oapSecurityContainer.push(oapSecurity);
                 }
             }
-        })
+        });
     }
 
-    return oapSecurityContainer
+    return oapSecurityContainer;
 }
 
 /**
@@ -162,24 +169,24 @@ function mapSecurityString(tdSecurity, oapSecuritySchemes, tdScopes) {
  * @param {object|undefined} tdDefinitions if no object is given, empty securitySchemes and scopes are returned
  */
 function mapSecurityDefinitions(tdDefinitions) {
-    const securitySchemes = {}
-    const scopes = {}
+    const securitySchemes = {};
+    const scopes = {};
 
     if (typeof tdDefinitions === "object") {
-        Object.keys(tdDefinitions).forEach( key => {
+        Object.keys(tdDefinitions).forEach((key) => {
             if (typeof tdDefinitions[key].scheme === "string") {
-                const {oapDefinition, scope} = genOapDefinition(tdDefinitions[key])
-                if(Object.keys(oapDefinition).length > 0) {
-                    securitySchemes[key] = oapDefinition
+                const { oapDefinition, scope } = genOapDefinition(tdDefinitions[key]);
+                if (Object.keys(oapDefinition).length > 0) {
+                    securitySchemes[key] = oapDefinition;
                     if (typeof scope === "object") {
-                        scopes[key] = scope
+                        scopes[key] = scope;
                     }
                 }
             }
-        })
+        });
     }
 
-    return {securitySchemes, scopes}
+    return { securitySchemes, scopes };
 }
 
 /**
@@ -187,84 +194,86 @@ function mapSecurityDefinitions(tdDefinitions) {
  * @param {object} tdDefinition one security definition object
  */
 function genOapDefinition(tdDefinition) {
-    const oapDefinition = {}
-    const tdScheme = tdDefinition.scheme.toLowerCase()
-    let addOptionals = true
-    const httpSchemes = ["basic", "digest", "bearer"]
-    let scope
+    const oapDefinition = {};
+    const tdScheme = tdDefinition.scheme.toLowerCase();
+    let addOptionals = true;
+    const httpSchemes = ["basic", "digest", "bearer"];
+    let scope;
 
-    if (httpSchemes.some( httpScheme => (httpScheme === tdScheme))) {
-        oapDefinition.type = "http"
-        oapDefinition.scheme = tdScheme
+    if (httpSchemes.some((httpScheme) => httpScheme === tdScheme)) {
+        oapDefinition.type = "http";
+        oapDefinition.scheme = tdScheme;
         if (tdDefinition.in && tdDefinition.in !== "header") {
-            throw new Error("Cannot represent " + tdScheme + " authentication outside the header in openAPI")
+            throw new Error("Cannot represent " + tdScheme + " authentication outside the header in openAPI");
         }
     }
 
     switch (tdScheme) {
-
         case "nosec":
         case "basic":
         case "psk":
             // do nothing?
-        break
+            break;
 
         case "digest":
-            oapDefinition["x-qop"] = (tdDefinition.qop === undefined) ? "auth" : tdDefinition.qop
-        break
+            oapDefinition["x-qop"] = tdDefinition.qop === undefined ? "auth" : tdDefinition.qop;
+            break;
 
         case "bearer":
-            oapDefinition.bearerFormat = (tdDefinition.format === undefined) ? "jwt" : tdDefinition.format
-            oapDefinition["x-alg"] = (tdDefinition.alg === undefined) ? "ES256" : tdDefinition.alg
-        break
+            oapDefinition.bearerFormat = tdDefinition.format === undefined ? "jwt" : tdDefinition.format;
+            oapDefinition["x-alg"] = tdDefinition.alg === undefined ? "ES256" : tdDefinition.alg;
+            break;
 
         case "apikey":
-            oapDefinition.type = "apiKey"
-            oapDefinition.in = (tdDefinition.in === undefined) ? "query" : tdDefinition.in
-            oapDefinition.name = (tdDefinition.name === undefined) ? "UNKNOWN" : tdDefinition.name
+            oapDefinition.type = "apiKey";
+            oapDefinition.in = tdDefinition.in === undefined ? "query" : tdDefinition.in;
+            oapDefinition.name = tdDefinition.name === undefined ? "UNKNOWN" : tdDefinition.name;
             if (oapDefinition.in === "body") {
-                throw new Error("Cannot represent ApiKey in `body` with openAPI")
+                throw new Error("Cannot represent ApiKey in `body` with openAPI");
             }
-        break
+            break;
 
         case "oauth2":
             if (typeof tdDefinition.scopes === "string") {
-                scope = [tdDefinition.scopes]
-            }
-            else if (typeof tdDefinition.scopes === "object") {
-                scope = tdDefinition.scopes
+                scope = [tdDefinition.scopes];
+            } else if (typeof tdDefinition.scopes === "object") {
+                scope = tdDefinition.scopes;
             }
 
-            oapDefinition.type = "oauth2"
-            oapDefinition.flows = genOAuthFlows(tdDefinition)
-        break
+            oapDefinition.type = "oauth2";
+            oapDefinition.flows = genOAuthFlows(tdDefinition);
+            break;
 
         case "combo":
             // todo  Implement combo security scheme
             if (tdDefinition.allOf) {
-                oapDefinition.type = "allOf"
-                oapDefinition.secdef = tdDefinition.allOf
+                oapDefinition.type = "allOf";
+                oapDefinition.secdef = tdDefinition.allOf;
             } else {
-                oapDefinition.type = "oneOf"
-                oapDefinition.secdef = tdDefinition.oneOf
+                oapDefinition.type = "oneOf";
+                oapDefinition.secdef = tdDefinition.oneOf;
             }
-        break
-
+            break;
 
         default:
-            console.log("unknown security definition: " + tdScheme)
-            addOptionals = false
-
+            console.log("unknown security definition: " + tdScheme);
+            addOptionals = false;
     }
 
     // add optional fields
     if (addOptionals) {
-        if (tdDefinition.description) {oapDefinition.description = tdDefinition.description}
-        if (tdDefinition.descriptions) {oapDefinition["x-descriptions"] = tdDefinition.descriptions}
-        if (tdDefinition.proxy) {oapDefinition["x-proxy"] = tdDefinition.proxy}
+        if (tdDefinition.description) {
+            oapDefinition.description = tdDefinition.description;
+        }
+        if (tdDefinition.descriptions) {
+            oapDefinition["x-descriptions"] = tdDefinition.descriptions;
+        }
+        if (tdDefinition.proxy) {
+            oapDefinition["x-proxy"] = tdDefinition.proxy;
+        }
     }
 
-    return {oapDefinition, scope}
+    return { oapDefinition, scope };
 }
 
 /**
@@ -272,52 +281,62 @@ function genOapDefinition(tdDefinition) {
  * @param {object} tdDefinition The security definition object of a TD
  */
 function genOAuthFlows(tdDefinition) {
-    const oapFlow = {}
-    if (typeof tdDefinition.flow !== "string") {throw new Error("the oauth2 object has no flow of type string")}
+    const oapFlow = {};
+    if (typeof tdDefinition.flow !== "string") {
+        throw new Error("the oauth2 object has no flow of type string");
+    }
 
-    const tdFlow = tdDefinition.flow.toLowerCase()
+    const tdFlow = tdDefinition.flow.toLowerCase();
     const mapTdToOap = {
         implicit: ["implicit"],
         password: ["password", "ropc"],
         clientCredentials: ["application", "client", "clientcredentials", "clientcredential"],
         authorizationCode: ["accesscode", "code", "authorizationcode"],
-        "x-device": ["device"]
-    }
+        "x-device": ["device"],
+    };
 
-    Object.keys(mapTdToOap).forEach( key => {
-        if (mapTdToOap[key].some( arrayElement => (arrayElement === tdFlow))) {
-            const protoFlow = {}
+    Object.keys(mapTdToOap).forEach((key) => {
+        if (mapTdToOap[key].some((arrayElement) => arrayElement === tdFlow)) {
+            const protoFlow = {};
             if (key === "implicit" || key === "authorizationCode" || key === "x-device") {
                 if (tdDefinition.authorization === undefined) {
-                    throw new Error("the authorization URI is required for oauth2 flow: " + key)
-                }
-                else {
-                    protoFlow.authorizationUrl = tdDefinition.authorization
+                    throw new Error("the authorization URI is required for oauth2 flow: " + key);
+                } else {
+                    protoFlow.authorizationUrl = tdDefinition.authorization;
                 }
             }
-            if (key === "password" || key === "clientCredentials" || key === "authorizationCode" || key === "x-device") {
+            if (
+                key === "password" ||
+                key === "clientCredentials" ||
+                key === "authorizationCode" ||
+                key === "x-device"
+            ) {
                 if (tdDefinition.token === undefined) {
-                    throw new Error("the token URI is required for oauth2 flow: " + key)
-                }
-                else {
-                    protoFlow.tokenUrl = tdDefinition.token
+                    throw new Error("the token URI is required for oauth2 flow: " + key);
+                } else {
+                    protoFlow.tokenUrl = tdDefinition.token;
                 }
             }
-            if (typeof tdDefinition.refresh === "string") {protoFlow.refreshUrl = tdDefinition.refresh}
+            if (typeof tdDefinition.refresh === "string") {
+                protoFlow.refreshUrl = tdDefinition.refresh;
+            }
             if (tdDefinition.scopes === undefined) {
-                protoFlow.scopes = {/* "default": "autogenerated default scope" */} // TODO: is one scope required? (I don't think so)
+                protoFlow.scopes = {
+                    /* "default": "autogenerated default scope" */
+                }; // TODO: is one scope required? (I don't think so)
+            } else {
+                protoFlow.scopes = {};
+                if (typeof tdDefinition.scopes === "string") {
+                    tdDefinition.scopes = [tdDefinition.scopes];
+                }
+                tdDefinition.scopes.forEach((scope) => {
+                    protoFlow.scopes[scope] = "";
+                });
             }
-            else {
-                protoFlow.scopes = {}
-                if (typeof tdDefinition.scopes === "string") {tdDefinition.scopes = [tdDefinition.scopes]}
-                tdDefinition.scopes.forEach( scope => {
-                    protoFlow.scopes[scope] = ""
-                })
-            }
-            oapFlow[key] = protoFlow
+            oapFlow[key] = protoFlow;
         }
-    })
-    return oapFlow
+    });
+    return oapFlow;
 }
 
 /**
@@ -326,31 +345,30 @@ function genOAuthFlows(tdDefinition) {
  * @param {string|string[]} tdSecurity security scheme names that apply to this TD part
  */
 function hasNoSec(tdDefinitions, tdSecurity) {
-
-    let foundNoSec = false
+    let foundNoSec = false;
 
     // find all noSec names
-    const noSecNames = []
+    const noSecNames = [];
     if (typeof tdDefinitions === "object") {
-        Object.keys(tdDefinitions).forEach( key => {
-            const tdScheme = tdDefinitions[key].scheme
+        Object.keys(tdDefinitions).forEach((key) => {
+            const tdScheme = tdDefinitions[key].scheme;
             if (typeof tdScheme === "string" && tdScheme.toLowerCase() === "nosec") {
-                noSecNames.push(key)
+                noSecNames.push(key);
             }
-        })
+        });
     }
 
-    if (typeof tdSecurity === "string") {tdSecurity = [tdSecurity]}
-    if (typeof tdSecurity === "undefined") {tdSecurity = []}
+    if (typeof tdSecurity === "string") {
+        tdSecurity = [tdSecurity];
+    }
+    if (typeof tdSecurity === "undefined") {
+        tdSecurity = [];
+    }
 
     // check if all security Schemes are of type noSec
     if (tdSecurity.length > 0) {
-        foundNoSec = tdSecurity.every( securityString => (
-                        noSecNames.some( noSecName => (
-                            noSecName === securityString
-                        ))
-                    ))
+        foundNoSec = tdSecurity.every((securityString) => noSecNames.some((noSecName) => noSecName === securityString));
     }
 
-    return foundNoSec
+    return foundNoSec;
 }

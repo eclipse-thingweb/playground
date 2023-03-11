@@ -3,7 +3,7 @@
     "description": "items: Used to define the characteristics of an array. MAY be included. Type: DataSchema.",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "is-complex": true,
-    "also": ["td-data-schema_items","td-data-schema-objects-arrays"],
+    "also": ["td-data-schema_items", "td-data-schema-objects-arrays"],
     "type": "object",
     "properties": {
         "properties": {
@@ -33,7 +33,8 @@
                 "required": ["items"],
                 "properties": {
                     "items": {
-                        "oneOf": [{
+                        "oneOf": [
+                            {
                                 "$ref": "#/definitions/dataSchema"
                             },
                             {
@@ -69,7 +70,8 @@
                         }
                     },
                     "items": {
-                        "oneOf": [{
+                        "oneOf": [
+                            {
                                 "$ref": "#/definitions/dataSchema"
                             },
                             {
@@ -114,7 +116,8 @@
                 "required": ["items"],
                 "properties": {
                     "items": {
-                        "oneOf": [{
+                        "oneOf": [
+                            {
                                 "$ref": "#/definitions/dataSchema"
                             },
                             {
@@ -167,18 +170,11 @@
                     "const": {},
                     "type": {
                         "type": "string",
-                        "enum": [
-                            "boolean",
-                            "integer",
-                            "number",
-                            "string",
-                            "object",
-                            "array",
-                            "null"
-                        ]
+                        "enum": ["boolean", "integer", "number", "string", "object", "array", "null"]
                     },
                     "items": {
-                        "oneOf": [{
+                        "oneOf": [
+                            {
                                 "$ref": "#/definitions/dataSchema"
                             },
                             {
@@ -190,16 +186,12 @@
                         ]
                     },
                     "maxItems": {
-
                         "type": "integer",
                         "minimum": 0
-
                     },
                     "minItems": {
-
                         "type": "integer",
                         "minimum": 0
-
                     },
                     "minimum": {
                         "type": "number"

@@ -13,50 +13,44 @@
             }
         }
     },
-    "required": [
-        "securityDefinitions"
-    ],
+    "required": ["securityDefinitions"],
     "additionalProperties": true,
     "definitions": {
         "securityScheme": {
             "if": {
-                    "type": "object",
-                    "properties": {
-                        "description": {
+                "type": "object",
+                "properties": {
+                    "description": {
+                        "type": "string"
+                    },
+                    "proxy": {
+                        "$ref": "#/definitions/url"
+                    },
+                    "scheme": {
+                        "type": "string",
+                        "enum": ["oauth2"]
+                    },
+                    "authorization": {
+                        "$ref": "#/definitions/url"
+                    },
+                    "token": {
+                        "$ref": "#/definitions/url"
+                    },
+                    "refresh": {
+                        "$ref": "#/definitions/url"
+                    },
+                    "scopes": {
+                        "type": "array",
+                        "items": {
                             "type": "string"
-                        },
-                        "proxy": {
-                            "$ref": "#/definitions/url"
-                        },
-                        "scheme": {
-                            "type": "string",
-                            "enum": [
-                                "oauth2"
-                            ]
-                        },
-                        "authorization": {
-                            "$ref": "#/definitions/url"
-                        },
-                        "token": {
-                            "$ref": "#/definitions/url"
-                        },
-                        "refresh": {
-                            "$ref": "#/definitions/url"
-                        },
-                        "scopes": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        "flow": {
-                            "type": "string",
-                            "enum": ["code"]
                         }
                     },
-                    "required": [
-                        "scheme", "authorization"
-                    ]
+                    "flow": {
+                        "type": "string",
+                        "enum": ["code"]
+                    }
+                },
+                "required": ["scheme", "authorization"]
             },
             "then": {
                 "const": "td-vocab-authorization--OAuth2SecurityScheme=pass"

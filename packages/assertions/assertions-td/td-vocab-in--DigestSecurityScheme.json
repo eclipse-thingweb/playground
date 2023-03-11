@@ -13,9 +13,7 @@
             }
         }
     },
-    "required": [
-        "securityDefinitions"
-    ],
+    "required": ["securityDefinitions"],
     "additionalProperties": true,
     "definitions": {
         "securityScheme": {
@@ -24,13 +22,11 @@
                 "properties": {
                     "scheme": {
                         "type": "string",
-                        "enum": [
-                            "digest"
-                        ]
+                        "enum": ["digest"]
                     },
                     "in": {
                         "type": "string",
-                        "enum": ["header", "query", "body", "cookie","auto"]
+                        "enum": ["header", "query", "body", "cookie", "auto"]
                     }
                 },
                 "required": ["in", "scheme"]

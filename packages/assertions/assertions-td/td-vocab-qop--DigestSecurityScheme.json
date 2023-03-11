@@ -13,44 +13,40 @@
             }
         }
     },
-    "required": [
-        "securityDefinitions"
-    ],
+    "required": ["securityDefinitions"],
     "additionalProperties": true,
     "definitions": {
         "securityScheme": {
             "if": {
-                "oneOf": [{
-                    "type": "object",
-                    "properties": {
-                        "description": {
-                            "type": "string"
+                "oneOf": [
+                    {
+                        "type": "object",
+                        "properties": {
+                            "description": {
+                                "type": "string"
+                            },
+                            "proxy": {
+                                "$ref": "#/definitions/url"
+                            },
+                            "scheme": {
+                                "type": "string",
+                                "enum": ["digest"]
+                            },
+                            "qop": {
+                                "type": "string",
+                                "enum": ["auth", "auth-int"]
+                            },
+                            "in": {
+                                "type": "string",
+                                "enum": ["header", "query", "body", "cookie"]
+                            },
+                            "name": {
+                                "type": "string"
+                            }
                         },
-                        "proxy": {
-                            "$ref": "#/definitions/url"
-                        },
-                        "scheme": {
-                            "type": "string",
-                            "enum": [
-                                "digest"
-                            ]
-                        },
-                        "qop": {
-                            "type": "string",
-                            "enum": ["auth", "auth-int"]
-                        },
-                        "in": {
-                            "type": "string",
-                            "enum": ["header", "query", "body", "cookie"]
-                        },
-                        "name": {
-                            "type": "string"
-                        }
-                    },
-                    "required": [
-                        "scheme", "qop"
-                    ]
-                }]
+                        "required": ["scheme", "qop"]
+                    }
+                ]
             },
             "then": {
                 "const": "td-vocab-qop--DigestSecurityScheme=pass"

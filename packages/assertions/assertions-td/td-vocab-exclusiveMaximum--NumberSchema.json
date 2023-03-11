@@ -61,9 +61,7 @@
                 "properties": {
                     "type": {
                         "type": "string",
-                        "enum": [
-                            "number"
-                        ]
+                        "enum": ["number"]
                     },
                     "exclusiveMaximum": {
                         "type": "number"
@@ -94,7 +92,8 @@
                         }
                     },
                     "items": {
-                        "oneOf": [{
+                        "oneOf": [
+                            {
                                 "$ref": "#/definitions/dataSchema"
                             },
                             {

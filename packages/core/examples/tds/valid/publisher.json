@@ -8,20 +8,18 @@
             "scheme": "nosec"
         }
     },
-    "security": [
-        "nosec_sc"
-    ],
+    "security": ["nosec_sc"],
     "properties": {
         "oneOfTest": {
-            "readOnly":true,
+            "readOnly": true,
             "writeOnly": false,
             "oneOf": [
                 {
                     "type": "string"
-                }, 
+                },
                 {
                     "type": "integer"
-                }, 
+                },
                 {
                     "type": "null"
                 }
@@ -29,7 +27,7 @@
             "forms": [
                 {
                     "href": "mqtt://iot.eclipse.org/oneOfTest",
-                    "op":"observeproperty",
+                    "op": "observeproperty",
                     "mqv:controlPacketValue": "SUBSCRIBE"
                 },
                 {
@@ -43,8 +41,8 @@
             "readOnly": true,
             "writeOnly": false,
             "type": "array",
-            "items":{"type":"integer"},
-            "maxItems":5,
+            "items": { "type": "integer" },
+            "maxItems": 5,
             "minItems": 2,
             "forms": [
                 {

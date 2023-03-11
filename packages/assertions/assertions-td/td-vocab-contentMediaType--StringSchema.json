@@ -3,7 +3,7 @@
     "description": "contentMediaType: Specifies the MIME type (e.g., image/png, audio/mpeg) of the contents of a string value, as described in RFC 2046. MAY be included. Type: string.",
     "$schema ": "http://json-schema.org/draft/2019-09/schema#",
     "is-complex": true,
-    "also":["td-data-schema_contentMediaType", "td-property-names_contentMediaType"],
+    "also": ["td-data-schema_contentMediaType", "td-property-names_contentMediaType"],
     "type": "object",
     "properties": {
         "properties": {
@@ -61,9 +61,7 @@
                 "properties": {
                     "type": {
                         "type": "string",
-                        "enum": [
-                            "string"
-                        ]
+                        "enum": ["string"]
                     },
                     "contentMediaType": {
                         "type": "string"
@@ -111,18 +109,11 @@
                     "const": {},
                     "type": {
                         "type": "string",
-                        "enum": [
-                            "boolean",
-                            "integer",
-                            "number",
-                            "string",
-                            "object",
-                            "array",
-                            "null"
-                        ]
+                        "enum": ["boolean", "integer", "number", "string", "object", "array", "null"]
                     },
                     "items": {
-                        "oneOf": [{
+                        "oneOf": [
+                            {
                                 "$ref": "#/definitions/dataSchema"
                             },
                             {
@@ -134,16 +125,12 @@
                         ]
                     },
                     "maxItems": {
-
                         "type": "integer",
                         "minimum": 0
-
                     },
                     "minItems": {
-
                         "type": "integer",
                         "minimum": 0
-
                     },
                     "minimum": {
                         "type": "number"

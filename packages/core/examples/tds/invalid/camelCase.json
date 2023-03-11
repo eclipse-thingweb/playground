@@ -1,6 +1,6 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
-    "@context":"https://www.w3.org/2022/wot/td/v1.1",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "title": "MyLampThing",
     "description": "Invalid TD since op in actions uses camelCase",
     "securityDefinitions": {
@@ -12,10 +12,12 @@
     "security": ["basic_sc"],
     "actions": {
         "toggle": {
-            "forms": [{
-                "href": "https://mylamp.example.com/toggle",
-                "op": ["invokeAction"]
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/toggle",
+                    "op": ["invokeAction"]
+                }
+            ]
         }
     }
 }

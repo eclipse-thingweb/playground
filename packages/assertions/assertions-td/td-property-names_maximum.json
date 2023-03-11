@@ -13,16 +13,14 @@
     },
     "additionalProperties": true,
     "definitions": {
-         "property_element": {
-             "type": "object",
-             "if": {
-                 "required": [
-                     "maximum"
-                 ]
-             },
-             "then": {
-                 "const": "td-property-names_maximum=pass"
-             }
-         }
+        "property_element": {
+            "type": "object",
+            "if": {
+                "required": ["maximum"]
+            },
+            "then": {
+                "const": "td-property-names_maximum=pass"
+            }
+        }
     }
 }

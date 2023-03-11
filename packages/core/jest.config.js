@@ -1,3 +1,3 @@
 module.exports = {
-    slowTestThreshold: 40
-}
+    slowTestThreshold: 40,
+};

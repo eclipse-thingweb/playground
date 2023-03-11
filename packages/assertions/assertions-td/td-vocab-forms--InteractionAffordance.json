@@ -24,7 +24,6 @@
                 "$ref": "#/definitions/event_element"
             }
         }
-
     },
     "additionalProperties": true,
     "definitions": {
@@ -105,9 +104,7 @@
                 },
                 "subprotocol": {
                     "type": "string",
-                    "enum": [
-                        "longpoll", "websub", "sse"
-                    ]
+                    "enum": ["longpoll", "websub", "sse"]
                 },
                 "response": {
                     "type": "object",
@@ -118,11 +115,8 @@
                     }
                 }
             },
-            "required": [
-                "href"
-            ],
+            "required": ["href"],
             "additionalProperties": true
-
         },
         "url": {
             "type": "string"

@@ -1,9 +1,7 @@
 {
     "id": "urn:security",
     "$comment": "security allowing placeholders in scheme",
-    "@context": [
-        "https://www.w3.org/2022/wot/td/v1.1"
-    ],
+    "@context": ["https://www.w3.org/2022/wot/td/v1.1"],
     "@type": "tm:ThingModel",
     "title": "Valid model 1",
     "securityDefinitions": {
@@ -11,7 +9,5 @@
             "scheme": "{{PLACEHOLDER}}"
         }
     },
-    "security": [
-        "example_sc"
-    ]
+    "security": ["example_sc"]
 }

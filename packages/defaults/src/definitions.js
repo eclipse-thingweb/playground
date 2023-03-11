@@ -7,48 +7,48 @@
  */
 const defaultLookup = {
     Form: {
-        contentType: "application/json"
+        contentType: "application/json",
     },
     "Form-PropertyAffordance": {
-        op: ["readproperty", "writeproperty"]
+        op: ["readproperty", "writeproperty"],
     },
     "Form-ActionAffordance": {
-        op: "invokeaction"
+        op: "invokeaction",
     },
     "Form-EventAffordance": {
-        op: ["subscribeevent", "unsubscribeevent"]
+        op: ["subscribeevent", "unsubscribeevent"],
     },
     AdditionalExpectedResponse: {
         success: false,
-        contentType: "application/json"
+        contentType: "application/json",
     },
     DataSchema: {
         readOnly: false,
-        writeOnly: false
+        writeOnly: false,
     },
     PropertyAffordance: {
-        observable: false
+        observable: false,
     },
     ActionAffordance: {
         safe: false,
-        idempotent: false
+        idempotent: false,
     },
     BasicSecuritySchema: {
-        in: "header"
+        in: "header",
     },
     DigestSecurityScheme: {
         in: "header",
-        qop: "auth"
+        qop: "auth",
     },
     BearerSecurityScheme: {
         in: "header",
         alg: "ES256",
-        format: "jwt"
+        format: "jwt",
     },
     APIKeySecurityScheme: {
-        in: "query"
-    }
-}
+        in: "query",
+    },
+};
 
 /**
  * The possible types of objects to extend
@@ -65,7 +65,7 @@ const defaultClasses = {
     basicSecuritySchema: "BasicSecuritySchema",
     digestSecurityScheme: "DigestSecurityScheme",
     bearerSecurityScheme: "BearerSecurityScheme",
-    apiKeySecurityScheme: "APIKeySecurityScheme"
-}
+    apiKeySecurityScheme: "APIKeySecurityScheme",
+};
 
-module.exports = {defaultLookup, defaultClasses}
+module.exports = { defaultLookup, defaultClasses };

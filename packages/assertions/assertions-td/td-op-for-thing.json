@@ -23,7 +23,8 @@
                         "$ref": "#/definitions/url"
                     },
                     "op": {
-                        "oneOf": [{
+                        "oneOf": [
+                            {
                                 "type": "string",
                                 "enum": [
                                     "readallproperties",
@@ -35,7 +36,7 @@
                                     "queryallactions",
                                     "subscribeallevents",
                                     "unsubscribeallevents"
-                                  ]
+                                ]
                             },
                             {
                                 "type": "array",
@@ -51,15 +52,13 @@
                                         "queryallactions",
                                         "subscribeallevents",
                                         "unsubscribeallevents"
-                                      ]
+                                    ]
                                 }
                             }
                         ]
                     }
                 },
-                "required": [
-                    "href", "op"
-                ]
+                "required": ["href", "op"]
             },
             "then": {
                 "const": "td-op-for-thing=pass"

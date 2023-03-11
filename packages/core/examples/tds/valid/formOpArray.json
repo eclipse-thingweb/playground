@@ -1,6 +1,6 @@
 {
     "id": "urn:formOpArray",
-    "@context":"https://www.w3.org/2022/wot/td/v1.1",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "title": "MyLampThing",
     "description": "Valid TD demonstrating how to use multiple forms with different op",
     "securityDefinitions": {
@@ -17,7 +17,8 @@
             "minimum": -64,
             "maximum": 64,
             "observable": true,
-            "forms": [{
+            "forms": [
+                {
                     "href": "http://example.org:9191/api/brightness",
                     "op": ["readproperty"]
                 },
@@ -41,12 +42,15 @@
             ]
         },
         "simple": {
-            "forms": [{
-                "href": "http://example.org:9191/api/simple1"
-            }]
+            "forms": [
+                {
+                    "href": "http://example.org:9191/api/simple1"
+                }
+            ]
         },
         "simple2": {
-            "forms": [{
+            "forms": [
+                {
                     "href": "http://example.org:9191/api/simple2",
                     "op": ["readproperty"]
                 },
@@ -62,22 +66,26 @@
                 }
             ]
         }
-
     },
     "actions": {
         "toggle": {
-            "forms": [{
-                "href": "https://mylamp.example.com/toggle",
-                "op": ["invokeaction"]
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/toggle",
+                    "op": ["invokeaction"]
+                }
+            ]
         },
         "simple3": {
-            "forms": [{
-                "href": "https://mylamp.example.com/toggle"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/toggle"
+                }
+            ]
         },
         "simple4": {
-            "forms": [{
+            "forms": [
+                {
                     "href": "https://mylamp.example.com/toggle",
                     "op": ["invokeaction"]
                 },
@@ -92,23 +100,28 @@
             "data": {
                 "type": "string"
             },
-            "forms": [{
-                "href": "https://mylamp.example.com/oh",
-                "subprotocol": "longpoll",
-                "op": ["subscribeevent"]
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/oh",
+                    "subprotocol": "longpoll",
+                    "op": ["subscribeevent"]
+                }
+            ]
         },
         "simple5": {
-            "forms": [{
-                "href": "https://mylamp.example.com/oh",
-                "subprotocol": "longpoll"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/oh",
+                    "subprotocol": "longpoll"
+                }
+            ]
         },
         "simple6": {
             "data": {
                 "type": "string"
             },
-            "forms": [{
+            "forms": [
+                {
                     "href": "https://mylamp.example.com/oh",
                     "subprotocol": "longpoll",
                     "op": ["subscribeevent"]

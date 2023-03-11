@@ -5,126 +5,120 @@
  *       making sure values that are not equal to defaults are not removed (`Remove specific`)
  */
 
-const fs = require("fs")
-const { TestScheduler } = require( 'jest' )
-const {removeDefaults} = require("../index.js")
+const fs = require("fs");
+const { TestScheduler } = require("jest");
+const { removeDefaults } = require("../index.js");
 
-if (!fs.existsSync("./out")) {fs.mkdirSync("./out")}
+if (!fs.existsSync("./out")) {
+    fs.mkdirSync("./out");
+}
 
-const staticTd = JSON.parse(fs.readFileSync("./examples/td-with-defaults.json", "utf-8"))
-const referenceOutput = JSON.parse(fs.readFileSync("./examples/td-without-defaults.json", "utf-8"))
+const staticTd = JSON.parse(fs.readFileSync("./examples/td-with-defaults.json", "utf-8"));
+const referenceOutput = JSON.parse(fs.readFileSync("./examples/td-without-defaults.json", "utf-8"));
 
 test("integration test", () => {
-
-    removeDefaults(staticTd)
+    removeDefaults(staticTd);
     // write output to be able to compare it to reference
-    fs.writeFileSync("./out/2_example.json", JSON.stringify(staticTd, undefined, 2))
+    fs.writeFileSync("./out/2_example.json", JSON.stringify(staticTd, undefined, 2));
 
-    expect(staticTd).toEqual(referenceOutput)
-})
+    expect(staticTd).toEqual(referenceOutput);
+});
 
 describe("module tests", () => {
-
-    test("ActionAffordance", ()=> {
+    test("ActionAffordance", () => {
         const refTd = {
             actions: {
-                throwBall: {}
-            }
-        }
+                throwBall: {},
+            },
+        };
         const td = {
             actions: {
                 throwBall: {
                     safe: false,
-                    idempotent: false
-                }
-            }
-        }
-        removeDefaults(td)
-        expect(td).toEqual(refTd)
-    })
+                    idempotent: false,
+                },
+            },
+        };
+        removeDefaults(td);
+        expect(td).toEqual(refTd);
+    });
 
     describe("forms", () => {
         test("PropertyAffordance", () => {
             const refTd = {
                 properties: {
                     throwBall: {
-                        forms: [
-                            {}
-                        ]
-                    }
-                }
-            }
+                        forms: [{}],
+                    },
+                },
+            };
             const td = {
                 properties: {
                     throwBall: {
                         forms: [
                             {
                                 op: ["readproperty", "writeproperty"],
-                                contentType: "application/json"
-                            }
-                        ]
-                    }
-                }
-            }
-            removeDefaults(td)
-            expect(td.properties.throwBall.forms).toEqual(refTd.properties.throwBall.forms)
-        })
+                                contentType: "application/json",
+                            },
+                        ],
+                    },
+                },
+            };
+            removeDefaults(td);
+            expect(td.properties.throwBall.forms).toEqual(refTd.properties.throwBall.forms);
+        });
         test("ActionAffordance", () => {
             const refTd = {
                 actions: {
                     throwBall: {
-                        forms: [
-                            {}
-                        ]
-                    }
-                }
-            }
+                        forms: [{}],
+                    },
+                },
+            };
             const td = {
                 actions: {
                     throwBall: {
                         forms: [
                             {
                                 op: "invokeaction",
-                                contentType: "application/json"
-                            }
-                        ]
-                    }
-                }
-            }
-            removeDefaults(td)
-            expect(td.actions.throwBall.forms).toEqual(refTd.actions.throwBall.forms)
-        })
+                                contentType: "application/json",
+                            },
+                        ],
+                    },
+                },
+            };
+            removeDefaults(td);
+            expect(td.actions.throwBall.forms).toEqual(refTd.actions.throwBall.forms);
+        });
         test("EventAffordance", () => {
             const refTd = {
                 events: {
                     throwBall: {
-                        forms: [
-                            {}
-                        ]
-                    }
-                }
-            }
+                        forms: [{}],
+                    },
+                },
+            };
             const td = {
                 events: {
                     throwBall: {
                         forms: [
                             {
                                 op: ["subscribeevent", "unsubscribeevent"],
-                                contentType: "application/json"
-                            }
-                        ]
-                    }
-                }
-            }
-            removeDefaults(td)
-            expect(td.events.throwBall.forms).toEqual(refTd.events.throwBall.forms)
-        })
-    })
+                                contentType: "application/json",
+                            },
+                        ],
+                    },
+                },
+            };
+            removeDefaults(td);
+            expect(td.events.throwBall.forms).toEqual(refTd.events.throwBall.forms);
+        });
+    });
 
     describe("DataSchema", () => {
         const refTdSchema = {
-            description: "just a data schema"
-        }
+            description: "just a data schema",
+        };
 
         test("PropertyAffordance", () => {
             const td = {
@@ -132,13 +126,13 @@ describe("module tests", () => {
                     temperature: {
                         description: "just a data schema",
                         writeOnly: false,
-                        readOnly: false
-                    }
-                }
-            }
-            removeDefaults(td)
-            expect(td.properties.temperature).toEqual(refTdSchema)
-        })
+                        readOnly: false,
+                    },
+                },
+            };
+            removeDefaults(td);
+            expect(td.properties.temperature).toEqual(refTdSchema);
+        });
         test("ActionAffordance", () => {
             const td = {
                 actions: {
@@ -146,20 +140,20 @@ describe("module tests", () => {
                         input: {
                             description: "just a data schema",
                             writeOnly: false,
-                            readOnly: false
+                            readOnly: false,
                         },
                         output: {
                             description: "just a data schema",
                             writeOnly: false,
-                            readOnly: false
-                        }
-                    }
-                }
-            }
-            removeDefaults(td)
-            expect(td.actions.throwBall.input).toEqual(refTdSchema)
-            expect(td.actions.throwBall.output).toEqual(refTdSchema)
-        })
+                            readOnly: false,
+                        },
+                    },
+                },
+            };
+            removeDefaults(td);
+            expect(td.actions.throwBall.input).toEqual(refTdSchema);
+            expect(td.actions.throwBall.output).toEqual(refTdSchema);
+        });
         test("EventAffordance", () => {
             const td = {
                 events: {
@@ -167,26 +161,26 @@ describe("module tests", () => {
                         subscription: {
                             description: "just a data schema",
                             writeOnly: false,
-                            readOnly: false
+                            readOnly: false,
                         },
-                                        data: {
+                        data: {
                             description: "just a data schema",
                             writeOnly: false,
-                            readOnly: false
+                            readOnly: false,
                         },
-                                        cancellation: {
+                        cancellation: {
                             description: "just a data schema",
                             writeOnly: false,
-                            readOnly: false
-                        }
-                    }
-                }
-            }
-            removeDefaults(td)
-            expect(td.events.overheating.subscription).toEqual(refTdSchema)
-            expect(td.events.overheating.data).toEqual(refTdSchema)
-            expect(td.events.overheating.cancellation).toEqual(refTdSchema)
-        })
+                            readOnly: false,
+                        },
+                    },
+                },
+            };
+            removeDefaults(td);
+            expect(td.events.overheating.subscription).toEqual(refTdSchema);
+            expect(td.events.overheating.data).toEqual(refTdSchema);
+            expect(td.events.overheating.cancellation).toEqual(refTdSchema);
+        });
         test("uriVariables", () => {
             const td = {
                 properties: {
@@ -195,68 +189,74 @@ describe("module tests", () => {
                             p: {
                                 description: "just a data schema",
                                 writeOnly: false,
-                                readOnly: false
-                            }
-                                            }
-                                        }
-                                    },
-                                    actions: {
-                                        throwBall: {
-                                            uriVariables: {
-                                                p: {
+                                readOnly: false,
+                            },
+                        },
+                    },
+                },
+                actions: {
+                    throwBall: {
+                        uriVariables: {
+                            p: {
                                 description: "just a data schema",
                                 writeOnly: false,
-                                readOnly: false
-                            }
-                                            }
-                                        }
-                                    },
-                                    events: {
-                                        overheating: {
-                                            uriVariables: {
-                                                p: {
+                                readOnly: false,
+                            },
+                        },
+                    },
+                },
+                events: {
+                    overheating: {
+                        uriVariables: {
+                            p: {
                                 description: "just a data schema",
                                 writeOnly: false,
-                                readOnly: false
-                            }
-                        }
-                    }
-                }
-            }
-            removeDefaults(td)
-            expect(td.properties.temperature.uriVariables.p).toEqual(refTdSchema)
-            expect(td.actions.throwBall.uriVariables.p).toEqual(refTdSchema)
-            expect(td.events.overheating.uriVariables.p).toEqual(refTdSchema)
-        })
+                                readOnly: false,
+                            },
+                        },
+                    },
+                },
+            };
+            removeDefaults(td);
+            expect(td.properties.temperature.uriVariables.p).toEqual(refTdSchema);
+            expect(td.actions.throwBall.uriVariables.p).toEqual(refTdSchema);
+            expect(td.events.overheating.uriVariables.p).toEqual(refTdSchema);
+        });
 
         describe("nested", () => {
             test("oneOf", () => {
                 const td = {
                     properties: {
                         temperature: {
-                            oneOf: [{
-                                description: "just a data schema",
-                                writeOnly: false,
-                                readOnly: false
-                            }, {
-                                oneOf: [{
+                            oneOf: [
+                                {
                                     description: "just a data schema",
                                     writeOnly: false,
-                                    readOnly: false
-                                }, {
-                                    description: "just a data schema",
-                                    writeOnly: false,
-                                    readOnly: false
-                                }]
-                            }]
-                        }
-                    }
-                }
-                removeDefaults(td)
-                expect(td.properties.temperature.oneOf[0]).toEqual(refTdSchema)
-                expect(td.properties.temperature.oneOf[1].oneOf[0]).toEqual(refTdSchema)
-                expect(td.properties.temperature.oneOf[1].oneOf[1]).toEqual(refTdSchema)
-            })
+                                    readOnly: false,
+                                },
+                                {
+                                    oneOf: [
+                                        {
+                                            description: "just a data schema",
+                                            writeOnly: false,
+                                            readOnly: false,
+                                        },
+                                        {
+                                            description: "just a data schema",
+                                            writeOnly: false,
+                                            readOnly: false,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    },
+                };
+                removeDefaults(td);
+                expect(td.properties.temperature.oneOf[0]).toEqual(refTdSchema);
+                expect(td.properties.temperature.oneOf[1].oneOf[0]).toEqual(refTdSchema);
+                expect(td.properties.temperature.oneOf[1].oneOf[1]).toEqual(refTdSchema);
+            });
             test("items", () => {
                 const td = {
                     actions: {
@@ -265,28 +265,31 @@ describe("module tests", () => {
                                 items: {
                                     description: "just a data schema",
                                     writeOnly: false,
-                                    readOnly: false
-                                }
+                                    readOnly: false,
+                                },
                             },
                             output: {
-                                items: [{
-                                    description: "just a data schema",
-                                    writeOnly: false,
-                                    readOnly: false
-                                }, {
-                                    description: "just a data schema",
-                                    writeOnly: false,
-                                    readOnly: false
-                                }]
-                            }
-                        }
-                    }
-                }
-                removeDefaults(td)
-                expect(td.actions.throwBall.input.items).toEqual(refTdSchema)
-                expect(td.actions.throwBall.output.items[0]).toEqual(refTdSchema)
-                expect(td.actions.throwBall.output.items[1]).toEqual(refTdSchema)
-            })
+                                items: [
+                                    {
+                                        description: "just a data schema",
+                                        writeOnly: false,
+                                        readOnly: false,
+                                    },
+                                    {
+                                        description: "just a data schema",
+                                        writeOnly: false,
+                                        readOnly: false,
+                                    },
+                                ],
+                            },
+                        },
+                    },
+                };
+                removeDefaults(td);
+                expect(td.actions.throwBall.input.items).toEqual(refTdSchema);
+                expect(td.actions.throwBall.output.items[0]).toEqual(refTdSchema);
+                expect(td.actions.throwBall.output.items[1]).toEqual(refTdSchema);
+            });
             test("properties", () => {
                 const td = {
                     events: {
@@ -296,107 +299,107 @@ describe("module tests", () => {
                                     a: {
                                         description: "just a data schema",
                                         writeOnly: false,
-                                        readOnly: false
+                                        readOnly: false,
                                     },
                                     b: {
                                         description: "just a data schema",
                                         writeOnly: false,
-                                        readOnly: false
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                removeDefaults(td)
-                expect(td.events.overheating.subscription.properties.a).toEqual(refTdSchema)
-                expect(td.events.overheating.subscription.properties.b).toEqual(refTdSchema)
-            })
-        })
-    })
+                                        readOnly: false,
+                                    },
+                                },
+                            },
+                        },
+                    },
+                };
+                removeDefaults(td);
+                expect(td.events.overheating.subscription.properties.a).toEqual(refTdSchema);
+                expect(td.events.overheating.subscription.properties.b).toEqual(refTdSchema);
+            });
+        });
+    });
 
     test("BasicSecurityScheme", () => {
         const refTd = {
             securityDefinitions: {
-                "basic_sc": {
-                    scheme: "basic"
-                }
-            }
-        }
+                basic_sc: {
+                    scheme: "basic",
+                },
+            },
+        };
         const td = {
             securityDefinitions: {
-                "basic_sc": {
+                basic_sc: {
                     scheme: "basic",
-                    in: "header"
-                }
-            }
-        }
-        removeDefaults(td)
-        expect(td).toEqual(refTd)
-    })
+                    in: "header",
+                },
+            },
+        };
+        removeDefaults(td);
+        expect(td).toEqual(refTd);
+    });
 
     test("DigestSecurityScheme", () => {
         const refTd = {
             securityDefinitions: {
-                "digest_sc": {
-                    scheme: "digest"
-                }
-            }
-        }
+                digest_sc: {
+                    scheme: "digest",
+                },
+            },
+        };
         const td = {
             securityDefinitions: {
-                "digest_sc": {
+                digest_sc: {
                     scheme: "digest",
                     in: "header",
-                    qop: "auth"
-                }
-            }
-        }
-        removeDefaults(td)
-        expect(td).toEqual(refTd)
-    })
+                    qop: "auth",
+                },
+            },
+        };
+        removeDefaults(td);
+        expect(td).toEqual(refTd);
+    });
 
     test("BearerSecurityScheme", () => {
         const refTd = {
             securityDefinitions: {
-                "bearer_sc": {
-                    scheme: "bearer"
-                }
-            }
-        }
+                bearer_sc: {
+                    scheme: "bearer",
+                },
+            },
+        };
         const td = {
             securityDefinitions: {
-                "bearer_sc": {
+                bearer_sc: {
                     scheme: "bearer",
                     in: "header",
                     alg: "ES256",
-                    format: "jwt"
-                }
-            }
-        }
-        removeDefaults(td)
-        expect(td).toEqual(refTd)
-    })
+                    format: "jwt",
+                },
+            },
+        };
+        removeDefaults(td);
+        expect(td).toEqual(refTd);
+    });
 
     test("APIKeySecurityScheme", () => {
         const refTd = {
             securityDefinitions: {
-                "api_sc": {
-                    scheme: "apikey"
-                }
-            }
-        }
+                api_sc: {
+                    scheme: "apikey",
+                },
+            },
+        };
         const td = {
             securityDefinitions: {
-                "api_sc": {
+                api_sc: {
                     scheme: "apikey",
-                    in: "query"
-                }
-            }
-        }
-        removeDefaults(td)
-        expect(td).toEqual(refTd)
-    })
+                    in: "query",
+                },
+            },
+        };
+        removeDefaults(td);
+        expect(td).toEqual(refTd);
+    });
 
     test("Remove specific", () => {
         const td = {
@@ -405,112 +408,119 @@ describe("module tests", () => {
                     forms: [
                         {
                             op: ["readproperty", "writeproperty"],
-                            contentType: "application/json"
+                            contentType: "application/json",
                         },
                         {
                             op: ["writeproperty", "readproperty"],
-                            contentType: "image/jpeg"
-                        }
-                    ]
-                }
-            }
-        }
+                            contentType: "image/jpeg",
+                        },
+                    ],
+                },
+            },
+        };
         const refTd = {
             properties: {
                 temperature: {
                     forms: [
                         {},
                         {
-                            contentType: "image/jpeg"
-                        }
-                    ]
-                }
-            }
-        }
-        removeDefaults(td)
-        expect(td).toEqual(refTd)
-    })
+                            contentType: "image/jpeg",
+                        },
+                    ],
+                },
+            },
+        };
+        removeDefaults(td);
+        expect(td).toEqual(refTd);
+    });
 
     test("readOnly special case", () => {
         const refTd = {
             properties: {
                 temperature: {
                     readOnly: true,
-                    forms: [{href:"asdf"}]
-                }
-            }
-        }
+                    forms: [{ href: "asdf" }],
+                },
+            },
+        };
         const td = {
             properties: {
                 temperature: {
                     readOnly: true,
                     writeOnly: false,
-                    forms: [{
-                        href:"asdf",
-                        op: "readproperty",
-                        contentType: "application/json"
-                    }]
-                }
-            }
-        }
-        removeDefaults(td)
-        expect(td).toEqual(refTd)
-    })
+                    forms: [
+                        {
+                            href: "asdf",
+                            op: "readproperty",
+                            contentType: "application/json",
+                        },
+                    ],
+                },
+            },
+        };
+        removeDefaults(td);
+        expect(td).toEqual(refTd);
+    });
 
     test("writeOnly special case", () => {
         const refTd = {
             properties: {
                 temperature: {
                     writeOnly: true,
-                    forms: [{href:"asdf"}, {}]
-                }
-            }
-        }
+                    forms: [{ href: "asdf" }, {}],
+                },
+            },
+        };
         const td = {
             properties: {
                 temperature: {
                     readOnly: false,
                     writeOnly: true,
-                    forms: [{
-                        href:"asdf",
-                        op: "writeproperty",
-                        contentType: "application/json"
-                    }, {
-                        op: ["writeproperty", "readproperty"]
-                    }]
-                }
-            }
-        }
-        removeDefaults(td)
-        expect(td).toEqual(refTd)
-    })
+                    forms: [
+                        {
+                            href: "asdf",
+                            op: "writeproperty",
+                            contentType: "application/json",
+                        },
+                        {
+                            op: ["writeproperty", "readproperty"],
+                        },
+                    ],
+                },
+            },
+        };
+        removeDefaults(td);
+        expect(td).toEqual(refTd);
+    });
 
     test("AdditionalExpectedResponse", () => {
         const td = {
             properties: {
                 temperature: {
                     observable: false,
-                    forms: [{
-                        href:"asdf",
-                        contentType: "application/json",
-                        additionalResponses: [{ success: false, contentType: "application/json" }]
-                    }]
-                }
-            }
-        }
+                    forms: [
+                        {
+                            href: "asdf",
+                            contentType: "application/json",
+                            additionalResponses: [{ success: false, contentType: "application/json" }],
+                        },
+                    ],
+                },
+            },
+        };
         const refTd = {
             properties: {
                 temperature: {
                     forms: [
                         {
-                            href:"asdf",
-                            additionalResponses: [{}]
-                        }
-                    ]
-                }
-            }
-        }
-        removeDefaults(td)
-        expect(td).toEqual(refTd)
-    })
-})
+                            href: "asdf",
+                            additionalResponses: [{}],
+                        },
+                    ],
+                },
+            },
+        };
+        removeDefaults(td);
+        expect(td).toEqual(refTd);
+    });
+});

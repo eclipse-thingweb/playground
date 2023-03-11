@@ -16,9 +16,7 @@
         "property_element": {
             "type": "object",
             "if": {
-                "required": [
-                    "enum"
-                ]
+                "required": ["enum"]
             },
             "then": {
                 "const": "td-property-names_enum=pass"

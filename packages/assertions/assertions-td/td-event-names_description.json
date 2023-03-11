@@ -16,9 +16,7 @@
         "event_element": {
             "type": "object",
             "if": {
-                "required": [
-                    "description"
-                ]
+                "required": ["description"]
             },
             "then": {
                 "const": "td-event-names_description=pass"

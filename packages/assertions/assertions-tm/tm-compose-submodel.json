@@ -20,12 +20,10 @@
                 "properties": {
                     "rel": {
                         "type": "string",
-                        "const":"tm:submodel"
+                        "const": "tm:submodel"
                     }
                 },
-                "required": [
-                    "rel"
-                ]
+                "required": ["rel"]
             },
             "then": {
                 "const": "tm-compose-submodel=pass"

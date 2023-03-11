@@ -34,9 +34,7 @@
                 "properties": {
                     "type": {
                         "type": "string",
-                        "enum": [
-                            "integer"
-                        ]
+                        "enum": ["integer"]
                     },
                     "minimum": {
                         "type": "integer"
@@ -66,7 +64,8 @@
                         }
                     },
                     "items": {
-                        "oneOf": [{
+                        "oneOf": [
+                            {
                                 "$ref": "#/definitions/dataSchema"
                             },
                             {
@@ -112,9 +111,7 @@
                 "properties": {
                     "type": {
                         "type": "string",
-                        "enum": [
-                            "integer"
-                        ]
+                        "enum": ["integer"]
                     },
                     "minimum": {
                         "type": "integer"
@@ -161,18 +158,11 @@
                     "const": {},
                     "type": {
                         "type": "string",
-                        "enum": [
-                            "boolean",
-                            "integer",
-                            "number",
-                            "string",
-                            "object",
-                            "array",
-                            "null"
-                        ]
+                        "enum": ["boolean", "integer", "number", "string", "object", "array", "null"]
                     },
                     "items": {
-                        "oneOf": [{
+                        "oneOf": [
+                            {
                                 "$ref": "#/definitions/dataSchema"
                             },
                             {
@@ -184,16 +174,12 @@
                         ]
                     },
                     "maxItems": {
-
                         "type": "integer",
                         "minimum": 0
-
                     },
                     "minItems": {
-
                         "type": "integer",
                         "minimum": 0
-
                     },
                     "minimum": {
                         "type": "number"

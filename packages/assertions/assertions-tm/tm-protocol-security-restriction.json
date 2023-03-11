@@ -2,7 +2,7 @@
     "title": "tm-protocol-security-restriction",
     "description": "A Thing Model MAY NOT contain instance specific Protocol Binding and security information such as endpoint addresses.",
     "$schema ": "http://json-schema.org/draft/2019-09/schema#",
-    "is-complex":true,
+    "is-complex": true,
     "definitions": {
         "anyUri": {
             "type": "string"
@@ -35,11 +35,7 @@
         },
         "subprotocol": {
             "type": "string",
-            "examples": [
-                "longpoll",
-                "websub",
-                "sse"
-            ]
+            "examples": ["longpoll", "websub", "sse"]
         },
         "bcp47_string": {
             "type": "string",
@@ -66,15 +62,7 @@
         },
         "dataSchema-type": {
             "type": "string",
-            "enum": [
-                "boolean",
-                "integer",
-                "number",
-                "string",
-                "object",
-                "array",
-                "null"
-            ]
+            "enum": ["boolean", "integer", "number", "string", "object", "array", "null"]
         },
         "dataSchema": {
             "type": "object"
@@ -89,9 +77,7 @@
                     "$ref": "#/definitions/security"
                 }
             },
-            "required": [
-                "href"
-            ],
+            "required": ["href"],
             "additionalProperties": true
         },
         "form_element_property": {
@@ -189,9 +175,7 @@
                     }
                 }
             },
-            "required": [
-                "forms"
-            ]
+            "required": ["forms"]
         },
         "action_element": {
             "type": "object",
@@ -204,9 +188,7 @@
                     }
                 }
             },
-            "required": [
-                "forms"
-            ],
+            "required": ["forms"],
             "additionalProperties": true
         },
         "event_element": {
@@ -220,9 +202,7 @@
                     }
                 }
             },
-            "required": [
-                "forms"
-            ],
+            "required": ["forms"],
             "additionalProperties": true
         },
         "additionalSecurityScheme": {
@@ -233,10 +213,7 @@
                     "scheme": "ace:ACESecurityScheme",
                     "ace:as": "coaps://as.example.com/token",
                     "ace:audience": "coaps://rs.example.com",
-                    "ace:scopes": [
-                        "limited",
-                        "special"
-                    ],
+                    "ace:scopes": ["limited", "special"],
                     "ace:cnonce": true
                 }
             ],
@@ -247,9 +224,7 @@
                     "pattern": ".+:.*"
                 }
             },
-            "required": [
-                "scheme"
-            ],
+            "required": ["scheme"],
             "additionalProperties": true
         },
         "noSecurityScheme": {
@@ -257,14 +232,10 @@
             "properties": {
                 "scheme": {
                     "type": "string",
-                    "enum": [
-                        "nosec"
-                    ]
+                    "enum": ["nosec"]
                 }
             },
-            "required": [
-                "scheme"
-            ],
+            "required": ["scheme"],
             "additionalProperties": true
         },
         "autoSecurityScheme": {
@@ -272,29 +243,21 @@
             "properties": {
                 "scheme": {
                     "type": "string",
-                    "enum": [
-                        "auto"
-                    ]
+                    "enum": ["auto"]
                 }
             },
-            "required": [
-                "scheme"
-            ],
+            "required": ["scheme"],
             "additionalProperties": true
         },
-        "comboSecurityScheme":{
+        "comboSecurityScheme": {
             "type": "object",
             "properties": {
                 "scheme": {
                     "type": "string",
-                    "enum": [
-                        "combo"
-                    ]
+                    "enum": ["combo"]
                 }
             },
-            "required": [
-                "scheme"
-            ],
+            "required": ["scheme"],
             "additionalProperties": true
         },
         "basicSecurityScheme": {
@@ -302,14 +265,10 @@
             "properties": {
                 "scheme": {
                     "type": "string",
-                    "enum": [
-                        "basic"
-                    ]
+                    "enum": ["basic"]
                 }
             },
-            "required": [
-                "scheme"
-            ],
+            "required": ["scheme"],
             "additionalProperties": true
         },
         "digestSecurityScheme": {
@@ -317,14 +276,10 @@
             "properties": {
                 "scheme": {
                     "type": "string",
-                    "enum": [
-                        "digest"
-                    ]
+                    "enum": ["digest"]
                 }
             },
-            "required": [
-                "scheme"
-            ],
+            "required": ["scheme"],
             "additionalProperties": true
         },
         "apiKeySecurityScheme": {
@@ -332,14 +287,10 @@
             "properties": {
                 "scheme": {
                     "type": "string",
-                    "enum": [
-                        "apikey"
-                    ]
+                    "enum": ["apikey"]
                 }
             },
-            "required": [
-                "scheme"
-            ],
+            "required": ["scheme"],
             "additionalProperties": true
         },
         "bearerSecurityScheme": {
@@ -347,14 +298,10 @@
             "properties": {
                 "scheme": {
                     "type": "string",
-                    "enum": [
-                        "bearer"
-                    ]
+                    "enum": ["bearer"]
                 }
             },
-            "required": [
-                "scheme"
-            ],
+            "required": ["scheme"],
             "additionalProperties": true
         },
         "pskSecurityScheme": {
@@ -362,14 +309,10 @@
             "properties": {
                 "scheme": {
                     "type": "string",
-                    "enum": [
-                        "psk"
-                    ]
+                    "enum": ["psk"]
                 }
             },
-            "required": [
-                "scheme"
-            ],
+            "required": ["scheme"],
             "additionalProperties": true
         },
         "oAuth2SecurityScheme": {
@@ -377,14 +320,10 @@
             "properties": {
                 "scheme": {
                     "type": "string",
-                    "enum": [
-                        "oauth2"
-                    ]
+                    "enum": ["oauth2"]
                 }
             },
-            "required": [
-                "scheme"
-            ],
+            "required": ["scheme"],
             "additionalProperties": true
         },
         "securityScheme": {
@@ -422,7 +361,7 @@
             ]
         }
     },
-    "if":{
+    "if": {
         "type": "object",
         "properties": {
             "properties": {
@@ -475,12 +414,9 @@
                 ]
             }
         },
-        "required": [
-            "security",
-            "securityDefinitions"
-        ]
+        "required": ["security", "securityDefinitions"]
     },
-    "else":{
+    "else": {
         "const": "tm-protocol-security-restriction=pass"
     }
 }

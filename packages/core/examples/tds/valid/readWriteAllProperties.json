@@ -10,21 +10,19 @@
     "versioning": {
         "instance": "1.0.0"
     },
-    "forms": [{
-        "href": "http://10.0.2.15:8080/Siemens-ReadWriteAllProperties-Tester/properties",
-        "contentType": "application/json",
-        "op": ["readallproperties", "writeallproperties"]
-    }],
+    "forms": [
+        {
+            "href": "http://10.0.2.15:8080/Siemens-ReadWriteAllProperties-Tester/properties",
+            "contentType": "application/json",
+            "op": ["readallproperties", "writeallproperties"]
+        }
+    ],
     "@type": "Thing",
     "security": ["nosec_sc"],
     "properties": {
         "status": {
             "type": "string",
-            "enum": [
-                "On",
-                "Off",
-                "Error"
-            ],
+            "enum": ["On", "Off", "Error"],
             "title": "Status",
             "titles": {
                 "en": "Status",
@@ -38,13 +36,11 @@
             "observable": true,
             "readOnly": false,
             "writeOnly": false,
-            "forms": [{
+            "forms": [
+                {
                     "href": "http://10.0.2.15:8080/Siemens-ReadWriteAllProperties-Tester/properties/status",
                     "contentType": "application/json",
-                    "op": [
-                        "readproperty",
-                        "writeproperty"
-                    ]
+                    "op": ["readproperty", "writeproperty"]
                 },
                 {
                     "href": "http://10.0.2.15:8080/Siemens-ReadWriteAllProperties-Tester/properties/status/observable",
@@ -55,10 +51,7 @@
                 {
                     "href": "http://192.168.0.124:8080/Siemens-ReadWriteAllProperties-Tester/properties/status",
                     "contentType": "application/json",
-                    "op": [
-                        "readproperty",
-                        "writeproperty"
-                    ]
+                    "op": ["readproperty", "writeproperty"]
                 },
                 {
                     "href": "http://192.168.0.124:8080/Siemens-ReadWriteAllProperties-Tester/properties/status/observable",
@@ -69,18 +62,12 @@
                 {
                     "href": "coap://10.0.2.15:5683/Siemens-ReadWriteAllProperties-Tester/pr/status",
                     "contentType": "application/json",
-                    "op": [
-                        "readproperty",
-                        "writeproperty"
-                    ]
+                    "op": ["readproperty", "writeproperty"]
                 },
                 {
                     "href": "coap://192.168.0.124:5683/Siemens-ReadWriteAllProperties-Tester/pr/status",
                     "contentType": "application/json",
-                    "op": [
-                        "readproperty",
-                        "writeproperty"
-                    ]
+                    "op": ["readproperty", "writeproperty"]
                 }
             ]
         },
@@ -90,7 +77,8 @@
             "observable": true,
             "readOnly": true,
             "writeOnly": false,
-            "forms": [{
+            "forms": [
+                {
                     "href": "http://10.0.2.15:8080/Siemens-ReadWriteAllProperties-Tester/properties/brightness",
                     "contentType": "application/json",
                     "op": ["readproperty"]

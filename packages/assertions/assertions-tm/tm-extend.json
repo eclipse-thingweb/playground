@@ -2,22 +2,21 @@
     "title": "tm-extend",
     "description": "A Thing Model MUST use at least one links entry with \"rel\":\"tm:extends\" that targets to a Thing Model that is be extended.",
     "$schema ": "http://json-schema.org/draft/2019-09/schema#",
-    "is-complex":true,
+    "is-complex": true,
     "type": "object",
     "properties": {
         "links": {
             "type": "array",
             "items": {
-                "if":{
+                "if": {
                     "$ref": "#/definitions/tm_extend_link_element"
                 },
-                "else":{
+                "else": {
                     "$ref": "#/definitions/base_link_element"
                 },
-                "then":{
+                "then": {
                     "const": "tm-extend=pass"
                 }
-                
             }
         }
     },
@@ -42,12 +41,10 @@
                     "$ref": "#/definitions/anyUri"
                 }
             },
-            "required": [
-                "href"
-            ],
+            "required": ["href"],
             "additionalProperties": true
         },
-        "tm_extend_link_element":{
+        "tm_extend_link_element": {
             "allOf": [
                 {
                     "$ref": "#/definitions/base_link_element"

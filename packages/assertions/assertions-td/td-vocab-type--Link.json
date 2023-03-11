@@ -22,9 +22,7 @@
                         "type": "string"
                     }
                 },
-                "required": [
-                    "type"
-                ]
+                "required": ["type"]
             },
             "then": {
                 "const": "td-vocab-type--Link=pass"

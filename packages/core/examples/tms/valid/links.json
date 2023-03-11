@@ -1,9 +1,7 @@
 {
     "id": "urn:links",
     "$comment": "example 59 of the spec",
-    "@context": [
-        "https://www.w3.org/2022/wot/td/v1.1"
-    ],
+    "@context": ["https://www.w3.org/2022/wot/td/v1.1"],
     "@type": "tm:ThingModel",
     "links": [
         {

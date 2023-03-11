@@ -1,9 +1,9 @@
 {
     "@context": [
-       "https://www.w3.org/2022/wot/td/v1.1",
+        "https://www.w3.org/2022/wot/td/v1.1",
         {
             "iot": "http://iotschema.org/",
-            "@language":"en"
+            "@language": "en"
         }
     ],
     "@type": "Thing",
@@ -14,7 +14,7 @@
         "basic_sc": {
             "scheme": "basic",
             "in": "header",
-            "@type":"normal"
+            "@type": "normal"
         }
     },
     "security": ["basic_sc"],
@@ -29,11 +29,13 @@
             "writeOnly": false,
             "observable": false,
             "type": "string",
-            "forms": [{
-                "href": "coaps://mylamp.example.com/status",
-                "contentType": "application/json",
-                "op": "readproperty"
-            }]
+            "forms": [
+                {
+                    "href": "coaps://mylamp.example.com/status",
+                    "contentType": "application/json",
+                    "op": "readproperty"
+                }
+            ]
         }
     },
     "actions": {
@@ -54,10 +56,12 @@
                     "@type": "iot:Direction"
                 }
             },
-            "forms": [{
-                "href": "coaps://mylamp.example.com/toggle",
-                "contentType": "application/json"
-            }]
+            "forms": [
+                {
+                    "href": "coaps://mylamp.example.com/toggle",
+                    "contentType": "application/json"
+                }
+            ]
         }
     },
     "events": {
@@ -67,10 +71,12 @@
             "data": {
                 "type": "string"
             },
-            "forms": [{
-                "href": "coaps://mylamp.example.com/oh",
-                "contentType": "application/json"
-            }]
+            "forms": [
+                {
+                    "href": "coaps://mylamp.example.com/oh",
+                    "contentType": "application/json"
+                }
+            ]
         }
     }
 }

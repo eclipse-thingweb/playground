@@ -1,4 +1,3 @@
-
 # CSV Changelog - 14/12/2022
 
 [Old CSV Path](assertions-csv/oldManual.csv)  

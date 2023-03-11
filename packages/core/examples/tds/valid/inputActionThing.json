@@ -1,6 +1,6 @@
 {
     "id": "urn:inputAction",
-    "@context":"https://www.w3.org/2022/wot/td/v1.1",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "title": "MyLampThing",
     "description": "Valid TD demonstrating how to use input and output data in actions",
     "securityDefinitions": {
@@ -31,10 +31,7 @@
                         "type": "number"
                     }
                 },
-                "required": [
-                    "to",
-                    "duration"
-                ]
+                "required": ["to", "duration"]
             },
             "output": {
                 "type": "string"
@@ -48,9 +45,11 @@
         "fade2": {
             "title": "Fade in/out",
             "description": "Smooth fade in and out animation.",
-            "forms": [{
-                "href": "http://mytemp.example.com:5683/fade2"
-            }]
+            "forms": [
+                {
+                    "href": "http://mytemp.example.com:5683/fade2"
+                }
+            ]
         }
     }
 }

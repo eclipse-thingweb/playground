@@ -1,6 +1,6 @@
 {
     "id": "urn:support",
-    "@context":"https://www.w3.org/2022/wot/td/v1.1",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "title": "MyLampThing",
     "description": "Valid TD copied from the spec's first example",
     "securityDefinitions": {
@@ -14,11 +14,13 @@
     "properties": {
         "status": {
             "type": "string",
-            "readOnly":false,
-            "writeOnly":false,
-            "forms": [{
-                "href": "https://mylamp.example.com/status"
-            }]
+            "readOnly": false,
+            "writeOnly": false,
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status"
+                }
+            ]
         }
     }
 }

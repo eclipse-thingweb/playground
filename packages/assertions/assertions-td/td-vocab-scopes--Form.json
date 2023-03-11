@@ -44,9 +44,7 @@
                     }
                 }
             },
-            "required": [
-                "forms"
-            ]
+            "required": ["forms"]
         },
         "action_element": {
             "type": "object",
@@ -59,9 +57,7 @@
                     }
                 }
             },
-            "required": [
-                "forms"
-            ]
+            "required": ["forms"]
         },
         "event_element": {
             "type": "object",
@@ -74,9 +70,7 @@
                     }
                 }
             },
-            "required": [
-                "forms"
-            ]
+            "required": ["forms"]
         },
         "form_element": {
             "type": "object",

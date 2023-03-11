@@ -1,6 +1,6 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
-    "@context":"https://www.w3.org/2022/wot/td/v1.1",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "title": "MyLampThing",
     "description": "Invalid TD since the security field is empty",
     "securityDefinitions": {
@@ -12,16 +12,20 @@
     "properties": {
         "status": {
             "type": "string",
-            "forms": [{
-                "href": "https://mylamp.example.com/status"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status"
+                }
+            ]
         }
     },
     "actions": {
         "toggle": {
-            "forms": [{
-                "href": "https://mylamp.example.com/toggle"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/toggle"
+                }
+            ]
         }
     },
     "events": {
@@ -29,10 +33,12 @@
             "data": {
                 "type": "string"
             },
-            "forms": [{
-                "href": "https://mylamp.example.com/oh",
-                "subprotocol": "longpoll"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/oh",
+                    "subprotocol": "longpoll"
+                }
+            ]
         }
     }
 }

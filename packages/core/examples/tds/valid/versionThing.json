@@ -1,6 +1,6 @@
 {
     "id": "urn:version",
-    "@context":"https://www.w3.org/2022/wot/td/v1.1",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "title": "MyLampThing",
     "description": "Valid TD demonstrating how to use version with additional fields",
     "securityDefinitions": {
@@ -31,7 +31,7 @@
     },
     "events": {
         "overheating": {
-            "data":{"type": "string"},
+            "data": { "type": "string" },
             "forms": [
                 {
                     "href": "https://mylamp.example.com/oh",

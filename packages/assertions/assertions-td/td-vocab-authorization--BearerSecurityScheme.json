@@ -13,47 +13,41 @@
             }
         }
     },
-    "required": [
-        "securityDefinitions"
-    ],
+    "required": ["securityDefinitions"],
     "additionalProperties": true,
     "definitions": {
         "securityScheme": {
             "if": {
-                    "type": "object",
-                    "properties": {
-                        "description": {
-                            "type": "string"
-                        },
-                        "proxy": {
-                            "$ref": "#/definitions/url"
-                        },
-                        "scheme": {
-                            "type": "string",
-                            "enum": [
-                                "bearer"
-                            ]
-                        },
-                        "authorization": {
-                            "$ref": "#/definitions/url"
-                        },
-                        "alg": {
-                            "type": "string"
-                        },
-                        "format": {
-                            "type": "string"
-                        },
-                        "in": {
-                            "type": "string",
-                            "enum": ["header", "query", "body", "cookie"]
-                        },
-                        "name": {
-                            "type": "string"
-                        }
+                "type": "object",
+                "properties": {
+                    "description": {
+                        "type": "string"
                     },
-                    "required": [
-                        "scheme", "authorization"
-                    ]
+                    "proxy": {
+                        "$ref": "#/definitions/url"
+                    },
+                    "scheme": {
+                        "type": "string",
+                        "enum": ["bearer"]
+                    },
+                    "authorization": {
+                        "$ref": "#/definitions/url"
+                    },
+                    "alg": {
+                        "type": "string"
+                    },
+                    "format": {
+                        "type": "string"
+                    },
+                    "in": {
+                        "type": "string",
+                        "enum": ["header", "query", "body", "cookie"]
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "required": ["scheme", "authorization"]
             },
             "then": {
                 "const": "td-vocab-authorization--BearerSecurityScheme=pass"

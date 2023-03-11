@@ -2,7 +2,7 @@
     "title": "td-vocab-titles--DataSchema",
     "description": "titles: Provides multi-language human-readable titles (e.g., display a text for UI representation in different languages) of the interaction pattern. MAY be included. Type: MultiLanguage.",
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "also": ["td-data-schema_titles", "td-multi-languages_titles","td-multilanguage-value"],
+    "also": ["td-data-schema_titles", "td-multi-languages_titles", "td-multilanguage-value"],
     "is-complex": true,
     "type": "object",
     "properties": {
@@ -60,7 +60,8 @@
                         }
                     },
                     "items": {
-                        "oneOf": [{
+                        "oneOf": [
+                            {
                                 "$ref": "#/definitions/dataSchema"
                             },
                             {
@@ -149,18 +150,11 @@
                     "const": {},
                     "type": {
                         "type": "string",
-                        "enum": [
-                            "boolean",
-                            "integer",
-                            "number",
-                            "string",
-                            "object",
-                            "array",
-                            "null"
-                        ]
+                        "enum": ["boolean", "integer", "number", "string", "object", "array", "null"]
                     },
                     "items": {
-                        "oneOf": [{
+                        "oneOf": [
+                            {
                                 "$ref": "#/definitions/dataSchema"
                             },
                             {
@@ -172,10 +166,8 @@
                         ]
                     },
                     "maxItems": {
-
                         "type": "integer",
                         "minimum": 0
-
                     },
                     "minItems": {
                         "type": "integer",

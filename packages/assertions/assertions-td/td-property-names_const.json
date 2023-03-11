@@ -16,9 +16,7 @@
         "property_element": {
             "type": "object",
             "if": {
-                "required": [
-                    "const"
-                ]
+                "required": ["const"]
             },
             "then": {
                 "const": "td-property-names_const=pass"

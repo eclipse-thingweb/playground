@@ -23,15 +23,12 @@
                         "type": "boolean"
                     }
                 },
-                "required": [
-                    "safe"
-                ],
+                "required": ["safe"],
                 "additionalProperties": true
             },
             "then": {
                 "const": "td-vocab-safe--ActionAffordance=pass"
             }
         }
-
     }
 }
