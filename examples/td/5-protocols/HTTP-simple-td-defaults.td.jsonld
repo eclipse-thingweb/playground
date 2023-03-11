@@ -1,0 +1,53 @@
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "id": "urn:uuid:3deca264-4f90-4321-a5ea-f197e6a1c7cf",
+    "title": "MyLampThing",
+    "description": "This example shows the default values for Procol Binding based on HTTP",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": [
+        "basic_sc"
+    ],
+    "properties": {
+        "status": {
+            "type": "string",
+            "readOnly": true,
+            "forms": [
+                {
+                    "op": "readproperty",
+                    "href": "https://mylamp.example.com/status",
+                    "htv:methodName": "GET"
+                }
+            ]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "forms": [
+                {
+                    "op": "invokeaction",
+                    "href": "https://mylamp.example.com/toggle",
+                    "htv:methodName": "POST"
+                }
+            ]
+        }
+    },
+    "events": {
+        "overheating": {
+            "data": {
+                "type": "string"
+            },
+            "forms": [
+                {
+                    "op": "subscribeevent",
+                    "href": "https://mylamp.example.com/oh",
+                    "subprotocol": "longpoll"
+                }
+            ]
+        }
+    }
+}

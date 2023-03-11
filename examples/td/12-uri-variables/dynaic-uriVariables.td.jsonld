@@ -1,0 +1,46 @@
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "title": "MyMapThing",
+    "description": "href may also carry a URI that contains dynamic variables",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": "basic_sc",
+    "properties": {
+        "weather": {
+            "uriVariables": {
+                "lat": { 
+                    "type": "number", 
+                    "minimum": 0, 
+                    "maximum": 90, 
+                    "description": "Latitude for the desired location in the world" },
+                "long": { 
+                    "type": "number", 
+                    "minimum": -180, 
+                    "maximum": 180, 
+                    "description": "Longitude for the desired location in the world" }
+            },
+            "forms": [{
+              "href": "http://mymap.example.org/weather/{?lat,long}",
+              "htv:methodName": "GET"
+            }]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "forms": [{"href": "http://mymap.example.org/toggle"}]
+        }
+    },
+    "events": {
+        "lowbatterie": {
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "http://mymap.example.org/toggle",
+                "subprotocol": "longpoll"
+            }]
+        }
+    }
+}

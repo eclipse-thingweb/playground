@@ -1,0 +1,43 @@
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "title": "MyLampThing",
+    "description": "TDs can specify a combination of security schemes. A ComboSecurityScheme with allOf can be used to specify that all need to be satisfied to allow activation of the Interaction Affordance. ",
+    "securityDefinitions": {
+        "proxy_sc": {
+            "scheme": "digest",
+            "proxy": "https://portal.example.com/"
+        },
+        "bearer_sc": {
+            "scheme": "bearer",
+            "in": "header",
+            "format": "jwt",
+            "alg": "ES256",
+            "authorization": "https://servient.example.com:8443/"
+        },
+        "combo_sc": {
+            "scheme": "combo",
+            "allOf": ["proxy_sc", "bearer_sc"]
+        }
+    },
+    "security": "combo_sc",
+    "properties": {
+        "status": {
+            "type": "string",
+            "forms": [{"href": "https://mylamp.example.com/status"}]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "forms": [{"href": "https://mylamp.example.com/toggle"}]
+        }
+    },
+    "events": {
+        "overheating": {
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "https://mylamp.example.com/oh"
+            }]
+        }
+    }
+}

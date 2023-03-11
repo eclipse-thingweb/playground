@@ -1,0 +1,34 @@
+{
+    "@context": [
+        "https://www.w3.org/2019/wot/td/v1",
+        {
+            "modbus": "https://www.example.com/ns/modbustcp"
+        }
+    ],
+    "title": "ModbusPLC",
+    "description": "To describe forms with multiple operations types, the Entity keyword can be used to create a short description of the modbus endpoint. This example shows how to use the read and write property in a single coil",
+    "id": "uri:dev:ModbusTCPThing",
+    "securityDefinitions": {
+        "nosec_sc": {
+            "scheme": "nosec"
+        }
+    },
+    "security": "nosec_sc",
+    "properties": {
+        "limitSwitch1": {
+            "title": "downLimitSwitch",
+            "type": "boolean",
+            "description": "Limit switch moving downwards",
+            "forms": [
+                {
+                    "href": "modbus+tcp://127.0.0.1:60000/1/1",
+                    "op": [
+                        "readproperty",
+                        "writeproperty"
+                    ],
+                    "modbus:entity": "Coil"
+                }
+            ]
+        }
+    }
+}

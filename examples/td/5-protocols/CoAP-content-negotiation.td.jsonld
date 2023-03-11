@@ -1,0 +1,63 @@
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "title": "MyLampThing",
+    "description": "Content negotiation in CoAP is used to negotiate the representation of CoAP resources that may have different representations available. This is accomplished  through the use of CoAP Accept and Content-Format options. The CoAP Accept option is used by clients to request a particular content format, while the Content-Format option is used by clients and servers to indicate the content format of the representation in requests and responses, respectively. ",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic"
+        }
+    },
+    "security": "basic_sc",
+    "properties": {
+        "status": {
+            "type": "string",
+            "readOnly": true,
+            "forms": [
+                {
+                    "href": "coap://mylamp.example.com/status",
+                    "contentType": "text/plain;charset=utf-8"
+                }
+            ]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "input": { "type": "integer" },
+            "output": { "type": "string" },
+            "forms": [
+                {
+                    "href": "coap://mylamp.example.comtoggle",
+                    "cov:accept": 60,
+                    "response": {
+                        "contentType": "application/cbor",
+                        "cov:contentFormat": 60
+                    }
+                },
+                {
+                    "href": "coap://mylamp.example.com/toggle",
+                    "contentType": "application/cbor",
+                    "cov:contentFormat": 60,
+                    "cov:accept": 50,
+                    "response": {
+                        "contentType": "application/json",
+                        "cov:contentFormat": 50
+                    }
+                }
+            ]
+        }
+    },
+    "events": {
+        "overheating": {
+            "data": {
+                "type": "string"
+            },
+            "forms": [
+                {
+                    "href": "coap://mylamp.example.com/oh",
+                    "subprotocol": "longpoll"
+                }
+            ]
+        }
+    }
+}

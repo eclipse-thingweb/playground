@@ -1,0 +1,42 @@
+{
+    "@context": [
+        "https://www.w3.org/2022/wot/td/v1.1",
+        { 
+          "@language": "ar-EG",
+          "@direction": "rtl" 
+        }
+    ],
+    "title": "شيء يخصني يقيس درجة الحرارة",
+    "description": "Metadata can be used to determine the base direction of string values, utilizing @direction and the values rtl, ltr and null for default direcction",
+    "securityDefinitions": {
+        "basic_sc": {"scheme": "basic", "in": "header"}
+    },
+    "security": "basic_sc",
+    "properties": {
+        "temp": {
+            "title": "درجة الحرارة",
+            "type": "boolean",
+            "forms": [{"href": "https://mylamp.example.com/temp"}]
+        },
+        "status": {
+            "title": "حالة",
+            "forms": [{"href": "https://mylamp.example.com/status"}]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "title": "تبديل",
+            "forms": [{"href": "https://mylamp.example.com/toggle"}]
+        }
+    },
+    "events": {
+        "overheating": {
+            "title": "ارتفاع درجة الحرارة",
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "https://mylamp.example.com/oh",
+                "subprotocol": "longpoll"
+            }]
+        }
+    }
+}

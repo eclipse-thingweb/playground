@@ -1,0 +1,34 @@
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "title": "MyLampThing",
+    "description": "TDs can specify a combination of security schemes. To avoid redundancy in this case, e.g. repeating the details of the form elements, a ComboSecurityScheme with oneOf can be used instead. ",
+    "securityDefinitions": {
+        "basic_sc": { "scheme": "basic" },
+        "digest_sc": { "scheme": "digest" },
+        "bearer_sc": { "scheme": "bearer" },
+        "combo_sc": { 
+            "scheme": "combo", 
+            "oneOf": [ "basic_sc", "digest_sc", "bearer_sc" ] 
+        }
+    },
+    "security": "combo_sc",
+    "properties": {
+        "status": {
+            "forms": [{"href": "https://mylamp.example.com/status"}]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "forms": [{"href": "https://mylamp.example.com/toggle"}]
+        }
+    },
+    "events": {
+        "overheating": {
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "https://mylamp.example.com/oh"
+            }]
+        }
+    }
+}
