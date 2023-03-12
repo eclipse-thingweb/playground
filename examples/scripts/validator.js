@@ -1,30 +1,94 @@
 // Test utility to test index.js
 const tdValidator = require("../../packages/core/index").tdValidator
 const fs = require("fs")
+const path = require('path')
 
-// Function to get current filenames in directory
+const [option, inputPath] = process.argv.splice(2)
 
-const fileNames = fs.readdirSync("../td/1-simple-default")
+if(fs.existsSync(inputPath))
+{
+    if((option == "-i" || option == "--input") && inputPath != undefined){
+    
+        //if it is a directory with multiple td
+        if( fs.lstatSync(inputPath).isDirectory()){
+            const fileNames = fs.readdirSync(inputPath)
+            fileNames.forEach(file => {
+                //Check if it is a valid td extension
+                if(path.extname(file) == ".jsonld"){
+                    const data = fs.readFileSync(inputPath+file)
+                    const TD = data.toString()
+                    tdValidator(TD, ()=>{}, {checkDefaults: false, checkJsonLd: false})
+                    .then( result => {
+                        console.log("File: ", file)
+                        console.log("OKAY")
+                        console.log(result)
+                        console.log("________________\n")
+                    }, err => {
+                        console.log("ERROR")
+                        console.error(err)
+                    })
+                }
+                else{
+                    console.log("The file: ", file, "is not a TD")
+                }
+            })
+        }
+    
+        //if it is an individual td
+        if(fs.lstatSync(inputPath).isFile()){
+            const file = fs.readFileSync(inputPath)
+            const fileName = path.basename(inputPath)
+            //Check if it is a valid td extension
+            if(path.extname(fileName) == ".jsonld"){
+                const TD = file.toString()
+                tdValidator(TD, ()=>{}, {checkDefaults: false, checkJsonLd: false})
+                .then( result => {
+                    console.log("File: ", fileName)
+                    console.log("OKAY")
+                    console.log(result)
+                    console.log("________________")
+                }, err => {
+                    console.log("ERROR")
+                    console.error(err)
+                })
+            }
+            else{
+                console.log("The file: ", file, "is not a TD")
+            }
+        }
+    }
+}
+else{
+    console.log("Invalid path");
+}
 
-fileNames.forEach(file => {
-	const data = fs.readFileSync("../td/1-simple-default/"+file)
-	const TD = data.toString()
-	tdValidator(TD, ()=>{}, {checkDefaults: false, checkJsonLd: false})
-	.then( result => {
-		console.log("File: ", file)
-		console.log("OKAY")
-		console.log(result)
-        console.log("________________")
-	}, err => {
-		console.log("ERROR")
-		console.error(err)
-	})
-})
 
 
 
 
-/** First way **/
+/* First way */
+
+// const fileNames = fs.readdirSync("../td/1-simple-default")
+
+// fileNames.forEach(file => {
+// 	const data = fs.readFileSync("../td/1-simple-default/"+file)
+// 	const TD = data.toString()
+// 	tdValidator(TD, ()=>{}, {checkDefaults: false, checkJsonLd: false})
+// 	.then( result => {
+// 		console.log("File: ", file)
+// 		console.log("OKAY")
+// 		console.log(result)
+//         console.log("________________")
+// 	}, err => {
+// 		console.log("ERROR")
+// 		console.error(err)
+// 	})
+// })
+
+
+
+
+/** Second way **/
 /*
 console.log("\nCurrent directory filenames:")
 filenames.forEach(file => {
@@ -50,7 +114,7 @@ filenames.forEach(file => {
 	console.log("______________________")
 })*/
 
-/** second version with for loop **/
+/** Third version with for loop **/
 /*
 for(let i = 0; i < filenames.length; i++){
 	console.log(filenames[i])
