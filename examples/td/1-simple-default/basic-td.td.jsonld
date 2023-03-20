@@ -16,7 +16,7 @@
     "actions": {
         "toggle": {
             "forms": [{"href": "https://mylamp.example.com/toggle"}]
-        }
+        } 
     },
     "events": {
         "overheating": {

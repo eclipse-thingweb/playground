@@ -40,6 +40,9 @@ jobs:
       - name: Test
         run: lerna run test --no-bail --stream
 
+      -name: Examples test
+        run: node packages/cli/index.js -i examples/td/*/* > examples/test-output.txt
+
   deploy-via-ssh:
 
     runs-on: ubuntu-latest
