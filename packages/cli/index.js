@@ -883,7 +883,7 @@ function tmCoreValidation(input) {
 
     }
     else {
-        const suite = builder.testSuite().name(el)
+        const suite = builder.testSuite().name(input)
         tmToCheck = fs.readFileSync(input, "utf-8")
         checkTm(tmToCheck, suite)
     }
