@@ -2,7 +2,9 @@
     "@context": ["https://www.w3.org/2022/wot/td/v1.1"], 
     "@type": "tm:ThingModel",
     "title": "Lamp Thing Model",
-    "description": "Basic example of TM",
+    "$title": "Versioning Thing Model Example",
+    "description": "TM for a lamp thing",
+    "$description": "When the Thing Model definitions change over time, this should be reflected in the version container. The term model is used with the version container in order to provide such versioning information.",
     "properties": {
         "status": {
             "description": "current status of the lamp (on|off)",

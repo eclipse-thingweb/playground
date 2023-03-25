@@ -941,7 +941,10 @@ function checkTm(tm, suite) {
         .then(result => {
             console.log("OKAY \n")
             console.log("\n")
-            console.log("--- Report ",JSON.parse(td).title,"---\n", result, "\n--------------")
+            if(JSON.parse(tm).$title){
+                console.log("--- Identifier name: ",JSON.parse(tm).$title,"---\n")
+            }
+            console.log("--- Report: ",JSON.parse(tm).title,"---\n", result, "\n--------------")
             if (myArguments.junit) {
                 builder.writeTo("junit-tests.xml")
             }
