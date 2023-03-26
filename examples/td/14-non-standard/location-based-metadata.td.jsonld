@@ -7,7 +7,9 @@
     ],
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
     "title": "MyRobotThing",
-    "description": "In some use cases location based metadata have to be provided at the interaction level, e.g., as provided as a Property that returns the latest longitude, latitude, and elevation values based on schema.org",
+    "$title": "Location Based Metadata TD Example",
+    "description": "TD for a Robot Thing",
+    "$description": "In some use cases location based metadata have to be provided at the interaction level, e.g., as provided as a Property that returns the latest longitude, latitude, and elevation values based on schema.org",
     "securityDefinitions": {
         "basic_sc": {"scheme": "basic", "in": "header"}
     },

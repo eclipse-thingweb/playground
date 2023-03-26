@@ -2,7 +2,9 @@
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
     "title": "MyLampThing",
-    "description": "Security configuration in the TD is mandatory, therefore the nosec security scheme is provided for the case that no security is needed",
+    "$title": "noSec Security TD Example",
+    "description": "TD for a Lamp Thing",
+    "$description": "Security configuration in the TD is mandatory, therefore the nosec security scheme is provided for the case that no security is needed.",
     "securityDefinitions": { 
         "nosec_sc": { 
             "scheme": "nosec" 

@@ -2,7 +2,9 @@
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:014139c9-b267-4db5-9c61-cc2d2bfc217d",
     "title": "MyCameraThing",
-    "description": "the Interaction Affordance not only describes the request, but also provides metadata for the expected response. In such cases, the response member is used to indicate the representation format of the response payload. therefore no output schema is required, as the content type fully specifies the representation format.",
+    "$title": "Simple Response TD Example",
+    "description": "TD for a Camera Thing",
+    "$description": "The Interaction Affordance not only describes the request, but also provides metadata for the expected response. In such cases, the response member is used to indicate the representation format of the response payload. therefore no output schema is required, as the content type fully specifies the representation format.",
     "securityDefinitions": {
         "basic_sc": {"scheme": "basic", "in": "header"}
     },

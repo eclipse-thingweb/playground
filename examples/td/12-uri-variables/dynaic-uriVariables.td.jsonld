@@ -1,7 +1,9 @@
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "title": "MyMapThing",
-    "description": "href may also carry a URI that contains dynamic variables",
+    "$title": "Dynamic uirVariables TD Example",
+    "description": "TD for Geolocation Thing",
+    "$description": "href may also carry a URI that contains dynamic variables.",
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",

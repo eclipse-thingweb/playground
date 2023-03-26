@@ -15,7 +15,9 @@
     "schema:manufacturer": {"name": "CompanyName"},
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
     "title": "MyTemperatureSensor",
-    "description": "This example provides additional metadata terms from different external context files as provided in @context.",
+    "$title": "Additional Metadata TD Example",
+    "description": "TD for a Temperature Sensor Thing",
+    "$description": "This example provides additional metadata terms from different external context files as provided in @context.",
     "securityDefinitions": {
         "basic_sc": {"scheme": "basic", "in": "header"}
     },

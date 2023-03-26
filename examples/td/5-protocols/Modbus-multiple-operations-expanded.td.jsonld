@@ -6,7 +6,9 @@
         }
     ],
     "title": "ModbusPLC",
-    "description": "This is an example of an extended version when using multiple operations with Modbus",
+    "$title": "Modbus Multiple Operations Expanded TD Example",
+    "description": "TD for a ModbusPLC",
+    "$description": "This is an example of an extended version when using multiple operations with Modbus",
     "id": "uri:dev:ModbusTCPThing",
     "securityDefinitions": {
         "nosec_sc": {

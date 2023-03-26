@@ -8,7 +8,9 @@
         "zh-Hans": "我的东西", 
         "zh-Hant": "我的東西"
     },
-    "description": "A TD can contain multiple languages, where the name is a valid language tag as defined by [BCP47] and the value is a human-readable string in the language indicated by the tag",
+    "$title": "Multilanguage TD Example",
+    "description": "TD for a Generic Thing",
+    "$description": "A TD can contain multiple languages, where the name is a valid language tag as defined by [BCP47] and the value is a human-readable string in the language indicated by the tag.",
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",

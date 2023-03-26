@@ -2,7 +2,9 @@
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
     "title": "MyLampThing",
-    "description": "When forms is present at the top level, it can be used to describe meta interactions offered by a Thing. readallproperties is a type of meta interaction which allows the consumer to read all properties at once",
+    "$title": "Readallproperties TD Example",
+    "description": "TD for a Lamp Thing",
+    "$description": "When forms is present at the top level, it can be used to describe meta interactions offered by a Thing. readallproperties is a type of meta interaction which allows the consumer to read all properties at once.",
     "securityDefinitions": {
         "basic_sc": {"scheme": "basic", "in": "header"}
     },

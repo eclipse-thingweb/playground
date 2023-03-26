@@ -2,7 +2,9 @@
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:9cd44eef-0b3f-4566-94b0-1358af3d86bd",
     "title": "MyLampThing",
-    "description": "This example shows the binding of the readproperty operation for the HTTP",
+    "$title": "HTTP readproperty TD Example",
+    "description": "TD for a Lamp Thing",
+    "$description": "This example shows the binding of the readproperty operation for the HTTP",
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",

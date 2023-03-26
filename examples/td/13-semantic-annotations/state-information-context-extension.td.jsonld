@@ -13,7 +13,9 @@
         "@type": "saref:OnOffState"
     },
     "title": "MyLampThing",
-    "description": "TD Context Extensions may be used to annotate pieces of a data schema, to be able to semantically process the state information of the physical world object, which is represented by the data exchanged during an interaction.",
+    "$title": "State Information Context Extension TD Example",
+    "description": "TD for a Lamp Thing",
+    "$description": "TD Context Extensions may be used to annotate pieces of a data schema, to be able to semantically process the state information of the physical world object, which is represented by the data exchanged during an interaction.",
     "securityDefinitions": {
         "basic_sc": {"scheme": "basic", "in": "header"}
     },

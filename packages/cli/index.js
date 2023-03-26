@@ -519,7 +519,10 @@ function checkTd(td, suite) {
         .then(result => {
             console.log("OKAY \n")
             console.log("\n")
-            console.log("--- Report ",JSON.parse(td).title,"---\n", result, "\n--------------")
+            if(JSON.parse(td).$title){
+                console.log("--- Identifier name: ",JSON.parse(td).$title,"---\n")
+            }
+            console.log("--- Report: ",JSON.parse(td).title,"---\n", result, "\n--------------")
             if (myArguments.junit) {
                 builder.writeTo("junit-tests.xml")
             }

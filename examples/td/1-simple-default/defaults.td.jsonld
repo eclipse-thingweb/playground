@@ -2,7 +2,9 @@
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:014139c9-b267-4db5-9c61-cc2d2bfc217d",
     "title": "MyLampThing",
-    "description": "A basic TD with all default values",
+    "$title": "All Default Values TD Example",
+    "description": "TD for a lamp thing",
+    "$description": "A basic TD with all default values",
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",

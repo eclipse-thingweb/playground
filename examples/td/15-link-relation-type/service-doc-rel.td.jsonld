@@ -2,7 +2,9 @@
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
     "title": "MyLampThing",
-    "description": "To point to a developer documentation of a Thing the value service-doc can be used",
+    "$title": "Service-doc Relation TD Example",
+    "description": "TD for a Lamp Thing",
+    "$description": "To point to a developer documentation of a Thing the value service-doc can be used.",
     "securityDefinitions": {
         "basic_sc": {"scheme": "basic", "in": "header"}
     },

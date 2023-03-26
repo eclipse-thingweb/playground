@@ -6,7 +6,9 @@
         }
     ],
     "title": "ModbusPLC",
-    "description": "This example shows the minimal set of terms to configure a single coil reading using Modbus. Notice that the unitID is contained in the href as the first element of the path",
+    "$title": "Modbus Single Coil TD Example",
+    "description": "TD for a ModbusPLC",
+    "$description": "This example shows the minimal set of terms to configure a single coil reading using Modbus. Notice that the unitID is contained in the href as the first element of the path.",
     "id": "uri:dev:ModbusTCPThing",
     "securityDefinitions": {
         "nosec_sc": {

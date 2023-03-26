@@ -2,7 +2,9 @@
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:014139c9-b267-4db5-9c61-cc2d2bfc217d",
     "title": "MyCameraThing",
-    "description": "The contentType member is used to assign a media type [RFC2046] including media type parameters as attribute-value pairs separated by a ; character",
+    "$title": "contentType TD Example",
+    "description": "Thing description for a camera thing",
+    "$description": "The contentType member is used to assign a media type [RFC2046] including media type parameters as attribute-value pairs separated by a ; character.",
     "securityDefinitions": {
         "basic_sc": {"scheme": "basic", "in": "header"}
     },

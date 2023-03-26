@@ -2,7 +2,9 @@
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
     "title": "MyLampThing",
-    "description": "A simple security configuration specifying basic username/password authentication in the header",
+    "$title": "Basic Security TD Example",
+    "description": "TD for a Lamp Thing",
+    "$description": "A simple security configuration specifying basic username/password authentication in the header.",
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",

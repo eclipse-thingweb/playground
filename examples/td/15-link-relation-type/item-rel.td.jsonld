@@ -2,7 +2,9 @@
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
     "title": "Electric Drive",
-    "description": "A superordinate Thing can collect a group of Things and refer to them by using the item value",
+    "$title": "Item Relation TD Example",
+    "description": "TD for an Electric Drive Thing",
+    "$description": "A superordinate Thing can collect a group of Things and refer to them by using the item value.",
     "securityDefinitions": {
         "basic_sc": {"scheme": "basic", "in": "header"}
     },

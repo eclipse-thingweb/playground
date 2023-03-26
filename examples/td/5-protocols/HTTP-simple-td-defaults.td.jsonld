@@ -2,7 +2,9 @@
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:3deca264-4f90-4321-a5ea-f197e6a1c7cf",
     "title": "MyLampThing",
-    "description": "This example shows the default values for Procol Binding based on HTTP",
+    "$title": "HTTP Simple with Defaults TD Example",
+    "description": "TD for a Lamp Thing",
+    "$description": "This example shows the default values for Procol Binding based on HTTP",
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",

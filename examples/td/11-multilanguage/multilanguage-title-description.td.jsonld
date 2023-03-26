@@ -13,14 +13,16 @@
         "zh-Hans": "我的东西",
         "zh-Hant": "我的東西"
     },
-    "description": "TD-Instanzen können auch die Verwendung von title und description mit Titeln und Beschreibungen kombinieren. title und description sind als Standardtext zu sehen",
+    "$title": "Multilanguage Title and Description TD Example",
+    "description": "TD für ein generisches Ding in verschiedenen Sprachen.",
     "descriptions": {
-        "en": "TD instances may also combine the use of title and description with titles and descriptions. title and description are seeing as the default text",
-        "de": "TD-Instanzen können auch die Verwendung von title und description mit Titeln und Beschreibungen kombinieren. title und description sind als Standardtext zu sehen",
-        "ja": "TDインスタンスでは、タイトルと説明文を組み合わせて使用することもできます。タイトルと説明文は、デフォルトのテキストとして表示されます。",
-        "zh-Hans": "TD实例也可以结合使用标题和描述。标题和描述被视为默认文本",
-        "zh-Hant": "TD 實例還可以將標題和描述與標題和描述結合使用。標題和描述被視為默認文本"
+        "en": "TD for a generic thing in various languages.",
+        "de": "TD für ein generisches Ding in verschiedenen Sprachen",
+        "ja": "様々な言語で汎用的なものを扱うTD",
+        "zh-Hans": "TD 用于各种语言的通用事物",
+        "zh-Hant": "TD 用於各種語言的通用事物"
     },
+    "$description": "TD instances may also combine the use of title and description with titles and descriptions. title and description are seeing as the default text.",
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",
