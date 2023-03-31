@@ -1,0 +1,63 @@
+{
+    "@context": [
+        "https://www.w3.org/2022/wot/td/v1.1"
+    ],
+    "@type": "Thing",
+    "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "title": "Smart Lamp Control with Dimming",
+    "$title": "Extend Thing Model Example",
+    "description": "TM for controlling a Lamp thing with dimming  fuctions",
+    "$description": "A Thing Model can extend an existing Thing Model by using the tm:extends mechanism. When a Thing Model extends another Thing Model, at least one links entry with 'rel: tm:extends' that targets a Thing Model that is be extended must be used",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": "basic_sc",
+    "links": [
+        {
+            "rel": "type",
+            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/UI-fixes/examples/tm/3-tm-extends-imports/extends-basic.tm.jsonld",
+            "type": "application/tm+json"
+        }
+    ],
+    "properties": {
+        "onOff": {
+            "type": "boolean",
+            "forms": [{"href": "https://mylamp.example.com/dim"}]
+        },
+        "dim" : {
+            "title": "Dimming level",
+            "description": "Dimms the lamp between the values: 0 and 100",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "forms": [{"href": "https://mylamp.example.com/dim"}]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "description": "Turn the lamp on or off",
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/toggle"
+                }
+            ]
+        }
+    },
+    "events": {
+        "overheating": {
+            "description": "Lamp reaches a critical temperature (overheating)",
+            "data": {
+                "type": "string"
+            },
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/oh",
+                    "subprotocol": "longpoll"
+                }
+            ]
+        }
+    }
+}
