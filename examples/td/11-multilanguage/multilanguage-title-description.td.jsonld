@@ -14,9 +14,9 @@
         "zh-Hant": "我的東西"
     },
     "$title": "Multilanguage Title and Description TD Example",
-    "description": "TD für ein generisches Ding in verschiedenen Sprachen.",
+    "description": "TD für ein generisches Ding in verschiedenen Sprachen",
     "descriptions": {
-        "en": "TD for a generic thing in various languages.",
+        "en": "TD for a generic thing in various languages",
         "de": "TD für ein generisches Ding in verschiedenen Sprachen",
         "ja": "様々な言語で汎用的なものを扱うTD",
         "zh-Hans": "TD 用于各种语言的通用事物",
