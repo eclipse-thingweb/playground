@@ -5,6 +5,7 @@
     "$title": "Versioning Thing Model Example",
     "description": "TM for a lamp thing",
     "$description": "When the Thing Model definitions change over time, this should be reflected in the version container. The term model is used with the version container in order to provide such versioning information.",
+    "version" : {"model": "1.0.0"},
     "properties": {
         "status": {
             "description": "current status of the lamp (on|off)",
