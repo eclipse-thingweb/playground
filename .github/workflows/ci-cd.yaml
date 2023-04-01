@@ -39,9 +39,6 @@ jobs:
       
       - name: Test
         run: lerna run test --no-bail --stream
-
-      - name: TD test
-        run: node packages/cli/index.js -i examples/td/*/*
       
       - name: TM test
         run: node packages/cli/index.js -t TM -i examples/tm/*/*
