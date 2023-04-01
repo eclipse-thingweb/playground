@@ -1,0 +1,67 @@
+{
+    "@context": [
+        "https://www.w3.org/2022/wot/td/v1.1"
+    ],
+    "@type": "Thing",
+    "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "title": "thermostat No. 4",
+    "$title": "Placeholder TM Example",
+    "description": "A TM for a thermostat with placeholder labeling",
+    "$description": "In a case where TD instance terms, but not their values, are known in advance, the placeholder labeling may be used in a Thing Model. The string-based pattern of the placeholder must follow a valid pattern based on the regular expression {{2}[ -~]+}{2} (e.g., {{PLACEHOLDER_IDENTIFIER}}). The characters between {{ and }} are used as identifier name of the placeholder.",
+    "version": {
+        "instance": "1.0.1",
+        "model": "2.0.0"
+    },
+    "base": "mqtt://192.168.178.72:1883",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": "basic_sc",
+    "links": [
+        {
+            "rel": "type",
+            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/UI-fixes/examples/tm/6-placeholder/placeholder.tm.jsonld",
+            "type": "application/tm+json"
+        }
+    ],
+    "properties": {
+        "temperature": {
+            "description": "Shows the current temperature value",
+            "type": "number",
+            "minimum": -20.0,
+            "maximum": 47.7,
+            "observable": true,
+            "forms": [
+                {
+                    "href": "https://thermostat.example.com/temperature"
+                }
+            ]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "description": "Turn the thermostat on or off",
+            "forms": [
+                {
+                    "href": "https://thermostat.example.com/toggle"
+                }
+            ]
+        }
+    },
+    "events": {
+        "overheating": {
+            "description": "critical temperature reached (overheating)",
+            "data": {
+                "type": "string"
+            },
+            "forms": [
+                {
+                    "href": "https://thermostat.example.com/oh"
+                }
+            ]
+        }
+    }
+}

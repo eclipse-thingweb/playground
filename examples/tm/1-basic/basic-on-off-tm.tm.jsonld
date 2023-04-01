@@ -3,7 +3,7 @@
     "@type": "tm:ThingModel",
     "title": "Basic On/Off Thing Model",
     "$title": "Basic Thing Model Example for an On and Off Thing Description",
-    "$description": "This is an Examples of a simple Thing Model which is utilized to extend onto another Thing Model",
+    "$description": "This is an example of a simple Thing Model which is utilized to extend onto another Thing Model",
     "properties": {
         "onOff": {
             "type": "boolean"
