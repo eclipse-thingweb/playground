@@ -22,16 +22,5 @@
     ],
     "properties" : {
         "status" : {"type": "string", "enum": ["on_value", "off_value", "error_value"]}
-    },
-    "actions": {
-        "toggle": {
-            "description": "Turn the ventilator on or off"
-        }
-    },
-    "events": {
-        "overheating": {
-            "description": "Ventilator reaches a critical temperature (overheating)",
-            "data": {"type": "string"}
-        }
     }
 }
