@@ -25,7 +25,16 @@
     "properties": {
         "switch": {
             "type": "boolean",
-            "forms": [{"href": "https://mylamp.example.com/onOff"}]
+            "readOnly": true,
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/onOff",
+                    "op": "readproperty",
+                    "contentType": "application/json"
+                }
+            ],
+            "observable": false,
+            "writeOnly": false
         }
     },
     "actions": {
@@ -33,21 +42,32 @@
             "description": "Turn the lamp on or off",
             "forms": [
                 {
-                    "href": "https://mylamp.example.com/toggle"
+                    "href": "https://mylamp.example.com/toggle",
+                    "op": "invokeaction",
+                    "contentType": "application/json"
                 }
-            ]
+            ],
+            "safe": false,
+            "idempotent": false
         }
     },
     "events": {
         "overheating": {
             "description": "Lamp reaches a critical temperature (overheating)",
             "data": {
-                "type": "string"
+                "type": "string",
+                "readOnly": false,
+                "writeOnly": false
             },
             "forms": [
                 {
                     "href": "https://mylamp.example.com/oh",
-                    "subprotocol": "longpoll"
+                    "subprotocol": "longpoll",
+                    "op": [
+                        "subscribeevent",
+                        "unsubscribeevent"
+                    ],
+                    "contentType": "application/json"
                 }
             ]
         }
