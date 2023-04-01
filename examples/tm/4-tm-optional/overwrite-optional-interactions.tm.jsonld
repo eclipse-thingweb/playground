@@ -8,13 +8,13 @@
     "links": [
        {
           "rel": "tm:extends",
-          "href": "./lampThingModel.tm.jsonld",
+          "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/UI-fixes/examples/tm/4-tm-optional/optional-interaction.tm.jsonld",
           "type": "application/tm+json"
        }
     ],
     "events": {
         "overheating": {
-            "tm:ref": "./lampThingModel.tm.jsonld#/events/overheating" 
+            "tm:ref": "https://raw.githubusercontent.com/thingweb/thingweb-playground/UI-fixes/examples/tm/4-tm-optional/optional-interaction.tm.jsonld#/events/overheating" 
         }
     }
 }
