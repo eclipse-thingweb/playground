@@ -9,13 +9,13 @@
     "links": [
       {
         "rel": "tm:submodel",
-        "href": "./Ventilation.tm.jsonld",
+        "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/UI-fixes/examples/tm/5-tm-submodel/basic-ventilation-tm.tm.jsonld",
         "type": "application/tm+json",
         "instanceName": "ventilation"
       },
       {
         "rel": "tm:submodel",
-        "href": "./LED.tm.jsonld",
+        "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/UI-fixes/examples/tm/5-tm-submodel/basic-led-tm.tm.jsonld",
         "type": "application/tm+json",
         "instanceName": "led"
       }

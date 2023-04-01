@@ -1,0 +1,47 @@
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "title": "Ventilator Thing Model",
+    "$title": "Basic Ventilator Thing Model Example",
+    "description": "Thing Model for a simple Ventilator Thing",
+    "$description": "This is an example of a simple Thing Model which is utilized as a submodel of another Thing Model",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": "basic_sc",
+    "links": [
+        {
+            "rel": "collection",
+            "href": "./SmartVentilation.td.jsonld",
+            "type": "application/td+json"
+        },
+        {
+            "rel": "type",
+            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/UI-fixes/examples/tm/5-tm-submodel/basic-ventilation-tm.tm.jsonld",
+            "type": "application/tm+json"
+        }
+    ],
+    "properties": {
+        "switch": {
+            "type": "boolean",
+            "description": "True=On; False=Off",
+            "forms": [
+                {
+                    "href": "http://ventilator.example.com/switch"
+                }
+            ]
+        },
+        "adjustRpm": {
+            "type": "number",
+            "minimum": 200,
+            "maximum": 1200,
+            "forms": [
+                {
+                    "href": "http://ventilator.example.com/adjustRpm"
+                }
+            ]
+        }
+    }
+}
