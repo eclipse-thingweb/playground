@@ -1,0 +1,80 @@
+{
+    "@context": [
+        "https://www.w3.org/2022/wot/td/v1.1"
+    ],
+    "@type": "Thing",
+    "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "title": "Multi Sensor",
+    "$title": "Relative Imports TM Example",
+    "description": "TM for a multisensor thing",
+    "$description": "This Thing Model example re-uses and augments a 'genericTemperature' property in two more specific properties, which describe an inner and an outer temperature value, respectively.",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": "basic_sc",
+    "links": [
+        {
+            "rel": "type",
+            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/UI-fixes/examples/tm/3-tm-extends-imports/relative-imports.tm.jsonld",
+            "type": "application/tm+json"
+        }
+    ],
+    "properties": {
+        "genericTemperature": {
+            "type": "number",
+            "unit": "C",
+            "forms": [
+                {
+                    "href": "https://multisensor.example.com/dim"
+                }
+            ]
+        },
+        "innerTemperature": {
+            "tm:ref": "#/properties/genericTemperature",
+            "title": "The inner temperature",
+            "minimum": 10,
+            "forms": [
+                {
+                    "href": "https://multisensor.example.com/dim"
+                }
+            ]
+        },
+        "outerTemperature": {
+            "tm:ref": "#/properties/genericTemperature",
+            "title": "The outer temperature",
+            "description": "The outer temperature is measured in Kelvin",
+            "unit": "K",
+            "forms": [
+                {
+                    "href": "https://multisensor.example.com/dim"
+                }
+            ]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "description": "Turn the sensor on or off",
+            "forms": [
+                {
+                    "href": "https://multisensor.example.com/toggle"
+                }
+            ]
+        }
+    },
+    "events": {
+        "overheating": {
+            "description": "The sensor reaches a critical temperature (overheating)",
+            "data": {
+                "type": "string"
+            },
+            "forms": [
+                {
+                    "href": "https://multisensor.example.com/toggle"
+                }
+            ]
+        }
+    }
+}
