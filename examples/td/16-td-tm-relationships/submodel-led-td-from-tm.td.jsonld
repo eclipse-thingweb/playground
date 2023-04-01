@@ -14,7 +14,7 @@
     "links": [
         {
             "rel": "collection",
-            "href": "./SmartVentilation.td.jsonld",
+            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/UI-fixes/examples/td/16-td-tm-relationships/composition-top-level-td-from-tm.td.jsonld",
             "type": "application/td+json"
         },
         {

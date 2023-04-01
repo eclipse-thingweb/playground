@@ -14,12 +14,12 @@
     "links": [
         {
             "rel": "item",
-            "href": "./Ventilation.td.jsonld",
+            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/UI-fixes/examples/td/16-td-tm-relationships/submodel-ventilator-td-from-tm.td.jsonld",
             "type": "application/td+json"
         },
         {
             "rel": "item",
-            "href": "./LED.td.jsonld",
+            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/UI-fixes/examples/td/16-td-tm-relationships/submodel-led-td-from-tm.td.jsonld",
             "type": "application/td+json"
         },
         {
