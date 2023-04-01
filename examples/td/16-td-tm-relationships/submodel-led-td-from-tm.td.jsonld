@@ -4,6 +4,10 @@
     "$title": "Basic LED Thing Model Example",
     "description": "Thing Model for a simple LED Thing",
     "$description": "This is an example of a simple Thing Model which is utilized as a submodel of another Thing Model",
+    "version": {
+        "instance": "1.0.0",
+        "model": "1.0.0"
+    },
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",

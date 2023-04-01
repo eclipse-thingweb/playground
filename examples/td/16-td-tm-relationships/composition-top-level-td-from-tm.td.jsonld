@@ -4,6 +4,10 @@
     "$title": "Top level/parent Thing Model Example",
     "description": "Top level/parent Smart Ventilator Thing Model ",
     "$description": "If it is desired to provide information that a Thing Model consists of one or more (sub-)TMs, the links entries must use the 'rel': 'tm:submodel' that targets to the (sub-)TM. Optionally an instanceName may be provided to associate an individual name to the composed (sub-)TM. This is useful when multiple similar Thing Model definitions are composed and needs to be distinguished.",
+    "version": {
+        "instance": "1.0.0",
+        "model": "1.0.0"
+    },
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",
@@ -42,11 +46,5 @@
                 }
             ]
         }
-    },
-    "actions": {
-
-    }, 
-    "events": {
-        
     }
 }
