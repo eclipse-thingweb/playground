@@ -1,0 +1,85 @@
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "title": "LED Thing Model",
+    "$title": "Basic LED Thing Model Example",
+    "description": "Thing Model for a simple LED Thing",
+    "$description": "This is an example of a simple Thing Model which is utilized as a submodel of another Thing Model",
+    "version": {
+        "instance": "1.0.0",
+        "model": "1.0.0"
+    },
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": "basic_sc",
+    "links": [
+        {
+            "rel": "collection",
+            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/UI-fixes/examples/td/16-td-tm-relationships/composition-top-level-td-from-tm.td.jsonld",
+            "type": "application/td+json"
+        },
+        {
+            "rel": "type",
+            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/UI-fixes/examples/tm/5-tm-submodel/basic-led-tm.tm.jsonld",
+            "type": "application/tm+json"
+        }
+    ],
+    "properties": {
+        "R": {
+            "type": "number",
+            "description": "Red color",
+            "forms": [
+                {
+                    "href": "http://led.example.com/R"
+                }
+            ]
+        },
+        "G": {
+            "type": "number",
+            "description": "Green color",
+            "forms": [
+                {
+                    "href": "http://led.example.com/G"
+                }
+            ]
+        },
+        "B": {
+            "type": "number",
+            "description": "Blue color",
+            "forms": [
+                {
+                    "href": "http://led.example.com/B"
+                }
+            ]
+        }
+    },
+    "actions": {
+        "fadeIn": {
+            "title": "fadeIn",
+            "input": {
+                "type": "number",
+                "description": "fadeIn in ms"
+            },
+            "forms": [
+                {
+                    "href": "http://led.example.com/fadeIn"
+                }
+            ]
+        },
+        "fadeOut": {
+            "title": "fadeOut",
+            "input": {
+                "type": "number",
+                "description": "fadeOut in ms"
+            },
+            "forms": [
+                {
+                    "href": "http://led.example.com/fadeOut"
+                }
+            ]
+        }
+    }
+}

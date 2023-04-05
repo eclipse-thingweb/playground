@@ -1,0 +1,26 @@
+{
+    "@context": ["https://www.w3.org/2022/wot/td/v1.1"], 
+    "@type": "tm:ThingModel",
+    "title": "Lamp Thing Model",
+    "$title": "Basic Thing Model Example",
+    "description": "TM for a lamp thing",
+    "$description": "This is an example of a basic Thing Model, which is use as a sort of template for creating a Thing Description instance of a Lamp TD",
+    "properties": {
+        "status": {
+            "description": "current status of the lamp (on|off)",
+            "type": "string",
+            "readOnly": true
+        }
+    },
+    "actions": {
+        "toggle": {
+            "description": "Turn the lamp on or off"
+        }
+    },
+    "events": {
+        "overheating": {
+            "description": "Lamp reaches a critical temperature (overheating)",
+            "data": {"type": "string"}
+        }
+    }
+}

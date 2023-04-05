@@ -1,0 +1,1 @@
+This folder contains various examples concerning the "actions" interaction affordance.

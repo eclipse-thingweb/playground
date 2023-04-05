@@ -1,0 +1,54 @@
+{
+    "@context": [
+        "https://www.w3.org/2022/wot/td/v1.1",
+        {
+            "saref": "https://w3id.org/saref#",
+            "ssn": "http://www.w3.org/ns/ssn/"
+        }
+    ],
+    "id": "urn:uuid:67c9122b-2680-4e1a-b41c-5af07edba1f4",
+    "@type": "saref:LightSwitch",
+    "saref:hasState": {
+        "@id": "urn:uuid:67c9122b-2680-4e1a-b41c-5af07edba1f4/state",
+        "@type": "saref:OnOffState"
+    },
+    "title": "MyLampThing",
+    "$title": "State Information Context Extension TD Example",
+    "description": "TD for a Lamp Thing",
+    "$description": "TD Context Extensions may be used to annotate pieces of a data schema, to be able to semantically process the state information of the physical world object, which is represented by the data exchanged during an interaction.",
+    "securityDefinitions": {
+        "basic_sc": {"scheme": "basic", "in": "header"}
+    },
+    "security": "basic_sc",
+    "properties": {
+        "status": {
+            "ssn:forProperty": "urn:uuid:67c9122b-2680-4e1a-b41c-5af07edba1f4/state",
+            "type": "string",
+            "forms": [{"href": "https://mylamp.example.com/status"}]
+        },
+        "fullStatus": {
+            "ssn:forProperty": "urn:uuid:67c9122b-2680-4e1a-b41c-5af07edba1f4/state",
+            "type": "object",
+            "properties": {
+                "statusString": { "type": "string" },
+                "statusCode": { "type": "number" },
+                "statusDescription": { "type": "string" }
+            },
+            "forms": [{"href": "https://mylamp.example.com/status?full=true"}]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "forms": [{"href": "https://mylamp.example.com/toggle"}]
+        }
+    },
+    "events": {
+        "overheating": {
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "https://mylamp.example.com/oh",
+                "subprotocol": "longpoll"
+            }]
+        }
+    }
+}

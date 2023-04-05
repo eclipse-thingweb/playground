@@ -1,0 +1,50 @@
+{
+    "@context": [
+        "https://www.w3.org/2022/wot/td/v1.1",
+        {
+            "saref": "https://w3id.org/saref#",
+            "om": "http://www.ontology-of-units-of-measure.org/resource/om-2/",
+            "schema": "http://schema.org" 
+        }
+    ],
+    "version": {
+        "instance": "1.2.1",
+        "schema:softwareVersion": "1.0.1"
+    },
+    "schema:serialNumber": "4CE0460D0G",
+    "schema:manufacturer": {"name": "CompanyName"},
+    "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "title": "MyTemperatureSensor",
+    "$title": "Additional Metadata TD Example",
+    "description": "TD for a Temperature Sensor Thing",
+    "$description": "This example provides additional metadata terms from different external context files as provided in @context.",
+    "securityDefinitions": {
+        "basic_sc": {"scheme": "basic", "in": "header"}
+    },
+    "security": "basic_sc",
+    "@type": "saref:TemperatureSensor",
+    "properties": {
+        "temperature": {
+            "description": "Temperature value of the weather station",
+            "type": "number",
+            "minimum": -32.5,
+            "maximum": 55.2,
+            "unit": "om:degree_Celsius",
+            "forms": [{"href": "https://mysensor.example.com/temperature"}]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "forms": [{"href": "https://mysensor.example.com/toggle"}]
+        }
+    },
+    "events": {
+        "overheating": {
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "https://mysensor.example.com/oh",
+                "subprotocol": "longpoll"
+            }]
+        }
+    }
+}

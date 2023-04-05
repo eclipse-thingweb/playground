@@ -1,0 +1,53 @@
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "title": "MyLampThing",
+    "$title": "Data Schema Serialization TD Example",
+    "description": "TD for a Lamp Thing",
+    "$description": "Data schema serialization applies to PropertyAffordance instances, the values assigned to input and output in ActionAffordance instances, the values assigned to subscription, data, and cancellation in EventAffordance instances, and the value assigned to uriVariables in instances of Subclasses of InteractionAffordance.",
+    "securityDefinitions": {
+        "basic_sc": {"scheme": "basic", "in": "header"}
+    },
+    "security": "basic_sc",
+    "properties": {
+        "status": {
+            "title": "Status",
+            "type": "string",
+            "enum": ["on_value", "off_value", "error_value"],
+            "forms": [{"href": "https://mylamp.example.com/status"}]
+        },
+        "brightness": {
+            "title": "Brightness value",
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 100.0,
+            "forms": [{"href": "https://mylamp.example.com/brightness"}]
+        },
+        "rgb": {
+            "title": "RGB color value",
+            "type": "array",
+            "items": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 255
+            },
+            "minItems": 3,
+            "maxItems": 3,
+            "forms": [{"href": "https://mylamp.example.com/rgb"}]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "forms": [{"href": "https://mylamp.example.com/toggle"}]
+        }
+    },
+    "events": {
+        "overheating": {
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "https://mylamp.example.com/oh",
+                "subprotocol": "longpoll"
+            }]
+        }
+    }
+}

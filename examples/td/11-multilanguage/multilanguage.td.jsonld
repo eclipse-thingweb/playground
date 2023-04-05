@@ -1,0 +1,68 @@
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "title": "MyThing",
+    "titles": {
+        "en": "MyThing",
+        "de": "MeinDing",
+        "ja": "私の物",
+        "zh-Hans": "我的东西", 
+        "zh-Hant": "我的東西"
+    },
+    "$title": "Multilanguage TD Example",
+    "description": "TD for a Generic Thing",
+    "$description": "A TD can contain multiple languages, where the name is a valid language tag as defined by [BCP47] and the value is a human-readable string in the language indicated by the tag.",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": "basic_sc",
+    "properties": {
+        "on": {
+            "titles": {
+                "en": "On/Off",
+                "de": "An/Aus",
+                "ja": "オンオフ",
+                "zh-Hans": "开关",
+                "zh-Hant": "開關" },
+            "type": "boolean",
+            "forms": [{"href": "https://mylamp.example.com/on"}]
+        },
+        "status": {
+            "titles": {
+                "en": "Status",
+                "de": "Zustand",
+                "ja": "状態",
+                "zh-Hans": "状态",
+                "zh-Hant": "狀態" },
+            "forms": [{"href": "https://mylamp.example.com/status"}]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "titles": {
+                "en": "Toggle",
+                "de": "Umschalten",
+                "ja": "トグル",
+                "zh-Hans": "切换",
+                "zh-Hant": "切換" },
+            "forms": [{"href": "https://mylamp.example.com/toggle"}]
+        }
+    },
+    "events": {
+        "overheating": {
+            "titles": {
+                "en": "Overheating",
+                "de": "Überhitzung",
+                "ja": "オーバーヒート",
+                "zh-Hans": "过热",
+                "zh-Hant": "過熱" },
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "https://mylamp.example.com/oh",
+                "subprotocol": "longpoll"
+            }]
+        }
+    }
+}

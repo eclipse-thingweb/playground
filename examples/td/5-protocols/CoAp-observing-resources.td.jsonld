@@ -1,0 +1,49 @@
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "title": "MyLampThing",
+    "$title": "CoAP Observing Resources TD Example",
+    "description": "TD for a Lamp Thing",
+    "$description": "CoAP provides a mechanism for clients to *observe* resources [RFC7641], i.e., to request notifications from the server whenever the resource changes. This is especially useful in the Web of Things where many Things are expected to have resources that change over time, such as sensor readings.",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic"
+        }
+    },
+    "security": "basic_sc",
+    "properties": {
+        "status": {
+            "type": "string",
+            "readOnly": true,
+            "forms": [{
+                "cov:method": "GET",
+                "href": "coap://[2001:DB8::1]/status",
+                "contentType": "text/plain;charset=utf-8",
+                "subprotocol": "cov:observe",
+                "op": ["observeproperty"]
+            }]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "forms": [
+                {
+                    "href": "coap://mylamp.example.com/toggle"
+                }
+            ]
+        }
+    },
+    "events": {
+        "overheating": {
+            "data": {
+                "type": "string"
+            },
+            "forms": [
+                {
+                    "href": "coap://mylamp.example.com/oh",
+                    "subprotocol": "longpoll"
+                }
+            ]
+        }
+    }
+}

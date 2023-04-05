@@ -1,0 +1,1 @@
+This folder contains examples regarding the possible relation links that could be used between individual or a collection of Thing Descriptions.

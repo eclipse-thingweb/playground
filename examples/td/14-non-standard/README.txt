@@ -1,0 +1,1 @@
+This folder contains examples regarding how additional non-standard metadata could be used to personalize or adapt a Thing Description to a specific situtation or appplication.

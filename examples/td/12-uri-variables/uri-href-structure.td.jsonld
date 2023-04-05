@@ -1,0 +1,52 @@
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "title": "MyWeatherThing",
+    "$title": "URI href Structure TD Example",
+    "description": "TD for Weather sensor Thing",
+    "$description": "As defined in [RFC6570], uriVariables can be used for replacing the href structure.",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": "basic_sc",
+    "properties": {
+        "weather": {
+            "uriVariables": {
+                "city": {
+                    "type": "string",
+                    "description": "City name to find the weather information for"
+                }
+            },
+            "forms": [
+                {
+                    "href": "http://example.org/weather/{city}",
+                    "htv:methodName": "GET"
+                }
+            ]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "forms": [
+                {
+                    "href": "http://example.org/toggle"
+                }
+            ]
+        }
+    },
+    "events": {
+        "lowbatterie": {
+            "data": {
+                "type": "string"
+            },
+            "forms": [
+                {
+                    "href": "http://example.org/lb",
+                    "subprotocol": "longpoll"
+                }
+            ]
+        }
+    }
+}

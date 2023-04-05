@@ -1,0 +1,60 @@
+{
+    "@context": [
+        "https://www.w3.org/2022/wot/td/v1.1"
+    ],
+    "@type": "Thing",
+    "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "title": "Lamp Thing Model (All Mandatory)",
+    "$title": "Overwriting Optinal Interaction Affordances Example",
+    "description": "Lamp Thing Model description wich expects all interaction affordances (status, toggle, and overheating)",
+    "$description": "An optional definition in a Thing Model definition can be overwritten in the case it is extended by another Thing Model through the use of tm:ref. This examples overwrites the 'tm:optional' of another TM with an optional 'overheating' event",   
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": "basic_sc",
+    "links": [
+        {
+            "rel": "type",
+            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/UI-fixes/examples/tm/4-tm-optional/overwrite-optional-interactions.tm.jsonld",
+            "type": "application/tm+json"
+        }
+    ],
+    "properties": {
+        "status": {
+            "description": "current status of the lamp (on|off)",
+            "type": "string",
+            "readOnly": true,
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status"
+                }
+            ]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "description": "Turn the lamp on or off",
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/toggle"
+                }
+            ]
+        }
+    },
+    "events": {
+        "overheating": {
+            "description": "Lamp reaches a critical temperature (overheating)",
+            "data": {
+                "type": "string"
+            },
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/oh"
+                }
+            ]
+        }
+    }
+}

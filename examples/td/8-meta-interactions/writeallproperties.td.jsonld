@@ -1,0 +1,46 @@
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "title": "MyLampThing",
+    "$title": "Writeallproperties TD Example",
+    "description": "TD for a Lamp Thing",
+    "$description": "When forms is present at the top level, it can be used to describe meta interactions offered by a Thing. writeallproperties is a type of meta interaction which allows the consumer to write all properties at once.",
+    "securityDefinitions": {
+        "basic_sc": {"scheme": "basic", "in": "header"}
+    },
+    "security": "basic_sc",
+    "properties": {
+        "on": {
+            "type": "boolean",
+            "forms": [{"href": "https://mylamp.example.com/on"}]
+        },
+        "brightness": {
+            "type": "number",
+            "forms": [{"href": "https://mylamp.example.com/brightness"}]
+        },
+        "timer": {
+            "type": "integer",
+            "forms": [{"href": "https://mylamp.example.com/timer"}]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "forms": [{"href": "https://mylamp.example.com/toggle"}]
+        }
+    },
+    "events": {
+        "overheating": {
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "https://mylamp.example.com/oh",
+                "subprotocol": "longpoll"
+            }]
+        }
+    },
+    "forms": [{
+        "op": "writeallproperties",
+        "href": "https://mylamp.example.com/properties",
+        "contentType": "application/json",
+        "htv:methodName": "PUT"
+    }]
+}

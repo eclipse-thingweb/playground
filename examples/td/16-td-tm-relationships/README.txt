@@ -1,0 +1,1 @@
+This folder contains examples of Thing Descriptions that would result from one or many Thing Models.

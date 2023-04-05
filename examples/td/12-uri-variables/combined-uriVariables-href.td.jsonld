@@ -1,0 +1,60 @@
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "title": "MyWeatherThing",
+    "$title": "Combined uirVariables in href TD Example",
+    "description": "TD for Weather Sensor Thing",
+    "$description": "Combined dynamic uriVariables and uriVariables in href structure.",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": "basic_sc",
+    "properties": {
+        "weather": {
+            "uriVariables": {
+                "city": {
+                    "type": "string",
+                    "description": "City name to find the weather information for"
+                },
+                "unit": {
+                    "type": "string",
+                    "enum": [
+                        "fahrenheit_value",
+                        "celsius_value"
+                    ],
+                    "description": "Desired unit for the temperature value"
+                }
+            },
+            "forms": [
+                {
+                    "href": "http://example.org/weather/{city}/{?unit}",
+                    "htv:methodName": "GET"
+                }
+            ]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "forms": [
+                {
+                    "href": "http://example.org/toggle"
+                }
+            ]
+        }
+    },
+    "events": {
+        "lowbatterie": {
+            "data": {
+                "type": "string"
+            },
+            "forms": [
+                {
+                    "href": "http://example.org/lb",
+                    "subprotocol": "longpoll"
+                }
+            ]
+        }
+    }
+}

@@ -519,7 +519,10 @@ function checkTd(td, suite) {
         .then(result => {
             console.log("OKAY \n")
             console.log("\n")
-            console.log("--- Report ",JSON.parse(td).title,"---\n", result, "\n--------------")
+            if(JSON.parse(td).$title){
+                console.log("--- Identifier name: ",JSON.parse(td).$title,"---\n")
+            }
+            console.log("--- Report: ",JSON.parse(td).title,"---\n", result, "\n--------------")
             if (myArguments.junit) {
                 builder.writeTo("junit-tests.xml")
             }
@@ -883,7 +886,7 @@ function tmCoreValidation(input) {
 
     }
     else {
-        const suite = builder.testSuite().name(el)
+        const suite = builder.testSuite().name(input)
         tmToCheck = fs.readFileSync(input, "utf-8")
         checkTm(tmToCheck, suite)
     }
@@ -941,7 +944,10 @@ function checkTm(tm, suite) {
         .then(result => {
             console.log("OKAY \n")
             console.log("\n")
-            console.log("--- Report ",JSON.parse(td).title,"---\n", result, "\n--------------")
+            if(JSON.parse(tm).$title){
+                console.log("--- Identifier name: ",JSON.parse(tm).$title,"---\n")
+            }
+            console.log("--- Report: ",JSON.parse(tm).title,"---\n", result, "\n--------------")
             if (myArguments.junit) {
                 builder.writeTo("junit-tests.xml")
             }

@@ -1,0 +1,42 @@
+{
+    "@context": [
+        "https://www.w3.org/2019/wot/td/v1",
+        {
+            "modbus": "https://www.example.com/ns/modbustcp"
+        }
+    ],
+    "title": "ModbusPLC",
+    "$title": "Modbus Multiple Operations Expanded TD Example",
+    "description": "TD for a ModbusPLC",
+    "$description": "This is an example of an extended version when using multiple operations with Modbus",
+    "id": "uri:dev:ModbusTCPThing",
+    "securityDefinitions": {
+        "nosec_sc": {
+            "scheme": "nosec"
+        }
+    },
+    "security": "nosec_sc",
+    "properties": {
+        "limitSwitch1": {
+            "title": "downLimitSwitch",
+            "type": "boolean",
+            "description": "Limit switch moving downwards",
+            "forms": [
+                {
+                    "href": "modbus+tcp://127.0.0.1:60000/1/1",
+                    "op": [
+                        "readproperty"
+                    ],
+                    "modbus:function": "readCoil"
+                },
+                {
+                    "href": "modbus+tcp://127.0.0.1:60000/1/1",
+                    "op": [
+                        "writeproperty"
+                    ],
+                    "modbus:function": "writeCoil"
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,75 @@
+{
+    "@context": [
+        "https://www.w3.org/2022/wot/td/v1.1"
+    ],
+    "@type": "Thing",
+    "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "title": "Smart Lamp Control",
+    "$title": "Import Existing Definitions TM Example",
+    "description": "TM for a lamp thing controller",
+    "$description": "For importing pieces of definitions of one or more existing Thiing Models, the 'tm:ref' term is utilized which provides the location of an existing (sub-)definition that should be reused. This example shows a TM definition that imports the existing definition of the property onOff from another TM into the new property definition switch.",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": "basic_sc",
+    "links": [
+        {
+            "rel": "type",
+            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/UI-fixes/examples/tm/3-tm-extends-imports/import-existing-definition.tm.jsonld",
+            "type": "application/tm+json"
+        }
+    ],
+    "properties": {
+        "switch": {
+            "type": "boolean",
+            "readOnly": true,
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/onOff",
+                    "op": "readproperty",
+                    "contentType": "application/json"
+                }
+            ],
+            "observable": false,
+            "writeOnly": false
+        }
+    },
+    "actions": {
+        "toggle": {
+            "description": "Turn the lamp on or off",
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/toggle",
+                    "op": "invokeaction",
+                    "contentType": "application/json"
+                }
+            ],
+            "safe": false,
+            "idempotent": false
+        }
+    },
+    "events": {
+        "overheating": {
+            "description": "Lamp reaches a critical temperature (overheating)",
+            "data": {
+                "type": "string",
+                "readOnly": false,
+                "writeOnly": false
+            },
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/oh",
+                    "subprotocol": "longpoll",
+                    "op": [
+                        "subscribeevent",
+                        "unsubscribeevent"
+                    ],
+                    "contentType": "application/json"
+                }
+            ]
+        }
+    }
+}
