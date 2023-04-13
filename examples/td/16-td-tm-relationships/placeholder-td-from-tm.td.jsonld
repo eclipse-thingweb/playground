@@ -5,8 +5,8 @@
     "@type": "Thing",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
     "title": "thermostat No. 4",
-    "$title": "Placeholder TM Example",
-    "description": "A TM for a thermostat with placeholder labeling",
+    "$title": "Placeholder Thing Example",
+    "description": "A Thing for a thermostat with placeholder labeling",
     "$description": "In a case where TD instance terms, but not their values, are known in advance, the placeholder labeling may be used in a Thing Model. The string-based pattern of the placeholder must follow a valid pattern based on the regular expression {{2}[ -~]+}{2} (e.g., {{PLACEHOLDER_IDENTIFIER}}). The characters between {{ and }} are used as identifier name of the placeholder.",
     "version": {
         "instance": "1.0.1",
@@ -23,7 +23,7 @@
     "links": [
         {
             "rel": "type",
-            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/UI-fixes/examples/tm/6-placeholder/placeholder.tm.jsonld",
+            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/examples/tm/6-placeholder/placeholder.tm.jsonld",
             "type": "application/tm+json"
         }
     ],

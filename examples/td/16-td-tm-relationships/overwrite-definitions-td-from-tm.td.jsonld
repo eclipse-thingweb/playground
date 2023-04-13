@@ -5,8 +5,8 @@
     "@type": "Thing",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
     "title": "Smart Lamp Control",
-    "$title": "Overwrite Existing Definitions TM Example",
-    "description": "TM for a lamp thing controller",
+    "$title": "Overwrite Existing Definitions Example",
+    "description": "Thing for a lamp thing controller",
     "$description": "At the place the 'tm:ref' is defined, additional name-value pairs can be added. It is also permitted to override name-value pairs from the referenced definition. If the intention is to override an existing JSON name-value pair definition from tm:ref, the same JSON name MUST be used at the same level of the tm:ref declaration that provides a new value. This example shows a new TM definition that overwrites (maximum), enhances (unit), and removes (title) existing definitions",
     "securityDefinitions": {
         "basic_sc": {
@@ -18,7 +18,7 @@
     "links": [
         {
             "rel": "type",
-            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/UI-fixes/examples/tm/3-tm-extends-imports/overwrite-existing-definitions.tm.jsonld",
+            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/examples/tm/3-tm-extends-imports/overwrite-existing-definitions.tm.jsonld",
             "type": "application/tm+json"
         }
     ],

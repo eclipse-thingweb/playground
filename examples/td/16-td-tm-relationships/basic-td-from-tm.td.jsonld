@@ -4,10 +4,10 @@
     ],
     "@type": "Thing",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
-    "title": "Lamp Thing Model",
-    "$title": "Basic Thing Model Example",
-    "description": "TM for a lamp thing",
-    "$description": "This is an example of a basic Thing Model, which is use as a sort of template for creating a Thing Description instance of a Lamp TD",
+    "title": "Lamp Thing",
+    "$title": "Basic Thing Example",
+    "description": "Lamp thing example",
+    "$description": "This is an example of a basic Thing, which is use as a sort of template for creating a Thing Description instance of a Lamp TD",
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",
@@ -18,7 +18,7 @@
     "links": [
         {
             "rel": "type",
-            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/UI-fixes/examples/tm/1-basic/basic-tm.tm.jsonld",
+            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/examples/tm/1-basic/basic-tm.tm.jsonld",
             "type": "application/tm+json"
         }
     ],

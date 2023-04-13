@@ -3,9 +3,9 @@
     "@type": "Thing",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
     "title": "Multi Sensor",
-    "$title": "Relative Imports TM Example",
-    "description": "TM for a multisensor thing",
-    "$description": "This Thing Model example re-uses and augments a 'genericTemperature' property in two more specific properties, which describe an inner and an outer temperature value, respectively.",
+    "$title": "Relative Imports Thing Example",
+    "description": "Thing for a multisensor",
+    "$description": "This Thing example re-uses and augments a 'genericTemperature' property in two more specific properties, which describe an inner and an outer temperature value, respectively.",
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",
@@ -16,7 +16,7 @@
     "links": [
         {
             "rel": "type",
-            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/UI-fixes/examples/tm/3-tm-extends-imports/relative-imports.tm.jsonld",
+            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/examples/tm/3-tm-extends-imports/relative-imports.tm.jsonld",
             "type": "application/tm+json"
         }
     ],

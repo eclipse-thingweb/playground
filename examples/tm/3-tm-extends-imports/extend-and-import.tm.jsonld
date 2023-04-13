@@ -2,20 +2,20 @@
     "@context": ["https://www.w3.org/2022/wot/td/v1.1"], 
     "@type": "tm:ThingModel",
     "title": "Smart Lamp Control",
-    "$title": "Smart Lamp Control TM with Extend and Import",
-    "description": "TM for a lamp thing controller",
+    "$title": "Smart Lamp Control with Extend and Import",
+    "description": "Lamp thing controller",
     "$description": "The tm:extends and the import mechanism based on tm:ref can also be used at the same time in a TM definition. This example extends the a basic TM with an On/Off property and imports the status and dim definitions from pther TMs respectively.",
     "links" : [{
         "rel": "tm:extends",
-        "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/UI-fixes/examples/tm/1-basic/basic-on-off-tm.tm.jsonld",
+        "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/examples/tm/1-basic/basic-on-off-tm.tm.jsonld",
         "type": "application/tm+json"
     }],
     "properties" : {
         "status" : {
-            "tm:ref": "https://raw.githubusercontent.com/thingweb/thingweb-playground/UI-fixes/examples/tm/1-basic/basic-tm.tm.jsonld#/properties/status"
+            "tm:ref": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/examples/tm/1-basic/basic-tm.tm.jsonld#/properties/status"
         },
         "dimming" : {
-            "tm:ref": "https://raw.githubusercontent.com/thingweb/thingweb-playground/UI-fixes/examples/tm/3-tm-extends-imports/extends-basic.tm.jsonld#/properties/dim"
+            "tm:ref": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/examples/tm/3-tm-extends-imports/extends-basic.tm.jsonld#/properties/dim"
         }
    }
 }
