@@ -56,8 +56,7 @@
             },
             "forms": [
                 {
-                    "href": "coap://mylamp.example.com/oh",
-                    "subprotocol": "longpoll"
+                    "href": "coap://mylamp.example.com/oh"
                 }
             ]
         }

@@ -1,9 +1,9 @@
 {
     "@context": ["https://www.w3.org/2022/wot/td/v1.1"], 
     "@type": "tm:ThingModel",
-    "title": "Lamp Thing Model",
+    "title": "Lamp Thing",
     "$title": "Optinal Interaction Affordances Example",
-    "description": "TM for a lamp thing",
+    "description": "Thing for a lamp",
     "$description": "In some cases it is desirable to not enforce which interaction affordances are mandatory and do not necessarily need to be implemented in a Thing Description instance. If interaction models are not mandatory to be implemented in a Thing Description instance, Thing Model definitions MUST use the JSON member name tm:optional.",
     "tm:optional": [
         "/events/overheating"

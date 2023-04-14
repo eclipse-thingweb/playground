@@ -3,10 +3,10 @@
         "https://www.w3.org/2022/wot/td/v1.1"
     ],
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
-    "title": "Lamp Thing Model",
-    "$title": "Versioning Thing Model Example",
-    "description": "TM for a lamp thing",
-    "$description": "When the Thing Model definitions change over time, this should be reflected in the version container. The term model is used with the version container in order to provide such versioning information.",
+    "title": "Lamp Thing",
+    "$title": "Versioning Thing Example",
+    "description": "Lamp thing example",
+    "$description": "When the Thing definitions change over time, this should be reflected in the version container. The term model is used with the version container in order to provide such versioning information.",
     "version": {
         "instance": "1.0.0",
         "model": "1.0.0"
@@ -14,7 +14,7 @@
     "links": [
         {
             "rel": "type",
-            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/UI-fixes/examples/tm/2-tm-versioning/versioning.tm.jsonld",
+            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/UI-fixes/master/tm/2-tm-versioning/versioning.tm.jsonld",
             "type": "application/tm+json"
         }
     ],

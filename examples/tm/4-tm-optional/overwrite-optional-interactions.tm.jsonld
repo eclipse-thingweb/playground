@@ -1,20 +1,20 @@
 {
     "@context": ["https://www.w3.org/2022/wot/td/v1.1"], 
     "@type": "tm:ThingModel",
-    "title": "Lamp Thing Model (All Mandatory)",
+    "title": "Lamp Thing (All Mandatory)",
     "$title": "Overwriting Optinal Interaction Affordances Example",
-    "description": "Lamp Thing Model description wich expects all interaction affordances (status, toggle, and overheating)",
+    "description": "Lamp Thing description wich expects all interaction affordances (status, toggle, and overheating)",
     "$description": "An optional definition in a Thing Model definition can be overwritten in the case it is extended by another Thing Model through the use of tm:ref. This examples overwrites the 'tm:optional' of another TM with an optional 'overheating' event",
     "links": [
        {
           "rel": "tm:extends",
-          "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/UI-fixes/examples/tm/4-tm-optional/optional-interaction.tm.jsonld",
+          "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/examples/tm/4-tm-optional/optional-interaction.tm.jsonld",
           "type": "application/tm+json"
        }
     ],
     "events": {
         "overheating": {
-            "tm:ref": "https://raw.githubusercontent.com/thingweb/thingweb-playground/UI-fixes/examples/tm/4-tm-optional/optional-interaction.tm.jsonld#/events/overheating" 
+            "tm:ref": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/examples/tm/4-tm-optional/optional-interaction.tm.jsonld#/events/overheating" 
         }
     }
 }

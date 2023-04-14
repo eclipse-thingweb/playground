@@ -1,9 +1,9 @@
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "@type": "tm:ThingModel",
-    "title": "Ventilator Thing Model",
-    "$title": "Basic Ventilator Thing Model Example",
-    "description": "Thing Model for a simple Ventilator Thing",
+    "title": "Ventilator Thing",
+    "$title": "Basic Ventilator Thing Example",
+    "description": "Thing for a simple Ventilator",
     "$description": "This is an example of a simple Thing Model which is utilized as a submodel of another Thing Model",
     "version": {
         "model": "1.0.0"

@@ -5,8 +5,8 @@
     "@type": "Thing",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
     "title": "Smart Lamp Control",
-    "$title": "Smart Lamp Control TM with Extend and Import",
-    "description": "TM for a lamp thing controller",
+    "$title": "Smart Lamp Control with Extend and Import",
+    "description": "Lamp thing controller",
     "$description": "The tm:extends and the import mechanism based on tm:ref can also be used at the same time in a TM definition. This example extends the a basic TM with an On/Off property and imports the status and dim definitions from pther TMs respectively.",
     "securityDefinitions": {
         "basic_sc": {
@@ -18,7 +18,7 @@
     "links": [
         {
             "rel": "type",
-            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/UI-fixes/examples/tm/3-tm-extends-imports/extend-and-import.tm.jsonld",
+            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/examples/tm/3-tm-extends-imports/extend-and-import.tm.jsonld",
             "type": "application/tm+json"
         }
     ],
