@@ -1,0 +1,1 @@
+This folder contains examples that show how to manage versioning on Thing Descriptions.

@@ -1,0 +1,33 @@
+{
+    "@context": ["https://www.w3.org/2022/wot/td/v1.1"], 
+    "@type": "tm:ThingModel",
+    "title": "Smart Lamp Control with Dimming",
+    "$title": "Extend Thing Example",
+    "description": "Thing for controlling a Lamp thing with dimming  fuctions",
+    "$description": "A Thing Model can extend an existing Thing Model by using the tm:extends mechanism. When a Thing Model extends another Thing Model, at least one links entry with 'rel: tm:extends' that targets a Thing Model that is be extended must be used",
+    "links" : [{
+        "rel": "tm:extends",
+        "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/examples/tm/1-basic/basic-on-off-tm.tm.jsonld",
+        "type": "application/tm+json"
+    }],
+    "properties" : {
+        "dim" : {
+            "title": "Dimming level",
+            "description": "Dimms the lamp between the values: 0 and 100",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+        }
+    },
+    "actions": {
+        "toggle": {
+            "description": "Turn the lamp on or off"
+        }
+    },
+    "events": {
+        "overheating": {
+            "description": "Lamp reaches a critical temperature (overheating)",
+            "data": {"type": "string"}
+        }
+    }
+}

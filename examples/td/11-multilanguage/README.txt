@@ -1,0 +1,1 @@
+This folder contains examples on how multiple languages as well as reading directions can be implemented on a Thing Description.

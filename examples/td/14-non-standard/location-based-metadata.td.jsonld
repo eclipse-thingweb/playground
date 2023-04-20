@@ -1,0 +1,43 @@
+{
+    "@context": [
+        "https://www.w3.org/2022/wot/td/v1.1",
+        {
+            "schema": "http://schema.org#"
+        }
+    ],
+    "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "title": "MyRobotThing",
+    "$title": "Location Based Metadata TD Example",
+    "description": "TD for a Robot Thing",
+    "$description": "In some use cases location based metadata have to be provided at the interaction level, e.g., as provided as a Property that returns the latest longitude, latitude, and elevation values based on schema.org",
+    "securityDefinitions": {
+        "basic_sc": {"scheme": "basic", "in": "header"}
+    },
+    "security": "basic_sc",
+    "properties": {
+        "position": {
+            "type": "object",
+            "@type": "schema:GeoCoordinates",
+            "properties": {
+                    "longitude": { "type": "number" },
+                    "latitude":  { "type": "number" },
+                    "elevation": { "type": "number" }
+            },
+            "forms": [{"href": "https://robot.example.com/position"}]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "forms": [{"href": "https://robot.example.com/toggle"}]
+        }
+    },
+    "events": {
+        "lowBattery": {
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "https://robot.example.com/lb",
+                "subprotocol": "longpoll"
+            }]
+        }
+    }
+}

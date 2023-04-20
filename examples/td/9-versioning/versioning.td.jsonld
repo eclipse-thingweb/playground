@@ -1,0 +1,32 @@
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "title": "MyLampThing",
+    "$title": "Versioning TD Example",
+    "description": "TD for a Lamp Thing",
+    "$description": "The version member is intended as container for additional application- and/or device-specific version information based on TD Context Extensions.",
+    "version": { "instance": "1.2.1" },
+    "securityDefinitions": {
+        "basic_sc": {"scheme": "basic", "in": "header"}
+    },
+    "security": "basic_sc",
+    "properties": {
+        "status": {
+            "type": "string",
+            "forms": [{"href": "https://mylamp.example.com/status"}]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "forms": [{"href": "https://mylamp.example.com/toggle"}]
+        }
+    },
+    "events": {
+        "overheating": {
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "https://mylamp.example.com/oh"
+            }]
+        }
+    }
+}

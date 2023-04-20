@@ -1,0 +1,22 @@
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "@type": "tm:ThingModel",
+    "title": "Ventilator Thing",
+    "$title": "Basic Ventilator Thing Example",
+    "description": "Thing for a simple Ventilator",
+    "$description": "This is an example of a simple Thing Model which is utilized as a submodel of another Thing Model",
+    "version": {
+        "model": "1.0.0"
+    },
+    "properties": {
+        "switch": {
+            "type": "boolean",
+            "description": "True=On; False=Off"
+        },
+        "adjustRpm": {
+            "type": "number",
+            "minimum": 200,
+            "maximum": 1200
+        }
+    }
+}

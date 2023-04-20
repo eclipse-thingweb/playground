@@ -1,0 +1,54 @@
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "title": "MyLampThing",
+    "$title": "readOnly And writeOnly TD Example",
+    "description": "TD for a Lamp Thing",
+    "$description": "Data schema serialization applies to PropertyAffordance instances, the values assigned to input and output in ActionAffordance instances, the values assigned to subscription, data, and cancellation in EventAffordance instances, and the value assigned to uriVariables in instances of Subclasses of InteractionAffordance.",
+    "securityDefinitions": {
+        "basic_sc": {"scheme": "basic", "in": "header"}
+    },
+    "security": "basic_sc",
+    "properties": {
+        "status": {
+            "description": "Read or write On/Off status.",
+            "type": "object",
+            "properties": {
+                "latestStatus": {
+                    "type": "string",
+                    "enum": ["on_value", "off_value"],
+                    "readOnly": true
+                },
+                "newStatusValue": {
+                    "type": "string",
+                    "enum": ["on_value", "off_value"],
+                    "writeOnly": true
+                }
+            },
+            "forms": [{
+                "href": "https://mylamp.example.com/status/latestStatus",
+                "contentType": "application/json",
+                "htv:methodName": "GET"
+            }, 
+            {
+                "href": "https://mylamp.example.com/status/newStatusValue",
+                "contentType": "application/json",
+                "htv:methodName": "GET"
+            }]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "forms": [{"href": "https://mylamp.example.com/toggle"}]
+        }
+    },
+    "events": {
+        "overheating": {
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "https://mylamp.example.com/oh",
+                "subprotocol": "longpoll"
+            }]
+        }
+    }
+}

@@ -1,0 +1,37 @@
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "title": "MyLampThing",
+    "$title": "writeOnly TD Example",
+    "description": "TD for a lamp thing",
+    "$description": "writeOnly can be used to signal which data items are exchanged in write interactions (i.e., when writing a Property)",
+    "securityDefinitions": {
+        "basic_sc": {"scheme": "basic", "in": "header"}
+    },
+    "security": "basic_sc",
+    "properties": {
+        "brightness": {
+            "title": "Brightness value",
+            "description": "Update brightness values of the lamp thing",
+            "writeOnly": true,
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 100.0,
+            "forms": [{"href": "https://mylamp.example.com/brightness"}]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "forms": [{"href": "https://mylamp.example.com/toggle"}]
+        }
+    },
+    "events": {
+        "overheating": {
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "https://mylamp.example.com/oh",
+                "subprotocol": "longpoll"
+            }]
+        }
+    }
+}

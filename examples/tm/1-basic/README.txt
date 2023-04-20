@@ -1,0 +1,1 @@
+This folder contains simple examples of how a Thing Model is done.

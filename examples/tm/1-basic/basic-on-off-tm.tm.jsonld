@@ -1,0 +1,12 @@
+{
+    "@context": ["https://www.w3.org/2022/wot/td/v1.1"], 
+    "@type": "tm:ThingModel",
+    "title": "Basic On/Off Thing",
+    "$title": "Basic Thing Example for an On and Off Thing Description",
+    "$description": "This is an example of a simple Thing which is utilized to extend onto another Thing",
+    "properties": {
+        "onOff": {
+            "type": "boolean"
+        }
+    }
+}

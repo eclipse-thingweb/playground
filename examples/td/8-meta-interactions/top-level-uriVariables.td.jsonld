@@ -1,0 +1,63 @@
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "title": "MyThing",
+    "$title": "Top Level uriVariables TD Example",
+    "description": "TD for a generic Thing",
+    "$description": "Thing-level uriVariables can be used here to supply further variables to the operation or to specify a list of Property Affordance names for a readmultipleproperties operation.",
+    "securityDefinitions": {
+        "basic_sc": {"scheme": "basic", "in": "header"}
+    },
+    "security": "basic_sc",
+    "properties": {
+        "on": {
+            "type": "boolean",
+            "forms": [{"href": "https://mything.example.com/on"}]
+        },
+        "brightness": {
+            "type": "number",
+            "forms": [{"href": "https://mything.example.com/brightness"}]
+        },
+        "timer": {
+            "type": "integer",
+            "forms": [{"href": "https://mything.example.com/timer"}]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "forms": [{"href": "https://mything.example.com/toggle"}]
+        }
+    },
+    "events": {
+        "overheating": {
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "https://mything.example.com/oh",
+                "subprotocol": "longpoll"
+            }]
+        }
+    },
+    "uriVariables": {
+        "propertyNames": {
+            "type": "string",
+            "description": "Comma separated list of property names to select."
+        },
+        "unitSystem": {
+            "type": "string",
+            "enum": ["metric_value","imperial_value","uscustomary_value"],
+            "description": "System of Measurement that will be used for the values"
+        }
+    },
+    "forms": [{
+        "op": "readallproperties",
+        "href": "https://mything.example.com/properties{?unitSystem}",
+        "contentType": "application/json",
+        "htv:methodName": "GET"
+    }, 
+    {
+        "op": "readmultipleproperties",
+        "href": "https://mything.example.com/properties{?propertyNames,unitSystem}",
+        "contentType": "application/json",
+        "htv:methodName": "GET"
+    }]
+}

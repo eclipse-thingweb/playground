@@ -1,0 +1,48 @@
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "title": "MyLampThing",
+    "$title": "Apikey In Body Simplified TD Example",
+    "description": "TD for a Lamp Thing",
+    "$description": "It is possbile to simplify how security parameters are included in the payload by using the feature that the location referenced by a JSON pointer in a body location will be automatically inserted if it does not exist.",
+    "securityDefinitions": {
+        "apikey_body": {
+            "scheme": "apikey",
+            "in": "body",
+            "name": "/auth/key"
+        }
+    },
+    "security": "apikey_body",
+    "properties": {
+        "color": {
+            "type": "object",
+            "properties": {
+                "brightness": {
+                    "type": "number"
+                },
+                "rgb": {
+                    "type": "array"
+                }
+            },
+            "required": ["brightness", "rgb"],
+            "forms": [{"href": "https://mylamp.example.com/color"}]
+        }
+    },
+    "action": {
+        "on": {
+            "required": ["auth"],
+            "forms": [{"href": "https://mylamp.example.com/on"}]
+        },
+        "off": {
+            "forms": [{"href": "https://mylamp.example.com/off"}]
+        }
+    },
+    "events": {
+        "overheating": {
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "https://mylamp.example.com/oh"
+            }]
+        }
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "@context": ["https://www.w3.org/2022/wot/td/v1.1"], 
+    "@type": "tm:ThingModel",
+    "title": "Smart Lamp Control",
+    "$title": "Import Existing Definitions Thing Example",
+    "description": "Thing for a lamp thing controller",
+    "$description": "For importing pieces of definitions of one or more existing Thiing Models, the 'tm:ref' term is utilized which provides the location of an existing (sub-)definition that should be reused. This example shows a TM definition that imports the existing definition of the property onOff from another TM into the new property definition switch.",
+    "properties" : {
+        "switch" : {
+            "tm:ref": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/examples/tm/1-basic/basic-on-off-tm.tm.jsonld#/properties/onOff"
+        }
+    },
+    "actions": {
+        "toggle": {
+            "description": "Turn the lamp on or off"
+        }
+    },
+    "events": {
+        "overheating": {
+            "description": "Lamp reaches a critical temperature (overheating)",
+            "data": {"type": "string"}
+        }
+    }
+}

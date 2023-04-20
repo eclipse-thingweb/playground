@@ -1,0 +1,34 @@
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "title": "MyLampThing",
+    "$title": "Apikey Security TD Example",
+    "description": "TD for a Lamp Thing",
+    "$description": "API key can be included in the request to the Thing in different ways. One way it can be used, is as a URI template where the API key should be replaced in the URI when sending an HTTPS request.",
+    "securityDefinitions": {
+        "apikey_key": {
+            "scheme": "apikey",
+            "in": "uri",
+            "name": "adminKey"
+        }
+    },
+    "security": "apikey_key",
+    "properties": {
+        "status": {
+            "forms": [{"href": "https://mylamp.example.com/{adminKey}/status"}]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "forms": [{"href": "https://mylamp.example.com/toggle"}]
+        }
+    },
+    "events": {
+        "overheating": {
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "https://mylamp.example.com/oh"
+            }]
+        }
+    }
+}

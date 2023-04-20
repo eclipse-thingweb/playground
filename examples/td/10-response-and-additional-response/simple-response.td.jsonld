@@ -1,0 +1,39 @@
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "id": "urn:uuid:014139c9-b267-4db5-9c61-cc2d2bfc217d",
+    "title": "MyCameraThing",
+    "$title": "Simple Response TD Example",
+    "description": "TD for a Camera Thing",
+    "$description": "The Interaction Affordance not only describes the request, but also provides metadata for the expected response. In such cases, the response member is used to indicate the representation format of the response payload. therefore no output schema is required, as the content type fully specifies the representation format.",
+    "securityDefinitions": {
+        "basic_sc": {"scheme": "basic", "in": "header"}
+    },
+    "security": "basic_sc",
+    "properties": {
+        "status": {
+            "type": "string",
+            "forms": [{"href": "https://mycamera.example.com/status"}]
+        }
+    },
+    "actions": {
+        "takePhoto": {
+            "forms": [{
+                "op": "invokeaction",
+                "href": "http://camera.example.com/api/snapshot",
+                "contentType": "application/json",
+                "response": {
+                    "contentType": "image/jpeg"
+                }
+            }]
+        }
+    },
+    "events": {
+        "lowMemory": {
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "https://mycamera.example.com/oh",
+                "subprotocol": "longpoll"
+            }]
+        }
+    }
+}

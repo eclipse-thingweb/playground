@@ -1,0 +1,26 @@
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "@type": "tm:ThingModel",
+    "title": "Smart Ventilator Thing",
+    "$title": "Top level/parent Thing Example",
+    "description": "Top level/parent Smart Ventilator Thing",
+    "$description": "If it is desired to provide information that a Thing Model consists of one or more (sub-)TMs, the links entries must use the 'rel': 'tm:submodel' that targets to the (sub-)TM. Optionally an instanceName may be provided to associate an individual name to the composed (sub-)TM. This is useful when multiple similar Thing Model definitions are composed and needs to be distinguished.",
+    "version" : { "model": "1.0.0" },
+    "links": [
+      {
+        "rel": "tm:submodel",
+        "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/examples/tm/5-tm-submodel/basic-ventilation-tm.tm.jsonld",
+        "type": "application/tm+json",
+        "instanceName": "ventilation"
+      },
+      {
+        "rel": "tm:submodel",
+        "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/examples/tm/5-tm-submodel/basic-led-tm.tm.jsonld",
+        "type": "application/tm+json",
+        "instanceName": "led"
+      }
+    ],
+    "properties" : {
+        "status" : {"type": "string", "enum": ["on_value", "off_value", "error_value"]}
+    }
+}

@@ -1,0 +1,64 @@
+{
+    "@context": [
+        "https://www.w3.org/2022/wot/td/v1.1"
+    ],
+    "@type": "Thing",
+    "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "title": "Smart Lamp Control",
+    "$title": "Overwrite Existing Definitions Example",
+    "description": "Thing for a lamp thing controller",
+    "$description": "At the place the 'tm:ref' is defined, additional name-value pairs can be added. It is also permitted to override name-value pairs from the referenced definition. If the intention is to override an existing JSON name-value pair definition from tm:ref, the same JSON name MUST be used at the same level of the tm:ref declaration that provides a new value. This example shows a new TM definition that overwrites (maximum), enhances (unit), and removes (title) existing definitions",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": "basic_sc",
+    "links": [
+        {
+            "rel": "type",
+            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/examples/tm/3-tm-extends-imports/overwrite-existing-definitions.tm.jsonld",
+            "type": "application/tm+json"
+        }
+    ],
+    "properties": {
+        "dimming": {
+            "title": "",
+            "description": "Dimms the lamp between the values: 0 and 100",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 80,
+            "unit": "%",
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/dimming"
+                }
+            ]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "description": "Turn the lamp on or off",
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/toggle"
+                }
+            ]
+        }
+    },
+    "events": {
+        "overheating": {
+            "description": "Lamp reaches a critical temperature (overheating)",
+            "data": {
+                "type": "string"
+            },
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/oh",
+                    "subprotocol": "longpoll"
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,50 @@
+{
+    "@context": [
+        "https://www.w3.org/2022/wot/td/v1.1"
+    ],
+    "@type": "Thing",
+    "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "title": "Lamp Thing",
+    "$title": "Optinal Interaction Affordances Example",
+    "description": "Thing for a lamp",
+    "$description": "In some cases it is desirable to not enforce which interaction affordances are mandatory and do not necessarily need to be implemented in a Thing Description instance. If interaction models are not mandatory to be implemented in a Thing Description instance, Thing Model definitions MUST use the JSON member name tm:optional.",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": "basic_sc",
+    "links": [
+        {
+            "rel": "type",
+            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/examples/tm/4-tm-optional/optional-interaction.tm.jsonld",
+            "type": "application/tm+json"
+        }
+    ],
+    "properties": {
+        "status": {
+            "description": "current status of the lamp (on|off)",
+            "type": "string",
+            "readOnly": true,
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status"
+                }
+            ]
+        }
+    },
+    "actions": {
+        "toggle": {
+            "description": "Turn the lamp on or off",
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/toggle"
+                }
+            ]
+        }
+    },
+    "events": {
+        
+    }
+}

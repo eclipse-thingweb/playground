@@ -1,0 +1,46 @@
+
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "id": "urn:uuid:014139c9-b267-4db5-9c61-cc2d2bfc217d",
+    "title": "MyCameraThing",
+    "$title": "contentMedia and contentEncoding TD Example",
+    "description": "Thing description for a camera thing",
+    "$description": "In some cases binary data is embedded in text-based values, e.g., a JSON string-based value embeds a base64 encoded image. The terms contentMediaType and contentEncoding can be used to clarify the context and encoding format of such name-value pairs.", 
+    "securityDefinitions": {
+        "basic_sc": {"scheme": "basic", "in": "header"}
+    },
+    "security": "basic_sc",
+    "properties": {
+        "image": { 
+	        "description": "Provides latest image", 
+	        "type": "string",
+	        "contentMediaType": "image/png",
+	        "contentEncoding": "base64",
+	        "forms": [{ 
+			    "op": "readproperty", 
+			    "href": "http://camera.example.com/lastPicture", 
+			    "cov:methodName": "GET",
+			    "contentType": "application/json" 
+		    }] 
+        }
+    },
+    "actions": {
+        "takePhoto": {
+            "forms": [{
+                "op": "invokeaction",
+                "href": "http://camera.example.com/snapshot",
+                "contentType": "application/json"
+            }]
+        }
+    },
+    "events": {
+        "lowMemory": {
+            "data": {"type": "string"},
+            "forms": [{
+                "href": "https://mycamera.example.com/oh",
+                "contentType": "text/plain",
+                "subprotocol": "longpoll"
+            }]
+        }
+    }
+}
