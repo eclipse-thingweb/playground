@@ -23,8 +23,8 @@ test("test the whole openAPI convertion", () => {
             fs.writeFileSync("./out/1.yaml", apiSpec.yaml);
 
             // test equality
-            const jsonString = JSON.stringify(apiSpec.json, undefined, 2);
-            expect(jsonString).toBe(aapJson);
+            const jsonString = JSON.stringify(apiSpec.json, undefined, 4);
+            expect(jsonString + "\n").toBe(aapJson);
             expect(apiSpec.yaml).toBe(aapYaml);
         },
         (err) => {
