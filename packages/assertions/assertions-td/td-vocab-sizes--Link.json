@@ -26,9 +26,7 @@
                         "type": "string"
                     }
                 },
-                "required": [
-                    "rel", "sizes"
-                ]
+                "required": ["rel", "sizes"]
             },
             "then": {
                 "const": "td-vocab-sizes--Link=pass"

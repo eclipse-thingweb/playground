@@ -16,9 +16,7 @@
         "property_element": {
             "type": "object",
             "if": {
-                "required": [
-                    "writeOnly"
-                ]
+                "required": ["writeOnly"]
             },
             "then": {
                 "const": "td-property-names_writeOnly=pass"

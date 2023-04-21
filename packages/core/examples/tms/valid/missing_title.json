@@ -1,8 +1,6 @@
 {
     "$comment": "missing title",
     "id": "urn:missing:title",
-    "@context": [
-        "https://www.w3.org/2022/wot/td/v1.1"
-    ],
+    "@context": ["https://www.w3.org/2022/wot/td/v1.1"],
     "@type": "tm:ThingModel"
 }

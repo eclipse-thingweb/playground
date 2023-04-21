@@ -1,6 +1,6 @@
 {
     "id": "urn:constOneOf",
-    "@context":"https://www.w3.org/2022/wot/td/v1.1",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "title": "MyLampThing",
     "description": "Valid TD showing how to use unit, oneOf and const",
     "securityDefinitions": {
@@ -13,15 +13,19 @@
     "properties": {
         "status": {
             "const": "noYouActuallyHaveOnly1Status",
-            "forms": [{
-                "href": "https://mylamp.example.com/status"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status"
+                }
+            ]
         },
         "something": {
             "enum": ["noYouActuallyHaveOnly1Status"],
-            "forms": [{
-                "href": "https://mylamp.example.com/status"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status"
+                }
+            ]
         }
     },
     "actions": {
@@ -30,16 +34,21 @@
                 "const": "noYouActuallyHaveOnly1Status"
             },
             "output": {
-                "oneOf": [{
-                    "type": "string"
-                }, {
-                    "type": "integer",
-                    "unit": "m3"
-                }]
+                "oneOf": [
+                    {
+                        "type": "string"
+                    },
+                    {
+                        "type": "integer",
+                        "unit": "m3"
+                    }
+                ]
             },
-            "forms": [{
-                "href": "https://mylamp.example.com/status"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status"
+                }
+            ]
         }
     }
 }

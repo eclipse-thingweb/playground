@@ -1,29 +1,44 @@
+/* 
+ *   Copyright (c) 2023 Contributors to the Eclipse Foundation
+ *   
+ *   See the NOTICE file(s) distributed with this work for additional
+ *   information regarding copyright ownership.
+ *   
+ *   This program and the accompanying materials are made available under the
+ *   terms of the Eclipse Public License v. 2.0 which is available at
+ *   http://www.eclipse.org/legal/epl-2.0, or the W3C Software Notice and
+ *   Document License (2015-05-13) which is available at
+ *   https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document.
+ *   
+ *   SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
+ */
+
 // used to check whether the supplied data is utf8
-const isUtf8 = require('is-utf8')
+const isUtf8 = require("is-utf8");
 
 // The usual library used for validation
 
-const Ajv = require("ajv")
-const addFormats = require("ajv-formats")
-const apply = require('ajv-formats-draft2019')
+const Ajv = require("ajv");
+const addFormats = require("ajv-formats");
+const apply = require("ajv-formats-draft2019");
 
 // Imports from utils
-const validate = require("./util").validate
-const createParents = require("./util").createParents
-const mergeIdenticalResults = require("./util").mergeIdenticalResults
+const validate = require("./util").validate;
+const createParents = require("./util").createParents;
+const mergeIdenticalResults = require("./util").mergeIdenticalResults;
 
 // Imports from playground core
-const checkUniqueness = require('@thing-description-playground/core').propUniqueness
-const checkMultiLangConsistency = require("@thing-description-playground/core").multiLangConsistency
-const checkSecurity = require("@thing-description-playground/core").security
-const checkLinksRelTypeCount = require("@thing-description-playground/core").checkLinksRelTypeCount
-const checkUriSecurity = require("@thing-description-playground/core").checkUriSecurity
-const checkLinkedAffordances = require("@thing-description-playground/core").checkLinkedAffordances
-const checkLinkedStructure = require("@thing-description-playground/core").checkLinkedStructure
+const checkUniqueness = require("@thing-description-playground/core").propUniqueness;
+const checkMultiLangConsistency = require("@thing-description-playground/core").multiLangConsistency;
+const checkSecurity = require("@thing-description-playground/core").security;
+const checkLinksRelTypeCount = require("@thing-description-playground/core").checkLinksRelTypeCount;
+const checkUriSecurity = require("@thing-description-playground/core").checkUriSecurity;
+const checkLinkedAffordances = require("@thing-description-playground/core").checkLinkedAffordances;
+const checkLinkedStructure = require("@thing-description-playground/core").checkLinkedStructure;
 
-const tdSchema = require("@thing-description-playground/core/td-schema.json")
+const tdSchema = require("@thing-description-playground/core/td-schema.json");
 
-module.exports = validateTD
+module.exports = validateTD;
 
 /**
  * validates the TD in the first argument according to the assertions given in the second argument
@@ -38,79 +53,79 @@ module.exports = validateTD
 async function validateTD(tdData, assertions, manualAssertions, logFunc) {
     return new Promise(async (res, rej) => {
         // a JSON file that will be returned containing the result for each assertion as a JSON Object
-        let results = []
+        let results = [];
         // !!! uses console info on purpose, to be able to deactivate it, without overwriting console.log !!!
         // console.info("=================================================================")
         // it is commented out to make sure that the output to std is also a valid csv file
 
         // check whether it is a valid JSON
-        let tdJson
+        let tdJson;
         try {
-            tdJson = JSON.parse(tdData)
+            tdJson = JSON.parse(tdData);
             // results.push({
             //     "ID": "td-json-open",
             //     "Status": "pass"
             // })
         } catch (error) {
-            throw new Error("td-json-open")
+            throw new Error("td-json-open");
         }
 
         // check whether it is a valid UTF-8
         if (isUtf8(tdData)) {
             results.push({
-                "ID": "td-json-open_utf-8",
-                "Status": "pass"
-            })
+                ID: "td-json-open_utf-8",
+                Status: "pass",
+            });
         } else {
-            throw new Error("td-json-open_utf-8")
+            throw new Error("td-json-open_utf-8");
         }
 
         // checking whether two interactions of the same interaction affordance type have the same names
         // This requires to use the string version of the TD that will be passed down to the jsonvalidator library
-        const tdDataString = tdData.toString()
-
+        const tdDataString = tdData.toString();
 
         // Normal TD Schema validation but this allows us to test multiple assertions at once
         try {
-            results.push(...checkVocabulary(tdJson))
+            results.push(...checkVocabulary(tdJson));
         } catch (error) {
             logFunc({
-                "ID": error,
-                "Status": "fail"
-            })
-            let logName = "" // this will be id and or title
-            if (tdJson.hasOwnProperty("title") && (tdJson.hasOwnProperty("id"))) {
-                logName = "title: "+tdJson.title + " id: " +tdJson.id
+                ID: error,
+                Status: "fail",
+            });
+            let logName = ""; // this will be id and or title
+            if (tdJson.hasOwnProperty("title") && tdJson.hasOwnProperty("id")) {
+                logName = "title: " + tdJson.title + " id: " + tdJson.id;
             } else if (tdJson.hasOwnProperty("title")) {
-                logName = "title: " + tdJson.title
+                logName = "title: " + tdJson.title;
             } else if (tdJson.hasOwnProperty("id")) {
-                logName = "id: " + tdJson.id
-            } else { // if no id or title present, put the whole td as string
-                logName = JSON.stringify(tdJson) + "\n"
+                logName = "id: " + tdJson.id;
+            } else {
+                // if no id or title present, put the whole td as string
+                logName = JSON.stringify(tdJson) + "\n";
             }
-            throw new Error(logName+" : Invalid TD")
+            throw new Error(logName + " : Invalid TD");
         }
 
         // additional checks
-        results.push(...checkUniqueness(tdDataString))
-        results.push(checkContentTypeDifference(tdJson))
-        results.push(checkInstanceNameCollision(tdJson))
-        results.push(...checkSecurity(tdJson))
-        results.push(...checkMultiLangConsistency(tdJson))
-        results.push(...checkLinksRelTypeCount(tdJson))
-        results.push(...checkUriSecurity(tdJson))
-        results.push(...(await checkLinkedAffordances(tdJson)))
-        results.push(...(await checkLinkedStructure(tdJson)))
+        results.push(...checkUniqueness(tdDataString));
+        results.push(checkContentTypeDifference(tdJson));
+        results.push(checkInstanceNameCollision(tdJson));
+        results.push(...checkSecurity(tdJson));
+        results.push(...checkMultiLangConsistency(tdJson));
+        results.push(...checkLinksRelTypeCount(tdJson));
+        results.push(...checkUriSecurity(tdJson));
+        results.push(...(await checkLinkedAffordances(tdJson)));
+        results.push(...(await checkLinkedStructure(tdJson)));
 
         // Iterating through assertions
         for (let index = 0; index < assertions.length; index++) {
-            const curAssertion = assertions[index]
+            const curAssertion = assertions[index];
 
-            const schema = curAssertion
+            const schema = curAssertion;
 
             // Validation starts here
 
-            const validPayload = validate(tdJson, schema, logFunc)
+            const validPayload = validate(tdJson, schema, logFunc);
 
             /*
                 If valid then it is not implemented
@@ -123,156 +138,155 @@ async function validateTD(tdData, assertions, manualAssertions, logFunc) {
             if (schema["is-complex"]) {
                 if (validPayload.valid) {
                     results.push({
-                        "ID": schema.title,
-                        "Status": "not-impl",
-                        "Assertion": schema.description
-                    })
+                        ID: schema.title,
+                        Status: "not-impl",
+                        Assertion: schema.description,
+                    });
                     if (schema.hasOwnProperty("also")) {
-                        const otherAssertions = schema.also
+                        const otherAssertions = schema.also;
                         otherAssertions.forEach(function (asser) {
                             results.push({
-                                "ID": asser,
-                                "Status": "not-impl"
-                            })
-                        })
+                                ID: asser,
+                                Status: "not-impl",
+                            });
+                        });
                     }
-
                 } else {
                     try {
-                        const output = validPayload.ajvObject.errors[0].params.allowedValue
+                        const output = validPayload.ajvObject.errors[0].params.allowedValue;
 
-                        const resultStart = output.indexOf("=")
-                        const result = output.slice(resultStart + 1)
+                        const resultStart = output.indexOf("=");
+                        const result = output.slice(resultStart + 1);
 
                         if (result === "pass") {
                             results.push({
-                                "ID": schema.title,
-                                "Status": result,
-                                "Assertion": schema.description
-                            })
+                                ID: schema.title,
+                                Status: result,
+                                Assertion: schema.description,
+                            });
                         } else {
                             results.push({
-                                "ID": schema.title,
-                                "Status": result,
-                                "Comment": validPayload.ajvObject.errorsText(),
-                                "Assertion": schema.description
-                            })
+                                ID: schema.title,
+                                Status: result,
+                                Comment: validPayload.ajvObject.errorsText(),
+                                Assertion: schema.description,
+                            });
                         }
                         if (schema.hasOwnProperty("also")) {
-                            const otherAssertions = schema.also
+                            const otherAssertions = schema.also;
                             otherAssertions.forEach(function (asser) {
                                 results.push({
-                                    "ID": asser,
-                                    "Status": result
-                                })
-                            })
+                                    ID: asser,
+                                    Status: result,
+                                });
+                            });
                         }
                         // there was some other error, so it is fail
                     } catch (error1) {
                         results.push({
-                            "ID": schema.title,
-                            "Status": "fail",
-                            "Comment": "Make sure you validate your TD before",
-                            "Assertion": schema.description
-                        })
+                            ID: schema.title,
+                            Status: "fail",
+                            Comment: "Make sure you validate your TD before",
+                            Assertion: schema.description,
+                        });
 
                         if (schema.hasOwnProperty("also")) {
-                            const otherAssertions = schema.also
+                            const otherAssertions = schema.also;
                             otherAssertions.forEach(function (asser) {
                                 results.push({
-                                    "ID": asser,
-                                    "Status": "fail",
-                                    "Comment": "Make sure you validate your TD before"
-                                })
-                            })
+                                    ID: asser,
+                                    Status: "fail",
+                                    Comment: "Make sure you validate your TD before",
+                                });
+                            });
                         }
                     }
                 }
-
             } else {
                 if (validPayload.valid) {
                     results.push({
-                        "ID": schema.title,
-                        "Status": "pass"
-                    })
+                        ID: schema.title,
+                        Status: "pass",
+                    });
                     if (schema.hasOwnProperty("also")) {
-                        const otherAssertions = schema.also
+                        const otherAssertions = schema.also;
                         otherAssertions.forEach(function (asser) {
                             results.push({
-                                "ID": asser,
-                                "Status": "pass",
-                                "Assertion": schema.description
-                            })
-                        })
+                                ID: asser,
+                                Status: "pass",
+                                Assertion: schema.description,
+                            });
+                        });
                     }
                 } else {
                     // failed because a required is not implemented
-                    if (validPayload.ajvObject.errorsText().indexOf("required") > -1 ||
-                        validPayload.ajvObject.errorsText().indexOf("must be")||
-                        validPayload.ajvObject.errorsText().indexOf("must match")) {
+                    if (
+                        validPayload.ajvObject.errorsText().indexOf("required") > -1 ||
+                        validPayload.ajvObject.errorsText().indexOf("must be") ||
+                        validPayload.ajvObject.errorsText().indexOf("must match")
+                    ) {
                         // failed because it doesnt have required key which is a non implemented feature
                         results.push({
-                            "ID": schema.title,
-                            "Status": "not-impl",
-                            "Comment": validPayload.ajvObject.errorsText(),
-                            "Assertion": schema.description
-                        })
+                            ID: schema.title,
+                            Status: "not-impl",
+                            Comment: validPayload.ajvObject.errorsText(),
+                            Assertion: schema.description,
+                        });
                         if (schema.hasOwnProperty("also")) {
-                            const otherAssertions = schema.also
+                            const otherAssertions = schema.also;
                             otherAssertions.forEach(function (asser) {
                                 results.push({
-                                    "ID": asser,
-                                    "Status": "not-impl",
-                                    "Comment": validPayload.ajvObject.errorsText(),
-                                    "Assertion": schema.description
-                                })
-                            })
+                                    ID: asser,
+                                    Status: "not-impl",
+                                    Comment: validPayload.ajvObject.errorsText(),
+                                    Assertion: schema.description,
+                                });
+                            });
                         }
                     } else {
                         // failed because of some other reason
                         results.push({
-                            "ID": schema.title,
-                            "Status": "fail",
-                            "Comment": validPayload.ajvObject.errorsText(),
-                            "Assertion": schema.description
-                        })
+                            ID: schema.title,
+                            Status: "fail",
+                            Comment: validPayload.ajvObject.errorsText(),
+                            Assertion: schema.description,
+                        });
                         if (schema.hasOwnProperty("also")) {
-                            const otherAssertions = schema.also
+                            const otherAssertions = schema.also;
                             otherAssertions.forEach(function (asser) {
                                 results.push({
-                                    "ID": asser,
-                                    "Status": "fail",
-                                    "Comment": validPayload.ajvObject.errorsText(),
-                                    "Assertion": schema.description
-                                })
-                            })
+                                    ID: asser,
+                                    Status: "fail",
+                                    Comment: validPayload.ajvObject.errorsText(),
+                                    Assertion: schema.description,
+                                });
+                            });
                         }
                     }
                 }
             }
         }
 
-        results = mergeIdenticalResults(results)
-        results = createParents(results)
-
+        results = mergeIdenticalResults(results);
+        results = createParents(results);
 
         // sort according to the ID in each item
         orderedResults = results.sort(function (a, b) {
-            const idA = a.ID
-            const idB = b.ID
+            const idA = a.ID;
+            const idB = b.ID;
             if (idA < idB) {
-                return -1
+                return -1;
             }
             if (idA > idB) {
-                return 1
+                return 1;
             }
 
             // if ids are equal
-            return 0
-        })
+            return 0;
+        });
 
-        results = orderedResults.concat(manualAssertions)
-        res(results)
+        results = orderedResults.concat(manualAssertions);
+        res(results);
     });
 }
 
@@ -287,40 +301,50 @@ async function validateTD(tdData, assertions, manualAssertions, logFunc) {
  * @param {*} tdSchema The JSON Schema used for td validation
  */
 function checkVocabulary(tdJson) {
+    const results = [];
+    let ajv = new Ajv({ strict: false });
+    ajv = addFormats(ajv); // ajv does not support formats by default anymore
+    ajv = apply(ajv); // new formats that include iri
+    ajv.addSchema(tdSchema, "td");
+    ajv.addVocabulary(["is-complex", "also"]);
 
-    const results = []
-    let ajv = new Ajv({strict: false})
-    ajv = addFormats(ajv) // ajv does not support formats by default anymore
-    ajv = apply(ajv) // new formats that include iri
-    ajv.addSchema(tdSchema, 'td')
-    ajv.addVocabulary(['is-complex', 'also'])
-
-    const valid = ajv.validate('td', tdJson)
-    const otherAssertions = ["td-objects_securityDefinitions", "td-vocab-security--Thing",
-                             "td-security-mandatory", "td-vocab-securityDefinitions--Thing", "td-context-toplevel",
-                             "td-vocab-title--Thing", "td-vocab-security--Thing", "td-vocab-id--Thing",
-                             "td-security", "td-security-activation", "td-context-ns-thing-mandatory",
-                             "td-map-type", "td-array-type", "td-class-type", "td-string-type", "td-security-schemes"]
+    const valid = ajv.validate("td", tdJson);
+    const otherAssertions = [
+        "td-objects_securityDefinitions",
+        "td-vocab-security--Thing",
+        "td-security-mandatory",
+        "td-vocab-securityDefinitions--Thing",
+        "td-context-toplevel",
+        "td-vocab-title--Thing",
+        "td-vocab-security--Thing",
+        "td-vocab-id--Thing",
+        "td-security",
+        "td-security-activation",
+        "td-context-ns-thing-mandatory",
+        "td-map-type",
+        "td-array-type",
+        "td-class-type",
+        "td-string-type",
+        "td-security-schemes",
+    ];
 
     if (valid) {
         results.push({
-            "ID": "td-processor",
-            "Status": "pass"
-        })
+            ID: "td-processor",
+            Status: "pass",
+        });
 
         otherAssertions.forEach(function (asser) {
             results.push({
-                "ID": asser,
-                "Status": "pass"
-            })
-        })
-        return results
-
+                ID: asser,
+                Status: "pass",
+            });
+        });
+        return results;
     } else {
-        throw new Error(`Invalid TD: ${JSON.stringify(ajv.errors,null,2)}`)
+        throw new Error(`Invalid TD: ${JSON.stringify(ajv.errors, null, 2)}`);
     }
 }
-
 
 /**
  *  Validates the following assertions:
@@ -332,25 +356,24 @@ function checkVocabulary(tdJson) {
  * @param {object} tdJson The td to validate
  * @returns {{"ID": td-expectedResponse-contentType,"Status": "not-impl OR pass"}}
  */
-function checkContentTypeDifference(td){
-
+function checkContentTypeDifference(td) {
     // checking inside each interaction
     if (td.hasOwnProperty("properties")) {
         // checking security in property level
-        tdProperties = Object.keys(td.properties)
+        tdProperties = Object.keys(td.properties);
         for (let i = 0; i < tdProperties.length; i++) {
-            const curPropertyName = tdProperties[i]
-            const curProperty = td.properties[curPropertyName]
-            const curFormsArray = curProperty.forms
+            const curPropertyName = tdProperties[i];
+            const curProperty = td.properties[curPropertyName];
+            const curFormsArray = curProperty.forms;
             for (let j = 0; j < curFormsArray.length; j++) {
                 // checking if response exists
-                const curForm = curFormsArray[j]
-                if (curForm.hasOwnProperty("response")){
-                    if (curForm.contentType !== curForm.response.contentType){
+                const curForm = curFormsArray[j];
+                if (curForm.hasOwnProperty("response")) {
+                    if (curForm.contentType !== curForm.response.contentType) {
                         return {
-                            "ID": "td-expectedResponse-contentType",
-                            "Status": "pass"
-                        }
+                            ID: "td-expectedResponse-contentType",
+                            Status: "pass",
+                        };
                     }
                 }
             }
@@ -358,20 +381,20 @@ function checkContentTypeDifference(td){
     }
     if (td.hasOwnProperty("actions")) {
         // checking security in action level
-        tdActions = Object.keys(td.actions)
+        tdActions = Object.keys(td.actions);
         for (let i = 0; i < tdActions.length; i++) {
-            const curActionName = tdActions[i]
-            const curAction = td.actions[curActionName]
-            const curFormsArray = curAction.forms
+            const curActionName = tdActions[i];
+            const curAction = td.actions[curActionName];
+            const curFormsArray = curAction.forms;
             for (let j = 0; j < curFormsArray.length; j++) {
                 // checking if response exists
-                const curForm = curFormsArray[j]
+                const curForm = curFormsArray[j];
                 if (curForm.hasOwnProperty("response")) {
                     if (curForm.contentType !== curForm.response.contentType) {
                         return {
-                            "ID": "td-expectedResponse-contentType",
-                            "Status": "pass"
-                        }
+                            ID: "td-expectedResponse-contentType",
+                            Status: "pass",
+                        };
                     }
                 }
             }
@@ -379,37 +402,37 @@ function checkContentTypeDifference(td){
     }
     if (td.hasOwnProperty("events")) {
         // checking security in event level
-        tdEvents = Object.keys(td.events)
+        tdEvents = Object.keys(td.events);
         for (let i = 0; i < tdEvents.length; i++) {
-            const curEventsName = tdEvents[i]
-            const curEvent = td.events[curEventsName]
-            const curFormsArray = curEvent.forms
+            const curEventsName = tdEvents[i];
+            const curEvent = td.events[curEventsName];
+            const curFormsArray = curEvent.forms;
             for (let j = 0; j < curFormsArray.length; j++) {
                 // checking if response exists
-                const curForm = curFormsArray[j]
+                const curForm = curFormsArray[j];
                 if (curForm.hasOwnProperty("response")) {
                     if (curForm.contentType !== curForm.response.contentType) {
                         return {
-                            "ID": "td-expectedResponse-contentType",
-                            "Status": "pass"
-                        }
+                            ID: "td-expectedResponse-contentType",
+                            Status: "pass",
+                        };
                     }
                 }
             }
         }
     }
 
-    if (td.hasOwnProperty("forms")){
-        const curFormsArray = td.forms
+    if (td.hasOwnProperty("forms")) {
+        const curFormsArray = td.forms;
         for (let j = 0; j < curFormsArray.length; j++) {
             // checking if response exists
-            const curForm = curFormsArray[j]
+            const curForm = curFormsArray[j];
             if (curForm.hasOwnProperty("response")) {
                 if (curForm.contentType !== curForm.response.contentType) {
                     return {
-                        "ID": "td-expectedResponse-contentType",
-                        "Status": "pass"
-                    }
+                        ID: "td-expectedResponse-contentType",
+                        Status: "pass",
+                    };
                 }
             }
         }
@@ -417,9 +440,9 @@ function checkContentTypeDifference(td){
 
     // if this contentType difference did not happen anywhere, return not impl
     return {
-        "ID": "td-expectedResponse-contentType",
-        "Status": "not-impl"
-    }
+        ID: "td-expectedResponse-contentType",
+        Status: "not-impl",
+    };
 }
 
 /**
@@ -433,68 +456,75 @@ function checkContentTypeDifference(td){
  * @param {object} tdJson The td to validate
  * @returns {{"ID": tm-compose-name-collision,"Status": "not-impl OR pass"}}
  */
- function checkInstanceNameCollision(td){
-    const ajv = new Ajv({strict: false})
+function checkInstanceNameCollision(td) {
+    const ajv = new Ajv({ strict: false });
 
     // check that if a TM is referenced
-    const ifTMused = ajv.validate({
-        "type":"object",
-        "properties": {
-            "links": {
-                "type": "array",
-                "contains": {
-                    "type":"object",
-                    "properties": {
-                        "rel":{
-                            "const":"type"
-                        }
-                    }
-                }
-            }
-        }
-    },td)
+    const ifTMused = ajv.validate(
+        {
+            type: "object",
+            properties: {
+                links: {
+                    type: "array",
+                    contains: {
+                        type: "object",
+                        properties: {
+                            rel: {
+                                const: "type",
+                            },
+                        },
+                    },
+                },
+            },
+        },
+        td
+    );
 
-    if (ifTMused){ // only valid when a tm is used for a TD
-        const affordanceNames = []
+    if (ifTMused) {
+        // only valid when a tm is used for a TD
+        const affordanceNames = [];
         // checking inside each interaction
         if (td.hasOwnProperty("properties")) {
             // checking security in property level
-            tdProperties = Object.keys(td.properties)
-            affordanceNames.push(...tdProperties) // spread syntax to concat
+            tdProperties = Object.keys(td.properties);
+            affordanceNames.push(...tdProperties); // spread syntax to concat
         }
         if (td.hasOwnProperty("actions")) {
             // checking security in action level
-            tdActions = Object.keys(td.actions)
-            affordanceNames.push(...tdActions)
+            tdActions = Object.keys(td.actions);
+            affordanceNames.push(...tdActions);
         }
         if (td.hasOwnProperty("events")) {
             // checking security in event level
-            tdEvents = Object.keys(td.events)
-            affordanceNames.push(...tdEvents)
+            tdEvents = Object.keys(td.events);
+            affordanceNames.push(...tdEvents);
         }
 
-        const result = ajv.validate({
-        "type":"array",
-        "contains":{
-            "type":"string",
-            "pattern":"_+[ -~]+" // this means having _ somewhere and then having a string of any char after it
-        }
-        },affordanceNames)
-        if (result){
+        const result = ajv.validate(
+            {
+                type: "array",
+                contains: {
+                    type: "string",
+                    pattern: "_+[ -~]+", // this means having _ somewhere and then having a string of any char after it
+                },
+            },
+            affordanceNames
+        );
+        if (result) {
             return {
-                "ID": "tm-compose-name-collision",
-                "Status": "pass"
-            }
+                ID: "tm-compose-name-collision",
+                Status: "pass",
+            };
         } else {
             return {
-                "ID": "tm-compose-name-collision",
-                "Status": "not-impl"
-            }
+                ID: "tm-compose-name-collision",
+                Status: "not-impl",
+            };
         }
     } else {
         return {
-            "ID": "tm-compose-name-collision",
-            "Status": "not-impl"
-        }
+            ID: "tm-compose-name-collision",
+            Status: "not-impl",
+        };
     }
 }

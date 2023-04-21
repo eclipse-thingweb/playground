@@ -1,3 +1,18 @@
+/* 
+ *   Copyright (c) 2023 Contributors to the Eclipse Foundation
+ *   
+ *   See the NOTICE file(s) distributed with this work for additional
+ *   information regarding copyright ownership.
+ *   
+ *   This program and the accompanying materials are made available under the
+ *   terms of the Eclipse Public License v. 2.0 which is available at
+ *   http://www.eclipse.org/legal/epl-2.0, or the W3C Software Notice and
+ *   Document License (2015-05-13) which is available at
+ *   https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document.
+ *   
+ *   SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
+ */
+
 /**
  * @file Visual testing for this package. Uses `playwright` to create screenshots of the locally served package
  *       and download an instance of the assertion report and OpenAPI convertion result (json & yaml).
@@ -5,73 +20,71 @@
  *        viewports and actions (click on forms etc.). The test results are written to "./test_results".
  */
 
-const playwright = require('playwright')
-const fs = require("fs")
-const handler = require("serve-handler")
-const http = require("http")
-const path = require("path")
-const assert = require('node:assert')
+const playwright = require("playwright");
+const fs = require("fs");
+const handler = require("serve-handler");
+const http = require("http");
+const path = require("path");
+const assert = require("node:assert");
 
-const arg = process.argv[2]
-const options = (arg === "-d" || arg === "--debug") ? {headless: false, slowMo: 200} : {}
+const arg = process.argv[2];
+const options = arg === "-d" || arg === "--debug" ? { headless: false, slowMo: 200 } : {};
 
-const port = 3000
-const host = "http://localhost"
-const fullHost = host + ":" + port
-const testDir = "./test_results"
+const port = 3000;
+const host = "http://localhost";
+const fullHost = host + ":" + port;
+const testDir = "./test_results";
 
 const server = http.createServer((request, response) => {
-  // You pass two more arguments for config and middleware
-  // More details here: https://github.com/vercel/serve-handler#options
-  return handler(request, response)
-})
+    // You pass two more arguments for config and middleware
+    // More details here: https://github.com/vercel/serve-handler#options
+    return handler(request, response);
+});
 
 /* ################### */
 /*      MAIN           */
 server.listen(port, () => {
-  console.log("Running siteTest at " + fullHost)
-})
-testVisual()
+    console.log("Running siteTest at " + fullHost);
+});
+testVisual();
 /* ################### */
-
 
 /**
  * main function to execute visual test using playwright
  */
 async function testVisual() {
-  if (!fs.existsSync(testDir)) {fs.mkdirSync(testDir)}
-
-
-  const BrowserList = []
-  BrowserList.push("chromium")
-  BrowserList.push("firefox")
-  // BrowserList.push("webkit")
-
-  for (const browserType of BrowserList) {
-    const browser = await playwright[browserType].launch(options)
-    const context = await browser.newContext({acceptDownloads: true})
-    const page = await context.newPage()
-
-    if (browserType === "chromium") {
-      await testVisualChromium(page)
-
-      await testViewport(browser, 1920, 1080)
-      await testViewport(browser, 2560, 1440)
-      await testViewport(browser, 3840, 2160)
-      await testViewport(browser, 4096, 2160)
-    }
-    else if (browserType === "firefox") {
-      await testVisualFirefox(page)
-    }
-    else if (browserType === "webkit") {
-      await testVisualWebkit(page)
+    if (!fs.existsSync(testDir)) {
+        fs.mkdirSync(testDir);
     }
 
-    await browser.close()
-    console.log("Finished testing with: " + browserType)
-  }
+    const BrowserList = [];
+    BrowserList.push("chromium");
+    BrowserList.push("firefox");
+    // BrowserList.push("webkit")
 
-  server.close()
+    for (const browserType of BrowserList) {
+        const browser = await playwright[browserType].launch(options);
+        const context = await browser.newContext({ acceptDownloads: true });
+        const page = await context.newPage();
+
+        if (browserType === "chromium") {
+            await testVisualChromium(page);
+
+            await testViewport(browser, 1920, 1080);
+            await testViewport(browser, 2560, 1440);
+            await testViewport(browser, 3840, 2160);
+            await testViewport(browser, 4096, 2160);
+        } else if (browserType === "firefox") {
+            await testVisualFirefox(page);
+        } else if (browserType === "webkit") {
+            await testVisualWebkit(page);
+        }
+
+        await browser.close();
+        console.log("Finished testing with: " + browserType);
+    }
+
+    server.close();
 }
 
 /**
@@ -81,13 +94,13 @@ async function testVisual() {
  * @param {*} height viewport height in px
  */
 async function testViewport(browser, width, height) {
-  const customPage = await browser.newPage({
-    viewport: { width, height }
-  })
+    const customPage = await browser.newPage({
+        viewport: { width, height },
+    });
 
-  await customPage.goto(fullHost)
-  await customPage.screenshot({ path: path.join(testDir, "viewport_" + width +"_x_" + height + ".png")})
-  await customPage.close()
+    await customPage.goto(fullHost);
+    await customPage.screenshot({ path: path.join(testDir, "viewport_" + width + "_x_" + height + ".png") });
+    await customPage.close();
 }
 
 /**
@@ -96,133 +109,134 @@ async function testViewport(browser, width, height) {
  * @param {object} page a playwright page
  */
 async function testVisualChromium(page) {
+    /** a shortcut function for taking screenshots of chromium pages */
+    const customShot = async (postfix) => {
+        await page.screenshot({ path: path.join(testDir, "chromium_" + postfix + ".png") });
+    };
+    await page.goto(fullHost);
+    await customShot("index");
 
-  /** a shortcut function for taking screenshots of chromium pages */
-  const customShot = async postfix => {await page.screenshot({path: path.join(testDir, "chromium_" + postfix + ".png")})}
-  await page.goto(fullHost)
-  await customShot("index")
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await page.click("#load_example", { waitUntil: "networkidle" });
+    await customShot("dropdown-examples");
 
-  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
-  await page.click('#load_example', {waitUntil: "networkidle"})
-  await customShot("dropdown-examples")
+    await loadTestToEditor("TypoCheckWithoutTypos", page);
+    await customShot("typo_check_without_typos");
+    await page.screenshot({ path: `./test_results/chromium_typo_check_without_typos.png`, fullPage: true });
 
-  await loadTestToEditor('TypoCheckWithoutTypos', page)
-  await customShot("typo_check_without_typos")
-  await page.screenshot({ path: `./test_results/chromium_typo_check_without_typos.png`, fullPage: true })
+    assert(
+        await page.evaluate(() => {
+            const markerCount = monaco.editor.getModelMarkers({ owner: "typo" }).length;
+            const typoCount = JSON.parse(window.tdEditor.getModel(monaco.Uri.parse("")).getValue()).typoCount;
 
-  assert(await page.evaluate(() => {
-    const markerCount = monaco.editor.getModelMarkers({owner: "typo"}).length
-    const typoCount = JSON.parse(window.tdEditor.getModel(monaco.Uri.parse("")).getValue()).typoCount
+            return markerCount === typoCount;
+        }),
+        "Typos markers are not equal to typo count!"
+    );
 
-    return markerCount === typoCount
-  }), 'Typos markers are not equal to typo count!')
+    await loadTestToEditor("TypoCheckWithTypos", page);
+    await customShot("typo_check_with_typos");
+    await page.screenshot({ path: `./test_results/chromium_typo_check_with_typos.png`, fullPage: true });
 
-  await loadTestToEditor('TypoCheckWithTypos', page)
-  await customShot("typo_check_with_typos")
-  await page.screenshot({ path: `./test_results/chromium_typo_check_with_typos.png`, fullPage: true })
+    assert(
+        await page.evaluate(() => {
+            const markerCount = monaco.editor.getModelMarkers({ owner: "typo" }).length;
+            const typoCount = JSON.parse(window.tdEditor.getModel(monaco.Uri.parse("")).getValue()).typoCount;
 
-  assert(await page.evaluate(() => {
-    const markerCount = monaco.editor.getModelMarkers({owner: "typo"}).length
-    const typoCount = JSON.parse(window.tdEditor.getModel(monaco.Uri.parse("")).getValue()).typoCount
+            return markerCount === typoCount;
+        }),
+        "Typos markers are not equal to typo count!"
+    );
 
-    return markerCount === typoCount
-  }), 'Typos markers are not equal to typo count!')
+    await page.evaluate(() => window.tdEditor.getModel(monaco.Uri.parse("")).setValue('{ "context": "Test" }'));
+    await myWait(1000);
+    await customShot("typo_check_handwritten_typo_exists");
+    await page.screenshot({ path: `./test_results/chromium_typo_check_handwritten_typo_exists.png`, fullPage: true });
 
-  await page.evaluate(() => window.tdEditor.getModel(monaco.Uri.parse("")).setValue('{ "context": "Test" }'))
-  await myWait(1000)
-  await customShot("typo_check_handwritten_typo_exists")
-  await page.screenshot({ path: `./test_results/chromium_typo_check_handwritten_typo_exists.png`, fullPage: true })
+    await page.evaluate(() =>
+        window.tdEditor.getModel(monaco.Uri.parse("")).setValue('{ "@context": "https://www.w3.org/2019/wot/td/v1" }')
+    );
+    await myWait(1000);
+    await customShot("typo_check_handwritten_typo_fixed");
+    await page.screenshot({ path: `./test_results/chromium_typo_check_handwritten_typo_fixed.png`, fullPage: true });
 
-  await page.evaluate(() =>
-    window.tdEditor.getModel(monaco.Uri.parse("")).setValue('{ "@context": "https://www.w3.org/2019/wot/td/v1" }')
-  )
-  await myWait(1000)
-  await customShot("typo_check_handwritten_typo_fixed")
-  await page.screenshot({ path: `./test_results/chromium_typo_check_handwritten_typo_fixed.png`, fullPage: true })
+    await page.evaluate(() =>
+        window.tdEditor
+            .getModel(monaco.Uri.parse(""))
+            .setValue('{ "@context": "https://www.w3.org/2019/wot/td/v1", "@type": [] }')
+    );
+    await myWait(1000);
+    await customShot("unformatted_document");
+    await page.screenshot({ path: `./test_results/chromium_unformatted_document.png`, fullPage: true });
 
-  await page.evaluate(() => window.tdEditor.getModel(monaco.Uri.parse(""))
-    .setValue('{ "@context": "https://www.w3.org/2019/wot/td/v1", "@type": [] }'))
-  await myWait(1000)
-  await customShot("unformatted_document")
-  await page.screenshot({ path: `./test_results/chromium_unformatted_document.png`, fullPage: true })
+    await page.click("#btn_formatDocument");
+    await myWait(1000);
+    await customShot("formatted_document");
+    await page.screenshot({ path: `./test_results/chromium_formatted_document.png`, fullPage: true });
 
-  await page.click("#btn_formatDocument")
-  await myWait(1000)
-  await customShot("formatted_document")
-  await page.screenshot({ path: `./test_results/chromium_formatted_document.png`, fullPage: true })
+    await page.selectOption("#load_example", "SimpleTD");
+    await customShot("td");
+    await page.screenshot({ path: `./test_results/chromium_td.png` });
 
-  await page.selectOption('#load_example', "SimpleTD")
-  await customShot("td")
-  await page.screenshot({ path: `./test_results/chromium_td.png` })
+    await page.click("#btn_validate");
+    await myWait(1000);
+    await page.screenshot({ path: path.join(testDir, "chromium_validation.png"), fullPage: true });
 
-  await page.click("#btn_validate")
-  await myWait(1000)
-  await page.screenshot({ path: path.join(testDir, "chromium_validation.png"),fullPage: true })
+    await page.click("#validation_table_head");
+    await page.screenshot({ path: `./test_results/chromium_lights.png` });
+    await customShot("lights");
 
-  await page.click("#validation_table_head")
-  await page.screenshot({ path: `./test_results/chromium_lights.png` })
-  await customShot("lights")
+    await page.click("#btn_assertion_popup");
+    await customShot("assertion-popup");
+    const [assertionDownload] = await Promise.all([page.waitForEvent("download"), page.click("#btn_assertion")]);
+    assertionDownload.saveAs("./test_results/assertions.csv");
+    await page.click("#close_assertion_test_popup");
 
-  await page.click("#btn_assertion_popup")
-  await customShot("assertion-popup")
-  const [assertionDownload] = await Promise.all([
-    page.waitForEvent("download"),
-    page.click("#btn_assertion")
-  ])
-  assertionDownload.saveAs("./test_results/assertions.csv")
-  await page.click("#close_assertion_test_popup")
+    await loadTestToEditor("HttpAndMqtt", page);
+    await customShot("http_and_mqtt_td_tab");
 
-  await loadTestToEditor('HttpAndMqtt', page)
-  await customShot("http_and_mqtt_td_tab")
+    await page.click("#open-api-tab");
+    await customShot("http_and_mqtt_open_api_tab");
 
-  await page.click("#open-api-tab")
-  await customShot("http_and_mqtt_open_api_tab")
+    const [openapiJsonDownload] = await Promise.all([page.waitForEvent("download"), page.click("#editor-print-btn")]);
+    openapiJsonDownload.saveAs("./test_results/openapi.json");
 
-  const [openapiJsonDownload] = await Promise.all([
-    page.waitForEvent("download"),
-    page.click("#editor-print-btn")
-  ])
-  openapiJsonDownload.saveAs("./test_results/openapi.json")
+    await page.click("#async-api-tab");
+    await customShot("http_and_mqtt_async_api_tab");
 
-  await page.click("#async-api-tab")
-  await customShot("http_and_mqtt_async_api_tab")
+    await page.evaluate(() => {
+        document.getElementById("yaml-format-btn").click();
+    });
+    await customShot("http_and_mqtt_async_api_tab_yaml");
 
-  await page.evaluate(() => {
-      document.getElementById("yaml-format-btn").click()
-  })
-  await customShot("http_and_mqtt_async_api_tab_yaml")
+    const [asyncapiYamlDownload] = await Promise.all([page.waitForEvent("download"), page.click("#editor-print-btn")]);
+    asyncapiYamlDownload.saveAs("./test_results/asyncapi.yaml");
 
-  const [asyncapiYamlDownload] = await Promise.all([
-    page.waitForEvent("download"),
-    page.click("#editor-print-btn")
-  ])
-  asyncapiYamlDownload.saveAs("./test_results/asyncapi.yaml")
+    await loadTestToEditor("NoProtocol", page);
+    await customShot("NoProtocol");
 
-  await loadTestToEditor('NoProtocol', page)
-  await customShot("NoProtocol")
+    await loadTestToEditor("OnlyHttp", page);
+    await customShot("OnlyHttp");
 
-  await loadTestToEditor('OnlyHttp', page)
-  await customShot("OnlyHttp")
+    await loadTestToEditor("OnlyMqtt", page);
+    await customShot("OnlyMqtt");
 
-  await loadTestToEditor('OnlyMqtt', page)
-  await customShot("OnlyMqtt")
+    await page.click("#td-tab");
+    await customShot("td_tab_yaml");
 
-  await page.click("#td-tab")
-  await customShot("td_tab_yaml")
+    await page.evaluate(() => {
+        document.getElementById("json-format-btn").click();
+    });
 
-  await page.evaluate(() => {
-    document.getElementById("json-format-btn").click()
-  })
+    await page.click("#btn_clearLog");
+    await myWait(300);
+    await customShot("cleared-log");
 
-  await page.click("#btn_clearLog")
-  await myWait(300)
-  await customShot("cleared-log")
+    await page.click("#editor_theme");
+    await customShot("dropdown-editor-color");
 
-  await page.click("#editor_theme")
-  await customShot("dropdown-editor-color")
-
-  await page.selectOption('#editor_theme', "vs-dark")
-  await customShot("dark-editor")
+    await page.selectOption("#editor_theme", "vs-dark");
+    await customShot("dark-editor");
 }
 
 /**
@@ -232,10 +246,10 @@ async function testVisualChromium(page) {
  * @param {object} page a playwright page
  */
 async function testVisualFirefox(page) {
-  const browserType = "firefox"
-  await page.goto(fullHost, {waitUntil: "networkidle"})
-  await myWait(1000)
-  await page.screenshot({ path: path.join(testDir, "firefox_index.png")})
+    const browserType = "firefox";
+    await page.goto(fullHost, { waitUntil: "networkidle" });
+    await myWait(1000);
+    await page.screenshot({ path: path.join(testDir, "firefox_index.png") });
 }
 
 /**
@@ -244,44 +258,44 @@ async function testVisualFirefox(page) {
  * @param {object} page a playwright page
  */
 async function testVisualWebkit(page) {
-  page.on("console", msg => console.log(msg.text())) // print page console output to node.js console
-  await page.goto(fullHost, {waitUntil: "networkidle"})
-  await myWait(9000)
-  await page.screenshot({ path: path.join(testDir, "webkit_index.png")})
+    page.on("console", (msg) => console.log(msg.text())); // print page console output to node.js console
+    await page.goto(fullHost, { waitUntil: "networkidle" });
+    await myWait(9000);
+    await page.screenshot({ path: path.join(testDir, "webkit_index.png") });
 }
 
 /**
  * helper function that resolves after given time
  * @param {number} milliseconds time to wait in milliseconds
  */
-function myWait(milliseconds){
-  return new Promise( (res, rej) => {
-    setTimeout( () => {
-      res()
-    }, milliseconds)
-  })
+function myWait(milliseconds) {
+    return new Promise((res, rej) => {
+        setTimeout(() => {
+            res();
+        }, milliseconds);
+    });
 }
 
 const testList = {
-  "TypoCheckWithoutTypos": {
-    "addr": "./node_modules/@thing-description-playground/core/tests/typo/typoCheckWithoutTypos.json"
-  },
-  "TypoCheckWithTypos": {
-      "addr": "./node_modules/@thing-description-playground/core/tests/typo/typoCheckWithTypos.json"
-  },
-  "HttpAndMqtt": {
-      "addr": "./node_modules/@thing-description-playground/core/tests/protocol-detection/httpAndMqtt.json"
-  },
-  "NoProtocol": {
-      "addr": "./node_modules/@thing-description-playground/core/tests/protocol-detection/noProtocol.json"
-  },
-  "OnlyHttp": {
-      "addr": "./node_modules/@thing-description-playground/core/tests/protocol-detection/onlyHttp.json"
-  },
-  "OnlyMqtt": {
-      "addr": "./node_modules/@thing-description-playground/core/tests/protocol-detection/onlyMqtt.json"
-  }
-}
+    TypoCheckWithoutTypos: {
+        addr: "./node_modules/@thing-description-playground/core/tests/typo/typoCheckWithoutTypos.json",
+    },
+    TypoCheckWithTypos: {
+        addr: "./node_modules/@thing-description-playground/core/tests/typo/typoCheckWithTypos.json",
+    },
+    HttpAndMqtt: {
+        addr: "./node_modules/@thing-description-playground/core/tests/protocol-detection/httpAndMqtt.json",
+    },
+    NoProtocol: {
+        addr: "./node_modules/@thing-description-playground/core/tests/protocol-detection/noProtocol.json",
+    },
+    OnlyHttp: {
+        addr: "./node_modules/@thing-description-playground/core/tests/protocol-detection/onlyHttp.json",
+    },
+    OnlyMqtt: {
+        addr: "./node_modules/@thing-description-playground/core/tests/protocol-detection/onlyMqtt.json",
+    },
+};
 
 /**
  *
@@ -289,10 +303,10 @@ const testList = {
  * @param {object} page a playwright page
  */
 async function loadTestToEditor(testName, page) {
-  const testAddr = testList[testName].addr
-  await page.evaluate(data => {
-    window.editor.setValue(JSON.stringify(data, null, '\t'))
-  }, getTestData(testAddr))
+    const testAddr = testList[testName].addr;
+    await page.evaluate((data) => {
+        window.editor.setValue(JSON.stringify(data, null, "\t"));
+    }, getTestData(testAddr));
 }
 
 /**
@@ -300,10 +314,10 @@ async function loadTestToEditor(testName, page) {
  * @param {string} urlAddr url of the test to fetch
  */
 function getTestData(urlAddr) {
-  try {
-    const data = fs.readFileSync(urlAddr)
-    return JSON.parse(data)
-  } catch(err) {
-    console.log(`Error while reading the file on address ${urlAddr}: ${err}`)
-  }
+    try {
+        const data = fs.readFileSync(urlAddr);
+        return JSON.parse(data);
+    } catch (err) {
+        console.log(`Error while reading the file on address ${urlAddr}: ${err}`);
+    }
 }

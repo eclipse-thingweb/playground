@@ -2,7 +2,7 @@
 
 This package provides the web interface of the Web of Things Thing Desciption Playground.
 It uses the functionality of the `core` package to validate Thing Descriptions and `assertions` to generate an assertion Test report.
-You can find more information about the Thingweb-Playground [here](https://github.com/thingweb/thingweb-playground).
+You can find more information about the Thingweb-Playground [here](https://github.com/eclipse/thingweb.td-playground).
 
 The TDs can be exported as URLs which can be copied anywhere and reopened here.
 
@@ -12,13 +12,14 @@ Licensed under the MIT license, see [License](../../LICENSE.md).
 
 ## Browser based Thing Description Validation
 
-* Online: It is hosted [here](http://plugfest.thingweb.io/playground/)
-  * Simply paste a TD in the text field and click validate
-  * Safari browser has unexpected behavior with JSON-LD documents
-  * I you loose your internet connection when validating JSON-LD validation will fail since it tries to access the documents under `@context` (can be turned off)
+-   Online: It is hosted [here](http://plugfest.thingweb.io/playground/)
 
-* Offline/OnPremise: by hosting the `web` yourself. You can use the `web` package to host/adapt your own browser version of the WoT playground.  
-  To host it yourself please read the section Deployment.
+    -   Simply paste a TD in the text field and click validate
+    -   Safari browser has unexpected behavior with JSON-LD documents
+    -   I you loose your internet connection when validating JSON-LD validation will fail since it tries to access the documents under `@context` (can be turned off)
+
+-   Offline/OnPremise: by hosting the `web` yourself. You can use the `web` package to host/adapt your own browser version of the WoT playground.  
+    To host it yourself please read the section Deployment.
 
 ## (Playwright) Testing
 

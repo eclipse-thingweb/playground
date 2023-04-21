@@ -17,7 +17,6 @@
             "additionalProperties": {
                 "$ref": "#/definitions/property_element"
             }
-
         },
         "actions": {
             "type": "object",
@@ -44,9 +43,7 @@
                     }
                 }
             },
-            "required": [
-                "forms"
-            ],
+            "required": ["forms"],
             "additionalProperties": true
         },
         "action_element": {
@@ -60,9 +57,7 @@
                     }
                 }
             },
-            "required": [
-                "forms"
-            ],
+            "required": ["forms"],
             "additionalProperties": true
         },
         "event_element": {
@@ -76,9 +71,7 @@
                     }
                 }
             },
-            "required": [
-                "forms"
-            ],
+            "required": ["forms"],
             "additionalProperties": true
         },
         "form_element": {
@@ -86,7 +79,7 @@
             "if": {
                 "required": ["additionalResponses"],
                 "properties": {
-                     "additionalResponses": {
+                    "additionalResponses": {
                         "oneOff": [
                             {
                                 "$ref": "#/definitions/additionalResponse_element"
@@ -98,15 +91,14 @@
                                 }
                             }
                         ]
-                     }
+                    }
                 }
-                                   
             },
             "then": {
                 "const": "td-vocab-additionalResponses--Form=pass"
             }
         },
-        "additionalResponse_element":{
+        "additionalResponse_element": {
             "type": "object",
             "properties": {
                 "contentType": {
@@ -115,8 +107,8 @@
                 "schema": {
                     "type": "string"
                 },
-                "success":{
-                    "type":"boolean"
+                "success": {
+                    "type": "boolean"
                 }
             }
         }

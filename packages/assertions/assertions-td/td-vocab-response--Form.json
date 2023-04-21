@@ -3,7 +3,7 @@
     "description": "response: This optional term can be used if, e.g., the output communication metadata differ from input metdata (e.g., output contentType differ from the input contentType). The response name contains metadata that is only valid for the reponse messages.",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "is-complex": true,
-    "also": ["td-forms-response", "td-vocab-contentType--ExpectedResponse","td-form-response-object"],
+    "also": ["td-forms-response", "td-vocab-contentType--ExpectedResponse", "td-form-response-object"],
     "type": "object",
     "properties": {
         "forms": {
@@ -18,7 +18,6 @@
             "additionalProperties": {
                 "$ref": "#/definitions/property_element"
             }
-
         },
         "actions": {
             "type": "object",
@@ -32,7 +31,6 @@
                 "$ref": "#/definitions/event_element"
             }
         }
-
     },
     "additionalProperties": true,
     "definitions": {
@@ -47,9 +45,7 @@
                     }
                 }
             },
-            "required": [
-                "forms"
-            ],
+            "required": ["forms"],
             "additionalProperties": true
         },
         "action_element": {
@@ -63,9 +59,7 @@
                     }
                 }
             },
-            "required": [
-                "forms"
-            ],
+            "required": ["forms"],
             "additionalProperties": true
         },
         "event_element": {
@@ -79,9 +73,7 @@
                     }
                 }
             },
-            "required": [
-                "forms"
-            ],
+            "required": ["forms"],
             "additionalProperties": true
         },
         "form_element": {
@@ -89,17 +81,16 @@
             "if": {
                 "required": ["response"],
                 "properties": {
-                     "response": {
-                         "type": "object",
-                         "properties": {
-                             "contentType": {
-                                 "type": "string"
-                             }
-                         },
-                         "required":["contentType"]
-                     }
+                    "response": {
+                        "type": "object",
+                        "properties": {
+                            "contentType": {
+                                "type": "string"
+                            }
+                        },
+                        "required": ["contentType"]
+                    }
                 }
-                                   
             },
             "then": {
                 "const": "td-vocab-response--Form=pass"

@@ -2,7 +2,7 @@
     "title": "td-event-names_uriVariables",
     "description": "Each optional vocabulary term as defined in the class Event, as well as its two superclasses InteractionPattern and DataSchema, MUST be serialized as a JSON name within an Event object. ",
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "is-complex":true,
+    "is-complex": true,
     "type": "object",
     "properties": {
         "events": {
@@ -16,9 +16,7 @@
         "event_element": {
             "type": "object",
             "if": {
-                "required": [
-                    "uriVariables"
-                ]
+                "required": ["uriVariables"]
             },
             "then": {
                 "const": "td-event-names_uriVariables=pass"

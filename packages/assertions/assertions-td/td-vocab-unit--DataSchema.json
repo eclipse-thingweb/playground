@@ -11,7 +11,6 @@
             "additionalProperties": {
                 "$ref": "#/definitions/property_element"
             }
-
         },
         "actions": {
             "type": "object",
@@ -61,7 +60,8 @@
                         }
                     },
                     "items": {
-                        "oneOf": [{
+                        "oneOf": [
+                            {
                                 "$ref": "#/definitions/dataSchema"
                             },
                             {
@@ -150,18 +150,11 @@
                     "const": {},
                     "type": {
                         "type": "string",
-                        "enum": [
-                            "boolean",
-                            "integer",
-                            "number",
-                            "string",
-                            "object",
-                            "array",
-                            "null"
-                        ]
+                        "enum": ["boolean", "integer", "number", "string", "object", "array", "null"]
                     },
                     "items": {
-                        "oneOf": [{
+                        "oneOf": [
+                            {
                                 "$ref": "#/definitions/dataSchema"
                             },
                             {
@@ -173,16 +166,12 @@
                         ]
                     },
                     "maxItems": {
-
                         "type": "integer",
                         "minimum": 0
-
                     },
                     "minItems": {
-
                         "type": "integer",
                         "minimum": 0
-
                     },
                     "minimum": {
                         "type": "number"

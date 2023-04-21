@@ -1,6 +1,6 @@
 {
     "id": "urn:links",
-    "@context":"https://www.w3.org/2022/wot/td/v1.1",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "title": "MyLampThing",
     "description": "Valid TD demonstrating how to use links",
     "securityDefinitions": {
@@ -13,12 +13,15 @@
     "properties": {
         "status": {
             "type": "string",
-            "forms": [{
-                "href": "https://mylamp.example.com/status"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status"
+                }
+            ]
         }
     },
-    "links": [{
+    "links": [
+        {
             "href": "https://servient.example.com/things/lampController",
             "rel": "controlledBy",
             "type": "application/td+json",

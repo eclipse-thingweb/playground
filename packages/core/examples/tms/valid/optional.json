@@ -1,16 +1,11 @@
 {
     "id": "urn:required",
     "$comment": "example 57 of the spec",
-    "@context": [
-        "https://www.w3.org/2022/wot/td/v1.1"
-    ],
+    "@context": ["https://www.w3.org/2022/wot/td/v1.1"],
     "@type": "tm:ThingModel",
     "title": "Smart Lamp",
     "description": "Basic usage of TD and TM together",
-    "tm:optional": [
-        "/properties/status",
-        "/actions/toggle"
-    ],
+    "tm:optional": ["/properties/status", "/actions/toggle"],
     "properties": {
         "status": {
             "description": "current status of the lamp (on|off)",

@@ -1,50 +1,51 @@
 {
     "id": "urn:simpleWithDefaults",
-    "@context":"https://www.w3.org/2022/wot/td/v1.1",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "title": "MyLampThing",
-    "description":"Valid TD copied from the spec's first example",
+    "description": "Valid TD copied from the spec's first example",
     "securityDefinitions": {
-        "basic_sc": {"scheme": "basic","in":"header"}
+        "basic_sc": { "scheme": "basic", "in": "header" }
     },
     "security": ["basic_sc"],
     "properties": {
-        "status" : {
+        "status": {
             "type": "string",
-            "readOnly":true,
-            "writeOnly":false,
-            "observable":false,
+            "readOnly": true,
+            "writeOnly": false,
+            "observable": false,
             "forms": [
                 {
                     "href": "https://mylamp.example.com/status",
                     "op": "readproperty",
                     "contentType": "application/json"
                 }
-                ]
+            ]
         }
     },
     "actions": {
-        "toggle" : {
+        "toggle": {
             "safe": false,
             "idempotent": false,
-            "forms": [{
-                        "href": "https://mylamp.example.com/toggle",
-                        "op": "invokeaction",
-                        "contentType": "application/json"
-                        }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/toggle",
+                    "op": "invokeaction",
+                    "contentType": "application/json"
+                }
+            ]
         }
     },
-    "events":{
-        "overheating":{
-            "data": {"type": "string",
-                "readOnly":true,
-                "writeOnly":false
-            },
-            "forms": [{
-                "href": "https://mylamp.example.com/oh",
-                "op": "subscribeevent",
-                "subprotocol": "longpoll",
-                "contentType": "application/json"
-            }]
+    "events": {
+        "overheating": {
+            "data": { "type": "string", "readOnly": true, "writeOnly": false },
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/oh",
+                    "op": "subscribeevent",
+                    "subprotocol": "longpoll",
+                    "contentType": "application/json"
+                }
+            ]
         }
     }
 }

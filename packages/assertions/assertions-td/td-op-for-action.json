@@ -25,44 +25,37 @@
                     }
                 }
             },
-            "required": [
-                "forms"
-            ],
+            "required": ["forms"],
             "additionalProperties": true
         },
         "form_element_action": {
-            "if":{
+            "if": {
                 "type": "object",
                 "properties": {
                     "href": {
                         "$ref": "#/definitions/url"
                     },
                     "op": {
-                        "oneOf": [{
+                        "oneOf": [
+                            {
                                 "type": "string",
-                                "enum": [
-                                    "invokeaction"
-                                ]
+                                "enum": ["invokeaction"]
                             },
                             {
                                 "type": "array",
                                 "items": {
                                     "type": "string",
-                                    "enum": [
-                                        "invokeaction"
-                                    ]
+                                    "enum": ["invokeaction"]
                                 }
                             }
                         ]
                     }
                 },
-                "required": [
-                    "href","op"
-                ],
+                "required": ["href", "op"],
                 "additionalProperties": true
             },
-            "then":{
-                "const":"td-op-for-action=pass"
+            "then": {
+                "const": "td-op-for-action=pass"
             }
         },
         "url": {

@@ -13,9 +13,7 @@
             }
         }
     },
-    "required": [
-        "securityDefinitions"
-    ],
+    "required": ["securityDefinitions"],
     "additionalProperties": true,
     "definitions": {
         "securityScheme": {
@@ -30,17 +28,13 @@
                     },
                     "scheme": {
                         "type": "string",
-                        "enum": [
-                            "psk"
-                        ]
+                        "enum": ["psk"]
                     },
                     "identity": {
                         "type": "string"
                     }
                 },
-                "required": [
-                    "scheme", "identity"
-                ]
+                "required": ["scheme", "identity"]
             },
             "then": {
                 "const": "td-vocab-identity--PSKSecurityScheme=pass"

@@ -1,7 +1,22 @@
-const jsf = require("json-schema-faker")
+/* 
+ *   Copyright (c) 2023 Contributors to the Eclipse Foundation
+ *   
+ *   See the NOTICE file(s) distributed with this work for additional
+ *   information regarding copyright ownership.
+ *   
+ *   This program and the accompanying materials are made available under the
+ *   terms of the Eclipse Public License v. 2.0 which is available at
+ *   http://www.eclipse.org/legal/epl-2.0, or the W3C Software Notice and
+ *   Document License (2015-05-13) which is available at
+ *   https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document.
+ *   
+ *   SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
+ */
 
-module.exports = genInteraction
-module.exports.test = {genParameters}
+const jsf = require("json-schema-faker");
+
+module.exports = genInteraction;
+module.exports.test = { genParameters };
 
 /**
  * Generates the general information and extracts the JSON-Schemas from one interaction
@@ -10,13 +25,13 @@ module.exports.test = {genParameters}
  * @param {string[]} tags The tags list
  */
 function genInteraction(interactionName, tdInteraction, tags) {
-    let interactionSchemas = genInteractionSchemas(tdInteraction)
-    interactionSchemas = addInteractionExamples(interactionSchemas)
+    let interactionSchemas = genInteractionSchemas(tdInteraction);
+    interactionSchemas = addInteractionExamples(interactionSchemas);
 
-    const interactionInfo = genInteractionInfo(interactionName, tdInteraction, tags)
-    Object.assign(interactionInfo, genParameters(tdInteraction.uriVariables))
+    const interactionInfo = genInteractionInfo(interactionName, tdInteraction, tags);
+    Object.assign(interactionInfo, genParameters(tdInteraction.uriVariables));
 
-    return {interactionInfo, interactionSchemas}
+    return { interactionInfo, interactionSchemas };
 }
 
 /**
@@ -27,29 +42,30 @@ function genInteraction(interactionName, tdInteraction, tags) {
  * @param {string[]} tags The tags list
  */
 function genInteractionInfo(interactionName, tdInteraction, tags) {
-    const interactionInfo = {tags, description: ""}
+    const interactionInfo = { tags, description: "" };
 
     // add title/headline
     if (tdInteraction.title) {
-        interactionInfo.summary = tdInteraction.title
-        interactionInfo.description += interactionName + "\n"
-    }
-    else {
-        interactionInfo.summary = interactionName
+        interactionInfo.summary = tdInteraction.title;
+        interactionInfo.description += interactionName + "\n";
+    } else {
+        interactionInfo.summary = interactionName;
     }
 
     // add description
-    if (tdInteraction.description) {interactionInfo.description += tdInteraction.description + "\n"}
+    if (tdInteraction.description) {
+        interactionInfo.description += tdInteraction.description + "\n";
+    }
 
     // add custom fields
-    const tdOpts = ["descriptions", "titles"]
-    tdOpts.forEach( prop => {
+    const tdOpts = ["descriptions", "titles"];
+    tdOpts.forEach((prop) => {
         if (tdInteraction[prop] !== undefined) {
-            interactionInfo["x-" + prop] = tdInteraction[prop]
+            interactionInfo["x-" + prop] = tdInteraction[prop];
         }
-    })
+    });
 
-    return interactionInfo
+    return interactionInfo;
 }
 
 /**
@@ -57,23 +73,23 @@ function genInteractionInfo(interactionName, tdInteraction, tags) {
  * @param {object} tdInteraction The InteractionAffordance object
  */
 function genInteractionSchemas(tdInteraction) {
-    let requestSchema = extractDataSchema(tdInteraction)
-    let responseSchema = extractDataSchema(tdInteraction)
+    let requestSchema = extractDataSchema(tdInteraction);
+    let responseSchema = extractDataSchema(tdInteraction);
 
     // more specific for actions
     if (tdInteraction.input !== undefined) {
-        requestSchema = extractDataSchema(tdInteraction.input)
+        requestSchema = extractDataSchema(tdInteraction.input);
     }
     if (tdInteraction.output !== undefined) {
-        responseSchema = extractDataSchema(tdInteraction.output)
+        responseSchema = extractDataSchema(tdInteraction.output);
     }
 
     // more specific for events
     if (tdInteraction.subscription !== undefined) {
-        requestSchema = extractDataSchema(tdInteraction.subscription)
+        requestSchema = extractDataSchema(tdInteraction.subscription);
     }
 
-    return {requestSchema, responseSchema}
+    return { requestSchema, responseSchema };
 }
 
 /**
@@ -81,50 +97,48 @@ function genInteractionSchemas(tdInteraction) {
  * @param {object} schemaParent The object that has the schema keywords as properties
  */
 function extractDataSchema(schemaParent, noWrap) {
-    const schema = {}
-    const dataSchemaKeywords = ["enum", "readOnly", "writeOnly", "format"]
-    const extendedSchemaKeywords = ["items", "minItems", "maxItems", "minimum", "maximum", "properties", "required"]
-    const keywords = dataSchemaKeywords.concat(extendedSchemaKeywords)
+    const schema = {};
+    const dataSchemaKeywords = ["enum", "readOnly", "writeOnly", "format"];
+    const extendedSchemaKeywords = ["items", "minItems", "maxItems", "minimum", "maximum", "properties", "required"];
+    const keywords = dataSchemaKeywords.concat(extendedSchemaKeywords);
 
-    keywords.forEach( keyword => {
+    keywords.forEach((keyword) => {
         if (schemaParent[keyword] !== undefined) {
-            schema[keyword] = schemaParent[keyword]
+            schema[keyword] = schemaParent[keyword];
         }
-    })
+    });
 
     // type null does not exist in openAPI spec, instead nullable:true is used
     if (schemaParent.type !== undefined) {
         if (schemaParent.type !== "null") {
-            schema.type = schemaParent.type
-        }
-        else {
-            schema.nullable = true
+            schema.type = schemaParent.type;
+        } else {
+            schema.nullable = true;
         }
     }
 
     // const is not allowed in openAPI schema
     if (schemaParent.const !== undefined) {
-        schema.enum = [schemaParent.const]
+        schema.enum = [schemaParent.const];
     }
 
     // get oneOf child schemas
     if (schemaParent.oneOf !== undefined) {
-        schema.oneOf = []
-        schemaParent.oneOf.forEach(element => {
-            schema.oneOf.push(extractDataSchema(element, true))
-        })
+        schema.oneOf = [];
+        schemaParent.oneOf.forEach((element) => {
+            schema.oneOf.push(extractDataSchema(element, true));
+        });
     }
 
     // empty schema should not contain the "schema" keyword
-    let out
+    let out;
     if (Object.keys(schema).length > 0 && noWrap !== true) {
-        out = {schema}
-    }
-    else {
-        out = schema
+        out = { schema };
+    } else {
+        out = schema;
     }
 
-    return out
+    return out;
 }
 
 /**
@@ -132,15 +146,14 @@ function extractDataSchema(schemaParent, noWrap) {
  * @param {object} interactionSchemas The input schemas
  */
 function addInteractionExamples(interactionSchemas) {
-
     if (interactionSchemas.requestSchema.schema) {
-        interactionSchemas.requestSchema.example = jsf.generate(interactionSchemas.requestSchema.schema)
+        interactionSchemas.requestSchema.example = jsf.generate(interactionSchemas.requestSchema.schema);
     }
     if (interactionSchemas.responseSchema.schema) {
-        interactionSchemas.responseSchema.example = jsf.generate(interactionSchemas.responseSchema.schema)
+        interactionSchemas.responseSchema.example = jsf.generate(interactionSchemas.responseSchema.schema);
     }
 
-    return interactionSchemas
+    return interactionSchemas;
 }
 
 /**
@@ -148,36 +161,42 @@ function addInteractionExamples(interactionSchemas) {
  * @param {object} tdParameters the td uriVariables property of an Interaction Affordance
  */
 function genParameters(tdParameters) {
-    const parameters = []
+    const parameters = [];
 
     if (typeof tdParameters === "object") {
-        Object.keys(tdParameters).forEach( tdParaKey => {
-            const tdParameter = tdParameters[tdParaKey]
-            const parameter = {}
+        Object.keys(tdParameters).forEach((tdParaKey) => {
+            const tdParameter = tdParameters[tdParaKey];
+            const parameter = {};
 
             // add description / titles
-            let description = ""
-            if (typeof tdParameter.description === "string") {description = tdParameter.description}
-            if (typeof tdParameter.title === "string") {description = tdParameter.title + "\n" + description}
-            if (description !== "") {parameter.description = description}
+            let description = "";
+            if (typeof tdParameter.description === "string") {
+                description = tdParameter.description;
+            }
+            if (typeof tdParameter.title === "string") {
+                description = tdParameter.title + "\n" + description;
+            }
+            if (description !== "") {
+                parameter.description = description;
+            }
 
             // add schema and example
-            Object.assign(parameter, extractDataSchema(tdParameter))
+            Object.assign(parameter, extractDataSchema(tdParameter));
             if (parameter.schema !== undefined) {
-                parameter.example = jsf.generate(parameter.schema)
+                parameter.example = jsf.generate(parameter.schema);
             }
 
             if (Object.keys(parameter).length > 0) {
-                parameter.name = tdParaKey
-                parameter.in = "query"
-                parameters.push(parameter)
+                parameter.name = tdParaKey;
+                parameter.in = "query";
+                parameters.push(parameter);
             }
-        })
+        });
     }
 
-    let oapParameters = {}
+    let oapParameters = {};
     if (parameters.length > 0) {
-        oapParameters = {parameters}
+        oapParameters = { parameters };
     }
-    return oapParameters
+    return oapParameters;
 }

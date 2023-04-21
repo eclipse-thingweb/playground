@@ -17,30 +17,36 @@
     "properties": {
         "status": {
             "type": "string",
-            "forms": [{
-                "href": "https://scopes.example.com/status",
-                "contentType": "application/json",
-                "scopes": ["limited"]
-            }]
+            "forms": [
+                {
+                    "href": "https://scopes.example.com/status",
+                    "contentType": "application/json",
+                    "scopes": ["limited"]
+                }
+            ]
         }
     },
     "actions": {
         "mega": {
-            "forms": [{
-                "href": "https://scopes.example.com/status",
-                "contentType": "application/json",
-                "scopes": ["limited"]
-            }]
+            "forms": [
+                {
+                    "href": "https://scopes.example.com/status",
+                    "contentType": "application/json",
+                    "scopes": ["limited"]
+                }
+            ]
         }
     },
     "events": {
         "eventScope": {
-            "forms": [{
-                "href": "https://scopes.example.com/status",
-                "contentType": "application/json",
-                "scopes": ["special"],
-                "subprotocol": "longpoll"
-            }]
+            "forms": [
+                {
+                    "href": "https://scopes.example.com/status",
+                    "contentType": "application/json",
+                    "scopes": ["special"],
+                    "subprotocol": "longpoll"
+                }
+            ]
         }
     }
 }

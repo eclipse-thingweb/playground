@@ -11,15 +11,18 @@
             "readOnly": false,
             "writeOnly": false,
             "observable": false,
-            "forms": [{
-                "href": "http://plugfest.thingweb.io:8083/TestThing/properties/bool",
-                "contentType": "application/json",
-                "op": ["readproperty", "writeproperty"]
-            }, {
-                "href": "coap://plugfest.thingweb.io:5683/TestThing/pr/bool",
-                "contentType": "application/json",
-                "op": ["readproperty", "writeproperty"]
-            }]
+            "forms": [
+                {
+                    "href": "http://plugfest.thingweb.io:8083/TestThing/properties/bool",
+                    "contentType": "application/json",
+                    "op": ["readproperty", "writeproperty"]
+                },
+                {
+                    "href": "coap://plugfest.thingweb.io:5683/TestThing/pr/bool",
+                    "contentType": "application/json",
+                    "op": ["readproperty", "writeproperty"]
+                }
+            ]
         },
         "int": {
             "title": "Integer number",
@@ -27,15 +30,18 @@
             "readOnly": false,
             "writeOnly": false,
             "observable": false,
-            "forms": [{
-                "href": "http://plugfest.thingweb.io:8083/TestThing/properties/int",
-                "contentType": "application/json",
-                "op": ["readproperty", "writeproperty"]
-            }, {
-                "href": "coap://plugfest.thingweb.io:5683/TestThing/pr/int",
-                "contentType": "application/json",
-                "op": ["readproperty", "writeproperty"]
-            }]
+            "forms": [
+                {
+                    "href": "http://plugfest.thingweb.io:8083/TestThing/properties/int",
+                    "contentType": "application/json",
+                    "op": ["readproperty", "writeproperty"]
+                },
+                {
+                    "href": "coap://plugfest.thingweb.io:5683/TestThing/pr/int",
+                    "contentType": "application/json",
+                    "op": ["readproperty", "writeproperty"]
+                }
+            ]
         },
         "num": {
             "title": "Floating point",
@@ -43,30 +49,36 @@
             "readOnly": false,
             "writeOnly": false,
             "observable": false,
-            "forms": [{
-                "href": "http://plugfest.thingweb.io:8083/TestThing/properties/num",
-                "contentType": "application/json",
-                "op": ["readproperty", "writeproperty"]
-            }, {
-                "href": "coap://plugfest.thingweb.io:5683/TestThing/pr/num",
-                "contentType": "application/json",
-                "op": ["readproperty", "writeproperty"]
-            }]
+            "forms": [
+                {
+                    "href": "http://plugfest.thingweb.io:8083/TestThing/properties/num",
+                    "contentType": "application/json",
+                    "op": ["readproperty", "writeproperty"]
+                },
+                {
+                    "href": "coap://plugfest.thingweb.io:5683/TestThing/pr/num",
+                    "contentType": "application/json",
+                    "op": ["readproperty", "writeproperty"]
+                }
+            ]
         },
         "string": {
             "type": "string",
             "readOnly": false,
             "writeOnly": false,
             "observable": false,
-            "forms": [{
-                "href": "http://plugfest.thingweb.io:8083/TestThing/properties/string",
-                "contentType": "application/json",
-                "op": ["readproperty", "writeproperty"]
-            }, {
-                "href": "coap://plugfest.thingweb.io:5683/TestThing/pr/string",
-                "contentType": "application/json",
-                "op": ["readproperty", "writeproperty"]
-            }]
+            "forms": [
+                {
+                    "href": "http://plugfest.thingweb.io:8083/TestThing/properties/string",
+                    "contentType": "application/json",
+                    "op": ["readproperty", "writeproperty"]
+                },
+                {
+                    "href": "coap://plugfest.thingweb.io:5683/TestThing/pr/string",
+                    "contentType": "application/json",
+                    "op": ["readproperty", "writeproperty"]
+                }
+            ]
         },
         "array": {
             "title": "Tuple",
@@ -75,15 +87,18 @@
             "readOnly": false,
             "writeOnly": false,
             "observable": false,
-            "forms": [{
-                "href": "http://plugfest.thingweb.io:8083/TestThing/properties/array",
-                "contentType": "application/json",
-                "op": ["readproperty", "writeproperty"]
-            }, {
-                "href": "coap://plugfest.thingweb.io:5683/TestThing/pr/array",
-                "contentType": "application/json",
-                "op": ["readproperty", "writeproperty"]
-            }]
+            "forms": [
+                {
+                    "href": "http://plugfest.thingweb.io:8083/TestThing/properties/array",
+                    "contentType": "application/json",
+                    "op": ["readproperty", "writeproperty"]
+                },
+                {
+                    "href": "coap://plugfest.thingweb.io:5683/TestThing/pr/array",
+                    "contentType": "application/json",
+                    "op": ["readproperty", "writeproperty"]
+                }
+            ]
         },
         "object": {
             "title": "ID-name",
@@ -104,22 +119,27 @@
             "readOnly": false,
             "writeOnly": false,
             "observable": false,
-            "forms": [{
-                "href": "http://plugfest.thingweb.io:8083/TestThing/properties/object",
-                "contentType": "application/json",
-                "op": ["readproperty", "writeproperty"]
-            }, {
-                "href": "coap://plugfest.thingweb.io:5683/TestThing/pr/object",
-                "contentType": "application/json",
-                "op": ["readproperty", "writeproperty"]
-            }]
+            "forms": [
+                {
+                    "href": "http://plugfest.thingweb.io:8083/TestThing/properties/object",
+                    "contentType": "application/json",
+                    "op": ["readproperty", "writeproperty"]
+                },
+                {
+                    "href": "coap://plugfest.thingweb.io:5683/TestThing/pr/object",
+                    "contentType": "application/json",
+                    "op": ["readproperty", "writeproperty"]
+                }
+            ]
         }
     },
-    "forms": [{
-        "href": "http://plugfest.thingweb.io:8083/TestThing/all/properties",
-        "contentType": "application/json",
-        "op": ["readallproperties", "readmultipleproperties", "writeallproperties", "writemultipleproperties"]
-    }],
+    "forms": [
+        {
+            "href": "http://plugfest.thingweb.io:8083/TestThing/all/properties",
+            "contentType": "application/json",
+            "op": ["readallproperties", "readmultipleproperties", "writeallproperties", "writemultipleproperties"]
+        }
+    ],
     "securityDefinitions": {
         "nosec_sc": {
             "scheme": "nosec"

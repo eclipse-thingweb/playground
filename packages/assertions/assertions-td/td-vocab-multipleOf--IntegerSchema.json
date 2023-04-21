@@ -61,9 +61,7 @@
                 "properties": {
                     "type": {
                         "type": "string",
-                        "enum": [
-                            "integer"
-                        ]
+                        "enum": ["integer"]
                     },
                     "multipleOf": {
                         "type": "integer"
@@ -94,7 +92,8 @@
                         }
                     },
                     "items": {
-                        "oneOf": [{
+                        "oneOf": [
+                            {
                                 "$ref": "#/definitions/dataSchema"
                             },
                             {

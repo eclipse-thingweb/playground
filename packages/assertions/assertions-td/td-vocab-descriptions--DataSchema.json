@@ -2,7 +2,12 @@
     "title": "td-vocab-descriptions--DataSchema",
     "description": "descriptions: Can be used to support (human-readable) information in different languages. MAY be included. Type: MultiLanguage.",
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "also": ["td-multi-languages_descriptions", "td-data-schema_descriptions", "td-multilanguage-value", "td-objects_descriptions"],
+    "also": [
+        "td-multi-languages_descriptions",
+        "td-data-schema_descriptions",
+        "td-multilanguage-value",
+        "td-objects_descriptions"
+    ],
     "is-complex": true,
     "type": "object",
     "properties": {
@@ -60,7 +65,8 @@
                         }
                     },
                     "items": {
-                        "oneOf": [{
+                        "oneOf": [
+                            {
                                 "$ref": "#/definitions/dataSchema"
                             },
                             {
@@ -88,7 +94,6 @@
                 "const": "td-vocab-descriptions--DataSchema=pass"
             },
             "else": {
-
                 "properties": {
                     "input": {
                         "$ref": "#/definitions/dataSchema"
@@ -176,18 +181,11 @@
                     "const": {},
                     "type": {
                         "type": "string",
-                        "enum": [
-                            "boolean",
-                            "integer",
-                            "number",
-                            "string",
-                            "object",
-                            "array",
-                            "null"
-                        ]
+                        "enum": ["boolean", "integer", "number", "string", "object", "array", "null"]
                     },
                     "items": {
-                        "oneOf": [{
+                        "oneOf": [
+                            {
                                 "$ref": "#/definitions/dataSchema"
                             },
                             {
@@ -199,10 +197,8 @@
                         ]
                     },
                     "maxItems": {
-
                         "type": "integer",
                         "minimum": 0
-
                     },
                     "minItems": {
                         "type": "integer",
@@ -236,8 +232,8 @@
         },
         "descriptions": {
             "type": "object",
-            "additionalProperties":{
-                "type":"string"
+            "additionalProperties": {
+                "type": "string"
             }
         },
         "titles": {

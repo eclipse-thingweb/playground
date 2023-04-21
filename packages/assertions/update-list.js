@@ -1,35 +1,49 @@
+/* 
+ *   Copyright (c) 2023 Contributors to the Eclipse Foundation
+ *   
+ *   See the NOTICE file(s) distributed with this work for additional
+ *   information regarding copyright ownership.
+ *   
+ *   This program and the accompanying materials are made available under the
+ *   terms of the Eclipse Public License v. 2.0 which is available at
+ *   http://www.eclipse.org/legal/epl-2.0, or the W3C Software Notice and
+ *   Document License (2015-05-13) which is available at
+ *   https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document.
+ *   
+ *   SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
+ */
+
 // Update list.json
-const fs = require("fs")
+const fs = require("fs");
 
 fs.readdir("./assertions-td", (err, assertionNames) => {
+    if (err) {
+        throw new Error("could not read assertion file names");
+    }
 
-	if (err) {throw new Error("could not read assertion file names")}
+    const nameAr = [];
 
-	const nameAr = []
+    assertionNames.forEach((el) => {
+        if (el.endsWith(".json") && el !== "tdAssertionList.json") nameAr.push(el);
+    });
 
-	assertionNames.forEach( el => {
-		if(el.endsWith(".json") && el !== "tdAssertionList.json")
-		nameAr.push(el)
-	})
-
-	fs.writeFile("./assertions-td/tdAssertionList.json", JSON.stringify(nameAr),  "utf8", () => {
-		console.log("Updated tdAssertionList.json")
-	})
-})
+    fs.writeFile("./assertions-td/tdAssertionList.json", JSON.stringify(nameAr), "utf8", () => {
+        console.log("Updated tdAssertionList.json");
+    });
+});
 
 fs.readdir("./assertions-tm", (err, assertionNames) => {
+    if (err) {
+        throw new Error("could not read assertion file names");
+    }
 
-	if (err) {throw new Error("could not read assertion file names")}
+    const nameAr = [];
 
-	const nameAr = []
+    assertionNames.forEach((el) => {
+        if (el.endsWith(".json") && el !== "tmAssertionList.json") nameAr.push(el);
+    });
 
-	assertionNames.forEach( el => {
-		if(el.endsWith(".json") && el !== "tmAssertionList.json")
-		nameAr.push(el)
-	})
-
-	fs.writeFile("./assertions-tm/tmAssertionList.json", JSON.stringify(nameAr),  "utf8", () => {
-		console.log("Updated tmAssertionList.json")
-	})
-})
-
+    fs.writeFile("./assertions-tm/tmAssertionList.json", JSON.stringify(nameAr), "utf8", () => {
+        console.log("Updated tmAssertionList.json");
+    });
+});

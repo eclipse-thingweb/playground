@@ -1,6 +1,6 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
-    "@context":"https://www.w3.org/2022/wot/td/v1.1",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "title": "MyLampThing",
     "description": "Invalid TD since securityDefinition basic_sc contains an unknown scheme",
     "securityDefinitions": {
@@ -8,5 +8,5 @@
             "scheme": "mostSecureScheme"
         }
     },
-    "security":["basic_sc"]
+    "security": ["basic_sc"]
 }

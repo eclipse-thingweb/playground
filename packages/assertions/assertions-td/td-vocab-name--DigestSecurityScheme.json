@@ -13,9 +13,7 @@
             }
         }
     },
-    "required": [
-        "securityDefinitions"
-    ],
+    "required": ["securityDefinitions"],
     "additionalProperties": true,
     "definitions": {
         "securityScheme": {
@@ -30,9 +28,7 @@
                     },
                     "scheme": {
                         "type": "string",
-                        "enum": [
-                            "digest"
-                        ]
+                        "enum": ["digest"]
                     },
                     "qop": {
                         "type": "string",
@@ -46,9 +42,7 @@
                         "type": "string"
                     }
                 },
-                "required": [
-                    "scheme","name"
-                ]
+                "required": ["scheme", "name"]
             },
             "then": {
                 "const": "td-vocab-name--DigestSecurityScheme=pass"

@@ -3,7 +3,7 @@
     "description": "op: Indicates the expected result of performing the operation described by the form. For example, the Property interaction allows get and set operations. The protocol binding may contain a form for the get operation and a different form for the set operation. The op attribute indicates which form is which and allows the client to select the correct form for the operation required. ",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "is-complex": true,
-    "also":["well-known-operation-types-only"],
+    "also": ["well-known-operation-types-only"],
     "type": "object",
     "properties": {
         "actions": {
@@ -12,7 +12,6 @@
                 "$ref": "#/definitions/action_element"
             }
         }
-
     },
     "additionalProperties": true,
     "definitions": {
@@ -27,9 +26,7 @@
                     }
                 }
             },
-            "required": [
-                "forms"
-            ],
+            "required": ["forms"],
             "additionalProperties": true
         },
         "form_element": {
@@ -38,11 +35,10 @@
                 "required": ["op"],
                 "properties": {
                     "op": {
-                        "anyOf": [{
+                        "anyOf": [
+                            {
                                 "type": "string",
-                                "enum": [
-                                    "invokeaction"
-                                ]
+                                "enum": ["invokeaction"]
                             },
                             {
                                 "type": "array",

@@ -1,7 +1,7 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
     "title": "MyLampThing",
-    "@context":"https://www.w3.org/2022/wot/td/v1.1",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "description": "Invalid TD since overheating event has a form with no href",
     "securityDefinitions": {
         "basic_sc": {
@@ -31,7 +31,7 @@
     },
     "events": {
         "overheating": {
-            "data":{"type": "string"},
+            "data": { "type": "string" },
             "forms": [
                 {
                     "subprotocol": "longpoll"

@@ -4,7 +4,7 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
     "is-complex": true,
-    "also":["well-known-operation-types-only"],
+    "also": ["well-known-operation-types-only"],
     "properties": {
         "forms": {
             "type": "array",
@@ -24,27 +24,22 @@
                         "$ref": "#/definitions/url"
                     },
                     "op": {
-                        "oneOf": [{
+                        "oneOf": [
+                            {
                                 "type": "string",
-                                "enum": [
-                                    "queryallactions"
-                                ]
+                                "enum": ["queryallactions"]
                             },
                             {
                                 "type": "array",
                                 "contains": {
                                     "type": "string",
-                                    "enum": [
-                                        "queryallactions"
-                                    ]
+                                    "enum": ["queryallactions"]
                                 }
                             }
                         ]
                     }
                 },
-                "required": [
-                    "href", "op"
-                ]
+                "required": ["href", "op"]
             },
             "then": {
                 "const": "td-vocab-op--Form_queryallactions=pass"

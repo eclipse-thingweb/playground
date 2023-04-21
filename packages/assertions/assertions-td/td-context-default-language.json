@@ -4,17 +4,15 @@
     "is-complex": false,
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
-    "required": [
-        "@context"
-    ],
+    "required": ["@context"],
     "properties": {
         "@context": {
-            "type":"array",
+            "type": "array",
             "contains": {
-                "type":"object",
+                "type": "object",
                 "properties": {
-                    "@language":{
-                        "type":"string"
+                    "@language": {
+                        "type": "string"
                     }
                 },
                 "required": ["@language"]

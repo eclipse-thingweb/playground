@@ -13,9 +13,7 @@
             }
         }
     },
-    "required": [
-        "securityDefinitions"
-    ],
+    "required": ["securityDefinitions"],
     "additionalProperties": true,
     "definitions": {
         "securityScheme": {
@@ -24,9 +22,7 @@
                 "properties": {
                     "scheme": {
                         "type": "string",
-                        "enum": [
-                            "nosec"
-                        ]
+                        "enum": ["nosec"]
                     }
                 },
                 "required": ["scheme"]

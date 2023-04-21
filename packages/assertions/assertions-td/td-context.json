@@ -3,14 +3,10 @@
     "description": "The root element of a TD Serialization MUST be a JSON object that includes a member with the name @context and a value of type string or array that equals or respectively contains https://www.w3.org/2022/wot/td/v1.1. ",
     "is-complex": true,
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "also": [
-        "td-vocab-at-context--Thing"
-    ],
+    "also": ["td-vocab-at-context--Thing"],
     "type": "object",
     "if": {
-        "required": [
-            "@context"
-        ],
+        "required": ["@context"],
         "properties": {
             "@context": {
                 "$ref": "#/definitions/thing-context"
@@ -24,9 +20,7 @@
     "definitions": {
         "thing-context-w3c-uri": {
             "type": "string",
-            "enum": [
-                "https://www.w3.org/2022/wot/td/v1.1"
-            ]
+            "enum": ["https://www.w3.org/2022/wot/td/v1.1"]
         },
         "thing-context": {
             "oneOf": [

@@ -1,66 +1,64 @@
 name: Default CI & CD Pipeline
 
-on: 
-  push:
-    paths-ignore:
-    - '**.md'
-    - '**.png'
-    - '**.drawio'
-    - '**.xlsx'
-  pull_request:
-    paths-ignore:
-    - '**.md'
-    - '**.png'
-    - '**.drawio'
-    - '**.xlsx'
+on:
+    push:
+        paths-ignore:
+            - "**.md"
+            - "**.png"
+            - "**.drawio"
+            - "**.xlsx"
+    pull_request:
+        paths-ignore:
+            - "**.md"
+            - "**.png"
+            - "**.drawio"
+            - "**.xlsx"
 jobs:
-  setup-and-test:
-    
-    runs-on: ubuntu-latest
+    setup-and-test:
+        runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [16.x, 18.x]
+        strategy:
+            matrix:
+                node-version: [16.x, 18.x]
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-            node-version: ${{ matrix.node-version }}
-      
-      - name: Use lerna
-        run: npm install -g lerna
-      
-      - name: Bootstrap
-        run: lerna bootstrap --no-ci
-      
-      - name: Test
-        run: lerna run test --no-bail --stream
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
 
-      - name: TD test
-        run: node packages/cli/index.js -i examples/td/*/*.jsonld
-      
-      - name: TM test
-        run: node packages/cli/index.js -t TM -i examples/tm/*/*.jsonld
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v1
+              with:
+                  node-version: ${{ matrix.node-version }}
 
-  deploy-via-ssh:
+            - name: Use lerna
+              run: npm install -g lerna
 
-    runs-on: ubuntu-latest
+            - name: Bootstrap
+              run: lerna bootstrap --no-ci
 
-    needs: setup-and-test
+            - name: Test
+              run: lerna run test --no-bail --stream
 
-    if: ${{ github.ref == 'refs/heads/master' && github.event_name == 'push' && github.repository_owner == 'thingweb' }}
+            - name: TD test
+              run: node packages/cli/index.js -i examples/td/*/*.jsonld
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+            - name: TM test
+              run: node packages/cli/index.js -t TM -i examples/tm/*/*.jsonld
 
-      - name: Run remote commands script
-        run: ./.github/scripts/deploy-web.sh
-        shell: bash
-        env:
-          SSH_PASS: ${{ secrets.SSH_PASS }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
+    deploy-via-ssh:
+        runs-on: ubuntu-latest
+
+        needs: setup-and-test
+
+        if: ${{ github.ref == 'refs/heads/master' && github.event_name == 'push' && github.repository_owner == 'thingweb' }}
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            - name: Run remote commands script
+              run: ./.github/scripts/deploy-web.sh
+              shell: bash
+              env:
+                  SSH_PASS: ${{ secrets.SSH_PASS }}
+                  SSH_HOST: ${{ secrets.SSH_HOST }}

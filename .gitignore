@@ -16,7 +16,8 @@ logs.json
 log.json
 
 # vscode
-.vscode
+.vscode/*
+!.vscode/templates/
 
 # JetBrains IDEs
 .idea

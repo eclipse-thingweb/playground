@@ -9,10 +9,6 @@
             "scheme": "basic"
         }
     },
-    "security": [
-        "example_sc"
-    ],
-    "forms": [
-        {}
-    ]
+    "security": ["example_sc"],
+    "forms": [{}]
 }

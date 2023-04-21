@@ -1,384 +1,631 @@
+<!-- 
+   Copyright (c) 2023 Contributors to the Eclipse Foundation
+   
+   See the NOTICE file(s) distributed with this work for additional
+   information regarding copyright ownership.
+   
+   This program and the accompanying materials are made available under the
+   terms of the Eclipse Public License v. 2.0 which is available at
+   http://www.eclipse.org/legal/epl-2.0, or the W3C Software Notice and
+   Document License (2015-05-13) which is available at
+   https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document.
+   
+   SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
+ -->
+
 <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Thing Description Playground - Validate your W3C Thing Description</title>
+        <link rel="shortcut icon" type="image/x-icon" href="./media/favlogo.png" />
+        <link rel="stylesheet" type="text/css" href="node_modules/bootstrap-css-only/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="./style.css" />
+        <link rel="stylesheet" type="text/css" href="./jsonld-vis.css" />
+    </head>
 
-<head>
-  <meta charset="utf-8">
-  <title>Thing Description Playground - Validate your W3C Thing Description</title>
-  <link rel="shortcut icon" type="image/x-icon" href="./media/favlogo.png" />
-  <link rel="stylesheet" type="text/css" href="node_modules/bootstrap-css-only/css/bootstrap.min.css" />
-  <link rel="stylesheet" type="text/css" href="./style.css" />
-  <link rel="stylesheet" type="text/css" href="./jsonld-vis.css" />
-</head>
+    <body>
+        <div id="assertion_test_popup" class="curtain popup">
+            <div class="assertion-test-popup">
+                <button class="btn top-right btn-close" id="close_assertion_test_popup">X</button>
+                <div>Please Select the manual assertions options.</div>
 
-<body>
+                <table class="table table-striped assertion-table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Assertion ID</th>
+                            <th scope="col" class="statcol">Status</th>
+                            <th scope="col">Description</th>
+                        </tr>
+                    </thead>
 
-  <div id="assertion_test_popup" class="curtain popup">
-    <div class="assertion-test-popup">
-      <button class="btn top-right btn-close" id="close_assertion_test_popup">X</button>
-      <div>Please Select the manual assertions options.</div>
-
-      <table class="table table-striped assertion-table">
-
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Assertion ID</th>
-            <th scope="col" class="statcol">Status</th>
-            <th scope="col">Description</th>
-          </tr>
-        </thead>
-
-        <tbody id="manual_assertion_table_body">
-          <!--Manual assertions will be appended here dynamically-->
-        </tbody>
-
-      </table>
-
-      <button type="button" class="btn custom-btn" id="btn_assertion">Assertion Test</button>
-    </div>
-  </div>
-
-  <div id="visualized-popup-wrapper" class="curtain popup">
-    <div id="visualized-popup">
-      <button class="btn" id="close-visualized-popup">X</button>
-      <div class="container-fluid p-3 h-100">
-        <div class="row">
-          <div class="col-9" id="visualized-wrapper">
-            <div id="visualized"></div>
-          </div>
-          <div class="col-3 border-left">
-            <div id="visualized-controls" class="mx-2">
-
-              <div class="controls-all mt-3">
-                <span class="d-inline-block mr-3">Type:</span>
-                <div class="custom-control custom-radio custom-control-inline">
-                  <input type="radio" id="graph-vis" name="visType" class="custom-control-input" checked>
-                  <label class="custom-control-label" for="graph-vis">Graph</label>
-                </div>
-                <div class="custom-control custom-radio custom-control-inline">
-                  <input type="radio" id="tree-vis" name="visType" class="custom-control-input">
-                  <label class="custom-control-label" for="tree-vis">Tree</label>
-                </div>
-              </div>
-
-              <div class="controls-graph mt-4">
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn custom-btn" id="vis-collapse-all"
-                    title="Collapse all nodes">Collapse All</button>
-                  <button type="button" class="btn custom-btn" id="vis-expand-all"
-                    title="Expand all nodes">Expand All</button>
-                </div>
-              </div>
-
-              <div id="vega-bindings-wrapper" class="controls-tree mt-3"></div>
-
-              <div class="controls-all mt-3">
-                <!-- <a href="#" target="_blank" download="visualization.svg">Save as SVG</a> -->
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn custom-btn oap-btn" title="Save the TD visualization as an SVG/PNG file"
-                    disabled>Save As</button>
-                  <a href="#" class="btn custom-btn" id="vis-download-svg" title="Save the TD visualization as an SVG file" download="td.svg">SVG</a>
-                  <a href="#" class="btn custom-btn" id="vis-download-png" title="Save the TD visualization as a PNG file" download="td.png">PNG</a>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="curtain" class="curtain">
-    <div id="curtain-text">Loading Environment. Please wait....</div>
-    <img src="./media/loading.svg" class="loading-spinner" alt="Loading..." />
-  </div>
-
-  <div class="container-fluid main">
-
-    <div class="row alert alert-info header">
-      <div class="col-2">
-        <div>
-          <img id="logo" alt="Thingweb Logo" src="./media/logo.png">
-        </div>
-      </div>
-
-      <div class="col-6">
-        <h3>Thing Description Playground</h3>
-        <br>
-        <a href="https://w3c.github.io/wot-thing-description/#" title="More about the W3C Thing Description"
-          target="_blank">Validate and play with TDs</a>
-      </div>
-
-      <div class="col-4 navcol">
-        <nav class="navbar navbar-dark bg-info">
-          <a class="navbar-brand btn" href="https://github.com/thingweb/thingweb-playground/issues/new">Create Issue</a>
-          <a class="navbar-brand btn"
-            href="https://github.com/thingweb/thingweb-playground/tree/master/packages/cli">Playground CLI</a>
-        </nav>
-      </div>
-    </div>
-    <div class="wrapper h-100">
-      <div class="row h-100">
-        <div class="col-8">
-          <div class="col-12 navcol">
-            <ul class="nav nav-tabs" id="editorTab" role="tablist">
-              <li class="nav-item td-related" role="presentation">
-                <button class="nav-link active" id="td-tab" data-bs-toggle="tab" data-bs-target="#td" type="button" role="tab" aria-controls="td" aria-selected="true">TD</button>
-              </li>
-              <li class="nav-item tm-related" role="presentation">
-                <button class="nav-link" id="tm-tab" data-bs-toggle="tab" data-bs-target="#tm" type="button" role="tab" aria-controls="tm" aria-selected="true">TM</button>
-              </li>
-              <li class="nav-item td-related" role="presentation">
-                <button class="nav-link" id="open-api-tab" data-bs-toggle="tab" data-bs-target="#open-api" type="button" role="tab" aria-controls="open-api" aria-selected="false">Open API</button>
-              </li>
-              <li class="nav-item td-related" role="presentation">
-                <button class="nav-link" id="async-api-tab" data-bs-toggle="tab" data-bs-target="#async-api" type="button" role="tab" aria-controls="async-api" aria-selected="false">Async API</button>
-              </li>
-              <div class="ml-auto">
-                <div class="btn-toolbar" role="toolbar" aria-label="Toolbar for editors">
-                  <div class="btn-group btn-group-toggle mr-2 td-related">
-                    <button type="button" title="Convert editor content to JSON" class="btn btn-info btn-sm active" id="json-format-btn">
-                      JSON
-                    </button>
-                    <button type="button" title="Convert editor content to YAML" class="btn btn-info btn-sm" id="yaml-format-btn">
-                      YAML
-                    </button>
-                  </div>
-                  <p> </p>
-                  <div class="btn-group mr-2" role="group">
-                    <button type="button" id="btn_save" title="Export your TD/TM document as a sharable link" class="btn btn-lg btn-info">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
-                        <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/>
-                        <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/>
-                      </svg>
-                    </button>
-                    <button type="button" class="btn btn-info mr-0 ml-0 pr-0 pl-0" disabled></button>
-                    <button type="button" title="Download the content on the editor" id="editor-print-btn" class="btn btn-lg btn-info">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
-                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </ul>
-          </div>
-          
-          <div class="tab-content td-related" id="editorTabContent">
-            <div class="tab-pane fade show active" id="td" role="tabpanel" aria-labelledby="td-tab">
-              <div class="editor" id="td-editor"></div>
-            </div>
-            <div class="tab-pane fade" id="open-api" role="tabpanel" aria-labelledby="open-api-tab">
-              <div class="editor" id="open-api-editor" style="display: none;"></div>
-            </div>
-            <div class="tab-pane fade" id="async-api" role="tabpanel" aria-labelledby="async-api-tab">
-              <div class="editor" id="async-api-editor" style="display: none;"></div>
-            </div>
-          </div>
-
-          <div class="editor tm-related" id="tm-editor"></div>
-        </div>
-
-        <div class="col-4" id="side-panel">
-          <div class="font-div">
-            <div class="panel">
-              <div class="row">
-                <table class="table">
-                  <tr id="validation_table_head" class="btn-info">
-                    <th rowspan="2">
-                      <i id="table_head_arrow" class="or-down"></i>
-                    </th>
-                  </tr>
-                  <tbody id="validation_table">
-                    <tr>
-                      <td>
-                        <svg class="svg-circle" xmlns="http://www.w3.org/2000/svg">
-                          <circle id="spot-json" cx="10" cy="10" r="9" />
-                        </svg>
-                      </td>
-                      <td title="Is green when TD/TM is a valid JSON" class="tooltipline">JSON validation</td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <svg class="svg-circle" xmlns="http://www.w3.org/2000/svg">
-                          <circle id="spot-schema" cx="10" cy="10" r="9" />
-                        </svg>
-                      </td>
-                      <td title="Is green when TD/TM is valid according to the JSON Schema of the TD/TM spec"
-                        class="tooltipline">JSON Schema validation</td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <svg class="svg-circle" xmlns="http://www.w3.org/2000/svg">
-                          <circle id="spot-defaults" cx="10" cy="10" r="9" />
-                        </svg>
-                      </td>
-                      <td
-                        title="Optional: Is green when the validated TD has no default assumptions and everything is explicitly declared"
-                        class="tooltipline">
-                        (With Defaults) JSON Schema validation</td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <svg class="svg-circle" xmlns="http://www.w3.org/2000/svg">
-                          <circle id="spot-jsonld" cx="10" cy="10" r="9" />
-                        </svg>
-                      </td>
-                      <td title="Is green when TD/TM can be expanded using the @context value" class="tooltipline">JSON-LD
-                        validation
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <svg class="svg-circle" xmlns="http://www.w3.org/2000/svg">
-                          <circle id="spot-additional" cx="10" cy="10" r="9" />
-                        </svg>
-                      </td>
-                      <td title="Is green when all custom checks pass" class="tooltipline">Additional Checks</td>
-                    </tr>
-                  </tbody>
+                    <tbody id="manual_assertion_table_body">
+                        <!--Manual assertions will be appended here dynamically-->
+                    </tbody>
                 </table>
-              </div>
 
-              <div class="row">
-                <form>
-                  <div class="form-group">
-                    <label for="editor_theme">Editor Theme</label>
-                    <select id="editor_theme" class="btn btn-info dropdown-toggle btn-sm">
-                      <option class="btn-info" value="vs">White </option>
-                      <option class="btn-info" value="vs-dark">Dark </option>
-                      <option class="btn-info" value="hc-black">Contrast </option>
-                    </select>
-                    <br><br>
-
-                    <ul class="list-unstyled">
-                      <li class="d-inline-block mr-4">
-                        <input type="checkbox" id="box_auto_validate" value="boxautoval" class="m-0">
-                        <label for="box_auto_validate" class="mb-0">Auto Validate</label>
-                      </li>
-                      <li class="d-inline-block">
-                        <input type="checkbox" id="box_reset_logging" value="boxreslog" class="m-0">
-                        <label class="tooltipline mb-0" for="box_reset_logging" title="Reset Logging for every new Validation">Reset Logging</label>
-                      </li>
-                    </ul>
-
-                    <ul class="list-unstyled">
-                      <li class="d-inline-block mr-3">
-                        <input type="checkbox" id="box_jsonld_validate" value="boxjsonld" class="m-0">
-                        <label for="box_jsonld_validate">Validate JSON-LD</label>
-                      </li>
-                      <li class="d-inline-block td-related">
-                        <input type="checkbox" id="box_check_tm_conformance" value="boxtmconf" class="m-0">
-                        <label class="tooltipline" for="box_check_tm_conformance" title="Check if TD conforms to structure imposed by linked TM">Check TM Conformance</label>
-                      </li>
-                    </ul>
-
-                    <br>
-                    <label for="doc_type">Document Type</label>
-                    <select id="doc_type" class="btn btn-info dropdown-toggle btn-sm">
-                      <option class="btn-info" value="td">Thing Description</option>
-                      <option class="btn-info" value="tm">Thing Model</option>
-                    </select>
-
-                    <br>
-                    <div class="btn-group" role="group">
-                      <button type="button" class="btn custom-btn jsonOnly" id="btn_validate">Validate</button>
-                      <button type="button" class="btn custom-btn jsonOnly" id="btn_clearLog">Clear Log</button>
-                      <button type="button" title="Format the JSON document with pretty printing" class="btn custom-btn jsonOnly" id="btn_formatDocument">Format Document</button>
-                    </div>
-
-                    <br>
-                    <div class="btn-group" role="group">
-                      <button type="button" class="btn custom-btn jsonOnly" id="btn_visualize">Visualize</button>
-                      <button type="button" class="btn custom-btn jsonOnly" id="btn_assertion_popup">Assertion Test</button>
-                    </div>
-
-                    <br class="td-related">
-                    <div class="btn-group td-related" role="group">
-                      <button type="button" class="btn custom-btn oap-btn" title="Extend/reduce a TD by default values"
-                        disabled>Defaults</button>
-                      <button type="button" class="btn custom-btn jsonOnly" id="btn_defaults_add"
-                        title="Add every default value explicitly">Add</button>
-                      <button type="button" class="btn custom-btn jsonOnly" id="btn_defaults_remove"
-                        title="Remove all explicitly stated default values">Remove</button>
-                    </div>
-
-                  </div>
-
-                </form>
-              </div>
-
-              <div class="row">
-                <form>
-                  <div class="form-group">
-                    <label>Examples:</label>
-                    <select id="load_example" class="btn btn-info btn-sm dropdown-toggle">
-                      <!-- Examples will be dynamically populated here -->
-                    </select>
-                  </div>
-                </form>
-              </div>
-
+                <button type="button" class="btn custom-btn" id="btn_assertion">Assertion Test</button>
             </div>
-          </div>
-          <div class="row conrow">
-            <div class="col">
-              <pre id="console">Please click Validate after an input TD/TM...&#13;&#10;</pre>
+        </div>
+
+        <div id="visualized-popup-wrapper" class="curtain popup">
+            <div id="visualized-popup">
+                <button class="btn" id="close-visualized-popup">X</button>
+                <div class="container-fluid p-3 h-100">
+                    <div class="row">
+                        <div class="col-9" id="visualized-wrapper">
+                            <div id="visualized"></div>
+                        </div>
+                        <div class="col-3 border-left">
+                            <div id="visualized-controls" class="mx-2">
+                                <div class="controls-all mt-3">
+                                    <span class="d-inline-block mr-3">Type:</span>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input
+                                            type="radio"
+                                            id="graph-vis"
+                                            name="visType"
+                                            class="custom-control-input"
+                                            checked
+                                        />
+                                        <label class="custom-control-label" for="graph-vis">Graph</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input type="radio" id="tree-vis" name="visType" class="custom-control-input" />
+                                        <label class="custom-control-label" for="tree-vis">Tree</label>
+                                    </div>
+                                </div>
+
+                                <div class="controls-graph mt-4">
+                                    <div class="btn-group" role="group">
+                                        <button
+                                            type="button"
+                                            class="btn custom-btn"
+                                            id="vis-collapse-all"
+                                            title="Collapse all nodes"
+                                        >
+                                            Collapse All
+                                        </button>
+                                        <button
+                                            type="button"
+                                            class="btn custom-btn"
+                                            id="vis-expand-all"
+                                            title="Expand all nodes"
+                                        >
+                                            Expand All
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div id="vega-bindings-wrapper" class="controls-tree mt-3"></div>
+
+                                <div class="controls-all mt-3">
+                                    <!-- <a href="#" target="_blank" download="visualization.svg">Save as SVG</a> -->
+                                    <div class="btn-group" role="group">
+                                        <button
+                                            type="button"
+                                            class="btn custom-btn oap-btn"
+                                            title="Save the TD visualization as an SVG/PNG file"
+                                            disabled
+                                        >
+                                            Save As
+                                        </button>
+                                        <a
+                                            href="#"
+                                            class="btn custom-btn"
+                                            id="vis-download-svg"
+                                            title="Save the TD visualization as an SVG file"
+                                            download="td.svg"
+                                            >SVG</a
+                                        >
+                                        <a
+                                            href="#"
+                                            class="btn custom-btn"
+                                            id="vis-download-png"
+                                            title="Save the TD visualization as a PNG file"
+                                            download="td.png"
+                                            >PNG</a
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
 
-  </div>
+        <div id="curtain" class="curtain">
+            <div id="curtain-text">Loading Environment. Please wait....</div>
+            <img src="./media/loading.svg" class="loading-spinner" alt="Loading..." />
+        </div>
 
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          ...
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
-    </div>
-  </div>
+        <div class="container-fluid main">
+            <div class="row alert alert-info header">
+                <div class="col-2">
+                    <div>
+                        <img id="logo" alt="Thingweb Logo" src="./media/logo.png" />
+                    </div>
+                </div>
 
-  <footer>
-    <div class="footer-shape">
-      <img src="./media/footer-shape.jpg">
-    </div>
-    <div class="links">
-      <p id="copynotice">Copyrights © 2022 Part of the Thingweb project.</p>
-    </div>
-  </footer>
-  <script src="./node_modules/papaparse/papaparse.js"></script>
-  <script src="./node_modules/@thing-description-playground/core/dist/web-bundle.min.js"></script>
-  <script src="./node_modules/@thing-description-playground/assertions/dist/web-bundle.min.js"></script>
-  <script src="./node_modules/@thing-description-playground/td_to_openapi/dist/web-bundle.min.js"></script>
-  <script src="./node_modules/@thing-description-playground/td_to_asyncapi/dist/web-bundle.min.js"></script>
-  <script src="./node_modules/@thing-description-playground/defaults/dist/web-bundle.min.js"></script>
-  <script src="./node_modules/@thing-description-playground/json-spell-checker/dist/web-bundle.min.js"></script>
-  <!-- Ensure that d3 and d3-tip are added before loader.js,
+                <div class="col-6">
+                    <h3>Thing Description Playground</h3>
+                    <br />
+                    <a
+                        href="https://w3c.github.io/wot-thing-description/#"
+                        title="More about the W3C Thing Description"
+                        target="_blank"
+                        >Validate and play with TDs</a
+                    >
+                </div>
+
+                <div class="col-4 navcol">
+                    <nav class="navbar navbar-dark bg-info">
+                        <a class="navbar-brand btn" href="https://github.com/eclipse/thingweb.td-playground/issues/new"
+                            >Create Issue</a
+                        >
+                        <a
+                            class="navbar-brand btn"
+                            href="https://github.com/eclipse/thingweb.td-playground/tree/master/packages/cli"
+                            >Playground CLI</a
+                        >
+                    </nav>
+                </div>
+            </div>
+            <div class="wrapper h-100">
+                <div class="row h-100">
+                    <div class="col-8">
+                        <div class="col-12 navcol">
+                            <ul class="nav nav-tabs" id="editorTab" role="tablist">
+                                <li class="nav-item td-related" role="presentation">
+                                    <button
+                                        class="nav-link active"
+                                        id="td-tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#td"
+                                        type="button"
+                                        role="tab"
+                                        aria-controls="td"
+                                        aria-selected="true"
+                                    >
+                                        TD
+                                    </button>
+                                </li>
+                                <li class="nav-item tm-related" role="presentation">
+                                    <button
+                                        class="nav-link"
+                                        id="tm-tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#tm"
+                                        type="button"
+                                        role="tab"
+                                        aria-controls="tm"
+                                        aria-selected="true"
+                                    >
+                                        TM
+                                    </button>
+                                </li>
+                                <li class="nav-item td-related" role="presentation">
+                                    <button
+                                        class="nav-link"
+                                        id="open-api-tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#open-api"
+                                        type="button"
+                                        role="tab"
+                                        aria-controls="open-api"
+                                        aria-selected="false"
+                                    >
+                                        Open API
+                                    </button>
+                                </li>
+                                <li class="nav-item td-related" role="presentation">
+                                    <button
+                                        class="nav-link"
+                                        id="async-api-tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#async-api"
+                                        type="button"
+                                        role="tab"
+                                        aria-controls="async-api"
+                                        aria-selected="false"
+                                    >
+                                        Async API
+                                    </button>
+                                </li>
+                                <div class="ml-auto">
+                                    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar for editors">
+                                        <div class="btn-group btn-group-toggle mr-2 td-related">
+                                            <button
+                                                type="button"
+                                                title="Convert editor content to JSON"
+                                                class="btn btn-info btn-sm active"
+                                                id="json-format-btn"
+                                            >
+                                                JSON
+                                            </button>
+                                            <button
+                                                type="button"
+                                                title="Convert editor content to YAML"
+                                                class="btn btn-info btn-sm"
+                                                id="yaml-format-btn"
+                                            >
+                                                YAML
+                                            </button>
+                                        </div>
+                                        <p></p>
+                                        <div class="btn-group mr-2" role="group">
+                                            <button
+                                                type="button"
+                                                id="btn_save"
+                                                title="Export your TD/TM document as a sharable link"
+                                                class="btn btn-lg btn-info"
+                                            >
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="16"
+                                                    height="16"
+                                                    fill="currentColor"
+                                                    class="bi bi-link-45deg"
+                                                    viewBox="0 0 16 16"
+                                                >
+                                                    <path
+                                                        d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"
+                                                    />
+                                                    <path
+                                                        d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"
+                                                    />
+                                                </svg>
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-info mr-0 ml-0 pr-0 pl-0"
+                                                disabled
+                                            ></button>
+                                            <button
+                                                type="button"
+                                                title="Download the content on the editor"
+                                                id="editor-print-btn"
+                                                class="btn btn-lg btn-info"
+                                            >
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="16"
+                                                    height="16"
+                                                    fill="currentColor"
+                                                    class="bi bi-download"
+                                                    viewBox="0 0 16 16"
+                                                >
+                                                    <path
+                                                        d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"
+                                                    />
+                                                    <path
+                                                        d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"
+                                                    />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ul>
+                        </div>
+
+                        <div class="tab-content td-related" id="editorTabContent">
+                            <div class="tab-pane fade show active" id="td" role="tabpanel" aria-labelledby="td-tab">
+                                <div class="editor" id="td-editor"></div>
+                            </div>
+                            <div class="tab-pane fade" id="open-api" role="tabpanel" aria-labelledby="open-api-tab">
+                                <div class="editor" id="open-api-editor" style="display: none"></div>
+                            </div>
+                            <div class="tab-pane fade" id="async-api" role="tabpanel" aria-labelledby="async-api-tab">
+                                <div class="editor" id="async-api-editor" style="display: none"></div>
+                            </div>
+                        </div>
+
+                        <div class="editor tm-related" id="tm-editor"></div>
+                    </div>
+
+                    <div class="col-4" id="side-panel">
+                        <div class="font-div">
+                            <div class="panel">
+                                <div class="row">
+                                    <table class="table">
+                                        <tr id="validation_table_head" class="btn-info">
+                                            <th rowspan="2">
+                                                <i id="table_head_arrow" class="or-down"></i>
+                                            </th>
+                                        </tr>
+                                        <tbody id="validation_table">
+                                            <tr>
+                                                <td>
+                                                    <svg class="svg-circle" xmlns="http://www.w3.org/2000/svg">
+                                                        <circle id="spot-json" cx="10" cy="10" r="9" />
+                                                    </svg>
+                                                </td>
+                                                <td title="Is green when TD/TM is a valid JSON" class="tooltipline">
+                                                    JSON validation
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <svg class="svg-circle" xmlns="http://www.w3.org/2000/svg">
+                                                        <circle id="spot-schema" cx="10" cy="10" r="9" />
+                                                    </svg>
+                                                </td>
+                                                <td
+                                                    title="Is green when TD/TM is valid according to the JSON Schema of the TD/TM spec"
+                                                    class="tooltipline"
+                                                >
+                                                    JSON Schema validation
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <svg class="svg-circle" xmlns="http://www.w3.org/2000/svg">
+                                                        <circle id="spot-defaults" cx="10" cy="10" r="9" />
+                                                    </svg>
+                                                </td>
+                                                <td
+                                                    title="Optional: Is green when the validated TD has no default assumptions and everything is explicitly declared"
+                                                    class="tooltipline"
+                                                >
+                                                    (With Defaults) JSON Schema validation
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <svg class="svg-circle" xmlns="http://www.w3.org/2000/svg">
+                                                        <circle id="spot-jsonld" cx="10" cy="10" r="9" />
+                                                    </svg>
+                                                </td>
+                                                <td
+                                                    title="Is green when TD/TM can be expanded using the @context value"
+                                                    class="tooltipline"
+                                                >
+                                                    JSON-LD validation
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <svg class="svg-circle" xmlns="http://www.w3.org/2000/svg">
+                                                        <circle id="spot-additional" cx="10" cy="10" r="9" />
+                                                    </svg>
+                                                </td>
+                                                <td title="Is green when all custom checks pass" class="tooltipline">
+                                                    Additional Checks
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="row">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="editor_theme">Editor Theme</label>
+                                            <select id="editor_theme" class="btn btn-info dropdown-toggle btn-sm">
+                                                <option class="btn-info" value="vs">White</option>
+                                                <option class="btn-info" value="vs-dark">Dark</option>
+                                                <option class="btn-info" value="hc-black">Contrast</option>
+                                            </select>
+                                            <br /><br />
+
+                                            <ul class="list-unstyled">
+                                                <li class="d-inline-block mr-4">
+                                                    <input
+                                                        type="checkbox"
+                                                        id="box_auto_validate"
+                                                        value="boxautoval"
+                                                        class="m-0"
+                                                    />
+                                                    <label for="box_auto_validate" class="mb-0">Auto Validate</label>
+                                                </li>
+                                                <li class="d-inline-block">
+                                                    <input
+                                                        type="checkbox"
+                                                        id="box_reset_logging"
+                                                        value="boxreslog"
+                                                        class="m-0"
+                                                    />
+                                                    <label
+                                                        class="tooltipline mb-0"
+                                                        for="box_reset_logging"
+                                                        title="Reset Logging for every new Validation"
+                                                        >Reset Logging</label
+                                                    >
+                                                </li>
+                                            </ul>
+
+                                            <ul class="list-unstyled">
+                                                <li class="d-inline-block mr-3">
+                                                    <input
+                                                        type="checkbox"
+                                                        id="box_jsonld_validate"
+                                                        value="boxjsonld"
+                                                        class="m-0"
+                                                    />
+                                                    <label for="box_jsonld_validate">Validate JSON-LD</label>
+                                                </li>
+                                                <li class="d-inline-block td-related">
+                                                    <input
+                                                        type="checkbox"
+                                                        id="box_check_tm_conformance"
+                                                        value="boxtmconf"
+                                                        class="m-0"
+                                                    />
+                                                    <label
+                                                        class="tooltipline"
+                                                        for="box_check_tm_conformance"
+                                                        title="Check if TD conforms to structure imposed by linked TM"
+                                                        >Check TM Conformance</label
+                                                    >
+                                                </li>
+                                            </ul>
+
+                                            <br />
+                                            <label for="doc_type">Document Type</label>
+                                            <select id="doc_type" class="btn btn-info dropdown-toggle btn-sm">
+                                                <option class="btn-info" value="td">Thing Description</option>
+                                                <option class="btn-info" value="tm">Thing Model</option>
+                                            </select>
+
+                                            <br />
+                                            <div class="btn-group" role="group">
+                                                <button type="button" class="btn custom-btn jsonOnly" id="btn_validate">
+                                                    Validate
+                                                </button>
+                                                <button type="button" class="btn custom-btn jsonOnly" id="btn_clearLog">
+                                                    Clear Log
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    title="Format the JSON document with pretty printing"
+                                                    class="btn custom-btn jsonOnly"
+                                                    id="btn_formatDocument"
+                                                >
+                                                    Format Document
+                                                </button>
+                                            </div>
+
+                                            <br />
+                                            <div class="btn-group" role="group">
+                                                <button
+                                                    type="button"
+                                                    class="btn custom-btn jsonOnly"
+                                                    id="btn_visualize"
+                                                >
+                                                    Visualize
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="btn custom-btn jsonOnly"
+                                                    id="btn_assertion_popup"
+                                                >
+                                                    Assertion Test
+                                                </button>
+                                            </div>
+
+                                            <br class="td-related" />
+                                            <div class="btn-group td-related" role="group">
+                                                <button
+                                                    type="button"
+                                                    class="btn custom-btn oap-btn"
+                                                    title="Extend/reduce a TD by default values"
+                                                    disabled
+                                                >
+                                                    Defaults
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="btn custom-btn jsonOnly"
+                                                    id="btn_defaults_add"
+                                                    title="Add every default value explicitly"
+                                                >
+                                                    Add
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="btn custom-btn jsonOnly"
+                                                    id="btn_defaults_remove"
+                                                    title="Remove all explicitly stated default values"
+                                                >
+                                                    Remove
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <div class="row">
+                                    <form>
+                                        <div class="form-group">
+                                            <label>Examples:</label>
+                                            <select id="load_example" class="btn btn-info btn-sm dropdown-toggle">
+                                                <!-- Examples will be dynamically populated here -->
+                                            </select>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row conrow">
+                            <div class="col">
+                                <pre id="console">Please click Validate after an input TD/TM...&#13;&#10;</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="modal fade"
+            id="exampleModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">...</div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-shape">
+                <img src="./media/footer-shape.jpg" />
+            </div>
+            <div class="links">
+                <p id="copynotice">Copyrights © 2022 Part of the Thingweb project.</p>
+            </div>
+        </footer>
+        <script src="./node_modules/papaparse/papaparse.js"></script>
+        <script src="./node_modules/@thing-description-playground/core/dist/web-bundle.min.js"></script>
+        <script src="./node_modules/@thing-description-playground/assertions/dist/web-bundle.min.js"></script>
+        <script src="./node_modules/@thing-description-playground/td_to_openapi/dist/web-bundle.min.js"></script>
+        <script src="./node_modules/@thing-description-playground/td_to_asyncapi/dist/web-bundle.min.js"></script>
+        <script src="./node_modules/@thing-description-playground/defaults/dist/web-bundle.min.js"></script>
+        <script src="./node_modules/@thing-description-playground/json-spell-checker/dist/web-bundle.min.js"></script>
+        <!-- Ensure that d3 and d3-tip are added before loader.js,
     otherwise throws an error, see https://github.com/microsoft/monaco-editor/issues/2283 -->
-  <!-- Also order matters for svg-crowbar, vega and vega-embed (relative to loader.js) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js" integrity="sha512-oJp0DdQuQQrRsKVly+Ww6fAN1GwJN7d1bi8UubpEbzDUh84WrJ2CFPBnT4LqBCcfqTcHR5OGXFFhaPe3g1/bzQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.6.7/d3-tip.min.js" integrity="sha512-d0MkreG3huSJjpMnjX8AaYzbn09Z4j5uUs/E9Eu/JNJYMXxo/YRONuB0sr0IzOszsqfC3Vxi4tHicoMC5QQF4A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vega@5.22.1/build/vega.min.js" integrity="sha256-cx8BtoEWvBhaGWMiCWyjQnN0JMSZXEimZ09X68ln6cE=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.21.0/build/vega-embed.min.js" integrity="sha256-/XLqtIcBhAjhlmMOaz23UAXzBgQymz60D73+PfrK24w=" crossorigin="anonymous"></script>
-  <script src="./node_modules/svg-crowbar/dist/main.js"></script>
-  <script src="./node_modules/string-direction/index.js"></script>
-  <script src="./node_modules/monaco-editor/min/vs/loader.js"></script>
-  <script type="module" src="./script.js"></script>
-</body>
-
+        <!-- Also order matters for svg-crowbar, vega and vega-embed (relative to loader.js) -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"
+            integrity="sha512-oJp0DdQuQQrRsKVly+Ww6fAN1GwJN7d1bi8UubpEbzDUh84WrJ2CFPBnT4LqBCcfqTcHR5OGXFFhaPe3g1/bzQ=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.6.7/d3-tip.min.js"
+            integrity="sha512-d0MkreG3huSJjpMnjX8AaYzbn09Z4j5uUs/E9Eu/JNJYMXxo/YRONuB0sr0IzOszsqfC3Vxi4tHicoMC5QQF4A=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/vega@5.22.1/build/vega.min.js"
+            integrity="sha256-cx8BtoEWvBhaGWMiCWyjQnN0JMSZXEimZ09X68ln6cE="
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/vega-embed@6.21.0/build/vega-embed.min.js"
+            integrity="sha256-/XLqtIcBhAjhlmMOaz23UAXzBgQymz60D73+PfrK24w="
+            crossorigin="anonymous"
+        ></script>
+        <script src="./node_modules/svg-crowbar/dist/main.js"></script>
+        <script src="./node_modules/string-direction/index.js"></script>
+        <script src="./node_modules/monaco-editor/min/vs/loader.js"></script>
+        <script type="module" src="./script.js"></script>
+    </body>
 </html>

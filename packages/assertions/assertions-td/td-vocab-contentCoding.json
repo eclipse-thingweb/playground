@@ -17,7 +17,6 @@
             "additionalProperties": {
                 "$ref": "#/definitions/property_element"
             }
-
         },
         "actions": {
             "type": "object",
@@ -31,7 +30,6 @@
                 "$ref": "#/definitions/event_element"
             }
         }
-
     },
     "additionalProperties": true,
     "definitions": {
@@ -46,9 +44,7 @@
                     }
                 }
             },
-            "required": [
-                "forms"
-            ],
+            "required": ["forms"],
             "additionalProperties": true
         },
         "action_element": {
@@ -62,9 +58,7 @@
                     }
                 }
             },
-            "required": [
-                "forms"
-            ],
+            "required": ["forms"],
             "additionalProperties": true
         },
         "event_element": {
@@ -78,9 +72,7 @@
                     }
                 }
             },
-            "required": [
-                "forms"
-            ],
+            "required": ["forms"],
             "additionalProperties": true
         },
         "form_element": {

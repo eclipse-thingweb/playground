@@ -13,9 +13,7 @@
             }
         }
     },
-    "required": [
-        "securityDefinitions"
-    ],
+    "required": ["securityDefinitions"],
     "additionalProperties": true,
     "definitions": {
         "securityScheme": {
@@ -26,9 +24,7 @@
                         "type": "string"
                     }
                 },
-                "required": [
-                    "description"
-                ]
+                "required": ["description"]
             },
             "then": {
                 "const": "td-vocab-description--SecurityScheme=pass"

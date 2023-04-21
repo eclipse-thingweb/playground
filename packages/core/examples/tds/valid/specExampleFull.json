@@ -10,9 +10,7 @@
             "in": "header"
         }
     },
-    "security": [
-        "basic_sc"
-    ],
+    "security": ["basic_sc"],
     "properties": {
         "status": {
             "readOnly": false,

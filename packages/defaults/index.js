@@ -1,6 +1,21 @@
-const {defaultLookup, defaultClasses} = require("./src/definitions")
-const {sharedDefaults, sharedDataSchema, sharedOneObject} = require("./src/shared")
-const {objEquality} = require( './src/util' )
+/* 
+ *   Copyright (c) 2023 Contributors to the Eclipse Foundation
+ *   
+ *   See the NOTICE file(s) distributed with this work for additional
+ *   information regarding copyright ownership.
+ *   
+ *   This program and the accompanying materials are made available under the
+ *   terms of the Eclipse Public License v. 2.0 which is available at
+ *   http://www.eclipse.org/legal/epl-2.0, or the W3C Software Notice and
+ *   Document License (2015-05-13) which is available at
+ *   https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document.
+ *   
+ *   SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
+ */
+
+const { defaultLookup, defaultClasses } = require("./src/definitions");
+const { sharedDefaults, sharedDataSchema, sharedOneObject } = require("./src/shared");
+const { objEquality } = require("./src/util");
 
 /**
  * Extends a given TD with the default values of fields that aren't filled.
@@ -8,7 +23,7 @@ const {objEquality} = require( './src/util' )
  * @returns {void}
  */
 function addDefaults(td) {
-    sharedDefaults(td, extendOneObject, extendDataSchema)
+    sharedDefaults(td, extendOneObject, extendDataSchema);
 }
 
 /**
@@ -17,7 +32,7 @@ function addDefaults(td) {
  * @returns {void}
  */
 function removeDefaults(td) {
-    sharedDefaults(td, reduceOneObject, reduceDataSchema)
+    sharedDefaults(td, reduceOneObject, reduceDataSchema);
 }
 
 /**
@@ -25,7 +40,7 @@ function removeDefaults(td) {
  * @param {object} dataSchema A TD dataSchema object
  */
 function extendDataSchema(dataSchema) {
-    sharedDataSchema(dataSchema, extendOneObject)
+    sharedDataSchema(dataSchema, extendOneObject);
 }
 
 /**
@@ -33,9 +48,8 @@ function extendDataSchema(dataSchema) {
  * @param {object} dataSchema A TD dataSchema object
  */
 function reduceDataSchema(dataSchema) {
-    sharedDataSchema(dataSchema, reduceOneObject)
+    sharedDataSchema(dataSchema, reduceOneObject);
 }
-
 
 /**
  * Adds default values to one given object,
@@ -45,40 +59,37 @@ function reduceDataSchema(dataSchema) {
  * @param {{}} parentInteraction Only for read/writeOnly special case
  */
 function extendOneObject(target, type, parentInteraction) {
-
     const callback = (cTarget, cType, cParent) => {
         // treat special case, that readOnly / writeOnly should be respected
         if (cType === "Form-PropertyAffordance" && (cParent.readOnly || cParent.writeOnly)) {
             if (cTarget.op === undefined) {
                 if (cParent.readOnly && cParent.writeOnly) {
-                    console.warn("readOnly and writeOnly are both true for: ", cParent)
+                    console.warn("readOnly and writeOnly are both true for: ", cParent);
                     // do not set op in this case
-                }
-                else if (cParent.readOnly) {
-                    cTarget.op = "readproperty"
-                }
-                else {
-                    cTarget.op = "writeproperty"
+                } else if (cParent.readOnly) {
+                    cTarget.op = "readproperty";
+                } else {
+                    cTarget.op = "writeproperty";
                 }
             }
         }
         // default behavior
         else {
-            const defaultSource = defaultLookup[cType]
+            const defaultSource = defaultLookup[cType];
 
             if (cType === "AdditionalExpectedResponse" && cParent.contentType) {
-                defaultSource.contentType = cParent.contentType
+                defaultSource.contentType = cParent.contentType;
             }
 
-            Object.keys(defaultSource).forEach( key => {
+            Object.keys(defaultSource).forEach((key) => {
                 if (cTarget[key] === undefined) {
-                    cTarget[key] = defaultSource[key]
+                    cTarget[key] = defaultSource[key];
                 }
-            })
+            });
         }
-    }
+    };
 
-    sharedOneObject(target, type, callback, parentInteraction)
+    sharedOneObject(target, type, callback, parentInteraction);
 }
 
 /**
@@ -89,40 +100,39 @@ function extendOneObject(target, type, parentInteraction) {
  * @param {{}} parentInteraction Only for read/writeOnly special case
  */
 function reduceOneObject(target, type, parentInteraction) {
-
     const callback = (cTarget, cType, cParent) => {
         // treat special case, that readOnly / writeOnly should be respected
-        if (cType === "Form-PropertyAffordance" && (cParent.readOnly || cParent.writeOnly) && typeof cTarget.op === "string") {
+        if (
+            cType === "Form-PropertyAffordance" &&
+            (cParent.readOnly || cParent.writeOnly) &&
+            typeof cTarget.op === "string"
+        ) {
             if (cParent.readOnly && cParent.writeOnly) {
-                console.warn("readOnly and writeOnly are both true for: ", cParent)
+                console.warn("readOnly and writeOnly are both true for: ", cParent);
                 // do not set op in this case
-            }
-            else if (cParent.readOnly && cTarget.op === "readproperty") {
-                delete cTarget.op
-            }
-            else if (cParent.writeOnly && cTarget.op === "writeproperty") {
-                delete cTarget.op
-            }
-            else {
+            } else if (cParent.readOnly && cTarget.op === "readproperty") {
+                delete cTarget.op;
+            } else if (cParent.writeOnly && cTarget.op === "writeproperty") {
+                delete cTarget.op;
+            } else {
                 // do nothing
             }
-        }
-        else {
-            const defaultSource = defaultLookup[cType]
+        } else {
+            const defaultSource = defaultLookup[cType];
 
             if (cType === "AdditionalExpectedResponse" && cParent.contentType) {
-                defaultSource.contentType = cParent.contentType
+                defaultSource.contentType = cParent.contentType;
             }
 
-            Object.keys(defaultSource).forEach( key => {
+            Object.keys(defaultSource).forEach((key) => {
                 if (objEquality(cTarget[key], defaultSource[key])) {
-                    delete cTarget[key]
+                    delete cTarget[key];
                 }
-            })
+            });
         }
-    }
+    };
 
-    sharedOneObject(target, type, callback, parentInteraction)
+    sharedOneObject(target, type, callback, parentInteraction);
 }
 
 module.exports = {
@@ -133,5 +143,5 @@ module.exports = {
     reduceDataSchema,
     reduceOneObject,
     defaultLookup,
-    defaultClasses
-}
+    defaultClasses,
+};

@@ -1,6 +1,6 @@
 {
     "title": "MyLampThing",
-    "@context":"https://www.w3.org/2022/wot/td/v1.1",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:dev:wot:com:example:servient:lamp",
     "description": "Invalid TD since property has no form in property",
     "securityDefinitions": {

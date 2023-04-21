@@ -13,13 +13,9 @@
                     "type": "string"
                 }
             },
-            "required": [
-                "instance"
-            ]
+            "required": ["instance"]
         }
     },
-    "required": [
-        "version"
-    ],
+    "required": ["version"],
     "additionalProperties": true
 }

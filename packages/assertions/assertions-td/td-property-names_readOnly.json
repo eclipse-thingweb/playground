@@ -16,9 +16,7 @@
         "property_element": {
             "type": "object",
             "if": {
-                "required": [
-                    "readOnly"
-                ]
+                "required": ["readOnly"]
             },
             "then": {
                 "const": "td-property-names_readOnly=pass"

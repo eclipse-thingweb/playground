@@ -1,30 +1,32 @@
 {
     "id": "urn:simple",
-    "@context":"https://www.w3.org/2022/wot/td/v1.1",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "title": "MyLampThing",
-    "description":"Valid TD copied from the spec's first example",
+    "description": "Valid TD copied from the spec's first example",
     "securityDefinitions": {
-        "basic_sc": {"scheme": "basic","in":"header"}
+        "basic_sc": { "scheme": "basic", "in": "header" }
     },
     "security": ["basic_sc"],
     "properties": {
-        "status" : {
+        "status": {
             "type": "string",
-            "forms": [{"href": "https://mylamp.example.com/status"}]
+            "forms": [{ "href": "https://mylamp.example.com/status" }]
         }
     },
     "actions": {
-        "toggle" : {
-            "forms": [{"href": "https://mylamp.example.com/toggle"}]
+        "toggle": {
+            "forms": [{ "href": "https://mylamp.example.com/toggle" }]
         }
     },
-    "events":{
-        "overheating":{
-            "data": {"type": "string"},
-            "forms": [{
-                "href": "https://mylamp.example.com/oh",
-                "subprotocol": "longpoll"
-            }]
+    "events": {
+        "overheating": {
+            "data": { "type": "string" },
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/oh",
+                    "subprotocol": "longpoll"
+                }
+            ]
         }
     }
 }

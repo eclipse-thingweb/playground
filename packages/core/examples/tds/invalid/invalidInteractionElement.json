@@ -1,6 +1,6 @@
 {
     "id": "urn:dev:wot:com:example:servient:lamp",
-    "@context":"https://www.w3.org/2022/wot/td/v1.1",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "title": "MyLampThing",
     "description": "Invalid TD since the interaction called wrongAction is not object",
     "securityDefinitions": {
@@ -11,11 +11,13 @@
     },
     "security": ["basic_sc"],
     "actions": {
-        "wrongAction":"shouldBeObject",
+        "wrongAction": "shouldBeObject",
         "toggle": {
-            "forms": [{
-                "href": "https://mylamp.example.com/toggle"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/toggle"
+                }
+            ]
         }
     }
 }

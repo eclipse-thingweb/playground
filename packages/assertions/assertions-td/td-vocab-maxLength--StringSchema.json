@@ -61,9 +61,7 @@
                 "properties": {
                     "type": {
                         "type": "string",
-                        "enum": [
-                            "string"
-                        ]
+                        "enum": ["string"]
                     },
                     "maxLength": {
                         "type": "integer",
@@ -95,7 +93,8 @@
                         }
                     },
                     "items": {
-                        "oneOf": [{
+                        "oneOf": [
+                            {
                                 "$ref": "#/definitions/dataSchema"
                             },
                             {

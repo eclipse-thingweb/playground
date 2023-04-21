@@ -10,35 +10,17 @@
     },
     "ignorePatterns": "dist/**",
     "rules": {
-        "arrow-parens": [
-            "error",
-            "as-needed"
-        ],
+        "arrow-parens": ["error", "as-needed"],
         "camelcase": "error",
         "comma-dangle": "error",
         "complexity": "off",
         "constructor-super": "error",
         "dot-notation": "error",
-        "eqeqeq": [
-            "error",
-            "smart"
-        ],
+        "eqeqeq": ["error", "smart"],
         "guard-for-in": "error",
-        "id-blacklist": [
-            "error",
-            "any",
-            "number",
-            "String",
-            "string",
-            "Boolean",
-            "boolean",
-            "Undefined"
-        ],
+        "id-blacklist": ["error", "any", "number", "String", "string", "Boolean", "boolean", "Undefined"],
         "id-match": "error",
-        "max-classes-per-file": [
-            "error",
-            1
-        ],
+        "max-classes-per-file": ["error", 1],
         "max-len": [
             "warn",
             {
@@ -72,13 +54,10 @@
         "no-unused-labels": "error",
         "no-var": "error",
         "object-shorthand": "error",
-        "one-var": [
-            "error",
-            "never"
-        ],
+        "one-var": ["error", "never"],
         "prefer-const": "warn",
         "radix": "error",
-        "semi": ["warn","never"],
+        "semi": ["warn", "never"],
         "spaced-comment": "error",
         "use-isnan": "error",
         "valid-typeof": "off"

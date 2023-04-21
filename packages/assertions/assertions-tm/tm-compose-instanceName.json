@@ -22,9 +22,7 @@
                         "type": "string"
                     }
                 },
-                "required": [
-                    "instanceName"
-                ]
+                "required": ["instanceName"]
             },
             "then": {
                 "const": "tm-compose-instanceName=pass"

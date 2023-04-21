@@ -5,9 +5,7 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
     "if": {
-        "required": [
-            "@context"
-        ]
+        "required": ["@context"]
     },
     "then": {
         "properties": {
@@ -33,18 +31,20 @@
     "definitions": {
         "thing-context-w3c-uri": {
             "type": "string",
-            "enum": [
-                "https://www.w3.org/2019/wot/td/v1"
-            ]
+            "enum": ["https://www.w3.org/2019/wot/td/v1"]
         },
         "thing-context": {
-            "oneOf": [{
+            "oneOf": [
+                {
                     "type": "array",
-                    "items": [{
-                        "$ref": "#/definitions/thing-context-w3c-uri"
-                    }],
+                    "items": [
+                        {
+                            "$ref": "#/definitions/thing-context-w3c-uri"
+                        }
+                    ],
                     "additionalItems": {
-                        "anyOf": [{
+                        "anyOf": [
+                            {
                                 "$ref": "#/definitions/anyUri"
                             },
                             {
@@ -59,9 +59,9 @@
             ]
         },
         "anyUri": {
-        "anyUri": {
-            "type": "string"
-        }
+            "anyUri": {
+                "type": "string"
+            }
         }
     }
 }

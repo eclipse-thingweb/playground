@@ -1,6 +1,6 @@
 {
     "@context": [
-       "https://www.w3.org/2022/wot/td/v1.1",
+        "https://www.w3.org/2022/wot/td/v1.1",
         {
             "iot": "http://iotschema.org/"
         }
@@ -36,19 +36,23 @@
                     "@type": "iot:Direction"
                 }
             },
-            "forms": [{
-                "href": "coaps://mylamp.example.com/status",
-                "contentType": "application/json",
-                "op": "readproperty"
-            }]
+            "forms": [
+                {
+                    "href": "coaps://mylamp.example.com/status",
+                    "contentType": "application/json",
+                    "op": "readproperty"
+                }
+            ]
         },
         "status2": {
             "type": "string",
-            "forms": [{
-                "href": "coaps://mylamp.example.com/status",
-                "contentType": "application/json",
-                "op": "readproperty"
-            }]
+            "forms": [
+                {
+                    "href": "coaps://mylamp.example.com/status",
+                    "contentType": "application/json",
+                    "op": "readproperty"
+                }
+            ]
         }
     },
     "actions": {
@@ -69,16 +73,20 @@
                     "@type": "iot:Direction"
                 }
             },
-            "forms": [{
-                "href": "coaps://mylamp.example.com/toggle",
-                "contentType": "application/json"
-            }]
+            "forms": [
+                {
+                    "href": "coaps://mylamp.example.com/toggle",
+                    "contentType": "application/json"
+                }
+            ]
         },
         "status3": {
-            "forms": [{
-                "href": "coaps://mylamp.example.com/status",
-                "contentType": "application/json"
-            }]
+            "forms": [
+                {
+                    "href": "coaps://mylamp.example.com/status",
+                    "contentType": "application/json"
+                }
+            ]
         }
     },
     "events": {
@@ -102,16 +110,20 @@
             "data": {
                 "type": "string"
             },
-            "forms": [{
-                "href": "coaps://mylamp.example.com/oh",
-                "contentType": "application/json"
-            }]
+            "forms": [
+                {
+                    "href": "coaps://mylamp.example.com/oh",
+                    "contentType": "application/json"
+                }
+            ]
         },
         "status4": {
-            "forms": [{
-                "href": "coaps://mylamp.example.com/status",
-                "contentType": "application/json"
-            }]
+            "forms": [
+                {
+                    "href": "coaps://mylamp.example.com/status",
+                    "contentType": "application/json"
+                }
+            ]
         }
     }
 }

@@ -3,7 +3,7 @@
     "description": "minLength: Specifies the minimum length of a string. Only applicable for associated string types. MAY be included. Type: unsignedInt.",
     "$schema ": "http://json-schema.org/draft/2019-09/schema#",
     "is-complex": true,
-    "also":["td-data-schema_minLength", "td-property-names_minLength"],
+    "also": ["td-data-schema_minLength", "td-property-names_minLength"],
     "type": "object",
     "properties": {
         "properties": {
@@ -61,9 +61,7 @@
                 "properties": {
                     "type": {
                         "type": "string",
-                        "enum": [
-                            "string"
-                        ]
+                        "enum": ["string"]
                     },
                     "minLength": {
                         "type": "integer",
@@ -95,7 +93,8 @@
                         }
                     },
                     "items": {
-                        "oneOf": [{
+                        "oneOf": [
+                            {
                                 "$ref": "#/definitions/dataSchema"
                             },
                             {

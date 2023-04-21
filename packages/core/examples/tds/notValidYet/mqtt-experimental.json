@@ -13,9 +13,7 @@
             "scheme": "auto"
         }
     },
-    "security": [
-        "auto_sc"
-    ],
+    "security": ["auto_sc"],
     "schemaDefinitions": {
         "actionCancellation": {
             "type": "string",
@@ -148,10 +146,7 @@
             },
             "output": {
                 "type": "string",
-                "enum": [
-                    "that took a while",
-                    "that was quick"
-                ]
+                "enum": ["that took a while", "that was quick"]
             },
             "forms": [
                 {

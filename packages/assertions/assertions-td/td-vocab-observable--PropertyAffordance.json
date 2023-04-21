@@ -18,9 +18,7 @@
         "property_element": {
             "type": "object",
             "if": {
-                "required": [
-                    "observable"
-                ],
+                "required": ["observable"],
                 "properties": {
                     "observable": {
                         "type": "boolean"

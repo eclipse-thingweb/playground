@@ -13,9 +13,7 @@
             }
         }
     },
-    "required": [
-        "securityDefinitions"
-    ],
+    "required": ["securityDefinitions"],
     "additionalProperties": true,
     "definitions": {
         "securityScheme": {
@@ -30,9 +28,7 @@
                     },
                     "scheme": {
                         "type": "string",
-                        "enum": [
-                            "bearer"
-                        ]
+                        "enum": ["bearer"]
                     },
                     "authorization": {
                         "$ref": "#/definitions/url"
@@ -51,9 +47,7 @@
                         "type": "string"
                     }
                 },
-                "required": [
-                    "scheme","alg"
-                ]
+                "required": ["scheme", "alg"]
             },
             "then": {
                 "const": "td-vocab-alg--BearerSecurityScheme=pass"

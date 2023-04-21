@@ -3,7 +3,7 @@
     "description": "output: Used to define the output data schema of the action.",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "is-complex": true,
-    "also": ["td-action-objects_output","td-action-names_output"],
+    "also": ["td-action-objects_output", "td-action-names_output"],
     "type": "object",
     "properties": {
         "actions": {
@@ -18,10 +18,7 @@
         "action_element": {
             "type": "object",
             "if": {
-
-                "required": [
-                    "output"
-                ],
+                "required": ["output"],
                 "additionalProperties": true
             },
             "then": {
@@ -66,18 +63,11 @@
                 "const": {},
                 "type": {
                     "type": "string",
-                    "enum": [
-                        "boolean",
-                        "integer",
-                        "number",
-                        "string",
-                        "object",
-                        "array",
-                        "null"
-                    ]
+                    "enum": ["boolean", "integer", "number", "string", "object", "array", "null"]
                 },
                 "items": {
-                    "oneOf": [{
+                    "oneOf": [
+                        {
                             "$ref": "#/definitions/dataSchema"
                         },
                         {
@@ -89,16 +79,12 @@
                     ]
                 },
                 "maxItems": {
-
                     "type": "integer",
                     "minimum": 0
-
                 },
                 "minItems": {
-
                     "type": "integer",
                     "minimum": 0
-
                 },
                 "minimum": {
                     "type": "number"

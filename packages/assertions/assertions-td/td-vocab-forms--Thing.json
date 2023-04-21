@@ -3,7 +3,7 @@
     "description": "forms: Indicates one or more endpoints at which operation(s) on this resource are accessible. In this version of TD, all operations that can be described at the Thing level are concerning how to interact with the Thing's Property interaction resources collectively at once. MAY be included. Type: array of Form.",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "is-complex": false,
-    "also": ["td-forms", "td-vocab-href--Form","td-arrays_forms"],
+    "also": ["td-forms", "td-vocab-href--Form", "td-arrays_forms"],
     "type": "object",
     "properties": {
         "forms": {
@@ -14,9 +14,7 @@
             }
         }
     },
-    "required": [
-        "forms"
-    ],
+    "required": ["forms"],
     "additionalProperties": true,
     "definitions": {
         "form_element_root": {
@@ -26,7 +24,8 @@
                     "$ref": "#/definitions/url"
                 },
                 "op": {
-                    "oneOf": [{
+                    "oneOf": [
+                        {
                             "type": "string",
                             "enum": [
                                 "readallproperties",
@@ -38,7 +37,7 @@
                                 "queryallactions",
                                 "subscribeallevents",
                                 "unsubscribeallevents"
-                              ]
+                            ]
                         },
                         {
                             "type": "array",
@@ -54,7 +53,7 @@
                                     "queryallactions",
                                     "subscribeallevents",
                                     "unsubscribeallevents"
-                                  ]
+                                ]
                             }
                         }
                     ]
@@ -76,9 +75,7 @@
                 },
                 "subprotocol": {
                     "type": "string",
-                    "enum": [
-                        "longpoll", "websub", "sse"
-                    ]
+                    "enum": ["longpoll", "websub", "sse"]
                 },
                 "response": {
                     "type": "object",
@@ -89,9 +86,7 @@
                     }
                 }
             },
-            "required": [
-                "href"
-            ],
+            "required": ["href"],
             "additionalProperties": true
         },
         "url": {

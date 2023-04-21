@@ -1,6 +1,6 @@
 {
     "id": "urn:rootForms",
-    "@context":"https://www.w3.org/2022/wot/td/v1.1",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "title": "MyLampThing",
     "description": "Valid TD demonstrating how to use forms in the root of the TD document",
     "securityDefinitions": {
@@ -10,30 +10,36 @@
         }
     },
     "security": ["basic_sc"],
-    "forms": [{
-        "href": "https://mylamp.example.com/allproperties",
-        "contentType": "application/json",
-        "op": ["readallproperties"],
-        "htv:methodName": "GET"
-    },
-    {
-        "href": "https://mylamp.example.com/allproperties",
-        "contentType": "application/json",
-        "op": ["writeallproperties"],
-        "htv:methodName": "PUT"
-    }],
+    "forms": [
+        {
+            "href": "https://mylamp.example.com/allproperties",
+            "contentType": "application/json",
+            "op": ["readallproperties"],
+            "htv:methodName": "GET"
+        },
+        {
+            "href": "https://mylamp.example.com/allproperties",
+            "contentType": "application/json",
+            "op": ["writeallproperties"],
+            "htv:methodName": "PUT"
+        }
+    ],
     "properties": {
         "status": {
             "type": "string",
-            "forms": [{
-                "href": "https://mylamp.example.com/status"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status"
+                }
+            ]
         },
         "color": {
             "type": "integer",
-            "forms": [{
-                "href": "https://mylamp.example.com/color"
-            }]
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/color"
+                }
+            ]
         }
     }
 }

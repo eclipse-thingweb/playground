@@ -1,9 +1,7 @@
 {
     "id": "urn:required",
     "$comment": "example 57 of the spec",
-    "@context": [
-        "https://www.w3.org/2022/wot/td/v1.1"
-    ],
+    "@context": ["https://www.w3.org/2022/wot/td/v1.1"],
     "title": "The title",
     "description": "The description",
     "securityDefinitions": {
@@ -20,11 +18,7 @@
             "readOnly": true,
             "writeOnly": false,
             "observable": false,
-            "enum": [
-                "on_value",
-                "off_value",
-                "error_value"
-            ],
+            "enum": ["on_value", "off_value", "error_value"],
             "forms": [
                 {
                     "op": "readproperty",

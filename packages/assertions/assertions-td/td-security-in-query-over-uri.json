@@ -13,9 +13,7 @@
             }
         }
     },
-    "required": [
-        "securityDefinitions"
-    ],
+    "required": ["securityDefinitions"],
     "additionalProperties": true,
     "definitions": {
         "securityScheme": {
@@ -24,9 +22,7 @@
                 "properties": {
                     "scheme": {
                         "type": "string",
-                        "enum": [
-                            "apikey","basic","bearer","digest"
-                        ]
+                        "enum": ["apikey", "basic", "bearer", "digest"]
                     },
                     "in": {
                         "type": "string",
