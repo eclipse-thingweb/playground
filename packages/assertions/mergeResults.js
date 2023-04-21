@@ -1,31 +1,16 @@
-/* Merge test results.
- * Read from all assertion test results and return a merged file
- *  Merged files
- * are also sorted by ID.
- *
- * For file format and usage, see testing/README.md and testing/results.
- *
- * Results mentioned in only one input will be output as-is.
- * Results for the same assertion mentioned in more
- * than one file with different statuses will be combined
- * as follows (order of inputs does not matter):
- *   {pass, fail} -> fail
- *   {not-impl, fail} -> fail
- *   {not-impl, pass} -> pass
- * In other words, one failure in any test means the entire
- * result is considered a failure.  Passes also dominate
- * not-implemented statuses.
- *
- * The purpose of this script is to combine results
- * for a single implementation (eg from different test runs
- * or for different test cases) so each implementation is
- * counted only once in the implementation report.
- * Each file in testing/results is considered to be
- * for a separate implementation so results for such
- * multiple internal tests should be combined into a single
- * file before generating the implementation report.
- *
- * Comments in the input will be concatenated in the output.
+/* 
+ *   Copyright (c) 2023 Contributors to the Eclipse Foundation
+ *   
+ *   See the NOTICE file(s) distributed with this work for additional
+ *   information regarding copyright ownership.
+ *   
+ *   This program and the accompanying materials are made available under the
+ *   terms of the Eclipse Public License v. 2.0 which is available at
+ *   http://www.eclipse.org/legal/epl-2.0, or the W3C Software Notice and
+ *   Document License (2015-05-13) which is available at
+ *   https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document.
+ *   
+ *   SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
  */
 
 // Dependencies
