@@ -2,9 +2,10 @@
 
 Try it online at [http://plugfest.thingweb.io/playground/](http://plugfest.thingweb.io/playground/)
 
-[![GitHub license](https://img.shields.io/github/license/thingweb/thingweb-playground)](./LICENSE.md)
-[![Default CI & CD Pipeline](https://github.com/eclipse/thingweb.td-playground/actions/workflows/ci-cd.yaml/badge.svg)](https://github.com/eclipse/thingweb.td-playground/actions/workflows/ci-cd.yaml)
-[![CodeQL](https://github.com/eclipse/thingweb.td-playground/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/eclipse/thingweb.td-playground/actions/workflows/codeql-analysis.yml)
+[![Default CI & CD Pipeline](https://github.com/thingweb/thingweb-playground/actions/workflows/ci-cd.yaml/badge.svg)](https://github.com/thingweb/thingweb-playground/actions/workflows/ci-cd.yaml)
+[![CodeQL](https://github.com/thingweb/thingweb-playground/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/thingweb/thingweb-playground/actions/workflows/codeql-analysis.yml)
+[![Discord](https://img.shields.io/badge/Discord-7289DA?logo=discord&logoColor=white&label=td-playground)](https://discord.gg/9yaFmkJ9GT)
+[<img alt="npm" src="https://img.shields.io/npm/dw/@thing-description-playground/core">](https://npm-stat.com/charts.html?package=%2540thing-description-playground%252Fcore)
 
 ## Installation
 
@@ -16,25 +17,38 @@ There are different ways to use Playground:
 ## Structure
 
 The structure of all Web of Things (WoT) Playground packages is shown here: ![packageStructure](images/playground-structure.png)  
-The core package provides a function to check whether a Thing Description (TD) is valid according to the W3C WoT [standard](https://w3c.github.io/wot-thing-description/#).
-Its functionality can be imported, as well as the assertion checks of the assertion package.
-They create a report stating how much standard assertions a fulfilled by a single TD or WoT Implementation.
+
+All packages (except CLI and Web) are designed to be used as an imported package in a Node.js project or as a web bundle in a Web application. 
+This allows them to be used in the Web package as part of a Web UI or inside the CLI.
+
+- The core package provides a function to check whether a Thing Description (TD) is valid according to the W3C WoT [Thing Description standard](https://w3c.github.io/wot-thing-description/#).
+It uses the official JSON Schema plus additional scripts for aspects which cannot be checked with a JSON Schema alone.
+Used together with the assertions package, it allows to check whether all of the features of the TD standard are present in a single TD or a group of TDs representing an implementation.
+
+
 Both packages are used by the Web and CLI packages to provide their functionalities, plus IO functionalities through an UI.
 
 ## Packages
 
-The packages in this repository ([here](./packages)), which you find on NPM under [@thing-description-playground/packageName](https://www.npmjs.com/search?q=%40thing-description-playground).
+The packages in this repository  are available under ([packages folder](./packages)) or on NPM under [@thing-description-playground/packageName](https://www.npmjs.com/search?q=%40thing-description-playground). 
 
--   You can use the `assertion` package to integrate assertion testing via an API in your own packages. The assertions package can be found [here](./packages/assertions/) or [on NPM](https://www.npmjs.com/package/@thing-description-playground/assertions).
--   You can use the `cli` package to test one/multiple TDs via the command line or execute assertion testing with it. The cli for the playground can be found [here](./packages/cli/) or [on NPM](https://www.npmjs.com/package/@thing-description-playground/cli).
--   You can use the `core` package as an API to validate TDs in your own packages. The core package can be found [here](./packages/core/) or [on NPM](https://www.npmjs.com/package/@thing-description-playground/core).
--   You can use the `defaults` package to add/remove explicitly stated default values in a TD. The default package can be found [here](./packages/defaults/) or [on NPM](https://www.npmjs.com/package/@thing-description-playground/defaults).
--   You can use the `td_to_openAPI` package to create an openAPI instance from a Thing Description. The package can be found [here](./packages/td_to_openAPI) or [on NPM](https://www.npmjs.com/package/@thing-description-playground/td_to_openapi).
--   You can use the `web` package to host/adapt your own browser version of the WoT playground. The web package can be found [here](./packages/web/) or [on NPM](https://www.npmjs.com/package/@thing-description-playground/web).
+Reusable packages:
+
+-   [core](./packages/core/): The core package provides a function to check whether a Thing Description (TD) is valid according to the W3C WoT [Thing Description standard](https://w3c.github.io/wot-thing-description/#).
+It uses the official JSON Schema plus additional scripts for aspects which cannot be checked with a JSON Schema alone. It generates a JSON report of the validation results. [NPM](https://www.npmjs.com/package/@thing-description-playground/core).
+-   [assertions](./packages/assertions/): The assertions package allows to check whether all of the features of the TD standard are present in a single TD or a group of TDs representing an implementation. It needs to be used together with the core package since some features are detected by the core package. [NPM](https://www.npmjs.com/package/@thing-description-playground/assertions).
+-   [defaults](./packages/defaults/): The defaults package can be used to add or remove explicitly stated default values in a TD. It has no dependency to other playground packages. [NPM](https://www.npmjs.com/package/@thing-description-playground/defaults).
+-   [td_to_openAPI](./packages/td_to_openAPI): The Open API package allows to create an Open API instance from a Thing Description which has HTTP in the forms. It has no dependency to other playground packages.[NPM](https://www.npmjs.com/package/@thing-description-playground/td_to_openapi).
+-   [td_to_asyncAPI](./packages/td_to_openAPI): The Async API package allows to create an Async API instance from a Thing Description which has MQTT in the forms. It only depends on the defaults package to add defaults to a TD before generating the Async API instance. [NPM](https://www.npmjs.com/package/@thing-description-playground/td_to_asyncapi).
+-   [json-spell-checker](./packages/json-spell-checker): The JSON Spell Checker package allows to find spelling mistakes (e.g. action instead of actions) in a JSON document according to its JSON Schema. Such JSON documents could be TDs, Open API specs etc. [NPM](https://www.npmjs.com/package/@thing-description-playground/json-spell-checker).
+
+End Product Packages: 
+-   [cli](./packages/cli/): The CLI package wraps the above packages in way they can be used from the command line. Additionally, it allows the functionalities of the other packages to be executed on a set of TDs. [NPM](https://www.npmjs.com/package/@thing-description-playground/cli).
+-   [web](./packages/web/): The Web package wraps the above packages in way they can be used from a browser interface. You can host/adapt your own browser version of the playground. It is online at [http://plugfest.thingweb.io/playground/](http://plugfest.thingweb.io/playground/)[NPM](https://www.npmjs.com/package/@thing-description-playground/web).
 
 ## Examples
 
-Examples are included in the `core` and can be used in the web interface by a dropdown menu.
+Examples are included in the [core](./packages/core/examples) and in the [examples folder](./examples) in the root of the project.
 
 ## Browser based Thing Description Validation
 
@@ -60,7 +74,7 @@ Please have look at the `cli` [package](https://github.com/eclipse/thingweb.td-p
 
 ## License
 
-All packages are licensed under the MIT license. You find a copy of the License [here](./LICENSE.md).
+All packages are licensed under the Eclipse Public License v. 2.0. You find a copy of the License [here](./LICENSE.md).
 
 ## Publish a new version
 
