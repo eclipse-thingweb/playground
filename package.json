@@ -18,7 +18,7 @@
         "install": "lerna bootstrap",
         "lint": "npm run lint --silent --if-present",
         "lint:fix": "npm run lint:fix --silent --if-present",
-        "format": "prettier --write . && npm run format --silent --if-present",
+        "format": "prettier --write . && npm run format --silent --workspaces --if-present",
         "format:quick": "pretty-quick"
     }
 }
