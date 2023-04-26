@@ -9,16 +9,20 @@
         "url": "https://github.com/eclipse/thingweb.td-playground.git"
     },
     "devDependencies": {
-        "lerna": "^5.4.3",
+        "@microsoft/eslint-formatter-sarif": "^2.1.7",
+        "eslint": "^8.22.0",
+        "eslint-config-prettier": "^8.8.0",
         "husky": "^7.0.4",
+        "lerna": "^5.4.3",
         "prettier": "^2.3.2",
         "pretty-quick": "^3.1.1"
     },
     "scripts": {
         "install": "lerna bootstrap",
-        "lint": "npm run lint --silent --if-present",
-        "lint:fix": "npm run lint:fix --silent --if-present",
-        "format": "prettier --write . && npm run format --silent --if-present",
+        "lint": "npx eslint . --config .eslintrc.json",
+        "lint:sarif": "npx eslint . --config .eslintrc.json --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif",
+        "lint:fix": "npx eslint . --config .eslintrc.json --fix",
+        "format": "prettier --write . && npm run format --silent --workspaces --if-present",
         "format:quick": "pretty-quick"
     }
 }

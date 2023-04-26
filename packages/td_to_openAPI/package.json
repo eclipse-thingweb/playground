@@ -19,8 +19,7 @@
         "testAll": "node testAll.js",
         "bundle": "npx browserify ./index.js -s tdToOpenAPI -o ./dist/web-bundle.js && npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
         "updateExamples": "node ./examples/updateExamples.js",
-        "prepare": "npm run bundle",
-        "lint": "npx eslint . --config .eslintrc.json --ext .js,.jsx,.ts,.tsx --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif"
+        "prepare": "npm run bundle"
     },
     "dependencies": {
         "json-schema-faker": "^0.5.0-rcv.44",
@@ -28,9 +27,7 @@
         "swagger-parser": "^10.0.3"
     },
     "devDependencies": {
-        "@microsoft/eslint-formatter-sarif": "^2.1.7",
         "browserify": "^17.0.0",
-        "eslint": "^8.22.0",
         "jest": "^28.1.3",
         "terser": "^5.14.2"
     },

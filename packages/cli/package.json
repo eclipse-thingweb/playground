@@ -16,8 +16,7 @@
     "main": "index.js",
     "scripts": {
         "test": "node ./tests/index-test.js",
-        "start": "node ./index.js",
-        "lint": "npx eslint . --config .eslintrc.json --ext .js,.jsx,.ts,.tsx --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif"
+        "start": "node ./index.js"
     },
     "dependencies": {
         "@thing-description-playground/assertions": "^1.5.0",
@@ -33,9 +32,7 @@
         "access": "public"
     },
     "devDependencies": {
-        "@microsoft/eslint-formatter-sarif": "^2.1.7",
-        "@types/commander": "^2.12.2",
-        "eslint": "^8.22.0"
+        "@types/commander": "^2.12.2"
     },
     "gitHead": "370e099b807034ad22e3a604f4340c82c0a47c30"
 }
