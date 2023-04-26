@@ -17,8 +17,7 @@
     "scripts": {
         "test": "node test.js",
         "debug": "node test.js -d",
-        "serve": "serve -p 5500",
-        "lint": "npx eslint . --config .eslintrc.json --ext .js,.jsx,.ts,.tsx --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif"
+        "serve": "serve -p 5500"
     },
     "dependencies": {
         "@thing-description-playground/assertions": "^1.5.0",
@@ -37,9 +36,7 @@
     "devDependencies": {
         "@babel/core": "^7.19.6",
         "@babel/preset-env": "^7.19.4",
-        "@microsoft/eslint-formatter-sarif": "^2.1.7",
         "browserify": "^17.0.0",
-        "eslint": "^8.22.0",
         "playwright": "^1.25.0",
         "serve": "^14.0.1",
         "serve-handler": "^6.1.3",
