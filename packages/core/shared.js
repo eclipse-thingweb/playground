@@ -933,7 +933,7 @@ function checkUriSecurity(td) {
                 Status: uriVariablesResult,
             });
             results.push({
-                ID: "td-security-uri-variable-distinct",
+                ID: "td-security-uri-variables-distinct",
                 Status: uriVariablesDistinctResult,
             });
             return results;
