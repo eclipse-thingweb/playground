@@ -1,0 +1,38 @@
+{
+    "@context": [
+        "https://www.w3.org/2019/wot/td/v1",
+        "https://www.w3.org/2022/wot/td/v1.1",
+        {
+            "@language": "en"
+        }
+    ],
+    "title": "DaylightSensor",
+    "security": "api_sc",
+    "securityDefinitions": {
+        "api_sc": {
+            "scheme": "apikey",
+            "in": "uri",
+            "name": "hueKey"
+        }
+    },
+    "id": "urn:dev:ops:32473-HueDaylight-1234",
+    "description": "Daylight information based on the GPS coordinates of the Hue Bridge",
+    "properties": {
+        "sensorInformation": {
+            "title": "Sensor Information",
+            "description": "State, config and other metadata about the sensor",
+            "type": "object",
+            "readOnly": true,
+            "writeOnly": false,
+            "forms": [
+                {
+                    "href": "https://esiremotelab.esi.ei.tum.de:8081/LabLocal/api/{hueKey}/sensors/1",
+                    "contentType": "application/json",
+                    "op": [
+                        "readproperty"
+                    ]
+                }
+            ]
+        }
+    }
+}
