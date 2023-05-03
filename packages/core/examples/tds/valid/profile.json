@@ -1,0 +1,16 @@
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "id": "urn:profile:1",
+    "profile": "https://www.w3.org/2022/wot/profile/http-basic/v1",
+    "title": "My Lamp",
+    "description": "Showcasing example of a profile",
+    "securityDefinitions": {
+        "basic_sc": {
+            "scheme": "basic",
+            "in": "header"
+        }
+    },
+    "security": [
+        "basic_sc"
+    ]
+}

@@ -22,8 +22,9 @@
         },
         "status": {
             "type": "number",
-            "minimum": 5,
-            "maximum": 1212,
+            "minimum": 5.1,
+            "maximum": 1210.1,
+            "multipleOf": 0.1,
             "unit": "complicatedTemperatureUnit",
             "readOnly": false,
             "writeOnly": false,
@@ -108,6 +109,8 @@
             "description": "something",
             "type": "string",
             "format": "email",
+            "maxLength":300,
+            "minLength": 10,
             "forms": [
                 {
                     "href": "https://mylamp.example.com/status6"
@@ -127,7 +130,20 @@
             ],
             "forms": [
                 {
-                    "href": "https://mylamp.example.com/status5"
+                    "href": "https://mylamp.example.com/status8"
+                }
+            ]
+        },
+        "status9": {
+            "type": "array",
+            "items": {
+                "type": "number"
+            },
+            "minLength":1,
+            "maxLength": 2,
+            "forms": [
+                {
+                    "href": "https://mylamp.example.com/status9"
                 }
             ]
         }

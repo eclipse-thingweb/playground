@@ -159,12 +159,12 @@
     "securityDefinitions": {
         "oauth2_sc": {
             "scheme": "oauth2",
-            "flow": "client",
-            "in": "header",
-            "name": "authorization"
+            "flow": "device",
+            "authorization": "https://localhost:3000/auth",
+            "token": "https://localhost:3000/token"
         }
     },
     "security": "oauth2_sc",
     "base": "https://localhost:8080/mygardenthing/",
-    "description": "Automate the gardening water system based on weather prediction, temperature and soil humidity"
+    "description": "Showcasing Device Flow in Oauth2"
 }

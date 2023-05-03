@@ -173,6 +173,7 @@
                     "that was quick"
                 ]
             },
+            "synchronous":false,
             "forms": [
                 {
                     "href": "mqtt://test.mosquitto.org",
@@ -212,6 +213,25 @@
             ]
         }
     },
+    "events":{
+        "status": {
+            "title": "Sensor Status",
+            "enum": [
+                "unknown",
+                "warmup",
+                "normal",
+                "fault"
+            ],
+            "type": "string",
+            "forms": [
+                {
+                    "href": "mqtt://broker.com/",
+                    "mqv:filter": "application/deviceid/sensor/operation",
+                    "op": "subscribeevent"
+                }
+            ]
+        }
+    },
     "links": [
         {
             "rel": "icon",
@@ -246,6 +266,17 @@
             "contentType": "application/json",
             "op": "unobserveallproperties",
             "mqv:controlPacket": "mqv:unsubscribe"
+        },
+        {
+            "href": "mqtt://test.mosquitto.org",
+            "mqv:topic": "EgeMyPublisher/actionTest",
+            "contentType": "application/json",
+            "op": "queryallactions"
+        },
+        {
+            "href": "mqtt://broker.com/",
+            "mqv:filter": "application/deviceid/sensor/operation",
+            "op": ["subscribeallevents","unsubscribeallevents"]
         }
     ]
 }
