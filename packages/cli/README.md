@@ -44,7 +44,7 @@ This tool checks which assertions are satisfied by a given Thing Description(s).
     1. Give multiple result files as arguments: `node index.js ./out/result-urn:another.csv ./out/result-urn:dev:wot:com:example:servient:lamp.csv -a`
         - You can put as many reports as you want after `node index.js` and before `-a`
     2. Give a directory containing multiple result files `node index.js ./out/ -a`
--   You can check the coverage of tge results.csv file with `node index.js results.csv -a` which will output a list to the std output indicating how many assertions passed, failed or not implemented
+-   You can check the coverage of the results.csv file with `node index.js results.csv -a` which will output a list to the std output indicating how many assertions passed, failed or not implemented
 
 **WARNING**: If you see an error like `ajv.errors[0].params.allowedValue` this very probably means that your TD is not valid at a specific point. Scroll up to see the precise error message
 

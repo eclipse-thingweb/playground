@@ -2,7 +2,7 @@
     "id": "urn:oneOf",
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "title": "MyLampThing",
-    "description":"example for showing how to use oneOf inside combo security",
+    "description": "example for showing how to use oneOf inside combo security",
     "securityDefinitions": {
         "apikey_key": {
             "scheme": "apikey",

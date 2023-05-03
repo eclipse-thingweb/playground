@@ -14,9 +14,7 @@
             "scheme": "auto"
         }
     },
-    "security": [
-        "auto_sc"
-    ],
+    "security": ["auto_sc"],
     "schemaDefinitions": {
         "actionCancellation": {
             "type": "string",
@@ -188,10 +186,7 @@
             },
             "output": {
                 "type": "string",
-                "enum": [
-                    "that took a while",
-                    "that was quick"
-                ],
+                "enum": ["that took a while", "that was quick"],
                 "readOnly": false,
                 "writeOnly": false
             },
@@ -240,12 +235,7 @@
     "events": {
         "status": {
             "title": "Sensor Status",
-            "enum": [
-                "unknown",
-                "warmup",
-                "normal",
-                "fault"
-            ],
+            "enum": ["unknown", "warmup", "normal", "fault"],
             "type": "string",
             "forms": [
                 {
@@ -301,10 +291,7 @@
         {
             "href": "mqtt://broker.com/",
             "mqv:filter": "application/deviceid/sensor/operation",
-            "op": [
-                "subscribeallevents",
-                "unsubscribeallevents"
-            ],
+            "op": ["subscribeallevents", "unsubscribeallevents"],
             "contentType": "application/json"
         }
     ]

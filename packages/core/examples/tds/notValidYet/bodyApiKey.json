@@ -24,9 +24,7 @@
             "name": "/-"
         }
     },
-    "security": [
-        "apikey_url"
-    ],
+    "security": ["apikey_url"],
     "properties": {
         "location": {
             "type": "object",

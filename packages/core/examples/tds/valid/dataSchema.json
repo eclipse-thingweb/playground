@@ -109,7 +109,7 @@
             "description": "something",
             "type": "string",
             "format": "email",
-            "maxLength":300,
+            "maxLength": 300,
             "minLength": 10,
             "forms": [
                 {
@@ -122,7 +122,7 @@
             "items": {
                 "type": "number"
             },
-            "minLength":1,
+            "minLength": 1,
             "maxLength": 2,
             "forms": [
                 {
