@@ -16,7 +16,6 @@
     },
     "scripts": {
         "test": "jest",
-        "testAll": "node testAll.js",
         "bundle": "npx browserify ./index.js -s tdToOpenAPI -o ./dist/web-bundle.js && npx terser ./dist/web-bundle.js -o ./dist/web-bundle.min.js",
         "updateExamples": "node ./examples/updateExamples.js",
         "prepare": "npm run bundle"
