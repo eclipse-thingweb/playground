@@ -1,10 +1,10 @@
 {
     "@context": [
-        "https://www.w3.org/2022/wot/td/v1.1",
-        {
-            "iot": "http://iotschema.org/",
-            "@language": "en"
-        }
+    "https://www.w3.org/2022/wot/td/v1.1",
+    {
+        "s": "http://schema.org",
+        "iot": "http://iotschema.org"
+    }
     ],
     "@type": "Thing",
     "id": "urn:semantic",
