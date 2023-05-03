@@ -15,9 +15,7 @@
             "in": "header"
         }
     },
-    "security": [
-        "basic_sc"
-    ],
+    "security": ["basic_sc"],
     "version": {
         "instance": "1.2.1"
     },
@@ -111,10 +109,7 @@
                 {
                     "href": "coaps://mylamp.example.com/{p}/{d}/oh",
                     "contentType": "application/json",
-                    "op": [
-                        "subscribeevent",
-                        "unsubscribeevent"
-                    ]
+                    "op": ["subscribeevent", "unsubscribeevent"]
                 }
             ]
         },
@@ -123,10 +118,7 @@
                 {
                     "href": "coaps://mylamp.example.com/{p}/{d}/status",
                     "contentType": "application/json",
-                    "op": [
-                        "subscribeevent",
-                        "unsubscribeevent"
-                    ]
+                    "op": ["subscribeevent", "unsubscribeevent"]
                 }
             ]
         }

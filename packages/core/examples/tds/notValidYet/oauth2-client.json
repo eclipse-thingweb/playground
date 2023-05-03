@@ -12,9 +12,7 @@
             "unit": "Celcius",
             "forms": [
                 {
-                    "op": [
-                        "readproperty"
-                    ],
+                    "op": ["readproperty"],
                     "href": "properties/temperature",
                     "contentType": "application/json"
                 }
@@ -32,9 +30,7 @@
             "unit": "percentage",
             "forms": [
                 {
-                    "op": [
-                        "readproperty"
-                    ],
+                    "op": ["readproperty"],
                     "href": "properties/soilHumidity",
                     "contentType": "application/json"
                 }
@@ -60,10 +56,7 @@
             "unit": "percentage",
             "forms": [
                 {
-                    "op": [
-                        "readproperty",
-                        "writeproperty"
-                    ],
+                    "op": ["readproperty", "writeproperty"],
                     "href": "properties/humidityThreshold",
                     "contentType": "application/json"
                 }
@@ -75,15 +68,10 @@
             "description": "Describes the state of the system for watering",
             "type": "string",
             "writeOnly": true,
-            "enum": [
-                "manualWatering",
-                "automaticWatering"
-            ],
+            "enum": ["manualWatering", "automaticWatering"],
             "forms": [
                 {
-                    "op": [
-                        "writeproperty"
-                    ],
+                    "op": ["writeproperty"],
                     "href": "properties/state",
                     "contentType": "application/json"
                 }
@@ -100,9 +88,7 @@
             "idempotent": false,
             "forms": [
                 {
-                    "op": [
-                        "invokeaction"
-                    ],
+                    "op": ["invokeaction"],
                     "href": "actions/startSprinkler",
                     "contentType": "application/json"
                 }
@@ -115,9 +101,7 @@
             "idempotent": false,
             "forms": [
                 {
-                    "op": [
-                        "invokeaction"
-                    ],
+                    "op": ["invokeaction"],
                     "href": "actions/stopSprinkler",
                     "contentType": "application/json"
                 }
@@ -130,10 +114,7 @@
             "description": "It is fired when the humidity reaches the set humidityThreshold",
             "forms": [
                 {
-                    "op": [
-                        "subscribeevent",
-                        "unsubscribeevent"
-                    ],
+                    "op": ["subscribeevent", "unsubscribeevent"],
                     "href": "events/tooDry",
                     "contentType": "application/json",
                     "subprotocol": "longpoll"
@@ -145,10 +126,7 @@
             "description": "It is fired when the humidity reaches 90 percent",
             "forms": [
                 {
-                    "op": [
-                        "subscribeevent",
-                        "unsubscribeevent"
-                    ],
+                    "op": ["subscribeevent", "unsubscribeevent"],
                     "href": "events/tooWet",
                     "contentType": "application/json",
                     "subprotocol": "longpoll"
@@ -163,11 +141,7 @@
             "in": "header",
             "name": "authorization",
             "token": "https://localhost:3000/token",
-            "scopes": [
-                "user",
-                "manger",
-                "admin"
-            ]
+            "scopes": ["user", "manger", "admin"]
         }
     },
     "security": "oauth2_sc",

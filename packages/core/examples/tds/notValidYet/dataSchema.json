@@ -12,7 +12,6 @@
     },
     "security": ["basic_sc"],
     "properties": {
-        
         "status8": {
             "type": "array",
             "items": [
@@ -30,6 +29,5 @@
                 }
             ]
         }
-        
     }
 }
