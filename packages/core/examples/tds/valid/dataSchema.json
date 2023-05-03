@@ -117,23 +117,6 @@
                 }
             ]
         },
-        "status8": {
-            "type": "array",
-            "items": [
-                {
-                    "type": "number"
-                },
-                {
-                    "type": "string",
-                    "format": "date-time"
-                }
-            ],
-            "forms": [
-                {
-                    "href": "https://mylamp.example.com/status8"
-                }
-            ]
-        },
         "status9": {
             "type": "array",
             "items": {

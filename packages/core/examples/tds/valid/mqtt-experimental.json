@@ -20,10 +20,14 @@
     "schemaDefinitions": {
         "actionCancellation": {
             "type": "string",
+            "readOnly": false,
+            "writeOnly": false,
             "const": "action canceled :-("
         },
         "actionQueryOutput": {
-            "type": "integer"
+            "type": "integer",
+            "readOnly": false,
+            "writeOnly": false
         }
     },
     "support": "https://github.com/egekorkan/wot-implementations/tree/master/mqtt-online",
@@ -35,25 +39,35 @@
             "oneOf": [
                 {
                     "type": "string",
-                    "const": "smaller than 3"
+                    "const": "smaller than 3",
+                    "readOnly": false,
+                    "writeOnly": false
                 },
                 {
                     "type": "string",
-                    "pattern": "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$"
+                    "pattern": "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$",
+                    "readOnly": false,
+                    "writeOnly": false
                 },
                 {
                     "type": "integer",
                     "multipleOf": 6,
                     "exclusiveMaximum": 60,
-                    "exclusiveMinimum": 0
+                    "exclusiveMinimum": 0,
+                    "readOnly": false,
+                    "writeOnly": false
                 },
                 {
                     "type": "number",
                     "exclusiveMaximum": 60,
-                    "exclusiveMinimum": 0
+                    "exclusiveMinimum": 0,
+                    "readOnly": false,
+                    "writeOnly": false
                 },
                 {
-                    "type": "null"
+                    "type": "null",
+                    "readOnly": false,
+                    "writeOnly": false
                 }
             ],
             "forms": [
@@ -78,7 +92,9 @@
             "writeOnly": false,
             "type": "array",
             "items": {
-                "type": "integer"
+                "type": "integer",
+                "readOnly": false,
+                "writeOnly": false
             },
             "maxItems": 5,
             "minItems": 2,
@@ -95,7 +111,8 @@
                     "op": "unobserveproperty",
                     "mqtt:methodCode": 10
                 }
-            ]
+            ],
+            "observable": false
         },
         "propertyConst": {
             "readOnly": true,
@@ -114,7 +131,8 @@
                     "op": "unobserveproperty",
                     "mqtt:methodCode": 10
                 }
-            ]
+            ],
+            "observable": false
         },
         "encodingTest": {
             "readOnly": true,
@@ -164,16 +182,20 @@
                 "type": "integer",
                 "minimum": 1,
                 "default": 10,
-                "description": "indicates how long this action should run in seconds"
+                "description": "indicates how long this action should run in seconds",
+                "readOnly": false,
+                "writeOnly": false
             },
             "output": {
                 "type": "string",
                 "enum": [
                     "that took a while",
                     "that was quick"
-                ]
+                ],
+                "readOnly": false,
+                "writeOnly": false
             },
-            "synchronous":false,
+            "synchronous": false,
             "forms": [
                 {
                     "href": "mqtt://test.mosquitto.org",
@@ -210,10 +232,12 @@
                         }
                     ]
                 }
-            ]
+            ],
+            "safe": false,
+            "idempotent": false
         }
     },
-    "events":{
+    "events": {
         "status": {
             "title": "Sensor Status",
             "enum": [
@@ -227,7 +251,8 @@
                 {
                     "href": "mqtt://broker.com/",
                     "mqv:filter": "application/deviceid/sensor/operation",
-                    "op": "subscribeevent"
+                    "op": "subscribeevent",
+                    "contentType": "application/json"
                 }
             ]
         }
@@ -276,7 +301,11 @@
         {
             "href": "mqtt://broker.com/",
             "mqv:filter": "application/deviceid/sensor/operation",
-            "op": ["subscribeallevents","unsubscribeallevents"]
+            "op": [
+                "subscribeallevents",
+                "unsubscribeallevents"
+            ],
+            "contentType": "application/json"
         }
     ]
 }

@@ -15,7 +15,9 @@
             "in": "header"
         }
     },
-    "security": ["basic_sc"],
+    "security": [
+        "basic_sc"
+    ],
     "version": {
         "instance": "1.2.1"
     },
@@ -24,12 +26,16 @@
             "type": "integer",
             "minimum": 0,
             "maximum": 16,
+            "writeOnly": true,
+            "readOnly": false,
             "@type": "iot:SomeKindOfAngle"
         },
         "d": {
             "type": "integer",
             "minimum": 0,
             "maximum": 1,
+            "writeOnly": true,
+            "readOnly": false,
             "@type": "iot:Direction"
         }
     },
@@ -42,7 +48,10 @@
                     "contentType": "application/json",
                     "op": "readproperty"
                 }
-            ]
+            ],
+            "observable": false,
+            "readOnly": false,
+            "writeOnly": false
         }
     },
     "actions": {
@@ -54,29 +63,39 @@
                     "type": "integer",
                     "minimum": 0,
                     "maximum": 16,
-                    "@type": "iot:SomeKindOfAngle"
+                    "@type": "iot:SomeKindOfAngle",
+                    "writeOnly": true,
+                    "readOnly": false
                 },
                 "b": {
                     "type": "integer",
                     "minimum": 0,
                     "maximum": 1,
-                    "@type": "iot:Direction"
+                    "@type": "iot:Direction",
+                    "writeOnly": true,
+                    "readOnly": false
                 }
             },
             "forms": [
                 {
                     "href": "coaps://mylamp.example.com/{p}/{d}/toggle/{?a,b}",
-                    "contentType": "application/json"
+                    "contentType": "application/json",
+                    "op": "invokeaction"
                 }
-            ]
+            ],
+            "safe": false,
+            "idempotent": false
         },
         "status3": {
             "forms": [
                 {
                     "href": "coaps://mylamp.example.com/{p}/{d}/status",
-                    "contentType": "application/json"
+                    "contentType": "application/json",
+                    "op": "invokeaction"
                 }
-            ]
+            ],
+            "safe": false,
+            "idempotent": false
         }
     },
     "events": {
@@ -84,12 +103,18 @@
             "@type": "iot:TemperatureAlarm",
             "description": "Lamp reaches a critical temperature (overheating)",
             "data": {
-                "type": "string"
+                "type": "string",
+                "readOnly": false,
+                "writeOnly": false
             },
             "forms": [
                 {
                     "href": "coaps://mylamp.example.com/{p}/{d}/oh",
-                    "contentType": "application/json"
+                    "contentType": "application/json",
+                    "op": [
+                        "subscribeevent",
+                        "unsubscribeevent"
+                    ]
                 }
             ]
         },
@@ -97,7 +122,11 @@
             "forms": [
                 {
                     "href": "coaps://mylamp.example.com/{p}/{d}/status",
-                    "contentType": "application/json"
+                    "contentType": "application/json",
+                    "op": [
+                        "subscribeevent",
+                        "unsubscribeevent"
+                    ]
                 }
             ]
         }
