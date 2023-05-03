@@ -21,7 +21,7 @@
         "apikey_body3": {
             "scheme": "apikey",
             "in": "body",
-            "name": "-"
+            "name": "/-"
         }
     },
     "security": [
