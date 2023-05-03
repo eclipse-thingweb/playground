@@ -1,0 +1,193 @@
+{
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "title": "A robot with different api keys everywhere",
+    "description": "TD Demonstrating the use of API Key in different places",
+    "securityDefinitions": {
+        "apikey_url": {
+            "scheme": "apikey",
+            "in": "uri",
+            "name": "urlKey"
+        },
+        "apikey_body1": {
+            "scheme": "apikey",
+            "in": "body",
+            "name": "/keyLocation"
+        },
+        "apikey_body2": {
+            "scheme": "apikey",
+            "in": "body",
+            "name": "/keyLocationInvisible"
+        },
+        "apikey_body3": {
+            "scheme": "apikey",
+            "in": "body",
+            "name": "/-"
+        }
+    },
+    "security": [
+        "apikey_url"
+    ],
+    "properties": {
+        "location": {
+            "type": "object",
+            "properties": {
+                "x": {
+                    "type": "integer"
+                },
+                "y": {
+                    "type": "integer"
+                },
+                "z": {
+                    "type": "integer"
+                }
+            },
+            "readOnly": true,
+            "writeOnly": false,
+            "observable": false,
+            "forms": [
+                {
+                    "href": "http://localhost:8080/{urlKey}/location",
+                    "op": "readproperty",
+                    "contentType": "application/json",
+                    "security": "apikey_url"
+                }
+            ]
+        },
+        "ownerInformation": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "surname": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            },
+            "readOnly": true,
+            "writeOnly": false,
+            "observable": false,
+            "forms": [
+                {
+                    "href": "http://localhost:8080/{urlKey}/location",
+                    "op": "readproperty",
+                    "contentType": "application/json",
+                    "security": "apikey_url"
+                }
+            ]
+        }
+    },
+    "actions": {
+        "moveTo1": {
+            "input": {
+                "type": "object",
+                "properties": {
+                    "x": {
+                        "type": "integer"
+                    },
+                    "y": {
+                        "type": "integer"
+                    },
+                    "z": {
+                        "type": "integer"
+                    },
+                    "keyLocation": {
+                        "type": "string"
+                    }
+                }
+            },
+            "safe": false,
+            "idempotent": false,
+            "forms": [
+                {
+                    "href": "http://localhost:8080/actions/moveTo1",
+                    "op": "invokeaction",
+                    "contentType": "application/json",
+                    "security": "apikey_body1"
+                }
+            ]
+        },
+        "moveTo2": {
+            "input": {
+                "type": "object",
+                "properties": {
+                    "x": {
+                        "type": "integer"
+                    },
+                    "y": {
+                        "type": "integer"
+                    },
+                    "z": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "safe": false,
+            "idempotent": false,
+            "forms": [
+                {
+                    "href": "http://localhost:8080/actions/moveTo1",
+                    "op": "invokeaction",
+                    "contentType": "application/json",
+                    "security": "apikey_body2"
+                }
+            ]
+        },
+        "moveInSequence": {
+            "description": "This allows sending multiple moves in sequence and how long to pause before next move",
+            "input": {
+                "type": "array",
+                "items": [
+                    {
+                        "type": "object",
+                        "properties": {
+                            "x": {
+                                "type": "integer"
+                            },
+                            "y": {
+                                "type": "integer"
+                            },
+                            "z": {
+                                "type": "integer"
+                            },
+                            "pause": {
+                                "description": "How long to pause before next move",
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "x": {
+                                "type": "integer"
+                            },
+                            "y": {
+                                "type": "integer"
+                            },
+                            "z": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                ],
+                "additionalItems": {
+                    "type": "string"
+                }
+            },
+            "safe": false,
+            "idempotent": false,
+            "forms": [
+                {
+                    "href": "http://localhost:8080/actions/moveInSequence",
+                    "op": "invokeaction",
+                    "contentType": "application/json",
+                    "security": "apikey_body3"
+                }
+            ]
+        }
+    },
+    "id": "urn:uuid5833154f-f20e-4fe4-af18-ddf6fb3d3ab4"
+}

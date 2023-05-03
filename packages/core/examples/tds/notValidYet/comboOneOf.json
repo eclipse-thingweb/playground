@@ -1,0 +1,23 @@
+{
+    "id": "urn:oneOf",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "title": "MyLampThing",
+    "description":"example for showing how to use oneOf inside combo security",
+    "securityDefinitions": {
+        "apikey_key": {
+            "scheme": "apikey",
+            "in": "uri",
+            "name": "secKey"
+        },
+        "apikey_id": {
+            "scheme": "apikey",
+            "in": "uri",
+            "name": "secClientID"
+        },
+        "apikey_combo": {
+            "scheme": "combo",
+            "oneOf": ["apikey_key", "apikey_id"]
+        }
+    },
+    "security": "apikey_combo"
+}

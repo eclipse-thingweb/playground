@@ -1,0 +1,176 @@
+{
+    "title": "MyGardenThing",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "properties": {
+        "temperature": {
+            "title": "Temperature",
+            "description": "A number value based on the weather prediction api between -20°C to 60°C",
+            "type": "number",
+            "readOnly": true,
+            "minimum": -20,
+            "maximum": 60,
+            "unit": "Celcius",
+            "forms": [
+                {
+                    "op": [
+                        "readproperty"
+                    ],
+                    "href": "properties/temperature",
+                    "contentType": "application/json"
+                }
+            ],
+            "writeOnly": false,
+            "observable": false
+        },
+        "soilHumidity": {
+            "title": "Humidty of Soil",
+            "description": "A number value used to measure the humdity of the soil in percentage",
+            "type": "number",
+            "readOnly": true,
+            "minimum": 0,
+            "maximum": 100,
+            "unit": "percentage",
+            "forms": [
+                {
+                    "op": [
+                        "readproperty"
+                    ],
+                    "href": "properties/soilHumidity",
+                    "contentType": "application/json"
+                }
+            ],
+            "writeOnly": false,
+            "observable": false
+        },
+        "humidityThreshold": {
+            "title": "Humidty Threshold",
+            "description": "A number value used to set the threshold for humdity of the soil in percentage",
+            "type": "object",
+            "properties": {
+                "threshold": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100,
+                    "readOnly": false,
+                    "writeOnly": false
+                }
+            },
+            "readOnly": false,
+            "writeOnly": false,
+            "unit": "percentage",
+            "forms": [
+                {
+                    "op": [
+                        "readproperty",
+                        "writeproperty"
+                    ],
+                    "href": "properties/humidityThreshold",
+                    "contentType": "application/json"
+                }
+            ],
+            "observable": false
+        },
+        "state": {
+            "title": "State of the system",
+            "description": "Describes the state of the system for watering",
+            "type": "string",
+            "writeOnly": true,
+            "enum": [
+                "manualWatering",
+                "automaticWatering"
+            ],
+            "forms": [
+                {
+                    "op": [
+                        "writeproperty"
+                    ],
+                    "href": "properties/state",
+                    "contentType": "application/json"
+                }
+            ],
+            "readOnly": false,
+            "observable": false
+        }
+    },
+    "actions": {
+        "startSprinkler": {
+            "title": "Start Sprinkler",
+            "description": "Starts the sprinkler",
+            "safe": false,
+            "idempotent": false,
+            "forms": [
+                {
+                    "op": [
+                        "invokeaction"
+                    ],
+                    "href": "actions/startSprinkler",
+                    "contentType": "application/json"
+                }
+            ]
+        },
+        "stopSprinkler": {
+            "title": "Stop Sprinkler",
+            "description": "Stops the sprinkler",
+            "safe": false,
+            "idempotent": false,
+            "forms": [
+                {
+                    "op": [
+                        "invokeaction"
+                    ],
+                    "href": "actions/stopSprinkler",
+                    "contentType": "application/json"
+                }
+            ]
+        }
+    },
+    "events": {
+        "tooDry": {
+            "title": "Low Humidity",
+            "description": "It is fired when the humidity reaches the set humidityThreshold",
+            "forms": [
+                {
+                    "op": [
+                        "subscribeevent",
+                        "unsubscribeevent"
+                    ],
+                    "href": "events/tooDry",
+                    "contentType": "application/json",
+                    "subprotocol": "longpoll"
+                }
+            ]
+        },
+        "tooWet": {
+            "title": "High Humidity",
+            "description": "It is fired when the humidity reaches 90 percent",
+            "forms": [
+                {
+                    "op": [
+                        "subscribeevent",
+                        "unsubscribeevent"
+                    ],
+                    "href": "events/tooWet",
+                    "contentType": "application/json",
+                    "subprotocol": "longpoll"
+                }
+            ]
+        }
+    },
+    "securityDefinitions": {
+        "oauth2_sc": {
+            "scheme": "oauth2",
+            "flow": "client",
+            "in": "header",
+            "name": "authorization",
+            "token": "https://localhost:3000/token",
+            "scopes": [
+                "user",
+                "manger",
+                "admin"
+            ]
+        }
+    },
+    "security": "oauth2_sc",
+    "base": "https://localhost:8080/mygardenthing/",
+    "description": "Showcasing Client Flow in Oauth2"
+}
