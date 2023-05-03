@@ -6,7 +6,7 @@
         }
     ],
     "@type": "Thing",
-    "id": "urn:uri:variables:thing",
+    "id": "urn:uri:variables:all",
     "title": "MyLampThing",
     "description": "TD Showing URI Variables in all interactions",
     "securityDefinitions": {
@@ -19,26 +19,26 @@
     "version": {
         "instance": "1.2.1"
     },
-    "uriVariables": {
-        "p": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 16,
-            "@type": "iot:SomeKindOfAngle"
-        },
-        "d": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 1,
-            "@type": "iot:Direction"
-        }
-    },
     "properties": {
         "status": {
             "type": "string",
+            "uriVariables": {
+                "p": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 16,
+                    "@type": "iot:SomeKindOfAngle"
+                },
+                "d": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1,
+                    "@type": "iot:Direction"
+                }
+            },
             "forms": [
                 {
-                    "href": "coaps://mylamp.example.com/status/{p}/{d}",
+                    "href": "coaps://mylamp.example.com/status/{?p,d}",
                     "contentType": "application/json",
                     "op": "readproperty"
                 }
@@ -50,13 +50,13 @@
             "@type": "iot:SwitchStatus",
             "description": "Turn on or off the lamp",
             "uriVariables": {
-                "a": {
+                "p": {
                     "type": "integer",
                     "minimum": 0,
                     "maximum": 16,
                     "@type": "iot:SomeKindOfAngle"
                 },
-                "b": {
+                "d": {
                     "type": "integer",
                     "minimum": 0,
                     "maximum": 1,
@@ -65,7 +65,7 @@
             },
             "forms": [
                 {
-                    "href": "coaps://mylamp.example.com/{p}/{d}/toggle/{?a,b}",
+                    "href": "coaps://mylamp.example.com/toggle/{?p,d}",
                     "contentType": "application/json"
                 }
             ]
@@ -73,7 +73,7 @@
         "status3": {
             "forms": [
                 {
-                    "href": "coaps://mylamp.example.com/{p}/{d}/status",
+                    "href": "coaps://mylamp.example.com/status",
                     "contentType": "application/json"
                 }
             ]
@@ -83,12 +83,26 @@
         "overheating": {
             "@type": "iot:TemperatureAlarm",
             "description": "Lamp reaches a critical temperature (overheating)",
+            "uriVariables": {
+                "p": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 16,
+                    "@type": "iot:SomeKindOfAngle"
+                },
+                "d": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1,
+                    "@type": "iot:Direction"
+                }
+            },
             "data": {
                 "type": "string"
             },
             "forms": [
                 {
-                    "href": "coaps://mylamp.example.com/{p}/{d}/oh",
+                    "href": "coaps://mylamp.example.com/oh/{?p,d}",
                     "contentType": "application/json"
                 }
             ]
@@ -96,7 +110,7 @@
         "status4": {
             "forms": [
                 {
-                    "href": "coaps://mylamp.example.com/{p}/{d}/status",
+                    "href": "coaps://mylamp.example.com/status",
                     "contentType": "application/json"
                 }
             ]

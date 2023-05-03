@@ -1,5 +1,5 @@
 {
-    "id": "urn:required",
+    "id": "urn:tm:basic",
     "$comment": "example 57 of the spec",
     "@context": ["https://www.w3.org/2022/wot/td/v1.1"],
     "title": "Smart Lamp",
