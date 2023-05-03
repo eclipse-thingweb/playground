@@ -36,7 +36,7 @@ describe("genInfo", () => {
             },
             description: "a coffee machine",
             "@context": [
-                "https://www.w3.org/2019/wot/td/v1",
+                "https://www.w3.org/2022/wot/td/v1.1",
                 {
                     cov: "http://www.example.org/coap-binding#",
                     mqv: "http://www.example.org/mqtt-binding#",

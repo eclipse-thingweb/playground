@@ -154,7 +154,7 @@ async function testVisualChromium(page) {
     await page.screenshot({ path: `./test_results/chromium_typo_check_handwritten_typo_exists.png`, fullPage: true });
 
     await page.evaluate(() =>
-        window.tdEditor.getModel(monaco.Uri.parse("")).setValue('{ "@context": "https://www.w3.org/2019/wot/td/v1" }')
+        window.tdEditor.getModel(monaco.Uri.parse("")).setValue('{ "@context": "https://www.w3.org/2022/wot/td/v1.1" }')
     );
     await myWait(1000);
     await customShot("typo_check_handwritten_typo_fixed");
@@ -163,7 +163,7 @@ async function testVisualChromium(page) {
     await page.evaluate(() =>
         window.tdEditor
             .getModel(monaco.Uri.parse(""))
-            .setValue('{ "@context": "https://www.w3.org/2019/wot/td/v1", "@type": [] }')
+            .setValue('{ "@context": "https://www.w3.org/2022/wot/td/v1.1", "@type": [] }')
     );
     await myWait(1000);
     await customShot("unformatted_document");
