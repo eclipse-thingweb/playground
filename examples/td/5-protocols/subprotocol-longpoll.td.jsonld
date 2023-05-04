@@ -1,8 +1,9 @@
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:9cd44eef-0b3f-4566-94b0-1358af3d86bd",
+    "@type": "Thing",
     "title": "MyLampThing",
-    "$title": "Subprotocol Longpoll TD Example",
+    "$title": "Subprotocol Longpoll",
     "description": "TD for a Lamp Thing",
     "$description": "protocols may have defined Subprotocols that can be used for some interaction types. For example, to receive asynchronous notifications using HTTP, some servers may support long polling.",
     "securityDefinitions": {

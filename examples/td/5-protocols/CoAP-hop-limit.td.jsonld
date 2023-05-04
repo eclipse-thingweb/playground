@@ -1,8 +1,9 @@
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "@type": "Thing",
     "title": "MyLampThing",
-    "$title": "CoAP Hop Limit TD Example",
+    "$title": "CoAP Hop Limit",
     "description": "TD for a Lamp Thing",
     "$description": "The CoAP Hop-Limit option [RFC8768] limits the number of hops a CoAP message can take before it is considered undeliverable. This prevents infinite message loops in CoAP networks. The cov:hopLimit member can be used to set the desired hop limit for a particular CoAP request.",
     "securityDefinitions": {

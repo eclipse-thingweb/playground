@@ -1,8 +1,9 @@
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "@type": "Thing",
     "title": "MyLampThing",
-    "$title": "Combo Apikey Security TD Example",
+    "$title": "Combo Apikey Security",
     "description": "TD for a Lamp Thing",
     "$description": "Multiple intances of API security schemes are also possible. These must then be used in the href in in a Form where the security scheme is active.",
     "securityDefinitions": {

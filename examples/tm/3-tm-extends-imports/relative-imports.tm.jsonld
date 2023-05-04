@@ -2,7 +2,7 @@
     "@context": "https://www.w3.org/2022/wot/td/v1.1", 
     "@type": "tm:ThingModel",
     "title": "Multi Sensor",
-    "$title": "Relative Imports Thing Example",
+    "$title": "Relative Imports",
     "description": "Thing for a multisensor",
     "$description": "This Thing example re-uses and augments a 'genericTemperature' property in two more specific properties, which describe an inner and an outer temperature value, respectively.",
     "properties": {

@@ -1,7 +1,8 @@
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "@type": "Thing",
     "title": "MyWeatherThing",
-    "$title": "URI href Structure TD Example",
+    "$title": "URI href Structure",
     "description": "TD for Weather sensor Thing",
     "$description": "As defined in [RFC6570], uriVariables can be used for replacing the href structure.",
     "securityDefinitions": {

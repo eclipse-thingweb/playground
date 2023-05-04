@@ -1,8 +1,9 @@
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "@type": "Thing",
     "title": "MyLampThing",
-    "$title": "Apikey In Body TD Example",
+    "$title": "Apikey In Body",
     "description": "TD for a Lamp Thing",
     "$description": "This in an example on how to include security parameters along with the payload.",
     "securityDefinitions": {

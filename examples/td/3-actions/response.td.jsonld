@@ -1,10 +1,11 @@
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "@type": "Thing",
     "title": "MyCameraThing",
-    "$title": "Action Response TD Example",
+    "$title": "Action Response",
     "description": "TD for a Camera Thing",
-    "$description": "In some use cases, the form metadata of the Interaction Affordance not only describes the request, but also provides metadata for the expected response. The response must be a JSON object and contain a contentType",
+    "$description": "In some use cases, the form metadata of the Interaction Affordance not only describes the request, but also provides metadata for the expected response. The response must be a JSON object and contain a contentType.",
 
     "securityDefinitions": {
         "basic_sc": {"scheme": "basic", "in": "header"}

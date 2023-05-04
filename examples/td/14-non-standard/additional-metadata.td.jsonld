@@ -15,14 +15,14 @@
     "schema:manufacturer": {"name": "CompanyName"},
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
     "title": "MyTemperatureSensor",
-    "$title": "Additional Metadata TD Example",
+    "$title": "Additional Metadata",
     "description": "TD for a Temperature Sensor Thing",
     "$description": "This example provides additional metadata terms from different external context files as provided in @context.",
     "securityDefinitions": {
         "basic_sc": {"scheme": "basic", "in": "header"}
     },
     "security": "basic_sc",
-    "@type": "saref:TemperatureSensor",
+    "@type": ["Thing", "saref:TemperatureSensor"],
     "properties": {
         "temperature": {
             "description": "Temperature value of the weather station",

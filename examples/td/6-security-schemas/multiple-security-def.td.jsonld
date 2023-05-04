@@ -1,15 +1,14 @@
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "@type": "Thing",
     "title": "MyLampThing",
-    "$title": "Basic Security TD Example",
+    "$title": "Multiple Security Definitions",
     "description": "TD for a Lamp Thing",
-    "$description": "A simple security configuration specifying basic username/password authentication in the header.",
+    "$description": "A TD can also have multiple security definitions.",
     "securityDefinitions": {
-        "basic_sc": {
-            "scheme": "basic",
-            "in": "header"
-        }
+        "basic_sc": {"scheme": "basic"},
+        "nosec_sc": {"scheme": "nosec"}
     },
     "security": "basic_sc",
     "properties": {
@@ -27,7 +26,8 @@
         "overheating": {
             "data": {"type": "string"},
             "forms": [{
-                "href": "https://mylamp.example.com/oh"
+                "href": "https://mylamp.example.com/oh",
+                "security": "nosec_sc"
             }]
         }
     }

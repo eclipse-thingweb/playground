@@ -1,8 +1,9 @@
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "@type": "Thing",
     "title": "MyLampThing",
-    "$title": "CoAP Simple No Defaults TD Example",
+    "$title": "CoAP Simple No Defaults",
     "description": "TD for a Lamp Thing",
     "$description": "A simple Thing Description using CoAP. The target resource is specified in the Thing Description by the href member of a form and the request method (e.g., GET, PUT, POST, or DELETE) is specified using the cov:method member of a form.",
     "securityDefinitions": {

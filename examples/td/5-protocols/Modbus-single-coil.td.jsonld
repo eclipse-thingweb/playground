@@ -5,8 +5,9 @@
             "modbus": "https://www.example.com/ns/modbustcp"
         }
     ],
+    "@type": "Thing",
     "title": "ModbusPLC",
-    "$title": "Modbus Single Coil TD Example",
+    "$title": "Modbus Single Coil",
     "description": "TD for a ModbusPLC",
     "$description": "This example shows the minimal set of terms to configure a single coil reading using Modbus. Notice that the unitID is contained in the href as the first element of the path.",
     "id": "uri:dev:ModbusTCPThing",

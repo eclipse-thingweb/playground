@@ -6,8 +6,9 @@
           "@direction": "rtl" 
         }
     ],
+    "@type": "Thing",
     "title": "شيء يخصني يقيس درجة الحرارة",
-    "$title": "String Direction TD Example",
+    "$title": "String Direction",
     "description": "TD for a sensor that measures the temperature",
     "$description": "Metadata can be used to determine the base direction of string values, utilizing @direction and the values rtl, ltr and null for default direcction.",
     "securityDefinitions": {

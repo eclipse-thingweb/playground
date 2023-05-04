@@ -5,9 +5,9 @@
     "@type": "Thing",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
     "title": "Smart Lamp Control with Dimming",
-    "$title": "Extend Thing Example",
+    "$title": "Extend Thing",
     "description": "Thing for controlling a Lamp thing with dimming  fuctions",
-    "$description": "A Thing Model can extend an existing Thing Model by using the tm:extends mechanism. When a Thing Model extends another Thing Model, at least one links entry with 'rel: tm:extends' that targets a Thing Model that is be extended must be used",
+    "$description": "A Thing Model can extend an existing Thing Model by using the tm:extends mechanism. When a Thing Model extends another Thing Model, at least one links entry with 'rel: tm:extends' that targets a Thing Model that is be extended must be used.",
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",

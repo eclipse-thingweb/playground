@@ -1,1 +1,1 @@
-This folder contains examples of ways to provide information of Thing Models that consist of one or more (sub-)Thing Models.
+This category contains examples of ways to provide information of Thing Models that consist of one or more (sub-)Thing Models.

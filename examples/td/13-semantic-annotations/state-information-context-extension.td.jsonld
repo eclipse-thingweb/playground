@@ -7,13 +7,13 @@
         }
     ],
     "id": "urn:uuid:67c9122b-2680-4e1a-b41c-5af07edba1f4",
-    "@type": "saref:LightSwitch",
+    "@type": ["Thing" ,"saref:LightSwitch"],
     "saref:hasState": {
         "@id": "urn:uuid:67c9122b-2680-4e1a-b41c-5af07edba1f4/state",
         "@type": "saref:OnOffState"
     },
     "title": "MyLampThing",
-    "$title": "State Information Context Extension TD Example",
+    "$title": "State Information Context Extension",
     "description": "TD for a Lamp Thing",
     "$description": "TD Context Extensions may be used to annotate pieces of a data schema, to be able to semantically process the state information of the physical world object, which is represented by the data exchanged during an interaction.",
     "securityDefinitions": {

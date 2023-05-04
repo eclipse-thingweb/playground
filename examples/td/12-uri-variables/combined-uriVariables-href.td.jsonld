@@ -1,7 +1,8 @@
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "@type": "Thing",
     "title": "MyWeatherThing",
-    "$title": "Combined uirVariables in href TD Example",
+    "$title": "Combined URI variables in href",
     "description": "TD for Weather Sensor Thing",
     "$description": "Combined dynamic uriVariables and uriVariables in href structure.",
     "securityDefinitions": {

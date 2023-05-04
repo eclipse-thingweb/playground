@@ -5,10 +5,10 @@
     ],
     "id": "urn:uuid:300f4c4b-ca6b-484a-88cf-fd5224a9a61d",
     "title": "MyLampThing",
-    "$title": "Semantic TD Example",
+    "$title": "Semantic",
     "description": "TD for a Lamp Thing",
     "$description": "Thing Description with TD Context Extension for semantic annotations.",
-    "@type": "saref:LightSwitch",
+    "@type": ["Thing", "saref:LightSwitch"],
     "securityDefinitions": {
         "basic_sc": {"scheme": "basic", "in": "header"}
     },

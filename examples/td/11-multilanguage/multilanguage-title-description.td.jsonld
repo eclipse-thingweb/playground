@@ -5,6 +5,7 @@
             "@language": "de"
         }
     ],
+    "@type": "Thing",
     "title": "MeinDing",
     "titles": {
         "en": "MyThing",
@@ -13,7 +14,7 @@
         "zh-Hans": "我的东西",
         "zh-Hant": "我的東西"
     },
-    "$title": "Multilanguage Title and Description TD Example",
+    "$title": "Multilanguage Title and Description",
     "description": "TD für ein generisches Ding in verschiedenen Sprachen",
     "descriptions": {
         "en": "TD for a generic thing in various languages",

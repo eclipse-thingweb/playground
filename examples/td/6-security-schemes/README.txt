@@ -1,1 +1,0 @@
-This folder contains various examples concerning the different types of security schemes that could/should be used for a Thing Description, as well as the different ways to combiine multiple security schemes.

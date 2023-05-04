@@ -1,8 +1,9 @@
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "@type": "Thing",
     "title": "MyLampThing",
-    "$title": "CoAP Block Wise No Parameters TD Example",
+    "$title": "CoAP Block Wise No Parameters",
     "description": "TD for a Lamp Thing",
     "$description": "CoAP supports block-wise transfers to allow large resource representations to be transferred between clients and servers. This feature enables clients and servers to request or provide resource representations in smaller blocks, which can be useful when constrained network conditions make it undesirable to transfer large amounts of data at once.",
     "securityDefinitions": {

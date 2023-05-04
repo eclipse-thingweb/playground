@@ -1,8 +1,9 @@
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "@type": "Thing",
     "title": "Electric Motor 1",
-    "$title": "Collection relation TD Example",
+    "$title": "Collection relation",
     "description": "TD for an Electric Motor Thing",
     "$description": "A Thing can also refer to a group in which it is collected with the collection value.",
     "base": "coaps://motor1.example.com",

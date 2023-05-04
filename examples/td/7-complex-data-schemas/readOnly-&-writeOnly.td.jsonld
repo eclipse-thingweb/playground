@@ -1,8 +1,9 @@
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "@type": "Thing",
     "title": "MyLampThing",
-    "$title": "readOnly And writeOnly TD Example",
+    "$title": "readOnly And writeOnly",
     "description": "TD for a Lamp Thing",
     "$description": "Data schema serialization applies to PropertyAffordance instances, the values assigned to input and output in ActionAffordance instances, the values assigned to subscription, data, and cancellation in EventAffordance instances, and the value assigned to uriVariables in instances of Subclasses of InteractionAffordance.",
     "securityDefinitions": {

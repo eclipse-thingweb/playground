@@ -1,8 +1,9 @@
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "@type": "Thing",
     "title": "MyLampThing",
-    "$title": "CoAP Block Wise Parameters TD Example",
+    "$title": "CoAP Block Wise Parameters",
     "description": "TD for a Lamp Thing",
     "$description": "A cov:blockwise or cov:quickblockwise member may indicate relevant parameters, such as the largest block size that may be used in a Block2 Option.",
     "securityDefinitions": {

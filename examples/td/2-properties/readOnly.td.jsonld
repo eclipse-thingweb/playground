@@ -1,10 +1,11 @@
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "@type": "Thing",
     "title": "MyLampThing",
-    "$title": "readOnly TD Example",
+    "$title": "readOnly",
     "description": "TD for a lamp thing",
-    "$description": "readOnly can be used to signal which data items are exchanged in read interactions (i.e., when reading a Property)",
+    "$description": "readOnly can be used to signal which data items are exchanged in read interactions (i.e., when reading a Property).",
     "securityDefinitions": {
         "basic_sc": {"scheme": "basic", "in": "header"}
     },

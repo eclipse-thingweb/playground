@@ -1,1 +1,1 @@
-This folder contains various examples concerning the different types of protocols that can be used with Thing Descriptions such as HTTP, Modbus, CoAP, etc.
+This category contains various examples concerning the different types of protocols that can be used with Thing Descriptions such as HTTP, Modbus, CoAP, etc.

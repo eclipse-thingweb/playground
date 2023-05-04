@@ -1,8 +1,9 @@
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "@type": "Thing",
     "title": "MyThing",
-    "$title": "Top Level uriVariables TD Example",
+    "$title": "Top Level uriVariables",
     "description": "TD for a generic Thing",
     "$description": "Thing-level uriVariables can be used here to supply further variables to the operation or to specify a list of Property Affordance names for a readmultipleproperties operation.",
     "securityDefinitions": {

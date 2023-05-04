@@ -5,10 +5,11 @@
             "modbus": "https://www.example.com/ns/modbustcp"
         }
     ],
+    "@type": "Thing",
     "title": "ModbusPLC",
-    "$title": "Modbus Multiple Operations Expanded TD Example",
+    "$title": "Modbus Multiple Operations Expanded",
     "description": "TD for a ModbusPLC",
-    "$description": "This is an example of an extended version when using multiple operations with Modbus",
+    "$description": "This is an example of an extended version when using multiple operations with Modbus.",
     "id": "uri:dev:ModbusTCPThing",
     "securityDefinitions": {
         "nosec_sc": {
