@@ -1,1 +1,1 @@
-This folder contains examples of how to extend a Thing Model by using other Thing Models, whether by using the extend or the import mechanism.
+This category contains examples of how to extend a Thing Model by using other Thing Models, whether by using the extend or the import mechanism.

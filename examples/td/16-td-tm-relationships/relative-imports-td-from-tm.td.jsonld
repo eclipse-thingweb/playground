@@ -3,7 +3,7 @@
     "@type": "Thing",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
     "title": "Multi Sensor",
-    "$title": "Relative Imports Thing Example",
+    "$title": "Relative Imports",
     "description": "Thing for a multisensor",
     "$description": "This Thing example re-uses and augments a 'genericTemperature' property in two more specific properties, which describe an inner and an outer temperature value, respectively.",
     "securityDefinitions": {

@@ -1,5 +1,6 @@
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "@type": "Thing",
     "title": "MyThing",
     "titles": {
         "en": "MyThing",
@@ -8,7 +9,7 @@
         "zh-Hans": "我的东西", 
         "zh-Hant": "我的東西"
     },
-    "$title": "Multilanguage TD Example",
+    "$title": "Multilanguage",
     "description": "TD for a Generic Thing",
     "$description": "A TD can contain multiple languages, where the name is a valid language tag as defined by [BCP47] and the value is a human-readable string in the language indicated by the tag.",
     "securityDefinitions": {

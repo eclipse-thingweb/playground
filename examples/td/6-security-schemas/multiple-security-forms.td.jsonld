@@ -1,8 +1,9 @@
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "@type": "Thing",
     "title": "MyLampThing",
-    "$title": "Multiple Security Forms TD Example",
+    "$title": "Multiple Security Forms",
     "description": "TD for a Lamp Thing",
     "$description": "Security configurations can also be specified for different forms within the same Interaction Affordance.",
     "securityDefinitions": {

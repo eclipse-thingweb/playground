@@ -2,7 +2,7 @@
     "@context": ["https://www.w3.org/2022/wot/td/v1.1"], 
     "@type": "tm:ThingModel",
     "title": "Lamp Thing",
-    "$title": "Basic Thing Example",
+    "$title": "Basic TM",
     "description": "Lamp thing example",
     "$description": "This is an example of a basic Thing, which is use as a sort of template for creating a Thing Description instance of a Lamp TD",
     "properties": {

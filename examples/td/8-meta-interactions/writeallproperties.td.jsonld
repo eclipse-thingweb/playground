@@ -1,8 +1,9 @@
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "@type": "Thing",
     "title": "MyLampThing",
-    "$title": "Writeallproperties TD Example",
+    "$title": "Writeallproperties",
     "description": "TD for a Lamp Thing",
     "$description": "When forms is present at the top level, it can be used to describe meta interactions offered by a Thing. writeallproperties is a type of meta interaction which allows the consumer to write all properties at once.",
     "securityDefinitions": {

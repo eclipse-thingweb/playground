@@ -2,9 +2,9 @@
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "@type": "tm:ThingModel",
     "title": "LED Thing",
-    "$title": "Basic LED Thing Example",
+    "$title": "Basic LED",
     "description": "Thing for a simple LED",
-    "$description": "This is an example of a simple Thing Model which is utilized as a submodel of another Thing Model",
+    "$description": "This is an example of a simple Thing Model which is utilized as a submodel of another Thing Model.",
     "version": {
         "model": "1.0.0"
     },

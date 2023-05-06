@@ -1,1 +1,1 @@
-This folder contains examples of how to implement optional interaction affordances as well as how to overwrite them.
+This category contains examples of how to implement optional interaction affordances as well as how to overwrite them.

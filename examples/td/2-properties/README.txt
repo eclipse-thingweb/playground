@@ -1,1 +1,1 @@
-This folder contains various examples concerning the "properties" interaction affordance.
+This category contains various examples concerning the "properties" interaction affordance.

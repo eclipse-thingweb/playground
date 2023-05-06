@@ -3,8 +3,9 @@
         "https://www.w3.org/2022/wot/td/v1.1"
     ],
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "@type": "Thing",
     "title": "Lamp Thing",
-    "$title": "Versioning Thing Example",
+    "$title": "Versioning",
     "description": "Lamp thing example",
     "$description": "When the Thing definitions change over time, this should be reflected in the version container. The term model is used with the version container in order to provide such versioning information.",
     "version": {

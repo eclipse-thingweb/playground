@@ -1,8 +1,9 @@
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "@type": "Thing",
     "title": "MyCarThing",
-    "$title": "Additional Responses TD Example",
+    "$title": "Additional Responses",
     "description": "TD for a Car Thing",
     "$description": "The message received from the Thing as part of an Interaction Affordance can differ due to different reasons. Such reasons could be error cases or alternative responses for a valid response. In these cases, additionalResponses terms can be used to describe this behavior.",
     "securityDefinitions": {

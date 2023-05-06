@@ -5,9 +5,9 @@
     "@type": "Thing",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
     "title": "Lamp Thing",
-    "$title": "Basic Thing Example",
+    "$title": "Basic Thing",
     "description": "Lamp thing example",
-    "$description": "This is an example of a basic Thing, which is use as a sort of template for creating a Thing Description instance of a Lamp TD",
+    "$description": "This is an example of a basic Thing, which is use as a sort of template for creating a Thing Description instance of a Lamp TD.",
     "securityDefinitions": {
         "basic_sc": {
             "scheme": "basic",

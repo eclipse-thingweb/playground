@@ -1,8 +1,9 @@
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "@type": "Thing",
     "title": "MyLampThing",
-    "$title": "@context TD Example",
+    "$title": "@context",
     "description": "TD for a lamp thing",
     "$description": "A member with the name @context and a value of type string is generally used to identify the TD representation format version defined by this specification.",
     "securityDefinitions": {

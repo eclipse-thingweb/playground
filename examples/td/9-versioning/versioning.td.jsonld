@@ -1,8 +1,9 @@
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "@type": "Thing",
     "title": "MyLampThing",
-    "$title": "Versioning TD Example",
+    "$title": "Versioning",
     "description": "TD for a Lamp Thing",
     "$description": "The version member is intended as container for additional application- and/or device-specific version information based on TD Context Extensions.",
     "version": { "instance": "1.2.1" },

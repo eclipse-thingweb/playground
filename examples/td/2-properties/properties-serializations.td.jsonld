@@ -1,8 +1,9 @@
 {
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
+    "@type": "Thing",
     "title": "MyLampThing",
-    "$title": "Properties Serialization TD Example",
+    "$title": "Properties Serialization",
     "description": "TD for a lamp thing",
     "$description": "All name-value pairs of a map of PropertyAffordance instances MUST be serialized as members of the JSON object that results from serializing the Map.",
     "securityDefinitions": {
