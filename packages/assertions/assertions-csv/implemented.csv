@@ -182,7 +182,6 @@
 "td-security-oauth2-client-flow","null",,"For the client flow token MUST be included."
 "td-security-oauth2-client-flow-no-auth","null",,""
 "td-security-oauth2-code-flow","null",,"For the code flow both authorization and token MUST be included."
-"td-security-oauth2-device-flow","null",,"For the device flow both authorization and token MUST be included."
 "td-security-overrides","null",,""
 "td-security-scheme-name","null",,""
 "td-security-schemes","null",,""
