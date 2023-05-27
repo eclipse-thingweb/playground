@@ -1,1 +1,4 @@
 "ID","Status","Comment","Assertion"
+"td-security-oauth2-device-flow",,"not testable with Assertion Tester","For the device flow both authorization and token MUST be included."
+"privacy-immutable-id-as-property",,"not testable with Assertion Tester","Ideally, any required immutable identifiers SHOULD only be made available via affordances, such as a property, whose value can only be obtained after appropriate authentication and authorization, and managed separately from the TD identifier."
+"security-context-secure-fetch",,"not testable with Assertion Tester","If it is necessary to fetch a context definition file, an implementation SHOULD first attempt to use HTTP over TLS even when only an HTTP URL is given."
