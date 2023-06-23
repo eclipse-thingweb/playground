@@ -22,7 +22,7 @@ jobs:
                   node-version: "16.x"
 
             - name: Use lerna
-              run: npm install -g lerna
+              run: npm install -g lerna@6.6.2
 
             - name: Bootstrap
               run: lerna bootstrap --no-ci
