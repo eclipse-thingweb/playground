@@ -1,6 +1,6 @@
 {
     "title": "Thing Model",
-    "version": "1.1-05-September-2022",
+    "version": "1.1-05-July-2023",
     "description": "JSON Schema for validating Thing Models. This is automatically generated from the WoT TD Schema.",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "$id": "https://raw.githubusercontent.com/w3c/wot-thing-description/main/validation/tm-json-schema-validation.json",
@@ -64,7 +64,11 @@
         },
         "subprotocol": {
             "type": "string",
-            "examples": ["longpoll", "websub", "sse"]
+            "examples": [
+                "longpoll",
+                "websub",
+                "sse"
+            ]
         },
         "thing-context-td-uri-v1": {
             "type": "string",
@@ -156,7 +160,7 @@
                     }
                 },
                 {
-                    "$comment": "Only the new context URI",
+                    "$comment": "Only the old context URI",
                     "$ref": "#/definitions/thing-context-td-uri-v1"
                 }
             ]
@@ -182,7 +186,15 @@
             "type": "string",
             "anyOf": [
                 {
-                    "enum": ["boolean", "integer", "number", "string", "object", "array", "null"]
+                    "enum": [
+                        "boolean",
+                        "integer",
+                        "number",
+                        "string",
+                        "object",
+                        "array",
+                        "null"
+                    ]
                 },
                 {
                     "$ref": "#/definitions/placeholder-pattern"
@@ -396,7 +408,10 @@
         "multipleOfDefinition": {
             "anyOf": [
                 {
-                    "type": ["integer", "number"],
+                    "type": [
+                        "integer",
+                        "number"
+                    ],
                     "exclusiveMinimum": 0
                 },
                 {
@@ -479,7 +494,12 @@
                             "type": "string",
                             "anyOf": [
                                 {
-                                    "enum": ["readproperty", "writeproperty", "observeproperty", "unobserveproperty"]
+                                    "enum": [
+                                        "readproperty",
+                                        "writeproperty",
+                                        "observeproperty",
+                                        "unobserveproperty"
+                                    ]
                                 },
                                 {
                                     "$ref": "#/definitions/placeholder-pattern"
@@ -503,7 +523,8 @@
                                         "$ref": "#/definitions/placeholder-pattern"
                                     }
                                 ]
-                            }
+                            },
+                            "minItems": 1
                         }
                     ]
                 },
@@ -532,7 +553,11 @@
                             "type": "string",
                             "anyOf": [
                                 {
-                                    "enum": ["invokeaction", "queryaction", "cancelaction"]
+                                    "enum": [
+                                        "invokeaction",
+                                        "queryaction",
+                                        "cancelaction"
+                                    ]
                                 },
                                 {
                                     "$ref": "#/definitions/placeholder-pattern"
@@ -545,13 +570,18 @@
                                 "type": "string",
                                 "anyOf": [
                                     {
-                                        "enum": ["invokeaction", "queryaction", "cancelaction"]
+                                        "enum": [
+                                            "invokeaction",
+                                            "queryaction",
+                                            "cancelaction"
+                                        ]
                                     },
                                     {
                                         "$ref": "#/definitions/placeholder-pattern"
                                     }
                                 ]
-                            }
+                            },
+                            "minItems": 1
                         }
                     ]
                 },
@@ -580,7 +610,10 @@
                             "type": "string",
                             "anyOf": [
                                 {
-                                    "enum": ["subscribeevent", "unsubscribeevent"]
+                                    "enum": [
+                                        "subscribeevent",
+                                        "unsubscribeevent"
+                                    ]
                                 },
                                 {
                                     "$ref": "#/definitions/placeholder-pattern"
@@ -593,13 +626,17 @@
                                 "type": "string",
                                 "anyOf": [
                                     {
-                                        "enum": ["subscribeevent", "unsubscribeevent"]
+                                        "enum": [
+                                            "subscribeevent",
+                                            "unsubscribeevent"
+                                        ]
                                     },
                                     {
                                         "$ref": "#/definitions/placeholder-pattern"
                                     }
                                 ]
-                            }
+                            },
+                            "minItems": 1
                         }
                     ]
                 },
@@ -667,7 +704,8 @@
                                         "$ref": "#/definitions/placeholder-pattern"
                                     }
                                 ]
-                            }
+                            },
+                            "minItems": 1
                         }
                     ]
                 },
@@ -1102,7 +1140,9 @@
                         "properties": {
                             "sizes": {}
                         },
-                        "required": ["sizes"]
+                        "required": [
+                            "sizes"
+                        ]
                     }
                 },
                 {
@@ -1112,7 +1152,9 @@
                             "rel": {
                                 "anyOf": [
                                     {
-                                        "enum": ["icon"]
+                                        "enum": [
+                                            "icon"
+                                        ]
                                     },
                                     {
                                         "$ref": "#/definitions/placeholder-pattern"
@@ -1120,7 +1162,9 @@
                                 ]
                             }
                         },
-                        "required": ["rel"]
+                        "required": [
+                            "rel"
+                        ]
                     }
                 }
             ]
@@ -1140,7 +1184,9 @@
                             "pattern": "[0-9]*x[0-9]+"
                         }
                     },
-                    "required": ["rel"]
+                    "required": [
+                        "rel"
+                    ]
                 }
             ]
         },
@@ -1152,7 +1198,10 @@
                     "scheme": "ace:ACESecurityScheme",
                     "ace:as": "coaps://as.example.com/token",
                     "ace:audience": "coaps://rs.example.com",
-                    "ace:scopes": ["limited", "special"],
+                    "ace:scopes": [
+                        "limited",
+                        "special"
+                    ],
                     "ace:cnonce": true
                 }
             ],
@@ -1201,7 +1250,9 @@
                     "type": "string",
                     "anyOf": [
                         {
-                            "enum": ["nosec"]
+                            "enum": [
+                                "nosec"
+                            ]
                         },
                         {
                             "$ref": "#/definitions/placeholder-pattern"
@@ -1238,7 +1289,9 @@
                     "type": "string",
                     "anyOf": [
                         {
-                            "enum": ["auto"]
+                            "enum": [
+                                "auto"
+                            ]
                         },
                         {
                             "$ref": "#/definitions/placeholder-pattern"
@@ -1247,7 +1300,9 @@
                 }
             },
             "not": {
-                "required": ["name"]
+                "required": [
+                    "name"
+                ]
             },
             "additionalProperties": true,
             "propertyNames": {
@@ -1277,7 +1332,9 @@
                             "type": "string",
                             "anyOf": [
                                 {
-                                    "enum": ["combo"]
+                                    "enum": [
+                                        "combo"
+                                    ]
                                 },
                                 {
                                     "$ref": "#/definitions/placeholder-pattern"
@@ -1316,7 +1373,9 @@
                             "type": "string",
                             "anyOf": [
                                 {
-                                    "enum": ["combo"]
+                                    "enum": [
+                                        "combo"
+                                    ]
                                 },
                                 {
                                     "$ref": "#/definitions/placeholder-pattern"
@@ -1357,7 +1416,9 @@
                     "type": "string",
                     "anyOf": [
                         {
-                            "enum": ["basic"]
+                            "enum": [
+                                "basic"
+                            ]
                         },
                         {
                             "$ref": "#/definitions/placeholder-pattern"
@@ -1368,7 +1429,13 @@
                     "type": "string",
                     "anyOf": [
                         {
-                            "enum": ["header", "query", "body", "cookie", "auto"]
+                            "enum": [
+                                "header",
+                                "query",
+                                "body",
+                                "cookie",
+                                "auto"
+                            ]
                         },
                         {
                             "$ref": "#/definitions/placeholder-pattern"
@@ -1408,7 +1475,9 @@
                     "type": "string",
                     "anyOf": [
                         {
-                            "enum": ["digest"]
+                            "enum": [
+                                "digest"
+                            ]
                         },
                         {
                             "$ref": "#/definitions/placeholder-pattern"
@@ -1419,7 +1488,10 @@
                     "type": "string",
                     "anyOf": [
                         {
-                            "enum": ["auth", "auth-int"]
+                            "enum": [
+                                "auth",
+                                "auth-int"
+                            ]
                         },
                         {
                             "$ref": "#/definitions/placeholder-pattern"
@@ -1430,7 +1502,13 @@
                     "type": "string",
                     "anyOf": [
                         {
-                            "enum": ["header", "query", "body", "cookie", "auto"]
+                            "enum": [
+                                "header",
+                                "query",
+                                "body",
+                                "cookie",
+                                "auto"
+                            ]
                         },
                         {
                             "$ref": "#/definitions/placeholder-pattern"
@@ -1470,7 +1548,9 @@
                     "type": "string",
                     "anyOf": [
                         {
-                            "enum": ["apikey"]
+                            "enum": [
+                                "apikey"
+                            ]
                         },
                         {
                             "$ref": "#/definitions/placeholder-pattern"
@@ -1481,7 +1561,14 @@
                     "type": "string",
                     "anyOf": [
                         {
-                            "enum": ["header", "query", "body", "cookie", "uri", "auto"]
+                            "enum": [
+                                "header",
+                                "query",
+                                "body",
+                                "cookie",
+                                "uri",
+                                "auto"
+                            ]
                         },
                         {
                             "$ref": "#/definitions/placeholder-pattern"
@@ -1521,7 +1608,9 @@
                     "type": "string",
                     "anyOf": [
                         {
-                            "enum": ["bearer"]
+                            "enum": [
+                                "bearer"
+                            ]
                         },
                         {
                             "$ref": "#/definitions/placeholder-pattern"
@@ -1541,7 +1630,13 @@
                     "type": "string",
                     "anyOf": [
                         {
-                            "enum": ["header", "query", "body", "cookie", "auto"]
+                            "enum": [
+                                "header",
+                                "query",
+                                "body",
+                                "cookie",
+                                "auto"
+                            ]
                         },
                         {
                             "$ref": "#/definitions/placeholder-pattern"
@@ -1581,7 +1676,9 @@
                     "type": "string",
                     "anyOf": [
                         {
-                            "enum": ["psk"]
+                            "enum": [
+                                "psk"
+                            ]
                         },
                         {
                             "$ref": "#/definitions/placeholder-pattern"
@@ -1621,7 +1718,9 @@
                     "type": "string",
                     "anyOf": [
                         {
-                            "enum": ["oauth2"]
+                            "enum": [
+                                "oauth2"
+                            ]
                         },
                         {
                             "$ref": "#/definitions/placeholder-pattern"
@@ -1659,7 +1758,10 @@
                             "type": "string",
                             "anyOf": [
                                 {
-                                    "enum": ["code", "client", "device"]
+                                    "enum": [
+                                        "code",
+                                        "client"
+                                    ]
                                 },
                                 {
                                     "$ref": "#/definitions/placeholder-pattern"
@@ -1830,7 +1932,9 @@
                                 "type": "string"
                             }
                         },
-                        "required": ["instance"]
+                        "required": [
+                            "instance"
+                        ]
                     }
                 },
                 {
@@ -1949,5 +2053,8 @@
             "$ref": "#/definitions/placeholder-pattern"
         }
     },
-    "required": ["@context", "@type"]
+    "required": [
+        "@context",
+        "@type"
+    ]
 }
