@@ -1,6 +1,6 @@
 {
     "title": "Thing Description",
-    "version": "1.1-10-June-2022",
+    "version": "1.1-05-July-2023",
     "description": "JSON Schema for validating TD instances against the TD information model. For a TD to validate this schema it must contain all the default terms defined in Section 5.4",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "definitions": {
@@ -376,7 +376,8 @@
                             "items": {
                                 "type": "string",
                                 "enum": ["readproperty", "writeproperty", "observeproperty", "unobserveproperty"]
-                            }
+                            },
+                            "minItems": 1
                         }
                     ]
                 }
@@ -402,7 +403,8 @@
                             "items": {
                                 "type": "string",
                                 "enum": ["invokeaction", "queryaction", "cancelaction"]
-                            }
+                            },
+                            "minItems": 1
                         }
                     ]
                 }
@@ -428,7 +430,8 @@
                             "items": {
                                 "type": "string",
                                 "enum": ["subscribeevent", "unsubscribeevent"]
-                            }
+                            },
+                            "minItems": 1
                         }
                     ]
                 }
@@ -474,7 +477,8 @@
                                     "subscribeallevents",
                                     "unsubscribeallevents"
                                 ]
-                            }
+                            },
+                            "minItems": 1
                         }
                     ]
                 }
