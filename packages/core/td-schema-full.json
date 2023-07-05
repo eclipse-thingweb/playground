@@ -376,7 +376,8 @@
                             "items": {
                                 "type": "string",
                                 "enum": ["readproperty", "writeproperty", "observeproperty", "unobserveproperty"]
-                            }
+                            },
+                            "minItems": 1
                         }
                     ]
                 }
@@ -402,7 +403,8 @@
                             "items": {
                                 "type": "string",
                                 "enum": ["invokeaction", "queryaction", "cancelaction"]
-                            }
+                            },
+                            "minItems": 1
                         }
                     ]
                 }
@@ -428,7 +430,8 @@
                             "items": {
                                 "type": "string",
                                 "enum": ["subscribeevent", "unsubscribeevent"]
-                            }
+                            },
+                            "minItems": 1
                         }
                     ]
                 }
@@ -474,7 +477,8 @@
                                     "subscribeallevents",
                                     "unsubscribeallevents"
                                 ]
-                            }
+                            },
+                            "minItems": 1
                         }
                     ]
                 }
