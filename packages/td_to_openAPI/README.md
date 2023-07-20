@@ -60,5 +60,5 @@ You can use this package to integrate OpenAPI instance generation from a TD in y
 
 Licensed under the MIT license, see [License](../../LICENSE.md).
 
-[web]: https://github.com/eclipse/thingweb.td-playground/tree/master/packages/web
-[cli]: https://github.com/eclipse/thingweb.td-playground/tree/master/packages/cli
+[web]: https://github.com/eclipse-thingweb/playground/tree/master/packages/web
+[cli]: https://github.com/eclipse-thingweb/playground/tree/master/packages/cli
