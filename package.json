@@ -1,5 +1,5 @@
 {
-    "name": "eclipse-thingweb/playground",
+    "name": "thingweb.playground",
     "description": "W3C Web of Things (WoT) Thing Description tooling (root project, not published)",
     "private": true,
     "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
