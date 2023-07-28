@@ -563,6 +563,27 @@ export async function save(docType, format) {
 }
 
 /**
+ * Save current TD/TM as a compressed string in URL fragment to be opened with ediTDor.
+ * @param {string} docType "td" or "tm"
+ * @param {string} format "json" or "yaml"
+ */
+export async function openEditdor(docType, format) {
+    const value = window.editor.getValue();
+    console.log(value);
+
+    if (!value) {
+        alert(`No ${docType.toUpperCase()} provided`);
+        return;
+    }
+
+    const data = docType + format + value;
+    console.log(data);
+    const compressed = Validators.compress(data);
+    const URL = `https://eclipse.github.io/editdor/?td=${compressed}`
+    window.open(URL, '_blank');
+}
+
+/**
  * Given a URL fragment construct current value of an editor.
  */
 export function getEditorValue(fragment) {

@@ -259,6 +259,10 @@ document
     .getElementById("btn_save")
     .addEventListener("click", () => util.save(docType, window.editor.getModel().getLanguageId()));
 
+document
+    .getElementById("btn-share-editdor")
+    .addEventListener("click", () => util.openEditdor(docType, window.editor.getModel().getLanguageId()));
+
 urlAddrObject = util.getExamplesList(docType); // Fetching list of examples from the given array(in helperFunctions.js).
 util.populateExamples(urlAddrObject); // Loading the examples given in list from their respective URLs
 
