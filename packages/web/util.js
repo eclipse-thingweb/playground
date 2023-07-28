@@ -569,7 +569,6 @@ export async function save(docType, format) {
  */
 export async function openEditdor(docType, format) {
     const value = window.editor.getValue();
-    console.log(value);
 
     if (!value) {
         alert(`No ${docType.toUpperCase()} provided`);
@@ -577,7 +576,6 @@ export async function openEditdor(docType, format) {
     }
 
     const data = docType + format + value;
-    console.log(data);
     const compressed = Validators.compress(data);
     const URL = `https://eclipse.github.io/editdor/?td=${compressed}`
     window.open(URL, '_blank');
