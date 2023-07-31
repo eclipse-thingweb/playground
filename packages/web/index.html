@@ -140,6 +140,18 @@
             <img src="./media/loading.svg" class="loading-spinner" alt="Loading..." />
         </div>
 
+        <div class="link-popup-wrapper closed">
+            <div class="link-popup">
+                <p class="link-popup__header">Share this TD</p>
+                <p class="link-popup__text">The sharable URL was copied to your clipboard!</p>
+                <input class="link-popup__url mb-3" type="text" id="url-input">
+                <div class="link-popup__btn-container">
+                    <button class="btn btn-editdor" type="button" id="btn-share-editdor" title="Export your TD/TM document to ediTDor as a sharable link">Open in ediTDor</button>
+                    <button class="btn btn-close" type="button" id="btn-close-linkpopup" title="Close the link popup">Close</button>
+                </div>
+            </div>
+        </div>
+
         <div class="container-fluid main">
             <div class="row alert alert-info header">
                 <div class="col-2">
@@ -303,19 +315,6 @@
                                                         d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"
                                                     />
                                                 </svg>
-                                            </button>
-                                            <button
-                                                type="button"
-                                                class="btn btn-info mr-0 ml-0 pr-0 pl-0"
-                                                disabled
-                                            ></button>
-                                            <button
-                                                type="button"
-                                                id="btn-share-editdor"
-                                                title="Export your TD/TM document to ediTDor as a sharable link"
-                                                class="btn btn-sm btn-info"
-                                            >
-                                                edi{TD}or
                                             </button>
                                         </div>
                                     </div>

@@ -255,14 +255,39 @@ document.getElementById("close_assertion_test_popup").addEventListener("click", 
     document.getElementById("assertion_test_popup").style.display = "none";
 });
 
+const shareLinkWrapper = document.querySelector(".link-popup-wrapper");
+const urlInput = document.querySelector("#url-input");
+
+//Open the share link pop up and populate the url field with the new link
 document
     .getElementById("btn_save")
-    .addEventListener("click", () => util.save(docType, window.editor.getModel().getLanguageId()));
+    .addEventListener("click", async () => {
+        try{
+            const URL = await util.save(docType, window.editor.getModel().getLanguageId());
+            if(URL !== undefined){
+                urlInput.value = URL
+                shareLinkWrapper.classList.remove("closed")
+            }
+        }
+        catch(err){
+            console.log(err);
+        } 
+    });
 
+//Open the shared link in ediTDor
 document
     .getElementById("btn-share-editdor")
     .addEventListener("click", () => util.openEditdor(docType, window.editor.getModel().getLanguageId()));
 
+//Close the share link pop up
+document
+    .getElementById("btn-close-linkpopup")
+    .addEventListener("click", () => {
+        urlInput.value = ''
+        shareLinkWrapper.classList.add("closed")
+    });
+
+    
 urlAddrObject = util.getExamplesList(docType); // Fetching list of examples from the given array(in helperFunctions.js).
 util.populateExamples(urlAddrObject); // Loading the examples given in list from their respective URLs
 

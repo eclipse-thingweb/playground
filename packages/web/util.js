@@ -557,9 +557,8 @@ export async function save(docType, format) {
 
     const data = docType + format + value;
     const compressed = Validators.compress(data);
-    window.location.hash = compressed;
-    await navigator.clipboard.writeText(window.location.href);
-    alert("The sharable URL is copied to your clipboard, if not - simply copy the address bar.");
+    await navigator.clipboard.writeText(`${window.location.href}#${compressed}`);
+    return  `${window.location.href}#${compressed}`;
 }
 
 /**
