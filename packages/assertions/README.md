@@ -1,7 +1,7 @@
 # @thing-description-playground/**ASSERTIONS**
 
 This package provides the assertion testing functionality for the Web of Things Playground.
-You can find more information about the Thingweb-Playground [here](https://github.com/eclipse/thingweb.td-playground).
+You can find more information about the Thingweb-Playground [here](https://github.com/eclipse-thingweb/playground).
 
 Validation tool for W3C WoT Thing Descriptions. Your Thing Descriptions should be written according to the W3C standard found [here](https://w3c.github.io/wot-thing-description/#).
 
@@ -125,20 +125,20 @@ You can contribute by providing new JSON Schemas for assertions or by correcting
 Some assertions cannot be verified just by a schema, even when the complex schemas are used.
 Examples are checking that all multi language definitions like titles and descriptions contain the same language tags.
 
-When a new one is added, it is advised to add it to the [shared.js](https://github.com/eclipse/thingweb.td-playground/blob/master/packages/core/shared.js) since such checks can be used by the core package as well.
+When a new one is added, it is advised to add it to the [shared.js](https://github.com/eclipse-thingweb/playground/blob/master/packages/core/shared.js) since such checks can be used by the core package as well.
 
 After adding the function, you should do the following:
 
 1. Add it to the exports of `shared.js`
 2. Add it to the exports of `index.js` of the core package
 3. Add its name to the details object in `index.js` and its description to the detailComments of the `index.js`
-4. In the assertions package, adding it to the imports at the [assertionTests.js](https://github.com/eclipse/thingweb.td-playground/blob/master/packages/assertions/assertionTests.js)
+4. In the assertions package, adding it to the imports at the [assertionTests.js](https://github.com/eclipse-thingweb/playground/blob/master/packages/assertions/assertionTests.js)
 5. In the same file, calling it whenever needed. The other ones are done at around line 80.
 6. Adding it to the expected results of the tests (refResults) at the core package.
 
 ## Known Bugs
 
--   td-json-open assertion exists multiple times, [see issue 124](https://github.com/eclipse/thingweb.td-playground/issues/124)
+-   td-json-open assertion exists multiple times, [see issue 124](https://github.com/eclipse-thingweb/playground/issues/124)
 
-[web]: https://github.com/eclipse/thingweb.td-playground/tree/master/packages/web
-[cli]: https://github.com/eclipse/thingweb.td-playground/tree/master/packages/cli
+[web]: https://github.com/eclipse-thingweb/playground/tree/master/packages/web
+[cli]: https://github.com/eclipse-thingweb/playground/tree/master/packages/cli

@@ -1,7 +1,7 @@
 # @thing-description-playground/**CORE**
 
 This package provides the main functionality of the Web of Things Playground, i.e., validating given Thing Descriptions.
-You can find more information about the Thingweb-Playground [here](https://github.com/eclipse/thingweb.td-playground).
+You can find more information about the Thingweb-Playground [here](https://github.com/eclipse-thingweb/playground).
 
 Limitations:
 
@@ -115,8 +115,8 @@ The core validation report is an object, which contains three objects (as you ca
 -   The `details` object contains the results of the additional checks. The keywords can have the same values as in report.
 -   The `detailComments` explains the meaning of every additional check.
 
-[web]: https://github.com/eclipse/thingweb.td-playground/tree/master/packages/web
-[cli]: https://github.com/eclipse/thingweb.td-playground/tree/master/packages/cli
+[web]: https://github.com/eclipse-thingweb/playground/tree/master/packages/web
+[cli]: https://github.com/eclipse-thingweb/playground/tree/master/packages/cli
 
 ## Test Usage
 

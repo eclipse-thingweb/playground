@@ -4,14 +4,14 @@
     "license": "EPL-2.0 OR W3C-20150513",
     "version": "1.0.1",
     "description": "Checks the spelling of a JSON file depending on the JSON schema",
-    "homepage": "https://github.com/eclipse/thingweb.td-playground#readme",
+    "homepage": "https://github.com/eclipse-thingweb/playground#readme",
     "bugs": {
-        "url": "https://github.com/eclipse/thingweb.td-playground/issues"
+        "url": "https://github.com/eclipse-thingweb/playground/issues"
     },
     "main": "index.js",
     "repository": {
         "type": "git",
-        "url": "https://github.com/eclipse/thingweb.td-playground.git",
+        "url": "https://github.com/eclipse-thingweb/playground.git",
         "directory": "packages/json-spell-checker"
     },
     "scripts": {

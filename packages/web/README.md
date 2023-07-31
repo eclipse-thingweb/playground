@@ -2,7 +2,7 @@
 
 This package provides the web interface of the Web of Things Thing Desciption Playground.
 It uses the functionality of the `core` package to validate Thing Descriptions and `assertions` to generate an assertion Test report.
-You can find more information about the Thingweb-Playground [here](https://github.com/eclipse/thingweb.td-playground).
+You can find more information about the Thingweb-Playground [here](https://github.com/eclipse-thingweb/playground).
 
 The TDs can be exported as URLs which can be copied anywhere and reopened here.
 

@@ -1,7 +1,7 @@
 # @thing-description-playground/**CLI**
 
 This package provides a Command Line Interface (CLI) for the Web of Things Playground.
-You can find more information about the Thingweb-Playground [here](https://github.com/eclipse/thingweb.td-playground).
+You can find more information about the Thingweb-Playground [here](https://github.com/eclipse-thingweb/playground).
 
 You can validate whether one, or several given TDs are valid.
 Furthermore you can generate an assertion test report (`-a`) to see which assertions are implemented in your TD.
@@ -100,7 +100,7 @@ The core validation report is an object, which contains three objects (as you ca
 
 ## Known Bugs
 
--   td-json-open assertion exists multiple times, [see issue 124](https://github.com/eclipse/thingweb.td-playground/issues/124)
+-   td-json-open assertion exists multiple times, [see issue 124](https://github.com/eclipse-thingweb/playground/issues/124)
 
 ## Parameters
 

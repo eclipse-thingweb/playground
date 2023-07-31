@@ -62,15 +62,15 @@ Examples are included in the [core](./packages/core/examples) and in the [exampl
 
 ## Batch Testing
 
-Please have a look at the `cli` [package](https://github.com/eclipse/thingweb.td-playground/tree/master/packages/cli#batch-testing) for batch testing of Thing Descriptions.
+Please have a look at the `cli` [package](https://github.com/eclipse-thingweb/playground/tree/master/packages/cli#batch-testing) for batch testing of Thing Descriptions.
 
 ## Script based Assertion Tester
 
-Please have a look at the `cli` [package](https://github.com/eclipse/thingweb.td-playground/tree/master/packages/cli#script-based-assertion-tester--a-parameter) for script based assertion testing, or at the `assertions` package, if you're planning to integrate the assertion testing as a dependency in your own NPM modules.
+Please have a look at the `cli` [package](https://github.com/eclipse-thingweb/playground/tree/master/packages/cli#script-based-assertion-tester--a-parameter) for script based assertion testing, or at the `assertions` package, if you're planning to integrate the assertion testing as a dependency in your own NPM modules.
 
 ## Script based Thing Description Validation
 
-Please have look at the `cli` [package](https://github.com/eclipse/thingweb.td-playground/tree/master/packages/cli#script-based-thing-description-validation) for script based TD validation, or at the `core` package, if you're planning to integrate the TD validation as a dependency in your own NPM modules.
+Please have look at the `cli` [package](https://github.com/eclipse-thingweb/playground/tree/master/packages/cli#script-based-thing-description-validation) for script based TD validation, or at the `core` package, if you're planning to integrate the TD validation as a dependency in your own NPM modules.
 
 ## License
 

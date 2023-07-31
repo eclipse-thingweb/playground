@@ -1,12 +1,12 @@
 {
-    "name": "thingweb.td-playground",
+    "name": "thingweb.playground",
     "description": "W3C Web of Things (WoT) Thing Description tooling (root project, not published)",
     "private": true,
     "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
     "license": "EPL-2.0 OR W3C-20150513",
     "repository": {
         "type": "git",
-        "url": "https://github.com/eclipse/thingweb.td-playground.git"
+        "url": "https://github.com/eclipse-thingweb/playground.git"
     },
     "devDependencies": {
         "@microsoft/eslint-formatter-sarif": "^2.1.7",
