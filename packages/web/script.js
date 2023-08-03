@@ -257,6 +257,7 @@ document.getElementById("close_assertion_test_popup").addEventListener("click", 
 
 const shareLinkWrapper = document.querySelector(".link-popup-wrapper");
 const urlInput = document.querySelector("#url-input");
+const linkTypeText = document.querySelectorAll("#link-type");
 
 //Open the share link pop up and populate the url field with the new link
 document
@@ -265,6 +266,9 @@ document
         try{
             const URL = await util.save(docType, window.editor.getModel().getLanguageId());
             if(URL !== undefined){
+                linkTypeText.forEach(linkText => {
+                    linkText.innerText = docType.toUpperCase()
+                })
                 urlInput.value = URL
                 shareLinkWrapper.classList.remove("closed")
             }
@@ -278,6 +282,13 @@ document
 document
     .getElementById("btn-share-editdor")
     .addEventListener("click", () => util.openEditdor(docType, window.editor.getModel().getLanguageId()));
+
+//Open the shared link in another playground tab
+document
+    .getElementById("btn-open-tab")
+    .addEventListener("click", () => {
+        window.open(urlInput.value, '_blank');
+    })
 
 //Close the share link pop up
 document

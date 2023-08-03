@@ -465,11 +465,49 @@ i {
 
 .link-popup__url{
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.link-popup__url .url-input{
+    width: 100%;
+    height: 2.25rem;
     margin-left: 0;
-    border-radius: 5px;
-    border: 2px solid #000000;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border: 2px solid #2b2b2b;
     padding: .25rem .5rem;
     font-size: 1rem;
+}
+
+.link-popup__url .url-input:focus{
+    outline: none;
+}
+
+.link-popup__url .btn-new-tab{
+    width: fit-content;
+    height: 2.25rem;
+    padding: .25rem .75rem;
+    border: none;
+    background-color: #2b2b2b;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    transition: background-color 150ms ease-in-out;
+}
+
+.link-popup__url .btn-new-tab:hover{
+    background-color: #1f1f1f;
+}
+
+.link-popup__url .btn-new-tab:focus{
+    outline: none;
+    background-color: #1f1f1f;
+}
+
+.btn-new-tab svg{
+    fill: #ffffff;
+    height: 1rem;
 }
 
 .link-popup__btn-container{
