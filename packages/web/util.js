@@ -557,8 +557,7 @@ export async function save(docType, format) {
 
     const data = docType + format + value;
     const compressed = Validators.compress(data);
-    await navigator.clipboard.writeText(`${window.location.href}#${compressed}`);
-    return  `${window.location.href}#${compressed}`;
+    return `${window.location.href}#${compressed}`;
 }
 
 /**
