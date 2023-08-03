@@ -17,6 +17,8 @@ jobs:
             - uses: actions/setup-node@v2
               with:
                   node-version: "16"
+            - name: Use lerna
+              run: npm install -g lerna@6.6.2
             - name: Install dependencies
               run: lerna bootstrap --no-ci
             - name: Fetch updated assertions.csv
