@@ -18,6 +18,8 @@ const genChannels = require("./src/genChannels");
 const { genInfo, genTags, genBaseServer } = require("./src/genRoot");
 const defaults = require("@thing-description-playground/defaults");
 
+const {mapSecurity} = require("./src/mapSecurity");
+
 /**
  * Create an AsyncAPI instance from a Web of Things Thing Description
  * @param {object} td A Thing Description object as input
@@ -28,14 +30,19 @@ function toAsyncAPI(td) {
         if (typeof td !== "object") {
             rej("TD has wrong type, should be an object");
         }
+        const {securitySchemes, security} = mapSecurity(td.securityDefinitions, td.security);       
+        const components = {
+            securitySchemes
+        };
 
         defaults.addDefaults(td);
 
-        const servers = genBaseServer(td);
+        const servers = genBaseServer(td, security);
         const asyncApiInstance = new AsyncAPI("2.0.0", genInfo(td), genChannels(td, servers), {
             id: td.id,
             servers,
             tags: genTags(td),
+            components: components,
             externalDocs: new ExternalDocs(
                 "http://plugfest.thingweb.io/playground/",
                 "This AsyncAPI instance was generated from a Web of Things (WoT) - Thing Description by the WoT Playground"
