@@ -218,20 +218,20 @@ function genaapDefinition(tdDefinition) {
         }
     }
 
-    switch (tdScheme) {
-
-        case "nosec":
-        case "basic":
-            if (tdDefinition.name) {
-                aapDefinition["x-name"] = tdDefinition.name;
-            }
-            // should the x-in parameter be added if in = header?
-            if (tdDefinition.in) {
-                aapDefinition["x-in"] = tdDefinition.in;
-            }
-        case "psk":
-            // do nothing?
-            break;
+  switch (tdScheme) {
+    case "nosec":
+    case "basic":
+      if (tdDefinition.name) {
+        aapDefinition["x-name"] = tdDefinition.name;
+      }
+      // should the x-in parameter be added if in = header?
+      if (tdDefinition.in) {
+        aapDefinition["x-in"] = tdDefinition.in;
+      }
+      break;
+    /*case "psk":
+      // do nothing?
+      break;*/
 
         case "digest":
             aapDefinition["x-qop"] = (tdDefinition.qop === undefined) ? "auth" : tdDefinition.qop;
