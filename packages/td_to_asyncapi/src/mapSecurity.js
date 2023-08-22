@@ -13,7 +13,7 @@
  *  SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
  */
 
-module.exports = { mapSecurity, mapSecurityString, mapSecurityDefinitions, hasNoSec, mapFormSecurity };
+module.exports = { mapSecurity, mapSecurityString, mapSecurityDefinitions, mapFormSecurity };
 
 /**
  * Convert the TD security Definitions and Security to
