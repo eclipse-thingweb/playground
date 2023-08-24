@@ -6,7 +6,6 @@ const {
     mapSecurity,
     mapSecurityString,
     mapSecurityDefinitions,
-    hasNoSec,
     mapFormSecurity,
   } = require("../src/mapSecurity");
   
