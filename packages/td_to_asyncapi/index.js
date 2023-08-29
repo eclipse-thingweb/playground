@@ -18,7 +18,7 @@ const genChannels = require("./src/genChannels");
 const { genInfo, genTags, genBaseServer } = require("./src/genRoot");
 const defaults = require("@thing-description-playground/defaults");
 
-const {mapSecurity} = require("./src/mapSecurity");
+const { mapSecurity } = require("./src/mapSecurity");
 
 /**
  * Create an AsyncAPI instance from a Web of Things Thing Description
@@ -26,39 +26,41 @@ const {mapSecurity} = require("./src/mapSecurity");
  * @returns {Promise<{json:object, yaml:String}>} Resolves as object containing the OAP document or rejects
  */
 function toAsyncAPI(td) {
-    return new Promise((res, rej) => {
-        if (typeof td !== "object") {
-            rej("TD has wrong type, should be an object");
-        }
-        const {securitySchemes, security} = mapSecurity(td.securityDefinitions, td.security);       
-        const components = {
-            securitySchemes
-        };
+  return new Promise((res, rej) => {
+    if (typeof td !== "object") {
+      rej("TD has wrong type, should be an object");
+    }
+    const { securitySchemes, security } = mapSecurity(td.securityDefinitions, td.security);
+    const components = {
+      securitySchemes
+    };
 
-        defaults.addDefaults(td);
-
-        const servers = genBaseServer(td, security);
-        const asyncApiInstance = new AsyncAPI("2.0.0", genInfo(td), genChannels(td, servers), {
-            id: td.id,
-            servers,
-            tags: genTags(td),
-            components: components,
-            externalDocs: new ExternalDocs(
-                "http://plugfest.thingweb.io/playground/",
-                "This AsyncAPI instance was generated from a Web of Things (WoT) - Thing Description by the WoT Playground"
-            ),
-        });
-
-        asyncApiInstance.parse().then(
-            (apiExport) => {
-                res(apiExport);
-            },
-            (err) => {
-                console.log(asyncApiInstance.asYaml());
-                rej(err);
-            }
-        );
+    defaults.addDefaults(td);
+    let securityPara = {
+      security: security,
+    };
+    const servers = genBaseServer(td, securityPara);
+    const asyncApiInstance = new AsyncAPI("2.0.0", genInfo(td), genChannels(td, servers), {
+      id: td.id,
+      servers,
+      tags: genTags(td),
+      components: components,
+      externalDocs: new ExternalDocs(
+        "http://plugfest.thingweb.io/playground/",
+        "This AsyncAPI instance was generated from a Web of Things (WoT) - Thing Description by the WoT Playground"
+      ),
     });
+
+    asyncApiInstance.parse().then(
+      (apiExport) => {
+        res(apiExport);
+      },
+      (err) => {
+        console.log(asyncApiInstance.asYaml());
+        rej(err);
+      }
+    );
+  });
 }
 
 module.exports = toAsyncAPI;

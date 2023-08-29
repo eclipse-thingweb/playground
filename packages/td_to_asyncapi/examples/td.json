@@ -1,163 +1,163 @@
 {
-    "@context": [
-        "https://www.w3.org/2022/wot/td/v1.1",
+  "@context": [
+    "https://www.w3.org/2022/wot/td/v1.1",
+    {
+      "cov": "http://www.example.org/coap-binding#",
+      "mqv": "http://www.example.org/mqtt-binding#"
+    },
+    { "@language": "en" }
+  ],
+  "id": "urn:dev:home:coff:type123-SNR123456",
+  "name": "MyCoffeeMaker",
+  "@type": "Thing",
+  "title": "MyCoffeeMaker-Home",
+  "description": "Order your coffee remotely!",
+  "securityDefinitions": {
+    "basic_sc": { "scheme": "basic", "in": "header" },
+    "psk_sc": { "scheme": "psk" },
+    "nosec_sc": { "scheme": "nosec" }
+  },
+  "security": ["nosec_sc"],
+  "properties": {
+    "oneOfTest": {
+      "readOnly": true,
+      "writeOnly": false,
+      "oneOf": [
         {
-            "cov": "http://www.example.org/coap-binding#",
-            "mqv": "http://www.example.org/mqtt-binding#"
+          "type": "string"
         },
-        { "@language": "en" }
-    ],
-    "id": "urn:dev:home:coff:type123-SNR123456",
-    "name": "MyCoffeeMaker",
-    "@type": "Thing",
-    "title": "MyCoffeeMaker-Home",
-    "description": "Order your coffee remotely!",
-    "securityDefinitions": {
-        "basic_sc": { "scheme": "basic", "in": "header" },
-        "psk_sc": { "scheme": "psk" },
-        "nosec_sc": { "scheme": "nosec" }
-    },
-    "security": ["nosec_sc"],
-    "properties": {
-        "oneOfTest": {
-            "readOnly": true,
-            "writeOnly": false,
-            "oneOf": [
-                {
-                    "type": "string"
-                },
-                {
-                    "type": "integer"
-                },
-                {
-                    "type": "null"
-                }
-            ],
-            "forms": [
-                {
-                    "href": "mqtt://iot.eclipse.org/oneOfTest",
-                    "op": "observeproperty",
-                    "mqv:controlPacketValue": "SUBSCRIBE",
-                    "mqv:options": [
-                        {
-                            "mqv:optionName": "qos",
-                            "mqv:optionValue": 1
-                        }
-                    ]
-                },
-                {
-                    "href": "mqtt://iot.eclipse.org/oneOfTest",
-                    "op": "unobserveproperty",
-                    "mqv:controlPacketValue": "UNSUBSCRIBE"
-                }
-            ]
+        {
+          "type": "integer"
         },
-        "maxItemsTest": {
-            "readOnly": true,
-            "writeOnly": false,
-            "type": "array",
-            "items": { "type": "integer" },
-            "maxItems": 5,
-            "minItems": 2,
-            "forms": [
-                {
-                    "href": "mqtt://iot.eclipse.org/maxItemsTest",
-                    "op": "observeproperty"
-                },
-                {
-                    "href": "mqtt://iot.eclipse.org/maxItemsTest",
-                    "op": "unobserveproperty"
-                }
-            ]
+        {
+          "type": "null"
         }
-    },
-    "actions": {
-        "brewCoffee": {
-            "input": {
-                "type": "string",
-                "enum": ["Espresso", "EspressoDoppio", "Coffee", "HotWater"]
-            },
-            "forms": [
-                {
-                    "href": "http://mycoffeemaker.example.com/brewcoffee",
-                    "op": "invokeaction",
-                    "contentType": "application/json"
-                }
-            ],
-            "safe": false,
-            "idempotent": false
+      ],
+      "forms": [
+        {
+          "href": "mqtt://iot.eclipse.org/oneOfTest",
+          "op": "observeproperty",
+          "mqv:controlPacketValue": "SUBSCRIBE",
+          "mqv:options": [
+            {
+              "mqv:optionName": "qos",
+              "mqv:optionValue": 1
+            }
+          ]
         },
-        "stopBrewing": {
-            "forms": [
-                {
-                    "href": "coap://mycoffeemaker.example.com/stopbrewing",
-                    "cov:methodName": "GET",
-                    "op": "invokeaction",
-                    "contentType": "application/json"
-                }
-            ],
-            "safe": false,
-            "idempotent": false
-        },
-        "switchOff": {
-            "forms": [
-                {
-                    "href": "http://mycoffeemaker.example.com/switchoff",
-                    "op": "invokeaction",
-                    "contentType": "application/json"
-                }
-            ],
-            "safe": false,
-            "idempotent": false
+        {
+          "href": "mqtt://iot.eclipse.org/oneOfTest",
+          "op": "unobserveproperty",
+          "mqv:controlPacketValue": "UNSUBSCRIBE"
         }
+      ]
     },
-    "events": {
-        "waterEmpty": {
-            "description": "The water fillstate is below a certain level!",
-            "data": {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 100
-            },
-            "forms": [
-                {
-                    "href": "http://mycoffeemaker.example.com/waterempty",
-                    "op": "subscribeevent",
-                    "contentType": "application/json",
-                    "subprotocol": "longpoll"
-                }
-            ]
+    "maxItemsTest": {
+      "readOnly": true,
+      "writeOnly": false,
+      "type": "array",
+      "items": { "type": "integer" },
+      "maxItems": 5,
+      "minItems": 2,
+      "forms": [
+        {
+          "href": "mqtt://iot.eclipse.org/maxItemsTest",
+          "op": "observeproperty"
         },
-        "coffeeEmpty": {
-            "description": "The coffee bean fillstate is below a certain amount!",
-            "data": {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 100
-            },
-            "forms": [
-                {
-                    "href": "http://mycoffeemaker.example.com/coffeeempty",
-                    "op": "subscribeevent",
-                    "contentType": "application/json",
-                    "subprotocol": "longpoll"
-                }
-            ]
-        },
-        "binFull": {
-            "description": "The bin  fillstate is above a certain level!",
-            "data": {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 100
-            },
-            "forms": [
-                {
-                    "href": "mqtt://mycoffeemaker.example.com/binfull",
-                    "op": "subscribeevent",
-                    "contentType": "application/json"
-                }
-            ]
+        {
+          "href": "mqtt://iot.eclipse.org/maxItemsTest",
+          "op": "unobserveproperty"
         }
+      ]
     }
+  },
+  "actions": {
+    "brewCoffee": {
+      "input": {
+        "type": "string",
+        "enum": ["Espresso", "EspressoDoppio", "Coffee", "HotWater"]
+      },
+      "forms": [
+        {
+          "href": "http://mycoffeemaker.example.com/brewcoffee",
+          "op": "invokeaction",
+          "contentType": "application/json"
+        }
+      ],
+      "safe": false,
+      "idempotent": false
+    },
+    "stopBrewing": {
+      "forms": [
+        {
+          "href": "coap://mycoffeemaker.example.com/stopbrewing",
+          "cov:methodName": "GET",
+          "op": "invokeaction",
+          "contentType": "application/json"
+        }
+      ],
+      "safe": false,
+      "idempotent": false
+    },
+    "switchOff": {
+      "forms": [
+        {
+          "href": "http://mycoffeemaker.example.com/switchoff",
+          "op": "invokeaction",
+          "contentType": "application/json"
+        }
+      ],
+      "safe": false,
+      "idempotent": false
+    }
+  },
+  "events": {
+    "waterEmpty": {
+      "description": "The water fillstate is below a certain level!",
+      "data": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 100
+      },
+      "forms": [
+        {
+          "href": "http://mycoffeemaker.example.com/waterempty",
+          "op": "subscribeevent",
+          "contentType": "application/json",
+          "subprotocol": "longpoll"
+        }
+      ]
+    },
+    "coffeeEmpty": {
+      "description": "The coffee bean fillstate is below a certain amount!",
+      "data": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 100
+      },
+      "forms": [
+        {
+          "href": "http://mycoffeemaker.example.com/coffeeempty",
+          "op": "subscribeevent",
+          "contentType": "application/json",
+          "subprotocol": "longpoll"
+        }
+      ]
+    },
+    "binFull": {
+      "description": "The bin  fillstate is above a certain level!",
+      "data": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 100
+      },
+      "forms": [
+        {
+          "href": "mqtt://mycoffeemaker.example.com/binfull",
+          "op": "subscribeevent",
+          "contentType": "application/json"
+        }
+      ]
+    }
+  }
 }
