@@ -429,7 +429,7 @@ i {
     text-decoration: underline dotted gray;
 }
 
-.link-popup-wrapper{
+.link-popup-wrapper {
     position: fixed;
     top: 0;
     left: 0;
@@ -441,11 +441,11 @@ i {
     background-color: rgba(0, 0, 0, 0.8);
 }
 
-.link-popup-wrapper.closed{
+.link-popup-wrapper.closed {
     display: none;
 }
 
-.link-popup{
+.link-popup {
     background-color: rgb(255, 255, 255);
     padding: 1.5rem;
     border-radius: 10px;
@@ -453,42 +453,42 @@ i {
     width: 33%;
 }
 
-.link-popup__header{
+.link-popup__header {
     font-weight: bold;
     font-size: 1.25rem;
 }
 
-.link-popup__text{
+.link-popup__text {
     font-size: 1rem;
     color: #575757;
 }
 
-.link-popup__url{
+.link-popup__url {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.link-popup__url .url-input{
+.link-popup__url .url-input {
     width: 100%;
     height: 2.25rem;
     margin-left: 0;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     border: 2px solid #2b2b2b;
-    padding: .25rem .5rem;
+    padding: 0.25rem 0.5rem;
     font-size: 1rem;
 }
 
-.link-popup__url .url-input:focus{
+.link-popup__url .url-input:focus {
     outline: none;
 }
 
-.link-popup__url .btn-new-tab{
+.link-popup__url .btn-new-tab {
     width: fit-content;
     height: 2.25rem;
-    padding: .25rem .75rem;
+    padding: 0.25rem 0.75rem;
     border: none;
     background-color: #2b2b2b;
     border-top-right-radius: 5px;
@@ -496,34 +496,34 @@ i {
     transition: background-color 150ms ease-in-out;
 }
 
-.link-popup__url .btn-new-tab:hover{
+.link-popup__url .btn-new-tab:hover {
     background-color: #1f1f1f;
 }
 
-.link-popup__url .btn-new-tab:focus{
+.link-popup__url .btn-new-tab:focus {
     outline: none;
     background-color: #1f1f1f;
 }
 
-.btn-new-tab svg{
+.btn-new-tab svg {
     fill: #ffffff;
     height: 1rem;
 }
 
-.link-popup__btn-container{
+.link-popup__btn-container {
     text-align: right;
 }
 
-.link-popup__btn-container .btn-editdor{
+.link-popup__btn-container .btn-editdor {
     background-color: transparent;
 }
 
-.link-popup__btn-container .btn-close{
+.link-popup__btn-container .btn-close {
     background-color: #138496;
     color: #fff;
     transition: background-color 250ms ease-in-out;
 }
 
-.link-popup__btn-container .btn-close:hover{
+.link-popup__btn-container .btn-close:hover {
     background-color: #106775;
 }

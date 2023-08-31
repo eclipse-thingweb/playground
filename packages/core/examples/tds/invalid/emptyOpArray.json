@@ -10,7 +10,7 @@
     "properties": {
         "status": {
             "type": "string",
-            "forms": [{ "href": "https://mylamp.example.com/status", "op":[] }]
+            "forms": [{ "href": "https://mylamp.example.com/status", "op": [] }]
         }
     },
     "actions": {

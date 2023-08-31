@@ -91,11 +91,11 @@ function genTags(td) {
     return tags;
 }
 
-function genBaseServer(td) {
+function genBaseServer(td, security) {
     const servers = {};
     if (td.base) {
         if (td.base.startsWith("mqtt")) {
-            servers.base = new Server(td.base, "mqtt");
+            servers.base = new Server(td.base, "mqtt", security);
         }
     }
     return servers;
