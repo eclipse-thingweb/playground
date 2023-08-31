@@ -260,23 +260,20 @@ const urlInput = document.querySelector("#url-input");
 const linkTypeText = document.querySelectorAll("#link-type");
 
 //Open the share link pop up and populate the url field with the new link
-document
-    .getElementById("btn_save")
-    .addEventListener("click", async () => {
-        try{
-            const URL = await util.save(docType, window.editor.getModel().getLanguageId());
-            if(URL !== undefined){
-                linkTypeText.forEach(linkText => {
-                    linkText.innerText = docType.toUpperCase()
-                })
-                urlInput.value = URL
-                shareLinkWrapper.classList.remove("closed")
-            }
+document.getElementById("btn_save").addEventListener("click", async () => {
+    try {
+        const URL = await util.save(docType, window.editor.getModel().getLanguageId());
+        if (URL !== undefined) {
+            linkTypeText.forEach((linkText) => {
+                linkText.innerText = docType.toUpperCase();
+            });
+            urlInput.value = URL;
+            shareLinkWrapper.classList.remove("closed");
         }
-        catch(err){
-            console.log(err);
-        } 
-    });
+    } catch (err) {
+        console.log(err);
+    }
+});
 
 //Open the shared link in ediTDor
 document
@@ -284,21 +281,16 @@ document
     .addEventListener("click", () => util.openEditdor(docType, window.editor.getModel().getLanguageId()));
 
 //Open the shared link in another playground tab
-document
-    .getElementById("btn-open-tab")
-    .addEventListener("click", () => {
-        window.open(urlInput.value, '_blank');
-    })
+document.getElementById("btn-open-tab").addEventListener("click", () => {
+    window.open(urlInput.value, "_blank");
+});
 
 //Close the share link pop up
-document
-    .getElementById("btn-close-linkpopup")
-    .addEventListener("click", () => {
-        urlInput.value = ''
-        shareLinkWrapper.classList.add("closed")
-    });
+document.getElementById("btn-close-linkpopup").addEventListener("click", () => {
+    urlInput.value = "";
+    shareLinkWrapper.classList.add("closed");
+});
 
-    
 urlAddrObject = util.getExamplesList(docType); // Fetching list of examples from the given array(in helperFunctions.js).
 util.populateExamples(urlAddrObject); // Loading the examples given in list from their respective URLs
 

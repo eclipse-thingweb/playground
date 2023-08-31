@@ -24,7 +24,6 @@ const { Channel, Operation, Tag, Message, MqttOperationBinding, Server } = requi
  * @param {object} servers The AsyncAPI servers map
  */
 function genChannels(td, servers, security) {
-
     const channels = {};
 
     // Scan Properties
@@ -111,10 +110,10 @@ function scanPropForm(form, channels, propertyName, payload, servers, interactio
             ) {
                 const { channel, server } = extractChannel(form.href);
                 let newOptionalPara = {
-                    "security": security
-                } 
+                    security: security,
+                };
                 // add server
-                addServer(servers, server, tryProtocol.id, newOptionalPara)
+                addServer(servers, server, tryProtocol.id, newOptionalPara);
 
                 // add channel
                 if (!channels[channel]) {

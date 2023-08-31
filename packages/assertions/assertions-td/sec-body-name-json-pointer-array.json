@@ -30,7 +30,7 @@
                     },
                     "name": {
                         "type": "string",
-                        "pattern": "\/-"
+                        "pattern": "/-"
                     }
                 },
                 "required": ["in", "scheme", "name"]
