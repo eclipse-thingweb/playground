@@ -1,0 +1,66 @@
+/** Control panel **/
+.control-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    width: 8rem;
+
+    &__btn {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: var(--clr-primary-500);
+        background-color: inherit;
+        border: none;
+        border-bottom: 2px solid var(--clr-primary-500);
+        font-family: var(--ff-primary);
+        cursor: pointer;
+        transition: all 250ms ease;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        &:hover {
+            color: var(--clr-neutral-50);
+            background-color: var(--clr-primary-500);
+        }
+
+        i {
+            font-size: var(--fs-i);
+        }
+
+        p {
+            font-weight: var(--fw-bold);
+        }
+
+        .text-icon {
+            width: fit-content;
+            opacity: 1;
+            margin-top: 1rem;
+            transform: scaleX(1);
+            transition: opacity 250ms var(--trans-bouncy), transform 250ms var(--trans-bouncy);
+        }
+
+        .text-icon.hiddenV {
+            opacity: 0;
+            margin: 0;
+            transform: scaleX(0);
+            height: 0;
+            flex: 0;
+        }
+
+        .text-icon.hiddenH {
+            opacity: 0;
+            margin: 0;
+            transform: scaleX(0);
+            height: 0;
+            flex: 0;
+        }
+    }
+}
