@@ -4,7 +4,7 @@
   "description": "New design for the browser GUI for the Web of Things - Thing Description Playground",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
+    "build": "node external-scripts/generate-paths.js && webpack",
     "dev": "webpack && node server/server.js",
     "server": "node server/server.js",
     "examples": "node external-scripts/generate-paths.js"

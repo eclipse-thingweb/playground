@@ -63,16 +63,15 @@ async function getExamples(){
 
 async function writeExamplesToFile(){
     const examplesData = await getExamples()
-    console.log(examplesData);
     
     try {
         const jsonData = JSON.stringify(examplesData, null, 2)
         const filePath = "./src/examples-paths/examples-paths.json"
         await fs.writeFile(filePath, jsonData, 'utf-8')
-        console.log("File created succesfully");
+        console.log("File created succesfully")
         
     } catch (err) {
-        console.error("Failed to wirte JSON file: ", err);
+        console.error("Failed to wirte JSON file: ", err)
     }
 }
 
