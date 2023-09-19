@@ -1,16 +1,25 @@
 {
   "name": "@thing-description-playground/web-new",
+  "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
+  "license": "EPL-2.0 OR W3C-20150513",
   "version": "1.0.0",
   "description": "New design for the browser GUI for the Web of Things - Thing Description Playground",
+  "homepage": "https://github.com/eclipse-thingweb/playground#readme",
+  "bugs": {
+    "url": "https://github.com/eclipse-thingweb/playground/issues"
+  },
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eclipse-thingweb/playground.git",
+    "directory": "packages/web-new"
+  },
   "scripts": {
     "build": "node external-scripts/generate-paths.js && webpack",
     "dev": "webpack && node server/server.js",
     "server": "node server/server.js",
     "examples": "node external-scripts/generate-paths.js"
   },
-  "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
-  "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.22.9",
     "@babel/preset-env": "^7.22.9",
