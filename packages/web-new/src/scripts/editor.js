@@ -134,7 +134,7 @@ export function createIde(ideNumber, exampleValue) {
         "@context": "https://www.w3.org/2022/wot/td/v1.1",
         "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
         "@type": "Thing",
-        "title": `My Thing Template`,
+        "title": `Thing Template`,
         "description": "This is your customizable template. Edit it to fit your Thing Description or Thing Model needs!",
         "securityDefinitions": {
           "basic_sc": { "scheme": "basic", "in": "header" }
@@ -258,7 +258,7 @@ async function initEditor(ideNumber, editorValue, editorLanguage) {
         markTypos(editorInstance.getModel());
       }
     } catch (err) {
-      console.error("Not a proper JSON object");
+      console.error("Invalid JSON object");
     }
 
   });

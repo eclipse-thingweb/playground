@@ -20,6 +20,7 @@
  */
 import { editorList } from './editor.js'
 import { generateTD } from './util.js'
+import { getEditorData } from './editor.js'
 
 /***********************************************************/
 /*                   Yaml functionality                    */
@@ -34,18 +35,18 @@ jsonBtn.checked = true
 
 
 //Click event to show the warning text before converting the td/tm
-yamlBtn.addEventListener("click", ()=> {
+yamlBtn.addEventListener("click", () => {
   editorList.forEach(editorInstance => {
-    if(editorInstance["_domElement"].classList.contains("active")){
-      try{
+    if (editorInstance["_domElement"].classList.contains("active") && editorInstance["_domElement"]["dataset"]["modeId"] == "json") {
+      try {
         JSON.parse(editorInstance.getValue())
+        yamlWarning.classList.remove('closed')
       }
-      catch(err){
+      catch (err) {
         alert('TD is not a valid JSON object');
         jsonBtn.checked = true
         return
       }
-      yamlWarning.classList.remove('closed')
     }
   })
 })
@@ -62,17 +63,34 @@ yamlConfirmBtn.addEventListener("click", () => {
   convertJsonYaml()
 })
 
-jsonBtn.addEventListener("click", ()=> {
-  convertJsonYaml()
+jsonBtn.addEventListener("click", () => {
+  editorList.forEach(editorInstance => {
+    if (editorInstance["_domElement"].classList.contains("active") && editorInstance["_domElement"]["dataset"]["modeId"] == "yaml") {
+      try {
+        getEditorData(editorInstance)
+        convertJsonYaml()
+      }
+      catch (err) {
+        alert('TD is not a valid YAML object');
+        yamlBtn.checked = true
+        return
+      }
+    }
+  })
 })
 
 /**
- * Get the currently active editor and its value and convert to json or yaml
+ * Get the currently active editor and convert it to json or yaml
  */
-function convertJsonYaml(){
+function convertJsonYaml() {
   editorList.forEach(editorInstance => {
-    if(editorInstance["_domElement"].classList.contains("active")){
-      generateTD(jsonBtn.checked === true ? "json" : "yaml", editorInstance)
+    if (editorInstance["_domElement"].classList.contains("active")) {
+      try {
+        const editorData = getEditorData(editorInstance)
+        generateTD(editorData[0] === "json" ? "yaml" : "json", editorInstance)
+      } catch (err) {
+        console.error(err)
+      }
     }
   })
 }
