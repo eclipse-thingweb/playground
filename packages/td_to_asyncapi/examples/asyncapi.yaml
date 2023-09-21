@@ -81,6 +81,12 @@ tags:
     externalDocs:
       url: "https://www.w3.org/TR/wot-thing-description/#eventaffordance"
       description: "Find out more about Event Affordances."
+components:
+  securitySchemes:
+    basic_sc:
+      type: "http"
+      scheme: "basic"
+      x-in: "header"
 externalDocs:
   url: "http://plugfest.thingweb.io/playground/"
   description: "This AsyncAPI instance was generated from a Web of Things (WoT) - Thing Description by the WoT Playground"

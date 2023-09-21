@@ -81,3 +81,8 @@ All packages are licensed under the Eclipse Public License v. 2.0. You find a co
 1. Run `lerna bootstrap` to install dependencies among the packages, even if a package has never been published before. Make sure you have not increased the dependency versions yet, e.g., you have a new package _newExample_ and the _oldExample_ depends on it. The _newExample_ is on version `0.0.0` (since you want to publish it as `1.0.0`) then in the _oldExample_ package.json the dependency has to be on the same version (or lower) so `"dependencies" { newExample: "^0.0.0"}}`. **Otherwise lerna will not accept linking the local _newExample_.**
 2. If `lerna bootstrap` was successful you can now bump dependency versions (if required), e.g., you could now do `"dependencies" { newExample: "^1.0.0"}}` in the _oldExample_ package.json.
 3. Run `lerna publish` to publish all new package versions. Lerna will then ask for every changed package whether it received a patch, minor or major update. In our example you should now select major for the _newExample_ so that it will be published as `1.0.0` version. You should login to npm via `npm login` before doing this.
+
+## Adapting Licenses
+
+One can use the VS Code plugin at <https://marketplace.visualstudio.com/items?itemName=angelo-breuer.license-header-manager> to updating the copyright fields on top of each file.
+

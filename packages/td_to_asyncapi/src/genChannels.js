@@ -23,7 +23,7 @@ const { Channel, Operation, Tag, Message, MqttOperationBinding, Server } = requi
  * @param {object} td The Thing Description input
  * @param {object} servers The AsyncAPI servers map
  */
-function genChannels(td, servers) {
+function genChannels(td, servers, security) {
     const channels = {};
 
     // Scan Properties
@@ -53,7 +53,7 @@ function genChannels(td, servers) {
                     interaction.forms.forEach((form) => {
                         const dataSchema = interactionInfo.getDataSchema(interaction);
                         const payload = dataToAsyncSchema(dataSchema);
-                        scanPropForm(form, channels, interactionName, payload, servers, interactionInfo);
+                        scanPropForm(form, channels, interactionName, payload, servers, interactionInfo, security);
                     });
                 }
             });
@@ -97,7 +97,7 @@ const tryProtocols = [
  * Check if form is relevant
  * @param {object} form One form
  */
-function scanPropForm(form, channels, propertyName, payload, servers, interactionInfo) {
+function scanPropForm(form, channels, propertyName, payload, servers, interactionInfo, security) {
     const hasBase = servers.base !== undefined ? true : false;
     const isRelative = form.href && form.href.search("://") === -1 ? true : false;
 
@@ -109,8 +109,11 @@ function scanPropForm(form, channels, propertyName, payload, servers, interactio
                 tryProtocol.checkForm(form)
             ) {
                 const { channel, server } = extractChannel(form.href);
+                let newOptionalPara = {
+                    security: security,
+                };
                 // add server
-                addServer(servers, server, tryProtocol.id);
+                addServer(servers, server, tryProtocol.id, newOptionalPara);
 
                 // add channel
                 if (!channels[channel]) {
@@ -141,7 +144,7 @@ function scanPropForm(form, channels, propertyName, payload, servers, interactio
  * @param {string|undefined} newServerUri
  * @param {string} protocol
  */
-function addServer(servers, newServerUri, newServerProtocol) {
+function addServer(servers, newServerUri, newServerProtocol, newOptionalPara) {
     if (
         newServerUri &&
         Object.keys(servers).every(
@@ -153,7 +156,7 @@ function addServer(servers, newServerUri, newServerProtocol) {
         while (Object.keys(servers).some((asyncServer) => asyncServer === i.toString())) {
             i++;
         }
-        servers[i.toString()] = new Server(newServerUri, newServerProtocol);
+        servers[i.toString()] = new Server(newServerUri, newServerProtocol, newOptionalPara);
     }
 }
 

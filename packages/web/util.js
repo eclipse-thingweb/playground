@@ -575,8 +575,8 @@ export async function openEditdor(docType, format) {
 
     const data = docType + format + value;
     const compressed = Validators.compress(data);
-    const URL = `https://eclipse.github.io/editdor/?td=${compressed}`
-    window.open(URL, '_blank');
+    const URL = `https://eclipse.github.io/editdor/?td=${compressed}`;
+    window.open(URL, "_blank");
 }
 
 /**
