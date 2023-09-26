@@ -94,7 +94,7 @@ Finally the web application can be deployed in production or in development mode
 
 ### Development mode
 
-1. Utilze the command `npm  run dev` which will start the webpack-dev-server in development mode, generate source maps for easier debuging, open your default browser and serve the application.
+1. Utilize the command `npm  run dev` which will start the webpack-dev-server in development mode, generate source maps for easier debugging, open your default browser and serve the application.
 
 ```sh
 npm run dev
