@@ -12,7 +12,6 @@
  *  
  *  SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
  */
-
 /*** Globals **/
 *,
 *::before,
@@ -384,6 +383,20 @@ main .console {
   }
 }
 /*** Main Content ***/
+/* 
+ *  Copyright (c) 2023 Contributors to the Eclipse Foundation
+ *  
+ *  See the NOTICE file(s) distributed with this work for additional
+ *  information regarding copyright ownership.
+ *  
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Eclipse Public License v. 2.0 which is available at
+ *  http://www.eclipse.org/legal/epl-2.0, or the W3C Software Notice and
+ *  Document License (2015-05-13) which is available at
+ *  https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document.
+ *  
+ *  SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
+ */
 /*** Editor ***/
 .ide__tabs {
   display: flex;
@@ -537,6 +550,20 @@ main .console {
   transition: opacity 300ms ease-in-out;
 }
 
+/* 
+ *  Copyright (c) 2023 Contributors to the Eclipse Foundation
+ *  
+ *  See the NOTICE file(s) distributed with this work for additional
+ *  information regarding copyright ownership.
+ *  
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Eclipse Public License v. 2.0 which is available at
+ *  http://www.eclipse.org/legal/epl-2.0, or the W3C Software Notice and
+ *  Document License (2015-05-13) which is available at
+ *  https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document.
+ *  
+ *  SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
+ */
 /** Control panel **/
 .control-panel {
   display: flex;
@@ -597,6 +624,20 @@ main .console {
   flex: 0;
 }
 
+/* 
+ *  Copyright (c) 2023 Contributors to the Eclipse Foundation
+ *  
+ *  See the NOTICE file(s) distributed with this work for additional
+ *  information regarding copyright ownership.
+ *  
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Eclipse Public License v. 2.0 which is available at
+ *  http://www.eclipse.org/legal/epl-2.0, or the W3C Software Notice and
+ *  Document License (2015-05-13) which is available at
+ *  https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document.
+ *  
+ *  SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
+ */
 /*** Console ***/
 .console {
   overflow: hidden;
@@ -1243,6 +1284,20 @@ main .console {
   }
 }
 /** Additional menus **/
+/* 
+ *  Copyright (c) 2023 Contributors to the Eclipse Foundation
+ *  
+ *  See the NOTICE file(s) distributed with this work for additional
+ *  information regarding copyright ownership.
+ *  
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Eclipse Public License v. 2.0 which is available at
+ *  http://www.eclipse.org/legal/epl-2.0, or the W3C Software Notice and
+ *  Document License (2015-05-13) which is available at
+ *  https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document.
+ *  
+ *  SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
+ */
 /***** settings menu *****/
 .settings-menu {
   position: absolute;
@@ -1450,6 +1505,20 @@ main .console {
   transition: transform 500ms var(--trans-bouncy), opacity 250ms ease-in-out 250ms, width 0s ease 500ms, height 0s ease 500ms;
 }
 
+/* 
+ *  Copyright (c) 2023 Contributors to the Eclipse Foundation
+ *  
+ *  See the NOTICE file(s) distributed with this work for additional
+ *  information regarding copyright ownership.
+ *  
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Eclipse Public License v. 2.0 which is available at
+ *  http://www.eclipse.org/legal/epl-2.0, or the W3C Software Notice and
+ *  Document License (2015-05-13) which is available at
+ *  https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document.
+ *  
+ *  SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
+ */
 /**** Examples Menu ****/
 .examples-menu {
   position: absolute;
@@ -1795,6 +1864,20 @@ main .console {
     width: 100%;
   }
 }
+/* 
+ *  Copyright (c) 2023 Contributors to the Eclipse Foundation
+ *  
+ *  See the NOTICE file(s) distributed with this work for additional
+ *  information regarding copyright ownership.
+ *  
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Eclipse Public License v. 2.0 which is available at
+ *  http://www.eclipse.org/legal/epl-2.0, or the W3C Software Notice and
+ *  Document License (2015-05-13) which is available at
+ *  https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document.
+ *  
+ *  SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
+ */
 .save-menu {
   position: absolute;
   top: 0;
@@ -1975,6 +2058,20 @@ main .console {
   pointer-events: none;
 }
 
+/* 
+ *  Copyright (c) 2023 Contributors to the Eclipse Foundation
+ *  
+ *  See the NOTICE file(s) distributed with this work for additional
+ *  information regarding copyright ownership.
+ *  
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Eclipse Public License v. 2.0 which is available at
+ *  http://www.eclipse.org/legal/epl-2.0, or the W3C Software Notice and
+ *  Document License (2015-05-13) which is available at
+ *  https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document.
+ *  
+ *  SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
+ */
 .json-yaml-warning {
   position: absolute;
   top: 0;
@@ -2041,6 +2138,20 @@ main .console {
 }
 
 /** Visualizations **/
+/* 
+ *  Copyright (c) 2023 Contributors to the Eclipse Foundation
+ *  
+ *  See the NOTICE file(s) distributed with this work for additional
+ *  information regarding copyright ownership.
+ *  
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Eclipse Public License v. 2.0 which is available at
+ *  http://www.eclipse.org/legal/epl-2.0, or the W3C Software Notice and
+ *  Document License (2015-05-13) which is available at
+ *  https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document.
+ *  
+ *  SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
+ */
 svg {
   border: none;
 }
