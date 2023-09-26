@@ -29,7 +29,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = {
-    mode: 'development',
     entry: {
         bundle: path.resolve(__dirname, 'src/scripts/main.js'),
         styles: path.resolve(__dirname, 'src/styles/styles.css'),

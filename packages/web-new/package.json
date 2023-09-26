@@ -15,9 +15,9 @@
     "directory": "packages/web-new"
   },
   "scripts": {
-    "build": "node external-scripts/generate-paths.js && webpack",
-    "dev": "webpack && node server/server.js",
-    "server": "node server/server.js",
+    "build": "node external-scripts/generate-paths.js && webpack --mode production",
+    "dev": "webpack-dev-server --mode development --config webpack.config.js",
+    "serve": "node server/server.js",
     "examples": "node external-scripts/generate-paths.js"
   },
   "devDependencies": {
