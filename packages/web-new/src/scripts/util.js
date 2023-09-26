@@ -231,21 +231,20 @@ export function validate(thingType, editorContent) {
                 document.getElementById(spotName).removeAttribute('open')
                 const resultIcon = document.getElementById(spotName).children[0].children[0]
                 if (result.report[el] === "passed") {
-                    resultIcon.classList.remove("fa-spinner")
+                    resultIcon.classList.remove("fa-circle")
                     resultIcon.classList.add("fa-circle-check")
                 }
                 else if (result.report[el] === "warning") {
-                    resultIcon.classList.remove("fa-spinner")
+                    resultIcon.classList.remove("fa-circle")
                     resultIcon.classList.add("fa-circle-exclamation")
 
                 }
                 else if (result.report[el] === "failed") {
-                    resultIcon.classList.remove("fa-spinner")
+                    resultIcon.classList.remove("fa-circle")
                     resultIcon.classList.add("fa-circle-xmark")
                 }
                 else if (result.report[el] === null) {
-                    resultIcon.classList.remove("fa-spinner")
-                    resultIcon.classList.add("fa-circle")
+                    //do nothing
                 }
                 else {
                     console.error("unknown report feedback value")
@@ -259,20 +258,19 @@ export function validate(thingType, editorContent) {
                     const detailsIcon = document.getElementById(detailsName).children[0].children[0]
 
                     if (result.details[el] === "passed") {
-                        detailsIcon.classList.remove("fa-spinner")
+                        detailsIcon.classList.remove("fa-circle")
                         detailsIcon.classList.add("fa-circle-check")
                     }
                     else if (result.details[el] === "warning" || result.details[el] === "not-impl") {
-                        detailsIcon.classList.remove("fa-spinner")
+                        detailsIcon.classList.remove("fa-circle")
                         detailsIcon.classList.add("fa-circle-exclamation")
                     }
                     else if (result.details[el] === "failed") {
-                        detailsIcon.classList.remove("fa-spinner")
+                        detailsIcon.classList.remove("fa-circle")
                         detailsIcon.classList.add("fa-circle-xmark")
                     }
                     else if (result.details[el] === null) {
-                        detailsIcon.classList.remove("fa-spinner")
-                        detailsIcon.classList.add("fa-circle")
+                        //do nothing
                     }
                     else {
                         console.error("unknown report feedback value")
@@ -303,9 +301,9 @@ function resetValidationStatus() {
     }
     sectionHeaders.forEach(header => {
         const headerIcon = header.children[0]
-        if (!headerIcon.classList.contains("fa-spinner")) {
+        if (!headerIcon.classList.contains("fa-circle")) {
             headerIcon.classList.remove("fa-circle-check", "fa-circle-exclamation", "fa-circle-xmark", "fa-circle")
-            headerIcon.classList.add("fa-spinner")
+            headerIcon.classList.add("fa-circle")
         }
     })
 }
@@ -341,6 +339,16 @@ function populateCategory(messagesList) {
                 listElement.textContent = message
                 categoryContainer.append(listElement)
             })
+            categoryContainer.classList.remove("empty")
+        } else if (category.children[0].children[0].classList.contains("fa-circle-check")){
+            const successMessage = document.createElement("li")
+            successMessage.textContent = "Validated Successfully"
+            categoryContainer.append(successMessage)
+            categoryContainer.classList.remove("empty")
+        }else{
+            const nullMessage = document.createElement("li")
+            nullMessage.textContent = "A previous validation has failed or it is only available for Thing Descriptions"
+            categoryContainer.append(nullMessage)
             categoryContainer.classList.remove("empty")
         }
     })

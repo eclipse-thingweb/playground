@@ -175,8 +175,7 @@
             position: absolute;
             top: 0;
             right: 0;
-            overflow-y: auto;
-            overflow-x: hidden;
+            overflow: hidden;
             padding: 2rem;
             transition: opacity 250ms ease-in-out;
 
@@ -187,14 +186,20 @@
                 pointer-events: none;
                 transition: opacity 0s ease-in-out;
             }
+        }
 
-            &.validation-view {
-                overflow: auto;
+        .validation-view {
+            .validation-container {
+                width: 100%;
+                height: 100%;
+                overflow-y: auto;
+                overflow-x: hidden;
 
-                details{
+                details {
                     margin-bottom: 1rem;
-                    summary{
-                        .show-icon{
+
+                    summary {
+                        .show-icon {
                             transform: rotate(0);
                             transition: transform 250ms ease-in-out;
                         }
@@ -206,70 +211,68 @@
                         justify-content: flex-start;
                         gap: 1rem;
                         cursor: pointer;
-    
+
                         .fa-circle-check {
                             color: var(--clr-success-500);
                         }
-    
+
                         .fa-circle-exclamation {
                             color: var(--clr-warning-500);
                         }
-    
+
                         .fa-circle-xmark {
                             color: var(--clr-error-500);
                         }
-    
-                        .fa-spinner {
-                            color: var(--clr-neutral-300);
-                            animation: rotate 2s infinite ease-in-out;
-                        }
-    
-                        .fa-circle{
+
+                        .fa-circle {
                             color: var(--clr-neutral-300);
                         }
-    
+
                         .show-icon {
                             cursor: pointer;
                         }
-    
-                        .title{
+
+                        .title {
                             font-weight: var(--fw-bold);
                         }
                     }
 
-                    .section-content, .section-additional{
+                    .section-content,
+                    .section-additional {
                         padding: 1rem 2rem;
                     }
 
-                    .section-content{
+                    .section-content {
                         list-style-position: inside;
                         list-style-type: disc;
 
-                        &.empty{
+                        &.empty {
                             padding: 0 0 1rem 0;
                         }
 
-                        .notice-prompt{
+                        .notice-prompt {
                             color: var(--clr-neutral-300);
                             font-size: var(--fs-footer);
                         }
                     }
 
-                    .section-additional{
-                        details{
+                    .section-additional {
+                        details {
                             margin-bottom: 1rem;
-                            summary{
-                                .show-icon{
+
+                            summary {
+                                .show-icon {
                                     transform: rotate(0);
                                     transition: transform 250ms ease-in-out;
                                 }
                             }
                         }
-        
-                        details[open]{
+
+                        details[open] {
                             margin-bottom: 0;
-                            summary{
-                                .show-icon{
+
+                            summary {
+                                .show-icon {
                                     transform: rotate(-90deg);
                                 }
                             }
@@ -277,14 +280,16 @@
                     }
                 }
 
-                details[open]{
+                details[open] {
                     margin-bottom: 0;
-                    summary{
-                        .show-icon{
+
+                    summary {
+                        .show-icon {
                             transform: rotate(-90deg);
                         }
                     }
                 }
+
             }
         }
 
@@ -327,12 +332,14 @@
                     appearance: none;
                     border: none;
                     width: 100%;
+                    height: 3.25rem;
                     border-radius: 5px;
                     padding: .75rem 1.5rem;
                     background-color: var(--clr-primary-500);
                     color: var(--clr-neutral-50);
                     font-family: var(--ff-primary);
                     font-size: var(--fs-p);
+                    font-weight: var(--fw-bold);
                     cursor: pointer;
                     transition: background-color 250ms ease-in-out;
                     display: flex;
@@ -352,15 +359,26 @@
 
                 .input-field {
                     width: 100%;
+                    min-height: 3.25rem;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     gap: 2px;
                     border-radius: 5px;
                     overflow: hidden;
-                    button{
+
+                    button {
                         border-radius: 0;
                     }
+                }
+
+                .view-download{
+                    width: 100%;
+                    height: 100%;
+                    min-height: 3.25rem;
+                    display: flex;
+                    align-items: flex-end;
+                    justify-content: center;
                 }
             }
         }
@@ -416,7 +434,7 @@
                         input[type="radio"] {
                             appearance: none;
                             width: 100%;
-                            height: 3.25rem;
+                            min-height: 3.25rem;
                             background-color: var(--clr-primary-500);
                             cursor: pointer;
                             transition: background-color 250ms ease-in-out;
@@ -427,7 +445,7 @@
                             }
 
                             &::before {
-                                content: '';
+                                position: absolute;
                                 top: 0;
                                 left: 0;
                                 width: 100%;
@@ -436,6 +454,7 @@
                                 place-items: center;
                                 font-size: var(--fs-p);
                                 font-family: var(--ff-primary);
+                                font-weight: var(--fw-bold);
                                 text-transform: capitalize;
                                 color: var(--clr-neutral-50);
                             }
@@ -644,7 +663,6 @@
                     width: 100%;
                     height: 100%;
                     margin-top: 2rem;
-                    //todo: Remove the separation for the download buttons?
                     display: flex;
                     flex-direction: column;
                     align-items: center;
@@ -652,15 +670,5 @@
                 }
             }
         }
-    }
-}
-
-@keyframes rotate {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
     }
 }
