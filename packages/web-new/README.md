@@ -58,7 +58,7 @@ The `webpack.config.js` file is used to set up Webpack for the project. It manag
 - `assetModuleFilename`: Specifies the filename for asset files
 
 **3.3 Development Server**
-- `devServer`: Configures the development server with settings such as the port, enabling hot module replacement, compressing assets, and enabling history API fallback
+- `devServer`: Configures the development server with settings such as the port, compressing assets, and enabling history API fallback
 
 **3.4 Module Rules**
 - `module`: Defines rules for how Webpack should process different file types. There are rules for JavaScript, images, CSS, and more. For example, it uses Babel to transpile JavaScript, handles image assets, and processes CSS with style loaders and sass loaders
@@ -94,7 +94,7 @@ Finally the web application can be deployed in production or in development mode
 
 ### Development mode
 
-1. Utilze the command `npm  run dev` which will start the webpack-dev-server in development mode, open your default browser and serve the application according to the configuaration specified in the `webpack.config.js` file.
+1. Utilze the command `npm  run dev` which will start the webpack-dev-server in development mode, generate source maps for easier debuging, open your default browser and serve the application.
 
 ```sh
 npm run dev
