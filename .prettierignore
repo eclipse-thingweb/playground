@@ -3,5 +3,5 @@ package-lock.json
 coverage
 .nyc_output
 **/out
-packages/td_to_openAPI/examples/openapi.yaml
+packages/td_to_openapi/examples/openapi.yaml
 packages/td_to_asyncapi/examples/asyncapi.yaml

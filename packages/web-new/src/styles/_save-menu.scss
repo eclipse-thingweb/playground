@@ -1,0 +1,223 @@
+/* 
+ *  Copyright (c) 2023 Contributors to the Eclipse Foundation
+ *  
+ *  See the NOTICE file(s) distributed with this work for additional
+ *  information regarding copyright ownership.
+ *  
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Eclipse Public License v. 2.0 which is available at
+ *  http://www.eclipse.org/legal/epl-2.0, or the W3C Software Notice and
+ *  Document License (2015-05-13) which is available at
+ *  https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document.
+ *  
+ *  SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
+ */
+
+.save-menu{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    background-color: var(--clr-shades-trans);
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: all;
+    transition: all 500ms var(--trans-bouncy);
+
+    &__container{
+        width: 50rem;
+        border-radius: 10px;
+        background-color: var(--clr-neutral-50);
+        box-shadow: 0px 0px 10px 0px var(--clr-shadow);
+        padding: 2rem;
+
+        .save-menu-close{
+            width: 100%;
+            text-align: right;
+            margin-bottom: 2rem;
+
+            i{
+                font-size: var(--fs-sub-header);
+                cursor: pointer;
+            }
+        }
+
+        .save-menu-title{
+            p{
+                color: var(--clr-neutral-900);
+                font-weight: var(--fw-bold);
+                font-size: var(--fs-sub-header);
+            }
+            margin-bottom: 3rem;
+        }
+
+        .share-td{
+            width: 100%;
+            margin-bottom: 3rem;
+
+            & > *{
+                width: 100%;
+                height: 4rem;
+                border-radius: 5px;  
+                font-family: var(--ff-primary);
+                font-size: var(--fs-p); 
+            }
+
+            &__input{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                margin-bottom: 1rem;
+
+                .share-url-input{
+                    width: 100%;
+                    height: 4rem;
+                    background-color: var(--clr-neutral-50);
+                    border-top: 2px solid var(--clr-neutral-200);
+                    border-left: 2px solid var(--clr-neutral-200);
+                    border-bottom: 2px solid var(--clr-neutral-200);
+                    border-right: none;
+                    border-top-left-radius: 5px;
+                    border-bottom-left-radius: 5px;
+                    font-family: var(--ff-primary);
+                    font-size: var(--fs-p);
+                    padding: 1rem;
+
+                    &.error{
+                        color: var(--clr-error-500);
+                    }
+
+                    &:focus{
+                        outline: none;
+                    }
+                }
+
+                .open-url-tab{
+                    height: 4rem;
+                    width: fit-content;
+                    background-color: var(--clr-neutral-200);
+                    color: var(--clr-neutral-50);
+                    font-size: var(--fs-p);
+                    padding: 1rem;
+                    border-top-right-radius: 5px;
+                    border-bottom-right-radius: 5px;
+                    border: none;
+                    cursor: pointer;
+                    transition: background-color 250ms ease-in-out;
+
+                    &:hover{
+                        background-color: var(--clr-neutral-300);
+                    }
+
+                    &:disabled{
+                        background-color: var(--clr-neutral-200);
+                        cursor: default;
+                    }
+                }
+            }
+
+            &__btn{
+                cursor: pointer;
+                font-weight: var(--fw-bold);
+                transition: all 250ms ease-in-out;
+
+                &.share-url{
+                    margin-bottom: 1rem;
+                    background-color: var(--clr-primary-500);
+                    color: var(--clr-neutral-50);
+                    border: none;
+                    transition: background-color 250ms ease-in-out;
+                    i{
+                        margin-right: 1rem;
+                    }
+
+                    &:hover{
+                        background-color: var(--clr-primary-700);
+                    }
+                }
+
+                &.open-editdor{
+                    border: 2px solid var(--clr-primary-500);
+                    background-color: transparent;
+                    color: var(--clr-primary-500);
+                    transition: all 250ms ease-in-out;
+
+                    &:hover{
+                        background-color: var(--clr-primary-700);
+                        border-color: var(--clr-primary-700);
+                        color: var(--clr-neutral-50);
+                    }
+                }  
+            }
+        }
+
+        .save-td{
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: .5rem;
+
+            & > *{
+                flex: 1;
+                height: 4rem;
+                border-radius: 5px;
+                border: none;
+                color: var(--clr-neutral-50);
+                background-color: var(--clr-primary-500);
+                cursor: pointer;
+                font-family: var(--ff-primary);
+                font-size: var(--fs-p);
+                font-weight: var(--fw-bold);
+                transition: background-color 250ms ease-in-out;
+
+                &:disabled{
+                    background-color: var(--clr-primary-100);
+                    cursor: not-allowed;
+
+                    &:hover{
+                        background-color: var(--clr-primary-100);
+                    }
+                }
+
+                i{
+                    margin-right: 1rem;
+                }
+
+                &:hover{
+                    background-color: var(--clr-primary-700);
+                }
+            }
+        }
+
+        .save-warning{
+            margin-bottom: 3rem;
+            p{
+                color: var(--clr-neutral-300);
+                font-size: var(--fs-footer);
+                transition: color 150ms ease-in-out;
+
+                span{
+                    font-weight: var(--fw-bold);
+                }
+            }
+
+            &.active{
+                p{
+                    color: var(--clr-error-500);
+                }
+            }
+        }
+    }
+
+    &.closed{
+        transform: scale(0);
+        opacity: 0;
+        pointer-events: none;
+    }
+}

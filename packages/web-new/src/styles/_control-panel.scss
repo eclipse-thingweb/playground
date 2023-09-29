@@ -1,0 +1,81 @@
+/* 
+ *  Copyright (c) 2023 Contributors to the Eclipse Foundation
+ *  
+ *  See the NOTICE file(s) distributed with this work for additional
+ *  information regarding copyright ownership.
+ *  
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Eclipse Public License v. 2.0 which is available at
+ *  http://www.eclipse.org/legal/epl-2.0, or the W3C Software Notice and
+ *  Document License (2015-05-13) which is available at
+ *  https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document.
+ *  
+ *  SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
+ */
+
+/** Control panel **/
+.control-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    width: 8rem;
+
+    &__btn {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: var(--clr-primary-500);
+        background-color: inherit;
+        border: none;
+        border-bottom: 2px solid var(--clr-primary-500);
+        font-family: var(--ff-primary);
+        cursor: pointer;
+        transition: all 250ms ease;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        &:hover {
+            color: var(--clr-neutral-50);
+            background-color: var(--clr-primary-500);
+        }
+
+        i {
+            font-size: var(--fs-i);
+        }
+
+        p {
+            font-weight: var(--fw-bold);
+        }
+
+        .text-icon {
+            width: fit-content;
+            opacity: 1;
+            margin-top: 1rem;
+            transform: scaleX(1);
+            transition: opacity 250ms var(--trans-bouncy), transform 250ms var(--trans-bouncy);
+        }
+
+        .text-icon.hiddenV {
+            opacity: 0;
+            margin: 0;
+            transform: scaleX(0);
+            height: 0;
+            flex: 0;
+        }
+
+        .text-icon.hiddenH {
+            opacity: 0;
+            margin: 0;
+            transform: scaleX(0);
+            height: 0;
+            flex: 0;
+        }
+    }
+}

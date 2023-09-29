@@ -1,0 +1,197 @@
+/* 
+ *  Copyright (c) 2023 Contributors to the Eclipse Foundation
+ *  
+ *  See the NOTICE file(s) distributed with this work for additional
+ *  information regarding copyright ownership.
+ *  
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Eclipse Public License v. 2.0 which is available at
+ *  http://www.eclipse.org/legal/epl-2.0, or the W3C Software Notice and
+ *  Document License (2015-05-13) which is available at
+ *  https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document.
+ *  
+ *  SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
+ */
+
+/*** Editor ***/
+.ide {
+    &__tabs {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+        ul {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+            height: 100%;
+
+            li {
+                height: 100%;
+                padding: 1rem;
+                text-align: left;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+                background-color: var(--clr-shades-trans);
+                color: var(--clr-neutral-300);
+                margin-right: 2px;
+                transition: all 250ms ease;
+                overflow: hidden;
+                white-space: nowrap;
+                cursor: pointer;
+
+                span{
+                    font-size: 1rem;
+                    font-weight: bold;
+                    margin-right: 1rem;
+                }
+
+                p {
+                    font-weight: var(--fw-bold);
+                }
+
+                i {
+                    font-size: var(--fs-p);
+                }
+
+                &.active {
+                    background-color: var(--clr-neutral-50);
+                    color: var(--clr-neutral-900);
+                }
+
+                &:hover {
+                    .close-tab {
+                        opacity: 1;
+                    }
+                }
+
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+        }
+
+        &__left {
+            max-width: 80%;
+            overflow-y: hidden;
+            overflow-x: auto;
+
+            li:not(:last-child) {
+                position: relative;
+                padding-right: 3rem;
+
+                .tab-icon{
+                    font-size: 1rem;
+                    margin-right: 1rem;
+                    color: var(--clr-td-300);
+                }
+
+                &.active{
+                    .tab-icon{
+                        color: var(--clr-td-500);
+                    }
+                }
+
+                .close-tab {
+                    position: absolute;
+                    content: '';
+                    top: 50%;
+                    right: 0;
+                    width: 2rem;
+                    height: 2rem;
+                    transform: translate(-.5rem, -50%);
+                    background-color: var(--clr-neutral-100);
+                    opacity: 0;
+                    border-radius: 5px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 250ms ease-in-out;
+
+                    &:hover {
+                        background-color: var(--clr-neutral-200);
+                    }
+
+                    i {
+                        pointer-events: none;
+                        font-size: 1.4rem;
+                        height: 1.3rem;
+                    }
+                }
+            }
+
+            li:last-child {
+                min-width: 3.5rem;
+                transition: all 250ms ease-in-out;
+
+                &:hover{
+                    background-color: var(--clr-neutral-50);
+                    color: var(--clr-neutral-900);
+                }
+            }
+        }
+
+        &__right{
+            height: 100%;
+            input[type=radio]{
+                appearance: none;
+                width: 6rem;
+                height: 100%;
+                background-color: var(--clr-shades-trans);
+                border-top-right-radius: 5px;
+                border-top-left-radius: 5px;
+                color: var(--clr-neutral-300);
+                font-family: var(--ff-primary);
+                font-size: var(--fs-p);
+                font-weight: var(--fw-bold);
+                cursor: pointer;
+                overflow: hidden;
+                transition: all 250ms ease-in-out;
+
+                &::before{
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                &:nth-child(1)::before{
+                    content: 'JSON';
+                }
+
+                &:nth-child(2)::before{
+                    content: 'YAML';
+                }
+            }
+
+            input[type=radio]:checked{
+                background-color: var(--clr-neutral-50);
+                color: var(--clr-neutral-900);
+            }
+        }
+    }
+
+    &__container {
+        .editor {
+            pointer-events: none;
+            width: 0;
+            height: 0;
+            opacity: 0;   
+        }
+
+        .editor.active {
+            pointer-events: all;
+            min-height: 100%;
+            width: 100%;
+            opacity: 1;
+            transition: opacity 300ms ease-in-out;
+        }
+    }
+}

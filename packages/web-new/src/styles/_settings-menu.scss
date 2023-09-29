@@ -1,0 +1,249 @@
+/* 
+ *  Copyright (c) 2023 Contributors to the Eclipse Foundation
+ *  
+ *  See the NOTICE file(s) distributed with this work for additional
+ *  information regarding copyright ownership.
+ *  
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Eclipse Public License v. 2.0 which is available at
+ *  http://www.eclipse.org/legal/epl-2.0, or the W3C Software Notice and
+ *  Document License (2015-05-13) which is available at
+ *  https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document.
+ *  
+ *  SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
+ */
+
+/***** settings menu *****/
+
+.settings-menu {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50rem;
+    height: 100%;
+    background-color: var(--clr-primary-700);
+    border-radius: 0 0 0 10px;
+    padding: 4rem;
+    color: var(--clr-neutral-50);
+    transform-origin: right;
+    transition: width 0s ease, height 0s ease, opacity 150ms ease-in-out, transform 500ms var(--trans-bouncy);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 100;
+
+    .settings {
+        width: 100%;
+
+        &__close {
+            text-align: right;
+            margin-bottom: 2rem;
+
+            i {
+                font-size: var(--fs-h4);
+                cursor: pointer;
+            }
+        }
+
+        &__title,
+        &__preferences {
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--clr-neutral-50);
+            margin: 4rem 0;
+        }
+
+        &__validate-options {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+
+            .form-field {
+                width: calc(50% - 2rem);
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+
+                label {
+                    font-size: var(--fs-p);
+                    max-width: 10ch;
+                }
+
+                input[type="checkbox"] {
+                    appearance: none;
+                    width: 6rem;
+                    height: 3rem;
+                    border-radius: 50vw;
+                    background-color: var(--clr-controls-bg);
+                    position: relative;
+                    transition: background-color 250ms ease-in-out;
+                    cursor: pointer;
+
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        top: .4rem;
+                        left: .4rem;
+                        width: 2.2rem;
+                        height: 2.2rem;
+                        border-radius: 50%;
+                        background-color: var(--clr-controls);
+                        transition: left 500ms var(--trans-bouncy);
+                    }
+                }
+
+                input[type="checkbox"]:checked {
+                    background-color: var(--clr-success-500);
+
+                    &::before {
+                        left: 3.2rem;
+                    }
+                }
+            }
+        }
+
+        &__editor {
+            width: 100%;
+
+            .form-field {
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                font-size: var(--fs-p);
+                margin-bottom: 2rem;
+
+                span {
+                    font-weight: var(--fw-bold);
+                }
+
+                select {
+                    width: 60%;
+                    background-color: var(--clr-neutral-50);
+                    color: var(--clr-neutral-900);
+                    padding: .5rem 1rem;
+                    border-radius: 5px;
+                    border: none;
+                    cursor: pointer;
+                    font-family: var(--ff-primary);
+                }
+
+                .font-range-container {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 1rem;
+                    width: 100%;
+                    padding: 1rem 0;
+
+                    span {
+                        width: fit-content;
+                    }
+                }
+
+                input[type="range"] {
+                    flex: 1;
+                    appearance: none;
+                    height: 4px;
+                    border-radius: 50vw;
+                    background-color: var(--clr-controls-bg);
+                    cursor: pointer;
+
+                    /* All the same stuff for Firefox */
+
+                    &::-moz-range-thumb {
+                        height: 2rem;
+                        width: 2rem;
+                        border-radius: 50%;
+                        background-color: var(--clr-controls);
+                        border: none;
+                    }
+
+                    &::-webkit-slider-thumb {
+                        -webkit-appearance: none;
+                        border: none;
+                        height: 2rem;
+                        width: 2rem;
+                        border-radius: 50%;
+                        background-color: var(--clr-controls);
+                    }
+
+                    input[type=range]::-ms-thumb {
+                        height: 2rem;
+                        width: 2rem;
+                        border-radius: 50%;
+                        background-color: var(--clr-controls);
+                        border: none;
+                    }
+                }
+
+                .reset-settings {
+                    width: 100%;
+                    border: none;
+                    padding: 1rem 2rem;
+                    border-radius: 5px;
+                    background-color: var(--clr-controls-bg);
+                    color: var(--clr-controls);
+                    font-size: var(--fs-p);
+                    font-weight: var(--fw-bold);
+                    font-family: var(--ff-primary);
+                    cursor: pointer;
+                    transition: background-color 250ms ease-in-out;
+
+                    &:hover {
+                        background-color: var(--clr-primary-900);
+                    }
+
+                    &:active {
+                        transform: scale(0.98);
+                    }
+                }
+            }
+
+            .form-field:nth-child(2) {
+                flex-direction: column;
+                align-items: self-start;
+            }
+        }
+    }
+
+    footer {
+        width: 100%;
+        text-align: center;
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            a {
+                font-size: 1.2rem;
+                padding: 0 1rem;
+                height: 100%;
+
+                &:not(:last-child) {
+                    border-right: 1px solid var(--clr-neutral-50);
+                }
+            }
+        }
+    }
+}
+
+.settings-menu.closed {
+    width: 0;
+    height: 0;
+    opacity: 0;
+    transform: scaleX(0);
+    transition: transform 500ms var(--trans-bouncy), opacity 250ms ease-in-out 250ms, width 0s ease 500ms, height 0s ease 500ms;
+}

@@ -1,0 +1,448 @@
+/* 
+ *  Copyright (c) 2023 Contributors to the Eclipse Foundation
+ *  
+ *  See the NOTICE file(s) distributed with this work for additional
+ *  information regarding copyright ownership.
+ *  
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Eclipse Public License v. 2.0 which is available at
+ *  http://www.eclipse.org/legal/epl-2.0, or the W3C Software Notice and
+ *  Document License (2015-05-13) which is available at
+ *  https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document.
+ *  
+ *  SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
+ */
+
+/*** Globals **/
+*,
+*::before,
+*::after {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    /*Fonts styles*/
+    --ff-primary: 'Roboto', sans-serif;
+    --ff-secundary: 'Open Sans', sans-serif;
+
+    /*Font weights*/
+    --fw-light: 300;
+    --fw-regular: 400;
+    --fw-bold: 700;
+    --fw-black: 900;
+
+    /*Font sizes*/
+    //default font size fallback values
+    --fs-h1: 3.5rem;
+    --fs-h2: 3rem;
+    --fs-h3: 2.5rem;
+    --fs-h4: 2rem;
+    --fs-sub-header: 1.8rem;
+    --fs-p: 1.4rem;
+    --fs-footer: 1rem;
+    --fs-i: 1.8rem;
+
+    //responsive font size values
+    --fs-h1: clamp(3rem, 2.8rem + 0.625vw, 4rem);
+    --fs-h2: clamp(2.5rem, 2.3rem + 0.625vw, 3.5rem);
+    --fs-h3: clamp(2rem, 1.8rem + 0.625vw, 3rem);
+    --fs-h4: clamp(1.5rem, 1.3rem + 0.625vw, 2.5rem);
+    --fs-sub-header: clamp(1.4rem, 1.239rem + 0.5vw, 2.2rem);
+    --fs-p: clamp(1.2rem, 1.119rem + 0.25vw, 1.6rem);
+    --fs-footer: clamp(0.8rem, 0.7200000000000001rem + 0.24999999999999997vw, 1.2rem);
+    --fs-i: clamp(1.4rem, 1.279rem + 0.375vw, 2rem);
+
+    /*line heights*/
+    --lh-h1: 5rem;
+    --lh-h2: 4.5rem;
+    --lh-h3: 4rem;
+    --lh-h4: 3.5rem;
+    --lh-sub-header: 3rem;
+    --lh-p: 2rem;
+    --lh-footer: 1.5rem;
+    --lh-i: 2.2rem;
+
+    /*colors*/
+    //neutrals
+    --clr-neutral-50: #FFFFFE;
+    --clr-neutral-100: #E4E6E6;
+    --clr-neutral-200: #CACCCC;
+    --clr-neutral-300: #B1B3B3;
+    --clr-neutral-900: #141414;
+
+    //primary
+    --clr-primary-100: #95E5D9;
+    --clr-primary-300: #5ED1C0;
+    --clr-primary-500: #33B8A4;
+    --clr-primary-700: #179985;
+    --clr-primary-900: #067362;
+
+    //shades
+    --clr-shades-trans: rgba(255, 255, 255, 0.6);
+    --clr-shadow: rgba(0, 0, 0, 0.4);
+
+    //success
+    --clr-success-100: #80F2AA;
+    --clr-success-300: #63E592;
+    --clr-success-500: #4ADE80;
+    --clr-success-700: #2DC464;
+    --clr-success-900: #16AB4C;
+
+    //warning
+    --clr-warning-100: #FFDE59;
+    --clr-warning-300: #FCD63F;
+    --clr-warning-500: #FACC15;
+    --clr-warning-700: #EDBF09;
+    --clr-warning-900: #E0B300;
+
+    //error
+    --clr-error-100: #FAA5A5;
+    --clr-error-300: #FA8C8C;
+    --clr-error-500: #F87171;
+    --clr-error-700: #EB5454;
+    --clr-error-900: #DE3A3A;
+
+    //td
+    --clr-td-300: #d6935d;
+    --clr-td-500: #E07A26;
+
+    //settings menu
+    --clr-controls: var(--clr-neutral-50);
+    --clr-controls-bg: var(--clr-primary-500);
+
+    /* transitions */
+    --trans-bouncy: cubic-bezier(0.68, -0.75, 0.27, 1.75);
+}
+
+//IDE Themes
+.dark-mode {
+    --clr-neutral-50: #1E1E1E;
+    --clr-neutral-100: #4C4D4C;
+    --clr-neutral-200: #656666;
+    --clr-neutral-300: #7E807F;
+    --clr-neutral-900: #FFFFFE;
+
+    --clr-shades-trans: rgba(30, 30, 30, 0.7);
+    --clr-shadow: rgba(255, 255, 255, 0.4);
+}
+
+.monochrome-mode {
+    --clr-neutral-50: #549087;
+    --clr-neutral-100: #4C4D4C;
+    --clr-neutral-200: #656666;
+    --clr-neutral-300: #7E807F;
+    --clr-neutral-900: #FFFFFE;
+
+    --clr-primary-500: #FFFFFE;
+    --clr-primary-700: #E4E6E6;
+
+    --clr-controls: #FFFFFE;
+    --clr-controls-bg: var(--clr-neutral-50);
+
+    --clr-shades-trans: rgba(84, 144, 135, 0.7);
+    --clr-shadow: rgba(255, 255, 255, 0.4);
+}
+
+html {
+    font-size: 62.5%;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--clr-neutral-100);
+    font-family: var(--ff-primary);
+    color: var(--clr-neutral-900);
+    position: relative;
+}
+
+h1 {
+    font-size: var(--fs-h1);
+    line-height: var(--lh-h1);
+    font-weight: var(--fw-bold);
+}
+
+h2 {
+    font-size: var(--fs-h2);
+    line-height: var(--lh-h2);
+    font-weight: var(--fw-bold);
+}
+
+h3 {
+    font-size: var(--fs-h3);
+    line-height: var(--lh-h3);
+    font-weight: var(--fw-bold);
+}
+
+h4 {
+    font-size: var(--fs-h4);
+    line-height: var(--lh-h4);
+    font-weight: var(--fw-bold);
+}
+
+h5 {
+    font-size: var(--fs-h5);
+    line-height: var(--lh-h5);
+    font-weight: var(--fw-bold);
+}
+
+p,
+li {
+    font-size: var(--fs-p);
+    line-height: var(--lh-sub-header);
+    font-weight: var(--fw-regular);
+}
+
+a {
+    text-decoration: none;
+    font-size: inherit;
+    color: inherit;
+    font-weight: var(--fw-regular);
+}
+
+i {
+    font-size: var(--fs-i);
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    width: 100%;
+    height: 100%;
+}
+
+.container {
+    padding: 0 2rem;
+    margin: 0 auto;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background-color: var(--clr-neutral-50);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--clr-primary-500);
+    border-radius: 50vh;
+    border: 1px solid var(--clr-neutral-50);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    border: none;
+}
+
+@supports (scrollbar-color: var(--clr-primary-500) var(--clr-neutral-50)){
+    *{
+        scrollbar-color: var(--clr-primary-500) var(--clr-neutral-50);
+    }
+}
+
+
+/***** Header *****/
+header {
+    background-color: var(--clr-primary-500);
+    color: var(--clr-neutral-50);
+
+    .navbar {
+        min-height: 8vh;
+        min-height: 8svh;
+        max-height: 8vh;
+        max-height: 8svh;
+        padding: 1rem 0;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+        &__logo {
+            width: 15rem;
+
+            .logo {
+                path {
+                    fill: var(--clr-neutral-50);
+                }
+            }
+        }
+
+        &__title{
+            span{
+                font-size: var(--fs-footer);
+            }
+        }
+
+        &__links {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            a {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                font-size: var(--fs-p);
+                transition: color 250ms ease;
+
+                &:hover {
+                    color: var(--clr-neutral-200);
+                }
+            }
+
+            .cli-link {
+                margin-right: 3rem;
+            }
+
+            i {
+                font-size: var(--fs-h4);
+                margin-bottom: .5rem;
+            }
+        }
+    }
+}
+
+/***** Main *****/
+
+main {
+    height: 92vh;
+    height: 92svh;
+    padding: 2rem 0;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+
+    .container {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .control-panel,
+    .console {
+        background-color: var(--clr-neutral-50);
+        border-radius: 10px;
+    }
+
+    .horizontal-divider,
+    .vertical-divider {
+        background-color: var(--clr-neutral-100);
+    }
+
+    .horizontal-divider,
+    .main-content,
+    .console {
+        width: 100%;
+    }
+
+    .main-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 14.5rem;
+        height: calc(60% - 1rem);
+
+        .ide,
+        .control-panel,
+        .vertical-divider {
+            height: 100%;
+        }
+
+        .ide {
+            width: 100%;
+            overflow: hidden;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+
+            &__container {
+                height: calc(100% - 3.5rem);
+                padding-top: 1rem;
+                background-color: var(--clr-neutral-50);
+            }
+
+            &__tabs {
+                height: 3.5rem;
+            }
+        }
+
+        .vertical-divider {
+            width: 2rem;
+            cursor: col-resize;
+        }
+    }
+
+    .horizontal-divider {
+        height: 2rem;
+        cursor: row-resize;
+    }
+
+    .console {
+        height: calc(40% - 1rem);
+    }
+}
+
+/**Loader**/
+.loader-container{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--clr-neutral-50);
+    display: grid;
+    place-items: center;
+    opacity: 1;
+    transition: opacity 500ms ease-in-out;
+    z-index: 100;
+
+    .loader{
+        width: 20rem;
+        animation: fade 1.5s infinite ease-in-out, pulsate 1.5s infinite ease-in-out;
+        svg{
+            width: 100%
+        }
+    }
+
+    &.hidden{
+        opacity: 0;
+        pointer-events: none;
+    }
+}
+
+@keyframes fade{
+    0%{opacity: 1;}
+    50%{opacity: .1;}
+    100%{opacity: 1;}
+}
+  
+@keyframes pulsate{
+    0%{transform: scale(1.1);}
+    50%{transform: scale(1);}
+    100%{transform: scale(1.1);}
+}
+
+/*** Main Content ***/
+
+@import "editor";
+@import "control-panel";
+@import "console";
+
+/** Additional menus **/
+@import "settings-menu";
+@import "examples-menu";
+@import "save-menu";
+@import "json-yaml-warning";
+
+/** Visualizations **/
+@import "jsonld-vis"

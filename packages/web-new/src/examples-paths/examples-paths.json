@@ -1,0 +1,546 @@
+{
+  "td": {
+    "1-simple-default": {
+      "description": "This category contains multiple simple/basic examples of Thing Description as well as its most basic components.",
+      "examples": {
+        "basic-td.td.jsonld": {
+          "title": "Basic TD",
+          "description": "This is an example of the most basic form of a td.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/1-simple-default/basic-td.td.jsonld"
+        },
+        "contentMedia-&-contentEncoding.td.jsonld": {
+          "title": "contentMedia and contentEncoding",
+          "description": "In some cases binary data is embedded in text-based values, e.g., a JSON string-based value embeds a base64 encoded image. The terms contentMediaType and contentEncoding can be used to clarify the context and encoding format of such name-value pairs.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/1-simple-default/contentMedia-&-contentEncoding.td.jsonld"
+        },
+        "contentType.td.jsonld": {
+          "title": "contentType",
+          "description": "The contentType member is used to assign a media type [RFC2046] including media type parameters as attribute-value pairs separated by a ; character.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/1-simple-default/contentType.td.jsonld"
+        },
+        "defaults.td.jsonld": {
+          "title": "All Default Values",
+          "description": "A basic TD with all default values.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/1-simple-default/defaults.td.jsonld"
+        },
+        "form-serialization.td.jsonld": {
+          "title": "Form Serialization",
+          "description": "This is an example for proper form serialization.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/1-simple-default/form-serialization.td.jsonld"
+        },
+        "simple-context.td.jsonld": {
+          "title": "@context",
+          "description": "A member with the name @context and a value of type string is generally used to identify the TD representation format version defined by this specification.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/1-simple-default/simple-context.td.jsonld"
+        }
+      }
+    },
+    "2-properties": {
+      "description": "This category contains various examples concerning the \"properties\" interaction affordance.",
+      "examples": {
+        "properties-serializations.td.jsonld": {
+          "title": "Properties Serialization",
+          "description": "All name-value pairs of a map of PropertyAffordance instances MUST be serialized as members of the JSON object that results from serializing the Map.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/2-properties/properties-serializations.td.jsonld"
+        },
+        "readOnly.td.jsonld": {
+          "title": "readOnly",
+          "description": "readOnly can be used to signal which data items are exchanged in read interactions (i.e., when reading a Property).",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/2-properties/readOnly.td.jsonld"
+        },
+        "writeOnly.td.jsonld": {
+          "title": "writeOnly",
+          "description": "writeOnly can be used to signal which data items are exchanged in write interactions (i.e., when writing a Property).",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/2-properties/writeOnly.td.jsonld"
+        }
+      }
+    },
+    "3-actions": {
+      "description": "This category contains various examples concerning the \"actions\" interaction affordance.",
+      "examples": {
+        "action-serialization.td.jsonld": {
+          "title": "Action Serialization",
+          "description": "All name-value pairs of a Map of ActionAffordance instances MUST be serialized as members of the JSON object that results from serializing the Map.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/3-actions/action-serialization.td.jsonld"
+        },
+        "response.td.jsonld": {
+          "title": "Action Response",
+          "description": "In some use cases, the form metadata of the Interaction Affordance not only describes the request, but also provides metadata for the expected response. The response must be a JSON object and contain a contentType.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/3-actions/response.td.jsonld"
+        }
+      }
+    },
+    "4-events": {
+      "description": "This category contains various examples concerning the \"events\" interaction affordance.",
+      "examples": {
+        "event-serialization.td.jsonld": {
+          "title": "Event Serialization",
+          "description": "All name-value pairs of a Map of EventAffordance instances MUST be serialized as members of the JSON object that results from serializing the Map.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/4-events/event-serialization.td.jsonld"
+        }
+      }
+    },
+    "5-protocols": {
+      "description": "This category contains various examples concerning the different types of protocols that can be used with Thing Descriptions such as HTTP, Modbus, CoAP, etc.",
+      "examples": {
+        "CoAP-block-wise-no-parameters.td.jsonld": {
+          "title": "CoAP Block Wise No Parameters",
+          "description": "CoAP supports block-wise transfers to allow large resource representations to be transferred between clients and servers. This feature enables clients and servers to request or provide resource representations in smaller blocks, which can be useful when constrained network conditions make it undesirable to transfer large amounts of data at once.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/5-protocols/CoAP-block-wise-no-parameters.td.jsonld"
+        },
+        "CoAP-block-wise-parameters.td.jsonld": {
+          "title": "CoAP Block Wise Parameters",
+          "description": "A cov:blockwise or cov:quickblockwise member may indicate relevant parameters, such as the largest block size that may be used in a Block2 Option.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/5-protocols/CoAP-block-wise-parameters.td.jsonld"
+        },
+        "CoAP-content-negotiation.td.jsonld": {
+          "title": "CoAP Content Negotiation",
+          "description": "Content negotiation in CoAP is used to negotiate the representation of CoAP resources that may have different representations available. This is accomplished  through the use of CoAP Accept and Content-Format options. The CoAP Accept option is used by clients to request a particular content format, while the Content-Format option is used by clients and servers to indicate the content format of the representation in requests and responses, respectively.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/5-protocols/CoAP-content-negotiation.td.jsonld"
+        },
+        "CoAP-hop-limit.td.jsonld": {
+          "title": "CoAP Hop Limit",
+          "description": "The CoAP Hop-Limit option [RFC8768] limits the number of hops a CoAP message can take before it is considered undeliverable. This prevents infinite message loops in CoAP networks. The cov:hopLimit member can be used to set the desired hop limit for a particular CoAP request.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/5-protocols/CoAP-hop-limit.td.jsonld"
+        },
+        "CoAP-observing-resources.td.jsonld": {
+          "title": "CoAP Observing Resources",
+          "description": "CoAP provides a mechanism for clients to *observe* resources [RFC7641], i.e., to request notifications from the server whenever the resource changes. This is especially useful in the Web of Things where many Things are expected to have resources that change over time, such as sensor readings.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/5-protocols/CoAP-observing-resources.td.jsonld"
+        },
+        "CoAP-simple-td-defaults.td.jsonld": {
+          "title": "CoAP Simple Defaults",
+          "description": "A simple Thing Description using CoAP. The target resource is specified in the Thing Description by the href member of a form and the request method (e.g., GET, PUT, POST, or DELETE) is specified using the cov:method member of a form.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/5-protocols/CoAP-simple-td-defaults.td.jsonld"
+        },
+        "CoAP-simple-td-no-defaults.td.jsonld": {
+          "title": "CoAP Simple No Defaults",
+          "description": "A simple Thing Description using CoAP. The target resource is specified in the Thing Description by the href member of a form and the request method (e.g., GET, PUT, POST, or DELETE) is specified using the cov:method member of a form.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/5-protocols/CoAP-simple-td-no-defaults.td.jsonld"
+        },
+        "extended-forms-multiple-op.td.jsonld": {
+          "title": "Extended Forms Multiple op",
+          "description": "In the case of a forms entry that has multiple op values the usage of the htv:methodName is not permitted. A TD Processor will extend the multiple op values to separate forms entries and associates a single operation with the default assumption.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/5-protocols/extended-forms-multiple-op.td.jsonld"
+        },
+        "HTTP-readproperty.td.jsonld": {
+          "title": "HTTP readproperty",
+          "description": "This example shows the binding of the readproperty operation for the HTTP.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/5-protocols/HTTP-readproperty.td.jsonld"
+        },
+        "HTTP-simple-td-defaults.td.jsonld": {
+          "title": "HTTP Simple with Defaults",
+          "description": "This example shows the default values for Procol Binding based on HTTP.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/5-protocols/HTTP-simple-td-defaults.td.jsonld"
+        },
+        "Modbus-multiple-operations-expanded.td.jsonld": {
+          "title": "Modbus Multiple Operations Expanded",
+          "description": "This is an example of an extended version when using multiple operations with Modbus.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/5-protocols/Modbus-multiple-operations-expanded.td.jsonld"
+        },
+        "Modbus-multiple-operations.td.jsonld": {
+          "title": "Modbus Multiple Operations",
+          "description": "To describe forms with multiple operations types, the Entity keyword can be used to create a short description of the modbus endpoint. This example shows how to use the read and write property in a single coil.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/5-protocols/Modbus-multiple-operations.td.jsonld"
+        },
+        "Modbus-single-coil.td.jsonld": {
+          "title": "Modbus Single Coil",
+          "description": "This example shows the minimal set of terms to configure a single coil reading using Modbus. Notice that the unitID is contained in the href as the first element of the path.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/5-protocols/Modbus-single-coil.td.jsonld"
+        },
+        "subprotocol-longpoll.td.jsonld": {
+          "title": "Subprotocol Longpoll",
+          "description": "protocols may have defined Subprotocols that can be used for some interaction types. For example, to receive asynchronous notifications using HTTP, some servers may support long polling.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/5-protocols/subprotocol-longpoll.td.jsonld"
+        }
+      }
+    },
+    "6-security-schemas": {
+      "description": "This category contains various examples concerning the different types of security schemas that could/should be used for a Thing Description, as well as the different ways to combine multiple security schemes.",
+      "examples": {
+        "apikey-in-body-simplified.td.jsonld": {
+          "title": "Apikey In Body Simplified",
+          "description": "It is possbile to simplify how security parameters are included in the payload by using the feature that the location referenced by a JSON pointer in a body location will be automatically inserted if it does not exist.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/6-security-schemas/apikey-in-body-simplified.td.jsonld"
+        },
+        "apikey-in-body.td.jsonld": {
+          "title": "Apikey In Body",
+          "description": "This in an example on how to include security parameters along with the payload.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/6-security-schemas/apikey-in-body.td.jsonld"
+        },
+        "apikey-security.td.jsonld": {
+          "title": "Apikey Security",
+          "description": "API key can be included in the request to the Thing in different ways. One way it can be used, is as a URI template where the API key should be replaced in the URI when sending an HTTPS request.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/6-security-schemas/apikey-security.td.jsonld"
+        },
+        "basic-security.td.jsonld": {
+          "title": "Basic Security",
+          "description": "A simple security configuration specifying basic username/password authentication in the header.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/6-security-schemas/basic-security.td.jsonld"
+        },
+        "combo-apikey-security.td.jsonld": {
+          "title": "Combo Apikey Security",
+          "description": "Multiple intances of API security schemes are also possible. These must then be used in the href in in a Form where the security scheme is active.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/6-security-schemas/combo-apikey-security.td.jsonld"
+        },
+        "combo-security-def-allOf.td.jsonld": {
+          "title": "Combo Security allOf",
+          "description": "TDs can specify a combination of security schemes. A ComboSecurityScheme with allOf can be used to specify that all need to be satisfied to allow activation of the Interaction Affordance.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/6-security-schemas/combo-security-def-allOf.td.jsonld"
+        },
+        "combo-security-def-oneOf.td.jsonld": {
+          "title": "Combo Security oneOf",
+          "description": "TDs can specify a combination of security schemes. To avoid redundancy in this case, e.g. repeating the details of the form elements, a ComboSecurityScheme with oneOf can be used instead.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/6-security-schemas/combo-security-def-oneOf.td.jsonld"
+        },
+        "multiple-security-def.td.jsonld": {
+          "title": "Multiple Security Definitions",
+          "description": "A TD can also have multiple security definitions.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/6-security-schemas/multiple-security-def.td.jsonld"
+        },
+        "multiple-security-forms.td.jsonld": {
+          "title": "Multiple Security Forms",
+          "description": "Security configurations can also be specified for different forms within the same Interaction Affordance.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/6-security-schemas/multiple-security-forms.td.jsonld"
+        },
+        "noSec-security.td.jsonld": {
+          "title": "noSec Security",
+          "description": "Security configuration in the TD is mandatory, therefore the nosec security scheme is provided for the case that no security is needed.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/6-security-schemas/noSec-security.td.jsonld"
+        },
+        "OAuth2-scopes.td.jsonld": {
+          "title": "OAuth2 Scopes",
+          "description": "OAuth 2.0 makes use of scopes. These are identifiers that may appear in tokens and must match with corresponding identifiers in a resource to allow access to that resource.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/6-security-schemas/OAuth2-scopes.td.jsonld"
+        }
+      }
+    },
+    "7-complex-data-schemas": {
+      "description": "This category contains various examples of Thing Descriptions with more complex data schemas.",
+      "examples": {
+        "data-schema-serialization.td.jsonld": {
+          "title": "Data Schema Serialization",
+          "description": "Data schema serialization applies to PropertyAffordance instances, the values assigned to input and output in ActionAffordance instances, the values assigned to subscription, data, and cancellation in EventAffordance instances, and the value assigned to uriVariables in instances of Subclasses of InteractionAffordance.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/7-complex-data-schemas/data-schema-serialization.td.jsonld"
+        },
+        "readOnly-&-writeOnly.td.jsonld": {
+          "title": "readOnly And writeOnly",
+          "description": "Data schema serialization applies to PropertyAffordance instances, the values assigned to input and output in ActionAffordance instances, the values assigned to subscription, data, and cancellation in EventAffordance instances, and the value assigned to uriVariables in instances of Subclasses of InteractionAffordance.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/7-complex-data-schemas/readOnly-&-writeOnly.td.jsonld"
+        }
+      }
+    },
+    "8-meta-interactions": {
+      "description": "This category contains various examples of meta interactions that can be used in Thing Descriptions such as readallproperties, writeallproperties, etc.",
+      "examples": {
+        "readallproperties.td.jsonld": {
+          "title": "Readallproperties",
+          "description": "When forms are present at the top level, it can be used to describe meta interactions offered by a Thing. readallproperties is a type of meta interaction which allows the consumer to read all properties at once.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/8-meta-interactions/readallproperties.td.jsonld"
+        },
+        "top-level-uriVariables.td.jsonld": {
+          "title": "Top Level uriVariables",
+          "description": "Thing-level uriVariables can be used here to supply further variables to the operation or to specify a list of Property Affordance names for a readmultipleproperties operation.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/8-meta-interactions/top-level-uriVariables.td.jsonld"
+        },
+        "writeallproperties.td.jsonld": {
+          "title": "Writeallproperties",
+          "description": "When forms is present at the top level, it can be used to describe meta interactions offered by a Thing. writeallproperties is a type of meta interaction which allows the consumer to write all properties at once.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/8-meta-interactions/writeallproperties.td.jsonld"
+        }
+      }
+    },
+    "9-versioning": {
+      "description": "This category contains examples that show how to manage versioning on Thing Descriptions.",
+      "examples": {
+        "versioning.td.jsonld": {
+          "title": "Versioning",
+          "description": "The version member is intended as container for additional application- and/or device-specific version information based on TD Context Extensions.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/9-versioning/versioning.td.jsonld"
+        }
+      }
+    },
+    "10-response-and-additional-response": {
+      "description": "This category contains examples that show how an interaction affordance can provide additonal metadata as a response.",
+      "examples": {
+        "additional-responses.td.jsonld": {
+          "title": "Additional Responses",
+          "description": "The message received from the Thing as part of an Interaction Affordance can differ due to different reasons. Such reasons could be error cases or alternative responses for a valid response. In these cases, additionalResponses terms can be used to describe this behavior.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/10-response-and-additional-response/additional-responses.td.jsonld"
+        },
+        "simple-response.td.jsonld": {
+          "title": "Simple Response",
+          "description": "The Interaction Affordance not only describes the request, but also provides metadata for the expected response. In such cases, the response member is used to indicate the representation format of the response payload. therefore no output schema is required, as the content type fully specifies the representation format.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/10-response-and-additional-response/simple-response.td.jsonld"
+        }
+      }
+    },
+    "11-multilanguage": {
+      "description": "This category contains examples on how multiple languages as well as reading directions can be implemented on a Thing Description.",
+      "examples": {
+        "multilanguage-title-description.td.jsonld": {
+          "title": "Multilanguage Title and Description",
+          "description": "TD instances may also combine the use of title and description with titles and descriptions. title and description are seeing as the default text.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/11-multilanguage/multilanguage-title-description.td.jsonld"
+        },
+        "multilanguage.td.jsonld": {
+          "title": "Multilanguage",
+          "description": "A TD can contain multiple languages, where the name is a valid language tag as defined by [BCP47] and the value is a human-readable string in the language indicated by the tag.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/11-multilanguage/multilanguage.td.jsonld"
+        },
+        "string-direction.td.jsonld": {
+          "title": "String Direction",
+          "description": "Metadata can be used to determine the base direction of string values, utilizing @direction and the values rtl, ltr and null for default direcction.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/11-multilanguage/string-direction.td.jsonld"
+        }
+      }
+    },
+    "12-uri-variables": {
+      "description": "This category contains examples regarding the use of URI variables in Thing Descriptions.",
+      "examples": {
+        "combined-uriVariables-href.td.jsonld": {
+          "title": "Combined URI variables in href",
+          "description": "Combined dynamic uriVariables and uriVariables in href structure.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/12-uri-variables/combined-uriVariables-href.td.jsonld"
+        },
+        "dynaic-uriVariables.td.jsonld": {
+          "title": "Dynamic URI variables",
+          "description": "href may also carry a URI that contains dynamic variables.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/12-uri-variables/dynaic-uriVariables.td.jsonld"
+        },
+        "uri-href-structure.td.jsonld": {
+          "title": "URI href Structure",
+          "description": "As defined in [RFC6570], uriVariables can be used for replacing the href structure.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/12-uri-variables/uri-href-structure.td.jsonld"
+        }
+      }
+    },
+    "13-semantic-annotations": {
+      "description": "This category contains examples on how to use semantic annotations to allow for the use of additional vocabulary terms in a Thing Description instance.",
+      "examples": {
+        "semantic.td.jsonld": {
+          "title": "Semantic",
+          "description": "Thing Description with TD Context Extension for semantic annotations.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/13-semantic-annotations/semantic.td.jsonld"
+        },
+        "state-information-context-extension.td.jsonld": {
+          "title": "State Information Context Extension",
+          "description": "TD Context Extensions may be used to annotate pieces of a data schema, to be able to semantically process the state information of the physical world object, which is represented by the data exchanged during an interaction.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/13-semantic-annotations/state-information-context-extension.td.jsonld"
+        }
+      }
+    },
+    "14-non-standard": {
+      "description": "This category contains examples regarding how additional non-standard metadata could be used to personalize or adapt a Thing Description to a specific situtation or appplication.",
+      "examples": {
+        "additional-metadata.td.jsonld": {
+          "title": "Additional Metadata",
+          "description": "This example provides additional metadata terms from different external context files as provided in @context.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/14-non-standard/additional-metadata.td.jsonld"
+        },
+        "location-based-metadata.td.jsonld": {
+          "title": "Location Based Metadata",
+          "description": "In some use cases location based metadata have to be provided at the interaction level, e.g., as provided as a Property that returns the latest longitude, latitude, and elevation values based on schema.org.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/14-non-standard/location-based-metadata.td.jsonld"
+        }
+      }
+    },
+    "15-link-relation-type": {
+      "description": "This category contains examples regarding the possible relation links that could be used between individual or a collection of Thing Descriptions.",
+      "examples": {
+        "collection-rel.td.jsonld": {
+          "title": "Collection relation",
+          "description": "A Thing can also refer to a group in which it is collected with the collection value.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/15-link-relation-type/collection-rel.td.jsonld"
+        },
+        "controlledBy-rel.td.jsonld": {
+          "title": "controlledBy Relation",
+          "description": "A reference can be provided that points to a Thing (e.g., a controller) that controls the underlying unit (e.g., a lamp) utilizing controlledBy.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/15-link-relation-type/controlledBy-rel.td.jsonld"
+        },
+        "item-rel.td.jsonld": {
+          "title": "Item Relation",
+          "description": "A superordinate Thing can collect a group of Things and refer to them by using the item value.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/15-link-relation-type/item-rel.td.jsonld"
+        },
+        "service-doc-rel.td.jsonld": {
+          "title": "Service-doc Relation",
+          "description": "To point to a developer documentation of a Thing the value service-doc can be used.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/15-link-relation-type/service-doc-rel.td.jsonld"
+        }
+      }
+    },
+    "16-td-tm-relationships": {
+      "description": "This category contains examples of Thing Descriptions that would result from one or many Thing Models.",
+      "examples": {
+        "basic-td-from-tm.td.jsonld": {
+          "title": "Basic Thing",
+          "description": "This is an example of a basic Thing, which is use as a sort of template for creating a Thing Description instance of a Lamp TD.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/16-td-tm-relationships/basic-td-from-tm.td.jsonld"
+        },
+        "composition-top-level-td-from-tm.td.jsonld": {
+          "title": "Top level/parent",
+          "description": "If it is desired to provide information that a Thing Model consists of one or more (sub-)TMs, the links entries must use the 'rel': 'tm:submodel' that targets to the (sub-)TM. Optionally an instanceName may be provided to associate an individual name to the composed (sub-)TM. This is useful when multiple similar Thing Model definitions are composed and needs to be distinguished.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/16-td-tm-relationships/composition-top-level-td-from-tm.td.jsonld"
+        },
+        "extend-and-import-td-from-tm.td.jsonld": {
+          "title": "Smart Lamp Control with Extend and Import",
+          "description": "The tm:extends and the import mechanism based on tm:ref can also be used at the same time in a TM definition. This example extends the a basic TM with an On/Off property and imports the status and dim definitions from pther TMs respectively.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/16-td-tm-relationships/extend-and-import-td-from-tm.td.jsonld"
+        },
+        "extends-basic-td-from-tm.td.jsonld": {
+          "title": "Extend Thing",
+          "description": "A Thing Model can extend an existing Thing Model by using the tm:extends mechanism. When a Thing Model extends another Thing Model, at least one links entry with 'rel: tm:extends' that targets a Thing Model that is be extended must be used.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/16-td-tm-relationships/extends-basic-td-from-tm.td.jsonld"
+        },
+        "import-definition-td-from-tm.td.jsonld": {
+          "title": "Import Existing Definitions",
+          "description": "For importing pieces of definitions of one or more existing Thiing Models, the 'tm:ref' term is utilized which provides the location of an existing (sub-)definition that should be reused. This example shows a TM definition that imports the existing definition of the property onOff from another TM into the new property definition switch.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/16-td-tm-relationships/import-definition-td-from-tm.td.jsonld"
+        },
+        "optional-interaction-td-from-tm.td.jsonld": {
+          "title": "Optinal Interaction Affordances",
+          "description": "In some cases it is desirable to not enforce which interaction affordances are mandatory and do not necessarily need to be implemented in a Thing Description instance. If interaction models are not mandatory to be implemented in a Thing Description instance, Thing Model definitions MUST use the JSON member name tm:optional.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/16-td-tm-relationships/optional-interaction-td-from-tm.td.jsonld"
+        },
+        "overwrite-definitions-td-from-tm.td.jsonld": {
+          "title": "Overwrite Existing Definitions",
+          "description": "At the place the 'tm:ref' is defined, additional name-value pairs can be added. It is also permitted to override name-value pairs from the referenced definition. If the intention is to override an existing JSON name-value pair definition from tm:ref, the same JSON name MUST be used at the same level of the tm:ref declaration that provides a new value. This example shows a new TM definition that overwrites (maximum), enhances (unit), and removes (title) existing definitions.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/16-td-tm-relationships/overwrite-definitions-td-from-tm.td.jsonld"
+        },
+        "overwrite-optional-td-from-tm.td.jsonld": {
+          "title": "Overwriting Optinal Interaction Affordances",
+          "description": "An optional definition in a Thing Model definition can be overwritten in the case it is extended by another Thing Model through the use of tm:ref. This examples overwrites the 'tm:optional' of another TM with an optional 'overheating' event.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/16-td-tm-relationships/overwrite-optional-td-from-tm.td.jsonld"
+        },
+        "placeholder-td-from-tm.td.jsonld": {
+          "title": "Placeholder",
+          "description": "In a case where TD instance terms, but not their values, are known in advance, the placeholder labeling may be used in a Thing Model. The string-based pattern of the placeholder must follow a valid pattern based on the regular expression {{2}[ -~]+}{2} (e.g., {{PLACEHOLDER_IDENTIFIER}}). The characters between {{ and }} are used as identifier name of the placeholder.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/16-td-tm-relationships/placeholder-td-from-tm.td.jsonld"
+        },
+        "relative-imports-td-from-tm.td.jsonld": {
+          "title": "Relative Imports",
+          "description": "This Thing example re-uses and augments a 'genericTemperature' property in two more specific properties, which describe an inner and an outer temperature value, respectively.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/16-td-tm-relationships/relative-imports-td-from-tm.td.jsonld"
+        },
+        "submodel-led-td-from-tm.td.jsonld": {
+          "title": "Basic LED",
+          "description": "This is an example of a simple Thing Model which is utilized as a submodel of another Thing Model.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/16-td-tm-relationships/submodel-led-td-from-tm.td.jsonld"
+        },
+        "submodel-ventilator-td-from-tm.td.jsonld": {
+          "title": "Basic Ventilator",
+          "description": "This is an example of a simple Thing Model which is utilized as a submodel of another Thing Model.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/16-td-tm-relationships/submodel-ventilator-td-from-tm.td.jsonld"
+        },
+        "versioning-td-from-tm.td.jsonld": {
+          "title": "Versioning",
+          "description": "When the Thing definitions change over time, this should be reflected in the version container. The term model is used with the version container in order to provide such versioning information.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/16-td-tm-relationships/versioning-td-from-tm.td.jsonld"
+        }
+      }
+    }
+  },
+  "tm": {
+    "1-basic": {
+      "description": "This category contains simple examples of how a Thing Model is done.",
+      "examples": {
+        "basic-on-off-tm.tm.jsonld": {
+          "title": "Basic Thing Model for an On and Off Thing Description",
+          "description": "This is an example of a simple Thing which is utilized to extend onto another Thing.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/tm/1-basic/basic-on-off-tm.tm.jsonld"
+        },
+        "basic-tm.tm.jsonld": {
+          "title": "Basic TM",
+          "description": "This is an example of a basic Thing, which is use as a sort of template for creating a Thing Description instance of a Lamp TD",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/tm/1-basic/basic-tm.tm.jsonld"
+        }
+      }
+    },
+    "2-tm-versioning": {
+      "description": "This category contains examples of how to handle versioning on Thing Models.",
+      "examples": {
+        "versioning.tm.jsonld": {
+          "title": "Versioning",
+          "description": "When the Thing definitions change over time, this should be reflected in the version container. The term model is used with the version container in order to provide such versioning information.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/tm/2-tm-versioning/versioning.tm.jsonld"
+        }
+      }
+    },
+    "3-tm-extends-imports": {
+      "description": "This category contains examples of how to extend a Thing Model by using other Thing Models, whether by using the extend or the import mechanism.",
+      "examples": {
+        "extend-and-import.tm.jsonld": {
+          "title": "Smart Lamp Control with Extend and Import",
+          "description": "The tm:extends and the import mechanism based on tm:ref can also be used at the same time in a TM definition. This example extends the a basic TM with an On/Off property and imports the status and dim definitions from pther TMs respectively.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/tm/3-tm-extends-imports/extend-and-import.tm.jsonld"
+        },
+        "extends-basic.tm.jsonld": {
+          "title": "Extend Thing Example",
+          "description": "A Thing Model can extend an existing Thing Model by using the tm:extends mechanism. When a Thing Model extends another Thing Model, at least one links entry with 'rel: tm:extends' that targets a Thing Model that is be extended must be used.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/tm/3-tm-extends-imports/extends-basic.tm.jsonld"
+        },
+        "import-existing-definition.tm.jsonld": {
+          "title": "Import Existing Definitions",
+          "description": "For importing pieces of definitions of one or more existing Thiing Models, the 'tm:ref' term is utilized which provides the location of an existing (sub-)definition that should be reused. This example shows a TM definition that imports the existing definition of the property onOff from another TM into the new property definition switch.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/tm/3-tm-extends-imports/import-existing-definition.tm.jsonld"
+        },
+        "overwrite-existing-definitions.tm.jsonld": {
+          "title": "Overwrite Existing Definitions",
+          "description": "At the place the 'tm:ref' is defined, additional name-value pairs can be added. It is also permitted to override name-value pairs from the referenced definition. If the intention is to override an existing JSON name-value pair definition from tm:ref, the same JSON name MUST be used at the same level of the tm:ref declaration that provides a new value. This example shows a new TM definition that overwrites (maximum), enhances (unit), and removes (title) existing definitions.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/tm/3-tm-extends-imports/overwrite-existing-definitions.tm.jsonld"
+        },
+        "relative-imports.tm.jsonld": {
+          "title": "Relative Imports",
+          "description": "This Thing example re-uses and augments a 'genericTemperature' property in two more specific properties, which describe an inner and an outer temperature value, respectively.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/tm/3-tm-extends-imports/relative-imports.tm.jsonld"
+        }
+      }
+    },
+    "4-tm-optional": {
+      "description": "This category contains examples of how to implement optional interaction affordances as well as how to overwrite them.",
+      "examples": {
+        "optional-interaction.tm.jsonld": {
+          "title": "Optional Interaction Affordances",
+          "description": "In some cases it is desirable to not enforce which interaction affordances are mandatory and do not necessarily need to be implemented in a Thing Description instance. If interaction models are not mandatory to be implemented in a Thing Description instance, Thing Model definitions MUST use the JSON member name tm:optional.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/tm/4-tm-optional/optional-interaction.tm.jsonld"
+        },
+        "overwrite-optional-interactions.tm.jsonld": {
+          "title": "Overwriting Optional Interaction Affordances",
+          "description": "An optional definition in a Thing Model definition can be overwritten in the case it is extended by another Thing Model through the use of tm:ref. This examples overwrites the 'tm:optional' of another TM with an optional 'overheating' event.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/tm/4-tm-optional/overwrite-optional-interactions.tm.jsonld"
+        }
+      }
+    },
+    "5-tm-submodel": {
+      "description": "This category contains examples of ways to provide information of Thing Models that consist of one or more (sub-)Thing Models.",
+      "examples": {
+        "basic-led-tm.tm.jsonld": {
+          "title": "Basic LED",
+          "description": "This is an example of a simple Thing Model which is utilized as a submodel of another Thing Model.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/tm/5-tm-submodel/basic-led-tm.tm.jsonld"
+        },
+        "basic-ventilation-tm.tm.jsonld": {
+          "title": "Basic Ventilator",
+          "description": "This is an example of a simple Thing Model which is utilized as a submodel of another Thing Model.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/tm/5-tm-submodel/basic-ventilation-tm.tm.jsonld"
+        },
+        "submodel.tm.jsonld": {
+          "title": "Top level/parent",
+          "description": "If it is desired to provide information that a Thing Model consists of one or more (sub-)TMs, the links entries must use the 'rel': 'tm:submodel' that targets to the (sub-)TM. Optionally an instanceName may be provided to associate an individual name to the composed (sub-)TM. This is useful when multiple similar Thing Model definitions are composed and needs to be distinguished.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/tm/5-tm-submodel/submodel.tm.jsonld"
+        }
+      }
+    },
+    "6-placeholder": {
+      "description": "This category contains examples of how to utilize placeholder labeling for Thing Models where the terms are known in advance but not the values.",
+      "examples": {
+        "placeholder.tm.jsonld": {
+          "title": "Placeholder",
+          "description": "In a case where TD instance terms, but not their values, are known in advance, the placeholder labeling may be used in a Thing Model. The string-based pattern of the placeholder must follow a valid pattern based on the regular expression {{2}[ -~]+}{2} (e.g., {{PLACEHOLDER_IDENTIFIER}}). The characters between {{ and }} are used as identifier name of the placeholder.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/tm/6-placeholder/placeholder.tm.jsonld"
+        }
+      }
+    }
+  }
+}
