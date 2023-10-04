@@ -1948,6 +1948,7 @@ main .console {
   border-bottom-left-radius: 5px;
   font-family: var(--ff-primary);
   font-size: var(--fs-p);
+  color: var(--clr-neutral-900);
   padding: 1rem;
 }
 .save-menu__container .share-td__input .share-url-input.error {
