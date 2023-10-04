@@ -46,8 +46,13 @@ export function visualize(editorValue) {
     visualizeView.classList.remove("hidden")
 
     if (graphViewInput.checked === true) {
+        //disable and enable respective buttons
+        graphViewInput.disabled = true
+        treeViewInput.disabled = false
+        //Show and hide the respective inputs
         graphInputs.classList.remove("hidden")
         treeInputs.classList.add("hidden")
+        //Run the jsonld visualization
         jsonldVis(editorValue, "#visualized", {
             h: document.getElementById("visualize-container").offsetHeight - 30,
             w: document.getElementById("visualize-container").offsetWidth - 20,
@@ -55,9 +60,13 @@ export function visualize(editorValue) {
             scalingFactor: 5,
         })
     } else {
+        //disable and enable respective buttons
+        graphViewInput.disabled = false
+        treeViewInput.disabled = true
+        //Show and hide the respective inputs
         graphInputs.classList.add("hidden")
         treeInputs.classList.remove("hidden")
-
+        //Run the vega visualization
         vegaVis("#visualized", editorValue)
     }
 }
