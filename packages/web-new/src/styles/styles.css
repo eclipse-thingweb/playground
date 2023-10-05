@@ -1764,36 +1764,50 @@ main .console {
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__btn, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__btn {
   display: flex;
+  width: 100%;
   gap: 2rem;
   height: 0;
   opacity: 0;
   transition: opacity 250ms ease-in-out 0ms, height 250ms ease-in-out 250ms;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__btn button, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__btn button {
-  padding: 0.5rem 1.5rem;
+  width: 100%;
+  padding: 0.75rem 1.5rem;
   border-radius: 5px;
-  border: 1px solid var(--clr-neutral-300);
-  background-color: var(--clr-neutral-50);
   font-family: var(--ff-primary);
-  color: var(--clr-neutral-900);
+  font-size: var(--fs-p);
+  font-weight: var(--fw-bold);
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background-color 250ms ease-in-out;
-}
-.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__btn button:hover, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__btn button:hover {
-  background-color: var(--clr-neutral-300);
+  transition: all 250ms ease-in-out;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__btn button p, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__btn button p {
-  font-size: inherit;
-  color: inherit;
-  font-family: inherit;
+  font-weight: var(--fw-bold);
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__btn button i, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__btn button i {
-  font-size: inherit;
   margin-right: 1rem;
+  font-size: var(--fs-p);
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__btn--use, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__btn--use {
+  background-color: var(--clr-primary-500);
+  border: none;
+  color: var(--clr-neutral-50);
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__btn--use:hover, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__btn--use:hover {
+  background-color: var(--clr-primary-700);
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__btn--cancel, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__btn--cancel {
+  background-color: var(--clr-neutral-50);
+  border: 2px solid var(--clr-primary-500);
+  color: var(--clr-primary-500);
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__btn--cancel:hover, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__btn--cancel:hover {
+  background-color: var(--clr-primary-700);
+  border-color: var(--clr-primary-700);
+  color: var(--clr-neutral-50);
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example.open .example__name, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example.open .example__name {
   border-bottom: 2px solid var(--clr-primary-500);
@@ -1810,7 +1824,7 @@ main .console {
   transition: height 250ms ease-in-out 0s, margin 250ms ease-in-out 0s, opacity 200ms ease-in-out 250ms;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example.open .example__btn, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example.open .example__btn {
-  height: 3rem;
+  height: 3.5rem;
   opacity: 1;
   transition: height 250ms ease-in-out 0s, opacity 200ms ease-in-out 250ms;
 }
