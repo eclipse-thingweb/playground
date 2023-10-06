@@ -22,7 +22,7 @@
 
 import { editor } from 'monaco-editor'
 import { convertTDJsonToYaml, convertTDYamlToJson, tdValidator, tmValidator, compress, decompress } from '../../../core/dist/web-bundle.min.js'
-import tdToOpenAPI from '../../../td_to_openapi/dist/web-bundle.min.js'
+import tdToOpenAPI from '../../../td_to_openAPI/dist/web-bundle.min.js'
 import tdToAsyncAPI from '../../../td_to_asyncapi/dist/web-bundle.min.js'
 import { addDefaults, removeDefaults } from '../../../defaults/dist/web-bundle.min.js'
 import { validateJsonLdBtn, tmConformanceBtn, sectionHeaders } from './validation'
