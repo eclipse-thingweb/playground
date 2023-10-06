@@ -44,6 +44,12 @@ const tmSearchResults = tmExamplesContainer.querySelector("#filtered-results")
  */
 closeExamples.addEventListener("click", () => {
     examplesMenu.classList.add("closed")
+    const exampleCards = document.querySelectorAll(".example")
+    exampleCards.forEach(card => {
+        if (card.classList.contains("open")) {
+            card.classList.toggle("open")
+        }
+    })
 })
 
 /**
@@ -260,7 +266,6 @@ async function getAllExamples(categoryId, thingType) {
         exampleName.appendChild(exampleNameIcon)
         const exampleNameTitle = document.createElement('p')
         exampleNameTitle.innerText = example[1]["title"]
-        // exampleNameTitle.innerText = data['$title']
         exampleName.appendChild(exampleNameTitle)
         exampleContainer.appendChild(exampleName)
 
@@ -287,29 +292,31 @@ async function getAllExamples(categoryId, thingType) {
         exampleBtnUse.classList.add("example__btn--use")
         exampleBtns.appendChild(exampleBtnUse)
 
-        const exampleBtnShow = document.createElement('button')
-        exampleBtnShow.classList.add("example__btn--show")
-        exampleBtns.appendChild(exampleBtnShow)
-
-        const exampleIconShow = document.createElement('i')
-        exampleIconShow.classList.add("fa-solid", "fa-eye")
-        exampleBtnShow.appendChild(exampleIconShow)
-
-        const exampleTxtShow = document.createElement('p')
-        exampleTxtShow.innerText = "Show Snipet"
-        exampleBtnShow.appendChild(exampleTxtShow)
-
         const exampleIconUse = document.createElement('i')
-        exampleIconUse.classList.add("fa-solid", "fa-file-pen")
+        exampleIconUse.classList.add("fa-solid", "fa-file-import")
         exampleBtnUse.appendChild(exampleIconUse)
 
         const exampleTxtUse = document.createElement('p')
-        exampleTxtUse.innerText = "Use as Template"
+        exampleTxtUse.innerText = "Apply"
         exampleBtnUse.appendChild(exampleTxtUse)
+
+        const exampleBtnCancel = document.createElement('button')
+        exampleBtnCancel.classList.add("example__btn--cancel")
+        exampleBtns.appendChild(exampleBtnCancel)
+
+        const exampleTxtCancel = document.createElement('p')
+        exampleTxtCancel.innerText = "Cancel"
+        exampleBtnCancel.appendChild(exampleTxtCancel)
+
 
         //Listener to generate an editor with the examples information
         exampleBtnUse.addEventListener('click', () => {
             getTemplateData(example[1]["path"])
+            exampleName.parentElement.classList.toggle("open")
+        })
+
+        //Listener to generate an editor with the examples information
+        exampleBtnCancel.addEventListener('click', () => {
             exampleName.parentElement.classList.toggle("open")
         })
     }

@@ -46,7 +46,7 @@
             text-align: right;
 
             i {
-                font-size: var(--fs-h4);
+                font-size: var(--fs-sub-header);
                 cursor: pointer;
             }
         }
@@ -123,10 +123,6 @@
                     border-radius: 5px;
                     text-transform: capitalize;
                 }
-
-                // .thing-category{
-                //    width: fit-content;
-                // }
 
                 .search-bar {
                     width: 100%;
@@ -286,38 +282,53 @@
 
                             &__btn {
                                 display: flex;
+                                width: 100%;
                                 gap: 2rem;
                                 height: 0;
                                 opacity: 0;
                                 transition: opacity 250ms ease-in-out 0ms, height 250ms ease-in-out 250ms, ;
 
                                 button {
-                                    padding: .5rem 1.5rem;
+                                    width: 100%; 
+                                    padding: .75rem 1.5rem;
                                     border-radius: 5px;
-                                    border: 1px solid var(--clr-neutral-300);
-                                    background-color: var(--clr-neutral-50);
                                     font-family: var(--ff-primary);
-                                    color: var(--clr-neutral-900);
+                                    font-size: var(--fs-p);
+                                    font-weight: var(--fw-bold);
                                     display: flex;
                                     flex-direction: row;
                                     align-items: center;
                                     justify-content: center;
                                     cursor: pointer;
-                                    transition: background-color 250ms ease-in-out;
-
-                                    &:hover {
-                                        background-color: var(--clr-neutral-300);
-                                    }
+                                    transition: all 250ms ease-in-out;
 
                                     p {
-                                        font-size: inherit;
-                                        color: inherit;
-                                        font-family: inherit;
+                                        font-weight: var(--fw-bold);
                                     }
 
                                     i {
-                                        font-size: inherit;
                                         margin-right: 1rem;
+                                        font-size: var(--fs-p);
+                                    }
+                                }
+
+                                &--use{
+                                    background-color: var(--clr-primary-500);
+                                    border: none;
+                                    color: var(--clr-neutral-50);
+                                    &:hover {
+                                        background-color: var(--clr-primary-700);
+                                    }
+                                }
+
+                                &--cancel{
+                                    background-color: var(--clr-neutral-50);
+                                    border: 2px solid var(--clr-primary-500);
+                                    color: var(--clr-primary-500);
+                                    &:hover {
+                                        background-color: var(--clr-primary-700);
+                                        border-color: var(--clr-primary-700);
+                                        color: var(--clr-neutral-50);
                                     }
                                 }
                             }
@@ -343,7 +354,7 @@
                             }
 
                             .example__btn {
-                                height: 3rem;
+                                height: 3.5rem;
                                 opacity: 1;
                                 transition: height 250ms ease-in-out 0s, opacity 200ms ease-in-out 250ms;
                             }

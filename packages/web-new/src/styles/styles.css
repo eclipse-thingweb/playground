@@ -31,31 +31,27 @@
   --fw-bold: 700;
   --fw-black: 900;
   /*Font sizes*/
-  --fs-h1: 3.5rem;
-  --fs-h2: 3rem;
-  --fs-h3: 2.5rem;
-  --fs-h4: 2rem;
-  --fs-sub-header: 1.8rem;
-  --fs-p: 1.4rem;
-  --fs-footer: 1rem;
-  --fs-i: 1.8rem;
-  --fs-h1: clamp(3rem, 2.8rem + 0.625vw, 4rem);
-  --fs-h2: clamp(2.5rem, 2.3rem + 0.625vw, 3.5rem);
-  --fs-h3: clamp(2rem, 1.8rem + 0.625vw, 3rem);
-  --fs-h4: clamp(1.5rem, 1.3rem + 0.625vw, 2.5rem);
-  --fs-sub-header: clamp(1.4rem, 1.239rem + 0.5vw, 2.2rem);
-  --fs-p: clamp(1.2rem, 1.119rem + 0.25vw, 1.6rem);
-  --fs-footer: clamp(0.8rem, 0.7200000000000001rem + 0.24999999999999997vw, 1.2rem);
-  --fs-i: clamp(1.4rem, 1.279rem + 0.375vw, 2rem);
+  --fs-h1: 2.5rem;
+  --fs-h2: 2.5rem;
+  --fs-sub-header: 1.75rem;
+  --fs-p: 1.2rem;
+  --fs-footer: 0.8rem;
+  --fs-i: 1.4rem;
+  --fs-h1: clamp(2rem, 1.8rem + 0.625vw, 3rem);
+  --fs-h2: clamp(2rem, 1.8rem + 0.625vw, 3rem);
+  --fs-h3: clamp(1.5rem, 1.3rem + 0.625vw, 2.5rem);
+  --fs-sub-header: clamp(1.25rem, 1.05rem + 1vw, 2.25rem);
+  --fs-p: clamp(1rem, 0.92rem + 0.3999999999999999vw, 1.4rem);
+  --fs-footer: clamp(0.8rem, 0.76rem + 0.19999999999999996vw, 1rem);
+  --fs-i: clamp(1.2rem, 1.1199999999999999rem + 0.4000000000000002vw, 1.6rem);
   /*line heights*/
-  --lh-h1: 5rem;
-  --lh-h2: 4.5rem;
-  --lh-h3: 4rem;
-  --lh-h4: 3.5rem;
-  --lh-sub-header: 3rem;
-  --lh-p: 2rem;
-  --lh-footer: 1.5rem;
-  --lh-i: 2.2rem;
+  --lh-h1: 4rem;
+  --lh-h2: 4rem;
+  --lh-h3: 3.5rem;
+  --lh-sub-header: 3.25rem;
+  --lh-p: 1.8rem;
+  --lh-footer: 1.25rem;
+  --lh-i: 2rem;
   /*colors*/
   --clr-neutral-50: #FFFFFE;
   --clr-neutral-100: #E4E6E6;
@@ -146,18 +142,6 @@ h3 {
   font-weight: var(--fw-bold);
 }
 
-h4 {
-  font-size: var(--fs-h4);
-  line-height: var(--lh-h4);
-  font-weight: var(--fw-bold);
-}
-
-h5 {
-  font-size: var(--fs-h5);
-  line-height: var(--lh-h5);
-  font-weight: var(--fw-bold);
-}
-
 p,
 li {
   font-size: var(--fs-p);
@@ -223,10 +207,10 @@ header {
   color: var(--clr-neutral-50);
 }
 header .navbar {
-  min-height: 8vh;
-  min-height: 8svh;
-  max-height: 8vh;
-  max-height: 8svh;
+  min-height: 7vh;
+  min-height: 7svh;
+  max-height: 7vh;
+  max-height: 7svh;
   padding: 1rem 0;
   display: flex;
   flex-direction: row;
@@ -234,13 +218,13 @@ header .navbar {
   justify-content: space-between;
 }
 header .navbar__logo {
-  width: 15rem;
+  width: 12rem;
 }
 header .navbar__logo .logo path {
   fill: var(--clr-neutral-50);
 }
 header .navbar__title span {
-  font-size: var(--fs-footer);
+  font-size: var(--fs-p);
 }
 header .navbar__links {
   display: flex;
@@ -262,14 +246,14 @@ header .navbar__links .cli-link {
   margin-right: 3rem;
 }
 header .navbar__links i {
-  font-size: var(--fs-h4);
+  font-size: var(--fs-i);
   margin-bottom: 0.5rem;
 }
 
 /***** Main *****/
 main {
-  height: 92vh;
-  height: 92svh;
+  height: 93vh;
+  height: 93svh;
   padding: 2rem 0;
   width: 100%;
   position: relative;
@@ -1343,7 +1327,7 @@ main .console {
   margin-bottom: 2rem;
 }
 .settings-menu .settings__close i {
-  font-size: var(--fs-h4);
+  font-size: var(--fs-sub-header);
   cursor: pointer;
 }
 .settings-menu .settings__title, .settings-menu .settings__preferences {
@@ -1570,7 +1554,7 @@ main .console {
   text-align: right;
 }
 .examples-menu .examples-menu-container__close i {
-  font-size: var(--fs-h4);
+  font-size: var(--fs-sub-header);
   cursor: pointer;
 }
 .examples-menu .examples-menu-container__filter {
@@ -1780,36 +1764,50 @@ main .console {
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__btn, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__btn {
   display: flex;
+  width: 100%;
   gap: 2rem;
   height: 0;
   opacity: 0;
   transition: opacity 250ms ease-in-out 0ms, height 250ms ease-in-out 250ms;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__btn button, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__btn button {
-  padding: 0.5rem 1.5rem;
+  width: 100%;
+  padding: 0.75rem 1.5rem;
   border-radius: 5px;
-  border: 1px solid var(--clr-neutral-300);
-  background-color: var(--clr-neutral-50);
   font-family: var(--ff-primary);
-  color: var(--clr-neutral-900);
+  font-size: var(--fs-p);
+  font-weight: var(--fw-bold);
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background-color 250ms ease-in-out;
-}
-.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__btn button:hover, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__btn button:hover {
-  background-color: var(--clr-neutral-300);
+  transition: all 250ms ease-in-out;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__btn button p, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__btn button p {
-  font-size: inherit;
-  color: inherit;
-  font-family: inherit;
+  font-weight: var(--fw-bold);
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__btn button i, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__btn button i {
-  font-size: inherit;
   margin-right: 1rem;
+  font-size: var(--fs-p);
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__btn--use, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__btn--use {
+  background-color: var(--clr-primary-500);
+  border: none;
+  color: var(--clr-neutral-50);
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__btn--use:hover, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__btn--use:hover {
+  background-color: var(--clr-primary-700);
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__btn--cancel, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__btn--cancel {
+  background-color: var(--clr-neutral-50);
+  border: 2px solid var(--clr-primary-500);
+  color: var(--clr-primary-500);
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__btn--cancel:hover, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__btn--cancel:hover {
+  background-color: var(--clr-primary-700);
+  border-color: var(--clr-primary-700);
+  color: var(--clr-neutral-50);
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example.open .example__name, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example.open .example__name {
   border-bottom: 2px solid var(--clr-primary-500);
@@ -1826,7 +1824,7 @@ main .console {
   transition: height 250ms ease-in-out 0s, margin 250ms ease-in-out 0s, opacity 200ms ease-in-out 250ms;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example.open .example__btn, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example.open .example__btn {
-  height: 3rem;
+  height: 3.5rem;
   opacity: 1;
   transition: height 250ms ease-in-out 0s, opacity 200ms ease-in-out 250ms;
 }
@@ -1964,6 +1962,7 @@ main .console {
   border-bottom-left-radius: 5px;
   font-family: var(--ff-primary);
   font-size: var(--fs-p);
+  color: var(--clr-neutral-900);
   padding: 1rem;
 }
 .save-menu__container .share-td__input .share-url-input.error {
