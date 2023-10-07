@@ -40,8 +40,8 @@ jobs:
             - name: Add generated files and commit
               if: ${{ ! steps.diff.outputs.changed }}
               run: |
-                  git config user.name 'Fady Salama'
-                  git config user.email 'fadytawfik11@gmail.com'
+                  git config user.name 'Ege Korkan'
+                  git config user.email 'egekorkan@gmail.com'
                   git add -u
                   git commit -a -m "chore: sync assertions.csv with the current assertions in the spec and generate manual.csv"
 
