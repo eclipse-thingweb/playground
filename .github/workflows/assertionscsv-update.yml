@@ -43,7 +43,7 @@ jobs:
                   git config user.name 'Ege Korkan'
                   git config user.email 'egekorkan@gmail.com'
                   git add -u
-                  git commit -a -m "chore: sync assertions.csv with the current assertions in the spec and generate manual.csv"
+                  git commit -a -s -m "chore: sync assertions.csv with the current assertions in the spec and generate manual.csv"
 
             - name: Create Pull Request
               if: ${{ ! steps.diff.outputs.changed }}
