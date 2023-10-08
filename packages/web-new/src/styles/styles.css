@@ -707,9 +707,12 @@ main .console {
   content: "AsyncAPI";
 }
 .console__tabs .visualization input[type=radio]:nth-child(4)::before {
-  content: "Defaults";
+  content: "AAS/AID";
 }
 .console__tabs .visualization input[type=radio]:nth-child(5)::before {
+  content: "Defaults";
+}
+.console__tabs .visualization input[type=radio]:nth-child(6)::before {
   content: "Visualize";
 }
 .console__tabs .visualization input[type=radio]:checked {
@@ -848,6 +851,7 @@ main .console {
 }
 .console__content .open-api-view,
 .console__content .async-api-view,
+.console__content .aas-view,
 .console__content .defaults-view,
 .console__content .visualize-view {
   display: flex;
@@ -859,18 +863,27 @@ main .console {
 }
 .console__content .open-api-view .open-api-container,
 .console__content .open-api-view .async-api-container,
+.console__content .open-api-view .aas-container,
 .console__content .open-api-view .defaults-container,
 .console__content .open-api-view .visualize-container,
 .console__content .async-api-view .open-api-container,
 .console__content .async-api-view .async-api-container,
+.console__content .async-api-view .aas-container,
 .console__content .async-api-view .defaults-container,
 .console__content .async-api-view .visualize-container,
+.console__content .aas-view .open-api-container,
+.console__content .aas-view .async-api-container,
+.console__content .aas-view .aas-container,
+.console__content .aas-view .defaults-container,
+.console__content .aas-view .visualize-container,
 .console__content .defaults-view .open-api-container,
 .console__content .defaults-view .async-api-container,
+.console__content .defaults-view .aas-container,
 .console__content .defaults-view .defaults-container,
 .console__content .defaults-view .visualize-container,
 .console__content .visualize-view .open-api-container,
 .console__content .visualize-view .async-api-container,
+.console__content .visualize-view .aas-container,
 .console__content .visualize-view .defaults-container,
 .console__content .visualize-view .visualize-container {
   height: 100%;
@@ -878,18 +891,27 @@ main .console {
 }
 .console__content .open-api-view .open-api-inputs,
 .console__content .open-api-view .async-api-inputs,
+.console__content .open-api-view .aas-inputs,
 .console__content .open-api-view .defaults-inputs,
 .console__content .open-api-view .visualize-inputs,
 .console__content .async-api-view .open-api-inputs,
 .console__content .async-api-view .async-api-inputs,
+.console__content .async-api-view .aas-inputs,
 .console__content .async-api-view .defaults-inputs,
 .console__content .async-api-view .visualize-inputs,
+.console__content .aas-view .open-api-inputs,
+.console__content .aas-view .async-api-inputs,
+.console__content .aas-view .aas-inputs,
+.console__content .aas-view .defaults-inputs,
+.console__content .aas-view .visualize-inputs,
 .console__content .defaults-view .open-api-inputs,
 .console__content .defaults-view .async-api-inputs,
+.console__content .defaults-view .aas-inputs,
 .console__content .defaults-view .defaults-inputs,
 .console__content .defaults-view .visualize-inputs,
 .console__content .visualize-view .open-api-inputs,
 .console__content .visualize-view .async-api-inputs,
+.console__content .visualize-view .aas-inputs,
 .console__content .visualize-view .defaults-inputs,
 .console__content .visualize-view .visualize-inputs {
   width: 30rem;
@@ -905,18 +927,27 @@ main .console {
 }
 .console__content .open-api-view .open-api-inputs button,
 .console__content .open-api-view .async-api-inputs button,
+.console__content .open-api-view .aas-inputs button,
 .console__content .open-api-view .defaults-inputs button,
 .console__content .open-api-view .visualize-inputs button,
 .console__content .async-api-view .open-api-inputs button,
 .console__content .async-api-view .async-api-inputs button,
+.console__content .async-api-view .aas-inputs button,
 .console__content .async-api-view .defaults-inputs button,
 .console__content .async-api-view .visualize-inputs button,
+.console__content .aas-view .open-api-inputs button,
+.console__content .aas-view .async-api-inputs button,
+.console__content .aas-view .aas-inputs button,
+.console__content .aas-view .defaults-inputs button,
+.console__content .aas-view .visualize-inputs button,
 .console__content .defaults-view .open-api-inputs button,
 .console__content .defaults-view .async-api-inputs button,
+.console__content .defaults-view .aas-inputs button,
 .console__content .defaults-view .defaults-inputs button,
 .console__content .defaults-view .visualize-inputs button,
 .console__content .visualize-view .open-api-inputs button,
 .console__content .visualize-view .async-api-inputs button,
+.console__content .visualize-view .aas-inputs button,
 .console__content .visualize-view .defaults-inputs button,
 .console__content .visualize-view .visualize-inputs button {
   -webkit-appearance: none;
@@ -941,36 +972,54 @@ main .console {
 }
 .console__content .open-api-view .open-api-inputs button:hover,
 .console__content .open-api-view .async-api-inputs button:hover,
+.console__content .open-api-view .aas-inputs button:hover,
 .console__content .open-api-view .defaults-inputs button:hover,
 .console__content .open-api-view .visualize-inputs button:hover,
 .console__content .async-api-view .open-api-inputs button:hover,
 .console__content .async-api-view .async-api-inputs button:hover,
+.console__content .async-api-view .aas-inputs button:hover,
 .console__content .async-api-view .defaults-inputs button:hover,
 .console__content .async-api-view .visualize-inputs button:hover,
+.console__content .aas-view .open-api-inputs button:hover,
+.console__content .aas-view .async-api-inputs button:hover,
+.console__content .aas-view .aas-inputs button:hover,
+.console__content .aas-view .defaults-inputs button:hover,
+.console__content .aas-view .visualize-inputs button:hover,
 .console__content .defaults-view .open-api-inputs button:hover,
 .console__content .defaults-view .async-api-inputs button:hover,
+.console__content .defaults-view .aas-inputs button:hover,
 .console__content .defaults-view .defaults-inputs button:hover,
 .console__content .defaults-view .visualize-inputs button:hover,
 .console__content .visualize-view .open-api-inputs button:hover,
 .console__content .visualize-view .async-api-inputs button:hover,
+.console__content .visualize-view .aas-inputs button:hover,
 .console__content .visualize-view .defaults-inputs button:hover,
 .console__content .visualize-view .visualize-inputs button:hover {
   background-color: var(--clr-primary-900);
 }
 .console__content .open-api-view .open-api-inputs button:disabled,
 .console__content .open-api-view .async-api-inputs button:disabled,
+.console__content .open-api-view .aas-inputs button:disabled,
 .console__content .open-api-view .defaults-inputs button:disabled,
 .console__content .open-api-view .visualize-inputs button:disabled,
 .console__content .async-api-view .open-api-inputs button:disabled,
 .console__content .async-api-view .async-api-inputs button:disabled,
+.console__content .async-api-view .aas-inputs button:disabled,
 .console__content .async-api-view .defaults-inputs button:disabled,
 .console__content .async-api-view .visualize-inputs button:disabled,
+.console__content .aas-view .open-api-inputs button:disabled,
+.console__content .aas-view .async-api-inputs button:disabled,
+.console__content .aas-view .aas-inputs button:disabled,
+.console__content .aas-view .defaults-inputs button:disabled,
+.console__content .aas-view .visualize-inputs button:disabled,
 .console__content .defaults-view .open-api-inputs button:disabled,
 .console__content .defaults-view .async-api-inputs button:disabled,
+.console__content .defaults-view .aas-inputs button:disabled,
 .console__content .defaults-view .defaults-inputs button:disabled,
 .console__content .defaults-view .visualize-inputs button:disabled,
 .console__content .visualize-view .open-api-inputs button:disabled,
 .console__content .visualize-view .async-api-inputs button:disabled,
+.console__content .visualize-view .aas-inputs button:disabled,
 .console__content .visualize-view .defaults-inputs button:disabled,
 .console__content .visualize-view .visualize-inputs button:disabled {
   background-color: var(--clr-neutral-300);
@@ -978,18 +1027,27 @@ main .console {
 }
 .console__content .open-api-view .open-api-inputs .input-field,
 .console__content .open-api-view .async-api-inputs .input-field,
+.console__content .open-api-view .aas-inputs .input-field,
 .console__content .open-api-view .defaults-inputs .input-field,
 .console__content .open-api-view .visualize-inputs .input-field,
 .console__content .async-api-view .open-api-inputs .input-field,
 .console__content .async-api-view .async-api-inputs .input-field,
+.console__content .async-api-view .aas-inputs .input-field,
 .console__content .async-api-view .defaults-inputs .input-field,
 .console__content .async-api-view .visualize-inputs .input-field,
+.console__content .aas-view .open-api-inputs .input-field,
+.console__content .aas-view .async-api-inputs .input-field,
+.console__content .aas-view .aas-inputs .input-field,
+.console__content .aas-view .defaults-inputs .input-field,
+.console__content .aas-view .visualize-inputs .input-field,
 .console__content .defaults-view .open-api-inputs .input-field,
 .console__content .defaults-view .async-api-inputs .input-field,
+.console__content .defaults-view .aas-inputs .input-field,
 .console__content .defaults-view .defaults-inputs .input-field,
 .console__content .defaults-view .visualize-inputs .input-field,
 .console__content .visualize-view .open-api-inputs .input-field,
 .console__content .visualize-view .async-api-inputs .input-field,
+.console__content .visualize-view .aas-inputs .input-field,
 .console__content .visualize-view .defaults-inputs .input-field,
 .console__content .visualize-view .visualize-inputs .input-field {
   width: 100%;
@@ -1003,36 +1061,54 @@ main .console {
 }
 .console__content .open-api-view .open-api-inputs .input-field button,
 .console__content .open-api-view .async-api-inputs .input-field button,
+.console__content .open-api-view .aas-inputs .input-field button,
 .console__content .open-api-view .defaults-inputs .input-field button,
 .console__content .open-api-view .visualize-inputs .input-field button,
 .console__content .async-api-view .open-api-inputs .input-field button,
 .console__content .async-api-view .async-api-inputs .input-field button,
+.console__content .async-api-view .aas-inputs .input-field button,
 .console__content .async-api-view .defaults-inputs .input-field button,
 .console__content .async-api-view .visualize-inputs .input-field button,
+.console__content .aas-view .open-api-inputs .input-field button,
+.console__content .aas-view .async-api-inputs .input-field button,
+.console__content .aas-view .aas-inputs .input-field button,
+.console__content .aas-view .defaults-inputs .input-field button,
+.console__content .aas-view .visualize-inputs .input-field button,
 .console__content .defaults-view .open-api-inputs .input-field button,
 .console__content .defaults-view .async-api-inputs .input-field button,
+.console__content .defaults-view .aas-inputs .input-field button,
 .console__content .defaults-view .defaults-inputs .input-field button,
 .console__content .defaults-view .visualize-inputs .input-field button,
 .console__content .visualize-view .open-api-inputs .input-field button,
 .console__content .visualize-view .async-api-inputs .input-field button,
+.console__content .visualize-view .aas-inputs .input-field button,
 .console__content .visualize-view .defaults-inputs .input-field button,
 .console__content .visualize-view .visualize-inputs .input-field button {
   border-radius: 0;
 }
 .console__content .open-api-view .open-api-inputs .view-download,
 .console__content .open-api-view .async-api-inputs .view-download,
+.console__content .open-api-view .aas-inputs .view-download,
 .console__content .open-api-view .defaults-inputs .view-download,
 .console__content .open-api-view .visualize-inputs .view-download,
 .console__content .async-api-view .open-api-inputs .view-download,
 .console__content .async-api-view .async-api-inputs .view-download,
+.console__content .async-api-view .aas-inputs .view-download,
 .console__content .async-api-view .defaults-inputs .view-download,
 .console__content .async-api-view .visualize-inputs .view-download,
+.console__content .aas-view .open-api-inputs .view-download,
+.console__content .aas-view .async-api-inputs .view-download,
+.console__content .aas-view .aas-inputs .view-download,
+.console__content .aas-view .defaults-inputs .view-download,
+.console__content .aas-view .visualize-inputs .view-download,
 .console__content .defaults-view .open-api-inputs .view-download,
 .console__content .defaults-view .async-api-inputs .view-download,
+.console__content .defaults-view .aas-inputs .view-download,
 .console__content .defaults-view .defaults-inputs .view-download,
 .console__content .defaults-view .visualize-inputs .view-download,
 .console__content .visualize-view .open-api-inputs .view-download,
 .console__content .visualize-view .async-api-inputs .view-download,
+.console__content .visualize-view .aas-inputs .view-download,
 .console__content .visualize-view .defaults-inputs .view-download,
 .console__content .visualize-view .visualize-inputs .view-download {
   width: 100%;
