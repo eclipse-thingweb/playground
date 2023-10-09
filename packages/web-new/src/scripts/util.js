@@ -172,7 +172,7 @@ export function generateAAS(fileType, editorInstance){
         ? editorInstance.getValue()
         : convertTDYamlToJson(editorInstance.getValue())
 
-    const AASInstance = assetInterfaceDescriptionUtil.transformTD2AAS(tdToConvert, ["http", "coap"])
+    const AASInstance = assetInterfaceDescriptionUtil.transformTD2SM(tdToConvert, ["http", "coap"])
     try {
         const content = fileType === "json" 
             ? JSON.stringify(JSON.parse(AASInstance), undefined, 4)
