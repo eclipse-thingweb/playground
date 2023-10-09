@@ -707,7 +707,7 @@ main .console {
   content: "AsyncAPI";
 }
 .console__tabs .visualization input[type=radio]:nth-child(4)::before {
-  content: "AAS/AID";
+  content: "AAS AID";
 }
 .console__tabs .visualization input[type=radio]:nth-child(5)::before {
   content: "Defaults";
