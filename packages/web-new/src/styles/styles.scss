@@ -108,6 +108,7 @@
     //settings menu
     --clr-controls: var(--clr-neutral-50);
     --clr-controls-bg: var(--clr-primary-500);
+    --clr-controls-txt: var(--clr-neutral-900);
 
     /* transitions */
     --trans-bouncy: cubic-bezier(0.68, -0.75, 0.27, 1.75);
@@ -137,6 +138,7 @@
 
     --clr-controls: #FFFFFE;
     --clr-controls-bg: var(--clr-neutral-50);
+    --clr-controls-txt: #141414;
 
     --clr-shades-trans: rgba(84, 144, 135, 0.7);
     --clr-shadow: rgba(255, 255, 255, 0.4);

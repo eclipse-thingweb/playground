@@ -29,7 +29,6 @@ import { createIde, ideCount } from "./editor"
 const closeExamples = document.querySelector(".examples-menu-container__close i")
 const examplesMenu = document.querySelector(".examples-menu")
 const examplesBtn = document.querySelector("#examples-btn")
-const thingTypeSelect = document.querySelector('#thing-type')
 const categorySelect = document.querySelector('#thing-category')
 const filterForm = document.querySelector('.examples-menu-container__filter')
 const tdExamplesContainer = document.querySelector(".examples-container__td")
@@ -37,6 +36,7 @@ const tmExamplesContainer = document.querySelector(".examples-container__tm")
 const searchInput = document.querySelector(".search-input")
 const tdSearchResults = tdExamplesContainer.querySelector("#filtered-results")
 const tmSearchResults = tmExamplesContainer.querySelector("#filtered-results")
+const thingTypeButton = document.querySelector(".thing-type-btn")
 
 /**
  * Close examples menu when clicking on x icon and
@@ -44,12 +44,7 @@ const tmSearchResults = tmExamplesContainer.querySelector("#filtered-results")
  */
 closeExamples.addEventListener("click", () => {
     examplesMenu.classList.add("closed")
-    const exampleCards = document.querySelectorAll(".example")
-    exampleCards.forEach(card => {
-        if (card.classList.contains("open")) {
-            card.classList.toggle("open")
-        }
-    })
+    closeCards()
 })
 
 /**
@@ -125,27 +120,25 @@ async function getCategories() {
  * Checks the TD/TM select and updates the categories select respectively
  */
 function filterThingType() {
-    //Clear all elments inside the categories select
+    //Clear all elements inside the categories select
     const selectOptions = [...categorySelect.options]
     selectOptions.forEach(option => {
         option.remove()
     })
 
-    if (thingTypeSelect.value === "thing-description") {
-        tdExamplesContainer.classList.remove("hidden")
-        tmExamplesContainer.classList.add("hidden")
-        tdCategories.forEach(category => {
+    if (thingTypeButton.checked) {
+        tmExamplesContainer.classList.remove("hidden")
+        tdExamplesContainer.classList.add("hidden")
+        tmCategories.forEach(category => {
             const opt = document.createElement('option')
             opt.value = category.id
             opt.innerText = category.name
             categorySelect.appendChild(opt)
         })
-    }
-
-    if (thingTypeSelect.value === "thing-model") {
-        tmExamplesContainer.classList.remove("hidden")
-        tdExamplesContainer.classList.add("hidden")
-        tmCategories.forEach(category => {
+    } else {
+        tdExamplesContainer.classList.remove("hidden")
+        tmExamplesContainer.classList.add("hidden")
+        tdCategories.forEach(category => {
             const opt = document.createElement('option')
             opt.value = category.id
             opt.innerText = category.name
@@ -157,11 +150,14 @@ function filterThingType() {
 /**
  * Event listeners to check for changes and scroll to the respective category
  */
-thingTypeSelect.addEventListener("change", () => {
+thingTypeButton.addEventListener("click", () => {
     filterThingType()
+    tdSearchResults.classList.add("hidden")
+    tmSearchResults.classList.add("hidden")
     const element = document.getElementById(categorySelect.value);
     element.scrollIntoView({ behavior: "smooth", block: "start" })
 })
+
 categorySelect.addEventListener("change", () => {
     const element = document.getElementById(categorySelect.value);
     element.scrollIntoView({ behavior: "smooth", block: "start" })
@@ -291,6 +287,7 @@ async function getAllExamples(categoryId, thingType) {
         //Importing example to the monaco editor with the quick buttons
         quickButton.addEventListener('click', () => {
             getTemplateData(example[1]["path"])
+            closeCards()
         })
 
         //create example content
@@ -331,7 +328,7 @@ async function getAllExamples(categoryId, thingType) {
         //Listener to generate an editor with the examples information
         exampleBtnUse.addEventListener('click', () => {
             getTemplateData(example[1]["path"])
-            exampleContainer.classList.toggle("open")
+            closeCards()
         })
 
         //Listener to generate an editor with the examples information
@@ -362,7 +359,7 @@ filterForm.addEventListener("submit", (e) => {
     e.preventDefault()
 
     //Check if the thingType select is TD or TM
-    if (thingTypeSelect.value === "thing-description") {
+    if (thingTypeButton.checked === false) {
         //Only ge the container for the searched results
         const examplesContainer = tdSearchResults.querySelector(".examples-category__container")
         //Clean all the children component
@@ -380,14 +377,24 @@ filterForm.addEventListener("submit", (e) => {
             examples.forEach(example => {
                 //If value of the search input mataches the title or description
                 //clone it, append it and add the respective event listeners
-                if ((example.firstChild.childNodes[1].innerText.toLowerCase()).includes(searchInput.value.toLowerCase()) || (example.children[1].children[0].innerText.toLowerCase()).includes(searchInput.value.toLowerCase())) {
+                if ((example.firstChild.children[0].children[1].innerText.toLowerCase()).includes(searchInput.value.toLowerCase()) || (example.children[1].children[0].innerText.toLowerCase()).includes(searchInput.value.toLowerCase())) {
                     let clonedElement = example.cloneNode(true)
-                    clonedElement.children[0].addEventListener('click', () => {
+                    //Open the card when clicking on the name
+                    clonedElement.children[0].children[0].addEventListener('click', () => {
                         clonedElement.classList.toggle("open")
                     })
-
+                    //Opning the example when clicking on the quick access button
+                    clonedElement.children[0].children[1].addEventListener('click', () => {
+                        example.querySelector(".example__btn--use").click()
+                        closeCards()
+                    })
+                    //Opening the example when clicking on the apply button
                     clonedElement.querySelector(".example__btn--use").addEventListener('click', () => {
                         example.querySelector(".example__btn--use").click()
+                        closeCards()
+                    })
+                    //Closing the card when clicking on the cancel btn
+                    clonedElement.querySelector(".example__btn--cancel").addEventListener('click', () => {
                         clonedElement.classList.toggle("open")
                     })
                     examplesContainer.appendChild(clonedElement)
@@ -413,14 +420,24 @@ filterForm.addEventListener("submit", (e) => {
         categories.forEach(category => {
             const examples = [...category.children[2].children]
             examples.forEach(example => {
-                if ((example.firstChild.childNodes[1].innerText.toLowerCase()).includes(searchInput.value.toLowerCase()) || (example.children[1].children[0].innerText.toLowerCase()).includes(searchInput.value.toLowerCase())) {
+                if ((example.firstChild.children[0].children[1].innerText.toLowerCase()).includes(searchInput.value.toLowerCase()) || (example.children[1].children[0].innerText.toLowerCase()).includes(searchInput.value.toLowerCase())) {
                     let clonedElement = example.cloneNode(true)
-                    clonedElement.children[0].addEventListener('click', () => {
+                    //Open the card when clicking on the name
+                    clonedElement.children[0].children[0].addEventListener('click', () => {
                         clonedElement.classList.toggle("open")
                     })
-
+                    //Opning the example when clicking on the quick access button
+                    clonedElement.children[0].children[1].addEventListener('click', () => {
+                        example.querySelector(".example__btn--use").click()
+                        closeCards()
+                    })
+                    //Opening the example when clicking on the apply button
                     clonedElement.querySelector(".example__btn--use").addEventListener('click', () => {
                         example.querySelector(".example__btn--use").click()
+                        closeCards()
+                    })
+                    //Closing the card when clicking on the cancel btn
+                    clonedElement.querySelector(".example__btn--cancel").addEventListener('click', () => {
                         clonedElement.classList.toggle("open")
                     })
                     examplesContainer.appendChild(clonedElement)
@@ -436,3 +453,16 @@ filterForm.addEventListener("submit", (e) => {
         })
     }
 })
+
+
+/**
+ * Reset all cards to the default closed state
+ */
+function closeCards() {
+    const exampleCards = document.querySelectorAll(".example")
+    exampleCards.forEach(card => {
+        if (card.classList.contains("open")) {
+            card.classList.remove("open")
+        }
+    })
+}
