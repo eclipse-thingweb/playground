@@ -43,7 +43,7 @@
   --fs-sub-header: clamp(1.25rem, 1.05rem + 1vw, 2.25rem);
   --fs-p: clamp(1rem, 0.92rem + 0.3999999999999999vw, 1.4rem);
   --fs-footer: clamp(0.8rem, 0.76rem + 0.19999999999999996vw, 1rem);
-  --fs-i: clamp(1.2rem, 1.1199999999999999rem + 0.4000000000000002vw, 1.6rem);
+  --fs-i: clamp(1.2rem, 1.04rem + 0.8vw, 2rem);
   /*line heights*/
   --lh-h1: 4rem;
   --lh-h2: 4rem;
@@ -1804,7 +1804,14 @@ main .console {
   padding: 2rem;
   box-shadow: 0px 0px 5px 0px var(--clr-shadow);
 }
-.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__name, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__name {
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--name, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--name {
+  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -1813,11 +1820,28 @@ main .console {
   cursor: pointer;
   transition: all 250ms ease-in-out 250ms;
 }
-.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__name i, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__name i {
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--name i, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--name i {
   color: var(--clr-primary-500);
 }
-.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__name p, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__name p {
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--name p, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--name p {
   font-weight: var(--fw-bold);
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--quick, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--quick {
+  width: -moz-fit-content;
+  width: fit-content;
+  background-color: transparent;
+  border: none;
+  border-left: 2px solid var(--clr-primary-500);
+  padding: 1rem 1rem 1rem 2rem;
+  cursor: pointer;
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--quick i, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--quick i {
+  font-size: var(--fs-i);
+  color: var(--clr-primary-500);
+  transition: color 250ms ease-in-out 250ms;
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--quick:hover i, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--quick:hover i {
+  color: var(--clr-primary-700);
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__content, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__content {
   pointer-events: none;

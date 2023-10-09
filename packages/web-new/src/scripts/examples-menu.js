@@ -258,20 +258,39 @@ async function getAllExamples(categoryId, thingType) {
         exampleContainer.classList.add("example")
         categoryContainer.appendChild(exampleContainer)
 
+        //Create header container
+        const exampleHeader = document.createElement('div')
+        exampleHeader.classList.add("example__header")
+        exampleContainer.appendChild(exampleHeader)
+
         //create example title
         const exampleName = document.createElement('div')
-        exampleName.classList.add("example__name")
+        exampleName.classList.add("example__header--name")
         const exampleNameIcon = document.createElement('i')
         exampleNameIcon.classList.add("fa-solid", "fa-file-code")
         exampleName.appendChild(exampleNameIcon)
         const exampleNameTitle = document.createElement('p')
         exampleNameTitle.innerText = example[1]["title"]
         exampleName.appendChild(exampleNameTitle)
-        exampleContainer.appendChild(exampleName)
+        exampleHeader.appendChild(exampleName)
+
+        //Create the example quick access button
+        const quickButton = document.createElement('button')
+        quickButton.classList.add("example__header--quick")
+        const quickButtonIcon = document.createElement('i')
+        quickButtonIcon.classList.add("fa-solid", "fa-file-import")
+        quickButton.appendChild(quickButtonIcon)
+        exampleHeader.appendChild(quickButton)
+
 
         //add event listener to show example information and interaction btns
         exampleName.addEventListener('click', () => {
-            exampleName.parentElement.classList.toggle("open")
+            exampleContainer.classList.toggle("open")
+        })
+
+        //Importing example to the monaco editor with the quick buttons
+        quickButton.addEventListener('click', () => {
+            getTemplateData(example[1]["path"])
         })
 
         //create example content
@@ -312,12 +331,12 @@ async function getAllExamples(categoryId, thingType) {
         //Listener to generate an editor with the examples information
         exampleBtnUse.addEventListener('click', () => {
             getTemplateData(example[1]["path"])
-            exampleName.parentElement.classList.toggle("open")
+            exampleContainer.classList.toggle("open")
         })
 
         //Listener to generate an editor with the examples information
         exampleBtnCancel.addEventListener('click', () => {
-            exampleName.parentElement.classList.toggle("open")
+            exampleContainer.classList.toggle("open")
         })
     }
 }
