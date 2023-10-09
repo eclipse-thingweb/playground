@@ -21,11 +21,12 @@
 
 import { openApiTab, openApiJsonBtn, openApiYamlBtn, openApiView } from './open-api'
 import { asyncApiTab, asyncApiJsonBtn, asyncApiYamlBtn, asyncApiView } from './async-api'
+import { AASJsonBtn, AASView } from './aas'
 import { defaultsView, defaultsJsonBtn, defaultsYamlBtn, defaultsAddBtn } from './defaults'
 import { visualize } from './visualize'
 import { validationView } from './validation'
 import { convertTDYamlToJson, detectProtocolSchemes } from '../../../core/dist/web-bundle.min.js'
-import { generateOAP, generateAAP, addDefaultsUtil, validate } from './util'
+import { generateOAP, generateAAP, addDefaultsUtil, validate, generateAAS } from './util'
 import { editorList, getEditorData } from './editor'
 
 /******************************************************************/
@@ -64,6 +65,7 @@ function clearVisualizationEditors() {
     window.openApiEditor.getModel().setValue('')
     window.asyncApiEditor.getModel().setValue('')
     window.defaultsEditor.getModel().setValue('')
+    window.AASEditor.getModel().setValue('')
 }
 
 
@@ -77,17 +79,19 @@ visualizationOptions.forEach(option => {
 
         editorList.forEach(editorInstance => {
             if (editorInstance["_domElement"].classList.contains("active")) {
-                const editorValue = editorInstance["_domElement"].dataset.modeId === "yaml" ? convertTDYamlToJson(editorInstance.getValue()) : editorInstance.getValue()
+                const fileType = editorInstance["_domElement"].dataset.modeId
+                const editorValue = fileType === "yaml" ? convertTDYamlToJson(editorInstance.getValue()) : editorInstance.getValue()
+
                 try {
                     let td = JSON.parse(editorValue)
                     hideConsoleError()
 
-                    if ((td["@type"] === "tm:ThingModel" && option.id === "open-api-tab") || (td["@type"] === "tm:ThingModel" && option.id === "async-api-tab") || (td["@type"] === "tm:ThingModel" && option.id === "defaults-tab")) {
+                    if ((td["@type"] === "tm:ThingModel" && option.id === "open-api-tab") || (td["@type"] === "tm:ThingModel" && option.id === "async-api-tab") || (td["@type"] === "tm:ThingModel" && option.id === "defaults-tab") || (td["@type"] === "tm:ThingModel" && option.id === "aas-tab")) {
                         showConsoleError("This function is only allowed for Thing Descriptions!")
                     } else {
                         switch (option.id) {
                             case "open-api-tab":
-                                if (editorInstance["_domElement"].dataset.modeId === "yaml") {
+                                if (fileType === "yaml") {
                                     openApiJsonBtn.disabled = false
                                     openApiYamlBtn.disabled = true
                                 } else {
@@ -95,14 +99,12 @@ visualizationOptions.forEach(option => {
                                     openApiYamlBtn.disabled = false
                                 }
 
-                                if (td["@type"] !== "tm:ThingModel") {
-                                    enableAPIConversionWithProtocol(editorInstance)
-                                }
+                                enableAPIConversionWithProtocol(editorInstance)
 
                                 break;
 
                             case "async-api-tab":
-                                if (editorInstance["_domElement"].dataset.modeId === "yaml") {
+                                if (fileType === "yaml") {
                                     asyncApiJsonBtn.disabled = false
                                     asyncApiYamlBtn.disabled = true
                                 } else {
@@ -110,25 +112,28 @@ visualizationOptions.forEach(option => {
                                     asyncApiYamlBtn.disabled = false
                                 }
 
-                                if (td["@type"] !== "tm:ThingModel") {
-                                    enableAPIConversionWithProtocol(editorInstance)
-                                }
+                                enableAPIConversionWithProtocol(editorInstance)
+
+                                break;
+
+                            case "aas-tab":
+                                AASView.classList.remove("hidden")
+                                generateAAS(fileType, editorInstance)
 
                                 break;
 
                             case "defaults-tab":
-                                if (editorInstance["_domElement"].dataset.modeId === "yaml") {
+                                if (fileType === "yaml") {
                                     defaultsJsonBtn.disabled = false
                                     defaultsYamlBtn.disabled = true
                                 } else {
                                     defaultsJsonBtn.disabled = true
                                     defaultsYamlBtn.disabled = false
                                 }
-                                if (td["@type"] !== "tm:ThingModel") {
-                                    addDefaultsUtil(editorInstance)
-                                    defaultsAddBtn.disabled = true
-                                    defaultsView.classList.remove("hidden")
-                                }
+
+                                addDefaultsUtil(editorInstance)
+                                defaultsAddBtn.disabled = true
+                                defaultsView.classList.remove("hidden")
 
                                 break;
 

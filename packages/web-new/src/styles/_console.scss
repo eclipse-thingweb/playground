@@ -99,9 +99,13 @@
                 }
 
                 &:nth-child(4)::before {
-                    content: 'Defaults';
+                    content: 'AAS AID';
                 }
 
+                &:nth-child(5)::before {
+                    content: 'Defaults';
+                }
+                
                 // &:nth-child(5)::before{
                 //     content: 'Linting';
                 // }
@@ -110,7 +114,7 @@
                 //     content: 'Canonicalize';
                 // }
 
-                &:nth-child(5)::before {
+                &:nth-child(6)::before {
                     content: 'Visualize';
                 }
             }
@@ -296,6 +300,7 @@
 
         .open-api-view,
         .async-api-view,
+        .aas-view,
         .defaults-view,
         .visualize-view {
             display: flex;
@@ -307,6 +312,7 @@
 
             .open-api-container,
             .async-api-container,
+            .aas-container,
             .defaults-container,
             .visualize-container {
                 height: 100%;
@@ -315,6 +321,7 @@
 
             .open-api-inputs,
             .async-api-inputs,
+            .aas-inputs,
             .defaults-inputs,
             .visualize-inputs {
                 width: 30rem;

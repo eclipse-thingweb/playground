@@ -25,6 +25,7 @@ import { convertTDJsonToYaml, convertTDYamlToJson, tdValidator, tmValidator, com
 import tdToOpenAPI from '../../../td_to_openAPI/dist/web-bundle.min.js'
 import tdToAsyncAPI from '../../../td_to_asyncapi/dist/web-bundle.min.js'
 import { addDefaults, removeDefaults } from '../../../defaults/dist/web-bundle.min.js'
+import {AssetInterfaceDescriptionUtil} from '@node-wot/td-tools/dist/util/asset-interface-description.js'
 import { validateJsonLdBtn, tmConformanceBtn, sectionHeaders } from './validation'
 
 
@@ -44,22 +45,6 @@ export function getTdUrl(urlAddr) {
 
     })
 }
-
-//TODO : Remove function?
-// /**
-//  * Fetch the File from the given address and return the content as string
-//  * @param {string} urlAddr url of the TD to fetch
-//  */
-// function getTextUrl(urlAddr){
-//     return new Promise( resolve => {
-
-//         fetch(urlAddr)
-//         .then(res => res.text())
-//         .then(data => {
-//             resolve(data)
-//         }, err => {alert("Text could not be fetched from: " + urlAddr + "\n Error: " + err)})
-//     })
-// }
 
 
 /**
@@ -173,6 +158,31 @@ export function generateAAP(fileType, editorInstance) {
             }, err => { rej("AsyncAPI generation problem: " + err) })
         }
     })
+}
+
+/**
+ * Generates an AAS instance from a TD in the current editor
+ * @param { String } fileType - JSON/YAML options
+ * @param { Monaco Object } editorInstance - Monaco editor object
+ */
+export function generateAAS(fileType, editorInstance){
+    const assetInterfaceDescriptionUtil = new AssetInterfaceDescriptionUtil()
+
+    const tdToConvert = fileType === "json"
+        ? editorInstance.getValue()
+        : convertTDYamlToJson(editorInstance.getValue())
+
+    const AASInstance = assetInterfaceDescriptionUtil.transformTD2SM(tdToConvert, ["http", "coap"])
+    try {
+        const content = fileType === "json" 
+            ? JSON.stringify(JSON.parse(AASInstance), undefined, 4)
+            : convertTDJsonToYaml(AASInstance)
+        
+        editor.setModelLanguage(window.AASEditor.getModel(), fileType)
+        window.AASEditor.getModel().setValue(content)
+    } catch (err) {
+        console.error(err);
+    }
 }
 
 /**
