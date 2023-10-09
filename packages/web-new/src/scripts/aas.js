@@ -15,7 +15,7 @@
 
 /**
  * @file The `aas.js` takes care of the main functionality for the 
- * AAS/AID feature within the console. This include initializing the editor,
+ * AAS AID feature within the console. This include initializing the editor,
  * connecting it to the local storage, as well as the main buttons within the AAS
  * feature such as json, yaml conversion and the download option.
  */
@@ -26,13 +26,12 @@ import { generateTD, offerFileDownload } from './util'
 import { getEditorData } from './editor'
 
 /******************************************************************/
-/*                    ASS functionality                       */
+/*                    AAS functionality                       */
 /******************************************************************/
 
 //AAS Elements
 export const AASTab = document.querySelector(".aas-tab-btn")
 export const AASJsonBtn = document.querySelector("#aas-json")
-export const AASYamlBtn = document.querySelector("#aas-yaml")
 export const AASView = document.querySelector("#aas-view")
 const AASDownload = document.querySelector("#aas-download")
 
@@ -63,25 +62,12 @@ async function initAASEditor() {
 
 initAASEditor()
 
-//Json conversion btn
-AASJsonBtn.addEventListener("click", () => {
-    generateTD("json", window.AASEditor)
-    AASJsonBtn.disabled = true
-    AASYamlBtn.disabled = false
-})
-
-//Yaml conversion btn
-AASYamlBtn.addEventListener("click", () => {
-    generateTD("yaml", window.AASEditor)
-    AASJsonBtn.disabled = false
-    AASYamlBtn.disabled = true
-})
 
 //Donwload btn
 AASDownload.addEventListener("click", () => {
     const editorData = getEditorData(window.AASEditor)
     const contentType = `application/${editorData[0]};charset=utf-8;`
-    const visualizationName = editorData[2]["submodels"][0]["submodelElements"][0]["value"][0]["value"]
+    const visualizationName = editorData[2]["submodelElements"][0]["value"][0]["value"]
 
     offerFileDownload(
         `${visualizationName}-AAS.${editorData[0]}`,

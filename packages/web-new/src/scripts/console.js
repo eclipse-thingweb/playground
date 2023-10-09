@@ -21,7 +21,7 @@
 
 import { openApiTab, openApiJsonBtn, openApiYamlBtn, openApiView } from './open-api'
 import { asyncApiTab, asyncApiJsonBtn, asyncApiYamlBtn, asyncApiView } from './async-api'
-import { AASJsonBtn, AASYamlBtn, AASView } from './aas'
+import { AASJsonBtn, AASView } from './aas'
 import { defaultsView, defaultsJsonBtn, defaultsYamlBtn, defaultsAddBtn } from './defaults'
 import { visualize } from './visualize'
 import { validationView } from './validation'
@@ -117,14 +117,6 @@ visualizationOptions.forEach(option => {
                                 break;
 
                             case "aas-tab":
-                                if (fileType === "yaml") {
-                                    AASJsonBtn.disabled = false
-                                    AASYamlBtn.disabled = true
-                                } else {
-                                    AASJsonBtn.disabled = true
-                                    AASYamlBtn.disabled = false
-                                }
-
                                 AASView.classList.remove("hidden")
                                 generateAAS(fileType, editorInstance)
 
