@@ -262,9 +262,32 @@ async function getAllExamples(categoryId, thingType) {
         //create example title
         const exampleName = document.createElement('div')
         exampleName.classList.add("example__header--name")
-        const exampleNameIcon = document.createElement('i')
-        exampleNameIcon.classList.add("fa-solid", "fa-file-code")
+        const exampleNameIcon = document.createElement('div')
+        exampleNameIcon.classList.add("example-icon")
+
+        // Create an SVG element
+        const svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+        svgElement.setAttribute("xmlns", "http://www.w3.org/2000/svg")
+        svgElement.setAttribute("width", "100%")
+        svgElement.setAttribute("viewBox", "0 0 351 379")
+        svgElement.setAttribute("fill", "none")
+
+        // Create a path element and set its attributes
+        const pathElement = document.createElementNS("http://www.w3.org/2000/svg", "path")
+        pathElement.setAttribute("fill-rule", "evenodd")
+        pathElement.setAttribute("clip-rule", "evenodd")
+        pathElement.setAttribute("d", "M184 0V95.9981C184 107.044 192.954 115.998 204 115.998H300V190H106C89.4315 190 76 203.431 76 220V379H40C17.9086 379 0 361.091 0 339V40C0 17.9086 17.9086 0 40 0H184ZM204 95.9981V4.28427L295.714 95.9981H204ZM189.758 379V265.724H231.32V243.922H189.758H162.019H121.105V265.724H162.019V379H189.758ZM275.017 379H288.654C297.808 379 306.158 377.485 313.703 374.454C321.311 371.362 327.836 367.001 333.278 361.373C338.783 355.683 343.02 348.88 345.988 340.963C349.019 333.046 350.534 324.295 350.534 314.708V308.307C350.534 298.658 349.019 289.907 345.988 282.052C343.02 274.135 338.783 267.332 333.278 261.642C327.774 255.951 321.249 251.591 313.703 248.561C306.219 245.468 297.963 243.922 288.933 243.922H275.017H258.688H247.185V379H259.245H275.017ZM275.017 357.291H288.654C295.952 357.291 302.106 355.652 307.116 352.374C312.126 349.034 315.899 344.179 318.435 337.809C321.032 331.438 322.331 323.738 322.331 314.708V308.121C322.331 301.194 321.589 295.102 320.104 289.845C318.682 284.588 316.548 280.165 313.703 276.578C310.858 272.991 307.364 270.3 303.22 268.507C299.076 266.651 294.313 265.724 288.933 265.724H275.017V357.291Z")
+
+        // Append the path element to the SVG element
+        svgElement.appendChild(pathElement)
+
+        // Append the SVG element to the document body or any other desired location
+        exampleNameIcon.appendChild(svgElement);
+
+        // Append the icon container to the name container
         exampleName.appendChild(exampleNameIcon)
+
+
         const exampleNameTitle = document.createElement('p')
         exampleNameTitle.innerText = example[1]["title"]
         exampleName.appendChild(exampleNameTitle)
@@ -337,6 +360,7 @@ async function getAllExamples(categoryId, thingType) {
         })
     }
 }
+
 
 /**
  * Gets the example data to pupulate the monaco editor and allow the user to use it as a template

@@ -341,8 +341,14 @@
                                     cursor: pointer;
                                     transition: all 250ms ease-in-out 250ms;
 
-                                    i {
-                                        color: var(--clr-primary-500);
+                                    .example-icon{
+                                        width: 1.8rem;
+
+                                        svg{
+                                            path{
+                                                fill: var(--clr-primary-500);
+                                            }
+                                        }
                                     }
 
                                     p {

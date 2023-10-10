@@ -1899,8 +1899,11 @@ main .console {
   cursor: pointer;
   transition: all 250ms ease-in-out 250ms;
 }
-.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--name i, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--name i {
-  color: var(--clr-primary-500);
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--name .example-icon, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--name .example-icon {
+  width: 1.8rem;
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--name .example-icon svg path, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--name .example-icon svg path {
+  fill: var(--clr-primary-500);
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--name p, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--name p {
   font-weight: var(--fw-bold);
