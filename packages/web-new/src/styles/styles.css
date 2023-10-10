@@ -1647,41 +1647,69 @@ main .console {
   font-size: var(--fs-p);
 }
 .examples-menu .examples-menu-container__filter .thing-type-toggle {
-  width: -moz-fit-content;
-  width: fit-content;
-}
-.examples-menu .examples-menu-container__filter .thing-type-toggle input[type=checkbox] {
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
   width: 6rem;
   height: 3rem;
   border-radius: 50vw;
   background-color: var(--clr-controls-bg);
   position: relative;
-  transition: background-color 250ms ease-in-out;
+}
+.examples-menu .examples-menu-container__filter .thing-type-toggle input[type=checkbox] {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
   cursor: pointer;
 }
 .examples-menu .examples-menu-container__filter .thing-type-toggle input[type=checkbox]::before {
-  content: "TD";
+  content: "";
   position: absolute;
   top: 0.4rem;
   left: 0.4rem;
   width: 2.2rem;
   height: 2.2rem;
-  font-size: var(--fs-footer);
-  font-weight: var(--fw-bold);
-  font-family: var(--ff-primary);
-  color: var(--clr-controls-txt);
   border-radius: 50%;
   background-color: var(--clr-controls);
   display: grid;
   place-items: center;
   transition: left 500ms var(--trans-bouncy);
 }
-.examples-menu .examples-menu-container__filter .thing-type-toggle input[type=checkbox]:checked::before {
+.examples-menu .examples-menu-container__filter .thing-type-toggle .td-text, .examples-menu .examples-menu-container__filter .thing-type-toggle .tm-text {
+  position: absolute;
+  height: 100%;
+  z-index: 1;
+  font-size: var(--fs-footer);
+  font-weight: var(--fw-bold);
+  font-family: var(--ff-primary);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+.examples-menu .examples-menu-container__filter .thing-type-toggle .td-text {
+  left: 0.9rem;
+  z-index: 1;
+  color: var(--clr-neutral-900);
+  transition: color 250ms ease-in-out 200ms;
+}
+.examples-menu .examples-menu-container__filter .thing-type-toggle .tm-text {
   content: "TM";
+  right: 1rem;
+  z-index: 1;
+  color: var(--clr-neutral-200);
+  transition: color 250ms ease-in-out;
+}
+.examples-menu .examples-menu-container__filter .thing-type-toggle input[type=checkbox]:checked::before {
+  content: "";
   left: 3.2rem;
+}
+.examples-menu .examples-menu-container__filter .thing-type-toggle input[type=checkbox]:checked ~ .td-text {
+  color: var(--clr-neutral-200);
+  transition: color 250ms ease-in-out;
+}
+.examples-menu .examples-menu-container__filter .thing-type-toggle input[type=checkbox]:checked ~ .tm-text {
+  color: var(--clr-neutral-900);
+  transition: color 250ms ease-in-out 200ms;
 }
 .examples-menu .examples-menu-container__filter .category-field {
   flex: 1 1 25rem;
