@@ -50,7 +50,7 @@
     --fs-sub-header: clamp(1.25rem, 1.05rem + 1vw, 2.25rem);
     --fs-p: clamp(1rem, 0.92rem + 0.3999999999999999vw, 1.4rem);
     --fs-footer: clamp(0.8rem, 0.76rem + 0.19999999999999996vw, 1rem);
-    --fs-i: clamp(1.2rem, 1.1199999999999999rem + 0.4000000000000002vw, 1.6rem);
+    --fs-i: clamp(1.2rem, 1.04rem + 0.8vw, 2rem);
 
     /*line heights*/
     --lh-h1: 4rem;
@@ -108,6 +108,7 @@
     //settings menu
     --clr-controls: var(--clr-neutral-50);
     --clr-controls-bg: var(--clr-primary-500);
+    --clr-controls-txt: var(--clr-neutral-900);
 
     /* transitions */
     --trans-bouncy: cubic-bezier(0.68, -0.75, 0.27, 1.75);
@@ -137,6 +138,7 @@
 
     --clr-controls: #FFFFFE;
     --clr-controls-bg: var(--clr-neutral-50);
+    --clr-controls-txt: #141414;
 
     --clr-shades-trans: rgba(84, 144, 135, 0.7);
     --clr-shadow: rgba(255, 255, 255, 0.4);

@@ -26,12 +26,12 @@ const initialPath = "../../examples";
 //path to the get the raw files from the github
 const rawFilePath = "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples"
 
-async function getExamples(){
+async function getExamples() {
     const files = await fs.readdir(initialPath)
 
     const examplesPaths = {}
 
-    for(const file of files){
+    for (const file of files) {
         examplesPaths[file] = {}
 
         const categories = await fs.readdir(path.join(initialPath, file))
@@ -39,7 +39,7 @@ async function getExamples(){
         //sorting them by the first number in their name
         categories.sort((a, b) => a.localeCompare(b, undefined, { numeric: true }))
 
-        for(const category of categories){
+        for (const category of categories) {
 
             const examples = await fs.readdir(path.join(initialPath, file, category))
 
@@ -49,17 +49,16 @@ async function getExamples(){
                 "examples": {}
             }
 
-            for(const example of examples){
-                if(path.extname(example) == ".txt"){
+            for (const example of examples) {
+
+                if (path.extname(example) == ".txt") {
                     try {
                         const categoryDescription = await fs.readFile(path.join(initialPath, file, category, example), 'utf8')
                         examplesPaths[file][category]["description"] = categoryDescription
                     } catch (err) {
                         console.error("Failed to read file: ", err);
                     }
-                }
-
-                if(path.extname(example) == ".jsonld"){
+                } else if (path.extname(example) == ".jsonld" || path.extname(example) == ".json") {
                     const exampleData = JSON.parse(await fs.readFile(path.join(initialPath, file, category, example), 'utf8'))
                     const exampleTitle = exampleData["$title"]
                     const exampleDescription = exampleData["$description"]
@@ -68,6 +67,8 @@ async function getExamples(){
                         "description": exampleDescription,
                         "path": `${rawFilePath}/${file}/${category}/${example}`
                     }
+                } else {
+                    //Do nothing
                 }
             }
         }
@@ -76,15 +77,15 @@ async function getExamples(){
     return examplesPaths
 }
 
-async function writeExamplesToFile(){
+async function writeExamplesToFile() {
     const examplesData = await getExamples()
-    
+
     try {
         const jsonData = JSON.stringify(examplesData, null, 2)
         const filePath = "./src/examples-paths/examples-paths.json"
         await fs.writeFile(filePath, jsonData, 'utf-8')
         console.log("File created succesfully")
-        
+
     } catch (err) {
         console.error("Failed to wirte JSON file: ", err)
     }

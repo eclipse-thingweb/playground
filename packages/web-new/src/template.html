@@ -591,30 +591,29 @@
                 </div>
 
                 <form action="#" class="examples-menu-container__filter">
-                    <p>Filter by:</p>
-                    <div class="form-field">
-                        <label for="thing-type"></label>
-                        <div class="select-container">
-                            <select name="thing-type" id="thing-type" class="thing-type">
-                                <option value="thing-description" selected>Thing Description</option>
-                                <option value="thing-model">Thing Model</option>
-                            </select>
-                        </div>
+
+                    <div class="thing-type-toggle">
+                        <input type="checkbox" name="thing-type-btn" id="thing-type-btn" class="thing-type-btn">
+                        <p class="td-text">TD</p>
+                        <p class="tm-text">TM</p>
                     </div>
-                    <div class="form-field">
-                        <label for="thing-category"></label>
+
+                    <div class="category-field">
+                        <label for="thing-category">Go to category:</label>
                         <div class="select-container">
                             <select name="thing-category" id="thing-category" class="thing-category"></select>
                         </div>
                     </div>
-                    <div class="form-field">
+
+                    <div class="search-field">
                         <label for="thing-category"></label>
                         <div class="search-bar">
                             <i class="fa-solid fa-magnifying-glass"></i>
-                            <input type="text" class="search-input" placeholder="Find examples based on card details">
+                            <input type="text" class="search-input"
+                                placeholder="Find examples based on card details">
                         </div>
                         <input type="submit" value="Search" class="search-btn"
-                            title="Find a specific example by title or description">
+                            title="Find a specific example by searching within the card details">
                     </div>
                 </form>
 
