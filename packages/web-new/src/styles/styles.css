@@ -404,7 +404,8 @@ main .console {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 1rem;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   background-color: var(--clr-shades-trans);
@@ -444,10 +445,12 @@ main .console {
 .ide__tabs__left li:not(:last-child) {
   position: relative;
   padding-right: 3rem;
+  min-width: 17rem;
 }
 .ide__tabs__left li:not(:last-child) .tab-icon {
   font-size: 1rem;
-  margin-right: 1rem;
+  width: -moz-fit-content;
+  width: fit-content;
   color: var(--clr-td-300);
 }
 .ide__tabs__left li:not(:last-child).active .tab-icon {
@@ -476,6 +479,58 @@ main .console {
   pointer-events: none;
   font-size: 1.4rem;
   height: 1.3rem;
+}
+.ide__tabs__left li:not(:last-child) .confirm-btns {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--clr-neutral-50);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  opacity: 1;
+  pointer-events: all;
+  transition: opacity 250ms ease-in-out;
+}
+.ide__tabs__left li:not(:last-child) .confirm-btns button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-family: var(--ff-primary);
+  font-size: var(--fs-p);
+  font-weight: var(--fw-bold);
+  color: var(--clr-neutral-50);
+  padding: 0.25rem 1rem;
+  transition: background-color 250ms ease-in-out;
+}
+.ide__tabs__left li:not(:last-child) .confirm-btns button i {
+  order: -1;
+}
+.ide__tabs__left li:not(:last-child) .confirm-btns button.confirm-tab-close {
+  background-color: var(--clr-success-500);
+}
+.ide__tabs__left li:not(:last-child) .confirm-btns button.confirm-tab-close:hover {
+  background-color: var(--clr-success-700);
+}
+.ide__tabs__left li:not(:last-child) .confirm-btns button.cancel-tab-close {
+  background-color: var(--clr-error-700);
+}
+.ide__tabs__left li:not(:last-child) .confirm-btns button.cancel-tab-close:hover {
+  background-color: var(--clr-error-900);
+}
+.ide__tabs__left li:not(:last-child) .confirm-btns.hidden {
+  opacity: 0;
+  pointer-events: none;
 }
 .ide__tabs__left li:last-child {
   min-width: 3.5rem;

@@ -35,7 +35,8 @@
                 display: flex;
                 flex-direction: row;
                 align-items: center;
-                justify-content: space-between;
+                justify-content: flex-start;
+                gap: 1rem;
                 border-top-left-radius: 5px;
                 border-top-right-radius: 5px;
                 background-color: var(--clr-shades-trans);
@@ -85,10 +86,11 @@
             li:not(:last-child) {
                 position: relative;
                 padding-right: 3rem;
+                min-width: 17rem;
 
                 .tab-icon{
                     font-size: 1rem;
-                    margin-right: 1rem;
+                    width: fit-content;
                     color: var(--clr-td-300);
                 }
 
@@ -122,6 +124,65 @@
                         pointer-events: none;
                         font-size: 1.4rem;
                         height: 1.3rem;
+                    }
+                }
+
+                .confirm-btns{
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: var(--clr-neutral-50);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 1rem;
+                    opacity: 1;
+                    pointer-events: all;
+                    transition: opacity 250ms ease-in-out;
+
+                    button{
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: .5rem;
+                        appearance: none;
+                        border: none;
+                        cursor: pointer;
+                        border-radius: 5px;
+                        font-family: var(--ff-primary);
+                        font-size: var(--fs-p);
+                        font-weight: var(--fw-bold);
+                        color: var(--clr-neutral-50);
+                        padding: .25rem 1rem;
+                        transition: background-color 250ms ease-in-out;
+
+                        i{
+                            order: -1;
+                        }
+
+                        &.confirm-tab-close{
+                            background-color: var(--clr-success-500);
+
+                            &:hover{
+                                background-color: var(--clr-success-700);
+                            }
+                        }
+    
+                        &.cancel-tab-close{
+                            background-color: var(--clr-error-700);
+
+                            &:hover{
+                                background-color: var(--clr-error-900);
+                            }
+                        }
+                    }
+
+
+                    &.hidden{
+                        opacity: 0;
+                        pointer-events: none;
                     }
                 }
             }

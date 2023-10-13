@@ -29,14 +29,15 @@ import { editorList, getEditorData } from "./editor"
 const saveMenu = document.querySelector(".save-menu")
 const saveMenuBtn = document.querySelector("#save-btn")
 const closeSaveMenu = document.querySelector(".save-menu-close i")
-const shareUrlContainer =  document.querySelector("#share-url-input")
-const openUrlTab =  document.querySelector("#open-url-tab")
+const shareUrlContainer = document.querySelector("#share-url-input")
+const openUrlTab = document.querySelector("#open-url-tab")
 const thingTypeText = document.querySelector('#thing-type-text')
 const shareUrlBtn = document.querySelector("#share-url-btn")
 const openEditdorBtn = document.querySelector('#open-editdor-btn')
 const downloadBtn = document.querySelector("#download-btn")
 const saveAsBtn = document.querySelector("#save-as-btn")
 const saveAsWarning = document.querySelector(".save-warning")
+const saveMenuContainer = document.querySelector(".save-menu__container")
 let fileHandle;
 openUrlTab.disabled = true
 shareUrlContainer.value = ""
@@ -44,7 +45,7 @@ shareUrlContainer.value = ""
 //Open the save menu and change the text depending on the Thing type (TD or TM)
 saveMenuBtn.addEventListener("click", () => {
   editorList.forEach(editorInstance => {
-    if(editorInstance["_domElement"].classList.contains("active")){
+    if (editorInstance["_domElement"].classList.contains("active")) {
       const editorValues = getEditorData(editorInstance)
       thingTypeText.innerText = editorValues[1].toUpperCase()
     }
@@ -59,6 +60,15 @@ closeSaveMenu.addEventListener("click", () => {
   openUrlTab.disabled = true
 })
 
+//Handle click outside the save menu
+document.addEventListener('click', (e) => {
+  if (!saveMenuBtn.contains(e.target) && !saveMenuContainer.contains(e.target) && !saveMenu.classList.contains("closed")) {
+    saveMenu.classList.add("closed")
+    shareUrlContainer.value = ""
+    openUrlTab.disabled = true
+  }
+})
+
 /**
  * Get the active editor, the format type, doc type and editor
  * and call the saveAsURL function
@@ -66,7 +76,7 @@ closeSaveMenu.addEventListener("click", () => {
 shareUrlBtn.addEventListener("click", () => {
   try {
     editorList.forEach(editorInstance => {
-      if(editorInstance["_domElement"].classList.contains("active")){
+      if (editorInstance["_domElement"].classList.contains("active")) {
         const editorValues = getEditorData(editorInstance)
 
         saveAsURL(editorValues[0], editorValues[1], editorValues[2])
@@ -90,9 +100,9 @@ shareUrlBtn.addEventListener("click", () => {
  * @param { String } format - json or yaml
  * @param { Object } editor - the editor reference object
  */
-async function saveAsURL(formatType, thingType, editorContent){
+async function saveAsURL(formatType, thingType, editorContent) {
   const URL = await save(formatType, thingType, editorContent)
-  if(URL !== undefined){
+  if (URL !== undefined) {
     shareUrlContainer.value = URL
     openUrlTab.disabled = false
   }
@@ -105,7 +115,7 @@ async function saveAsURL(formatType, thingType, editorContent){
 openEditdorBtn.addEventListener("click", () => {
   try {
     editorList.forEach(editorInstance => {
-      if(editorInstance["_domElement"].classList.contains("active")){
+      if (editorInstance["_domElement"].classList.contains("active")) {
         const editorValues = getEditorData(editorInstance)
 
         openEditdor(editorValues[0], editorValues[1], editorInstance)
@@ -126,7 +136,7 @@ openEditdorBtn.addEventListener("click", () => {
  * Open the generated sharable link in a new playground tab
  */
 openUrlTab.addEventListener("click", () => {
-  if(shareUrlContainer.value !== "" || shareUrlContainer.value !== "Invalid JSON Object"){
+  if (shareUrlContainer.value !== "" || shareUrlContainer.value !== "Invalid JSON Object") {
     window.open(shareUrlContainer.value, '_blank');
   }
 })
@@ -137,7 +147,7 @@ openUrlTab.addEventListener("click", () => {
  */
 downloadBtn.addEventListener("click", () => {
   editorList.forEach(editorInstance => {
-    if(editorInstance["_domElement"].classList.contains("active")){
+    if (editorInstance["_domElement"].classList.contains("active")) {
       const editorValues = getEditorData(editorInstance)
       let tabName = editorValues[2]["title"].replaceAll(' ', '-')
       const contentType = `application/${editorValues[0]};charset=utf-8;`
@@ -146,6 +156,8 @@ downloadBtn.addEventListener("click", () => {
     }
   })
   saveMenu.classList.add("closed")
+  shareUrlContainer.value = ""
+  openUrlTab.disabled = true
 })
 
 /* Save as btn functionality */
@@ -157,7 +169,7 @@ saveAsBtn.addEventListener("click", () => {
  * Saves the td as a file in the file system
  * @param {*} content
  */
-async function saveFileInSystem(content){
+async function saveFileInSystem(content) {
   let stream = await fileHandle.createWritable()
   await stream.write(content)
   await stream.close()
@@ -168,14 +180,14 @@ async function saveFileInSystem(content){
  * name and save it as json , jsonld or yaml
  * This function only works for chrome, edge and oper as of now (26.05.2023)
  */
-async function saveAsFile(){
-  try{
+async function saveAsFile() {
+  try {
     let fileName = ""
     let editorContent = ""
     let acceptOpts = {}
     let acceptDesc = ""
     editorList.forEach(editorInstance => {
-      if(editorInstance["_domElement"].classList.contains("active")){
+      if (editorInstance["_domElement"].classList.contains("active")) {
         const editorValues = getEditorData(editorInstance)
         fileName = `${editorValues[2]["title"]}.${editorValues[0]}`
         editorContent = editorInstance.getValue()
@@ -186,7 +198,7 @@ async function saveAsFile(){
 
 
     const opts = {
-      suggestedName : fileName,
+      suggestedName: fileName,
       types: [
         {
           description: acceptDesc,
@@ -200,17 +212,16 @@ async function saveAsFile(){
 
     saveFileInSystem(editorContent)
 
-  }catch(err){
+  } catch (err) {
     const errTxt = `${err}`
-    if(errTxt === "AbortError: The user aborted a request.")
-    {
+    if (errTxt === "AbortError: The user aborted a request.") {
       console.error(err)
     }
-    else{
+    else {
       saveAsWarning.classList.add("active")
       setTimeout(() => {
         saveAsWarning.classList.remove("active")
-      },1500)
+      }, 1500)
     }
   }
 }
