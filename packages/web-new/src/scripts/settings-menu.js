@@ -18,7 +18,7 @@
  * for the settings menu, such as event handlers, toggle buttons, 
  * application preferences and themes. The preferences and themes are
  * subsequently stored in the local storage
- */  
+ */
 
 import { editor } from 'monaco-editor'
 import themeData from './monochrome-theme'
@@ -34,7 +34,6 @@ const themePicker = document.querySelector("#theme-picker")
 const fontSizeTxt = document.querySelector(".editor-font-size")
 export const fontSizeSlider = document.querySelector("#font-size")
 const autoValidateBtn = document.querySelector('#auto-validate')
-const resetLoggingBtn = document.querySelector('#reset-logging')
 const validateJSONLDBtn = document.querySelector('#validate-jsonld')
 const tmConformanceBtn = document.querySelector('#tm-conformance')
 
@@ -61,6 +60,13 @@ settingsBtn.addEventListener("click", () => {
     settingsMenu.classList.toggle("closed")
 })
 
+//Handle click outside the settings menu
+document.addEventListener('click', (e) => {
+    if (!settingsBtn.contains(e.target) && !settingsMenu.contains(e.target) && !settingsMenu.classList.contains("closed")) {
+        settingsMenu.classList.add("closed")
+    }
+})
+
 /**
  * Event listener for reseting all the settings and preferences values
  * @param {event} e - reset event
@@ -76,10 +82,9 @@ editorForm.addEventListener("reset", (e) => {
     storeTheme(themePicker.value)
     storeFontSize(fontSizeSlider.value)
     setMonacoTheme(themePicker.value)
-  
+
     //resetting all toggle btns
     autoValidateBtn.checked = false
-    resetLoggingBtn.checked = true
     validateJSONLDBtn.checked = true
     tmConformanceBtn.checked = true
 })
@@ -90,9 +95,9 @@ editorForm.addEventListener("reset", (e) => {
 themePicker.addEventListener("change", () => {
     storeTheme(themePicker.value)
     document.documentElement.className = themePicker.value
-    setMonacoTheme(themePicker.value) 
+    setMonacoTheme(themePicker.value)
 })
-  
+
 /**
  * Event listener to update the font size in the settings menu text 
  * and in the monaco editor when the font size input is changed
@@ -111,33 +116,33 @@ fontSizeSlider.addEventListener("input", () => {
  * Store the selected themek in the localStorage
  * @param {String} theme - the name of the theme
  */
-function storeTheme (theme) {
+function storeTheme(theme) {
     localStorage.setItem("theme", theme)
 }
-  
+
 /**
  * Store the selected font size in the localStorage
  * @param {Number} fontSize - The number of the font size
  */
-function storeFontSize (fontSize) {
+function storeFontSize(fontSize) {
     localStorage.setItem("fontSize", fontSize)
 }
-  
+
 /**
  * Gets the theme value from the localStorage and sets the new theme
  */
-function setTheme () {
+function setTheme() {
     const activeTheme = localStorage.getItem("theme") === null ? 'light-mode' : localStorage.getItem("theme")
     themePicker.value = activeTheme
     document.documentElement.className = activeTheme
     setMonacoTheme(activeTheme)
 }
-  
+
 /**
  * Function which gets the value from the localStorage and sets the new font size
  * @param {object} editor - the editor object which references the created monaco editor
  */
-export function setFontSize (editorInstance) {
+export function setFontSize(editorInstance) {
     const activeFontSize = localStorage.getItem("fontSize") === null ? '14' : localStorage.getItem("fontSize")
     fontSizeTxt.innerText = activeFontSize
     fontSizeSlider.value = activeFontSize
@@ -150,12 +155,12 @@ export function setFontSize (editorInstance) {
  * Get the current page theme and implement it for the monaco editor as well
  * @param { String } theme - the name of the current or wanted theme
  */
-function setMonacoTheme(theme){
+function setMonacoTheme(theme) {
     if (theme == "dark-mode") {
         editor.setTheme('vs-dark')
-    }else if (theme == "light-mode") {
+    } else if (theme == "light-mode") {
         editor.setTheme('vs')
-    }else{
+    } else {
         editor.setTheme('monochrome')
     }
 }

@@ -97,21 +97,81 @@ function createTab(tabNumber, exampleName, thingType) {
   closeIcon.classList.add("fa-solid", "fa-xmark")
 
   closeBtn.appendChild(closeIcon)
+
+  //Create the close confirmation btns
+  const confirmBtns = document.createElement("div")
+  confirmBtns.classList.add("confirm-btns", "hidden")
+
+  const confirmTabClose = document.createElement("button")
+  confirmTabClose.classList.add("confirm-tab-close")
+  confirmTabClose.textContent = "Close"
+  const confirmTabIcon = document.createElement("i")
+  confirmTabIcon.classList.add("fa-solid", "fa-check")
+  confirmTabClose.appendChild(confirmTabIcon)
+  
+  const cancelTabClose = document.createElement("button")
+  cancelTabClose.classList.add("cancel-tab-close")
+  cancelTabClose.textContent = "Cancel"
+  const cancelTabIcon = document.createElement("i")
+  cancelTabIcon.classList.add("fa-solid", "fa-xmark")
+  cancelTabClose.appendChild(cancelTabIcon)
+
+  cancelTabClose.addEventListener("click", () => {
+    cancelTabClose.parentElement.classList.add("hidden")
+  })
+
+  confirmBtns.appendChild(confirmTabClose)
+  confirmBtns.appendChild(cancelTabClose)
+  
   newTab.appendChild(tabIcon)
   newTab.appendChild(tabContent)
   newTab.appendChild(closeBtn)
+  newTab.appendChild(confirmBtns)
 
   //Insert the newly created list at the end of the tab container but before the add new tab button
   tabsLeftContainer.insertBefore(newTab, tabsLeftContainer.children[(tabsLeftContainer.children.length) - 1])
   tabsLeft = document.querySelectorAll(".ide__tabs__left li:not(:last-child)")
 
-  //Once the new tab is created remove "active class from all other tab" as well as the
-  //contenteditable attribute and give the class "active to the new tab"
+  //Once the new tab is created remove "active class from all other tab"
+  //and give the class "active to the new tab"
   tabsLeft.forEach(tab => {
     tab.classList.remove("active")
-    tab.children[0].removeAttribute("contenteditable")
   })
   newTab.classList.add("active")
+
+  confirmTabClose.addEventListener("click", () => {
+    //If there is only one tab and its closed create a completely editor and tab and restart the counter
+    //If not the last one adjust the styling accordingly and update the amount of tabs
+    if (tabsLeft.length == 1) {
+      ideCount.ideNumber = 0
+      editorList.forEach(ide => {
+        if (confirmTabClose.parentElement.parentElement.dataset.tabId === ide["_domElement"].dataset.ideId) {
+          //remove the editor from the editor list array and from the DOM
+          const index = editorList.indexOf(ide)
+          editorList.splice(index, 1)
+          ide["_domElement"].remove()
+        }
+      })
+      //remove tab
+      confirmTabClose.parentElement.parentElement.remove()
+      //create new tab
+      createIde(++ideCount.ideNumber)
+      jsonBtn.checked = true
+    }
+    else {
+      editorList.forEach(ide => {
+        if (confirmTabClose.parentElement.parentElement.dataset.tabId === ide["_domElement"].dataset.ideId) {
+          const index = editorList.indexOf(ide)
+          editorList.splice(index, 1)
+          ide["_domElement"].remove()
+        }
+      })
+      confirmTabClose.parentElement.parentElement.remove()
+      tabsLeft = document.querySelectorAll(".ide__tabs__left li:not(:last-child)")
+      tabsLeft[0].classList.add("active")
+      editorList[0]["_domElement"].classList.add("active")
+    }
+  })
 }
 
 /**
@@ -333,14 +393,16 @@ tabsLeftContainer.addEventListener("click", (e) => {
   //getting the initial target
   const selectedElement = e.target
   clearConsole()
+  tabsLeft.forEach(tab => {
+    tab.children[3].classList.add("hidden")
+  })
 
   //Add the active styling when tab is clicked
   if (selectedElement.id == "tab" || selectedElement.parentElement.id == "tab") {
 
-    //Removing the active style from all tabs and contenteditable attribute
+    //Removing the active style from all tabs
     tabsLeft.forEach(tab => {
       tab.classList.remove("active")
-      tab.children[0].removeAttribute("contenteditable")
     })
     //removing the active style from all editors
     editorList.forEach(ide => {
@@ -375,37 +437,7 @@ tabsLeftContainer.addEventListener("click", (e) => {
 
   //Closing tabs only when the click event happens on the close icon of the tab
   if (selectedElement.className == "close-tab" && tabsLeft.length >= 1) {
-    //If there is only one tab and its closed create a completely editor and tab and restart the counter
-    //If not the last one adjust the styling accordingly and update the amount of tabs
-    if (tabsLeft.length == 1) {
-      ideCount.ideNumber = 0
-      editorList.forEach(ide => {
-        if (selectedElement.parentElement.dataset.tabId === ide["_domElement"].dataset.ideId) {
-          //remove the editor from the editor list array and from the DOM
-          const index = editorList.indexOf(ide)
-          editorList.splice(index, 1)
-          ide["_domElement"].remove()
-        }
-      })
-      //remove tab
-      selectedElement.parentElement.remove()
-      //create new tab
-      createIde(++ideCount.ideNumber)
-      jsonBtn.checked = true
-    }
-    else {
-      editorList.forEach(ide => {
-        if (selectedElement.parentElement.dataset.tabId === ide["_domElement"].dataset.ideId) {
-          const index = editorList.indexOf(ide)
-          editorList.splice(index, 1)
-          ide["_domElement"].remove()
-        }
-      })
-      selectedElement.parentElement.remove()
-      tabsLeft = document.querySelectorAll(".ide__tabs__left li:not(:last-child)")
-      tabsLeft[0].classList.add("active")
-      editorList[0]["_domElement"].classList.add("active")
-    }
+    selectedElement.nextElementSibling.classList.remove("hidden")
   }
 
   findFileType()

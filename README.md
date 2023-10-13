@@ -1,6 +1,11 @@
-# W3C Web of Things - Thing Description Playground
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/eclipse-thingweb/website/master/misc/thingweb_logo_for_dark_bg.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/eclipse-thingweb/website/master/misc/thingweb_logo.svg">
+  <img title="ThingWeb" alt="Thingweb logo" src="" width="300px">
+</picture>
 
-Try it online at [http://plugfest.thingweb.io/playground/](http://plugfest.thingweb.io/playground/)
+## Playground
+> The place where you can create and play with Thing Descriptions. Try it online at [http://plugfest.thingweb.io/playground/](http://plugfest.thingweb.io/playground/)
 
 [![Default CI & CD Pipeline](https://github.com/thingweb/thingweb-playground/actions/workflows/ci-cd.yaml/badge.svg)](https://github.com/thingweb/thingweb-playground/actions/workflows/ci-cd.yaml)
 [![CodeQL](https://github.com/thingweb/thingweb-playground/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/thingweb/thingweb-playground/actions/workflows/codeql-analysis.yml)
