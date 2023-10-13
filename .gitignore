@@ -6,6 +6,7 @@ node_modules
 
 # test screenshots for web package
 test_results/
+test-results/
 
 # dist directory should be included only in the Package but not Repository
 dist
