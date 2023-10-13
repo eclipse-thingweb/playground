@@ -2232,6 +2232,8 @@ main .console {
   justify-content: space-between;
   gap: 1rem;
   margin-bottom: 0.5rem;
+  padding-top: 3rem;
+  border-top: 2px solid var(--clr-primary-500);
 }
 .save-menu__container .save-td > * {
   flex: 1;

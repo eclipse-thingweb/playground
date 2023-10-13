@@ -35,8 +35,8 @@ const thingTypeText = document.querySelector('#thing-type-text')
 const shareUrlBtn = document.querySelector("#share-url-btn")
 const openEditdorBtn = document.querySelector('#open-editdor-btn')
 const downloadBtn = document.querySelector("#download-btn")
-const saveAsBtn = document.querySelector("#save-as-btn")
-const saveAsWarning = document.querySelector(".save-warning")
+// const saveAsBtn = document.querySelector("#save-as-btn")
+// const saveAsWarning = document.querySelector(".save-warning")
 const saveMenuContainer = document.querySelector(".save-menu__container")
 let fileHandle;
 openUrlTab.disabled = true
@@ -161,9 +161,9 @@ downloadBtn.addEventListener("click", () => {
 })
 
 /* Save as btn functionality */
-saveAsBtn.addEventListener("click", () => {
-  saveAsFile()
-})
+// saveAsBtn.addEventListener("click", () => {
+//   saveAsFile()
+// })
 
 /**
  * Saves the td as a file in the file system
@@ -175,56 +175,57 @@ async function saveFileInSystem(content) {
   await stream.close()
 }
 
+//TODO: Uncomment when https is implemented
 /**
  * Opens the file system allows the user to input a file
  * name and save it as json , jsonld or yaml
  * This function only works for chrome, edge and oper as of now (26.05.2023)
  */
-async function saveAsFile() {
-  try {
-    let fileName = ""
-    let editorContent = ""
-    let acceptOpts = {}
-    let acceptDesc = ""
-    editorList.forEach(editorInstance => {
-      if (editorInstance["_domElement"].classList.contains("active")) {
-        const editorValues = getEditorData(editorInstance)
-        fileName = `${editorValues[2]["title"]}.${editorValues[0]}`
-        editorContent = editorInstance.getValue()
-        acceptOpts = editorValues[0] === "json" ? { "text/plain": [".jsonld", ".json"] } : { "text/plain": [".yaml"] }
-        acceptDesc = editorValues[0] === "json" ? "json or jsonld files only" : "yaml files only"
-      }
-    })
+// async function saveAsFile() {
+//   try {
+//     let fileName = ""
+//     let editorContent = ""
+//     let acceptOpts = {}
+//     let acceptDesc = ""
+//     editorList.forEach(editorInstance => {
+//       if (editorInstance["_domElement"].classList.contains("active")) {
+//         const editorValues = getEditorData(editorInstance)
+//         fileName = `${editorValues[2]["title"]}.${editorValues[0]}`
+//         editorContent = editorInstance.getValue()
+//         acceptOpts = editorValues[0] === "json" ? { "text/plain": [".jsonld", ".json"] } : { "text/plain": [".yaml"] }
+//         acceptDesc = editorValues[0] === "json" ? "json or jsonld files only" : "yaml files only"
+//       }
+//     })
 
 
-    const opts = {
-      suggestedName: fileName,
-      types: [
-        {
-          description: acceptDesc,
-          accept: acceptOpts,
-        },
-      ],
-      excludeAcceptAllOption: true,
-    }
+//     const opts = {
+//       suggestedName: fileName,
+//       types: [
+//         {
+//           description: acceptDesc,
+//           accept: acceptOpts,
+//         },
+//       ],
+//       excludeAcceptAllOption: true,
+//     }
 
-    fileHandle = await window.showSaveFilePicker(opts)
+//     fileHandle = await window.showSaveFilePicker(opts)
 
-    saveFileInSystem(editorContent)
+//     saveFileInSystem(editorContent)
 
-  } catch (err) {
-    const errTxt = `${err}`
-    if (errTxt === "AbortError: The user aborted a request.") {
-      console.error(err)
-    }
-    else {
-      saveAsWarning.classList.add("active")
-      setTimeout(() => {
-        saveAsWarning.classList.remove("active")
-      }, 1500)
-    }
-  }
-}
+//   } catch (err) {
+//     const errTxt = `${err}`
+//     if (errTxt === "AbortError: The user aborted a request.") {
+//       console.error(err)
+//     }
+//     else {
+//       saveAsWarning.classList.add("active")
+//       setTimeout(() => {
+//         saveAsWarning.classList.remove("active")
+//       }, 1500)
+//     }
+//   }
+// }
 
 //TODO IMPORT FROM FILES
 /** Experimental file manager fucntion*/
