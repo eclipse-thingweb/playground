@@ -22,7 +22,7 @@
 
 import { editor } from 'monaco-editor'
 import { setFontSize, editorForm, fontSizeSlider } from './settings-menu'
-import { generateTD, offerFileDownload } from './util'
+import { offerFileDownload } from './util'
 import { getEditorData } from './editor'
 
 /******************************************************************/
@@ -31,7 +31,6 @@ import { getEditorData } from './editor'
 
 //AAS Elements
 export const AASTab = document.querySelector(".aas-tab-btn")
-export const AASJsonBtn = document.querySelector("#aas-json")
 export const AASView = document.querySelector("#aas-view")
 const AASDownload = document.querySelector("#aas-download")
 
