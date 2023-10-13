@@ -21,7 +21,7 @@
 
 import { openApiTab, openApiJsonBtn, openApiYamlBtn, openApiView } from './open-api'
 import { asyncApiTab, asyncApiJsonBtn, asyncApiYamlBtn, asyncApiView } from './async-api'
-import { AASView } from './aas'
+import { AASView, AASTab } from './aas'
 import { defaultsView, defaultsJsonBtn, defaultsYamlBtn, defaultsAddBtn } from './defaults'
 import { visualize } from './visualize'
 import { validationView } from './validation'
@@ -117,8 +117,8 @@ visualizationOptions.forEach(option => {
                                 break;
 
                             case "aas-tab":
-                                AASView.classList.remove("hidden")
-                                generateAAS(fileType, editorInstance)
+
+                                enableAPIConversionWithProtocol(editorInstance)
 
                                 break;
 
@@ -172,10 +172,8 @@ visualizationOptions.forEach(option => {
  * @param {object} editor - currently active monaco editor
  */
 function enableAPIConversionWithProtocol(editorInstance) {
-    let td = editorInstance.getValue()
-    if (editorInstance["_domElement"].dataset.modeId === "yaml") {
-        td = convertTDYamlToJson(td)
-    }
+
+    let td = editorInstance["_domElement"].dataset.modeId === "yaml" ? convertTDYamlToJson(editorInstance.getValue()) : editorInstance.getValue()
 
     const protocolSchemes = detectProtocolSchemes(td)
 
@@ -196,6 +194,15 @@ function enableAPIConversionWithProtocol(editorInstance) {
                 asyncApiView.classList.remove("hidden")
             } else {
                 showConsoleError("Please insert a TD which uses MQTT!")
+            }
+        }
+
+        if (AASTab.checked === true) {
+            if (["mqtt", "mqtts", "http", "https", "coap", "modbus"].some(p => protocolSchemes.includes(p))) {
+                generateAAS(editorInstance["_domElement"].dataset.modeId, editorInstance)
+                AASView.classList.remove("hidden")
+            } else {
+                showConsoleError("Please insert a TD which uses HTTP, MQTT, CoAP or Modbus!")
             }
         }
     }
