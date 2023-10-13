@@ -31,6 +31,7 @@ export const jsonBtn = document.querySelector("#file-type-json")
 const yamlWarning = document.querySelector('.json-yaml-warning')
 const yamlConfirmBtn = document.querySelector("#yaml-confirm-btn")
 const yamlCancelBtn = document.querySelector("#yaml-cancel-btn")
+const yamlWarningContainer = document.querySelector(".json-yaml-warning__container")
 jsonBtn.checked = true
 
 
@@ -55,6 +56,14 @@ yamlBtn.addEventListener("click", () => {
 yamlCancelBtn.addEventListener("click", () => {
   yamlWarning.classList.add('closed')
   jsonBtn.checked = true
+})
+
+//Handle click outside the warning pop up
+document.addEventListener('click', (e) => {
+  if(!yamlBtn.contains(e.target) && !yamlWarningContainer.contains(e.target) && !yamlWarning.classList.contains("closed")){
+    yamlWarning.classList.add("closed")
+    jsonBtn.checked = true
+  }
 })
 
 //Confirm the json to yaml convertion
