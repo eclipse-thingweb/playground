@@ -29,3 +29,5 @@ eslint-results.sarif
 
 # junit test results
 junit-tests.xml
+packages/web-new/test-results
+packages/web-new/playwright-report
