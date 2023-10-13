@@ -7,6 +7,7 @@ node_modules
 # test screenshots for web package
 test_results/
 test-results/
+playwright-report/
 
 # dist directory should be included only in the Package but not Repository
 dist
