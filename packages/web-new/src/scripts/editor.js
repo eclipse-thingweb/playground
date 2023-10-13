@@ -41,7 +41,7 @@ import { clearConsole } from './console'
 const addTab = document.querySelector(".ide__tabs__add")
 const tabsLeftContainer = document.querySelector(".ide__tabs__left")
 const ideContainer = document.querySelector(".ide__container")
-let tabsLeft = document.querySelectorAll(".ide__tabs__left li:not(:last-child)")
+export let tabsLeft = document.querySelectorAll(".ide__tabs__left li:not(:last-child)")
 
 //Editor list array where all the generated editor will be added and referenced from
 export let editorList = []
