@@ -27,8 +27,9 @@ jobs:
             - name: Bootstrap
               run: lerna bootstrap --no-ci
 
-            - name: Visual Test
+            - name: New Web Visual Test
               run: |
                   cd ./packages/web-new
                   npm install
+                  npx playwright install
                   npm run test
