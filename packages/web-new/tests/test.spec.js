@@ -1584,7 +1584,7 @@ test.describe("AsyncAPI view functionality", () => {
 
 
 test.describe("AAS AID view functionality", () => {
-    test("Trying to open the AAS view with a TD with no protocols and closing it", async ({ page }) => {
+    test("Open the AAS view with a TD with no protocols and closing it", async ({ page }) => {
 
         const initialTab = page.locator("#tab").nth(0)
         await expect(initialTab).toHaveAttribute('data-tab-id', "1")
@@ -1602,8 +1602,7 @@ test.describe("AAS AID view functionality", () => {
         await AASTab.click()
 
         await expect(AASTab).toBeChecked({ checked: true })
-        await expect(AASView).toHaveClass("console-view aas-view hidden")
-        await expect(page.locator(".console-error__txt")).toHaveText("Please insert a TD which uses HTTP, MQTT, CoAP or Modbus!")
+        await expect(AASView).toHaveClass("console-view aas-view")
 
         const trashBtn = page.locator(".trash")
         await trashBtn.click()
