@@ -21,7 +21,7 @@
 
 import { openApiTab, openApiJsonBtn, openApiYamlBtn, openApiView } from './open-api'
 import { asyncApiTab, asyncApiJsonBtn, asyncApiYamlBtn, asyncApiView } from './async-api'
-import { AASView, AASTab } from './aas'
+import { AASView } from './aas'
 import { defaultsView, defaultsJsonBtn, defaultsYamlBtn, defaultsAddBtn } from './defaults'
 import { visualize } from './visualize'
 import { validationView } from './validation'
@@ -118,7 +118,8 @@ visualizationOptions.forEach(option => {
 
                             case "aas-tab":
 
-                                enableAPIConversionWithProtocol(editorInstance)
+                                generateAAS(fileType, editorInstance)
+                                AASView.classList.remove("hidden")
 
                                 break;
 
@@ -194,15 +195,6 @@ function enableAPIConversionWithProtocol(editorInstance) {
                 asyncApiView.classList.remove("hidden")
             } else {
                 showConsoleError("Please insert a TD which uses MQTT!")
-            }
-        }
-
-        if (AASTab.checked === true) {
-            if (["mqtt", "mqtts", "http", "https", "coap", "modbus"].some(p => protocolSchemes.includes(p))) {
-                generateAAS(editorInstance["_domElement"].dataset.modeId, editorInstance)
-                AASView.classList.remove("hidden")
-            } else {
-                showConsoleError("Please insert a TD which uses HTTP, MQTT, CoAP or Modbus!")
             }
         }
     }
