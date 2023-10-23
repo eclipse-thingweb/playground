@@ -48,7 +48,7 @@
   --lh-h1: 4rem;
   --lh-h2: 4rem;
   --lh-h3: 3.5rem;
-  --lh-sub-header: 3.25rem;
+  --lh-sub-header: 3rem;
   --lh-p: 1.8rem;
   --lh-footer: 1.25rem;
   --lh-i: 2rem;
@@ -981,6 +981,36 @@ main .console {
   overflow-y: auto;
   overflow-x: hidden;
   gap: 1rem;
+}
+.console__content .open-api-view .open-api-inputs .warning-txt,
+.console__content .open-api-view .async-api-inputs .warning-txt,
+.console__content .open-api-view .aas-inputs .warning-txt,
+.console__content .open-api-view .defaults-inputs .warning-txt,
+.console__content .open-api-view .visualize-inputs .warning-txt,
+.console__content .async-api-view .open-api-inputs .warning-txt,
+.console__content .async-api-view .async-api-inputs .warning-txt,
+.console__content .async-api-view .aas-inputs .warning-txt,
+.console__content .async-api-view .defaults-inputs .warning-txt,
+.console__content .async-api-view .visualize-inputs .warning-txt,
+.console__content .aas-view .open-api-inputs .warning-txt,
+.console__content .aas-view .async-api-inputs .warning-txt,
+.console__content .aas-view .aas-inputs .warning-txt,
+.console__content .aas-view .defaults-inputs .warning-txt,
+.console__content .aas-view .visualize-inputs .warning-txt,
+.console__content .defaults-view .open-api-inputs .warning-txt,
+.console__content .defaults-view .async-api-inputs .warning-txt,
+.console__content .defaults-view .aas-inputs .warning-txt,
+.console__content .defaults-view .defaults-inputs .warning-txt,
+.console__content .defaults-view .visualize-inputs .warning-txt,
+.console__content .visualize-view .open-api-inputs .warning-txt,
+.console__content .visualize-view .async-api-inputs .warning-txt,
+.console__content .visualize-view .aas-inputs .warning-txt,
+.console__content .visualize-view .defaults-inputs .warning-txt,
+.console__content .visualize-view .visualize-inputs .warning-txt {
+  font-size: var(--fs-p);
+  font-family: var(--ff-primary);
+  color: var(--clr-neutral-300);
+  line-height: var(--lh-p);
 }
 .console__content .open-api-view .open-api-inputs button,
 .console__content .open-api-view .async-api-inputs button,
@@ -2230,6 +2260,8 @@ main .console {
   justify-content: space-between;
   gap: 1rem;
   margin-bottom: 0.5rem;
+  padding-top: 3rem;
+  border-top: 2px solid var(--clr-primary-500);
 }
 .save-menu__container .save-td > * {
   flex: 1;

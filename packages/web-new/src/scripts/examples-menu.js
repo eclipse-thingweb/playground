@@ -21,7 +21,7 @@
  * In the future the option to see short snipets of the most important part of the example, might also be implemented.
  */
 
-import { createIde, ideCount } from "./editor"
+import { createIde, ideCount, tabsLeft } from "./editor"
 
 /***********************************************************/
 /*                      Examples menu                      */
@@ -311,6 +311,9 @@ async function getAllExamples(categoryId, thingType) {
         quickButton.addEventListener('click', () => {
             getTemplateData(example[1]["path"])
             closeCards()
+            tabsLeft.forEach(tab => {
+                tab.children[3].classList.add("hidden")
+            })
         })
 
         //create example content
@@ -352,6 +355,9 @@ async function getAllExamples(categoryId, thingType) {
         exampleBtnUse.addEventListener('click', () => {
             getTemplateData(example[1]["path"])
             closeCards()
+            tabsLeft.forEach(tab => {
+                tab.children[3].classList.add("hidden")
+            })
         })
 
         //Listener to generate an editor with the examples information
@@ -411,11 +417,17 @@ filterForm.addEventListener("submit", (e) => {
                     clonedElement.children[0].children[1].addEventListener('click', () => {
                         example.querySelector(".example__btn--use").click()
                         closeCards()
+                        tabsLeft.forEach(tab => {
+                            tab.children[3].classList.add("hidden")
+                        })
                     })
                     //Opening the example when clicking on the apply button
                     clonedElement.querySelector(".example__btn--use").addEventListener('click', () => {
                         example.querySelector(".example__btn--use").click()
                         closeCards()
+                        tabsLeft.forEach(tab => {
+                            tab.children[3].classList.add("hidden")
+                        })
                     })
                     //Closing the card when clicking on the cancel btn
                     clonedElement.querySelector(".example__btn--cancel").addEventListener('click', () => {
@@ -450,15 +462,21 @@ filterForm.addEventListener("submit", (e) => {
                     clonedElement.children[0].children[0].addEventListener('click', () => {
                         clonedElement.classList.toggle("open")
                     })
-                    //Opning the example when clicking on the quick access button
+                    //Opening the example when clicking on the quick access button
                     clonedElement.children[0].children[1].addEventListener('click', () => {
                         example.querySelector(".example__btn--use").click()
                         closeCards()
+                        tabsLeft.forEach(tab => {
+                            tab.children[3].classList.add("hidden")
+                        })
                     })
                     //Opening the example when clicking on the apply button
                     clonedElement.querySelector(".example__btn--use").addEventListener('click', () => {
                         example.querySelector(".example__btn--use").click()
                         closeCards()
+                        tabsLeft.forEach(tab => {
+                            tab.children[3].classList.add("hidden")
+                        })
                     })
                     //Closing the card when clicking on the cancel btn
                     clonedElement.querySelector(".example__btn--cancel").addEventListener('click', () => {

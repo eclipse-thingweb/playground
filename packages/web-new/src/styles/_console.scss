@@ -335,6 +335,14 @@
                 overflow-x: hidden;
                 gap: 1rem;
 
+                .warning-txt{
+                    font-size: var(--fs-p);
+                    font-family: var(--ff-primary);
+                    color: var(--clr-neutral-300);
+                    line-height: var(--lh-p);
+
+                }
+
                 button {
                     appearance: none;
                     border: none;

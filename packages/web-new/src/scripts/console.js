@@ -117,8 +117,9 @@ visualizationOptions.forEach(option => {
                                 break;
 
                             case "aas-tab":
-                                AASView.classList.remove("hidden")
+
                                 generateAAS(fileType, editorInstance)
+                                AASView.classList.remove("hidden")
 
                                 break;
 
@@ -172,10 +173,8 @@ visualizationOptions.forEach(option => {
  * @param {object} editor - currently active monaco editor
  */
 function enableAPIConversionWithProtocol(editorInstance) {
-    let td = editorInstance.getValue()
-    if (editorInstance["_domElement"].dataset.modeId === "yaml") {
-        td = convertTDYamlToJson(td)
-    }
+
+    let td = editorInstance["_domElement"].dataset.modeId === "yaml" ? convertTDYamlToJson(editorInstance.getValue()) : editorInstance.getValue()
 
     const protocolSchemes = detectProtocolSchemes(td)
 
