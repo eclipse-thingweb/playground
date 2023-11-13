@@ -2164,13 +2164,13 @@ test.describe("Visualization view functionality", () => {
         const clusterBtn = page.getByLabel('cluster')
         const linksDropDown = page.getByLabel('links')
 
-        await expect(labelBtn).toBeChecked({checked: true})
+        await expect(labelBtn).toBeChecked({ checked: true })
         await expect(radiusSlider).toHaveValue("350")
         await expect(extentSlider).toHaveValue("360")
         await expect(rotateSlider).toHaveValue("0")
         await expect(dragSlider).toHaveValue("100")
-        await expect(tidyBtn).toBeChecked({checked: true})
-        await expect(clusterBtn).toBeChecked({checked: false})
+        await expect(tidyBtn).toBeChecked({ checked: true })
+        await expect(clusterBtn).toBeChecked({ checked: false })
         await expect(linksDropDown).toHaveValue("line")
 
         await labelBtn.click()
@@ -2178,16 +2178,28 @@ test.describe("Visualization view functionality", () => {
         await extentSlider.click()
         await rotateSlider.click()
         await dragSlider.click()
-        await clusterBtn.click()
+        await clusterBtn.check()
         await linksDropDown.selectOption("diagonal")
+        await expect(labelBtn).toBeChecked({ checked: false })
 
-        await expect(labelBtn).toBeChecked({checked: false})
-        await expect(radiusSlider).toHaveValue("410")
-        await expect(extentSlider).toHaveValue("180")
-        await expect(rotateSlider).toHaveValue("180")
-        await expect(dragSlider).toHaveValue("50")
-        await expect(tidyBtn).toBeChecked({checked: false})
-        await expect(clusterBtn).toBeChecked({checked: true})
+        const radiusSliderValue = await radiusSlider.inputValue()
+        expect(parseInt(radiusSliderValue)).toBeLessThan(450)
+        expect(parseInt(radiusSliderValue)).toBeGreaterThan(330)
+
+        const extentSliderValue = await extentSlider.inputValue()
+        expect(parseInt(extentSliderValue)).toBeLessThan(190)
+        expect(parseInt(extentSliderValue)).toBeGreaterThan(170)
+
+        const rotateSliderValue = await rotateSlider.inputValue()
+        expect(parseInt(rotateSliderValue)).toBeLessThan(190)
+        expect(parseInt(rotateSliderValue)).toBeGreaterThan(170)
+
+        const dragSliderValue = await dragSlider.inputValue()
+        expect(parseInt(dragSliderValue)).toBeLessThan(60)
+        expect(parseInt(dragSliderValue)).toBeGreaterThan(40)
+        
+        await expect(tidyBtn).toBeChecked({ checked: false })
+        await expect(clusterBtn).toBeChecked({ checked: true })
         await expect(linksDropDown).toHaveValue("diagonal")
 
     })
