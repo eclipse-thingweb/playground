@@ -1,15 +1,8 @@
 // @ts-check
 const { defineConfig, devices } = require('@playwright/test');
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
 // require('dotenv').config();
 
-/**
- * @see https://playwright.dev/docs/test-configuration
- */
 module.exports = defineConfig({
   testDir: './tests',
   // Folder for test artifacts such as screenshots, videos, traces, etc.
@@ -38,20 +31,15 @@ module.exports = defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-      // use: { ...devices['Desktop Chrome'], headless: false, slowMo: 500},
     },
-
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
     },
-
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
     },
-
-    /* Test against branded browsers. */
     {
       name: 'Microsoft Edge',
       use: { ...devices['Desktop Edge'], channel: 'msedge' },
@@ -59,7 +47,7 @@ module.exports = defineConfig({
     {
       name: 'Google Chrome',
       use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    },
+    }
   ],
 
   /* Run your local dev server before starting the tests */
@@ -69,4 +57,3 @@ module.exports = defineConfig({
     reuseExistingServer: !process.env.CI,
   },
 });
-
