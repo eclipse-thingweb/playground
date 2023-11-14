@@ -58,7 +58,6 @@ closeSettings.addEventListener("click", () => {
 
 settingsBtn.addEventListener("click", () => {
     settingsMenu.classList.toggle("closed")
-    window.dispatchEvent(new CustomEvent("popup"));
 })
 
 //Handle click outside the settings menu
