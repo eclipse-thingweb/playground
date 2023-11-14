@@ -118,11 +118,6 @@
           "description": "A simple Thing Description using CoAP. The target resource is specified in the Thing Description by the href member of a form and the request method (e.g., GET, PUT, POST, or DELETE) is specified using the cov:method member of a form.",
           "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/5-protocols/CoAP-simple-td-no-defaults.td.jsonld"
         },
-        "extended-forms-multiple-op.td.jsonld": {
-          "title": "Extended Forms Multiple op",
-          "description": "In the case of a forms entry that has multiple op values the usage of the htv:methodName is not permitted. A TD Processor will extend the multiple op values to separate forms entries and associates a single operation with the default assumption.",
-          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/5-protocols/extended-forms-multiple-op.td.jsonld"
-        },
         "HTTP-readproperty.td.jsonld": {
           "title": "HTTP readproperty",
           "description": "This example shows the binding of the readproperty operation for the HTTP.",
@@ -148,6 +143,11 @@
           "description": "This example shows the minimal set of terms to configure a single coil reading using Modbus. Notice that the unitID is contained in the href as the first element of the path.",
           "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/5-protocols/Modbus-single-coil.td.jsonld"
         },
+        "extended-forms-multiple-op.td.jsonld": {
+          "title": "Extended Forms Multiple op",
+          "description": "In the case of a forms entry that has multiple op values the usage of the htv:methodName is not permitted. A TD Processor will extend the multiple op values to separate forms entries and associates a single operation with the default assumption.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/5-protocols/extended-forms-multiple-op.td.jsonld"
+        },
         "subprotocol-longpoll.td.jsonld": {
           "title": "Subprotocol Longpoll",
           "description": "protocols may have defined Subprotocols that can be used for some interaction types. For example, to receive asynchronous notifications using HTTP, some servers may support long polling.",
@@ -158,6 +158,11 @@
     "6-security-schemas": {
       "description": "This category contains various examples concerning the different types of security schemas that could/should be used for a Thing Description, as well as the different ways to combine multiple security schemes.",
       "examples": {
+        "OAuth2-scopes.td.jsonld": {
+          "title": "OAuth2 Scopes",
+          "description": "OAuth 2.0 makes use of scopes. These are identifiers that may appear in tokens and must match with corresponding identifiers in a resource to allow access to that resource.",
+          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/6-security-schemas/OAuth2-scopes.td.jsonld"
+        },
         "apikey-in-body-simplified.td.jsonld": {
           "title": "Apikey In Body Simplified",
           "description": "It is possbile to simplify how security parameters are included in the payload by using the feature that the location referenced by a JSON pointer in a body location will be automatically inserted if it does not exist.",
@@ -207,11 +212,6 @@
           "title": "noSec Security",
           "description": "Security configuration in the TD is mandatory, therefore the nosec security scheme is provided for the case that no security is needed.",
           "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/6-security-schemas/noSec-security.td.jsonld"
-        },
-        "OAuth2-scopes.td.jsonld": {
-          "title": "OAuth2 Scopes",
-          "description": "OAuth 2.0 makes use of scopes. These are identifiers that may appear in tokens and must match with corresponding identifiers in a resource to allow access to that resource.",
-          "path": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/6-security-schemas/OAuth2-scopes.td.jsonld"
         }
       }
     },

@@ -1316,10 +1316,12 @@ main .console {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  pointer-events: none;
 }
 .console__content .visualize-view .visualize-inputs__tree .vega-bind label input,
 .console__content .visualize-view .visualize-inputs__tree .vega-bind label select {
   width: 100%;
+  pointer-events: all;
 }
 .console__content .visualize-view .visualize-inputs__tree .vega-bind label input[type=checkbox] {
   -webkit-appearance: none;

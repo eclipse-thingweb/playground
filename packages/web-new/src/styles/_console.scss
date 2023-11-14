@@ -537,10 +537,12 @@
                             align-items: center;
                             justify-content: space-between;
                             gap: 1rem;
+                            pointer-events: none;
 
                             input,
                             select {
                                 width: 100%;
+                                pointer-events: all;
                             }
 
                             input[type="checkbox"] {
