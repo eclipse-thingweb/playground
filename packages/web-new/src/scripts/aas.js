@@ -66,7 +66,7 @@ initAASEditor()
 AASDownload.addEventListener("click", () => {
     const editorData = getEditorData(window.AASEditor)
     const contentType = `application/${editorData[0]};charset=utf-8;`
-    const visualizationName = editorData[2]["submodelElements"][0]["value"][0]["value"]
+    const visualizationName = editorData[2]["description"][0]["text"]
 
     offerFileDownload(
         `${visualizationName}-AAS.${editorData[0]}`,

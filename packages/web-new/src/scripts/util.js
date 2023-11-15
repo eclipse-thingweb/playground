@@ -174,11 +174,9 @@ export function generateAAS(fileType, editorInstance){
 
     const AASInstance = assetInterfaceDescriptionUtil.transformTD2SM(tdToConvert)
     try {
-        const content = fileType === "json" 
-            ? JSON.stringify(JSON.parse(AASInstance), undefined, 4)
-            : convertTDJsonToYaml(AASInstance)
+        const content = JSON.stringify(JSON.parse(AASInstance), undefined, 4)
         
-        editor.setModelLanguage(window.AASEditor.getModel(), fileType)
+        editor.setModelLanguage(window.AASEditor.getModel(), 'json')
         window.AASEditor.getModel().setValue(content)
     } catch (err) {
         console.error(err);

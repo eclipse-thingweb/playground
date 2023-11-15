@@ -6,6 +6,8 @@ node_modules
 
 # test screenshots for web package
 test_results/
+test-results/
+playwright-report/
 
 # dist directory should be included only in the Package but not Repository
 dist
@@ -27,3 +29,5 @@ eslint-results.sarif
 
 # junit test results
 junit-tests.xml
+packages/web-new/test-results
+packages/web-new/playwright-report

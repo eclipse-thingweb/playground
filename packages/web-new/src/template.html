@@ -241,10 +241,6 @@
                             title="Conversion to Asset Administration Shell/Asset Interface Description">
                         <input type="radio" name="visualization-option" id="defaults-tab"
                             class="visualization__option defaults-tab-btn" title="Add or remove default values">
-                        <!-- <input type="radio" name="visualization-option" id="linting-tab" 
-                            class="visualization__option linting-tab-btn">
-                        <input type="radio" name="visualization-option" id="canonicalize-tab"
-                            class="visualization__option canonicalize-tab-btn"> -->
                         <input type="radio" name="visualization-option" id="visualize-tab"
                             class="visualization__option visualize-tab-btn" title="Tree or Graph TD visualizations">
                     </div>
@@ -443,6 +439,7 @@
                     <div class="console-view aas-view hidden" id="aas-view">
                         <div class="aas-container" id="aas-container"></div>
                         <div class="aas-inputs">
+                            <p class="warning-txt">*Protocols other than HTTP(S), MQTT and Modbus are not officially supported by AID, do not use the resulting AID in production*</p>
                             <div class="view-download">
                                 <button id="aas-download"><i class="fa-solid fa-download"></i>Download</button>
                             </div>
@@ -466,14 +463,6 @@
 
                         </div>
                     </div>
-
-                    <!-- <div class="console-view hidden" id="linting-view">
- 
-                     </div>
- 
-                     <div class="console-view hidden" id="canonicalize-view">
- 
-                     </div> -->
 
                     <div class="console-view visualize-view hidden" id="visualize-view">
                         <div class="visualize-container" id="visualize-container">
@@ -565,13 +554,17 @@
             </div>
 
             <footer>
-                <p><a href="https://www.thingweb.io/" target="_blank">© 2023 The Eclipse Thingweb Project</a></p>
+                <p><a href="https://www.thingweb.io/" target="_blank" id="thingweb-link">© 2023 The Eclipse Thingweb
+                        Project</a></p>
                 <div class="footer-links">
-                    <a href="https://www.eclipse.org" target="_blank">Eclipse</a>
-                    <a href="https://www.eclipse.org/legal/privacy.php" target="_blank">Privacy Policy</a>
-                    <a href="https://www.eclipse.org/legal/termsofuse.php" target="_blank">Terms of Use</a>
-                    <a href="https://www.eclipse.org/legal/copyright.php" target="_blank">Copyright Agent</a>
-                    <a href="https://www.eclipse.org/legal/" target="_blank">Legal</a>
+                    <a href="https://www.eclipse.org" target="_blank" id="eclipse-link">Eclipse</a>
+                    <a href="https://www.eclipse.org/legal/privacy.php" target="_blank" id="privacy-link">Privacy
+                        Policy</a>
+                    <a href="https://www.eclipse.org/legal/termsofuse.php" target="_blank" id="terms-link">Terms of
+                        Use</a>
+                    <a href="https://www.eclipse.org/legal/copyright.php" target="_blank" id="copyright-link">Copyright
+                        Agent</a>
+                    <a href="https://www.eclipse.org/legal/" target="_blank" id="legal-link">Legal</a>
                 </div>
             </footer>
         </div>
@@ -661,16 +654,16 @@
                 <div class="save-td">
                     <button type="button" title="Download your current TD/TM" class="save-td__download"
                         id="download-btn"><i class="fa-solid fa-file-arrow-down"></i>Download</button>
-                    <button type="button"
+                    <!-- <button type="button"
                         title="Save your current TD/TM in your file system with your name and location of preference"
                         class="save-td__save-as" id="save-as-btn"><i class="fa-solid fa-folder-open"></i>Save
-                        as</button>
+                        as</button> -->
                 </div>
 
-                <div class="save-warning">
+                <!-- <div class="save-warning">
                     <p>*The <span>Save as</span> function is currently only available for <span>Chrome, Edge and
                             Opera</span>*</p>
-                </div>
+                </div> -->
 
             </div>
         </div>

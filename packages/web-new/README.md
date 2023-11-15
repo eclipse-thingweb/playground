@@ -74,7 +74,7 @@ The `webpack.config.js` file is used to set up Webpack for the project. It manag
 - `optimization`: Contains settings for optimizing the build, including minimizing CSS using `CssMinimizerPlugin`
 
 
-## Deployment
+### 4. Deployment
 
 Requires [Lerna](https://www.npmjs.com/package/lerna) to be installed globally (`npm install -g lerna`).
 
@@ -109,3 +109,18 @@ npm run dev
 npm run build
 npm run serve
 ```
+
+### 5. Testing with Playwright
+
+To utilize the Playwright package for testing the application, you need to install it using `npm install` since it's not intended for production use. Additionally, to set up the supported browsers required for Playwright to run tests, you should execute the command `npx playwright install`.
+
+You can assess the visual appearance and functionality of the package in all browsers by running the command `npm run test`. This will execute all the tests in the supported browsers, and once the tests have finished, Playwright will host the reports at `http://localhost:9323`.
+
+If the reports aren't displayed automatically, you can also use the command `npx playwright show-report` to view the test results.
+
+For a more visual approach to writing and visualizing tests, you can use the command `npx playwright test --ui`. This command provides a visual interface that allows you to step through each part of the test and observe what occurs before, during, and after each step.
+
+Debugging can also be accomplished by running the Playwright test command with the `--debug` flag, like this: `npx playwright test --debug`.
+
+For additional information on how to run and debug tests, please refer to the [official Playwright website](https://playwright.dev/docs/running-tests).
+
