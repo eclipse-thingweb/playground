@@ -19,7 +19,8 @@
     "dev": "webpack serve --mode development",
     "serve": "node server/server.js",
     "examples": "node external-scripts/generate-paths.js",
-    "test": "npx playwright test"
+    "test": "npx playwright test --project=chromium --project=firefox",
+    "test-full": "npx playwright test"
   },
   "devDependencies": {
     "@babel/core": "^7.22.9",
