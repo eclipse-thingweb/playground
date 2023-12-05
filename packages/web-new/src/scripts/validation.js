@@ -15,7 +15,7 @@
 
 /**
  * @file The `validation.js` contains the related html elements for the validation view, as
- * well as the behaviour for the validation button on the main navigation menu
+ * well as the behavior for the validation button on the main navigation menu
  */
 
 export const validationView = document.querySelector("#validation-view")
