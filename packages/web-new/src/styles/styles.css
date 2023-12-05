@@ -692,53 +692,20 @@ main .console {
   justify-content: space-between;
   border-bottom: 2px solid var(--clr-primary-500);
   padding: 0 1rem;
-  height: -moz-fit-content;
-  height: fit-content;
 }
-.console__tabs .console-controllers {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.console__tabs .console-controllers .trash,
-.console__tabs .console-controllers .download {
-  padding: 1rem 0.5rem;
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
-  border: none;
-  background-color: var(--clr-neutral-50);
-  color: var(--clr-primary-500);
-  transition: color 250ms ease;
-}
-.console__tabs .console-controllers .trash:hover,
-.console__tabs .console-controllers .download:hover {
-  color: var(--clr-primary-900);
-  cursor: pointer;
-}
-.console__tabs .console-controllers .trash:disabled,
-.console__tabs .console-controllers .download:disabled {
-  color: var(--clr-neutral-300);
-  cursor: auto;
-}
-.console__tabs .console-controllers .download {
-  margin-right: 1rem;
-}
-.console__tabs .visualization {
+.console__tabs .visualizations {
   height: 100%;
   display: flex;
   align-items: center;
 }
-.console__tabs .visualization input[type=radio] {
+.console__tabs .visualizations input[type=radio] {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
   width: -moz-fit-content;
   width: fit-content;
-  padding: 0.5rem 1rem;
+  padding: 1rem;
   background-color: var(--clr-neutral-50);
-  border-top-right-radius: 5px;
-  border-top-left-radius: 5px;
   color: var(--clr-neutral-300);
   font-family: var(--ff-primary);
   font-size: var(--fs-p);
@@ -747,35 +714,35 @@ main .console {
   overflow: hidden;
   transition: all 250ms ease-in-out;
 }
-.console__tabs .visualization input[type=radio]::before {
+.console__tabs .visualizations input[type=radio]::before {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.console__tabs .visualization input[type=radio]:nth-child(1)::before {
+.console__tabs .visualizations input[type=radio]:nth-child(1)::before {
   content: "Validation";
 }
-.console__tabs .visualization input[type=radio]:nth-child(2)::before {
+.console__tabs .visualizations input[type=radio]:nth-child(2)::before {
   content: "OpenAPI";
 }
-.console__tabs .visualization input[type=radio]:nth-child(3)::before {
+.console__tabs .visualizations input[type=radio]:nth-child(3)::before {
   content: "AsyncAPI";
 }
-.console__tabs .visualization input[type=radio]:nth-child(4)::before {
+.console__tabs .visualizations input[type=radio]:nth-child(4)::before {
   content: "AAS AID";
 }
-.console__tabs .visualization input[type=radio]:nth-child(5)::before {
+.console__tabs .visualizations input[type=radio]:nth-child(5)::before {
   content: "Defaults";
 }
-.console__tabs .visualization input[type=radio]:nth-child(6)::before {
+.console__tabs .visualizations input[type=radio]:nth-child(6)::before {
   content: "Visualize";
 }
-.console__tabs .visualization input[type=radio]:checked {
+.console__tabs .visualizations input[type=radio]:checked {
   color: var(--clr-neutral-900);
 }
-.console__tabs .visualization input[type=radio]:disabled {
+.console__tabs .visualizations input[type=radio]:disabled {
   color: var(--clr-neutral-200);
   cursor: not-allowed;
 }
