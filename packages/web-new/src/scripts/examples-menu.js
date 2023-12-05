@@ -262,6 +262,7 @@ async function getAllExamples(categoryId, thingType) {
         //create example title
         const exampleName = document.createElement('div')
         exampleName.classList.add("example__header--name")
+        exampleName.setAttribute("title", "Expand")
         const exampleNameIcon = document.createElement('div')
         exampleNameIcon.classList.add("example-icon")
 
@@ -296,6 +297,7 @@ async function getAllExamples(categoryId, thingType) {
         //Create the example quick access button
         const quickButton = document.createElement('button')
         quickButton.classList.add("example__header--quick")
+        quickButton.setAttribute("title", "Use")
         const quickButtonIcon = document.createElement('i')
         quickButtonIcon.classList.add("fa-solid", "fa-file-import")
         quickButton.appendChild(quickButtonIcon)
@@ -380,7 +382,7 @@ async function getTemplateData(path) {
 
 /**
  * Listener when search input is used in the examples menu
- * Gets all the examples that match the inputed text to the title and
+ * Gets all the examples that match the inputted text to the title and
  * description of the examples, clones them and adds them to the
  * search result category
  * @param {event} e - submit event
@@ -405,7 +407,7 @@ filterForm.addEventListener("submit", (e) => {
         categories.forEach(category => {
             const examples = [...category.children[2].children]
             examples.forEach(example => {
-                //If value of the search input mataches the title or description
+                //If value of the search input matches the title or description
                 //clone it, append it and add the respective event listeners
                 if ((example.firstChild.children[0].children[1].innerText.toLowerCase()).includes(searchInput.value.toLowerCase()) || (example.children[1].children[0].innerText.toLowerCase()).includes(searchInput.value.toLowerCase())) {
                     let clonedElement = example.cloneNode(true)
@@ -413,7 +415,7 @@ filterForm.addEventListener("submit", (e) => {
                     clonedElement.children[0].children[0].addEventListener('click', () => {
                         clonedElement.classList.toggle("open")
                     })
-                    //Opning the example when clicking on the quick access button
+                    //Opening the example when clicking on the quick access button
                     clonedElement.children[0].children[1].addEventListener('click', () => {
                         example.querySelector(".example__btn--use").click()
                         closeCards()

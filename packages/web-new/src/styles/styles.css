@@ -1967,22 +1967,24 @@ main .console {
   border-radius: 5px;
   width: -moz-fit-content;
   width: fit-content;
-  padding: 2rem;
+  padding: 1rem;
   box-shadow: 0px 0px 5px 0px var(--clr-shadow);
+  transition: box-shadow 250ms ease-in-out;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 2rem;
+  gap: 1rem;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--name, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--name {
-  width: 100%;
+  flex: 1;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
+  margin: 0 1rem;
+  gap: 1rem;
   cursor: pointer;
   transition: all 250ms ease-in-out 250ms;
 }
@@ -2001,24 +2003,29 @@ main .console {
   background-color: transparent;
   border: none;
   border-left: 2px solid var(--clr-primary-500);
-  padding: 1rem 1rem 1rem 2rem;
+  padding: 1rem 1rem 1rem 1.5rem;
   cursor: pointer;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--quick i, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--quick i {
   font-size: var(--fs-i);
   color: var(--clr-primary-500);
-  transition: color 250ms ease-in-out 250ms;
+  transition: color 250ms ease-in-out;
 }
-.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--quick:hover i, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--quick:hover i {
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--quick i:hover, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--quick i:hover {
   color: var(--clr-primary-700);
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example:hover, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example:hover {
+  box-shadow: 0px 0px 10px 0px var(--clr-shadow);
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__content, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__content {
   pointer-events: none;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   flex-wrap: wrap;
+  padding: 0 1rem 0 1rem;
+  transition: padding 250ms ease-in-out 250ms;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__description, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__description {
   height: 0;
@@ -2085,6 +2092,8 @@ main .console {
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example.open .example__content, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example.open .example__content {
   pointer-events: all;
+  padding: 0 1rem 1rem 1rem;
+  transition: padding 250ms ease-in-out 0s;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example.open .example__description, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example.open .example__description {
   height: 9rem;
