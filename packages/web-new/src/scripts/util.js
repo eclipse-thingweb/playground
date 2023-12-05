@@ -25,7 +25,7 @@ import { convertTDJsonToYaml, convertTDYamlToJson, tdValidator, tmValidator, com
 import tdToOpenAPI from '../../../td_to_openAPI/dist/web-bundle.min.js'
 import tdToAsyncAPI from '../../../td_to_asyncapi/dist/web-bundle.min.js'
 import { addDefaults, removeDefaults } from '../../../defaults/dist/web-bundle.min.js'
-import {AssetInterfaceDescriptionUtil} from '@node-wot/td-tools/dist/util/asset-interface-description.js'
+import { AssetInterfaceDescriptionUtil } from '@node-wot/td-tools/dist/util/asset-interface-description.js'
 import { validateJsonLdBtn, tmConformanceBtn, sectionHeaders } from './validation'
 
 
@@ -165,7 +165,7 @@ export function generateAAP(fileType, editorInstance) {
  * @param { String } fileType - JSON/YAML options
  * @param { Monaco Object } editorInstance - Monaco editor object
  */
-export function generateAAS(fileType, editorInstance){
+export function generateAAS(fileType, editorInstance) {
     const assetInterfaceDescriptionUtil = new AssetInterfaceDescriptionUtil()
 
     const tdToConvert = fileType === "json"
@@ -175,7 +175,7 @@ export function generateAAS(fileType, editorInstance){
     const AASInstance = assetInterfaceDescriptionUtil.transformTD2SM(tdToConvert)
     try {
         const content = JSON.stringify(JSON.parse(AASInstance), undefined, 4)
-        
+
         editor.setModelLanguage(window.AASEditor.getModel(), 'json')
         window.AASEditor.getModel().setValue(content)
     } catch (err) {
@@ -303,15 +303,25 @@ export function validate(thingType, editorContent) {
 /**
  * Resets the status of the validation headers, as well as the error message list
  */
-function resetValidationStatus() {
+export function resetValidationStatus() {
     while (errorMessages.length > 0) {
         errorMessages.pop()
     }
+
     sectionHeaders.forEach(header => {
         const headerIcon = header.children[0]
         if (!headerIcon.classList.contains("fa-circle")) {
-            headerIcon.classList.remove("fa-circle-check", "fa-circle-exclamation", "fa-circle-xmark", "fa-circle")
+            headerIcon.classList.remove("fa-circle-check", "fa-circle-exclamation", "fa-circle-xmark")
             headerIcon.classList.add("fa-circle")
+        }
+    })
+
+    document.querySelectorAll("#spot-json, #spot-schema, #spot-defaults, #spot-jsonld, #spot-additional").forEach(category => {
+        category.open = false
+        category.classList.add("disabled")
+        const categoryContainer = category.querySelector("ul.section-content")
+        while (categoryContainer.children.length > 0) {
+            categoryContainer.children[0].remove()
         }
     })
 }
@@ -324,7 +334,7 @@ function log(message) {
     errorMessages.push(message)
 }
 
-//TODO: This function should only be used for the moment being as it should be changed or adpated when the corresponding changes to the Validator have been finalized
+//TODO: This function should only be used for the moment being as it should be changed or adapted when the corresponding changes to the Validator have been finalized
 /**
  * Populates the error messages on the categories where the validation has failed or has a warning
  * @param { Array } messagesList - Array of error messages
@@ -333,10 +343,7 @@ function populateCategory(messagesList) {
     // console.log(messagesList);
     document.querySelectorAll("#spot-json, #spot-schema, #spot-defaults, #spot-jsonld, #spot-additional").forEach(category => {
         const categoryContainer = category.querySelector("ul.section-content")
-        categoryContainer.classList.add("empty")
-        while (categoryContainer.children.length > 0) {
-            categoryContainer.children[0].remove()
-        }
+        category.classList.remove("disabled")
         if (category.children[0].children[0].classList.contains("fa-circle-xmark") || category.children[0].children[0].classList.contains("fa-circle-exclamation")) {
             const noticePrompt = document.createElement("p")
             noticePrompt.textContent = "*This feature is still in the testing phase, and it may not refer to the correct source of the error*"
@@ -347,17 +354,14 @@ function populateCategory(messagesList) {
                 listElement.textContent = message
                 categoryContainer.append(listElement)
             })
-            categoryContainer.classList.remove("empty")
-        } else if (category.children[0].children[0].classList.contains("fa-circle-check")){
+        } else if (category.children[0].children[0].classList.contains("fa-circle-check")) {
             const successMessage = document.createElement("li")
             successMessage.textContent = "Validated Successfully"
             categoryContainer.append(successMessage)
-            categoryContainer.classList.remove("empty")
-        }else{
+        } else {
             const nullMessage = document.createElement("li")
             nullMessage.textContent = "A previous validation has failed or it is only available for Thing Descriptions"
             categoryContainer.append(nullMessage)
-            categoryContainer.classList.remove("empty")
         }
     })
 }
@@ -435,7 +439,7 @@ const COMMA = ","
 
 /**
  * Looks for specific characters on the model to figure out the path of the position/search text
- * @param {ITextModel} textModel The text model of Monaco Edtior
+ * @param {ITextModel} textModel The text model of Monaco Editor
  * @param {IPosition} position The position on Monaco editor which consists of column and line number
  * @returns A string that is the path of the searched text. Search is done with the text's position on the editor
  */

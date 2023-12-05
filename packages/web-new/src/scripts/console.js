@@ -24,9 +24,9 @@ import { asyncApiTab, asyncApiJsonBtn, asyncApiYamlBtn, asyncApiView } from './a
 import { AASView } from './aas'
 import { defaultsView, defaultsJsonBtn, defaultsYamlBtn, defaultsAddBtn } from './defaults'
 import { visualize } from './visualize'
-import { validationView } from './validation'
+import { validationView, validationTab } from './validation'
 import { convertTDYamlToJson, detectProtocolSchemes } from '../../../core/dist/web-bundle.min.js'
-import { generateOAP, generateAAP, addDefaultsUtil, validate, generateAAS } from './util'
+import { generateOAP, generateAAP, addDefaultsUtil, validate, generateAAS, resetValidationStatus } from './util'
 import { editorList, getEditorData } from './editor'
 
 /******************************************************************/
@@ -45,7 +45,7 @@ eraseConsole.addEventListener("click", () => {
 })
 
 /**
- * Unchecks all visualizatin btns and hiddes all visualization containers
+ * Unchecks all visualizations btns and hides all visualization containers
  */
 export function clearConsole() {
     visualizationContainers.forEach(container => {
@@ -55,11 +55,15 @@ export function clearConsole() {
         option.checked = false
     })
 
+    //reset to the default validation view
+    validationView.classList.remove("hidden")
+    validationTab.checked = true
+    resetValidationStatus()
     clearVisualizationEditors()
 }
 
 /**
- * Clear the value of all the viisualization monaco editor
+ * Clear the value of all the monaco editors
  */
 function clearVisualizationEditors() {
     window.openApiEditor.getModel().setValue('')
