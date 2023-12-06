@@ -1762,7 +1762,8 @@ main .console {
   place-items: center;
   transition: left 500ms var(--trans-bouncy);
 }
-.examples-menu .examples-menu-container__filter .thing-type-toggle .td-text, .examples-menu .examples-menu-container__filter .thing-type-toggle .tm-text {
+.examples-menu .examples-menu-container__filter .thing-type-toggle .td-text,
+.examples-menu .examples-menu-container__filter .thing-type-toggle .tm-text {
   position: absolute;
   height: 100%;
   z-index: 1;
@@ -1967,15 +1968,16 @@ main .console {
   border-radius: 5px;
   width: -moz-fit-content;
   width: fit-content;
-  padding: 1rem;
+  padding: 0.75rem 1rem;
   box-shadow: 0px 0px 5px 0px var(--clr-shadow);
   transition: box-shadow 250ms ease-in-out;
+  position: relative;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 2rem;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--name, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--name {
   flex: 1;
@@ -1983,7 +1985,6 @@ main .console {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin: 0 1rem;
   gap: 1rem;
   cursor: pointer;
   transition: all 250ms ease-in-out 250ms;
@@ -1997,25 +1998,56 @@ main .console {
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--name p, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--name p {
   font-weight: var(--fw-bold);
 }
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--name .toggle-arrow, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--name .toggle-arrow {
+  font-size: var(--fs-footer);
+  transform: rotate(0);
+  transition: transform 250ms ease-in-out 250ms;
+}
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--quick, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--quick {
-  width: -moz-fit-content;
-  width: fit-content;
-  background-color: transparent;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 6rem;
+  height: 100%;
+  max-height: 4.5rem;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background-color: var(--clr-neutral-50);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  transition: opacity 250ms ease-in-out;
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--quick .quick-btn, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--quick .quick-btn {
+  width: 4rem;
+  height: 4rem;
+  margin: 0.25rem 0.5rem 0 0;
+  border-radius: 50%;
+  background-color: var(--clr-neutral-50);
   border: none;
-  border-left: 2px solid var(--clr-primary-500);
-  padding: 1rem 1rem 1rem 1.5rem;
   cursor: pointer;
+  transition: background-color 250ms ease-in-out;
 }
-.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--quick i, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--quick i {
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--quick .quick-btn i, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--quick .quick-btn i {
   font-size: var(--fs-i);
-  color: var(--clr-primary-500);
+  color: var(--clr-neutral-50);
   transition: color 250ms ease-in-out;
-}
-.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--quick i:hover, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--quick i:hover {
-  color: var(--clr-primary-700);
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example:hover, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example:hover {
   box-shadow: 0px 0px 10px 0px var(--clr-shadow);
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example:hover .example__header--quick, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example:hover .example__header--quick {
+  opacity: 1;
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example:hover .example__header--quick .quick-btn i, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example:hover .example__header--quick .quick-btn i {
+  color: var(--clr-neutral-300);
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example:hover .example__header--quick .quick-btn:hover, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example:hover .example__header--quick .quick-btn:hover {
+  background-color: var(--clr-neutral-100);
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example:hover .example__header--quick .quick-btn:hover i, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example:hover .example__header--quick .quick-btn:hover i {
+  color: var(--clr-neutral-900);
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__content, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__content {
   pointer-events: none;
@@ -2024,8 +2056,6 @@ main .console {
   align-items: flex-start;
   justify-content: center;
   flex-wrap: wrap;
-  padding: 0 1rem 0 1rem;
-  transition: padding 250ms ease-in-out 250ms;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__description, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__description {
   height: 0;
@@ -2085,15 +2115,12 @@ main .console {
   border-color: var(--clr-primary-700);
   color: var(--clr-neutral-50);
 }
-.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example.open .example__name, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example.open .example__name {
-  border-bottom: 2px solid var(--clr-primary-500);
-  padding-bottom: 2rem;
-  transition: all 250ms ease-in-out 0s;
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example.open .example__header--name .toggle-arrow, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example.open .example__header--name .toggle-arrow {
+  transform: rotate(-90deg);
+  transition: transform 250ms ease-in-out 0s;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example.open .example__content, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example.open .example__content {
   pointer-events: all;
-  padding: 0 1rem 1rem 1rem;
-  transition: padding 250ms ease-in-out 0s;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example.open .example__description, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example.open .example__description {
   height: 9rem;

@@ -18,7 +18,7 @@
  * for the examples menu, such as displaying all the TD and TM examples,
  * as well as filtering them by categories, a search function to find
  * specific examples and a use a template example to directly added to an editor where it can be utilized and modified.
- * In the future the option to see short snipets of the most important part of the example, might also be implemented.
+ * In the future the option to see short snippets of the most important part of the example, might also be implemented.
  */
 
 import { createIde, ideCount, tabsLeft } from "./editor"
@@ -288,20 +288,30 @@ async function getAllExamples(categoryId, thingType) {
         // Append the icon container to the name container
         exampleName.appendChild(exampleNameIcon)
 
-
+        //Create, populate and append the example title
         const exampleNameTitle = document.createElement('p')
         exampleNameTitle.innerText = example[1]["title"]
         exampleName.appendChild(exampleNameTitle)
+        
+        // //Create, populate and append the example title toggle arrow
+        const exampleNameArrow = document.createElement('i')
+        exampleNameArrow.classList.add("fa-solid", "fa-chevron-down", "toggle-arrow")
+        exampleName.appendChild(exampleNameArrow)
+
+        //Append the whole name component to the header component
         exampleHeader.appendChild(exampleName)
 
         //Create the example quick access button
+        const quickBtnContainer = document.createElement('div')
+        quickBtnContainer.classList.add("example__header--quick")
         const quickButton = document.createElement('button')
-        quickButton.classList.add("example__header--quick")
+        quickButton.classList.add("quick-btn")
         quickButton.setAttribute("title", "Use")
         const quickButtonIcon = document.createElement('i')
         quickButtonIcon.classList.add("fa-solid", "fa-file-import")
+        quickBtnContainer.appendChild(quickButton)
         quickButton.appendChild(quickButtonIcon)
-        exampleHeader.appendChild(quickButton)
+        exampleHeader.appendChild(quickBtnContainer)
 
 
         //add event listener to show example information and interaction btns
@@ -371,7 +381,7 @@ async function getAllExamples(categoryId, thingType) {
 
 
 /**
- * Gets the example data to pupulate the monaco editor and allow the user to use it as a template
+ * Gets the example data to populate the monaco editor and allow the user to use it as a template
  */
 async function getTemplateData(path) {
     const res = await fetch(path)
