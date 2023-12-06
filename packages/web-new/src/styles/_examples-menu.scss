@@ -325,7 +325,7 @@
                             background-color: var(--clr-neutral-50);
                             border-radius: 5px;
                             width: fit-content;
-                            padding: .75rem;
+                            padding: 1rem;
                             box-shadow: 0px 0px 5px 0px var(--clr-shadow);
                             transition: box-shadow 250ms ease-in-out;
                             position: relative;
@@ -337,12 +337,12 @@
 
                                 &--name {
                                     flex: 1;
+                                    flex: 1;
                                     display: flex;
                                     flex-direction: row;
                                     align-items: center;
                                     justify-content: center;
                                     gap: 1rem;
-                                    margin: 0 4rem;
                                     cursor: pointer;
                                     transition: all 250ms ease-in-out;
 
@@ -368,52 +368,20 @@
                                 }
 
                                 &--quick {
-                                    opacity: 0;
-                                    position: absolute;
-                                    top: .25rem;
-                                    right: .25rem;
-                                    width: 4rem;
-                                    height: 4rem;
-                                    border-radius: 50%;
-                                    background-color: var(--clr-neutral-50);
+                                    width: fit-content;
+                                    background-color: var(--clr-primary-500);
                                     border: none;
+                                    border-radius: 5px;
+                                    padding: .75rem 1.5rem;
                                     cursor: pointer;
-                                    transition: background-color 250ms ease-in-out, opacity 250ms ease-in-out;
+                                    font-weight: bold;
+                                    color: var(--clr-neutral-50);
+                                    transition: background-color 250ms ease-in-out;
 
-                                    i {
-                                        font-size: var(--fs-i);
-                                        color: var(--clr-neutral-50);
-                                        transition: color 250ms ease-in-out;
+                                    &:hover {
+                                        background-color: var(--clr-primary-700);
                                     }
                                 }
-                            }
-
-                            &:hover {
-                                box-shadow: 0px 0px 10px 0px var(--clr-shadow);
-
-                                .example__header {
-
-                                    &--quick {
-
-                                        opacity: 1;
-
-                                        i {
-                                            color: var(--clr-neutral-300);
-                                        }
-
-                                        &:hover {
-                                            background-color: var(--clr-neutral-100);
-
-                                            i {
-                                                color: var(--clr-neutral-900);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            &:hover{
-                                box-shadow: 0px 0px 10px 0px var(--clr-shadow);
                             }
 
                             &__content {
