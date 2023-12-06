@@ -691,38 +691,29 @@ main .console {
   align-items: center;
   justify-content: space-between;
   border-bottom: 2px solid var(--clr-primary-500);
-  padding: 0 1rem;
   height: -moz-fit-content;
   height: fit-content;
+  background-color: var(--clr-neutral-50);
+  padding-right: 1rem;
 }
 .console__tabs .console-controllers {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.console__tabs .console-controllers .trash,
-.console__tabs .console-controllers .download {
-  padding: 1rem 0.5rem;
+.console__tabs .console-controllers .trash {
+  padding: 1rem;
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
   border: none;
-  background-color: var(--clr-neutral-50);
+  background-color: transparent;
   color: var(--clr-primary-500);
   transition: color 250ms ease;
 }
-.console__tabs .console-controllers .trash:hover,
-.console__tabs .console-controllers .download:hover {
-  color: var(--clr-primary-900);
+.console__tabs .console-controllers .trash:hover {
+  color: var(--clr-primary-700);
   cursor: pointer;
-}
-.console__tabs .console-controllers .trash:disabled,
-.console__tabs .console-controllers .download:disabled {
-  color: var(--clr-neutral-300);
-  cursor: auto;
-}
-.console__tabs .console-controllers .download {
-  margin-right: 1rem;
 }
 .console__tabs .visualization {
   height: 100%;
@@ -735,11 +726,9 @@ main .console {
           appearance: none;
   width: -moz-fit-content;
   width: fit-content;
-  padding: 0.5rem 1rem;
-  background-color: var(--clr-neutral-50);
-  border-top-right-radius: 5px;
-  border-top-left-radius: 5px;
-  color: var(--clr-neutral-300);
+  height: 100%;
+  padding: 0.75rem 1.5rem;
+  color: var(--clr-primary-500);
   font-family: var(--ff-primary);
   font-size: var(--fs-p);
   font-weight: var(--fw-bold);
@@ -772,8 +761,13 @@ main .console {
 .console__tabs .visualization input[type=radio]:nth-child(6)::before {
   content: "Visualize";
 }
+.console__tabs .visualization input[type=radio]:hover {
+  background-color: var(--clr-primary-500);
+  color: var(--clr-neutral-50);
+}
 .console__tabs .visualization input[type=radio]:checked {
-  color: var(--clr-neutral-900);
+  color: var(--clr-neutral-50);
+  background-color: var(--clr-primary-500);
 }
 .console__tabs .visualization input[type=radio]:disabled {
   color: var(--clr-neutral-200);

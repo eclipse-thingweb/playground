@@ -163,7 +163,7 @@ function onmousemoveY(e) {
     // DOWN
     if (deltaY > 0) {
       const h = Math.round(parseInt(getComputedStyle(b).height) - deltaY)
-      b.style.flex = `0 ${h < 55 ? 50 : h}px`
+      b.style.flex = `0 ${h < 50 ? 40 : h}px`
       t.style.flex = "1 0"
       if (Math.round(parseInt(getComputedStyle(t).height) + deltaY) > 290) {
         textIcon.forEach(text => {
