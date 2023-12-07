@@ -33,8 +33,7 @@
             align-items: center;
             justify-content: center;
 
-            .trash,
-            .download {
+            .min-max {
                 padding: 1rem .5rem;
                 appearance: none;
                 border: none;
@@ -51,10 +50,6 @@
                     color: var(--clr-neutral-300);
                     cursor: auto;
                 }
-            }
-
-            .download {
-                margin-right: 1rem;
             }
         }
 

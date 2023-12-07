@@ -700,8 +700,7 @@ main .console {
   align-items: center;
   justify-content: center;
 }
-.console__tabs .console-controllers .trash,
-.console__tabs .console-controllers .download {
+.console__tabs .console-controllers .min-max {
   padding: 1rem 0.5rem;
   -webkit-appearance: none;
      -moz-appearance: none;
@@ -711,18 +710,13 @@ main .console {
   color: var(--clr-primary-500);
   transition: color 250ms ease;
 }
-.console__tabs .console-controllers .trash:hover,
-.console__tabs .console-controllers .download:hover {
+.console__tabs .console-controllers .min-max:hover {
   color: var(--clr-primary-900);
   cursor: pointer;
 }
-.console__tabs .console-controllers .trash:disabled,
-.console__tabs .console-controllers .download:disabled {
+.console__tabs .console-controllers .min-max:disabled {
   color: var(--clr-neutral-300);
   cursor: auto;
-}
-.console__tabs .console-controllers .download {
-  margin-right: 1rem;
 }
 .console__tabs .visualization {
   height: 100%;
