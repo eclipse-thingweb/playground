@@ -36,16 +36,11 @@ import { editorList, getEditorData } from './editor'
 //Main console elements
 const errorContainer = document.querySelector(".console__content #console-error")
 const errorTxt = document.querySelector(".console-error__txt")
-const eraseConsole = document.querySelector(".console__tabs .trash")
-export const visualizationOptions = document.querySelectorAll(".visualization__option")
+export const visualizationOptions = document.querySelectorAll(".visualizations__option")
 export const visualizationContainers = document.querySelectorAll(".console-view")
 
-eraseConsole.addEventListener("click", () => {
-    clearConsole()
-})
-
 /**
- * Unchecks all visualizatin btns and hiddes all visualization containers
+ * Unchecks all visualizations btns and hides all visualization containers
  */
 export function clearConsole() {
     visualizationContainers.forEach(container => {
@@ -59,7 +54,7 @@ export function clearConsole() {
 }
 
 /**
- * Clear the value of all the viisualization monaco editor
+ * Clear the value of all the monaco editors
  */
 function clearVisualizationEditors() {
     window.openApiEditor.getModel().setValue('')
