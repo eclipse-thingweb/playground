@@ -24,7 +24,7 @@
 :root {
   /*Fonts styles*/
   --ff-primary: "Roboto", sans-serif;
-  --ff-secundary: "Open Sans", sans-serif;
+  --ff-secondary: "Open Sans", sans-serif;
   /*Font weights*/
   --fw-light: 300;
   --fw-regular: 400;
@@ -810,6 +810,11 @@ main .console {
 .console__content .validation-view .validation-container details {
   margin-bottom: 1rem;
 }
+.console__content .validation-view .validation-container details summary {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
 .console__content .validation-view .validation-container details summary .show-icon {
   transform: rotate(0);
   transition: transform 250ms ease-in-out;
@@ -847,9 +852,6 @@ main .console {
   list-style-position: inside;
   list-style-type: disc;
 }
-.console__content .validation-view .validation-container details .section-content.empty {
-  padding: 0 0 1rem 0;
-}
 .console__content .validation-view .validation-container details .section-content .notice-prompt {
   color: var(--clr-neutral-300);
   font-size: var(--fs-footer);
@@ -872,6 +874,9 @@ main .console {
 }
 .console__content .validation-view .validation-container details[open] summary .show-icon {
   transform: rotate(-90deg);
+}
+.console__content .validation-view .validation-container details.disabled {
+  pointer-events: none;
 }
 .console__content .open-api-view,
 .console__content .async-api-view,
@@ -1193,7 +1198,7 @@ main .console {
 }
 .console__content .visualize-view .visualize-container .visualized svg text {
   font-size: 1.2rem;
-  font-family: var(--ff-secundary);
+  font-family: var(--ff-secondary);
   fill: var(--clr-neutral-900);
 }
 .console__content .visualize-view .visualize-inputs {
@@ -2386,7 +2391,7 @@ svg g .link {
 
 .d3-tip {
   font-size: var(--fs-p);
-  font-family: var(--ff-secundary);
+  font-family: var(--ff-secondary);
   color: var(--clr-neutral-900);
   border: 1px solid var(--clr-neutral-300);
   border-radius: 5px;
