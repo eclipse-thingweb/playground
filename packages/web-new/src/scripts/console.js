@@ -24,9 +24,9 @@ import { asyncApiTab, asyncApiJsonBtn, asyncApiYamlBtn, asyncApiView } from './a
 import { AASView } from './aas'
 import { defaultsView, defaultsJsonBtn, defaultsYamlBtn, defaultsAddBtn } from './defaults'
 import { visualize } from './visualize'
-import { validationView } from './validation'
+import { validationView, validationTab } from './validation'
 import { convertTDYamlToJson, detectProtocolSchemes } from '../../../core/dist/web-bundle.min.js'
-import { generateOAP, generateAAP, addDefaultsUtil, validate, generateAAS } from './util'
+import { generateOAP, generateAAP, addDefaultsUtil, validate, generateAAS, resetValidationStatus } from './util'
 import { editorList, getEditorData } from './editor'
 import { textIcon } from './main.js'
 
@@ -67,7 +67,6 @@ minMaxBtn.addEventListener("click", () => {
         }, 50);
 
     }
-
 })
 
 /**
@@ -81,6 +80,10 @@ export function clearConsole() {
         option.checked = false
     })
 
+    //reset to the default validation view
+    validationView.classList.remove("hidden")
+    validationTab.checked = true
+    resetValidationStatus()
     clearVisualizationEditors()
 }
 

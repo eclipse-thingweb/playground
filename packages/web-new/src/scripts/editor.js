@@ -16,8 +16,8 @@
 /**
  * @file The `editor.js` contains the main functionality
  * for the generated monaco editors and the surrounding elements
- * such as the tab functionality. It utilizes mutiple other files and dependncies
- * such as the monaco-editor dependencie, the monochrome-theme file to add the custom 
+ * such as the tab functionality. It utilizes multiple other files and dependencies
+ * such as the monaco-editor dependency, the monochrome-theme file to add the custom 
  * theme, some util functions, the td and tm schemas from the core @thing-description-playground
  * as well as the "Validators" and the "JsonSpellChecker" from the json-spell-checker dependency
  */
@@ -37,7 +37,7 @@ import { clearConsole } from './console'
 /*                    Editor and tabs                      */
 /***********************************************************/
 
-//Decalre all necessary item from the DOM
+//Declare all necessary item from the DOM
 const addTab = document.querySelector(".ide__tabs__add")
 const tabsLeftContainer = document.querySelector(".ide__tabs__left")
 const ideContainer = document.querySelector(".ide__container")
@@ -57,7 +57,7 @@ validationTab.checked = true
 validationView.classList.remove("hidden")
 
 /**
- * Funtion which creates a tab for the respective editor
+ * Function which creates a tab for the respective editor
  * and adds all other tab component such as the close button
  * @param {Number} tabNumber - the "id" number for the tab
  * @param {String} exampleName - the initial/default name shown in the tab
@@ -248,7 +248,7 @@ export function createIde(ideNumber, exampleValue) {
 }
 
 /**
- * Async funtion to initiate the editors
+ * Async function to initiate the editors
  * @param {Number} ideNumber 
  * @param {Object} defaultValue 
  * @param {String} editorLanguage 
@@ -268,7 +268,7 @@ async function initEditor(ideNumber, editorValue, editorLanguage) {
     setFontSize(editorInstance)
   })
 
-  //Bind the reset button form the settings to the editor and assign the specied font size
+  //Bind the reset button form the settings to the editor and assign the specified font size
   editorForm.addEventListener("reset", () => {
     setFontSize(editorInstance)
   })
@@ -410,7 +410,7 @@ tabsLeftContainer.addEventListener("click", (e) => {
     })
 
     //if the target element is the tab itself add the active class
-    //else if the target element is a child of the element add the active calss to the parent element
+    //else if the target element is a child of the element add the active class to the parent element
     if (selectedElement.id == "tab") {
       selectedElement.classList.add("active")
     }
@@ -444,7 +444,7 @@ tabsLeftContainer.addEventListener("click", (e) => {
 })
 
 /**
- * Find if active editor is json or yaml and change the json/yaml btns repectively
+ * Find if active editor is json or yaml and change the json/yaml btns respectively
  */
 function findFileType() {
   editorList.forEach(editor => {
