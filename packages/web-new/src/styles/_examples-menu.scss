@@ -323,7 +323,7 @@
                             background-color: var(--clr-neutral-50);
                             border-radius: 5px;
                             width: fit-content;
-                            padding: .75rem 1rem;
+                            padding: .75rem;
                             box-shadow: 0px 0px 5px 0px var(--clr-shadow);
                             transition: box-shadow 250ms ease-in-out;
                             position: relative;
@@ -358,7 +358,7 @@
                                         font-weight: var(--fw-bold);
                                     }
 
-                                    .toggle-arrow{
+                                    .toggle-arrow {
                                         font-size: var(--fs-footer);
                                         transform: rotate(0);
                                         transition: transform 250ms ease-in-out 250ms;
@@ -378,7 +378,7 @@
                                     cursor: pointer;
                                     transition: background-color 250ms ease-in-out, opacity 250ms ease-in-out;
 
-                                    i{
+                                    i {
                                         font-size: var(--fs-i);
                                         color: var(--clr-neutral-50);
                                         transition: color 250ms ease-in-out;
@@ -394,6 +394,7 @@
                                     &--quick {
 
                                         opacity: 1;
+
                                         i {
                                             color: var(--clr-neutral-300);
                                         }
@@ -428,16 +429,15 @@
                                 overflow-x: hidden;
                                 padding-right: 1rem;
                                 transition: height 250ms ease-in-out 250ms, margin 250ms ease-in-out 250ms, opacity 250ms ease-in-out 0ms;
-
                             }
 
                             &__btn {
                                 display: flex;
                                 width: 100%;
-                                gap: 2rem;
+                                gap: .5rem;
                                 height: 0;
                                 opacity: 0;
-                                transition: opacity 250ms ease-in-out 0ms, height 250ms ease-in-out 250ms, ;
+                                transition: opacity 250ms ease-in-out 0ms, height 250ms ease-in-out 250ms;
 
                                 button {
                                     width: 100%;
@@ -490,12 +490,12 @@
                         .example.open {
 
                             .example__header {
-                                &--name{
-                                    .toggle-arrow{
+                                &--name {
+                                    .toggle-arrow {
                                         transform: rotate(-90deg);
                                         transition: transform 250ms ease-in-out 0s;
                                     }
-                                }  
+                                }
                             }
 
                             .example__content {
