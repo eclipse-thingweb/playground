@@ -24,7 +24,7 @@
 :root {
   /*Fonts styles*/
   --ff-primary: "Roboto", sans-serif;
-  --ff-secundary: "Open Sans", sans-serif;
+  --ff-secondary: "Open Sans", sans-serif;
   /*Font weights*/
   --fw-light: 300;
   --fw-regular: 400;
@@ -701,8 +701,10 @@ main .console {
   align-items: center;
   justify-content: center;
 }
-.console__tabs .console-controllers .trash {
-  padding: 1rem;
+
+.console__tabs .console-controllers .min-max {
+  padding: 1rem 0.5rem;
+
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
@@ -711,16 +713,18 @@ main .console {
   color: var(--clr-primary-500);
   transition: color 250ms ease;
 }
-.console__tabs .console-controllers .trash:hover {
-  color: var(--clr-primary-700);
+
+.console__tabs .console-controllers .min-max:hover {
+  color: var(--clr-primary-900);
   cursor: pointer;
 }
+
 .console__tabs .visualization {
   height: 100%;
   display: flex;
   align-items: center;
 }
-.console__tabs .visualization input[type=radio] {
+.console__tabs .visualizations input[type=radio] {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
@@ -736,31 +740,32 @@ main .console {
   overflow: hidden;
   transition: all 250ms ease-in-out;
 }
-.console__tabs .visualization input[type=radio]::before {
+.console__tabs .visualizations input[type=radio]::before {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.console__tabs .visualization input[type=radio]:nth-child(1)::before {
+.console__tabs .visualizations input[type=radio]:nth-child(1)::before {
   content: "Validation";
 }
-.console__tabs .visualization input[type=radio]:nth-child(2)::before {
+.console__tabs .visualizations input[type=radio]:nth-child(2)::before {
   content: "OpenAPI";
 }
-.console__tabs .visualization input[type=radio]:nth-child(3)::before {
+.console__tabs .visualizations input[type=radio]:nth-child(3)::before {
   content: "AsyncAPI";
 }
-.console__tabs .visualization input[type=radio]:nth-child(4)::before {
+.console__tabs .visualizations input[type=radio]:nth-child(4)::before {
   content: "AAS AID";
 }
-.console__tabs .visualization input[type=radio]:nth-child(5)::before {
+.console__tabs .visualizations input[type=radio]:nth-child(5)::before {
   content: "Defaults";
 }
-.console__tabs .visualization input[type=radio]:nth-child(6)::before {
+.console__tabs .visualizations input[type=radio]:nth-child(6)::before {
   content: "Visualize";
 }
+
 .console__tabs .visualization input[type=radio]:hover {
   background-color: var(--clr-primary-500);
   color: var(--clr-neutral-50);
@@ -769,7 +774,7 @@ main .console {
   color: var(--clr-neutral-50);
   background-color: var(--clr-primary-500);
 }
-.console__tabs .visualization input[type=radio]:disabled {
+.console__tabs .visualizations input[type=radio]:disabled {
   color: var(--clr-neutral-200);
   cursor: not-allowed;
 }
@@ -837,6 +842,11 @@ main .console {
 .console__content .validation-view .validation-container details {
   margin-bottom: 1rem;
 }
+.console__content .validation-view .validation-container details summary {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
 .console__content .validation-view .validation-container details summary .show-icon {
   transform: rotate(0);
   transition: transform 250ms ease-in-out;
@@ -874,9 +884,6 @@ main .console {
   list-style-position: inside;
   list-style-type: disc;
 }
-.console__content .validation-view .validation-container details .section-content.empty {
-  padding: 0 0 1rem 0;
-}
 .console__content .validation-view .validation-container details .section-content .notice-prompt {
   color: var(--clr-neutral-300);
   font-size: var(--fs-footer);
@@ -899,6 +906,9 @@ main .console {
 }
 .console__content .validation-view .validation-container details[open] summary .show-icon {
   transform: rotate(-90deg);
+}
+.console__content .validation-view .validation-container details.disabled {
+  pointer-events: none;
 }
 .console__content .open-api-view,
 .console__content .async-api-view,
@@ -1220,7 +1230,7 @@ main .console {
 }
 .console__content .visualize-view .visualize-container .visualized svg text {
   font-size: 1.2rem;
-  font-family: var(--ff-secundary);
+  font-family: var(--ff-secondary);
   fill: var(--clr-neutral-900);
 }
 .console__content .visualize-view .visualize-inputs {
@@ -1756,7 +1766,8 @@ main .console {
   place-items: center;
   transition: left 500ms var(--trans-bouncy);
 }
-.examples-menu .examples-menu-container__filter .thing-type-toggle .td-text, .examples-menu .examples-menu-container__filter .thing-type-toggle .tm-text {
+.examples-menu .examples-menu-container__filter .thing-type-toggle .td-text,
+.examples-menu .examples-menu-container__filter .thing-type-toggle .tm-text {
   position: absolute;
   height: 100%;
   z-index: 1;
@@ -1961,24 +1972,27 @@ main .console {
   border-radius: 5px;
   width: -moz-fit-content;
   width: fit-content;
-  padding: 2rem;
+  padding: 0.75rem;
   box-shadow: 0px 0px 5px 0px var(--clr-shadow);
+  transition: box-shadow 250ms ease-in-out;
+  position: relative;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
+  justify-content: center;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--name, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--name {
-  width: 100%;
+  flex: 1;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
+  gap: 1rem;
+
+  margin: 0 4rem;
   cursor: pointer;
-  transition: all 250ms ease-in-out 250ms;
+  transition: all 250ms ease-in-out;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--name .example-icon, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--name .example-icon {
   width: 1.8rem;
@@ -1989,37 +2003,63 @@ main .console {
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--name p, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--name p {
   font-weight: var(--fw-bold);
 }
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--name .toggle-arrow, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--name .toggle-arrow {
+  font-size: var(--fs-footer);
+  transform: rotate(0);
+  transition: transform 250ms ease-in-out 250ms;
+}
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--quick, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--quick {
-  width: -moz-fit-content;
-  width: fit-content;
-  background-color: transparent;
+  opacity: 0;
+  position: absolute;
+  top: 0.25rem;
+  right: 0.5rem;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background-color: var(--clr-neutral-50);
   border: none;
-  border-left: 2px solid var(--clr-primary-500);
-  padding: 1rem 1rem 1rem 2rem;
   cursor: pointer;
+  transition: background-color 250ms ease-in-out, opacity 250ms ease-in-out;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--quick i, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--quick i {
   font-size: var(--fs-i);
-  color: var(--clr-primary-500);
-  transition: color 250ms ease-in-out 250ms;
+  color: var(--clr-neutral-50);
+  transition: color 250ms ease-in-out;
 }
-.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--quick:hover i, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--quick:hover i {
-  color: var(--clr-primary-700);
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example:hover, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example:hover {
+  box-shadow: 0px 0px 10px 0px var(--clr-shadow);
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example:hover .example__header--quick, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example:hover .example__header--quick {
+  opacity: 1;
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example:hover .example__header--quick i, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example:hover .example__header--quick i {
+  color: var(--clr-neutral-300);
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example:hover .example__header--quick:hover, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example:hover .example__header--quick:hover {
+  background-color: var(--clr-neutral-100);
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example:hover .example__header--quick:hover i, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example:hover .example__header--quick:hover i {
+  color: var(--clr-neutral-900);
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example:hover, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example:hover {
+  box-shadow: 0px 0px 10px 0px var(--clr-shadow);
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__content, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__content {
   pointer-events: none;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   flex-wrap: wrap;
+  padding: 0 1rem;
+  transition: padding 250ms ease-in-out 250ms;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__description, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__description {
   height: 0;
   opacity: 0;
   font-size: var(--fs-p);
   line-height: var(--lh-sub-header);
-  max-width: 50ch;
+  max-width: 60ch;
   overflow-y: scroll;
   overflow-x: hidden;
   padding-right: 1rem;
@@ -2028,7 +2068,7 @@ main .console {
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__btn, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__btn {
   display: flex;
   width: 100%;
-  gap: 2rem;
+  gap: 0.5rem;
   height: 0;
   opacity: 0;
   transition: opacity 250ms ease-in-out 0ms, height 250ms ease-in-out 250ms;
@@ -2072,13 +2112,14 @@ main .console {
   border-color: var(--clr-primary-700);
   color: var(--clr-neutral-50);
 }
-.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example.open .example__name, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example.open .example__name {
-  border-bottom: 2px solid var(--clr-primary-500);
-  padding-bottom: 2rem;
-  transition: all 250ms ease-in-out 0s;
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example.open .example__header--name .toggle-arrow, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example.open .example__header--name .toggle-arrow {
+  transform: rotate(-90deg);
+  transition: transform 250ms ease-in-out 0s;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example.open .example__content, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example.open .example__content {
   pointer-events: all;
+  padding: 0 1rem 1rem 1rem;
+  transition: padding 250ms ease-in-out 0s;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example.open .example__description, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example.open .example__description {
   height: 9rem;
@@ -2413,7 +2454,7 @@ svg g .link {
 
 .d3-tip {
   font-size: var(--fs-p);
-  font-family: var(--ff-secundary);
+  font-family: var(--ff-secondary);
   color: var(--clr-neutral-900);
   border: 1px solid var(--clr-neutral-300);
   border-radius: 5px;
