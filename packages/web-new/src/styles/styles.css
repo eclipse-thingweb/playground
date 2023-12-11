@@ -1759,7 +1759,8 @@ main .console {
   place-items: center;
   transition: left 500ms var(--trans-bouncy);
 }
-.examples-menu .examples-menu-container__filter .thing-type-toggle .td-text, .examples-menu .examples-menu-container__filter .thing-type-toggle .tm-text {
+.examples-menu .examples-menu-container__filter .thing-type-toggle .td-text,
+.examples-menu .examples-menu-container__filter .thing-type-toggle .tm-text {
   position: absolute;
   height: 100%;
   z-index: 1;
@@ -1964,15 +1965,15 @@ main .console {
   border-radius: 5px;
   width: -moz-fit-content;
   width: fit-content;
-  padding: 0.5rem;
+  padding: 0.75rem;
   box-shadow: 0px 0px 5px 0px var(--clr-shadow);
   transition: box-shadow 250ms ease-in-out;
+  position: relative;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  justify-content: center;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--name, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--name {
   flex: 1;
@@ -1981,7 +1982,8 @@ main .console {
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  margin: 0 1rem;
+
+  margin: 0 4rem;
   cursor: pointer;
   transition: all 250ms ease-in-out;
 }
@@ -1994,22 +1996,43 @@ main .console {
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--name p, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--name p {
   font-weight: var(--fw-bold);
 }
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--name .toggle-arrow, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--name .toggle-arrow {
+  font-size: var(--fs-footer);
+  transform: rotate(0);
+  transition: transform 250ms ease-in-out 250ms;
+}
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--quick, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--quick {
-  width: -moz-fit-content;
-  width: fit-content;
-  background-color: transparent;
+  opacity: 0;
+  position: absolute;
+  top: 0.25rem;
+  right: 0.5rem;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background-color: var(--clr-neutral-50);
   border: none;
-  border-left: 2px solid var(--clr-primary-500);
-  padding: 1rem 1rem 1rem 1.5rem;
   cursor: pointer;
+  transition: background-color 250ms ease-in-out, opacity 250ms ease-in-out;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--quick i, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--quick i {
   font-size: var(--fs-i);
-  color: var(--clr-primary-500);
-  transition: color 250ms ease-in-out 250ms;
+  color: var(--clr-neutral-50);
+  transition: color 250ms ease-in-out;
 }
-.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--quick:hover i, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--quick:hover i {
-  color: var(--clr-primary-700);
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example:hover, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example:hover {
+  box-shadow: 0px 0px 10px 0px var(--clr-shadow);
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example:hover .example__header--quick, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example:hover .example__header--quick {
+  opacity: 1;
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example:hover .example__header--quick i, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example:hover .example__header--quick i {
+  color: var(--clr-neutral-300);
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example:hover .example__header--quick:hover, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example:hover .example__header--quick:hover {
+  background-color: var(--clr-neutral-100);
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example:hover .example__header--quick:hover i, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example:hover .example__header--quick:hover i {
+  color: var(--clr-neutral-900);
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example:hover, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example:hover {
   box-shadow: 0px 0px 10px 0px var(--clr-shadow);
@@ -2029,7 +2052,7 @@ main .console {
   opacity: 0;
   font-size: var(--fs-p);
   line-height: var(--lh-sub-header);
-  max-width: 50ch;
+  max-width: 60ch;
   overflow-y: scroll;
   overflow-x: hidden;
   padding-right: 1rem;
@@ -2038,7 +2061,7 @@ main .console {
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__btn, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__btn {
   display: flex;
   width: 100%;
-  gap: 2rem;
+  gap: 0.5rem;
   height: 0;
   opacity: 0;
   transition: opacity 250ms ease-in-out 0ms, height 250ms ease-in-out 250ms;
@@ -2081,6 +2104,10 @@ main .console {
   background-color: var(--clr-primary-700);
   border-color: var(--clr-primary-700);
   color: var(--clr-neutral-50);
+}
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example.open .example__header--name .toggle-arrow, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example.open .example__header--name .toggle-arrow {
+  transform: rotate(-90deg);
+  transition: transform 250ms ease-in-out 0s;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example.open .example__content, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example.open .example__content {
   pointer-events: all;

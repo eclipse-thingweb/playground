@@ -91,7 +91,8 @@
                     }
                 }
 
-                .td-text, .tm-text{
+                .td-text,
+                .tm-text {
                     position: absolute;
                     height: 100%;
                     z-index: 1;
@@ -110,7 +111,7 @@
                     transition: color 250ms ease-in-out 200ms;
                 }
 
-                .tm-text{
+                .tm-text {
                     content: 'TM';
                     right: 1rem;
                     z-index: 1;
@@ -124,12 +125,12 @@
                         left: 3.2rem;
                     }
 
-                    & ~ .td-text{
+                    &~.td-text {
                         color: var(--clr-neutral-200);
                         transition: color 250ms ease-in-out;
                     }
 
-                    & ~ .tm-text{
+                    &~.tm-text {
                         color: var(--clr-neutral-900);
                         transition: color 250ms ease-in-out 200ms;
                     }
@@ -322,15 +323,15 @@
                             background-color: var(--clr-neutral-50);
                             border-radius: 5px;
                             width: fit-content;
-                            padding: .5rem;
+                            padding: .75rem;
                             box-shadow: 0px 0px 5px 0px var(--clr-shadow);
                             transition: box-shadow 250ms ease-in-out;
+                            position: relative;
 
                             &__header {
                                 display: flex;
                                 align-items: center;
-                                justify-content: space-between;
-                                gap: 1rem;
+                                justify-content: center;
 
                                 &--name {
                                     flex: 1;
@@ -339,15 +340,15 @@
                                     align-items: center;
                                     justify-content: center;
                                     gap: 1rem;
-                                    margin: 0 1rem;
+                                    margin: 0 4rem;
                                     cursor: pointer;
                                     transition: all 250ms ease-in-out;
 
-                                    .example-icon{
+                                    .example-icon {
                                         width: 1.8rem;
 
-                                        svg{
-                                            path{
+                                        svg {
+                                            path {
                                                 fill: var(--clr-primary-500);
                                             }
                                         }
@@ -356,25 +357,54 @@
                                     p {
                                         font-weight: var(--fw-bold);
                                     }
+
+                                    .toggle-arrow {
+                                        font-size: var(--fs-footer);
+                                        transform: rotate(0);
+                                        transition: transform 250ms ease-in-out 250ms;
+                                    }
                                 }
 
                                 &--quick {
-                                    width: fit-content;
-                                    background-color: transparent;
+                                    opacity: 0;
+                                    position: absolute;
+                                    top: .25rem;
+                                    right: .5rem;
+                                    width: 4rem;
+                                    height: 4rem;
+                                    border-radius: 50%;
+                                    background-color: var(--clr-neutral-50);
                                     border: none;
-                                    border-left: 2px solid var(--clr-primary-500);
-                                    padding: 1rem 1rem 1rem 1.5rem;
                                     cursor: pointer;
+                                    transition: background-color 250ms ease-in-out, opacity 250ms ease-in-out;
 
                                     i {
                                         font-size: var(--fs-i);
-                                        color: var(--clr-primary-500);
-                                        transition: color 250ms ease-in-out 250ms;
+                                        color: var(--clr-neutral-50);
+                                        transition: color 250ms ease-in-out;
                                     }
+                                }
+                            }
 
-                                    &:hover {
+                            &:hover {
+                                box-shadow: 0px 0px 10px 0px var(--clr-shadow);
+
+                                .example__header {
+
+                                    &--quick {
+
+                                        opacity: 1;
+
                                         i {
-                                            color: var(--clr-primary-700);
+                                            color: var(--clr-neutral-300);
+                                        }
+
+                                        &:hover {
+                                            background-color: var(--clr-neutral-100);
+
+                                            i {
+                                                color: var(--clr-neutral-900);
+                                            }
                                         }
                                     }
                                 }
@@ -400,18 +430,17 @@
                                 opacity: 0;
                                 font-size: var(--fs-p);
                                 line-height: var(--lh-sub-header);
-                                max-width: 50ch;
+                                max-width: 60ch;
                                 overflow-y: scroll;
                                 overflow-x: hidden;
                                 padding-right: 1rem;
                                 transition: height 250ms ease-in-out 250ms, margin 250ms ease-in-out 250ms, opacity 250ms ease-in-out 0ms;
-
                             }
 
                             &__btn {
                                 display: flex;
                                 width: 100%;
-                                gap: 2rem;
+                                gap: .5rem;
                                 height: 0;
                                 opacity: 0;
                                 transition: opacity 250ms ease-in-out 0ms, height 250ms ease-in-out 250ms;
@@ -465,6 +494,15 @@
                         }
 
                         .example.open {
+
+                            .example__header {
+                                &--name {
+                                    .toggle-arrow {
+                                        transform: rotate(-90deg);
+                                        transition: transform 250ms ease-in-out 0s;
+                                    }
+                                }
+                            }
 
                             .example__content {
                                 pointer-events: all;
