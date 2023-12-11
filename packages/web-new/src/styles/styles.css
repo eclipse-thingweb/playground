@@ -1976,8 +1976,7 @@ main .console {
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
+  justify-content: center;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--name, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--name {
   flex: 1;
@@ -1986,6 +1985,7 @@ main .console {
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  margin: 0 4rem;
   cursor: pointer;
   transition: all 250ms ease-in-out 250ms;
 }
@@ -2006,30 +2006,17 @@ main .console {
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--quick, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--quick {
   opacity: 0;
   position: absolute;
-  top: 0;
-  right: 0;
-  width: 6rem;
-  height: 100%;
-  max-height: 4.5rem;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-  background-color: var(--clr-neutral-50);
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-end;
-  transition: opacity 250ms ease-in-out;
-}
-.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--quick .quick-btn, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--quick .quick-btn {
+  top: 0.25rem;
+  right: 0.5rem;
   width: 4rem;
   height: 4rem;
-  margin: 0.25rem 0.5rem 0 0;
   border-radius: 50%;
   background-color: var(--clr-neutral-50);
   border: none;
   cursor: pointer;
-  transition: background-color 250ms ease-in-out;
+  transition: background-color 250ms ease-in-out, opacity 250ms ease-in-out;
 }
-.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--quick .quick-btn i, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--quick .quick-btn i {
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__header--quick i, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__header--quick i {
   font-size: var(--fs-i);
   color: var(--clr-neutral-50);
   transition: color 250ms ease-in-out;
@@ -2040,13 +2027,13 @@ main .console {
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example:hover .example__header--quick, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example:hover .example__header--quick {
   opacity: 1;
 }
-.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example:hover .example__header--quick .quick-btn i, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example:hover .example__header--quick .quick-btn i {
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example:hover .example__header--quick i, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example:hover .example__header--quick i {
   color: var(--clr-neutral-300);
 }
-.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example:hover .example__header--quick .quick-btn:hover, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example:hover .example__header--quick .quick-btn:hover {
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example:hover .example__header--quick:hover, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example:hover .example__header--quick:hover {
   background-color: var(--clr-neutral-100);
 }
-.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example:hover .example__header--quick .quick-btn:hover i, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example:hover .example__header--quick .quick-btn:hover i {
+.examples-menu .examples-menu-container .examples-container__td .examples-category__container .example:hover .example__header--quick:hover i, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example:hover .example__header--quick:hover i {
   color: var(--clr-neutral-900);
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__content, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__content {
@@ -2062,7 +2049,7 @@ main .console {
   opacity: 0;
   font-size: var(--fs-p);
   line-height: var(--lh-sub-header);
-  max-width: 50ch;
+  max-width: 60ch;
   overflow-y: scroll;
   overflow-x: hidden;
   padding-right: 1rem;

@@ -302,16 +302,13 @@ async function getAllExamples(categoryId, thingType) {
         exampleHeader.appendChild(exampleName)
 
         //Create the example quick access button
-        const quickBtnContainer = document.createElement('div')
-        quickBtnContainer.classList.add("example__header--quick")
-        const quickButton = document.createElement('button')
-        quickButton.classList.add("quick-btn")
-        quickButton.setAttribute("title", "Use")
+        const quickBtn = document.createElement('button')
+        quickBtn.classList.add("example__header--quick")
+        quickBtn.setAttribute("title", "Use")
         const quickButtonIcon = document.createElement('i')
         quickButtonIcon.classList.add("fa-solid", "fa-file-import")
-        quickBtnContainer.appendChild(quickButton)
-        quickButton.appendChild(quickButtonIcon)
-        exampleHeader.appendChild(quickBtnContainer)
+        quickBtn.appendChild(quickButtonIcon)
+        exampleHeader.appendChild(quickBtn)
 
 
         //add event listener to show example information and interaction btns
@@ -320,7 +317,7 @@ async function getAllExamples(categoryId, thingType) {
         })
 
         //Importing example to the monaco editor with the quick buttons
-        quickButton.addEventListener('click', () => {
+        quickBtn.addEventListener('click', () => {
             getTemplateData(example[1]["path"])
             closeCards()
             tabsLeft.forEach(tab => {
