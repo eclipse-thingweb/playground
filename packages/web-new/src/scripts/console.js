@@ -28,6 +28,7 @@ import { validationView, validationTab } from './validation'
 import { convertTDYamlToJson, detectProtocolSchemes } from '../../../core/dist/web-bundle.min.js'
 import { generateOAP, generateAAP, addDefaultsUtil, validate, generateAAS, resetValidationStatus } from './util'
 import { editorList, getEditorData } from './editor'
+import { textIcon } from './main.js'
 
 /******************************************************************/
 /*                    Console functionality                       */
@@ -36,11 +37,40 @@ import { editorList, getEditorData } from './editor'
 //Main console elements
 const errorContainer = document.querySelector(".console__content #console-error")
 const errorTxt = document.querySelector(".console-error__txt")
-export const visualizationOptions = document.querySelectorAll(".visualizations__option")
+export const minMaxBtn = document.querySelector(".min-max")
+export const visualizationOptions = document.querySelectorAll(".visualization__option")
 export const visualizationContainers = document.querySelectorAll(".console-view")
+const consoleElement = document.querySelector(".console")
+const mainContentElement = document.querySelector(".main-content")
+
+minMaxBtn.addEventListener("click", () => {
+
+    if (minMaxBtn.children[0].classList.contains("fa-down-left-and-up-right-to-center")) {
+        mainContentElement.style.flex = "1 0"
+        consoleElement.style.flex = `0 40px`
+        minMaxBtn.children[0].classList.remove("fa-down-left-and-up-right-to-center")
+        minMaxBtn.children[0].classList.add("fa-up-right-and-down-left-from-center")
+
+        textIcon.forEach(text => {
+            text.classList.remove("hiddenV")
+        })
+    } else {
+        textIcon.forEach(text => {
+            text.classList.add("hiddenV")
+        })
+
+        setTimeout(() => {
+            mainContentElement.style.flex = "0 200px"
+            consoleElement.style.flex = `1 0`
+            minMaxBtn.children[0].classList.add("fa-down-left-and-up-right-to-center")
+            minMaxBtn.children[0].classList.remove("fa-up-right-and-down-left-from-center")
+        }, 50);
+
+    }
+})
 
 /**
- * Unchecks all visualizations btns and hides all visualization containers
+ * Unchecks all visualization btns and hides all visualization containers
  */
 export function clearConsole() {
     visualizationContainers.forEach(container => {

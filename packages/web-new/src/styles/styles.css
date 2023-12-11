@@ -692,8 +692,33 @@ main .console {
   justify-content: space-between;
   border-bottom: 2px solid var(--clr-primary-500);
   padding: 0 1rem;
+  height: -moz-fit-content;
+  height: fit-content;
 }
-.console__tabs .visualizations {
+.console__tabs .console-controllers {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.console__tabs .console-controllers .min-max {
+  padding: 1rem 0.5rem;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border: none;
+  background-color: var(--clr-neutral-50);
+  color: var(--clr-primary-500);
+  transition: color 250ms ease;
+}
+.console__tabs .console-controllers .min-max:hover {
+  color: var(--clr-primary-900);
+  cursor: pointer;
+}
+.console__tabs .console-controllers .min-max:disabled {
+  color: var(--clr-neutral-300);
+  cursor: auto;
+}
+.console__tabs .visualization {
   height: 100%;
   display: flex;
   align-items: center;

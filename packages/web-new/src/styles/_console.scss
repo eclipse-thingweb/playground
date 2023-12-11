@@ -27,7 +27,32 @@
         border-bottom: 2px solid var(--clr-primary-500);
         padding: 0 1rem;
 
-        .visualizations {
+        .console-controllers {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .min-max {
+                padding: 1rem .5rem;
+                appearance: none;
+                border: none;
+                background-color: var(--clr-neutral-50);
+                color: var(--clr-primary-500);
+                transition: color 250ms ease;
+
+                &:hover {
+                    color: var(--clr-primary-900);
+                    cursor: pointer;
+                }
+
+                &:disabled {
+                    color: var(--clr-neutral-300);
+                    cursor: auto;
+                }
+            }
+        }
+
+        .visualization {
             height: 100%;
             display: flex;
             align-items: center;
