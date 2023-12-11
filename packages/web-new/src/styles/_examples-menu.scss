@@ -342,7 +342,7 @@
                                     gap: 1rem;
                                     margin: 0 4rem;
                                     cursor: pointer;
-                                    transition: all 250ms ease-in-out 250ms;
+                                    transition: all 250ms ease-in-out;
 
                                     .example-icon {
                                         width: 1.8rem;
@@ -410,6 +410,10 @@
                                 }
                             }
 
+                            &:hover{
+                                box-shadow: 0px 0px 10px 0px var(--clr-shadow);
+                            }
+
                             &__content {
                                 pointer-events: none;
                                 display: flex;
@@ -417,6 +421,8 @@
                                 align-items: flex-start;
                                 justify-content: center;
                                 flex-wrap: wrap;
+                                padding: 0 1rem;
+                                transition: padding 250ms ease-in-out 250ms;
                             }
 
                             &__description {
@@ -500,6 +506,8 @@
 
                             .example__content {
                                 pointer-events: all;
+                                padding: 0 1rem 1rem 1rem;
+                                transition: padding 250ms ease-in-out 0s;
                             }
 
                             .example__description {

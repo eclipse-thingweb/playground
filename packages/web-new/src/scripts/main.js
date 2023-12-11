@@ -26,14 +26,13 @@ import './json-yaml'
 import './settings-menu'
 import './save-menu'
 import './examples-menu'
-import './console'
+import {minMaxBtn} from './console'
 import './open-api'
 import './async-api'
 import './aas'
 import './defaults'
 import './visualize'
 import './validation'
-
 
 /***********************************************************/
 /*                          Loader                         */
@@ -50,7 +49,7 @@ let stateCheck = setInterval(() => {
 /***********************************************************/
 /*                Resizing functionality                   */
 /***********************************************************/
-const textIcon = document.querySelectorAll(".text-icon")
+export const textIcon = document.querySelectorAll(".text-icon")
 const resizerY = document.querySelector(".horizontal-divider")
 const resizerX = document.querySelector(".vertical-divider")
 
@@ -163,9 +162,18 @@ function onmousemoveY(e) {
     // DOWN
     if (deltaY > 0) {
       const h = Math.round(parseInt(getComputedStyle(b).height) - deltaY)
-      b.style.flex = `0 ${h < 55 ? 50 : h}px`
+      b.style.flex = `0 ${h < 50 ? 40 : h}px`
       t.style.flex = "1 0"
-      if (Math.round(parseInt(getComputedStyle(t).height) + deltaY) > 290) {
+
+      if(h > 39){
+        minMaxBtn.children[0].classList.add("fa-down-left-and-up-right-to-center")
+        minMaxBtn.children[0].classList.remove("fa-up-right-and-down-left-from-center")
+      }else{
+        minMaxBtn.children[0].classList.remove("fa-down-left-and-up-right-to-center")
+        minMaxBtn.children[0].classList.add("fa-up-right-and-down-left-from-center")
+      }
+
+      if (h > 290) {
         textIcon.forEach(text => {
           text.classList.remove("hiddenV")
         })
@@ -176,6 +184,16 @@ function onmousemoveY(e) {
       const h = Math.round(parseInt(getComputedStyle(t).height) + deltaY)
       t.style.flex = `0 ${h < 210 ? 200 : h}px`
       b.style.flex = "1 0"
+
+      if(h < 713){
+        minMaxBtn.children[0].classList.add("fa-down-left-and-up-right-to-center")
+        minMaxBtn.children[0].classList.remove("fa-up-right-and-down-left-from-center")
+      }else{
+        minMaxBtn.children[0].classList.remove("fa-down-left-and-up-right-to-center")
+        minMaxBtn.children[0].classList.add("fa-up-right-and-down-left-from-center")
+      }
+
+
       if (h < 290) {
         textIcon.forEach(text => {
           text.classList.add("hiddenV")
