@@ -38,7 +38,7 @@ import { textIcon } from './main.js'
 const errorContainer = document.querySelector(".console__content #console-error")
 const errorTxt = document.querySelector(".console-error__txt")
 export const minMaxBtn = document.querySelector(".min-max")
-export const visualizationOptions = document.querySelectorAll(".visualization__option")
+export const visualizationOptions = document.querySelectorAll(".visualizations__option")
 export const visualizationContainers = document.querySelectorAll(".console-view")
 const consoleElement = document.querySelector(".console")
 const mainContentElement = document.querySelector(".main-content")
@@ -47,7 +47,7 @@ minMaxBtn.addEventListener("click", () => {
 
     if (minMaxBtn.children[0].classList.contains("fa-down-left-and-up-right-to-center")) {
         mainContentElement.style.flex = "1 0"
-        consoleElement.style.flex = `0 40px`
+        consoleElement.style.flex = `0 39px`
         minMaxBtn.children[0].classList.remove("fa-down-left-and-up-right-to-center")
         minMaxBtn.children[0].classList.add("fa-up-right-and-down-left-from-center")
 

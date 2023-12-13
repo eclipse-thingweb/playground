@@ -701,10 +701,8 @@ main .console {
   align-items: center;
   justify-content: center;
 }
-
 .console__tabs .console-controllers .min-max {
   padding: 1rem 0.5rem;
-
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
@@ -713,13 +711,11 @@ main .console {
   color: var(--clr-primary-500);
   transition: color 250ms ease;
 }
-
 .console__tabs .console-controllers .min-max:hover {
-  color: var(--clr-primary-900);
+  color: var(--clr-primary-700);
   cursor: pointer;
 }
-
-.console__tabs .visualization {
+.console__tabs .visualizations {
   height: 100%;
   display: flex;
   align-items: center;
@@ -765,18 +761,13 @@ main .console {
 .console__tabs .visualizations input[type=radio]:nth-child(6)::before {
   content: "Visualize";
 }
-
-.console__tabs .visualization input[type=radio]:hover {
+.console__tabs .visualizations input[type=radio]:hover {
   background-color: var(--clr-primary-500);
   color: var(--clr-neutral-50);
 }
-.console__tabs .visualization input[type=radio]:checked {
+.console__tabs .visualizations input[type=radio]:checked {
   color: var(--clr-neutral-50);
   background-color: var(--clr-primary-500);
-}
-.console__tabs .visualizations input[type=radio]:disabled {
-  color: var(--clr-neutral-200);
-  cursor: not-allowed;
 }
 .console__content {
   width: 100%;
@@ -1989,7 +1980,6 @@ main .console {
   align-items: center;
   justify-content: center;
   gap: 1rem;
-
   margin: 0 4rem;
   cursor: pointer;
   transition: all 250ms ease-in-out;
@@ -2012,7 +2002,7 @@ main .console {
   opacity: 0;
   position: absolute;
   top: 0.25rem;
-  right: 0.5rem;
+  right: 0.25rem;
   width: 4rem;
   height: 4rem;
   border-radius: 50%;
@@ -2051,8 +2041,6 @@ main .console {
   align-items: flex-start;
   justify-content: center;
   flex-wrap: wrap;
-  padding: 0 1rem;
-  transition: padding 250ms ease-in-out 250ms;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__description, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__description {
   height: 0;
@@ -2118,8 +2106,6 @@ main .console {
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example.open .example__content, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example.open .example__content {
   pointer-events: all;
-  padding: 0 1rem 1rem 1rem;
-  transition: padding 250ms ease-in-out 0s;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example.open .example__description, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example.open .example__description {
   height: 9rem;

@@ -49,7 +49,7 @@
             }
         }
 
-        .visualization {
+        .visualizations {
             height: 100%;
             display: flex;
             align-items: center;
@@ -95,14 +95,6 @@
                     content: 'Defaults';
                 }
 
-                // &:nth-child(5)::before{
-                //     content: 'Linting';
-                // }
-
-                // &:nth-child(6)::before{
-                //     content: 'Canonicalize';
-                // }
-
                 &:nth-child(6)::before {
                     content: 'Visualize';
                 }
@@ -117,12 +109,6 @@
                 color: var(--clr-neutral-50);
                 background-color: var(--clr-primary-500);
             }
-
-            input[type=radio]:disabled {
-                color: var(--clr-neutral-200);
-                cursor: not-allowed;
-            }
-
         }
     }
 

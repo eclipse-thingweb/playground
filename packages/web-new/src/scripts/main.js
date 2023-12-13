@@ -162,10 +162,10 @@ function onmousemoveY(e) {
     // DOWN
     if (deltaY > 0) {
       const h = Math.round(parseInt(getComputedStyle(b).height) - deltaY)
-      b.style.flex = `0 ${h < 50 ? 40 : h}px`
+      b.style.flex = `0 ${h < 50 ? 39 : h}px`
       t.style.flex = "1 0"
 
-      if(h > 39){
+      if(h > 38){
         minMaxBtn.children[0].classList.add("fa-down-left-and-up-right-to-center")
         minMaxBtn.children[0].classList.remove("fa-up-right-and-down-left-from-center")
       }else{
@@ -173,7 +173,7 @@ function onmousemoveY(e) {
         minMaxBtn.children[0].classList.add("fa-up-right-and-down-left-from-center")
       }
 
-      if (h > 290) {
+      if (h < 445) {
         textIcon.forEach(text => {
           text.classList.remove("hiddenV")
         })
@@ -185,7 +185,7 @@ function onmousemoveY(e) {
       t.style.flex = `0 ${h < 210 ? 200 : h}px`
       b.style.flex = "1 0"
 
-      if(h < 713){
+      if(h < 714){
         minMaxBtn.children[0].classList.add("fa-down-left-and-up-right-to-center")
         minMaxBtn.children[0].classList.remove("fa-up-right-and-down-left-from-center")
       }else{
@@ -193,8 +193,7 @@ function onmousemoveY(e) {
         minMaxBtn.children[0].classList.add("fa-up-right-and-down-left-from-center")
       }
 
-
-      if (h < 290) {
+      if (h < 310) {
         textIcon.forEach(text => {
           text.classList.add("hiddenV")
         })
