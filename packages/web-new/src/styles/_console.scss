@@ -25,7 +25,9 @@
         align-items: center;
         justify-content: space-between;
         border-bottom: 2px solid var(--clr-primary-500);
-        padding: 0 1rem;
+        height: fit-content;
+        background-color: var(--clr-neutral-50);
+        padding-right: 1rem;
 
         .console-controllers {
             display: flex;
@@ -36,23 +38,18 @@
                 padding: 1rem .5rem;
                 appearance: none;
                 border: none;
-                background-color: var(--clr-neutral-50);
+                background-color: transparent;
                 color: var(--clr-primary-500);
                 transition: color 250ms ease;
 
                 &:hover {
-                    color: var(--clr-primary-900);
+                    color: var(--clr-primary-700);
                     cursor: pointer;
-                }
-
-                &:disabled {
-                    color: var(--clr-neutral-300);
-                    cursor: auto;
                 }
             }
         }
 
-        .visualization {
+        .visualizations {
             height: 100%;
             display: flex;
             align-items: center;
@@ -60,9 +57,9 @@
             input[type=radio] {
                 appearance: none;
                 width: fit-content;
-                padding: 1rem;
-                background-color: var(--clr-neutral-50);
-                color: var(--clr-neutral-300);
+                height: 100%;
+                padding: .75rem 1.5rem;
+                color: var(--clr-primary-500);
                 font-family: var(--ff-primary);
                 font-size: var(--fs-p);
                 font-weight: var(--fw-bold);
@@ -98,28 +95,20 @@
                     content: 'Defaults';
                 }
 
-                // &:nth-child(5)::before{
-                //     content: 'Linting';
-                // }
-
-                // &:nth-child(6)::before{
-                //     content: 'Canonicalize';
-                // }
-
                 &:nth-child(6)::before {
                     content: 'Visualize';
+                }
+
+                &:hover{
+                    background-color: var(--clr-primary-500);
+                    color: var(--clr-neutral-50);
                 }
             }
 
             input[type=radio]:checked {
-                color: var(--clr-neutral-900);
+                color: var(--clr-neutral-50);
+                background-color: var(--clr-primary-500);
             }
-
-            input[type=radio]:disabled {
-                color: var(--clr-neutral-200);
-                cursor: not-allowed;
-            }
-
         }
     }
 
