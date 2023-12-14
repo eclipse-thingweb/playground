@@ -22,7 +22,6 @@
 
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -35,7 +34,7 @@ module.exports = (env, argv) => {
     const config = {
         entry: {
             bundle: path.resolve(__dirname, 'src/scripts/main.js'),
-            styles: path.resolve(__dirname, 'src/styles/styles.css'),
+            styles: path.resolve(__dirname, 'src/styles/styles.scss'),
         },
         output: {
             path: path.resolve(__dirname, 'dist'),
@@ -74,7 +73,11 @@ module.exports = (env, argv) => {
                 },
                 {
                     test: /\.scss$/,
-                    use: ['style-loader', 'css-loader', 'sass-loader'],
+                    use: [
+                        isDevMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+                        'css-loader',
+                        'sass-loader',
+                    ],
                 },
                 {
                     test: /\.css$/i,
@@ -98,7 +101,6 @@ module.exports = (env, argv) => {
                 template: 'src/template.html',
                 favicon: 'src/assets/favicon/favicon.ico'
             }),
-            // new BundleAnalyzerPlugin(),
             new CopyWebpackPlugin({
                 patterns: [
                     {
@@ -113,8 +115,8 @@ module.exports = (env, argv) => {
             }),
             new MonacoWebpackPlugin(),
             new MiniCssExtractPlugin({
-                filename: '[name].[contenthash].css',
-            })
+                filename: isDevMode ? '[name].css' : '[name].[contenthash].css',
+            }),
         ],
         optimization: {
             minimizer: [
