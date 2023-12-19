@@ -173,6 +173,8 @@
                     <h1>Thing Description Playground <span>- BETA Version</span></h1>
                 </div>
                 <div class="navbar__links">
+                    <a href="https://github.com/eclipse-thingweb/playground/discussions/492" class="feedback-link"
+                        target="_blank"><i class="fa-solid fa-comments"></i><span>Feedback</span></a>
                     <a href="https://github.com/eclipse-thingweb/playground/tree/master/packages/cli" class="cli-link"
                         target="_blank"><i class="fa-solid fa-terminal"></i><span>CLI</span></a>
                     <a href="https://github.com/eclipse-thingweb/playground" class="git-link" target="_blank"><i
@@ -529,11 +531,13 @@
                 <form action="#" class="settings__editor">
                     <div class="form-field">
                         <label for="theme-picker">Theme:</label>
-                        <select name="theme-picker" id="theme-picker" class="theme-picker">
-                            <option value="light-mode" selected>Light Mode</option>
-                            <option value="dark-mode">Dark Mode</option>
-                            <option value="monochrome-mode">Monochrome</option>
-                        </select>
+                        <div class="select-container">
+                            <select name="theme-picker" id="theme-picker" class="theme-picker">
+                                <option value="light-mode" selected>Light Mode</option>
+                                <option value="dark-mode">Dark Mode</option>
+                                <option value="monochrome-mode">Monochrome</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="form-field">

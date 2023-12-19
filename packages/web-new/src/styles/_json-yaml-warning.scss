@@ -58,11 +58,12 @@
                 font-size: var(--fs-p);
                 font-weight: var(--fw-bold);
                 font-family: var(--ff-primary);
-                color: var(--clr-neutral-900);
+                color: var(--clr-neutral-50);
+                // color: var(--clr-neutral-900);
                 transition: background-color 250ms ease-in-out;
             }
             .confirm-btn{
-                background-color: var(--clr-success-500);
+                background-color: var(--clr-success-700);
                 margin-right: 1rem;
 
                 &:hover{
@@ -71,7 +72,7 @@
             }
 
             .cancel-btn{
-                background-color: var(--clr-error-500);
+                background-color: var(--clr-error-700);
 
                 &:hover{
                     background-color: var(--clr-error-900);

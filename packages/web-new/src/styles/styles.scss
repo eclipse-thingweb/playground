@@ -271,6 +271,7 @@ header {
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 3rem;
 
             a {
                 display: flex;
@@ -283,10 +284,6 @@ header {
                 &:hover {
                     color: var(--clr-neutral-200);
                 }
-            }
-
-            .cli-link {
-                margin-right: 3rem;
             }
 
             i {

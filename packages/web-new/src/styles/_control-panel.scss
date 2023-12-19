@@ -38,7 +38,11 @@
         transition: all 250ms ease;
 
         &:last-child {
-            border-bottom: none;
+            border-color: var(--clr-neutral-50);
+
+            &:hover{
+                border-color: var(--clr-primary-500);
+            }
         }
 
         &:hover {
@@ -57,7 +61,6 @@
         .text-icon {
             width: fit-content;
             opacity: 1;
-            margin-top: 1rem;
             transform: scaleX(1);
             transition: opacity 250ms var(--trans-bouncy), transform 250ms var(--trans-bouncy);
         }

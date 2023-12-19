@@ -162,8 +162,10 @@
                         text-rendering: auto;
                         -webkit-font-smoothing: antialiased;
                         font: var(--fa-font-solid);
-                        content: "\f0d7";
+                        content: "\f107";
                         pointer-events: none;
+                        color: var(--clr-neutral-900);
+                        font-size: var(--fs-p);
                     }
                 }
 

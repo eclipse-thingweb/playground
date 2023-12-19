@@ -23,7 +23,7 @@ import { openApiTab, openApiJsonBtn, openApiYamlBtn, openApiView } from './open-
 import { asyncApiTab, asyncApiJsonBtn, asyncApiYamlBtn, asyncApiView } from './async-api'
 import { AASView } from './aas'
 import { defaultsView, defaultsJsonBtn, defaultsYamlBtn, defaultsAddBtn } from './defaults'
-import { visualize } from './visualize'
+import { visualize, visualizeTab } from './visualize'
 import { validationView, validationTab } from './validation'
 import { convertTDYamlToJson, detectProtocolSchemes } from '../../../core/dist/web-bundle.min.js'
 import { generateOAP, generateAAP, addDefaultsUtil, validate, generateAAS, resetValidationStatus } from './util'
@@ -60,12 +60,15 @@ minMaxBtn.addEventListener("click", () => {
         })
 
         setTimeout(() => {
-            mainContentElement.style.flex = "0 200px"
+            mainContentElement.style.flex = "0 210px"
             consoleElement.style.flex = `1 0`
             minMaxBtn.children[0].classList.add("fa-down-left-and-up-right-to-center")
             minMaxBtn.children[0].classList.remove("fa-up-right-and-down-left-from-center")
-        }, 50);
 
+            if (visualizeTab.checked === true) {
+                visualizeTab.click()
+            }
+        }, 100);
     }
 })
 
