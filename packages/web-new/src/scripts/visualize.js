@@ -34,8 +34,8 @@ const treeInputs = document.querySelector(".visualize-inputs__tree")
 const visViews = [graphViewInput, treeViewInput]
 
 /**
- * parses the edito value, if it works, checks the the vis type
- * and initializes the rescpective visualization and well as 
+ * parses the editor value, if it works, checks the the vis type
+ * and initializes the respective visualization and well as 
  * enabling the respective inputs
  * @param { String } editorValue 
  */

@@ -122,15 +122,36 @@
                     font-weight: var(--fw-bold);
                 }
 
-                select {
+                .select-container {
                     width: 60%;
-                    background-color: var(--clr-neutral-50);
-                    color: var(--clr-neutral-900);
-                    padding: .5rem 1rem;
-                    border-radius: 5px;
-                    border: none;
-                    cursor: pointer;
-                    font-family: var(--ff-primary);
+                    position: relative;
+
+                    select {
+                        width: 100%;
+                        appearance: none;
+                        background-color: var(--clr-neutral-50);
+                        color: var(--clr-neutral-900);
+                        padding: .5rem 1rem;
+                        border-radius: 5px;
+                        border: none;
+                        cursor: pointer;
+                        font-family: var(--ff-primary);
+                    }
+
+                    &::after {
+                        position: absolute;
+                        top: 50%;
+                        right: 1rem;
+                        transform: translateY(-50%);
+                        display: inline-block;
+                        text-rendering: auto;
+                        -webkit-font-smoothing: antialiased;
+                        font: var(--fa-font-solid);
+                        content: "\f107";
+                        pointer-events: none;
+                        color: var(--clr-neutral-900);
+                        font-size: var(--fs-footer);
+                    }
                 }
 
                 .font-range-container {

@@ -182,7 +182,7 @@ function onmousemoveY(e) {
     // UP
     if (deltaY < 0) {
       const h = Math.round(parseInt(getComputedStyle(t).height) + deltaY)
-      t.style.flex = `0 ${h < 210 ? 200 : h}px`
+      t.style.flex = `0 ${h < 220 ? 210 : h}px`
       b.style.flex = "1 0"
 
       if(h < 714){

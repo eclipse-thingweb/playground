@@ -232,6 +232,7 @@ header .navbar__links {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 3rem;
 }
 header .navbar__links a {
   display: flex;
@@ -243,9 +244,6 @@ header .navbar__links a {
 }
 header .navbar__links a:hover {
   color: var(--clr-neutral-200);
-}
-header .navbar__links .cli-link {
-  margin-right: 3rem;
 }
 header .navbar__links i {
   font-size: var(--fs-i);
@@ -630,7 +628,10 @@ main .console {
   transition: all 250ms ease;
 }
 .control-panel__btn:last-child {
-  border-bottom: none;
+  border-color: var(--clr-neutral-50);
+}
+.control-panel__btn:last-child:hover {
+  border-color: var(--clr-primary-500);
 }
 .control-panel__btn:hover {
   color: var(--clr-neutral-50);
@@ -646,7 +647,6 @@ main .console {
   width: -moz-fit-content;
   width: fit-content;
   opacity: 1;
-  margin-top: 1rem;
   transform: scaleX(1);
   transition: opacity 250ms var(--trans-bouncy), transform 250ms var(--trans-bouncy);
 }
@@ -1558,8 +1558,15 @@ main .console {
 .settings-menu .settings__editor .form-field span {
   font-weight: var(--fw-bold);
 }
-.settings-menu .settings__editor .form-field select {
+.settings-menu .settings__editor .form-field .select-container {
   width: 60%;
+  position: relative;
+}
+.settings-menu .settings__editor .form-field .select-container select {
+  width: 100%;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
   background-color: var(--clr-neutral-50);
   color: var(--clr-neutral-900);
   padding: 0.5rem 1rem;
@@ -1567,6 +1574,20 @@ main .console {
   border: none;
   cursor: pointer;
   font-family: var(--ff-primary);
+}
+.settings-menu .settings__editor .form-field .select-container::after {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  display: inline-block;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  font: var(--fa-font-solid);
+  content: "\f107";
+  pointer-events: none;
+  color: var(--clr-neutral-900);
+  font-size: var(--fs-footer);
 }
 .settings-menu .settings__editor .form-field .font-range-container {
   display: flex;
@@ -1818,8 +1839,10 @@ main .console {
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
   font: var(--fa-font-solid);
-  content: "\f0d7";
+  content: "\f107";
   pointer-events: none;
+  color: var(--clr-neutral-900);
+  font-size: var(--fs-p);
 }
 .examples-menu .examples-menu-container__filter .category-field select,
 .examples-menu .examples-menu-container__filter .category-field .search-bar,
@@ -2389,18 +2412,18 @@ main .console {
   font-size: var(--fs-p);
   font-weight: var(--fw-bold);
   font-family: var(--ff-primary);
-  color: var(--clr-neutral-900);
+  color: var(--clr-neutral-50);
   transition: background-color 250ms ease-in-out;
 }
 .json-yaml-warning__container .warning-btns .confirm-btn {
-  background-color: var(--clr-success-500);
+  background-color: var(--clr-success-700);
   margin-right: 1rem;
 }
 .json-yaml-warning__container .warning-btns .confirm-btn:hover {
   background-color: var(--clr-success-900);
 }
 .json-yaml-warning__container .warning-btns .cancel-btn {
-  background-color: var(--clr-error-500);
+  background-color: var(--clr-error-700);
 }
 .json-yaml-warning__container .warning-btns .cancel-btn:hover {
   background-color: var(--clr-error-900);
