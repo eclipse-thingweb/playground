@@ -527,3 +527,125 @@ i {
 .link-popup__btn-container .btn-close:hover {
     background-color: #106775;
 }
+
+/* Styling for popup to redirect to the new Playground */
+.pop-up-to-new-wrapper{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99;
+    display: grid;
+    place-items: center;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.pop-up-to-new-wrapper.closed {
+    display: none;
+}
+
+.pop-up-to-new {
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.pop-up-to-new__img, .pop-up-to-new__txt{
+    padding: 1.5rem;
+}
+
+.pop-up-to-new__img {
+    width: 100%;
+    background-color: #138496;
+    display: grid;
+    place-items: center;
+}
+
+.pop-up-to-new__img svg{
+    width: 50%;
+}
+
+.pop-up-to-new__txt {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.pop-up-to-new__txt > *{
+    margin-bottom: 0;
+}
+
+.pop-up-to-new__txt h3{
+    font-size: 1.25rem;
+}
+
+.pop-up-to-new__txt .pop-up-btns{
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 100%;
+   gap: 1rem;
+}
+
+.pop-up-btns button{
+    border: none;
+    border-radius: 5px;
+    flex: 1;
+    padding: .25rem .75rem;
+}
+
+.pop-up-btns .pop-up-btns__cancel{
+    background-color: transparent;
+    border: 2px solid #138496;
+    color: #138496;
+    transition: all 250ms ease-in-out;
+}
+
+.pop-up-btns .pop-up-btns__cancel:hover{
+    background-color: #106775;
+    border-color: #106775;
+    color: #ffffff;
+}
+
+.pop-up-btns .pop-up-btns__go{
+    background-color: #138496;
+    color: #ffffff;
+    transition: background-color 250ms ease-in-out;
+}
+
+.pop-up-btns .pop-up-btns__go:hover {
+    background-color: #106775;
+}
+
+
+@media screen and (min-width: 990px) {
+    .pop-up-to-new {
+        width: 50%;
+        flex-direction: row;
+        height: 20rem;
+    }
+    
+    .pop-up-to-new__img {
+        width: 40%;
+        height: 100%;
+    }
+    
+    .pop-up-to-new__img svg{
+        width: 100%;
+    }
+    
+    .pop-up-to-new__txt {
+        width: 60%;
+        height: 100%;
+        gap: 0;
+    }
+}

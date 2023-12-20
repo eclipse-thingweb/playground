@@ -14,119 +14,90 @@
  -->
 
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>Eclipse Thingweb Playground | Validate and play with W3C Thing Descriptions</title>
-        <link rel="shortcut icon" type="image/x-icon" href="./media/favlogo.png" />
-        <link rel="stylesheet" type="text/css" href="node_modules/bootstrap-css-only/css/bootstrap.min.css" />
-        <link rel="stylesheet" type="text/css" href="./style.css" />
-        <link rel="stylesheet" type="text/css" href="./jsonld-vis.css" />
-    </head>
 
-    <body>
-        <div id="assertion_test_popup" class="curtain popup">
-            <div class="assertion-test-popup">
-                <button class="btn top-right btn-close" id="close_assertion_test_popup">X</button>
-                <div>Please Select the manual assertions options.</div>
+<head>
+    <meta charset="utf-8" />
+    <title>Eclipse Thingweb Playground | Validate and play with W3C Thing Descriptions</title>
+    <link rel="shortcut icon" type="image/x-icon" href="./media/favlogo.png" />
+    <link rel="stylesheet" type="text/css" href="node_modules/bootstrap-css-only/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <link rel="stylesheet" type="text/css" href="./jsonld-vis.css" />
+</head>
 
-                <table class="table table-striped assertion-table">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Assertion ID</th>
-                            <th scope="col" class="statcol">Status</th>
-                            <th scope="col">Description</th>
-                        </tr>
-                    </thead>
+<body>
+    <div id="assertion_test_popup" class="curtain popup">
+        <div class="assertion-test-popup">
+            <button class="btn top-right btn-close" id="close_assertion_test_popup">X</button>
+            <div>Please Select the manual assertions options.</div>
 
-                    <tbody id="manual_assertion_table_body">
-                        <!--Manual assertions will be appended here dynamically-->
-                    </tbody>
-                </table>
+            <table class="table table-striped assertion-table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Assertion ID</th>
+                        <th scope="col" class="statcol">Status</th>
+                        <th scope="col">Description</th>
+                    </tr>
+                </thead>
 
-                <button type="button" class="btn custom-btn" id="btn_assertion">Assertion Test</button>
-            </div>
+                <tbody id="manual_assertion_table_body">
+                    <!--Manual assertions will be appended here dynamically-->
+                </tbody>
+            </table>
+
+            <button type="button" class="btn custom-btn" id="btn_assertion">Assertion Test</button>
         </div>
+    </div>
 
-        <div id="visualized-popup-wrapper" class="curtain popup">
-            <div id="visualized-popup">
-                <button class="btn" id="close-visualized-popup">X</button>
-                <div class="container-fluid p-3 h-100">
-                    <div class="row">
-                        <div class="col-9" id="visualized-wrapper">
-                            <div id="visualized"></div>
-                        </div>
-                        <div class="col-3 border-left">
-                            <div id="visualized-controls" class="mx-2">
-                                <div class="controls-all mt-3">
-                                    <span class="d-inline-block mr-3">Type:</span>
-                                    <div class="custom-control custom-radio custom-control-inline">
-                                        <input
-                                            type="radio"
-                                            id="graph-vis"
-                                            name="visType"
-                                            class="custom-control-input"
-                                            checked
-                                        />
-                                        <label class="custom-control-label" for="graph-vis">Graph</label>
-                                    </div>
-                                    <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" id="tree-vis" name="visType" class="custom-control-input" />
-                                        <label class="custom-control-label" for="tree-vis">Tree</label>
-                                    </div>
+    <div id="visualized-popup-wrapper" class="curtain popup">
+        <div id="visualized-popup">
+            <button class="btn" id="close-visualized-popup">X</button>
+            <div class="container-fluid p-3 h-100">
+                <div class="row">
+                    <div class="col-9" id="visualized-wrapper">
+                        <div id="visualized"></div>
+                    </div>
+                    <div class="col-3 border-left">
+                        <div id="visualized-controls" class="mx-2">
+                            <div class="controls-all mt-3">
+                                <span class="d-inline-block mr-3">Type:</span>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="graph-vis" name="visType" class="custom-control-input"
+                                        checked />
+                                    <label class="custom-control-label" for="graph-vis">Graph</label>
                                 </div>
-
-                                <div class="controls-graph mt-4">
-                                    <div class="btn-group" role="group">
-                                        <button
-                                            type="button"
-                                            class="btn custom-btn"
-                                            id="vis-collapse-all"
-                                            title="Collapse all nodes"
-                                        >
-                                            Collapse All
-                                        </button>
-                                        <button
-                                            type="button"
-                                            class="btn custom-btn"
-                                            id="vis-expand-all"
-                                            title="Expand all nodes"
-                                        >
-                                            Expand All
-                                        </button>
-                                    </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="tree-vis" name="visType" class="custom-control-input" />
+                                    <label class="custom-control-label" for="tree-vis">Tree</label>
                                 </div>
+                            </div>
 
-                                <div id="vega-bindings-wrapper" class="controls-tree mt-3"></div>
+                            <div class="controls-graph mt-4">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn custom-btn" id="vis-collapse-all"
+                                        title="Collapse all nodes">
+                                        Collapse All
+                                    </button>
+                                    <button type="button" class="btn custom-btn" id="vis-expand-all"
+                                        title="Expand all nodes">
+                                        Expand All
+                                    </button>
+                                </div>
+                            </div>
 
-                                <div class="controls-all mt-3">
-                                    <!-- <a href="#" target="_blank" download="visualization.svg">Save as SVG</a> -->
-                                    <div class="btn-group" role="group">
-                                        <button
-                                            type="button"
-                                            class="btn custom-btn oap-btn"
-                                            title="Save the TD visualization as an SVG/PNG file"
-                                            disabled
-                                        >
-                                            Save As
-                                        </button>
-                                        <a
-                                            href="#"
-                                            class="btn custom-btn"
-                                            id="vis-download-svg"
-                                            title="Save the TD visualization as an SVG file"
-                                            download="td.svg"
-                                            >SVG</a
-                                        >
-                                        <a
-                                            href="#"
-                                            class="btn custom-btn"
-                                            id="vis-download-png"
-                                            title="Save the TD visualization as a PNG file"
-                                            download="td.png"
-                                            >PNG</a
-                                        >
-                                    </div>
+                            <div id="vega-bindings-wrapper" class="controls-tree mt-3"></div>
+
+                            <div class="controls-all mt-3">
+                                <!-- <a href="#" target="_blank" download="visualization.svg">Save as SVG</a> -->
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn custom-btn oap-btn"
+                                        title="Save the TD visualization as an SVG/PNG file" disabled>
+                                        Save As
+                                    </button>
+                                    <a href="#" class="btn custom-btn" id="vis-download-svg"
+                                        title="Save the TD visualization as an SVG file" download="td.svg">SVG</a>
+                                    <a href="#" class="btn custom-btn" id="vis-download-png"
+                                        title="Save the TD visualization as a PNG file" download="td.png">PNG</a>
                                 </div>
                             </div>
                         </div>
@@ -134,536 +105,545 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <div id="curtain" class="curtain">
-            <div id="curtain-text">Loading Environment. Please wait....</div>
-            <img src="./media/loading.svg" class="loading-spinner" alt="Loading..." />
+    <div id="curtain" class="curtain">
+        <div id="curtain-text">Loading Environment. Please wait....</div>
+        <img src="./media/loading.svg" class="loading-spinner" alt="Loading..." />
+    </div>
+
+    <div class="link-popup-wrapper closed">
+        <div class="link-popup">
+            <p class="link-popup__header">Share this <span id="link-type">TD</span></p>
+            <p class="link-popup__text">
+                Copy the link below to share your <span id="link-type">TD</span> or open it in a new tab!
+            </p>
+            <div class="link-popup__url">
+                <input class="url-input mb-4" type="text" id="url-input" />
+                <button class="btn-new-tab mb-4" type="button" id="btn-open-tab"
+                    title="Open the url in a new playground tab">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <path
+                            d="M352 0c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9L370.7 96 201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L416 141.3l41.4 41.4c9.2 9.2 22.9 11.9 34.9 6.9s19.8-16.6 19.8-29.6V32c0-17.7-14.3-32-32-32H352zM80 32C35.8 32 0 67.8 0 112V432c0 44.2 35.8 80 80 80H400c44.2 0 80-35.8 80-80V320c0-17.7-14.3-32-32-32s-32 14.3-32 32V432c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16H192c17.7 0 32-14.3 32-32s-14.3-32-32-32H80z" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="link-popup__btn-container">
+                <button class="btn btn-editdor" type="button" id="btn-share-editdor"
+                    title="Export your TD/TM document to ediTDor as a sharable link">
+                    Open in ediTDor
+                </button>
+                <button class="btn btn-close" type="button" id="btn-close-linkpopup" title="Close the link popup">
+                    Close
+                </button>
+            </div>
         </div>
+    </div>
 
-        <div class="link-popup-wrapper closed">
-            <div class="link-popup">
-                <p class="link-popup__header">Share this <span id="link-type">TD</span></p>
-                <p class="link-popup__text">
-                    Copy the link below to share your <span id="link-type">TD</span> or open it in a new tab!
-                </p>
-                <div class="link-popup__url">
-                    <input class="url-input mb-4" type="text" id="url-input" />
-                    <button
-                        class="btn-new-tab mb-4"
-                        type="button"
-                        id="btn-open-tab"
-                        title="Open the url in a new playground tab"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                            <path
-                                d="M352 0c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9L370.7 96 201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L416 141.3l41.4 41.4c9.2 9.2 22.9 11.9 34.9 6.9s19.8-16.6 19.8-29.6V32c0-17.7-14.3-32-32-32H352zM80 32C35.8 32 0 67.8 0 112V432c0 44.2 35.8 80 80 80H400c44.2 0 80-35.8 80-80V320c0-17.7-14.3-32-32-32s-32 14.3-32 32V432c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16H192c17.7 0 32-14.3 32-32s-14.3-32-32-32H80z"
-                            />
-                        </svg>
-                    </button>
-                </div>
+    <div class="pop-up-to-new-wrapper closed">
+        <div class="pop-up-to-new">
+            <div class="pop-up-to-new__img">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 436 440" fill="none">
+                    <path
+                        d="M388.06 388.608L387.788 388.049C387.705 387.879 379.56 370.849 384.101 354.063C388.642 337.277 404.26 326.676 404.416 326.571L404.932 326.226L405.204 326.785C405.287 326.955 413.432 343.985 408.891 360.771C404.35 377.557 388.731 388.159 388.574 388.263L388.06 388.608ZM408.237 358.873C411.285 344.559 390.05 338.847 385.604 352.79C385.441 353.301 385.289 353.819 385.147 354.342C381.181 368.998 387.138 383.892 388.497 386.987C391.231 384.998 403.882 375.143 407.848 360.487C407.992 359.953 408.122 359.415 408.237 358.873Z"
+                        fill="#3F3D56" />
+                    <path
+                        d="M367.056 360.63C371.597 377.417 387.156 387.813 387.156 387.813C387.156 387.813 395.348 370.993 390.807 354.206C386.266 337.419 370.707 327.023 370.707 327.023C370.707 327.023 362.515 343.843 367.056 360.63Z"
+                        fill="white" />
+                    <path
+                        d="M388.307 388.373L387.687 388.339C387.498 388.329 368.659 387.168 356.196 375.039C343.733 362.91 342.067 344.106 342.051 343.917L342 343.299L342.62 343.333C342.809 343.343 361.648 344.504 374.11 356.633C386.572 368.762 388.24 387.566 388.255 387.755L388.307 388.373ZM356.952 374.264C367.834 384.864 383.74 386.891 387.107 387.21C386.698 383.853 384.238 368.01 373.355 357.41C372.966 357.031 372.571 356.664 372.169 356.307C361.24 346.576 345.881 362.307 355.793 373.072C356.169 373.48 356.555 373.877 356.952 374.264Z"
+                        fill="#3F3D56" />
+                    <path
+                        d="M401.695 357.022C389.234 369.152 387.712 387.799 387.712 387.799C387.712 387.799 406.393 386.779 418.854 374.649C431.315 362.519 432.84 343.871 432.84 343.871C432.84 343.871 414.156 344.891 401.695 357.022Z"
+                        fill="#3F3D56" />
+                    <path
+                        d="M387.452 324.252C391.94 324.252 395.578 320.614 395.578 316.126C395.578 311.638 391.94 308 387.452 308C382.964 308 379.326 311.638 379.326 316.126C379.326 320.614 382.964 324.252 387.452 324.252Z"
+                        fill="white" />
+                    <path
+                        d="M372.707 384.461H403.707C407.42 384.461 410.981 385.936 413.607 388.562C416.232 391.187 417.707 394.748 417.707 398.461C417.707 406.193 413.325 434.238 405.593 434.238L367.593 435.238C359.861 435.238 358.707 406.193 358.707 398.461C358.707 394.748 360.182 391.187 362.807 388.562C365.433 385.936 368.994 384.461 372.707 384.461Z"
+                        fill="#E6E6E6" />
+                    <path
+                        d="M269.475 211.473H196.029C194.166 211.471 192.379 210.73 191.061 209.412C189.744 208.095 189.002 206.308 189 204.445V142.795C189.002 140.932 189.743 139.145 191.061 137.827C192.379 136.509 194.166 135.768 196.029 135.766H261.57C267.176 135.772 272.551 138.002 276.515 141.966C280.479 145.93 282.709 151.305 282.715 156.911V198.233C282.711 201.743 281.315 205.108 278.833 207.591C276.35 210.073 272.985 211.469 269.475 211.473ZM196.029 137.766C194.696 137.767 193.418 138.298 192.475 139.241C191.532 140.183 191.001 141.462 191 142.795V204.445C191.002 205.778 191.532 207.056 192.475 207.999C193.418 208.941 194.696 209.471 196.029 209.473H269.475C272.455 209.47 275.312 208.284 277.419 206.177C279.527 204.07 280.712 201.213 280.715 198.233V156.911C280.709 151.835 278.691 146.969 275.101 143.38C271.512 139.791 266.646 137.772 261.57 137.766L196.029 137.766Z"
+                        fill="#3F3D56" />
+                    <path
+                        d="M199.524 140.5C198.199 140.502 196.928 141.029 195.991 141.966C195.053 142.904 194.526 144.175 194.524 145.5V201.74C194.526 203.065 195.053 204.336 195.991 205.273C196.928 206.211 198.199 206.738 199.524 206.74H265.98C268.952 206.736 271.802 205.554 273.904 203.452C276.006 201.35 277.188 198.5 277.191 195.528V159.616C277.186 154.548 275.17 149.689 271.586 146.105C268.002 142.522 263.143 140.506 258.075 140.5H199.524Z"
+                        fill="#E6E6E6" />
+                    <path
+                        d="M241.229 155.376H230.907C230.244 155.375 229.609 155.112 229.14 154.643C228.671 154.174 228.408 153.539 228.407 152.876V135H243.729V152.876C243.729 153.539 243.465 154.174 242.996 154.643C242.528 155.112 241.892 155.375 241.229 155.376Z"
+                        fill="#3F3D56" />
+                    <path
+                        d="M221.231 193.363H194.054C193.789 193.363 193.534 193.258 193.347 193.07C193.159 192.883 193.054 192.628 193.054 192.363C193.054 192.098 193.159 191.844 193.347 191.656C193.534 191.469 193.789 191.363 194.054 191.363H221.231C221.496 191.363 221.751 191.469 221.938 191.656C222.126 191.844 222.231 192.098 222.231 192.363C222.231 192.628 222.126 192.883 221.938 193.07C221.751 193.258 221.496 193.363 221.231 193.363Z"
+                        fill="#3F3D56" />
+                    <path
+                        d="M221.231 185.363H194.054C193.789 185.363 193.534 185.258 193.347 185.07C193.159 184.883 193.054 184.628 193.054 184.363C193.054 184.098 193.159 183.844 193.347 183.656C193.534 183.469 193.789 183.363 194.054 183.363H221.231C221.496 183.363 221.751 183.469 221.938 183.656C222.126 183.844 222.231 184.098 222.231 184.363C222.231 184.628 222.126 184.883 221.938 185.07C221.751 185.258 221.496 185.363 221.231 185.363Z"
+                        fill="#3F3D56" />
+                    <path
+                        d="M31.1101 327.474C43.0216 321.859 52.3792 311.961 57.3167 299.753C57.805 298.543 59.6569 299.364 59.1693 300.573C54.0074 313.267 44.2485 323.548 31.8403 329.364C30.6572 329.917 29.9335 328.025 31.1101 327.474Z"
+                        fill="white" />
+                    <path
+                        d="M52.3891 220.085C54.5711 221.397 57.0448 222.147 59.5881 222.266C62.1313 222.386 64.6645 221.872 66.9601 220.771C68.1356 220.203 68.8581 222.096 67.6903 222.661C65.1483 223.866 62.35 224.43 59.5398 224.304C56.7296 224.178 53.993 223.365 51.5692 221.938C51.3295 221.822 51.1426 221.62 51.0467 221.372C50.9508 221.123 50.9531 220.848 51.0529 220.601C51.1627 220.357 51.3646 220.165 51.6149 220.068C51.8651 219.972 52.1433 219.978 52.3891 220.085Z"
+                        fill="white" />
+                    <path
+                        d="M137.883 164.904C137.419 165.205 136.979 165.542 136.567 165.911L88.5134 153.66L85.2354 142.067L67.0914 144.728L70.9005 165.816C71.2082 167.52 72.0602 169.078 73.3287 170.256C74.5972 171.434 76.2137 172.169 77.9354 172.35L134.046 178.259C134.961 180.186 136.44 181.788 138.288 182.853C140.135 183.918 142.263 184.396 144.388 184.222C146.514 184.048 148.536 183.231 150.185 181.88C151.835 180.529 153.034 178.707 153.623 176.658C154.213 174.608 154.164 172.428 153.483 170.407C152.803 168.386 151.523 166.62 149.815 165.344C148.106 164.068 146.05 163.343 143.919 163.264C141.788 163.185 139.683 163.758 137.885 164.904H137.883Z"
+                        fill="#FFB6B6" />
+                    <path
+                        d="M63.8484 155.251L76.2284 165.931L93.5484 180.861L101.198 141.721L101.998 137.651L102.628 134.421L85.0784 103.851L70.4484 104.691L69.4484 104.751L69.4284 104.971L69.1984 107.021L66.1984 134.001L66.1284 134.651L63.8484 155.251Z"
+                        fill="#E6E6E6" />
+                    <path d="M144.766 422.926H157.026L162.859 375.638H144.764L144.766 422.926Z" fill="#FFB6B6" />
+                    <path d="M16.7664 423.926H29.0264L34.8594 376.638H16.7644L16.7664 423.926Z" fill="#FFB6B6" />
+                    <path
+                        d="M6.96741 403.102L39.9674 408.102L87.9774 245.622L138.967 409.102L175.967 404.102L127.967 214.102V199.102L121.467 176.602L122.147 170.512L126.877 127.922L128.927 109.452L129.06 108.259C129.172 107.257 128.907 106.25 128.316 105.434C127.726 104.617 126.853 104.05 125.867 103.842L110.467 100.602H85.3015L70.4515 104.692L69.4315 104.972L68.9715 105.102L69.2015 107.022L72.6815 136.202L72.8715 137.802L76.2315 165.932L76.9715 172.102C47.9715 193.102 46.9715 214.102 46.9715 214.102L6.96741 403.102Z"
+                        fill="#2F2E41" />
+                    <path
+                        d="M100.925 87.9515C114.49 87.9515 125.486 76.9551 125.486 63.3905C125.486 49.8258 114.49 38.8295 100.925 38.8295C87.3607 38.8295 76.3644 49.8258 76.3644 63.3905C76.3644 76.9551 87.3607 87.9515 100.925 87.9515Z"
+                        fill="#FFB6B6" />
+                    <path d="M75.1278 166.458L74.2201 173.399L122.806 179.753L123.714 172.813L75.1278 166.458Z"
+                        fill="white" />
+                    <path
+                        d="M188.883 174.905C188.419 175.205 187.979 175.542 187.567 175.911L139.513 163.66L136.235 152.068L118.091 154.729L121.9 175.816C122.208 177.52 123.06 179.078 124.329 180.256C125.597 181.434 127.214 182.169 128.935 182.35L185.046 188.259C185.961 190.186 187.44 191.788 189.288 192.853C191.135 193.918 193.263 194.396 195.388 194.222C197.514 194.048 199.536 193.231 201.185 191.88C202.835 190.529 204.034 188.707 204.623 186.658C205.213 184.608 205.164 182.428 204.483 180.407C203.803 178.386 202.523 176.62 200.815 175.344C199.106 174.068 197.05 173.343 194.919 173.264C192.788 173.186 190.683 173.758 188.885 174.905H188.883Z"
+                        fill="#FFB6B6" />
+                    <path
+                        d="M114.967 110.101L123.467 103.601C125.767 102.729 128.914 105.206 129.467 107.601L141.467 156.601L116.467 174.601L112.967 169.101L114.967 110.101Z"
+                        fill="#E6E6E6" />
+                    <path
+                        d="M119.745 43.0555C124.338 42.4925 129.379 42.8905 132.959 45.8225C136.539 48.7545 137.695 54.8505 134.305 58.0005C131.305 60.7895 126.612 60.1335 122.592 60.9265C119.13 61.7025 116.027 63.6178 113.782 66.3658C111.537 69.1138 110.278 72.5356 110.208 76.0835C110.268 86.2575 120.032 93.9625 121.786 103.984C122.986 110.824 120.098 118.022 115.111 122.854C110.124 127.686 103.268 130.296 96.3604 131.003C89.4524 131.71 82.4673 130.63 75.7543 128.855C69.0133 127.073 62.3763 124.544 56.7203 120.467C51.0643 116.39 46.4274 110.641 44.6114 103.91C42.7954 97.1775 44.0994 89.4585 48.7794 84.2895C54.1384 78.3705 63.0533 76.3355 67.6893 69.8335C72.8893 62.5455 70.9623 52.1675 75.1683 44.2665C77.9763 38.9915 83.2934 35.3935 88.9604 33.4975C94.6274 31.6015 100.679 31.2275 106.652 31.0445C109.792 30.9445 113.027 30.9155 115.952 32.0605C118.877 33.2055 121.452 35.8135 121.6 38.9515C121.748 42.0895 119.745 43.0555 119.745 43.0555Z"
+                        fill="#2F2E41" />
+                    <path
+                        d="M369.105 319.376L373.479 307.715L373.636 307.625L408.873 287.49C409.253 287.274 409.663 287.118 410.091 287.028C411.072 286.821 412.095 286.973 412.974 287.456C413.853 287.938 414.53 288.72 414.883 289.659C415.235 290.598 415.239 291.633 414.895 292.574C414.55 293.516 413.879 294.304 413.004 294.793L369.105 319.376Z"
+                        fill="#3F3D56" />
+                    <path
+                        d="M239.522 319.376L195.628 294.795C194.752 294.305 194.082 293.518 193.737 292.576C193.392 291.634 193.396 290.599 193.749 289.66C194.101 288.721 194.779 287.939 195.658 287.456C196.537 286.973 197.561 286.821 198.542 287.028C198.969 287.118 199.38 287.274 199.759 287.49L235.154 307.715L239.522 319.376Z"
+                        fill="#3F3D56" />
+                    <path d="M372.607 320.825H236.021L224.533 267.211H384.095L372.607 320.825Z" fill="#3F3D56" />
+                    <path
+                        d="M377.106 316.602H231.523L221.509 270.98C221.205 269.592 221.215 268.152 221.54 266.768C221.865 265.384 222.496 264.091 223.387 262.983C224.278 261.875 225.406 260.981 226.689 260.367C227.971 259.752 229.374 259.433 230.796 259.433H377.834C379.255 259.433 380.659 259.752 381.941 260.367C383.223 260.981 384.351 261.875 385.242 262.983C386.133 264.091 386.764 265.384 387.089 266.768C387.414 268.152 387.425 269.592 387.12 270.98L377.106 316.602ZM233.132 314.602H375.497L385.167 270.551C385.407 269.454 385.399 268.317 385.143 267.225C384.886 266.132 384.387 265.11 383.684 264.235C382.98 263.361 382.09 262.655 381.077 262.17C380.065 261.685 378.956 261.433 377.834 261.433H230.796C229.673 261.433 228.565 261.685 227.552 262.17C226.54 262.655 225.649 263.361 224.945 264.236C224.242 265.111 223.743 266.132 223.487 267.225C223.23 268.318 223.222 269.455 223.462 270.552L233.132 314.602Z"
+                        fill="#3F3D56" />
+                    <path opacity="0.1" d="M372.607 320.825H236.021L224.533 267.211H384.095L372.607 320.825Z"
+                        fill="black" />
+                    <path
+                        d="M371.284 434.91H237.345C235.528 434.908 233.786 434.185 232.501 432.901C231.217 431.616 230.494 429.874 230.492 428.057V313.533H378.137V428.057C378.135 429.874 377.412 431.616 376.128 432.901C374.843 434.185 373.101 434.908 371.284 434.91ZM232.492 315.533V428.057C232.493 429.344 233.005 430.577 233.915 431.487C234.825 432.397 236.058 432.908 237.345 432.91H371.284C372.571 432.908 373.804 432.397 374.714 431.487C375.624 430.577 376.136 429.344 376.137 428.057V315.533H232.492Z"
+                        fill="#3F3D56" />
+                    <path
+                        d="M235.884 318.132V424.81C235.885 426.268 236.465 427.666 237.496 428.697C238.528 429.728 239.925 430.308 241.384 430.31H367.245C368.704 430.308 370.102 429.728 371.133 428.697C372.164 427.666 372.744 426.268 372.745 424.81V318.132H235.884Z"
+                        fill="#3F3D56" />
+                    <path
+                        d="M384.596 267.711H224.034V267.211C224.035 265.507 224.713 263.873 225.918 262.668C227.123 261.463 228.757 260.786 230.461 260.784H378.167C379.871 260.786 381.505 261.463 382.71 262.668C383.916 263.873 384.593 265.507 384.596 267.211V267.711Z"
+                        fill="white" />
+                    <path
+                        d="M144.26 412.894L158.927 412.018V418.302L172.87 427.932C173.559 428.408 174.078 429.091 174.351 429.882C174.624 430.674 174.637 431.531 174.388 432.33C174.138 433.129 173.64 433.828 172.966 434.324C172.292 434.82 171.477 435.087 170.64 435.087H153.179L150.169 428.872L148.994 435.087H142.411L144.26 412.894Z"
+                        fill="#2F2E41" />
+                    <path
+                        d="M16.2601 412.894L30.9266 412.018V418.302L44.8704 427.932C45.5592 428.408 46.0779 429.091 46.3508 429.882C46.6238 430.674 46.6367 431.531 46.3876 432.33C46.1385 433.129 45.6405 433.828 44.9663 434.324C44.2921 434.82 43.4771 435.087 42.6401 435.087H25.1791L22.1694 428.872L20.9943 435.087H14.4108L16.2601 412.894Z"
+                        fill="#2F2E41" />
+                    <path
+                        d="M263.927 406.087H236.749C236.484 406.087 236.23 405.982 236.042 405.794C235.855 405.607 235.749 405.353 235.749 405.087C235.749 404.822 235.855 404.568 236.042 404.38C236.23 404.193 236.484 404.087 236.749 404.087H263.927C264.192 404.087 264.446 404.193 264.634 404.38C264.821 404.568 264.927 404.822 264.927 405.087C264.927 405.353 264.821 405.607 264.634 405.794C264.446 405.982 264.192 406.087 263.927 406.087Z"
+                        fill="white" />
+                    <path
+                        d="M274.927 396.087H247.749C247.484 396.087 247.23 395.982 247.042 395.794C246.855 395.607 246.749 395.353 246.749 395.087C246.749 394.822 246.855 394.568 247.042 394.38C247.23 394.193 247.484 394.087 247.749 394.087H274.927C275.192 394.087 275.446 394.193 275.634 394.38C275.821 394.568 275.927 394.822 275.927 395.087C275.927 395.353 275.821 395.607 275.634 395.794C275.446 395.982 275.192 396.087 274.927 396.087Z"
+                        fill="white" />
+                    <path
+                        d="M309.875 284.315H299.553C298.89 284.314 298.255 284.05 297.786 283.582C297.317 283.113 297.054 282.478 297.053 281.815V263.939H312.375V281.815C312.374 282.478 312.111 283.113 311.642 283.582C311.173 284.05 310.538 284.314 309.875 284.315Z"
+                        fill="white" />
+                    <path d="M420 436H-3.05176e-05V437H420V436Z" fill="#CCCCCC" />
+                    <path
+                        d="M354 11.9034V23.1961H353.703V23.0758H254.297V23.1961H254V11.9034C254.001 10.6033 254.518 9.35688 255.438 8.43759C256.357 7.51829 257.603 7.00128 258.903 7H349.097C350.397 7.00128 351.643 7.51829 352.562 8.43759C353.482 9.35688 353.999 10.6033 354 11.9034Z"
+                        fill="white" />
+                    <path
+                        d="M274.208 18.0698C275.849 18.0698 277.18 16.7393 277.18 15.098C277.18 13.4568 275.849 12.1263 274.208 12.1263C272.567 12.1263 271.236 13.4568 271.236 15.098C271.236 16.7393 272.567 18.0698 274.208 18.0698Z"
+                        fill="white" />
+                    <path
+                        d="M333.792 18.0698C335.433 18.0698 336.764 16.7393 336.764 15.098C336.764 13.4568 335.433 12.1263 333.792 12.1263C332.151 12.1263 330.82 13.4568 330.82 15.098C330.82 16.7393 332.151 18.0698 333.792 18.0698Z"
+                        fill="white" />
+                    <path
+                        d="M282.794 48.2336H265.116C264.367 48.2327 263.649 47.9348 263.119 47.4052C262.589 46.8756 262.292 46.1576 262.291 45.4087V37.0532C262.292 36.3042 262.589 35.5862 263.119 35.0566C263.649 34.527 264.367 34.2291 265.116 34.2283H282.794C283.543 34.2291 284.261 34.527 284.791 35.0566C285.32 35.5862 285.618 36.3042 285.619 37.0532V45.4087C285.618 46.1576 285.32 46.8756 284.791 47.4052C284.261 47.9348 283.543 48.2327 282.794 48.2336Z"
+                        fill="white" />
+                    <path
+                        d="M312.868 48.2336H295.19C294.441 48.2327 293.723 47.9348 293.193 47.4052C292.664 46.8756 292.366 46.1576 292.365 45.4087V37.0532C292.366 36.3042 292.664 35.5862 293.193 35.0566C293.723 34.527 294.441 34.2291 295.19 34.2283H312.868C313.617 34.2291 314.335 34.527 314.865 35.0566C315.394 35.5862 315.692 36.3042 315.693 37.0532V45.4087C315.692 46.1576 315.394 46.8756 314.865 47.4052C314.335 47.9348 313.617 48.2327 312.868 48.2336Z"
+                        fill="white" />
+                    <path
+                        d="M312.868 69.8222H295.19C294.418 69.8213 293.678 69.5144 293.133 68.9688C292.587 68.4231 292.28 67.6834 292.279 66.9117V58.5561C292.28 57.7845 292.587 57.0447 293.133 56.499C293.678 55.9534 294.418 55.6465 295.19 55.6456H312.868C313.64 55.6465 314.38 55.9534 314.925 56.499C315.471 57.0447 315.778 57.7845 315.779 58.5561V66.9117C315.778 67.6834 315.471 68.4231 314.925 68.9688C314.38 69.5144 313.64 69.8213 312.868 69.8222Z"
+                        fill="white" />
+                    <path
+                        d="M282.736 69.8222H265.058C264.286 69.8213 263.546 69.5144 263.001 68.9688C262.455 68.4231 262.148 67.6834 262.147 66.9117V58.5561C262.148 57.7845 262.455 57.0447 263.001 56.4991C263.546 55.9534 264.286 55.6465 265.058 55.6456H282.736C283.508 55.6465 284.248 55.9534 284.793 56.499C285.339 57.0447 285.646 57.7845 285.647 58.5561V66.9117C285.646 67.6834 285.339 68.4231 284.793 68.9688C284.248 69.5144 283.508 69.8213 282.736 69.8222Z"
+                        fill="white" />
+                    <path
+                        d="M342.942 69.8222H325.264C324.492 69.8213 323.752 69.5144 323.207 68.9688C322.661 68.4231 322.354 67.6834 322.353 66.9117V58.5561C322.354 57.7845 322.661 57.0447 323.207 56.499C323.752 55.9534 324.492 55.6465 325.264 55.6456H342.942C343.714 55.6465 344.454 55.9534 344.999 56.499C345.545 57.0447 345.852 57.7845 345.853 58.5561V66.9117C345.852 67.6834 345.545 68.4231 344.999 68.9688C344.454 69.5144 343.714 69.8213 342.942 69.8222Z"
+                        fill="#3F3D56" />
+                    <path
+                        d="M342.942 48.2504H325.264C324.492 48.2495 323.752 47.9426 323.207 47.3969C322.661 46.8513 322.354 46.1115 322.353 45.3399V36.9843C322.354 36.2126 322.661 35.4728 323.207 34.9272C323.752 34.3816 324.492 34.0747 325.264 34.0738H342.942C343.714 34.0747 344.454 34.3816 344.999 34.9272C345.545 35.4728 345.852 36.2126 345.853 36.9843V45.3399C345.852 46.1115 345.545 46.8513 344.999 47.3969C344.454 47.9426 343.714 48.2495 342.942 48.2504Z"
+                        fill="white" />
+                    <path
+                        d="M333.794 67.5875C336.441 67.5875 338.587 65.4412 338.587 62.7937C338.587 60.1462 336.441 58 333.794 58C331.146 58 329 60.1462 329 62.7937C329 65.4412 331.146 67.5875 333.794 67.5875Z"
+                        fill="white" />
+                    <path
+                        d="M333.319 64.6225C333.211 64.6227 333.106 64.5878 333.019 64.5231L333.014 64.5191L331.888 63.6565C331.782 63.5758 331.713 63.4565 331.696 63.3249C331.678 63.1933 331.714 63.0602 331.795 62.9548C331.875 62.8495 331.995 62.7805 332.126 62.7631C332.258 62.7457 332.391 62.7812 332.496 62.862L333.226 63.4215L334.95 61.1726C334.99 61.1205 335.04 61.0767 335.097 61.0438C335.154 61.0109 335.217 60.9896 335.282 60.981C335.347 60.9724 335.413 60.9767 335.477 60.9937C335.54 61.0107 335.6 61.04 335.652 61.08L335.641 61.0945L335.652 61.0802C335.758 61.1611 335.826 61.2804 335.844 61.4119C335.861 61.5435 335.826 61.6765 335.745 61.7819L333.717 64.4271C333.67 64.4881 333.61 64.5374 333.54 64.5713C333.471 64.6052 333.395 64.6227 333.319 64.6225Z"
+                        fill="#3F3D56" />
+                    <rect x="251" y="4" width="106" height="78.4906" rx="6" stroke="#3F3D56" stroke-width="2" />
+                </svg>
+            </div>
+            <div class="pop-up-to-new__txt">
+                <h3>New Web App Ready for You!</h3>
+                <p>Dear User,</p>
+                <p>Pack your virtual bags! We're moving to a brand-new web application. The current app will bid
+                    farewell by April.</p>
+                <p></p>
 
-                <div class="link-popup__btn-container">
-                    <button
-                        class="btn btn-editdor"
-                        type="button"
-                        id="btn-share-editdor"
-                        title="Export your TD/TM document to ediTDor as a sharable link"
-                    >
-                        Open in ediTDor
-                    </button>
-                    <button class="btn btn-close" type="button" id="btn-close-linkpopup" title="Close the link popup">
-                        Close
-                    </button>
+                <div class="pop-up-btns">
+                    <button class="pop-up-btns__btn pop-up-btns__cancel" id="popup-cancel" type="button">Remind me later</button>
+                    <button class="pop-up-btns__btn pop-up-btns__go" id="popup-go" type="button">Take me there!</button>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="container-fluid main">
-            <div class="row alert alert-info header">
-                <div class="col-2">
-                    <div>
-                        <img id="logo" alt="Thingweb Logo" src="./media/logo.png" />
+    <div class="container-fluid main">
+        <div class="row alert alert-info header">
+            <div class="col-2">
+                <div>
+                    <img id="logo" alt="Thingweb Logo" src="./media/logo.png" />
+                </div>
+            </div>
+
+            <div class="col-6">
+                <h3>Thing Description Playground</h3>
+                <br />
+                <a href="https://w3c.github.io/wot-thing-description/#" title="More about the W3C Thing Description"
+                    target="_blank">Validate and play with TDs</a>
+            </div>
+
+            <div class="col-4 navcol">
+                <nav class="navbar navbar-dark bg-info">
+                    <a class="navbar-brand btn" href="https://github.com/eclipse-thingweb/playground/issues/new">Create
+                        Issue</a>
+                    <a class="navbar-brand btn"
+                        href="https://github.com/eclipse-thingweb/playground/tree/master/packages/cli">Playground
+                        CLI</a>
+                </nav>
+            </div>
+        </div>
+        <div class="wrapper h-100">
+            <div class="row h-100">
+                <div class="col-8">
+                    <div class="col-12 navcol">
+                        <ul class="nav nav-tabs" id="editorTab" role="tablist">
+                            <li class="nav-item td-related" role="presentation">
+                                <button class="nav-link active" id="td-tab" data-bs-toggle="tab" data-bs-target="#td"
+                                    type="button" role="tab" aria-controls="td" aria-selected="true">
+                                    TD
+                                </button>
+                            </li>
+                            <li class="nav-item tm-related" role="presentation">
+                                <button class="nav-link" id="tm-tab" data-bs-toggle="tab" data-bs-target="#tm"
+                                    type="button" role="tab" aria-controls="tm" aria-selected="true">
+                                    TM
+                                </button>
+                            </li>
+                            <li class="nav-item td-related" role="presentation">
+                                <button class="nav-link" id="open-api-tab" data-bs-toggle="tab"
+                                    data-bs-target="#open-api" type="button" role="tab" aria-controls="open-api"
+                                    aria-selected="false">
+                                    Open API
+                                </button>
+                            </li>
+                            <li class="nav-item td-related" role="presentation">
+                                <button class="nav-link" id="async-api-tab" data-bs-toggle="tab"
+                                    data-bs-target="#async-api" type="button" role="tab" aria-controls="async-api"
+                                    aria-selected="false">
+                                    Async API
+                                </button>
+                            </li>
+                            <div class="ml-auto">
+                                <div class="btn-toolbar" role="toolbar" aria-label="Toolbar for editors">
+                                    <div class="btn-group btn-group-toggle mr-2 td-related">
+                                        <button type="button" title="Convert editor content to JSON"
+                                            class="btn btn-info btn-sm active" id="json-format-btn">
+                                            JSON
+                                        </button>
+                                        <button type="button" title="Convert editor content to YAML"
+                                            class="btn btn-info btn-sm" id="yaml-format-btn">
+                                            YAML
+                                        </button>
+                                    </div>
+                                    <p></p>
+                                    <div class="btn-group mr-2" role="group">
+                                        <button type="button" id="btn_save"
+                                            title="Export your TD/TM document as a sharable link"
+                                            class="btn btn-lg btn-info">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z" />
+                                                <path
+                                                    d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z" />
+                                            </svg>
+                                        </button>
+                                        <button type="button" class="btn btn-info mr-0 ml-0 pr-0 pl-0"
+                                            disabled></button>
+                                        <button type="button" title="Download the content on the editor"
+                                            id="editor-print-btn" class="btn btn-lg btn-info">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                                                <path
+                                                    d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </ul>
                     </div>
+
+                    <div class="tab-content td-related" id="editorTabContent">
+                        <div class="tab-pane fade show active" id="td" role="tabpanel" aria-labelledby="td-tab">
+                            <div class="editor" id="td-editor"></div>
+                        </div>
+                        <div class="tab-pane fade" id="open-api" role="tabpanel" aria-labelledby="open-api-tab">
+                            <div class="editor" id="open-api-editor" style="display: none"></div>
+                        </div>
+                        <div class="tab-pane fade" id="async-api" role="tabpanel" aria-labelledby="async-api-tab">
+                            <div class="editor" id="async-api-editor" style="display: none"></div>
+                        </div>
+                    </div>
+
+                    <div class="editor tm-related" id="tm-editor"></div>
                 </div>
 
-                <div class="col-6">
-                    <h3>Thing Description Playground</h3>
-                    <br />
-                    <a
-                        href="https://w3c.github.io/wot-thing-description/#"
-                        title="More about the W3C Thing Description"
-                        target="_blank"
-                        >Validate and play with TDs</a
-                    >
-                </div>
-
-                <div class="col-4 navcol">
-                    <nav class="navbar navbar-dark bg-info">
-                        <a class="navbar-brand btn" href="https://github.com/eclipse-thingweb/playground/issues/new"
-                            >Create Issue</a
-                        >
-                        <a
-                            class="navbar-brand btn"
-                            href="https://github.com/eclipse-thingweb/playground/tree/master/packages/cli"
-                            >Playground CLI</a
-                        >
-                    </nav>
-                </div>
-            </div>
-            <div class="wrapper h-100">
-                <div class="row h-100">
-                    <div class="col-8">
-                        <div class="col-12 navcol">
-                            <ul class="nav nav-tabs" id="editorTab" role="tablist">
-                                <li class="nav-item td-related" role="presentation">
-                                    <button
-                                        class="nav-link active"
-                                        id="td-tab"
-                                        data-bs-toggle="tab"
-                                        data-bs-target="#td"
-                                        type="button"
-                                        role="tab"
-                                        aria-controls="td"
-                                        aria-selected="true"
-                                    >
-                                        TD
-                                    </button>
-                                </li>
-                                <li class="nav-item tm-related" role="presentation">
-                                    <button
-                                        class="nav-link"
-                                        id="tm-tab"
-                                        data-bs-toggle="tab"
-                                        data-bs-target="#tm"
-                                        type="button"
-                                        role="tab"
-                                        aria-controls="tm"
-                                        aria-selected="true"
-                                    >
-                                        TM
-                                    </button>
-                                </li>
-                                <li class="nav-item td-related" role="presentation">
-                                    <button
-                                        class="nav-link"
-                                        id="open-api-tab"
-                                        data-bs-toggle="tab"
-                                        data-bs-target="#open-api"
-                                        type="button"
-                                        role="tab"
-                                        aria-controls="open-api"
-                                        aria-selected="false"
-                                    >
-                                        Open API
-                                    </button>
-                                </li>
-                                <li class="nav-item td-related" role="presentation">
-                                    <button
-                                        class="nav-link"
-                                        id="async-api-tab"
-                                        data-bs-toggle="tab"
-                                        data-bs-target="#async-api"
-                                        type="button"
-                                        role="tab"
-                                        aria-controls="async-api"
-                                        aria-selected="false"
-                                    >
-                                        Async API
-                                    </button>
-                                </li>
-                                <div class="ml-auto">
-                                    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar for editors">
-                                        <div class="btn-group btn-group-toggle mr-2 td-related">
-                                            <button
-                                                type="button"
-                                                title="Convert editor content to JSON"
-                                                class="btn btn-info btn-sm active"
-                                                id="json-format-btn"
-                                            >
-                                                JSON
-                                            </button>
-                                            <button
-                                                type="button"
-                                                title="Convert editor content to YAML"
-                                                class="btn btn-info btn-sm"
-                                                id="yaml-format-btn"
-                                            >
-                                                YAML
-                                            </button>
-                                        </div>
-                                        <p></p>
-                                        <div class="btn-group mr-2" role="group">
-                                            <button
-                                                type="button"
-                                                id="btn_save"
-                                                title="Export your TD/TM document as a sharable link"
-                                                class="btn btn-lg btn-info"
-                                            >
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-link-45deg"
-                                                    viewBox="0 0 16 16"
-                                                >
-                                                    <path
-                                                        d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"
-                                                    />
-                                                    <path
-                                                        d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"
-                                                    />
+                <div class="col-4" id="side-panel">
+                    <div class="font-div">
+                        <div class="panel">
+                            <div class="row">
+                                <table class="table">
+                                    <tr id="validation_table_head" class="btn-info">
+                                        <th rowspan="2">
+                                            <i id="table_head_arrow" class="or-down"></i>
+                                        </th>
+                                    </tr>
+                                    <tbody id="validation_table">
+                                        <tr>
+                                            <td>
+                                                <svg class="svg-circle" xmlns="http://www.w3.org/2000/svg">
+                                                    <circle id="spot-json" cx="10" cy="10" r="9" />
                                                 </svg>
-                                            </button>
-                                            <button
-                                                type="button"
-                                                class="btn btn-info mr-0 ml-0 pr-0 pl-0"
-                                                disabled
-                                            ></button>
-                                            <button
-                                                type="button"
-                                                title="Download the content on the editor"
-                                                id="editor-print-btn"
-                                                class="btn btn-lg btn-info"
-                                            >
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    fill="currentColor"
-                                                    class="bi bi-download"
-                                                    viewBox="0 0 16 16"
-                                                >
-                                                    <path
-                                                        d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"
-                                                    />
-                                                    <path
-                                                        d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"
-                                                    />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </ul>
-                        </div>
-
-                        <div class="tab-content td-related" id="editorTabContent">
-                            <div class="tab-pane fade show active" id="td" role="tabpanel" aria-labelledby="td-tab">
-                                <div class="editor" id="td-editor"></div>
-                            </div>
-                            <div class="tab-pane fade" id="open-api" role="tabpanel" aria-labelledby="open-api-tab">
-                                <div class="editor" id="open-api-editor" style="display: none"></div>
-                            </div>
-                            <div class="tab-pane fade" id="async-api" role="tabpanel" aria-labelledby="async-api-tab">
-                                <div class="editor" id="async-api-editor" style="display: none"></div>
-                            </div>
-                        </div>
-
-                        <div class="editor tm-related" id="tm-editor"></div>
-                    </div>
-
-                    <div class="col-4" id="side-panel">
-                        <div class="font-div">
-                            <div class="panel">
-                                <div class="row">
-                                    <table class="table">
-                                        <tr id="validation_table_head" class="btn-info">
-                                            <th rowspan="2">
-                                                <i id="table_head_arrow" class="or-down"></i>
-                                            </th>
+                                            </td>
+                                            <td title="Is green when TD/TM is a valid JSON" class="tooltipline">
+                                                JSON validation
+                                            </td>
                                         </tr>
-                                        <tbody id="validation_table">
-                                            <tr>
-                                                <td>
-                                                    <svg class="svg-circle" xmlns="http://www.w3.org/2000/svg">
-                                                        <circle id="spot-json" cx="10" cy="10" r="9" />
-                                                    </svg>
-                                                </td>
-                                                <td title="Is green when TD/TM is a valid JSON" class="tooltipline">
-                                                    JSON validation
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <svg class="svg-circle" xmlns="http://www.w3.org/2000/svg">
-                                                        <circle id="spot-schema" cx="10" cy="10" r="9" />
-                                                    </svg>
-                                                </td>
-                                                <td
-                                                    title="Is green when TD/TM is valid according to the JSON Schema of the TD/TM spec"
-                                                    class="tooltipline"
-                                                >
-                                                    JSON Schema validation
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <svg class="svg-circle" xmlns="http://www.w3.org/2000/svg">
-                                                        <circle id="spot-defaults" cx="10" cy="10" r="9" />
-                                                    </svg>
-                                                </td>
-                                                <td
-                                                    title="Optional: Is green when the validated TD has no default assumptions and everything is explicitly declared"
-                                                    class="tooltipline"
-                                                >
-                                                    (With Defaults) JSON Schema validation
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <svg class="svg-circle" xmlns="http://www.w3.org/2000/svg">
-                                                        <circle id="spot-jsonld" cx="10" cy="10" r="9" />
-                                                    </svg>
-                                                </td>
-                                                <td
-                                                    title="Is green when TD/TM can be expanded using the @context value"
-                                                    class="tooltipline"
-                                                >
-                                                    JSON-LD validation
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <svg class="svg-circle" xmlns="http://www.w3.org/2000/svg">
-                                                        <circle id="spot-additional" cx="10" cy="10" r="9" />
-                                                    </svg>
-                                                </td>
-                                                <td title="Is green when all custom checks pass" class="tooltipline">
-                                                    Additional Checks
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                        <tr>
+                                            <td>
+                                                <svg class="svg-circle" xmlns="http://www.w3.org/2000/svg">
+                                                    <circle id="spot-schema" cx="10" cy="10" r="9" />
+                                                </svg>
+                                            </td>
+                                            <td title="Is green when TD/TM is valid according to the JSON Schema of the TD/TM spec"
+                                                class="tooltipline">
+                                                JSON Schema validation
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <svg class="svg-circle" xmlns="http://www.w3.org/2000/svg">
+                                                    <circle id="spot-defaults" cx="10" cy="10" r="9" />
+                                                </svg>
+                                            </td>
+                                            <td title="Optional: Is green when the validated TD has no default assumptions and everything is explicitly declared"
+                                                class="tooltipline">
+                                                (With Defaults) JSON Schema validation
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <svg class="svg-circle" xmlns="http://www.w3.org/2000/svg">
+                                                    <circle id="spot-jsonld" cx="10" cy="10" r="9" />
+                                                </svg>
+                                            </td>
+                                            <td title="Is green when TD/TM can be expanded using the @context value"
+                                                class="tooltipline">
+                                                JSON-LD validation
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <svg class="svg-circle" xmlns="http://www.w3.org/2000/svg">
+                                                    <circle id="spot-additional" cx="10" cy="10" r="9" />
+                                                </svg>
+                                            </td>
+                                            <td title="Is green when all custom checks pass" class="tooltipline">
+                                                Additional Checks
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
 
-                                <div class="row">
-                                    <form>
-                                        <div class="form-group">
-                                            <label for="editor_theme">Editor Theme</label>
-                                            <select id="editor_theme" class="btn btn-info dropdown-toggle btn-sm">
-                                                <option class="btn-info" value="vs">White</option>
-                                                <option class="btn-info" value="vs-dark">Dark</option>
-                                                <option class="btn-info" value="hc-black">Contrast</option>
-                                            </select>
-                                            <br /><br />
+                            <div class="row">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="editor_theme">Editor Theme</label>
+                                        <select id="editor_theme" class="btn btn-info dropdown-toggle btn-sm">
+                                            <option class="btn-info" value="vs">White</option>
+                                            <option class="btn-info" value="vs-dark">Dark</option>
+                                            <option class="btn-info" value="hc-black">Contrast</option>
+                                        </select>
+                                        <br /><br />
 
-                                            <ul class="list-unstyled">
-                                                <li class="d-inline-block mr-4">
-                                                    <input
-                                                        type="checkbox"
-                                                        id="box_auto_validate"
-                                                        value="boxautoval"
-                                                        class="m-0"
-                                                    />
-                                                    <label for="box_auto_validate" class="mb-0">Auto Validate</label>
-                                                </li>
-                                                <li class="d-inline-block">
-                                                    <input
-                                                        type="checkbox"
-                                                        id="box_reset_logging"
-                                                        value="boxreslog"
-                                                        class="m-0"
-                                                    />
-                                                    <label
-                                                        class="tooltipline mb-0"
-                                                        for="box_reset_logging"
-                                                        title="Reset Logging for every new Validation"
-                                                        >Reset Logging</label
-                                                    >
-                                                </li>
-                                            </ul>
+                                        <ul class="list-unstyled">
+                                            <li class="d-inline-block mr-4">
+                                                <input type="checkbox" id="box_auto_validate" value="boxautoval"
+                                                    class="m-0" />
+                                                <label for="box_auto_validate" class="mb-0">Auto Validate</label>
+                                            </li>
+                                            <li class="d-inline-block">
+                                                <input type="checkbox" id="box_reset_logging" value="boxreslog"
+                                                    class="m-0" />
+                                                <label class="tooltipline mb-0" for="box_reset_logging"
+                                                    title="Reset Logging for every new Validation">Reset Logging</label>
+                                            </li>
+                                        </ul>
 
-                                            <ul class="list-unstyled">
-                                                <li class="d-inline-block mr-3">
-                                                    <input
-                                                        type="checkbox"
-                                                        id="box_jsonld_validate"
-                                                        value="boxjsonld"
-                                                        class="m-0"
-                                                    />
-                                                    <label for="box_jsonld_validate">Validate JSON-LD</label>
-                                                </li>
-                                                <li class="d-inline-block td-related">
-                                                    <input
-                                                        type="checkbox"
-                                                        id="box_check_tm_conformance"
-                                                        value="boxtmconf"
-                                                        class="m-0"
-                                                    />
-                                                    <label
-                                                        class="tooltipline"
-                                                        for="box_check_tm_conformance"
-                                                        title="Check if TD conforms to structure imposed by linked TM"
-                                                        >Check TM Conformance</label
-                                                    >
-                                                </li>
-                                            </ul>
+                                        <ul class="list-unstyled">
+                                            <li class="d-inline-block mr-3">
+                                                <input type="checkbox" id="box_jsonld_validate" value="boxjsonld"
+                                                    class="m-0" />
+                                                <label for="box_jsonld_validate">Validate JSON-LD</label>
+                                            </li>
+                                            <li class="d-inline-block td-related">
+                                                <input type="checkbox" id="box_check_tm_conformance" value="boxtmconf"
+                                                    class="m-0" />
+                                                <label class="tooltipline" for="box_check_tm_conformance"
+                                                    title="Check if TD conforms to structure imposed by linked TM">Check
+                                                    TM Conformance</label>
+                                            </li>
+                                        </ul>
 
-                                            <br />
-                                            <label for="doc_type">Document Type</label>
-                                            <select id="doc_type" class="btn btn-info dropdown-toggle btn-sm">
-                                                <option class="btn-info" value="td">Thing Description</option>
-                                                <option class="btn-info" value="tm">Thing Model</option>
-                                            </select>
+                                        <br />
+                                        <label for="doc_type">Document Type</label>
+                                        <select id="doc_type" class="btn btn-info dropdown-toggle btn-sm">
+                                            <option class="btn-info" value="td">Thing Description</option>
+                                            <option class="btn-info" value="tm">Thing Model</option>
+                                        </select>
 
-                                            <br />
-                                            <div class="btn-group" role="group">
-                                                <button type="button" class="btn custom-btn jsonOnly" id="btn_validate">
-                                                    Validate
-                                                </button>
-                                                <button type="button" class="btn custom-btn jsonOnly" id="btn_clearLog">
-                                                    Clear Log
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    title="Format the JSON document with pretty printing"
-                                                    class="btn custom-btn jsonOnly"
-                                                    id="btn_formatDocument"
-                                                >
-                                                    Format Document
-                                                </button>
-                                            </div>
-
-                                            <br />
-                                            <div class="btn-group" role="group">
-                                                <button
-                                                    type="button"
-                                                    class="btn custom-btn jsonOnly"
-                                                    id="btn_visualize"
-                                                >
-                                                    Visualize
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    class="btn custom-btn jsonOnly"
-                                                    id="btn_assertion_popup"
-                                                >
-                                                    Assertion Test
-                                                </button>
-                                            </div>
-
-                                            <br class="td-related" />
-                                            <div class="btn-group td-related" role="group">
-                                                <button
-                                                    type="button"
-                                                    class="btn custom-btn oap-btn"
-                                                    title="Extend/reduce a TD by default values"
-                                                    disabled
-                                                >
-                                                    Defaults
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    class="btn custom-btn jsonOnly"
-                                                    id="btn_defaults_add"
-                                                    title="Add every default value explicitly"
-                                                >
-                                                    Add
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    class="btn custom-btn jsonOnly"
-                                                    id="btn_defaults_remove"
-                                                    title="Remove all explicitly stated default values"
-                                                >
-                                                    Remove
-                                                </button>
-                                            </div>
+                                        <br />
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn custom-btn jsonOnly" id="btn_validate">
+                                                Validate
+                                            </button>
+                                            <button type="button" class="btn custom-btn jsonOnly" id="btn_clearLog">
+                                                Clear Log
+                                            </button>
+                                            <button type="button" title="Format the JSON document with pretty printing"
+                                                class="btn custom-btn jsonOnly" id="btn_formatDocument">
+                                                Format Document
+                                            </button>
                                         </div>
-                                    </form>
-                                </div>
 
-                                <div class="row">
-                                    <form>
-                                        <div class="form-group">
-                                            <label>Examples:</label>
-                                            <select id="load_example" class="btn btn-info btn-sm dropdown-toggle">
-                                                <!-- Examples will be dynamically populated here -->
-                                            </select>
+                                        <br />
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn custom-btn jsonOnly" id="btn_visualize">
+                                                Visualize
+                                            </button>
+                                            <button type="button" class="btn custom-btn jsonOnly"
+                                                id="btn_assertion_popup">
+                                                Assertion Test
+                                            </button>
                                         </div>
-                                    </form>
-                                </div>
+
+                                        <br class="td-related" />
+                                        <div class="btn-group td-related" role="group">
+                                            <button type="button" class="btn custom-btn oap-btn"
+                                                title="Extend/reduce a TD by default values" disabled>
+                                                Defaults
+                                            </button>
+                                            <button type="button" class="btn custom-btn jsonOnly" id="btn_defaults_add"
+                                                title="Add every default value explicitly">
+                                                Add
+                                            </button>
+                                            <button type="button" class="btn custom-btn jsonOnly"
+                                                id="btn_defaults_remove"
+                                                title="Remove all explicitly stated default values">
+                                                Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="row">
+                                <form>
+                                    <div class="form-group">
+                                        <label>Examples:</label>
+                                        <select id="load_example" class="btn btn-info btn-sm dropdown-toggle">
+                                            <!-- Examples will be dynamically populated here -->
+                                        </select>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                        <div class="row conrow">
-                            <div class="col">
-                                <pre id="console">Please click Validate after an input TD/TM...&#13;&#10;</pre>
-                            </div>
+                    </div>
+                    <div class="row conrow">
+                        <div class="col">
+                            <pre id="console">Please click Validate after an input TD/TM...&#13;&#10;</pre>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div
-            class="modal fade"
-            id="exampleModal"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-        >
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">...</div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">...</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </div>
+    </div>
 
-        <footer>
-            <div class="footer-shape">
-                <img src="./media/footer-shape.jpg" />
-            </div>
-            <div class="links">
-                <p id="copynotice">Copyrights © 2023 Part of the Eclipse Thingweb project.</p>
-            </div>
-        </footer>
-        <script src="./node_modules/papaparse/papaparse.js"></script>
-        <script src="./node_modules/@thing-description-playground/core/dist/web-bundle.min.js"></script>
-        <script src="./node_modules/@thing-description-playground/assertions/dist/web-bundle.min.js"></script>
-        <script src="./node_modules/@thing-description-playground/td_to_openapi/dist/web-bundle.min.js"></script>
-        <script src="./node_modules/@thing-description-playground/td_to_asyncapi/dist/web-bundle.min.js"></script>
-        <script src="./node_modules/@thing-description-playground/defaults/dist/web-bundle.min.js"></script>
-        <script src="./node_modules/@thing-description-playground/json-spell-checker/dist/web-bundle.min.js"></script>
-        <!-- Ensure that d3 and d3-tip are added before loader.js,
+    <footer>
+        <div class="footer-shape">
+            <img src="./media/footer-shape.jpg" />
+        </div>
+        <div class="links">
+            <p id="copynotice">Copyrights © 2023 Part of the Eclipse Thingweb project.</p>
+        </div>
+    </footer>
+    <script src="./node_modules/papaparse/papaparse.js"></script>
+    <script src="./node_modules/@thing-description-playground/core/dist/web-bundle.min.js"></script>
+    <script src="./node_modules/@thing-description-playground/assertions/dist/web-bundle.min.js"></script>
+    <script src="./node_modules/@thing-description-playground/td_to_openapi/dist/web-bundle.min.js"></script>
+    <script src="./node_modules/@thing-description-playground/td_to_asyncapi/dist/web-bundle.min.js"></script>
+    <script src="./node_modules/@thing-description-playground/defaults/dist/web-bundle.min.js"></script>
+    <script src="./node_modules/@thing-description-playground/json-spell-checker/dist/web-bundle.min.js"></script>
+    <!-- Ensure that d3 and d3-tip are added before loader.js,
     otherwise throws an error, see https://github.com/microsoft/monaco-editor/issues/2283 -->
-        <!-- Also order matters for svg-crowbar, vega and vega-embed (relative to loader.js) -->
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"
-            integrity="sha512-oJp0DdQuQQrRsKVly+Ww6fAN1GwJN7d1bi8UubpEbzDUh84WrJ2CFPBnT4LqBCcfqTcHR5OGXFFhaPe3g1/bzQ=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"
-        ></script>
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.6.7/d3-tip.min.js"
-            integrity="sha512-d0MkreG3huSJjpMnjX8AaYzbn09Z4j5uUs/E9Eu/JNJYMXxo/YRONuB0sr0IzOszsqfC3Vxi4tHicoMC5QQF4A=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"
-        ></script>
-        <script
-            src="https://cdn.jsdelivr.net/npm/vega@5.22.1/build/vega.min.js"
-            integrity="sha256-cx8BtoEWvBhaGWMiCWyjQnN0JMSZXEimZ09X68ln6cE="
-            crossorigin="anonymous"
-        ></script>
-        <script
-            src="https://cdn.jsdelivr.net/npm/vega-embed@6.21.0/build/vega-embed.min.js"
-            integrity="sha256-/XLqtIcBhAjhlmMOaz23UAXzBgQymz60D73+PfrK24w="
-            crossorigin="anonymous"
-        ></script>
-        <script src="./node_modules/svg-crowbar/dist/main.js"></script>
-        <script src="./node_modules/string-direction/index.js"></script>
-        <script src="./node_modules/monaco-editor/min/vs/loader.js"></script>
-        <script type="module" src="./script.js"></script>
-    </body>
+    <!-- Also order matters for svg-crowbar, vega and vega-embed (relative to loader.js) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"
+        integrity="sha512-oJp0DdQuQQrRsKVly+Ww6fAN1GwJN7d1bi8UubpEbzDUh84WrJ2CFPBnT4LqBCcfqTcHR5OGXFFhaPe3g1/bzQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.6.7/d3-tip.min.js"
+        integrity="sha512-d0MkreG3huSJjpMnjX8AaYzbn09Z4j5uUs/E9Eu/JNJYMXxo/YRONuB0sr0IzOszsqfC3Vxi4tHicoMC5QQF4A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.22.1/build/vega.min.js"
+        integrity="sha256-cx8BtoEWvBhaGWMiCWyjQnN0JMSZXEimZ09X68ln6cE=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.21.0/build/vega-embed.min.js"
+        integrity="sha256-/XLqtIcBhAjhlmMOaz23UAXzBgQymz60D73+PfrK24w=" crossorigin="anonymous"></script>
+    <script src="./node_modules/svg-crowbar/dist/main.js"></script>
+    <script src="./node_modules/string-direction/index.js"></script>
+    <script src="./node_modules/monaco-editor/min/vs/loader.js"></script>
+    <script type="module" src="./script.js"></script>
+</body>
+
 </html>
