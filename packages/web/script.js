@@ -313,6 +313,25 @@ document.getElementById("btn_validate").addEventListener("click", () => {
     util.validate("manual", undefined, docType);
 });
 
+//Functionality for the popup to change to the new app
+
+//show the popup as soon as the pages loads
+window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        document.querySelector(".pop-up-to-new-wrapper").classList.remove("closed");
+    }, 1500)
+});
+
+//Handle the closing of the popup
+document.getElementById("popup-cancel").addEventListener("click", () => {
+    document.querySelector(".pop-up-to-new-wrapper").classList.add("closed");
+});
+
+//Handle the redirection of the popup
+document.getElementById("popup-go").addEventListener("click", () => {
+    window.location.href = "https://playground.thingweb.io";
+});
+
 /**
  * Implement functionality of the editor's nav tabs
  */
