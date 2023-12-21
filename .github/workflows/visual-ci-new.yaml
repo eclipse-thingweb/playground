@@ -28,6 +28,7 @@ jobs:
               run: lerna bootstrap --no-ci
 
             - name: New Web Visual Test
+            timeout-minutes: 18
               run: |
                   cd ./packages/web-new
                   npm install
