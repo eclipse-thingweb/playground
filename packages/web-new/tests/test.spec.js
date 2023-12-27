@@ -664,7 +664,7 @@ test.describe("Settings menu functionality", () => {
         const fontSizeSlider = page.locator('#font-size')
         await fontSizeSlider.click()
 
-        await expect(editorFontSize).toHaveText("23")
+        await expect(editorFontSize).toHaveText("23")   
 
         await page.reload({ waitUntil: 'domcontentloaded' })
 
@@ -696,7 +696,7 @@ test.describe("Settings menu functionality", () => {
 
 test.describe("Validation view functionality", () => {
 
-    test("Starting the validation with the main valiation button", async ({ page }) => {
+    test("Starting the validation with the main validation button", async ({ page }) => {
 
         const validationTab = page.locator('#validation-tab')
         const validationView = page.locator('#validation-view')
@@ -712,29 +712,6 @@ test.describe("Validation view functionality", () => {
 
         //TODO: Find a better way to wait for this event to happen
         await page.waitForTimeout(5000)
-        await expect(stateIcon).toHaveClass("fa-solid fa-circle-check")
-    })
-
-    test("Closing the default validation view and opening it again with the validation view tab", async ({ page }) => {
-
-        const validationTab = page.locator('#validation-tab')
-        const validationView = page.locator('#validation-view')
-
-        await expect(validationTab).toBeChecked()
-        await expect(validationView).toHaveClass("console-view validation-view")
-
-        const trashBtn = page.locator(".trash")
-        await trashBtn.click()
-
-        await expect(validationTab).toBeChecked({ checked: false })
-        await expect(validationView).toHaveClass("console-view validation-view hidden")
-
-        await validationTab.click()
-
-        await expect(validationTab).toBeChecked({ checked: true })
-        await expect(validationView).toHaveClass("console-view validation-view")
-
-        const stateIcon = page.locator(".json-validation-section > .section-header > i").nth(0)
         await expect(stateIcon).toHaveClass("fa-solid fa-circle-check")
     })
 
@@ -755,14 +732,11 @@ test.describe("Validation view functionality", () => {
         await expect(exampleTab).toHaveText("TDMyLampThingCloseCancel")
         await expect(exampleTab).toHaveClass("active")
 
-        await expect(validationTab).toBeChecked({ checked: false })
-        await expect(validationView).toHaveClass("console-view validation-view hidden")
+        await expect(validationTab).toBeChecked()
+        await expect(validationView).toHaveClass("console-view validation-view")
 
         const validationBtn = page.locator("#validate-btn")
         await validationBtn.click()
-
-        await expect(validationTab).toBeChecked({ checked: true })
-        await expect(validationView).toHaveClass("console-view validation-view")
 
         //validation section
         const jsonValidationSection = page.locator(".json-validation-section")
@@ -823,15 +797,11 @@ test.describe("Validation view functionality", () => {
         await expect(exampleTab).toHaveText("TDMyLampThingCloseCancel")
         await expect(exampleTab).toHaveClass("active")
 
-        await expect(validationTab).toBeChecked({ checked: false })
-        await expect(validationView).toHaveClass("console-view validation-view hidden")
+        await expect(validationTab).toBeChecked()
+        await expect(validationView).toHaveClass("console-view validation-view")
 
         const validationBtn = page.locator("#validate-btn")
         await validationBtn.click()
-
-        await expect(validationTab).toBeChecked({ checked: true })
-        await expect(validationView).toHaveClass("console-view validation-view")
-
 
         //Validation section
         const jsonValidationSection = page.locator(".json-validation-section")
@@ -897,14 +867,11 @@ test.describe("Validation view functionality", () => {
         await expect(exampleTab).toHaveText("TMLamp ThingCloseCancel")
         await expect(exampleTab).toHaveClass("active")
 
-        await expect(validationTab).toBeChecked({ checked: false })
-        await expect(validationView).toHaveClass("console-view validation-view hidden")
+        await expect(validationTab).toBeChecked()
+        await expect(validationView).toHaveClass("console-view validation-view")
 
         const validationBtn = page.locator("#validate-btn")
         await validationBtn.click()
-
-        await expect(validationTab).toBeChecked({ checked: true })
-        await expect(validationView).toHaveClass("console-view validation-view")
 
         //Validation section
         const jsonValidationSection = page.locator(".json-validation-section")
@@ -951,7 +918,7 @@ test.describe("Validation view functionality", () => {
 })
 
 test.describe("OpenAPI view functionality", () => {
-    test("Trying to open the OpenAPI view with a TD with no protocols and closing it", async ({ page }) => {
+    test("Trying to open the OpenAPI view with a TD with no protocols", async ({ page }) => {
 
         const initialTab = page.locator("#tab").nth(0)
         await expect(initialTab).toHaveAttribute('data-tab-id', "1")
@@ -971,14 +938,6 @@ test.describe("OpenAPI view functionality", () => {
         await expect(openAPITab).toBeChecked({ checked: true })
         await expect(openAPIView).toHaveClass("console-view open-api-view hidden")
         await expect(page.locator(".console-error__txt")).toHaveText("Please insert a TD which uses HTTP!")
-
-        const trashBtn = page.locator(".trash")
-        await trashBtn.click()
-
-        await expect(openAPIView).toHaveClass("console-view open-api-view hidden")
-        await expect(consoleError).toHaveClass("console-view console-error hidden")
-        await expect(openAPITab).toBeChecked({ checked: false })
-
     })
 
     test("Trying to open the OpenAPI view with a TM", async ({ page }) => {
@@ -1272,7 +1231,7 @@ test.describe("OpenAPI view functionality", () => {
 })
 
 test.describe("AsyncAPI view functionality", () => {
-    test("Trying to open the AsyncAPI view with a TD with no protocols and closing it", async ({ page }) => {
+    test("Trying to open the AsyncAPI view with a TD with no protocols", async ({ page }) => {
 
         const initialTab = page.locator("#tab").nth(0)
         await expect(initialTab).toHaveAttribute('data-tab-id', "1")
@@ -1292,14 +1251,6 @@ test.describe("AsyncAPI view functionality", () => {
         await expect(AsyncAPITab).toBeChecked({ checked: true })
         await expect(AsyncAPIView).toHaveClass("console-view async-api-view hidden")
         await expect(page.locator(".console-error__txt")).toHaveText("Please insert a TD which uses MQTT!")
-
-        const trashBtn = page.locator(".trash")
-        await trashBtn.click()
-
-        await expect(AsyncAPIView).toHaveClass("console-view async-api-view hidden")
-        await expect(consoleError).toHaveClass("console-view console-error hidden")
-        await expect(AsyncAPITab).toBeChecked({ checked: false })
-
     })
 
     test("Trying to open the AsyncAPI view with a TM", async ({ page }) => {
@@ -1598,34 +1549,6 @@ test.describe("AsyncAPI view functionality", () => {
 
 
 test.describe("AAS AID view functionality", () => {
-    test("Open the AAS view with a TD with no protocols and closing it", async ({ page }) => {
-
-        const initialTab = page.locator("#tab").nth(0)
-        await expect(initialTab).toHaveAttribute('data-tab-id', "1")
-        await expect(initialTab).toHaveText("TDThing TemplateCloseCancel")
-        await expect(initialTab).toHaveClass("active")
-
-        const AASView = page.locator('#aas-view')
-        const consoleError = page.locator('#console-error')
-        const AASTab = page.locator("#aas-tab")
-
-        await expect(AASView).toHaveClass("console-view aas-view hidden")
-        await expect(consoleError).toHaveClass("console-view console-error hidden")
-        await expect(AASTab).toBeChecked({ checked: false })
-
-        await AASTab.click()
-
-        await expect(AASTab).toBeChecked({ checked: true })
-        await expect(AASView).toHaveClass("console-view aas-view")
-
-        const trashBtn = page.locator(".trash")
-        await trashBtn.click()
-
-        await expect(AASView).toHaveClass("console-view aas-view hidden")
-        await expect(consoleError).toHaveClass("console-view console-error hidden")
-        await expect(AASTab).toBeChecked({ checked: false })
-
-    })
 
     test("Trying to open the AAS view with a TM", async ({ page }) => {
 
@@ -1744,7 +1667,7 @@ test.describe("AAS AID view functionality", () => {
 })
 
 test.describe("Defaults view functionality", () => {
-    test("Opening the Defaults view with the Thing Template and closing it", async ({ page }) => {
+    test("Opening the Defaults view with the Thing Template", async ({ page }) => {
 
         const initialTab = page.locator("#tab").nth(0)
         await expect(initialTab).toHaveAttribute('data-tab-id', "1")
@@ -1776,13 +1699,6 @@ test.describe("Defaults view functionality", () => {
 
         await expect(defaultsJsonBtn).toBeDisabled()
         await expect(defaultsAddBtn).toBeDisabled()
-
-        const trashBtn = page.locator(".trash")
-        await trashBtn.click()
-
-        await expect(DefaultsView).toHaveClass("console-view defaults-view hidden")
-        await expect(consoleError).toHaveClass("console-view console-error hidden")
-        await expect(DefaultsTab).toBeChecked({ checked: false })
     })
 
     test("Trying to open the Defaults view with a TM", async ({ page }) => {
@@ -2026,7 +1942,7 @@ test.describe("Defaults view functionality", () => {
 
 test.describe("Visualization view functionality", () => {
 
-    test("Open the visualization view with the thing template and closing it", async ({ page }) => {
+    test("Open the visualization view with the thing template", async ({ page }) => {
 
         const visualizeView = page.locator('#visualize-view')
         const visualizeTab = page.locator("#visualize-tab")
@@ -2047,12 +1963,6 @@ test.describe("Visualization view functionality", () => {
 
         const graphVisTitle = page.locator('#visualized').getByText('Thing Template', { exact: true })
         await expect(graphVisTitle).toHaveText("Thing Template")
-
-        const trashBtn = page.locator(".trash")
-        await trashBtn.click()
-
-        await expect(visualizeView).toHaveClass("console-view visualize-view hidden")
-        await expect(visualizeTab).toBeChecked({ checked: false })
     })
 
     test("Open the visualization view with the thing template and expand and collapse the graph view", async ({ page }) => {
@@ -2211,7 +2121,7 @@ test.describe("Visualization view functionality", () => {
         const dragSliderValue = await dragSlider.inputValue()
         expect(parseInt(dragSliderValue)).toBeLessThan(60)
         expect(parseInt(dragSliderValue)).toBeGreaterThan(40)
-        
+
         await expect(tidyBtn).toBeChecked({ checked: false })
         await expect(clusterBtn).toBeChecked({ checked: true })
         await expect(linksDropDown).toHaveValue("diagonal")
