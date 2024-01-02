@@ -55,7 +55,7 @@ async function initAsyncApiEditor() {
         setFontSize(window.asyncApiEditor)
     })
 
-    //Bind the reset button form the settings to the editor and assign the specied font size
+    //Bind the reset button form the settings to the editor and assign the specified font size
     editorForm.addEventListener("reset", () => {
         setFontSize(window.asyncApiEditor)
     })
@@ -77,7 +77,7 @@ asyncApiYamlBtn.addEventListener("click", () => {
     asyncApiYamlBtn.disabled = true
 })
 
-//Donwload btn
+//Download btn
 asyncApiDownload.addEventListener("click", () => {
     const editorData = getEditorData(window.asyncApiEditor)
     const contentType = `application/${editorData[0]};charset=utf-8;`

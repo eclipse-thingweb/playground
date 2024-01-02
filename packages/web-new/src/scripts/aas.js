@@ -53,7 +53,7 @@ async function initAASEditor() {
         setFontSize(window.AASEditor)
     })
 
-    //Bind the reset button form the settings to the editor and assign the specied font size
+    //Bind the reset button form the settings to the editor and assign the specified font size
     editorForm.addEventListener("reset", () => {
         setFontSize(window.AASEditor)
     })
@@ -62,7 +62,7 @@ async function initAASEditor() {
 initAASEditor()
 
 
-//Donwload btn
+//Download btn
 AASDownload.addEventListener("click", () => {
     const editorData = getEditorData(window.AASEditor)
     const contentType = `application/${editorData[0]};charset=utf-8;`
