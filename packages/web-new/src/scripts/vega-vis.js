@@ -15,13 +15,13 @@
 
 /**
  * @file The `vega-vis.js` handles the vega visualization for the
- * tree option, by utilizin the vega and vega-embed dependencies
+ * tree option, by utilizing the vega and vega-embed dependencies
  */
 
 import vegaEmbed from 'vega-embed'
 
 /**
- * Initialize and generat the Vega visualization by passing the container element and the td content
+ * Initialize and generate the Vega visualization by passing the container element and the td content
  * @param { html element } visContainer - Html container for the svg visualization
  * @param { json object } td - Json object from the current editor
  */

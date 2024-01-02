@@ -56,7 +56,7 @@ async function initDefaultsEditor() {
         setFontSize(window.defaultsEditor)
     })
 
-    //Bind the reset button form the settings to the editor and assign the specied font size
+    //Bind the reset button form the settings to the editor and assign the specified font size
     editorForm.addEventListener("reset", () => {
         setFontSize(window.defaultsEditor)
     })
@@ -92,7 +92,7 @@ defaultsRemoveBtn.addEventListener("click", () => {
     defaultsRemoveBtn.disabled = true
 })
 
-//Donwload btn
+//Download btn
 defaultsDownload.addEventListener("click", () => {
     const editorData = getEditorData(window.defaultsEditor)
     const contentType = `application/${editorData[0]};charset=utf-8;`

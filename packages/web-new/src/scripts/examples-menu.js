@@ -18,7 +18,7 @@
  * for the examples menu, such as displaying all the TD and TM examples,
  * as well as filtering them by categories, a search function to find
  * specific examples and a use a template example to directly added to an editor where it can be utilized and modified.
- * In the future the option to see short snippppets of the most important part of the example, might also be implemented.
+ * In the future the option to see short snippets of the most important part of the example, might also be implemented.
  */
 
 import { createIde, ideCount, tabsLeft } from "./editor"
@@ -304,14 +304,12 @@ async function getAllExamples(categoryId, thingType) {
         //Create the example quick access button
         const quickBtn = document.createElement('button')
         quickBtn.classList.add("example__header--quick")
-        quickBtn.setAttribute("title", "Use")
-        const quickButtonIcon = document.createElement('i')
-        quickButtonIcon.classList.add("fa-solid", "fa-file-import")
-        quickBtn.appendChild(quickButtonIcon)
+        quickBtn.setAttribute("title", "Load this example into the editor")
+        quickBtn.innerText = "Load"
+
         exampleHeader.appendChild(quickBtn)
 
-
-        //add event listener to show example information and interaction btns
+        //add event listener to show example information and interaction buttons
         exampleName.addEventListener('click', () => {
             exampleContainer.classList.toggle("open")
         })
