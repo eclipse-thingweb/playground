@@ -20,13 +20,13 @@
  * to integrate the monaco editor
  */
 
-import { visualizeTab } from './visualize'
+import './visualize'
 import './editor'
 import './json-yaml'
 import './settings-menu'
 import './save-menu'
 import './examples-menu'
-import {minMaxBtn} from './console'
+import { minMaxBtn, consoleElement } from './console'
 import './open-api'
 import './async-api'
 import './aas'
@@ -168,9 +168,15 @@ function onmousemoveY(e) {
       if(h > 38){
         minMaxBtn.children[0].classList.add("fa-down-left-and-up-right-to-center")
         minMaxBtn.children[0].classList.remove("fa-up-right-and-down-left-from-center")
+
+        consoleElement.classList.remove("collapsed")
+        consoleElement.classList.add("expanded")
       }else{
         minMaxBtn.children[0].classList.remove("fa-down-left-and-up-right-to-center")
         minMaxBtn.children[0].classList.add("fa-up-right-and-down-left-from-center")
+
+        consoleElement.classList.remove("expanded")
+        consoleElement.classList.add("collapsed")
       }
 
       if (h < 445) {
@@ -188,9 +194,15 @@ function onmousemoveY(e) {
       if(h < 714){
         minMaxBtn.children[0].classList.add("fa-down-left-and-up-right-to-center")
         minMaxBtn.children[0].classList.remove("fa-up-right-and-down-left-from-center")
+
+        consoleElement.classList.remove("collapsed")
+        consoleElement.classList.add("expanded")
       }else{
         minMaxBtn.children[0].classList.remove("fa-down-left-and-up-right-to-center")
         minMaxBtn.children[0].classList.add("fa-up-right-and-down-left-from-center")
+
+        consoleElement.classList.remove("expanded")
+        consoleElement.classList.add("collapsed")
       }
 
       if (h < 310) {
@@ -212,8 +224,4 @@ function onmouseupY(e) {
   document.removeEventListener("mousemove", onmousemoveY)
   document.removeEventListener("mouseup", onmouseupY)
   delete e.clientY
-
-  if(visualizeTab.checked === true){
-    visualizeTab.click()
-  }
 }

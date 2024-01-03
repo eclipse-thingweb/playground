@@ -54,7 +54,8 @@ export function visualize(editorValue) {
         treeInputs.classList.add("hidden")
         //Run the jsonld visualization
         jsonldVis(editorValue, "#visualized", {
-            h: document.getElementById("visualize-container").offsetHeight - 30,
+            // h: document.getElementById("visualize-container").offsetHeight - 30,
+            h: 450,
             w: document.getElementById("visualize-container").offsetWidth - 20,
             maxLabelWidth: 200,
             scalingFactor: 5,
