@@ -14,28 +14,8 @@
  ********************************************************************************/
 // @ts-check
 const { defineConfig, devices } = require('@playwright/test');
-const handler = require("serve-handler");
-const http = require("http");
 
 const isCI = process.env.CI;
-
-if (isCI) {
-  const port = 5101;
-  const host = "http://localhost";
-  const fullHost = host + ":" + port;
-
-  const server = http.createServer((request, response) => {
-    // You pass two more arguments for config and middleware
-    // More details here: https://github.com/vercel/serve-handler#options
-    return handler(request, response);
-  });
-
-  /* ################### */
-  /*      MAIN           */
-  server.listen(port, () => {
-    console.log("Running siteTest at " + fullHost);
-  });
-}
 
 module.exports = defineConfig({
   testDir: './tests',
@@ -54,7 +34,7 @@ module.exports = defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: isCI ? 'http://localhost:5101' : 'http://127.0.0.1:5100',
+    baseURL: isCI ? 'https://deploy-preview-515--thingweb-playground.netlify.app' : 'http://127.0.0.1:5100',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
@@ -87,7 +67,7 @@ module.exports = defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: {
     command: isCI ? '' : 'npm run serve',
-    url: isCI ? 'http://localhost:5101' : 'http://127.0.0.1:5100',
-    reuseExistingServer: true,
+    url: isCI ? 'https://deploy-preview-515--thingweb-playground.netlify.app' : 'http://127.0.0.1:5100',
+    reuseExistingServer: !isCI,
   }
 });
