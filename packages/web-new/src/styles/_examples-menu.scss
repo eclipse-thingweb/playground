@@ -45,9 +45,11 @@
             width: 100%;
             text-align: right;
 
-            i {
-                font-size: var(--fs-sub-header);
+            .icon {
+                width: fit-content;
+                height: var(--fs-sub-header);
                 cursor: pointer;
+                fill: var(--clr-neutral-900);
             }
         }
 
@@ -158,15 +160,18 @@
                         top: 50%;
                         right: 2rem;
                         transform: translateY(-50%);
+                        content: '';
+                        -webkit-mask: url('../assets/img/angle-down-solid.svg') no-repeat 50% 50%;
+                        mask: url('../assets/img/angle-down-solid.svg') no-repeat 50% 50%;
+                        -webkit-mask-size: cover;
+                        mask-size: cover;
                         display: inline-block;
-                        text-rendering: auto;
-                        -webkit-font-smoothing: antialiased;
-                        font: var(--fa-font-solid);
-                        content: "\f107";
+                        height: 1.25rem;
+                        width: 1.25rem;
                         pointer-events: none;
-                        color: var(--clr-neutral-900);
-                        font-size: var(--fs-p);
+                        background-color: var(--clr-neutral-300);
                     }
+
                 }
 
                 select,
@@ -216,12 +221,13 @@
                     background-color: var(--clr-neutral-50);
                     color: var(--clr-neutral-900);
                     font-family: var(--ff-primary);
-                    font-size: inherit;
+                    font-size: var(--fs-p);
 
-                    i {
+                    .icon {
+                        height: var(--fs-p);
                         width: fit-content;
                         padding: 0 1rem;
-                        font-size: inherit;
+                        fill: var(--clr-neutral-300);
                     }
 
                     .search-input {
@@ -231,7 +237,7 @@
                         font-size: inherit;
                         border: none;
                         width: 100%;
-                        padding: .8rem 1rem;
+                        padding: .8rem 1rem .8rem 0;
                         appearance: none;
                         cursor: text;
 
@@ -328,6 +334,7 @@
                             padding: .75rem;
                             box-shadow: 0px 0px 5px 0px var(--clr-shadow);
                             transition: box-shadow 250ms ease-in-out;
+                            position: relative;
 
                             &__header {
                                 display: flex;
@@ -341,7 +348,7 @@
                                     align-items: center;
                                     justify-content: center;
                                     gap: 1rem;
-                                    margin: 0 2rem;
+                                    margin: 0 4rem;
                                     cursor: pointer;
                                     transition: all 250ms ease-in-out;
 
@@ -359,24 +366,34 @@
                                         font-weight: var(--fw-bold);
                                     }
 
-                                    .toggle-arrow {
-                                        font-size: var(--fs-footer);
+                                    .icon {
+                                        fill: var(--clr-neutral-900);
+                                        height: var(--fs-footer);
+                                        width: fit-content;
                                         transform: rotate(0);
                                         transition: transform 250ms ease-in-out 250ms;
                                     }
                                 }
 
                                 &--quick {
-                                    font-size: var(--fs-p);
-                                    font-weight: var(--fw-bold);
-                                    color: var(--clr-neutral-50);
-                                    background-color: var(--clr-neutral-100);
+                                    opacity: 0;
+                                    position: absolute;
+                                    top: .25rem;
+                                    right: .25rem;
+                                    width: 4rem;
+                                    height: 4rem;
+                                    border-radius: 50%;
+                                    background-color: var(--clr-neutral-50);
                                     border: none;
-                                    border-radius: 5px;
-                                    padding: .5rem 1rem;
                                     cursor: pointer;
-                                    height: 3rem;
-                                    transition: background-color 250ms ease-in-out;
+                                    transition: background-color 250ms ease-in-out, opacity 250ms ease-in-out;
+
+                                    .icon {
+                                        height: var(--fs-i);
+                                        width: fit-content;
+                                        fill: var(--clr-neutral-50);
+                                        transition: fill 250ms ease-in-out;
+                                    }
                                 }
                             }
 
@@ -386,13 +403,21 @@
                                 .example__header {
 
                                     &--quick {
-                                        background-color: var(--clr-neutral-300);
 
-                                        &:hover{
-                                            background-color: var(--clr-primary-700);
+                                        opacity: 1;
+
+                                        .icon {
+                                            fill: var(--clr-neutral-300);
+                                        }
+
+                                        &:hover {
+                                            background-color: var(--clr-neutral-100);
+
+                                            .icon {
+                                                fill: var(--clr-neutral-900);
+                                            }
                                         }
                                     }
-
                                 }
                             }
 
@@ -443,9 +468,11 @@
                                         font-weight: var(--fw-bold);
                                     }
 
-                                    i {
+                                    .icon {
                                         margin-right: 1rem;
-                                        font-size: var(--fs-p);
+                                        height: var(--fs-p);
+                                        width: fit-content;
+                                        fill: var(--clr-neutral-50);
                                     }
                                 }
 
@@ -477,7 +504,7 @@
 
                             .example__header {
                                 &--name {
-                                    .toggle-arrow {
+                                    .icon {
                                         transform: rotate(-90deg);
                                         transition: transform 250ms ease-in-out 0s;
                                     }

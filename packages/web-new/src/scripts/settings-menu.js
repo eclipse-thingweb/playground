@@ -26,7 +26,7 @@ import themeData from './monochrome-theme'
 /***********************************************************/
 /*                     Settings menu                       */
 /***********************************************************/
-const closeSettings = document.querySelector(".settings__close i");
+const closeSettings = document.querySelector(".settings__close .x-icon");
 const settingsMenu = document.querySelector(".settings-menu");
 const settingsBtn = document.querySelector("#settings-btn");
 export const editorForm = document.querySelector(".settings__editor")
