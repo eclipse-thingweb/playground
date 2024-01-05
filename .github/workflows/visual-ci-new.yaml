@@ -1,36 +1,63 @@
-name: web-new Visual Testing Pipeline
+# name: web-new Visual Testing Pipeline
 
+# on:
+#     pull_request:
+#         paths-ignore:
+#             - "**.md"
+#             - "**.png"
+#             - "**.drawio"
+#             - "**.xlsx"
+
+# jobs:
+#     setup-and-visual-test:
+#         runs-on: ubuntu-latest
+
+#         steps:
+#             - name: Checkout
+#               uses: actions/checkout@v3
+
+#             - name: Use Node.js 18
+#               uses: actions/setup-node@v3
+#               with:
+#                   node-version: "18.x"
+
+#             - name: Use lerna
+#               run: npm install -g lerna@6.6.2
+
+#             - name: Bootstrap
+#               run: lerna bootstrap --no-ci
+
+#             - name: New Web Visual Test
+#               timeout-minutes: 18
+#               run: |
+#                   cd ./packages/web-new
+#                   npm install
+#                   npx playwright install chromium firefox
+#                   npm run test
+name: Playwright Tests
 on:
-    pull_request:
-        paths-ignore:
-            - "**.md"
-            - "**.png"
-            - "**.drawio"
-            - "**.xlsx"
-
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
 jobs:
-    setup-and-visual-test:
-        runs-on: ubuntu-latest
-
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v3
-
-            - name: Use Node.js 18
-              uses: actions/setup-node@v3
-              with:
-                  node-version: "18.x"
-
-            - name: Use lerna
-              run: npm install -g lerna@6.6.2
-
-            - name: Bootstrap
-              run: lerna bootstrap --no-ci
-
-            - name: New Web Visual Test
-              timeout-minutes: 18
-              run: |
-                  cd ./packages/web-new
-                  npm install
-                  npx playwright install chromium firefox
-                  npm run test
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install chromium firefox
+    - name: Run Playwright tests
+      run: npx playwright test
+    - uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30
