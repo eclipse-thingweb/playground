@@ -15,6 +15,20 @@
 // @ts-check
 const { defineConfig, devices } = require('@playwright/test');
 
+//server
+const express = require('express')
+const port = 5100
+
+const app = express()
+
+//Middleware
+app.use(express.json())
+app.use(express.urlencoded({extended: false}))
+
+app.use('/', express.static('./dist/'))
+
+app.listen(port, () => console.log(`Running siteTest on port ${port}`))
+
 const isCI = process.env.CI;
 
 module.exports = defineConfig({
@@ -34,7 +48,7 @@ module.exports = defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: isCI ? 'https://deploy-preview-515--thingweb-playground.netlify.app' : 'http://127.0.0.1:5100',
+    baseURL: 'http://127.0.0.1:5100',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
@@ -65,9 +79,9 @@ module.exports = defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  webServer: {
-    command: isCI ? '' : 'npm run serve',
-    url: isCI ? 'https://deploy-preview-515--thingweb-playground.netlify.app' : 'http://127.0.0.1:5100',
-    reuseExistingServer: !isCI,
-  }
+  // webServer: {
+  //   command: isCI ? '' : 'npm run serve',
+  //   url: isCI ? '' : 'http://127.0.0.1:5100',
+  //   reuseExistingServer: !isCI,
+  // }
 });
