@@ -23,7 +23,7 @@ import { openApiTab, openApiJsonBtn, openApiYamlBtn, openApiView } from './open-
 import { asyncApiTab, asyncApiJsonBtn, asyncApiYamlBtn, asyncApiView } from './async-api'
 import { AASView } from './aas'
 import { defaultsView, defaultsJsonBtn, defaultsYamlBtn, defaultsAddBtn } from './defaults'
-import { visualize, visualizeTab } from './visualize'
+import { visualize } from './visualize'
 import { validationView, validationTab } from './validation'
 import { convertTDYamlToJson, detectProtocolSchemes } from '../../../core/dist/web-bundle.min.js'
 import { generateOAP, generateAAP, addDefaultsUtil, validate, generateAAS, resetValidationStatus } from './util'
@@ -40,37 +40,55 @@ const errorTxt = document.querySelector(".console-error__txt")
 export const minMaxBtn = document.querySelector(".min-max")
 export const visualizationOptions = document.querySelectorAll(".visualizations__option")
 export const visualizationContainers = document.querySelectorAll(".console-view")
-const consoleElement = document.querySelector(".console")
+export const consoleElement = document.querySelector(".console")
 const mainContentElement = document.querySelector(".main-content")
 
+/**
+ * Hides the text from the left control panel, updates the state of the console element
+ * and adjusts the console size as well as the expand/collapse icon
+ */
+function expandConsole() {
+    textIcon.forEach(text => {
+        text.classList.add("hiddenV")
+    })
+
+    consoleElement.classList.remove("collapsed")
+    consoleElement.classList.add("expanded")
+
+    setTimeout(() => {
+        mainContentElement.style.flex = "0 210px"
+        consoleElement.style.flex = `1 0`
+        minMaxBtn.children[0].classList.add("fa-down-left-and-up-right-to-center")
+        minMaxBtn.children[0].classList.remove("fa-up-right-and-down-left-from-center")
+    }, 100);
+}
+
+/**
+ * Shows the text from the left control panel, updates the state of the console element
+ * and adjusts the console size as well as the expand/collapse icon
+ */
+function collapseConsole() {
+    consoleElement.classList.remove("expanded")
+    consoleElement.classList.add("collapsed")
+
+    mainContentElement.style.flex = "1 0"
+    consoleElement.style.flex = `0 39px`
+    minMaxBtn.children[0].classList.remove("fa-down-left-and-up-right-to-center")
+    minMaxBtn.children[0].classList.add("fa-up-right-and-down-left-from-center")
+
+    textIcon.forEach(text => {
+        text.classList.remove("hiddenV")
+    })
+}
+
 minMaxBtn.addEventListener("click", () => {
-
-    if (minMaxBtn.children[0].classList.contains("fa-down-left-and-up-right-to-center")) {
-        mainContentElement.style.flex = "1 0"
-        consoleElement.style.flex = `0 39px`
-        minMaxBtn.children[0].classList.remove("fa-down-left-and-up-right-to-center")
-        minMaxBtn.children[0].classList.add("fa-up-right-and-down-left-from-center")
-
-        textIcon.forEach(text => {
-            text.classList.remove("hiddenV")
-        })
+    if (consoleElement.classList.contains("expanded")) {
+        collapseConsole()
     } else {
-        textIcon.forEach(text => {
-            text.classList.add("hiddenV")
-        })
-
-        setTimeout(() => {
-            mainContentElement.style.flex = "0 210px"
-            consoleElement.style.flex = `1 0`
-            minMaxBtn.children[0].classList.add("fa-down-left-and-up-right-to-center")
-            minMaxBtn.children[0].classList.remove("fa-up-right-and-down-left-from-center")
-
-            if (visualizeTab.checked === true) {
-                visualizeTab.click()
-            }
-        }, 100);
+        expandConsole()
     }
 })
+
 
 /**
  * Unchecks all visualization btns and hides all visualization containers
@@ -104,6 +122,9 @@ function clearVisualizationEditors() {
 //Set the behavior for each visualization tab when clicked on it
 visualizationOptions.forEach(option => {
     option.addEventListener("click", () => {
+        if(consoleElement.classList.contains("collapsed")){
+            expandConsole()
+        }
         clearVisualizationEditors()
         visualizationContainers.forEach(container => {
             container.classList.add("hidden")
@@ -123,6 +144,7 @@ visualizationOptions.forEach(option => {
                     } else {
                         switch (option.id) {
                             case "open-api-tab":
+
                                 if (fileType === "yaml") {
                                     openApiJsonBtn.disabled = false
                                     openApiYamlBtn.disabled = true
