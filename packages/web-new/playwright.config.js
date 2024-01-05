@@ -22,7 +22,7 @@ console.log(process.env);
 console.log(isCI);
 
 if (isCI) {
-  const port = 3000;
+  const port = 5101;
   const host = "http://localhost";
   const fullHost = host + ":" + port;
 
@@ -56,7 +56,7 @@ module.exports = defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: isCI ? 'http://localhost:3000' : 'http://127.0.0.1:5100',
+    baseURL: isCI ? 'http://localhost:5101' : 'http://127.0.0.1:5100',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
@@ -89,7 +89,7 @@ module.exports = defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: {
     command: isCI ? '' : 'npm run serve',
-    url: isCI ? 'http://localhost:3000' : 'http://127.0.0.1:5100',
+    url: isCI ? 'http://localhost:5101' : 'http://127.0.0.1:5100',
     reuseExistingServer: !isCI,
   },
 });
