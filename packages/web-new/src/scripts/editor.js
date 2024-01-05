@@ -108,10 +108,26 @@ function createTab(tabNumber, exampleName, thingType) {
   closeIconSvg.appendChild(closeIconPath)
   closeBtn.appendChild(closeIconSvg)
 
+  // Create the svg close icon
+  const closeIconSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+  closeIconSvg.setAttribute("xmlns", "http://www.w3.org/2000/svg")
+  closeIconSvg.setAttribute("width", "100%")
+  closeIconSvg.setAttribute("height", "100%")
+  closeIconSvg.setAttribute("viewBox", "0 0 384 512")
+
+  // Create a path element and set its attributes
+  const closeIconPath = document.createElementNS("http://www.w3.org/2000/svg", "path")
+  closeIconPath.setAttribute("d", "M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z")
+
+  //append the path to the svg and the svg to the button
+  closeIconSvg.appendChild(closeIconPath)
+  closeBtn.appendChild(closeIconSvg)
+
   //Create the close confirmation buttons
   const confirmBtns = document.createElement("div")
   confirmBtns.classList.add("confirm-btns", "hidden")
 
+  //Confirm close button
   //Confirm close button
   const confirmTabClose = document.createElement("button")
   confirmTabClose.classList.add("confirm-tab-close")
@@ -130,11 +146,41 @@ function createTab(tabNumber, exampleName, thingType) {
 
   confirmIconSvg.appendChild(confirmIconPath)
   confirmTabClose.appendChild(confirmIconSvg)
+  // Create the svg confirm close icon
+  const confirmIconSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+  confirmIconSvg.setAttribute("xmlns", "http://www.w3.org/2000/svg")
+  confirmIconSvg.setAttribute("width", "100%")
+  confirmIconSvg.setAttribute("height", "100%")
+  confirmIconSvg.setAttribute("viewBox", "0 0 448 512")
+  confirmIconSvg.classList.add("icon")
+
+  // Create a path element and set its attributes
+  const confirmIconPath = document.createElementNS("http://www.w3.org/2000/svg", "path")
+  confirmIconPath.setAttribute("d", "M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z")
+
+  confirmIconSvg.appendChild(confirmIconPath)
+  confirmTabClose.appendChild(confirmIconSvg)
   
+  //Cancel close button
   //Cancel close button
   const cancelTabClose = document.createElement("button")
   cancelTabClose.classList.add("cancel-tab-close")
   cancelTabClose.textContent = "Cancel"
+  
+  // Create the svg close cancel icon
+  const cancelIconSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+  cancelIconSvg.setAttribute("xmlns", "http://www.w3.org/2000/svg")
+  cancelIconSvg.setAttribute("width", "100%")
+  cancelIconSvg.setAttribute("height", "100%")
+  cancelIconSvg.setAttribute("viewBox", "0 0 384 512")
+  cancelIconSvg.classList.add("icon")
+
+  // Create a path element and set its attributes
+  const cancelIconPath = document.createElementNS("http://www.w3.org/2000/svg", "path")
+  cancelIconPath.setAttribute("d", "M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z")
+
+  cancelIconSvg.appendChild(cancelIconPath)
+  cancelTabClose.appendChild(cancelIconSvg)
   
   // Create the svg close cancel icon
   const cancelIconSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
