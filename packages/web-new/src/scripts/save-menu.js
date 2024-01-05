@@ -28,7 +28,7 @@ import { editorList, getEditorData } from "./editor"
 /***********************************************************/
 const saveMenu = document.querySelector(".save-menu")
 const saveMenuBtn = document.querySelector("#save-btn")
-const closeSaveMenu = document.querySelector(".save-menu-close i")
+const closeSaveMenu = document.querySelector(".save-menu-close .x-icon")
 const shareUrlContainer = document.querySelector("#share-url-input")
 const openUrlTab = document.querySelector("#open-url-tab")
 const thingTypeText = document.querySelector('#thing-type-text')
