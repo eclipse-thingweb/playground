@@ -188,10 +188,6 @@ a {
     font-weight: var(--fw-regular);
 }
 
-i {
-    font-size: var(--fs-i);
-}
-
 ul {
     list-style: none;
 }
@@ -270,7 +266,7 @@ header {
         &__links {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             gap: 3rem;
 
             a {
@@ -279,16 +275,22 @@ header {
                 align-items: center;
                 justify-content: center;
                 font-size: var(--fs-p);
-                transition: color 250ms ease;
+                transition: color 250ms ease-in-out;
 
                 &:hover {
                     color: var(--clr-neutral-200);
+
+                    .icon {
+                        fill: var(--clr-neutral-200);
+                    }
                 }
             }
 
-            i {
-                font-size: var(--fs-i);
+            .icon {
+                height: var(--fs-i);
                 margin-bottom: .5rem;
+                fill: var(--clr-neutral-50);
+                transition: fill 250ms ease-in-out;
             }
         }
     }

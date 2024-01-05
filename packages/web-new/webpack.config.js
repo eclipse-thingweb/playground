@@ -69,7 +69,7 @@ module.exports = (env, argv) => {
                 },
                 {
                     test: /\.(png|svg|jpg|jpeg|gif|ico)$/i,
-                    type: 'asset/resource'
+                    type: 'asset/resource',
                 },
                 {
                     test: /\.scss$/,
@@ -99,7 +99,7 @@ module.exports = (env, argv) => {
                 title: 'Webpack App',
                 filename: 'index.html',
                 template: 'src/template.html',
-                favicon: 'src/assets/favicon/favicon.ico'
+                favicon: 'src/assets/favicon/favicon.ico',
             }),
             new CopyWebpackPlugin({
                 patterns: [
