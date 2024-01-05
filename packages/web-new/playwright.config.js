@@ -14,8 +14,30 @@
  ********************************************************************************/
 // @ts-check
 const { defineConfig, devices } = require('@playwright/test');
+const handler = require("serve-handler");
+const http = require("http");
 
-// require('dotenv').config();
+const isCI = process.env.CI;
+console.log(process.env);
+console.log(isCI);
+
+if (isCI) {
+  const port = 3000;
+  const host = "http://localhost";
+  const fullHost = host + ":" + port;
+
+  const server = http.createServer((request, response) => {
+    // You pass two more arguments for config and middleware
+    // More details here: https://github.com/vercel/serve-handler#options
+    return handler(request, response);
+  });
+
+  /* ################### */
+  /*      MAIN           */
+  server.listen(port, () => {
+    console.log("Running siteTest at " + fullHost);
+  });
+}
 
 module.exports = defineConfig({
   testDir: './tests',
@@ -24,17 +46,17 @@ module.exports = defineConfig({
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!process.env.CI,
+  forbidOnly: !!isCI,
   /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
+  retries: isCI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: isCI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'http://127.0.0.1:5100',
+    baseURL: isCI ? 'http://localhost:3000' : 'http://127.0.0.1:5100',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
@@ -66,8 +88,8 @@ module.exports = defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'npm run serve',
-    url: 'http://127.0.0.1:5100',
-    reuseExistingServer: !process.env.CI,
+    command: isCI ? '' : 'npm run serve',
+    url: isCI ? 'http://localhost:3000' : 'http://127.0.0.1:5100',
+    reuseExistingServer: !isCI,
   },
 });

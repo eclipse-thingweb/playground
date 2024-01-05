@@ -37,6 +37,7 @@
     "nodemon": "^3.0.1",
     "sass": "^1.64.0",
     "sass-loader": "^13.3.2",
+    "serve-handler": "^6.1.5",
     "style-loader": "^3.3.3",
     "webpack": "^5.88.2",
     "webpack-bundle-analyzer": "^4.9.0",
