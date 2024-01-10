@@ -347,7 +347,7 @@ async function getAllExamples(categoryId, thingType) {
         exampleBtnUse.appendChild(exampleIconUse)
 
         const exampleTxtUse = document.createElement('p')
-        exampleTxtUse.innerText = "Apply"
+        exampleTxtUse.innerText = "Load"
         exampleBtnUse.appendChild(exampleTxtUse)
 
         const exampleBtnCancel = document.createElement('button')
