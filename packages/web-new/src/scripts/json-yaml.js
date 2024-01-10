@@ -16,7 +16,7 @@
 /**
  * @file The `json-yaml.js` contains the main functionality
  * for converting json to yaml and vice versa, utilizing the util's 
- * funcions and the editorList array from the editor file.
+ * functions and the editorList array from the editor file.
  */
 import { editorList } from './editor.js'
 import { generateTD } from './util.js'
@@ -66,7 +66,7 @@ document.addEventListener('click', (e) => {
   }
 })
 
-//Confirm the json to yaml convertion
+//Confirm the json to yaml conversion
 yamlConfirmBtn.addEventListener("click", () => {
   yamlWarning.classList.add('closed')
   convertJsonYaml()

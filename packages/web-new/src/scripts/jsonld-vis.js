@@ -15,7 +15,7 @@
 
 /**
  * @file The `jsonld-vis.js` handles the d3 visualization for the
- * graph option, by utilizin the d3 and d3-tip dependencies
+ * graph option, by utilizing the d3 and d3-tip dependencies
  */
 
 import * as d3 from 'd3'

@@ -68,7 +68,7 @@ document.addEventListener('click', (e) => {
 })
 
 /**
- * Event listener for reseting all the settings and preferences values
+ * Event listener for resetting all the settings and preferences values
  * @param {event} e - reset event
  */
 editorForm.addEventListener("reset", (e) => {
@@ -83,7 +83,7 @@ editorForm.addEventListener("reset", (e) => {
     storeFontSize(fontSizeSlider.value)
     setMonacoTheme(themePicker.value)
 
-    //resetting all toggle btns
+    //resetting all toggle buttons
     autoValidateBtn.checked = false
     validateJSONLDBtn.checked = true
     tmConformanceBtn.checked = true
@@ -113,7 +113,7 @@ fontSizeSlider.addEventListener("input", () => {
 /***********************************************************/
 
 /**
- * Store the selected themek in the localStorage
+ * Store the selected theme in the localStorage
  * @param {String} theme - the name of the theme
  */
 function storeTheme(theme) {

@@ -228,7 +228,7 @@ async function saveFileInSystem(content) {
 // }
 
 //TODO IMPORT FROM FILES
-/** Experimental file manager fucntion*/
+/** Experimental file manager function*/
 // const visualizeView = document.querySelector("#visualize-view p")
 // async function getFile() {
 //   // Open file picker and destructure the result the first handle

@@ -98,7 +98,7 @@ function createTab(tabNumber, exampleName, thingType) {
 
   closeBtn.appendChild(closeIcon)
 
-  //Create the close confirmation btns
+  //Create the close confirmation buttons
   const confirmBtns = document.createElement("div")
   confirmBtns.classList.add("confirm-btns", "hidden")
 
@@ -444,7 +444,7 @@ tabsLeftContainer.addEventListener("click", (e) => {
 })
 
 /**
- * Find if active editor is json or yaml and change the json/yaml btns respectively
+ * Find if active editor is json or yaml and change the json/yaml buttons respectively
  */
 function findFileType() {
   editorList.forEach(editor => {
