@@ -41,7 +41,7 @@
 
             .icon {
                 height: var(--fs-sub-header);
-                width: fit-content;
+                width: var(--fs-sub-header);
                 cursor: pointer;
                 fill: var(--clr-neutral-900);
             }
@@ -113,7 +113,7 @@
                     .icon {
                         fill: var(--clr-neutral-50);
                         height: var(--fs-i);
-                        width: fit-content;
+                        width: var(--fs-i);
                     }
 
                     &:hover{
@@ -144,8 +144,8 @@
                     transition: background-color 250ms ease-in-out;
                     
                     .icon {
-                        height: var(--fs-i);
-                        width: fit-content;
+                        // height: var(--fs-i);
+                        width: var(--fs-i);
                         fill: var(--clr-neutral-50);
                     }
 
@@ -207,7 +207,7 @@
 
                 .icon {
                     height: var(--fs-i);
-                    width: fit-content;
+                    width: var(--fs-i);
                     fill: var(--clr-neutral-50);
                 }
 

@@ -280,8 +280,13 @@ async function getAllExamples(categoryId, thingType) {
         tdFilePath.setAttribute("clip-rule", "evenodd")
         tdFilePath.setAttribute("d", "M184 0V95.9981C184 107.044 192.954 115.998 204 115.998H300V190H106C89.4315 190 76 203.431 76 220V379H40C17.9086 379 0 361.091 0 339V40C0 17.9086 17.9086 0 40 0H184ZM204 95.9981V4.28427L295.714 95.9981H204ZM189.758 379V265.724H231.32V243.922H189.758H162.019H121.105V265.724H162.019V379H189.758ZM275.017 379H288.654C297.808 379 306.158 377.485 313.703 374.454C321.311 371.362 327.836 367.001 333.278 361.373C338.783 355.683 343.02 348.88 345.988 340.963C349.019 333.046 350.534 324.295 350.534 314.708V308.307C350.534 298.658 349.019 289.907 345.988 282.052C343.02 274.135 338.783 267.332 333.278 261.642C327.774 255.951 321.249 251.591 313.703 248.561C306.219 245.468 297.963 243.922 288.933 243.922H275.017H258.688H247.185V379H259.245H275.017ZM275.017 357.291H288.654C295.952 357.291 302.106 355.652 307.116 352.374C312.126 349.034 315.899 344.179 318.435 337.809C321.032 331.438 322.331 323.738 322.331 314.708V308.121C322.331 301.194 321.589 295.102 320.104 289.845C318.682 284.588 316.548 280.165 313.703 276.578C310.858 272.991 307.364 270.3 303.22 268.507C299.076 266.651 294.313 265.724 288.933 265.724H275.017V357.291Z")
 
+        //Create and append Font Awesome attribution comment
+        const commentTDFile = document.createComment(" !Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc. ")
+        tdFileSvg.appendChild(commentTDFile)
+
         // Append the path element to the SVG element
         tdFileSvg.appendChild(tdFilePath)
+
 
         // Append the SVG element to the document body or any other desired location
         exampleNameIcon.appendChild(tdFileSvg);
@@ -306,6 +311,10 @@ async function getAllExamples(categoryId, thingType) {
         const exampleArrowPath = document.createElementNS("http://www.w3.org/2000/svg", "path")
         exampleArrowPath.setAttribute("d", "M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z")
 
+        //Create and append Font Awesome attribution comment
+        const commentExampleArrow = document.createComment(" !Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc. ")
+        exampleArrowSvg.appendChild(commentExampleArrow)
+
         exampleArrowSvg.appendChild(exampleArrowPath)
         exampleName.appendChild(exampleArrowSvg)
 
@@ -315,21 +324,9 @@ async function getAllExamples(categoryId, thingType) {
         //Create the example quick access button
         const quickBtn = document.createElement('button')
         quickBtn.classList.add("example__header--quick")
-        quickBtn.setAttribute("title", "Use")
-        // create the svg icon for the quick use button
-        const importFileSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
-        importFileSvg.setAttribute("xmlns", "http://www.w3.org/2000/svg")
-        importFileSvg.setAttribute("width", "100%")
-        importFileSvg.setAttribute("height", "100%")
-        importFileSvg.setAttribute("viewBox", "0 0 512 512")
-        importFileSvg.classList.add("icon")
+        quickBtn.setAttribute("title", "Load this example into the editor")
+        quickBtn.innerText = "Load"
 
-        // Create a path element and set its attributes
-        const importFilePath = document.createElementNS("http://www.w3.org/2000/svg", "path")
-        importFilePath.setAttribute("d", "M128 64c0-35.3 28.7-64 64-64H352V128c0 17.7 14.3 32 32 32H512V448c0 35.3-28.7 64-64 64H192c-35.3 0-64-28.7-64-64V336H302.1l-39 39c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l80-80c9.4-9.4 9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l39 39H128V64zm0 224v48H24c-13.3 0-24-10.7-24-24s10.7-24 24-24H128zM512 128H384V0L512 128z")
-
-        importFileSvg.appendChild(importFilePath)
-        quickBtn.appendChild(importFileSvg)
         exampleHeader.appendChild(quickBtn)
 
         //add event listener to show example information and interaction buttons
@@ -364,7 +361,6 @@ async function getAllExamples(categoryId, thingType) {
         exampleBtnUse.classList.add("example__btn--use")
         exampleBtns.appendChild(exampleBtnUse)
 
-        //todo: create the apply button
         // create the svg icon for the apply button
         const applyIconSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
         applyIconSvg.setAttribute("xmlns", "http://www.w3.org/2000/svg")
@@ -376,6 +372,10 @@ async function getAllExamples(categoryId, thingType) {
         // Create a path element and set its attributes
         const applyIconPath = document.createElementNS("http://www.w3.org/2000/svg", "path")
         applyIconPath.setAttribute("d", "M128 64c0-35.3 28.7-64 64-64H352V128c0 17.7 14.3 32 32 32H512V448c0 35.3-28.7 64-64 64H192c-35.3 0-64-28.7-64-64V336H302.1l-39 39c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l80-80c9.4-9.4 9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l39 39H128V64zm0 224v48H24c-13.3 0-24-10.7-24-24s10.7-24 24-24H128zM512 128H384V0L512 128z")
+
+        //Create and append Font Awesome attribution comment
+        const commentApplyIcon = document.createComment(" !Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc. ")
+        applyIconSvg.appendChild(commentApplyIcon)
 
         applyIconSvg.appendChild(applyIconPath)
         exampleBtnUse.appendChild(applyIconSvg)

@@ -46,7 +46,7 @@
             text-align: right;
 
             .icon {
-                width: fit-content;
+                width: var(--fs-sub-header);
                 height: var(--fs-sub-header);
                 cursor: pointer;
                 fill: var(--clr-neutral-900);
@@ -225,7 +225,7 @@
 
                     .icon {
                         height: var(--fs-p);
-                        width: fit-content;
+                        width: calc(var(--fs-p) + 2.5rem);
                         padding: 0 1rem;
                         fill: var(--clr-neutral-300);
                     }
@@ -334,7 +334,6 @@
                             padding: .75rem;
                             box-shadow: 0px 0px 5px 0px var(--clr-shadow);
                             transition: box-shadow 250ms ease-in-out;
-                            position: relative;
 
                             &__header {
                                 display: flex;
@@ -368,54 +367,34 @@
 
                                     .icon {
                                         fill: var(--clr-neutral-900);
-                                        height: var(--fs-footer);
-                                        width: fit-content;
+                                        width: var(--fs-footer);
                                         transform: rotate(0);
                                         transition: transform 250ms ease-in-out 250ms;
                                     }
                                 }
 
                                 &--quick {
-                                    opacity: 0;
-                                    position: absolute;
-                                    top: .25rem;
-                                    right: .25rem;
-                                    width: 4rem;
-                                    height: 4rem;
-                                    border-radius: 50%;
-                                    background-color: var(--clr-neutral-50);
+                                    font-size: var(--fs-p);
+                                    font-weight: var(--fw-bold);
+                                    color: var(--clr-neutral-50);
+                                    background-color: var(--clr-neutral-100);
                                     border: none;
+                                    border-radius: 5px;
+                                    padding: .5rem 1rem;
                                     cursor: pointer;
-                                    transition: background-color 250ms ease-in-out, opacity 250ms ease-in-out;
-
-                                    .icon {
-                                        height: var(--fs-i);
-                                        width: fit-content;
-                                        fill: var(--clr-neutral-50);
-                                        transition: fill 250ms ease-in-out;
-                                    }
+                                    height: 3rem;
+                                    transition: background-color 250ms ease-in-out;
                                 }
                             }
 
                             &:hover {
                                 box-shadow: 0px 0px 10px 0px var(--clr-shadow);
-
                                 .example__header {
-
                                     &--quick {
-
-                                        opacity: 1;
-
-                                        .icon {
-                                            fill: var(--clr-neutral-300);
-                                        }
+                                        background-color: var(--clr-neutral-300);
 
                                         &:hover {
-                                            background-color: var(--clr-neutral-100);
-
-                                            .icon {
-                                                fill: var(--clr-neutral-900);
-                                            }
+                                            background-color: var(--clr-primary-700);
                                         }
                                     }
                                 }
@@ -470,8 +449,7 @@
 
                                     .icon {
                                         margin-right: 1rem;
-                                        height: var(--fs-p);
-                                        width: fit-content;
+                                        width: var(--fs-p);
                                         fill: var(--clr-neutral-50);
                                     }
                                 }
@@ -505,7 +483,7 @@
                             .example__header {
                                 &--name {
                                     .icon {
-                                        transform: rotate(-90deg);
+                                        transform: rotate(-180deg);
                                         transition: transform 250ms ease-in-out 0s;
                                     }
                                 }

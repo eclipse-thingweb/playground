@@ -104,6 +104,10 @@ function createTab(tabNumber, exampleName, thingType) {
   const closeIconPath = document.createElementNS("http://www.w3.org/2000/svg", "path")
   closeIconPath.setAttribute("d", "M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z")
 
+  //Create and append Font Awesome attribution comment
+  const commentCloseIcon = document.createComment(" !Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc. ")
+  closeIconSvg.appendChild(commentCloseIcon)
+
   //append the path to the svg and the svg to the button
   closeIconSvg.appendChild(closeIconPath)
   closeBtn.appendChild(closeIconSvg)
@@ -128,6 +132,10 @@ function createTab(tabNumber, exampleName, thingType) {
   const confirmIconPath = document.createElementNS("http://www.w3.org/2000/svg", "path")
   confirmIconPath.setAttribute("d", "M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z")
 
+  //Create and append Font Awesome attribution comment
+  const commentConfirmIcon = document.createComment(" !Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc. ")
+  confirmIconSvg.appendChild(commentConfirmIcon)
+
   confirmIconSvg.appendChild(confirmIconPath)
   confirmTabClose.appendChild(confirmIconSvg)
   
@@ -147,6 +155,10 @@ function createTab(tabNumber, exampleName, thingType) {
   // Create a path element and set its attributes
   const cancelIconPath = document.createElementNS("http://www.w3.org/2000/svg", "path")
   cancelIconPath.setAttribute("d", "M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z")
+
+  //Create and append Font Awesome attribution comment
+  const commentCancelIcon = document.createComment(" !Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc. ")
+  cancelIconSvg.appendChild(commentCancelIcon)
 
   cancelIconSvg.appendChild(cancelIconPath)
   cancelTabClose.appendChild(cancelIconSvg)

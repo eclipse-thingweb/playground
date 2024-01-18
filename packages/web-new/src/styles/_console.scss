@@ -42,6 +42,7 @@
                 cursor: pointer;
 
                 .icon {
+                    display: inline-block;
                     fill: var(--clr-primary-500);
                     height: var(--fs-i);
                     width: fit-content;
@@ -52,6 +53,10 @@
                     .icon {
                         fill: var(--clr-primary-700);
                     }
+                }
+
+                .hidden {
+                    display: none;
                 }
             }
         }
@@ -197,7 +202,7 @@
                             transform: rotate(0);
                             transition: transform 250ms ease-in-out;
                             cursor: pointer;
-                            height: var(--fs-p);
+                            height: var(--fs-footer);
                             fill: var(--clr-neutral-900);
                         }
                     }
@@ -211,6 +216,15 @@
 
                         .icon {
                             width: fit-content;
+                            display: block;
+
+                            &.hidden {
+                                display: none;
+                            }
+                        }
+
+                        .show-icon {
+                            width: var(--fs-footer);
                         }
 
                         .neutral-circle-icon,
@@ -273,7 +287,7 @@
 
                             summary {
                                 .show-icon {
-                                    transform: rotate(-90deg);
+                                    transform: rotate(90deg);
                                 }
                             }
                         }
@@ -285,7 +299,7 @@
 
                     summary {
                         .show-icon {
-                            transform: rotate(-90deg);
+                            transform: rotate(90deg);
                         }
                     }
                 }
@@ -364,8 +378,7 @@
 
                     .icon {
                         fill: var(--clr-neutral-50);
-                        height: var(--fs-i);
-                        width: fit-content;
+                        width: var(--fs-i);
                     }
 
                     &:hover {
@@ -629,6 +642,7 @@
                                 color: var(--clr-neutral-50);
                                 font-size: var(--fs-p);
                                 font-family: var(--ff-primary);
+                                font-weight: var(--fw-bold);
                                 padding: .75rem 1rem;
                                 border: none;
                                 cursor: pointer;
@@ -653,6 +667,7 @@
                                     color: var(--clr-neutral-50);
                                     padding: .75rem 1.5rem;
                                     justify-content: center;
+                                    font-weight: var(--fw-bold);
                                     cursor: pointer;
 
                                     input[type='radio'] {

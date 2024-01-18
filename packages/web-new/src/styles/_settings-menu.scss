@@ -42,7 +42,7 @@
 
             .icon {
                 height: var(--fs-sub-header);
-                width: fit-content;
+                width: var(--fs-sub-header);
                 fill: var(--clr-neutral-50);
                 cursor: pointer;
             }
