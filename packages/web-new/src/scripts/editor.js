@@ -94,6 +94,7 @@ function createTab(tabNumber, exampleName, thingType) {
   closeBtn.classList.add("close-tab")
 
   // Create the svg close icon
+  // Close icon gotten from: https://fontawesome.com/icons/xmark?f=classic&s=solid
   const closeIconSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
   closeIconSvg.setAttribute("xmlns", "http://www.w3.org/2000/svg")
   closeIconSvg.setAttribute("width", "100%")
@@ -120,7 +121,9 @@ function createTab(tabNumber, exampleName, thingType) {
   const confirmTabClose = document.createElement("button")
   confirmTabClose.classList.add("confirm-tab-close")
   confirmTabClose.textContent = "Close"
+
   // Create the svg confirm close icon
+  // Check icon gotten from: https://fontawesome.com/icons/check?f=classic&s=solid
   const confirmIconSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
   confirmIconSvg.setAttribute("xmlns", "http://www.w3.org/2000/svg")
   confirmIconSvg.setAttribute("width", "100%")
@@ -145,6 +148,7 @@ function createTab(tabNumber, exampleName, thingType) {
   cancelTabClose.textContent = "Cancel"
   
   // Create the svg close cancel icon
+  // Close icon gotten from: https://fontawesome.com/icons/xmark?f=classic&s=solid
   const cancelIconSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
   cancelIconSvg.setAttribute("xmlns", "http://www.w3.org/2000/svg")
   cancelIconSvg.setAttribute("width", "100%")

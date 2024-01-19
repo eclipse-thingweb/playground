@@ -26,7 +26,7 @@ import './json-yaml'
 import './settings-menu'
 import './save-menu'
 import './examples-menu'
-import { consoleElement, expandArrows, collapseArrows } from './console'
+import { consoleElement, minMaxBtn } from './console'
 import './open-api'
 import './async-api'
 import './aas'
@@ -165,12 +165,13 @@ function onmousemoveY(e) {
       b.style.flex = `0 ${h < 50 ? 39 : h}px`
       t.style.flex = "1 0"
 
-      if(h < 39){
+      if (h < 39) {
         consoleElement.classList.remove("expanded")
         consoleElement.classList.add("collapsed")
 
-        collapseArrows.classList.add("hidden")
-        expandArrows.classList.remove("hidden")
+        minMaxBtn.children[0].children[0].setAttribute("d", "M344 0H488c13.3 0 24 10.7 24 24V168c0 9.7-5.8 18.5-14.8 22.2s-19.3 1.7-26.2-5.2l-39-39-87 87c-9.4 9.4-24.6 9.4-33.9 0l-32-32c-9.4-9.4-9.4-24.6 0-33.9l87-87L327 41c-6.9-6.9-8.9-17.2-5.2-26.2S334.3 0 344 0zM168 512H24c-13.3 0-24-10.7-24-24V344c0-9.7 5.8-18.5 14.8-22.2s19.3-1.7 26.2 5.2l39 39 87-87c9.4-9.4 24.6-9.4 33.9 0l32 32c9.4 9.4 9.4 24.6 0 33.9l-87 87 39 39c6.9 6.9 8.9 17.2 5.2 26.2s-12.5 14.8-22.2 14.8z")
+        minMaxBtn.children[0].classList.add("expand-arrows")
+        minMaxBtn.children[0].classList.remove("collapse-arrows")
       }
 
       if (h < 445) {
@@ -185,12 +186,13 @@ function onmousemoveY(e) {
       t.style.flex = `0 ${h < 220 ? 210 : h}px`
       b.style.flex = "1 0"
 
-      if ( h > 714 ){
+      if (h > 714) {
         consoleElement.classList.remove("collapsed")
         consoleElement.classList.add("expanded")
 
-        expandArrows.classList.add("hidden")
-        collapseArrows.classList.remove("hidden")
+        minMaxBtn.children[0].children[0].setAttribute("d", "M439 7c9.4-9.4 24.6-9.4 33.9 0l32 32c9.4 9.4 9.4 24.6 0 33.9l-87 87 39 39c6.9 6.9 8.9 17.2 5.2 26.2s-12.5 14.8-22.2 14.8H296c-13.3 0-24-10.7-24-24V72c0-9.7 5.8-18.5 14.8-22.2s19.3-1.7 26.2 5.2l39 39L439 7zM72 272H216c13.3 0 24 10.7 24 24V440c0 9.7-5.8 18.5-14.8 22.2s-19.3 1.7-26.2-5.2l-39-39L73 505c-9.4 9.4-24.6 9.4-33.9 0L7 473c-9.4-9.4-9.4-24.6 0-33.9l87-87L55 313c-6.9-6.9-8.9-17.2-5.2-26.2s12.5-14.8 22.2-14.8z")
+        minMaxBtn.children[0].classList.remove("expand-arrows")
+        minMaxBtn.children[0].classList.add("collapse-arrows")
       }
 
       if (h < 310) {

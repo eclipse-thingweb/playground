@@ -221,6 +221,10 @@ export function removeDefaultsUtil(editorInstance) {
  * @param {string} body Thing Description/Thing Model to validate
  * @param {string} docType "td" or "tm"
  * @param {*} source "manual" or "auto"
+ * *Neutral circle icon gotten from: https://fontawesome.com/icons/circle?f=classic&s=solid
+ * *Success circle icon gotten from: https://fontawesome.com/icons/circle-check?f=classic&s=solid
+ * *Warning circle icon gotten from: https://fontawesome.com/icons/circle-exclamation?f=classic&s=solid
+ * *Error circle icon gotten from: https://fontawesome.com/icons/circle-xmark?f=classic&s=solid
  */
 export function validate(thingType, editorContent) {
 
@@ -236,41 +240,25 @@ export function validate(thingType, editorContent) {
             Object.keys(result.report).forEach(el => {
                 const spotName = "spot-" + el
                 document.getElementById(spotName).removeAttribute('open')
-                const resultIcons = document.getElementById(spotName).children[0].children[0].querySelectorAll(".icon")
-
-                resultIcons.forEach(icon => {
-                    if (!icon.classList.contains("hidden")) {
-                        icon.classList.add("hidden")
-                    }
-                })
+                const resultIcon = document.getElementById(spotName).children[0].children[0].children[0]
 
                 if (result.report[el] === "passed") {
-                    resultIcons.forEach(icon => {
-                        if (icon.classList.contains("success-circle-icon")) {
-                            icon.classList.remove("hidden")
-                        }
-                    })
+                    resultIcon.children[0].setAttribute("d", "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z")
+                    resultIcon.classList.remove("neutral-circle-icon")
+                    resultIcon.classList.add("success-circle-icon")
                 }
                 else if (result.report[el] === "warning") {
-                    resultIcons.forEach(icon => {
-                        if (icon.classList.contains("warning-circle-icon")) {
-                            icon.classList.remove("hidden")
-                        }
-                    })
+                    resultIcon.children[0].setAttribute("d", "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z")
+                    resultIcon.classList.remove("neutral-circle-icon")
+                    resultIcon.classList.add("warning-circle-icon")
                 }
                 else if (result.report[el] === "failed") {
-                    resultIcons.forEach(icon => {
-                        if (icon.classList.contains("error-circle-icon")) {
-                            icon.classList.remove("hidden")
-                        }
-                    })
+                    resultIcon.children[0].setAttribute("d", "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z")
+                    resultIcon.classList.remove("neutral-circle-icon")
+                    resultIcon.classList.add("error-circle-icon")
                 }
                 else if (result.report[el] === null) {
-                    resultIcons.forEach(icon => {
-                        if (icon.classList.contains("neutral-circle-icon")) {
-                            icon.classList.remove("hidden")
-                        }
-                    })
+                    // do nothing
                 }
                 else {
                     console.error("unknown report feedback value")
@@ -281,41 +269,25 @@ export function validate(thingType, editorContent) {
                 const detailsName = el + "-section"
                 if (document.getElementById(detailsName)) {
                     document.getElementById(detailsName).removeAttribute('open')
-                    const detailsIcons = document.getElementById(detailsName).children[0].children[0].querySelectorAll(".icon")
-
-                    detailsIcons.forEach(icon => {
-                        if (!icon.classList.contains("hidden")) {
-                            icon.classList.add("hidden")
-                        }
-                    })
+                    const detailsIcon = document.getElementById(detailsName).children[0].children[0].children[0]
 
                     if (result.details[el] === "passed") {
-                        detailsIcons.forEach(icon => {
-                            if (icon.classList.contains("success-circle-icon")) {
-                                icon.classList.remove("hidden")
-                            }
-                        })
+                        detailsIcon.children[0].setAttribute("d", "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z")
+                        detailsIcon.classList.remove("neutral-circle-icon")
+                        detailsIcon.classList.add("success-circle-icon")
                     }
                     else if (result.details[el] === "warning" || result.details[el] === "not-impl") {
-                        detailsIcons.forEach(icon => {
-                            if (icon.classList.contains("warning-circle-icon")) {
-                                icon.classList.remove("hidden")
-                            }
-                        })
+                        detailsIcon.children[0].setAttribute("d", "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z")
+                        detailsIcon.classList.remove("neutral-circle-icon")
+                        detailsIcon.classList.add("warning-circle-icon")
                     }
                     else if (result.details[el] === "failed") {
-                        detailsIcons.forEach(icon => {
-                            if (icon.classList.contains("error-circle-icon")) {
-                                icon.classList.remove("hidden")
-                            }
-                        })
+                        detailsIcon.children[0].setAttribute("d", "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z")
+                        detailsIcon.classList.remove("neutral-circle-icon")
+                        detailsIcon.classList.add("error-circle-icon")
                     }
                     else if (result.details[el] === null) {
-                        detailsIcons.forEach(icon => {
-                            if (icon.classList.contains("neutral-circle-icon")) {
-                                icon.classList.remove("hidden")
-                            }
-                        })
+                        // do nothing
                     }
                     else {
                         console.error("unknown report feedback value")
@@ -346,15 +318,13 @@ export function resetValidationStatus() {
     }
 
     sectionHeaders.forEach(header => {
-        const headerIcons = header.children[0].querySelectorAll(".icon")
-        headerIcons.forEach(icon => {
-            if (!icon.classList.contains("hidden")) {
-                icon.classList.add("hidden")
-            }
-            if (icon.classList.contains("neutral-circle-icon")) {
-                icon.classList.remove("hidden")
-            }
-        })
+        const headerIcon = header.children[0].children[0]
+
+        if(!headerIcon.classList.contains("neutral-circle-icon")){
+            headerIcon.children[0].setAttribute("d", "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z")
+            headerIcon.classList.remove("success-circle-icon", "warning-circle-icon", "error-circle-icon")
+            headerIcon.classList.add("neutral-circle-icon")
+        }
     })
 
     document.querySelectorAll("#spot-json, #spot-schema, #spot-defaults, #spot-jsonld, #spot-additional").forEach(category => {
@@ -386,33 +356,29 @@ function populateCategory(messagesList) {
         const categoryContainer = category.querySelector("ul.section-content")
         category.classList.remove("disabled")
 
-        const categoryIcons = category.children[0].children[0].querySelectorAll(".icon")
-
-        categoryIcons.forEach(icon => {
-            if (!icon.classList.contains("hidden")) {
-                if (icon.classList.contains("error-circle-icon") || icon.classList.contains("warning-circle-icon")) {
-                    const noticePrompt = document.createElement("p")
-                    noticePrompt.textContent = "*This feature is still in the testing phase, and it may not refer to the correct source of the error*"
-                    noticePrompt.classList.add("notice-prompt")
-                    categoryContainer.append(noticePrompt)
-                    messagesList.forEach(message => {
-                        const listElement = document.createElement("li")
-                        listElement.textContent = message
-                        categoryContainer.append(listElement)
-                    })
-                }
-                else if (icon.classList.contains("success-circle-icon")) {
-                    const successMessage = document.createElement("li")
-                    successMessage.textContent = "Validated Successfully"
-                    categoryContainer.append(successMessage)
-                }
-                else {
-                    const nullMessage = document.createElement("li")
-                    nullMessage.textContent = "A previous validation has failed or it is only available for Thing Descriptions"
-                    categoryContainer.append(nullMessage)
-                }
-            }
-        })
+        const categoryIcon = category.children[0].children[0].children[0]
+        
+        if (categoryIcon.classList.contains("error-circle-icon") || categoryIcon.classList.contains("warning-circle-icon")) {
+            const noticePrompt = document.createElement("p")
+            noticePrompt.textContent = "*This feature is still in the testing phase, and it may not refer to the correct source of the error*"
+            noticePrompt.classList.add("notice-prompt")
+            categoryContainer.append(noticePrompt)
+            messagesList.forEach(message => {
+                const listElement = document.createElement("li")
+                listElement.textContent = message
+                categoryContainer.append(listElement)
+            })
+        }
+        else if (categoryIcon.classList.contains("success-circle-icon")) {
+            const successMessage = document.createElement("li")
+            successMessage.textContent = "Validated Successfully"
+            categoryContainer.append(successMessage)
+        }
+        else {
+            const nullMessage = document.createElement("li")
+            nullMessage.textContent = "A previous validation has failed or it is only available for Thing Descriptions"
+            categoryContainer.append(nullMessage)
+        }
     })
 }
 
