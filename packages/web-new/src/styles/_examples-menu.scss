@@ -45,9 +45,11 @@
             width: 100%;
             text-align: right;
 
-            i {
-                font-size: var(--fs-sub-header);
+            .icon {
+                width: var(--fs-sub-header);
+                height: var(--fs-sub-header);
                 cursor: pointer;
+                fill: var(--clr-neutral-900);
             }
         }
 
@@ -158,15 +160,18 @@
                         top: 50%;
                         right: 2rem;
                         transform: translateY(-50%);
+                        content: '';
+                        -webkit-mask: url('../assets/img/angle-down-solid.svg') no-repeat 50% 50%;
+                        mask: url('../assets/img/angle-down-solid.svg') no-repeat 50% 50%;
+                        -webkit-mask-size: cover;
+                        mask-size: cover;
                         display: inline-block;
-                        text-rendering: auto;
-                        -webkit-font-smoothing: antialiased;
-                        font: var(--fa-font-solid);
-                        content: "\f107";
+                        height: 1.25rem;
+                        width: 1.25rem;
                         pointer-events: none;
-                        color: var(--clr-neutral-900);
-                        font-size: var(--fs-p);
+                        background-color: var(--clr-neutral-300);
                     }
+
                 }
 
                 select,
@@ -216,12 +221,13 @@
                     background-color: var(--clr-neutral-50);
                     color: var(--clr-neutral-900);
                     font-family: var(--ff-primary);
-                    font-size: inherit;
+                    font-size: var(--fs-p);
 
-                    i {
-                        width: fit-content;
+                    .icon {
+                        height: var(--fs-p);
+                        width: calc(var(--fs-p) + 2.5rem);
                         padding: 0 1rem;
-                        font-size: inherit;
+                        fill: var(--clr-neutral-300);
                     }
 
                     .search-input {
@@ -231,7 +237,7 @@
                         font-size: inherit;
                         border: none;
                         width: 100%;
-                        padding: .8rem 1rem;
+                        padding: .8rem 1rem .8rem 0;
                         appearance: none;
                         cursor: text;
 
@@ -341,7 +347,7 @@
                                     align-items: center;
                                     justify-content: center;
                                     gap: 1rem;
-                                    margin: 0 2rem;
+                                    margin: 0 4rem;
                                     cursor: pointer;
                                     transition: all 250ms ease-in-out;
 
@@ -359,8 +365,9 @@
                                         font-weight: var(--fw-bold);
                                     }
 
-                                    .toggle-arrow {
-                                        font-size: var(--fs-footer);
+                                    .icon {
+                                        fill: var(--clr-neutral-900);
+                                        width: var(--fs-footer);
                                         transform: rotate(0);
                                         transition: transform 250ms ease-in-out 250ms;
                                     }
@@ -382,17 +389,14 @@
 
                             &:hover {
                                 box-shadow: 0px 0px 10px 0px var(--clr-shadow);
-
                                 .example__header {
-
                                     &--quick {
                                         background-color: var(--clr-neutral-300);
 
-                                        &:hover{
+                                        &:hover {
                                             background-color: var(--clr-primary-700);
                                         }
                                     }
-
                                 }
                             }
 
@@ -443,9 +447,10 @@
                                         font-weight: var(--fw-bold);
                                     }
 
-                                    i {
+                                    .icon {
                                         margin-right: 1rem;
-                                        font-size: var(--fs-p);
+                                        width: var(--fs-p);
+                                        fill: var(--clr-neutral-50);
                                     }
                                 }
 
@@ -477,8 +482,8 @@
 
                             .example__header {
                                 &--name {
-                                    .toggle-arrow {
-                                        transform: rotate(-90deg);
+                                    .icon {
+                                        transform: rotate(-180deg);
                                         transition: transform 250ms ease-in-out 0s;
                                     }
                                 }

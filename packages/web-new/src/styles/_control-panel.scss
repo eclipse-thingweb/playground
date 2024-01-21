@@ -35,7 +35,7 @@
         border-bottom: 2px solid var(--clr-primary-500);
         font-family: var(--ff-primary);
         cursor: pointer;
-        transition: all 250ms ease;
+        transition: all 250ms ease-in-out;
 
         &:last-child {
             border-color: var(--clr-neutral-50);
@@ -48,10 +48,16 @@
         &:hover {
             color: var(--clr-neutral-50);
             background-color: var(--clr-primary-500);
+
+            .icon {
+                fill: var(--clr-neutral-50);
+            }
         }
 
-        i {
-            font-size: var(--fs-i);
+        .icon {
+            height: var(--fs-i);
+            fill: var(--clr-primary-500);
+            transition: fill 250ms ease-in-out;
         }
 
         p {
