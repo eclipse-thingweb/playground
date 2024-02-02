@@ -74,9 +74,9 @@ jobs:
 
             - name: Run server and test
               run: |
-                npm run serve &
+                npm serve &
                 sleep 10
-                npm run test
+                npm test
 
             # - name: Run Playwright tests
             #   run: npm run test
