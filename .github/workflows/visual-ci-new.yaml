@@ -63,17 +63,11 @@ jobs:
             - name: Bootstrap
               run: lerna bootstrap --no-ci
             
-            - name: Move to folder
-              run: cd ./packages/web-new
-
-            - name: Install dependencies
-              run: npm install
-
-            - name: Install Playwright Browsers
-              run: npx playwright install chromium firefox
-
-            - name: Run server and test
+            - name: Visual Tests
               run: |
+                cd ./packages/web-new
+                npm install
+                npx playwright install chromium firefox
                 npm serve &
                 sleep 10
                 npm test
