@@ -68,7 +68,7 @@ jobs:
                 cd ./packages/web-new
                 npm install
                 npx playwright install chromium firefox
-                npm serve &
+                npm run serve &
                 sleep 10
                 npm test
 
