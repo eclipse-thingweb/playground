@@ -15,7 +15,11 @@
 // @ts-check
 const { defineConfig, devices } = require('@playwright/test');
 
-const isCI = process.env.CI;
+/**
+ * Read environment variables from file.
+ * https://github.com/motdotla/dotenv
+ */
+// require('dotenv').config();
 
 module.exports = defineConfig({
   testDir: './tests',
@@ -24,11 +28,11 @@ module.exports = defineConfig({
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!isCI,
+  forbidOnly: !!process.env.CI,
   /* Retry on CI only */
-  retries: isCI ? 2 : 0,
+  retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: isCI ? 1 : undefined,
+  workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -64,11 +68,11 @@ module.exports = defineConfig({
     // }
   ],
 
-  // /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run serve',
-  //   url: 'http://127.0.0.1:5100',
-  //   timeout: 120 * 1000,
-  //   reuseExistingServer: !isCI,
-  // }
+  /* Run your local dev server before starting the tests */
+  webServer: {
+    command: 'npm run serve',
+    url: 'http://127.0.0.1:5100',
+    // timeout: 120 * 1000,
+    reuseExistingServer: !process.env.CI,
+  }
 });
