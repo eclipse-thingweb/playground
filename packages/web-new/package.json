@@ -19,7 +19,7 @@
     "dev": "webpack serve --mode development",
     "serve": "node server/server.js",
     "examples": "node external-scripts/generate-paths.js",
-    "test": "npx playwright test --project=chromium --project=firefox",
+    "test": "npx playwright test --project=chromium",
     "test-full": "npx playwright test"
   },
   "devDependencies": {
