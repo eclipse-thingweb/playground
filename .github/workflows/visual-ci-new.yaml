@@ -33,6 +33,8 @@ jobs:
                 cd ./packages/web-new
                 npm install
                 npx playwright install chromium firefox
+                npm run serve &
+                sleep 10
                 npm test
 
             - uses: actions/upload-artifact@v3
