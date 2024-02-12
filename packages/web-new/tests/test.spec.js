@@ -433,6 +433,7 @@ test.describe("Examples menu functionality", () => {
         const quickAccessBtn = page.locator(".example").filter({ hasText: 'Overwrite Existing Definitions' }).nth(1).getByRole("button").nth(0)
         await quickAccessBtn.click()
 
+        await page.waitForTimeout(1000)
         const exampleTab = page.locator("#tab").nth(1)
         await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
         await expect(exampleTab).toHaveText("TMSmart Lamp ControlCloseCancel")
