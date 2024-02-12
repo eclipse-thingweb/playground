@@ -15,10 +15,7 @@
 // @ts-check
 const { defineConfig, devices } = require('@playwright/test');
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
+
 // require('dotenv').config();
 
 module.exports = defineConfig({
@@ -58,20 +55,21 @@ module.exports = defineConfig({
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
     },
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // }
+    {
+      name: 'Microsoft Edge',
+      use: { ...devices['Desktop Edge'], channel: 'msedge' },
+    },
+    {
+      name: 'Google Chrome',
+      use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+    }
   ],
 
   /* Run your local dev server before starting the tests */
   webServer: {
     command: 'npm run serve',
     url: 'http://127.0.0.1:5100',
+    // Add a timeout in case the server takes to long to start
     // timeout: 120 * 1000,
     reuseExistingServer: !process.env.CI,
   }

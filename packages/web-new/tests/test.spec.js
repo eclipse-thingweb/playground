@@ -188,7 +188,7 @@ test.describe("Editors and Tabs creation and deletion", () => {
 
         await page.locator("#examples-btn").click()
         await page.locator(".example").nth(0).click()
-        await page.locator(".example").nth(0).getByRole("button", { name: /Apply/ }).click()
+        await page.locator(".example").nth(0).locator(".example__btn").locator(".example__btn--use").click()
 
         await expect(editorTabs).toHaveCount(2)
         await expect(editors).toHaveCount(2)
@@ -281,7 +281,7 @@ test.describe("Examples menu functionality", () => {
         await page.locator("#examples-btn").click()
 
         await expect(page.getByRole('heading', { name: 'Simple Default' })).toBeVisible({ visible: true })
-        await page.locator(".examples-menu-container__close > i").click()
+        await page.locator(".examples-menu-container__close > svg").click()
 
         await expect(page.getByRole('heading', { name: 'Simple Default' })).toBeVisible({ visible: false })
     })
@@ -315,7 +315,7 @@ test.describe("Examples menu functionality", () => {
         await basicExample.click()
         await expect(basicExample).toHaveClass("example open")
 
-        const applyBtn = page.locator(".example").filter({ hasText: 'Basic TD' }).nth(0).getByRole("button").filter({ hasText: "Apply" })
+        const applyBtn = page.locator(".example").filter({ hasText: 'Basic TD' }).nth(0).locator(".example__btn").locator(".example__btn--use")
         await applyBtn.click()
         await expect(basicExample).toHaveClass("example")
 
@@ -448,7 +448,7 @@ test.describe("Save menu functionality", () => {
         await page.locator("#save-btn").click()
         await expect(saveMenu).toHaveClass("save-menu")
 
-        const closeMenu = page.locator(".save-menu-close > i")
+        const closeMenu = page.locator(".save-menu-close > svg")
         await closeMenu.click()
         await expect(saveMenu).toHaveClass("save-menu closed")
     })
@@ -577,7 +577,7 @@ test.describe("Settings menu functionality", () => {
         await page.locator("#settings-btn").click()
         await expect(settingsMenu).toHaveClass("settings-menu")
 
-        const closeMenu = page.locator(".settings__close > i")
+        const closeMenu = page.locator(".settings__close > svg")
         await closeMenu.click()
         await expect(settingsMenu).toHaveClass("settings-menu closed")
     })
@@ -704,15 +704,15 @@ test.describe("Validation view functionality", () => {
         await expect(validationTab).toBeChecked()
         await expect(validationView).toHaveClass("console-view validation-view")
 
-        const stateIcon = page.locator(".json-validation-section > .section-header > i").nth(0)
-        await expect(stateIcon).toHaveClass("fa-solid fa-circle")
+        const stateIcon = page.locator(".json-validation-section > .section-header > .header-icons > svg")
+        await expect(stateIcon).toHaveClass("neutral-circle-icon icon")
 
         const validationBtn = page.locator("#validate-btn")
         await validationBtn.click()
 
         //TODO: Find a better way to wait for this event to happen
-        await page.waitForTimeout(5000)
-        await expect(stateIcon).toHaveClass("fa-solid fa-circle-check")
+        await page.waitForTimeout(3000)
+        await expect(stateIcon).toHaveClass("icon success-circle-icon")
     })
 
     test("Validating the 'All Defaults TD'", async ({ page }) => {
@@ -740,44 +740,44 @@ test.describe("Validation view functionality", () => {
 
         //validation section
         const jsonValidationSection = page.locator(".json-validation-section")
-        const jsonValidationSectionIcon = page.locator(".json-validation-section > .section-header > i").nth(0)
+        const jsonValidationSectionIcon = page.locator(".json-validation-section > .section-header > .header-icons > svg")
         const jsonValidationSectionTxt = page.locator(".json-validation-section > .section-content > li")
 
         await jsonValidationSection.click()
         await expect(jsonValidationSectionTxt).toHaveText("Validated Successfully")
-        await expect(jsonValidationSectionIcon).toHaveClass("fa-solid fa-circle-check")
+        await expect(jsonValidationSectionIcon).toHaveClass("icon success-circle-icon")
 
         const jsonSchemaValidationSection = page.locator(".json-schema-validation-section")
-        const jsonSchemaValidationSectionIcon = page.locator(".json-schema-validation-section > .section-header > i").nth(0)
+        const jsonSchemaValidationSectionIcon = page.locator(".json-schema-validation-section > .section-header > .header-icons > svg")
         const jsonSchemaValidationSectionTxt = page.locator(".json-schema-validation-section > .section-content > li")
 
         await jsonSchemaValidationSection.click()
         await expect(jsonSchemaValidationSectionTxt).toHaveText("Validated Successfully")
-        await expect(jsonSchemaValidationSectionIcon).toHaveClass("fa-solid fa-circle-check")
+        await expect(jsonSchemaValidationSectionIcon).toHaveClass("icon success-circle-icon")
 
         const jsonSchemaDefaultsSection = page.locator(".json-schema-defaults-section")
-        const jsonSchemaDefaultsSectionIcon = page.locator(".json-schema-defaults-section > .section-header > i").nth(0)
+        const jsonSchemaDefaultsSectionIcon = page.locator(".json-schema-defaults-section > .section-header > .header-icons > svg")
         const jsonSchemaDefaultsSectionTxt = page.locator(".json-schema-defaults-section > .section-content > li")
 
         await jsonSchemaDefaultsSection.click()
         await expect(jsonSchemaDefaultsSectionTxt).toHaveText("Validated Successfully")
-        await expect(jsonSchemaDefaultsSectionIcon).toHaveClass("fa-solid fa-circle-check")
+        await expect(jsonSchemaDefaultsSectionIcon).toHaveClass("icon success-circle-icon")
 
         const jsonlsValidationSection = page.locator(".jsonls-validation-section")
-        const jsonlsValidationSectionIcon = page.locator(".jsonls-validation-section > .section-header > i").nth(0)
+        const jsonlsValidationSectionIcon = page.locator(".jsonls-validation-section > .section-header > .header-icons > svg")
         const jsonlsValidationSectionTxt = page.locator(".jsonls-validation-section > .section-content > li")
 
         await jsonlsValidationSection.click()
         await expect(jsonlsValidationSectionTxt).toHaveText("Validated Successfully")
-        await expect(jsonlsValidationSectionIcon).toHaveClass("fa-solid fa-circle-check")
+        await expect(jsonlsValidationSectionIcon).toHaveClass("icon success-circle-icon")
 
         const additionalChecksSection = page.locator(".additional-checks-section")
-        const additionalChecksSectionIcon = page.locator(".additional-checks-section > .section-header > i").nth(0)
+        const additionalChecksSectionIcon = page.locator(".additional-checks-section > .section-header > .header-icons > svg")
         const additionalChecksSectionTxt = page.locator(".additional-checks-section > .section-content > li")
 
         await additionalChecksSection.click()
         await expect(additionalChecksSectionTxt).toHaveText("Validated Successfully")
-        await expect(additionalChecksSectionIcon).toHaveClass("fa-solid fa-circle-check")
+        await expect(additionalChecksSectionIcon).toHaveClass("icon success-circle-icon")
     })
 
     test("Validating the 'Basic TD'", async ({ page }) => {
@@ -805,44 +805,44 @@ test.describe("Validation view functionality", () => {
 
         //Validation section
         const jsonValidationSection = page.locator(".json-validation-section")
-        const jsonValidationSectionIcon = page.locator(".json-validation-section > .section-header > i").nth(0)
+        const jsonValidationSectionIcon = page.locator(".json-validation-section > .section-header > .header-icons > svg")
         const jsonValidationSectionTxt = page.locator(".json-validation-section > .section-content > li")
 
         await jsonValidationSection.click()
         await expect(jsonValidationSectionTxt).toHaveText("Validated Successfully")
-        await expect(jsonValidationSectionIcon).toHaveClass("fa-solid fa-circle-check")
+        await expect(jsonValidationSectionIcon).toHaveClass("icon success-circle-icon")
 
         const jsonSchemaValidationSection = page.locator(".json-schema-validation-section")
-        const jsonSchemaValidationSectionIcon = page.locator(".json-schema-validation-section > .section-header > i").nth(0)
+        const jsonSchemaValidationSectionIcon = page.locator(".json-schema-validation-section > .section-header > .header-icons > svg")
         const jsonSchemaValidationSectionTxt = page.locator(".json-schema-validation-section > .section-content > li")
 
         await jsonSchemaValidationSection.click()
         await expect(jsonSchemaValidationSectionTxt).toHaveText("Validated Successfully")
-        await expect(jsonSchemaValidationSectionIcon).toHaveClass("fa-solid fa-circle-check")
+        await expect(jsonSchemaValidationSectionIcon).toHaveClass("icon success-circle-icon")
 
         const jsonSchemaDefaultsSection = page.locator(".json-schema-defaults-section")
-        const jsonSchemaDefaultsSectionIcon = page.locator(".json-schema-defaults-section > .section-header > i").nth(0)
+        const jsonSchemaDefaultsSectionIcon = page.locator(".json-schema-defaults-section > .section-header > .header-icons > svg")
         const jsonSchemaDefaultsSectionTxt = page.locator(".json-schema-defaults-section > .section-content > li").nth(0)
 
         await jsonSchemaDefaultsSection.click()
         await expect(jsonSchemaDefaultsSectionTxt).toHaveText("Optional validation failed:")
-        await expect(jsonSchemaDefaultsSectionIcon).toHaveClass("fa-solid fa-circle-exclamation")
+        await expect(jsonSchemaDefaultsSectionIcon).toHaveClass("icon warning-circle-icon")
 
         const jsonlsValidationSection = page.locator(".jsonls-validation-section")
-        const jsonlsValidationSectionIcon = page.locator(".jsonls-validation-section > .section-header > i").nth(0)
+        const jsonlsValidationSectionIcon = page.locator(".jsonls-validation-section > .section-header > .header-icons > svg")
         const jsonlsValidationSectionTxt = page.locator(".jsonls-validation-section > .section-content > li")
 
         await jsonlsValidationSection.click()
         await expect(jsonlsValidationSectionTxt).toHaveText("Validated Successfully")
-        await expect(jsonlsValidationSectionIcon).toHaveClass("fa-solid fa-circle-check")
+        await expect(jsonlsValidationSectionIcon).toHaveClass("icon success-circle-icon")
 
         const additionalChecksSection = page.locator(".additional-checks-section")
-        const additionalChecksSectionIcon = page.locator(".additional-checks-section > .section-header > i").nth(0)
+        const additionalChecksSectionIcon = page.locator(".additional-checks-section > .section-header > .header-icons > svg")
         const additionalChecksSectionTxt = page.locator(".additional-checks-section > .section-content > li")
 
         await additionalChecksSection.click()
         await expect(additionalChecksSectionTxt).toHaveText("Validated Successfully")
-        await expect(additionalChecksSectionIcon).toHaveClass("fa-solid fa-circle-check")
+        await expect(additionalChecksSectionIcon).toHaveClass("icon success-circle-icon")
     })
 
     test("Validating the 'Basic TM'", async ({ page }) => {
@@ -875,44 +875,44 @@ test.describe("Validation view functionality", () => {
 
         //Validation section
         const jsonValidationSection = page.locator(".json-validation-section")
-        const jsonValidationSectionIcon = page.locator(".json-validation-section > .section-header > i").nth(0)
+        const jsonValidationSectionIcon = page.locator(".json-validation-section > .section-header > .header-icons > svg")
         const jsonValidationSectionTxt = page.locator(".json-validation-section > .section-content > li")
 
         await jsonValidationSection.click()
         await expect(jsonValidationSectionTxt).toHaveText("Validated Successfully")
-        await expect(jsonValidationSectionIcon).toHaveClass("fa-solid fa-circle-check")
+        await expect(jsonValidationSectionIcon).toHaveClass("icon success-circle-icon")
 
         const jsonSchemaValidationSection = page.locator(".json-schema-validation-section")
-        const jsonSchemaValidationSectionIcon = page.locator(".json-schema-validation-section > .section-header > i").nth(0)
+        const jsonSchemaValidationSectionIcon = page.locator(".json-schema-validation-section > .section-header > .header-icons > svg")
         const jsonSchemaValidationSectionTxt = page.locator(".json-schema-validation-section > .section-content > li")
 
         await jsonSchemaValidationSection.click()
         await expect(jsonSchemaValidationSectionTxt).toHaveText("Validated Successfully")
-        await expect(jsonSchemaValidationSectionIcon).toHaveClass("fa-solid fa-circle-check")
+        await expect(jsonSchemaValidationSectionIcon).toHaveClass("icon success-circle-icon")
 
         const jsonSchemaDefaultsSection = page.locator(".json-schema-defaults-section")
-        const jsonSchemaDefaultsSectionIcon = page.locator(".json-schema-defaults-section > .section-header > i").nth(0)
+        const jsonSchemaDefaultsSectionIcon = page.locator(".json-schema-defaults-section > .section-header > .header-icons > svg")
         const jsonSchemaDefaultsSectionTxt = page.locator(".json-schema-defaults-section > .section-content > li").nth(0)
 
         await jsonSchemaDefaultsSection.click()
         await expect(jsonSchemaDefaultsSectionTxt).toHaveText("A previous validation has failed or it is only available for Thing Descriptions")
-        await expect(jsonSchemaDefaultsSectionIcon).toHaveClass("fa-solid fa-circle")
+        await expect(jsonSchemaDefaultsSectionIcon).toHaveClass("neutral-circle-icon icon")
 
         const jsonlsValidationSection = page.locator(".jsonls-validation-section")
-        const jsonlsValidationSectionIcon = page.locator(".jsonls-validation-section > .section-header > i").nth(0)
+        const jsonlsValidationSectionIcon = page.locator(".jsonls-validation-section > .section-header > .header-icons > svg")
         const jsonlsValidationSectionTxt = page.locator(".jsonls-validation-section > .section-content > li")
 
         await jsonlsValidationSection.click()
         await expect(jsonlsValidationSectionTxt).toHaveText("Validated Successfully")
-        await expect(jsonlsValidationSectionIcon).toHaveClass("fa-solid fa-circle-check")
+        await expect(jsonlsValidationSectionIcon).toHaveClass("icon success-circle-icon")
 
         const additionalChecksSection = page.locator(".additional-checks-section")
-        const additionalChecksSectionIcon = page.locator(".additional-checks-section > .section-header > i").nth(0)
+        const additionalChecksSectionIcon = page.locator(".additional-checks-section > .section-header > .header-icons > svg")
         const additionalChecksSectionTxt = page.locator(".additional-checks-section > .section-content > li")
 
         await additionalChecksSection.click()
         await expect(additionalChecksSectionTxt).toHaveText("Validated Successfully")
-        await expect(additionalChecksSectionIcon).toHaveClass("fa-solid fa-circle-check")
+        await expect(additionalChecksSectionIcon).toHaveClass("icon success-circle-icon")
     })
 
 })
