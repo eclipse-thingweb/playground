@@ -14,7 +14,7 @@
  ********************************************************************************/
 const { test, expect } = require('@playwright/test');
 
-//Open the playground app before any test is runned
+//Open the playground app before any test is ran
 test.beforeEach(async ({ page }) => {
     await page.goto('/')
 });
@@ -188,7 +188,7 @@ test.describe("Editors and Tabs creation and deletion", () => {
 
         await page.locator("#examples-btn").click()
         await page.locator(".example").nth(0).click()
-        await page.locator(".example").nth(0).getByRole("button", { name: /Apply/ }).click()
+        await page.locator(".example").nth(0).locator(".example__btn").locator(".example__btn--use").click()
 
         await expect(editorTabs).toHaveCount(2)
         await expect(editors).toHaveCount(2)
@@ -281,7 +281,7 @@ test.describe("Examples menu functionality", () => {
         await page.locator("#examples-btn").click()
 
         await expect(page.getByRole('heading', { name: 'Simple Default' })).toBeVisible({ visible: true })
-        await page.locator(".examples-menu-container__close > i").click()
+        await page.locator(".examples-menu-container__close > svg").click()
 
         await expect(page.getByRole('heading', { name: 'Simple Default' })).toBeVisible({ visible: false })
     })
@@ -315,7 +315,7 @@ test.describe("Examples menu functionality", () => {
         await basicExample.click()
         await expect(basicExample).toHaveClass("example open")
 
-        const applyBtn = page.locator(".example").filter({ hasText: 'Basic TD' }).nth(0).getByRole("button").filter({ hasText: "Apply" })
+        const applyBtn = page.locator(".example").filter({ hasText: 'Basic TD' }).nth(0).locator(".example__btn").locator(".example__btn--use")
         await applyBtn.click()
         await expect(basicExample).toHaveClass("example")
 
@@ -433,6 +433,7 @@ test.describe("Examples menu functionality", () => {
         const quickAccessBtn = page.locator(".example").filter({ hasText: 'Overwrite Existing Definitions' }).nth(1).getByRole("button").nth(0)
         await quickAccessBtn.click()
 
+        await page.waitForTimeout(1000)
         const exampleTab = page.locator("#tab").nth(1)
         await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
         await expect(exampleTab).toHaveText("TMSmart Lamp ControlCloseCancel")
@@ -448,7 +449,7 @@ test.describe("Save menu functionality", () => {
         await page.locator("#save-btn").click()
         await expect(saveMenu).toHaveClass("save-menu")
 
-        const closeMenu = page.locator(".save-menu-close > i")
+        const closeMenu = page.locator(".save-menu-close > svg")
         await closeMenu.click()
         await expect(saveMenu).toHaveClass("save-menu closed")
     })
@@ -577,7 +578,7 @@ test.describe("Settings menu functionality", () => {
         await page.locator("#settings-btn").click()
         await expect(settingsMenu).toHaveClass("settings-menu")
 
-        const closeMenu = page.locator(".settings__close > i")
+        const closeMenu = page.locator(".settings__close > svg")
         await closeMenu.click()
         await expect(settingsMenu).toHaveClass("settings-menu closed")
     })
@@ -704,15 +705,15 @@ test.describe("Validation view functionality", () => {
         await expect(validationTab).toBeChecked()
         await expect(validationView).toHaveClass("console-view validation-view")
 
-        const stateIcon = page.locator(".json-validation-section > .section-header > i").nth(0)
-        await expect(stateIcon).toHaveClass("fa-solid fa-circle")
+        const stateIcon = page.locator(".json-validation-section > .section-header > .header-icons > svg")
+        await expect(stateIcon).toHaveClass("neutral-circle-icon icon")
 
         const validationBtn = page.locator("#validate-btn")
         await validationBtn.click()
 
         //TODO: Find a better way to wait for this event to happen
-        await page.waitForTimeout(5000)
-        await expect(stateIcon).toHaveClass("fa-solid fa-circle-check")
+        await page.waitForTimeout(3000)
+        await expect(stateIcon).toHaveClass("icon success-circle-icon")
     })
 
     test("Validating the 'All Defaults TD'", async ({ page }) => {
@@ -740,44 +741,44 @@ test.describe("Validation view functionality", () => {
 
         //validation section
         const jsonValidationSection = page.locator(".json-validation-section")
-        const jsonValidationSectionIcon = page.locator(".json-validation-section > .section-header > i").nth(0)
+        const jsonValidationSectionIcon = page.locator(".json-validation-section > .section-header > .header-icons > svg")
         const jsonValidationSectionTxt = page.locator(".json-validation-section > .section-content > li")
 
         await jsonValidationSection.click()
         await expect(jsonValidationSectionTxt).toHaveText("Validated Successfully")
-        await expect(jsonValidationSectionIcon).toHaveClass("fa-solid fa-circle-check")
+        await expect(jsonValidationSectionIcon).toHaveClass("icon success-circle-icon")
 
         const jsonSchemaValidationSection = page.locator(".json-schema-validation-section")
-        const jsonSchemaValidationSectionIcon = page.locator(".json-schema-validation-section > .section-header > i").nth(0)
+        const jsonSchemaValidationSectionIcon = page.locator(".json-schema-validation-section > .section-header > .header-icons > svg")
         const jsonSchemaValidationSectionTxt = page.locator(".json-schema-validation-section > .section-content > li")
 
         await jsonSchemaValidationSection.click()
         await expect(jsonSchemaValidationSectionTxt).toHaveText("Validated Successfully")
-        await expect(jsonSchemaValidationSectionIcon).toHaveClass("fa-solid fa-circle-check")
+        await expect(jsonSchemaValidationSectionIcon).toHaveClass("icon success-circle-icon")
 
         const jsonSchemaDefaultsSection = page.locator(".json-schema-defaults-section")
-        const jsonSchemaDefaultsSectionIcon = page.locator(".json-schema-defaults-section > .section-header > i").nth(0)
+        const jsonSchemaDefaultsSectionIcon = page.locator(".json-schema-defaults-section > .section-header > .header-icons > svg")
         const jsonSchemaDefaultsSectionTxt = page.locator(".json-schema-defaults-section > .section-content > li")
 
         await jsonSchemaDefaultsSection.click()
         await expect(jsonSchemaDefaultsSectionTxt).toHaveText("Validated Successfully")
-        await expect(jsonSchemaDefaultsSectionIcon).toHaveClass("fa-solid fa-circle-check")
+        await expect(jsonSchemaDefaultsSectionIcon).toHaveClass("icon success-circle-icon")
 
         const jsonlsValidationSection = page.locator(".jsonls-validation-section")
-        const jsonlsValidationSectionIcon = page.locator(".jsonls-validation-section > .section-header > i").nth(0)
+        const jsonlsValidationSectionIcon = page.locator(".jsonls-validation-section > .section-header > .header-icons > svg")
         const jsonlsValidationSectionTxt = page.locator(".jsonls-validation-section > .section-content > li")
 
         await jsonlsValidationSection.click()
         await expect(jsonlsValidationSectionTxt).toHaveText("Validated Successfully")
-        await expect(jsonlsValidationSectionIcon).toHaveClass("fa-solid fa-circle-check")
+        await expect(jsonlsValidationSectionIcon).toHaveClass("icon success-circle-icon")
 
         const additionalChecksSection = page.locator(".additional-checks-section")
-        const additionalChecksSectionIcon = page.locator(".additional-checks-section > .section-header > i").nth(0)
+        const additionalChecksSectionIcon = page.locator(".additional-checks-section > .section-header > .header-icons > svg")
         const additionalChecksSectionTxt = page.locator(".additional-checks-section > .section-content > li")
 
         await additionalChecksSection.click()
         await expect(additionalChecksSectionTxt).toHaveText("Validated Successfully")
-        await expect(additionalChecksSectionIcon).toHaveClass("fa-solid fa-circle-check")
+        await expect(additionalChecksSectionIcon).toHaveClass("icon success-circle-icon")
     })
 
     test("Validating the 'Basic TD'", async ({ page }) => {
@@ -805,44 +806,44 @@ test.describe("Validation view functionality", () => {
 
         //Validation section
         const jsonValidationSection = page.locator(".json-validation-section")
-        const jsonValidationSectionIcon = page.locator(".json-validation-section > .section-header > i").nth(0)
+        const jsonValidationSectionIcon = page.locator(".json-validation-section > .section-header > .header-icons > svg")
         const jsonValidationSectionTxt = page.locator(".json-validation-section > .section-content > li")
 
         await jsonValidationSection.click()
         await expect(jsonValidationSectionTxt).toHaveText("Validated Successfully")
-        await expect(jsonValidationSectionIcon).toHaveClass("fa-solid fa-circle-check")
+        await expect(jsonValidationSectionIcon).toHaveClass("icon success-circle-icon")
 
         const jsonSchemaValidationSection = page.locator(".json-schema-validation-section")
-        const jsonSchemaValidationSectionIcon = page.locator(".json-schema-validation-section > .section-header > i").nth(0)
+        const jsonSchemaValidationSectionIcon = page.locator(".json-schema-validation-section > .section-header > .header-icons > svg")
         const jsonSchemaValidationSectionTxt = page.locator(".json-schema-validation-section > .section-content > li")
 
         await jsonSchemaValidationSection.click()
         await expect(jsonSchemaValidationSectionTxt).toHaveText("Validated Successfully")
-        await expect(jsonSchemaValidationSectionIcon).toHaveClass("fa-solid fa-circle-check")
+        await expect(jsonSchemaValidationSectionIcon).toHaveClass("icon success-circle-icon")
 
         const jsonSchemaDefaultsSection = page.locator(".json-schema-defaults-section")
-        const jsonSchemaDefaultsSectionIcon = page.locator(".json-schema-defaults-section > .section-header > i").nth(0)
+        const jsonSchemaDefaultsSectionIcon = page.locator(".json-schema-defaults-section > .section-header > .header-icons > svg")
         const jsonSchemaDefaultsSectionTxt = page.locator(".json-schema-defaults-section > .section-content > li").nth(0)
 
         await jsonSchemaDefaultsSection.click()
         await expect(jsonSchemaDefaultsSectionTxt).toHaveText("Optional validation failed:")
-        await expect(jsonSchemaDefaultsSectionIcon).toHaveClass("fa-solid fa-circle-exclamation")
+        await expect(jsonSchemaDefaultsSectionIcon).toHaveClass("icon warning-circle-icon")
 
         const jsonlsValidationSection = page.locator(".jsonls-validation-section")
-        const jsonlsValidationSectionIcon = page.locator(".jsonls-validation-section > .section-header > i").nth(0)
+        const jsonlsValidationSectionIcon = page.locator(".jsonls-validation-section > .section-header > .header-icons > svg")
         const jsonlsValidationSectionTxt = page.locator(".jsonls-validation-section > .section-content > li")
 
         await jsonlsValidationSection.click()
         await expect(jsonlsValidationSectionTxt).toHaveText("Validated Successfully")
-        await expect(jsonlsValidationSectionIcon).toHaveClass("fa-solid fa-circle-check")
+        await expect(jsonlsValidationSectionIcon).toHaveClass("icon success-circle-icon")
 
         const additionalChecksSection = page.locator(".additional-checks-section")
-        const additionalChecksSectionIcon = page.locator(".additional-checks-section > .section-header > i").nth(0)
+        const additionalChecksSectionIcon = page.locator(".additional-checks-section > .section-header > .header-icons > svg")
         const additionalChecksSectionTxt = page.locator(".additional-checks-section > .section-content > li")
 
         await additionalChecksSection.click()
         await expect(additionalChecksSectionTxt).toHaveText("Validated Successfully")
-        await expect(additionalChecksSectionIcon).toHaveClass("fa-solid fa-circle-check")
+        await expect(additionalChecksSectionIcon).toHaveClass("icon success-circle-icon")
     })
 
     test("Validating the 'Basic TM'", async ({ page }) => {
@@ -875,44 +876,44 @@ test.describe("Validation view functionality", () => {
 
         //Validation section
         const jsonValidationSection = page.locator(".json-validation-section")
-        const jsonValidationSectionIcon = page.locator(".json-validation-section > .section-header > i").nth(0)
+        const jsonValidationSectionIcon = page.locator(".json-validation-section > .section-header > .header-icons > svg")
         const jsonValidationSectionTxt = page.locator(".json-validation-section > .section-content > li")
 
         await jsonValidationSection.click()
         await expect(jsonValidationSectionTxt).toHaveText("Validated Successfully")
-        await expect(jsonValidationSectionIcon).toHaveClass("fa-solid fa-circle-check")
+        await expect(jsonValidationSectionIcon).toHaveClass("icon success-circle-icon")
 
         const jsonSchemaValidationSection = page.locator(".json-schema-validation-section")
-        const jsonSchemaValidationSectionIcon = page.locator(".json-schema-validation-section > .section-header > i").nth(0)
+        const jsonSchemaValidationSectionIcon = page.locator(".json-schema-validation-section > .section-header > .header-icons > svg")
         const jsonSchemaValidationSectionTxt = page.locator(".json-schema-validation-section > .section-content > li")
 
         await jsonSchemaValidationSection.click()
         await expect(jsonSchemaValidationSectionTxt).toHaveText("Validated Successfully")
-        await expect(jsonSchemaValidationSectionIcon).toHaveClass("fa-solid fa-circle-check")
+        await expect(jsonSchemaValidationSectionIcon).toHaveClass("icon success-circle-icon")
 
         const jsonSchemaDefaultsSection = page.locator(".json-schema-defaults-section")
-        const jsonSchemaDefaultsSectionIcon = page.locator(".json-schema-defaults-section > .section-header > i").nth(0)
+        const jsonSchemaDefaultsSectionIcon = page.locator(".json-schema-defaults-section > .section-header > .header-icons > svg")
         const jsonSchemaDefaultsSectionTxt = page.locator(".json-schema-defaults-section > .section-content > li").nth(0)
 
         await jsonSchemaDefaultsSection.click()
         await expect(jsonSchemaDefaultsSectionTxt).toHaveText("A previous validation has failed or it is only available for Thing Descriptions")
-        await expect(jsonSchemaDefaultsSectionIcon).toHaveClass("fa-solid fa-circle")
+        await expect(jsonSchemaDefaultsSectionIcon).toHaveClass("neutral-circle-icon icon")
 
         const jsonlsValidationSection = page.locator(".jsonls-validation-section")
-        const jsonlsValidationSectionIcon = page.locator(".jsonls-validation-section > .section-header > i").nth(0)
+        const jsonlsValidationSectionIcon = page.locator(".jsonls-validation-section > .section-header > .header-icons > svg")
         const jsonlsValidationSectionTxt = page.locator(".jsonls-validation-section > .section-content > li")
 
         await jsonlsValidationSection.click()
         await expect(jsonlsValidationSectionTxt).toHaveText("Validated Successfully")
-        await expect(jsonlsValidationSectionIcon).toHaveClass("fa-solid fa-circle-check")
+        await expect(jsonlsValidationSectionIcon).toHaveClass("icon success-circle-icon")
 
         const additionalChecksSection = page.locator(".additional-checks-section")
-        const additionalChecksSectionIcon = page.locator(".additional-checks-section > .section-header > i").nth(0)
+        const additionalChecksSectionIcon = page.locator(".additional-checks-section > .section-header > .header-icons > svg")
         const additionalChecksSectionTxt = page.locator(".additional-checks-section > .section-content > li")
 
         await additionalChecksSection.click()
         await expect(additionalChecksSectionTxt).toHaveText("Validated Successfully")
-        await expect(additionalChecksSectionIcon).toHaveClass("fa-solid fa-circle-check")
+        await expect(additionalChecksSectionIcon).toHaveClass("icon success-circle-icon")
     })
 
 })
@@ -1284,267 +1285,6 @@ test.describe("AsyncAPI view functionality", () => {
         await expect(page.locator(".console-error__txt")).toHaveText("This function is only allowed for Thing Descriptions!")
 
     })
-
-    /**
-     * TODO: Do to a lack of examples that include the mqtt protocol this cannot be tested, nonetheless once
-     * TODO: this is added the code below should sufice with minimal adjustments
-    test("Open the AsyncAPI view with the '---' example", async ({ page }) => {
-        await page.locator("#examples-btn").click()
-
-        const quickAccessBtn = page.locator(".example").filter({ hasText: '---' }).getByRole("button").nth(0)
-        await quickAccessBtn.click()
-
-        const exampleTab = page.locator("#tab").nth(1)
-        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
-        await expect(exampleTab).toHaveText("TD---CloseCancel")
-        await expect(exampleTab).toHaveClass("active")
-
-        const exampleEditor = page.locator("#editor2")
-        await expect(exampleEditor).toHaveAttribute('data-ide-id', "2")
-        await expect(exampleEditor).toHaveAttribute('data-mode-id', "json")
-        await expect(exampleEditor).toHaveClass("editor active")
-
-        const AsyncAPIView = page.locator('#async-api-view')
-        const consoleError = page.locator('#console-error')
-        const AsyncAPITab = page.locator("#async-api-tab")
-
-        await expect(AsyncAPIView).toHaveClass("console-view async-api-view hidden")
-        await expect(consoleError).toHaveClass("console-view console-error hidden")
-        await expect(AsyncAPITab).toBeChecked({ checked: false })
-
-        await AsyncAPITab.click()
-
-        await expect(AsyncAPITab).toBeChecked({ checked: true })
-        await expect(AsyncAPIView).toHaveClass("console-view async-api-view")
-        await expect(consoleError).toHaveClass("console-view console-error hidden")
-
-        const AsyncAPIEditor = page.locator('#async-api-container')
-        const AsyncAPIContainer = AsyncAPIEditor.getByRole('code').locator('div').filter({ hasText: '"asyncapi": "2.0.0",' }).nth(4)
-
-        await expect(AsyncAPIEditor).toHaveAttribute('data-mode-id', "json")
-        await expect(AsyncAPIContainer).toHaveText('"asyncapi": "2.0.0",')
-
-        const AsyncAPIJsonBtn = page.locator('#async-api-json')
-
-        await expect(AsyncAPIJsonBtn).toBeDisabled()
-
-    })
-
-    test("Open the AsyncAPI view with the '---' example as YAML", async ({ page }) => {
-
-        await page.locator("#examples-btn").click()
-
-        const quickAccessBtn = page.locator(".example").filter({ hasText: '---' }).getByRole("button").nth(0)
-        await quickAccessBtn.click()
-
-        const exampleTab = page.locator("#tab").nth(1)
-        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
-        await expect(exampleTab).toHaveText("TD---CloseCancel")
-        await expect(exampleTab).toHaveClass("active")
-
-        const exampleEditor = page.locator("#editor2")
-        await expect(exampleEditor).toHaveAttribute('data-ide-id', "2")
-        await expect(exampleEditor).toHaveAttribute('data-mode-id', "json")
-        await expect(exampleEditor).toHaveClass("editor active")
-
-
-        const jsonYamlPopup = page.locator('.json-yaml-warning')
-        await expect(jsonYamlPopup).toHaveClass("json-yaml-warning closed")
-
-        const jsonBtn = page.locator('#file-type-json')
-        const yamlBtn = page.locator('#file-type-yaml')
-
-        await expect(jsonBtn).toBeChecked({ checked: true })
-        await expect(yamlBtn).toBeChecked({ checked: false })
-
-        await yamlBtn.click()
-        await expect(jsonYamlPopup).toHaveClass("json-yaml-warning")
-
-        await page.locator('#yaml-confirm-btn').click()
-        await expect(jsonYamlPopup).toHaveClass("json-yaml-warning closed")
-        await expect(exampleEditor).toHaveAttribute('data-mode-id', "yaml")
-        await expect(jsonBtn).toBeChecked({ checked: false })
-        await expect(yamlBtn).toBeChecked({ checked: true })
-
-        const AsyncAPIView = page.locator('#async-api-view')
-        const consoleError = page.locator('#console-error')
-        const AsyncAPITab = page.locator("#async-api-tab")
-
-        await expect(AsyncAPIView).toHaveClass("console-view async-api-view hidden")
-        await expect(consoleError).toHaveClass("console-view console-error hidden")
-        await expect(AsyncAPITab).toBeChecked({ checked: false })
-
-        await AsyncAPITab.click()
-
-        await expect(AsyncAPITab).toBeChecked({ checked: true })
-        await expect(AsyncAPIView).toHaveClass("console-view async-api-view")
-        await expect(consoleError).toHaveClass("console-view console-error hidden")
-
-        const AsyncAPIEditor = page.locator('#async-api-container')
-        const AsyncAPIContainer = AsyncAPIEditor.getByRole('code').locator('div').filter({ hasText: 'asyncapi: 2.0.0' }).nth(4)
-
-        await expect(AsyncAPIEditor).toHaveAttribute('data-mode-id', "yaml")
-        await expect(AsyncAPIContainer).toHaveText('asyncapi: 2.0.0')
-
-        const AsyncAPIYamlBtn = page.locator('#async-api-yaml')
-        await expect(AsyncAPIYamlBtn).toBeDisabled()
-
-    })
-
-    test("Open the AsyncAPI view and change form JSON to YAML and from YAML to JSON", async ({ page }) => {
-        await page.locator("#examples-btn").click()
-
-        const quickAccessBtn = page.locator(".example").filter({ hasText: '---' }).getByRole("button").nth(0)
-        await quickAccessBtn.click()
-
-        const exampleTab = page.locator("#tab").nth(1)
-        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
-        await expect(exampleTab).toHaveText("TD---CloseCancel")
-        await expect(exampleTab).toHaveClass("active")
-
-        const exampleEditor = page.locator("#editor2")
-        await expect(exampleEditor).toHaveAttribute('data-ide-id', "2")
-        await expect(exampleEditor).toHaveAttribute('data-mode-id', "json")
-        await expect(exampleEditor).toHaveClass("editor active")
-
-        const AsyncAPIView = page.locator('#async-api-view')
-        const consoleError = page.locator('#console-error')
-        const AsyncAPITab = page.locator("#async-api-tab")
-
-        await expect(AsyncAPIView).toHaveClass("console-view async-api-view hidden")
-        await expect(consoleError).toHaveClass("console-view console-error hidden")
-        await expect(AsyncAPITab).toBeChecked({ checked: false })
-
-        await AsyncAPITab.click()
-
-        await expect(AsyncAPITab).toBeChecked({ checked: true })
-        await expect(AsyncAPIView).toHaveClass("console-view async-api-view")
-        await expect(consoleError).toHaveClass("console-view console-error hidden")
-
-        const AsyncAPIEditor = page.locator('#async-api-container')
-
-        await expect(AsyncAPIEditor).toHaveAttribute('data-mode-id', "json")
-
-        const AsyncAPIJsonBtn = page.locator('#async-api-json')
-        const AsyncAPIYamlBtn = page.locator('#async-api-yaml')
-
-        await expect(AsyncAPIJsonBtn).toBeDisabled()
-
-        await AsyncAPIYamlBtn.click()
-
-        await expect(AsyncAPIEditor).toHaveAttribute('data-mode-id', "yaml")
-        await expect(AsyncAPIYamlBtn).toBeDisabled()
-
-        await AsyncAPIJsonBtn.click()
-
-        await expect(AsyncAPIEditor).toHaveAttribute('data-mode-id', "json")
-        await expect(AsyncAPIJsonBtn).toBeDisabled()
-    })
-
-    test("Open the AsyncAPI view and downloading it as JSON", async ({ page }) => {
-        await page.locator("#examples-btn").click()
-
-        const quickAccessBtn = page.locator(".example").filter({ hasText: '---' }).getByRole("button").nth(0)
-        await quickAccessBtn.click()
-
-        const exampleTab = page.locator("#tab").nth(1)
-        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
-        await expect(exampleTab).toHaveText("TD---CloseCancel")
-        await expect(exampleTab).toHaveClass("active")
-
-        const exampleEditor = page.locator("#editor2")
-        await expect(exampleEditor).toHaveAttribute('data-ide-id', "2")
-        await expect(exampleEditor).toHaveAttribute('data-mode-id', "json")
-        await expect(exampleEditor).toHaveClass("editor active")
-
-        const AsyncAPIView = page.locator('#async-api-view')
-        const consoleError = page.locator('#console-error')
-        const AsyncAPITab = page.locator("#async-api-tab")
-
-        await expect(AsyncAPIView).toHaveClass("console-view async-api-view hidden")
-        await expect(consoleError).toHaveClass("console-view console-error hidden")
-        await expect(AsyncAPITab).toBeChecked({ checked: false })
-
-        await AsyncAPITab.click()
-
-        await expect(AsyncAPITab).toBeChecked({ checked: true })
-        await expect(AsyncAPIView).toHaveClass("console-view async-api-view")
-        await expect(consoleError).toHaveClass("console-view console-error hidden")
-
-        const AsyncAPIEditor = page.locator('#async-api-container')
-        const AsyncAPIContainer = AsyncAPIEditor.getByRole('code').locator('div').filter({ hasText: '"asyncapi": "2.0.0",' }).nth(4)
-
-        await expect(AsyncAPIEditor).toHaveAttribute('data-mode-id', "json")
-        await expect(AsyncAPIContainer).toHaveText('\"asyncapi\": \"2.0.0\",')
-
-        const AsyncAPIJsonBtn = page.locator('#async-api-json')
-        await expect(AsyncAPIJsonBtn).toBeDisabled()
-
-        // Start waiting for download before clicking.
-        const AsyncAPIDownload = page.locator('#async-api-download')
-        const downloadPromise = page.waitForEvent('download')
-        await AsyncAPIDownload.click()
-        const download = await downloadPromise
-        const expectedFilename = 'MyLampThing-AsyncAPI.json'
-        expect(download.suggestedFilename()).toBe(expectedFilename)
-    })
-
-    test("Open the AsyncAPI view and downloading it as YAML", async ({ page }) => {
-        await page.locator("#examples-btn").click()
-
-        const quickAccessBtn = page.locator(".example").filter({ hasText: '---' }).getByRole("button").nth(0)
-        await quickAccessBtn.click()
-
-        const exampleTab = page.locator("#tab").nth(1)
-        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
-        await expect(exampleTab).toHaveText("TD---CloseCancel")
-        await expect(exampleTab).toHaveClass("active")
-
-        const exampleEditor = page.locator("#editor2")
-        await expect(exampleEditor).toHaveAttribute('data-ide-id', "2")
-        await expect(exampleEditor).toHaveAttribute('data-mode-id', "json")
-        await expect(exampleEditor).toHaveClass("editor active")
-
-        const AsyncAPIView = page.locator('#async-api-view')
-        const consoleError = page.locator('#console-error')
-        const AsyncAPITab = page.locator("#async-api-tab")
-
-        await expect(AsyncAPIView).toHaveClass("console-view async-api-view hidden")
-        await expect(consoleError).toHaveClass("console-view console-error hidden")
-        await expect(AsyncAPITab).toBeChecked({ checked: false })
-
-        await AsyncAPITab.click()
-
-        await expect(AsyncAPITab).toBeChecked({ checked: true })
-        await expect(AsyncAPIView).toHaveClass("console-view async-api-view")
-        await expect(consoleError).toHaveClass("console-view console-error hidden")
-
-        const AsyncAPIEditor = page.locator('#async-api-container')
-
-        await expect(AsyncAPIEditor).toHaveAttribute('data-mode-id', "json")
-
-        const AsyncAPIJsonBtn = page.locator('#async-api-json')
-        const AsyncAPIYamlBtn = page.locator('#async-api-yaml')
-
-        await expect(AsyncAPIJsonBtn).toBeDisabled()
-
-        await AsyncAPIYamlBtn.click()
-
-        await expect(AsyncAPIEditor).toHaveAttribute('data-mode-id', "yaml")
-        await expect(AsyncAPIYamlBtn).toBeDisabled()
-
-        const AsyncAPIContainer = AsyncAPIEditor.getByRole('code').locator('div').filter({ hasText: 'asyncapi: 2.0.0' }).nth(4)
-        await expect(AsyncAPIContainer).toHaveText('asyncapi: 2.0.0')
-
-        // Start waiting for download before clicking.
-        const AsyncAPIDownload = page.locator('#async-api-download')
-        const downloadPromise = page.waitForEvent('download')
-        await AsyncAPIDownload.click()
-        const download = await downloadPromise
-        const expectedFilename = 'MyLampThing-AsyncAPI.yaml'
-        expect(download.suggestedFilename()).toBe(expectedFilename)
-    })
-    */
 })
 
 
