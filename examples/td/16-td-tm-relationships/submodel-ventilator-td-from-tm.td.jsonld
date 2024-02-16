@@ -19,12 +19,12 @@
     "links": [
         {
             "rel": "collection",
-            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/examples/td/16-td-tm-relationships/composition-top-level-td-from-tm.td.jsonld",
+            "href": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/td/16-td-tm-relationships/composition-top-level-td-from-tm.td.jsonld",
             "type": "application/td+json"
         },
         {
             "rel": "type",
-            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/examples/tm/5-tm-submodel/basic-ventilation-tm.tm.jsonld",
+            "href": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/tm/5-tm-submodel/basic-ventilation-tm.tm.jsonld",
             "type": "application/tm+json"
         }
     ],

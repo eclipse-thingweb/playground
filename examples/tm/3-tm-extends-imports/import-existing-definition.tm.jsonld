@@ -7,7 +7,7 @@
     "$description": "For importing pieces of definitions of one or more existing Thiing Models, the 'tm:ref' term is utilized which provides the location of an existing (sub-)definition that should be reused. This example shows a TM definition that imports the existing definition of the property onOff from another TM into the new property definition switch.",
     "properties" : {
         "switch" : {
-            "tm:ref": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/examples/tm/1-basic/basic-on-off-tm.tm.jsonld#/properties/onOff"
+            "tm:ref": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/tm/1-basic/basic-on-off-tm.tm.jsonld#/properties/onOff"
         }
     },
     "actions": {

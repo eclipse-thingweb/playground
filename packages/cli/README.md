@@ -1,7 +1,7 @@
 # @thing-description-playground/**CLI**
 
 This package provides a Command Line Interface (CLI) for the Web of Things Playground.
-You can find more information about the Thingweb-Playground [here](https://github.com/eclipse-thingweb/playground).
+You can find more information about the Playground [here](https://github.com/eclipse-thingweb/playground).
 
 You can validate whether one, or several given TDs are valid.
 Furthermore you can generate an assertion test report (`-a`) to see which assertions are implemented in your TD.

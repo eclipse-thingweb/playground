@@ -15,7 +15,7 @@
     "links": [
         {
             "rel": "type",
-            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/UI-fixes/master/tm/2-tm-versioning/versioning.tm.jsonld",
+            "href": "https://raw.githubusercontent.com/eclipse-thingweb/playground/UI-fixes/master/tm/2-tm-versioning/versioning.tm.jsonld",
             "type": "application/tm+json"
         }
     ],

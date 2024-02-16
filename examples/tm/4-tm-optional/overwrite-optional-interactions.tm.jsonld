@@ -8,13 +8,13 @@
     "links": [
        {
           "rel": "tm:extends",
-          "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/examples/tm/4-tm-optional/optional-interaction.tm.jsonld",
+          "href": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/tm/4-tm-optional/optional-interaction.tm.jsonld",
           "type": "application/tm+json"
        }
     ],
     "events": {
         "overheating": {
-            "tm:ref": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/examples/tm/4-tm-optional/optional-interaction.tm.jsonld#/events/overheating" 
+            "tm:ref": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/tm/4-tm-optional/optional-interaction.tm.jsonld#/events/overheating" 
         }
     }
 }

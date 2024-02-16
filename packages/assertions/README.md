@@ -1,7 +1,7 @@
 # @thing-description-playground/**ASSERTIONS**
 
 This package provides the assertion testing functionality for the Web of Things Playground.
-You can find more information about the Thingweb-Playground [here](https://github.com/eclipse-thingweb/playground).
+You can find more information about the Playground [here](https://github.com/eclipse-thingweb/playground).
 
 Validation tool for W3C WoT Thing Descriptions. Your Thing Descriptions should be written according to the W3C standard found [here](https://w3c.github.io/wot-thing-description/#).
 

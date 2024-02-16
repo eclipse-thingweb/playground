@@ -7,7 +7,7 @@
     "$description": "A Thing Model can extend an existing Thing Model by using the tm:extends mechanism. When a Thing Model extends another Thing Model, at least one links entry with 'rel: tm:extends' that targets a Thing Model that is be extended must be used.",
     "links" : [{
         "rel": "tm:extends",
-        "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/examples/tm/1-basic/basic-on-off-tm.tm.jsonld",
+        "href": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/tm/1-basic/basic-on-off-tm.tm.jsonld",
         "type": "application/tm+json"
     }],
     "properties" : {

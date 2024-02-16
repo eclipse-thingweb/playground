@@ -142,7 +142,7 @@ const simpleTD = JSON.stringify({
     links: [
         {
             rel: "type",
-            href: "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/packages/core/examples/tms/valid/optional.json",
+            href: "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/packages/core/examples/tms/valid/optional.json",
             type: "application/td+json",
         },
     ],
