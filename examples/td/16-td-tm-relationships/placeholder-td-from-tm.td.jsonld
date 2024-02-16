@@ -23,7 +23,7 @@
     "links": [
         {
             "rel": "type",
-            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/examples/tm/6-placeholder/placeholder.tm.jsonld",
+            "href": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/tm/6-placeholder/placeholder.tm.jsonld",
             "type": "application/tm+json"
         }
     ],

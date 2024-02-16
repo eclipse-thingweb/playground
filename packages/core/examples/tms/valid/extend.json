@@ -8,7 +8,7 @@
     "links": [
         {
             "rel": "tm:extends",
-            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/packages/core/examples/tms/valid/version.json",
+            "href": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/packages/core/examples/tms/valid/version.json",
             "type": "application/td+json"
         }
     ],

@@ -1,16 +1,15 @@
 # @thing-description-playground/**WEB**
 
-This package provides the web interface of the Web of Things Thing Desciption Playground.
+This package provides the web interface of the Web of Things Thing Description Playground.
 It uses the functionality of the `core` package to validate Thing Descriptions and `assertions` to generate an assertion Test report.
-You can find more information about the Thingweb-Playground [here](https://github.com/eclipse-thingweb/playground).
+You can find more information about the Playground [here](https://github.com/eclipse-thingweb/playground).
 
 The TDs can be exported as URLs which can be copied anywhere and reopened here.
 
 ## License
 
 Licensed under the MIT license, see [License](../../LICENSE.md).
-
-## Browser based Thing Description Validation
+Browser-based Thing Description Validation
 
 -   Online: It is hosted [here](http://plugfest.thingweb.io/playground/)
 
@@ -81,13 +80,13 @@ Requires [Lerna](https://www.npmjs.com/package/lerna) to be installed globally (
 6. Clean the checked out files
 
 ```sh
-git clone git@github.com:thingweb/thingweb-playground.git
-cd thingweb-playground
+git clone git@github.com:eclipse-thingweb/playground.git
+cd playground
 lerna bootstrap
-cd ./packages/playground-web
+cd ./packages/web
 npm install
 rm -r -f /var/www/html/subdir/*
 cp -r ./* /var/www/html
 cd ../../../
-rm -r -f thingweb-playground
+rm -r -f playground
 ```

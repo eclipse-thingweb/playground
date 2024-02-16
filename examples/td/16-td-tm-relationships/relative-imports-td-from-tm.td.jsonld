@@ -16,7 +16,7 @@
     "links": [
         {
             "rel": "type",
-            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/examples/tm/3-tm-extends-imports/relative-imports.tm.jsonld",
+            "href": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/tm/3-tm-extends-imports/relative-imports.tm.jsonld",
             "type": "application/tm+json"
         }
     ],

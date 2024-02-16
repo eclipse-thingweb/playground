@@ -2,7 +2,7 @@
 
 The package adds/removes defaults according to the Thing Description (TD) specification for every property with a default that is not filled with a value.
 Currently using [this](https://www.w3.org/TR/2020/REC-wot-thing-description-20200409/) version of the TD specification.
-It is part of the Thingweb-Playground, you can find more information about the Thingweb-Playground [here](https://github.com/eclipse-thingweb/playground).
+It is part of the Playground, you can find more information about the Playground [here](https://github.com/eclipse-thingweb/playground).
 
 ## License
 

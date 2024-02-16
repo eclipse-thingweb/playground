@@ -1,7 +1,7 @@
 # @thing-description-playground/**CORE**
 
 This package provides the main functionality of the Web of Things Playground, i.e., validating given Thing Descriptions.
-You can find more information about the Thingweb-Playground [here](https://github.com/eclipse-thingweb/playground).
+You can find more information about the Playground [here](https://github.com/eclipse-thingweb/playground).
 
 Limitations:
 

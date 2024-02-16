@@ -820,7 +820,7 @@ function checkUriSecurity(td) {
                         } // otherwise not-impl stays
                     } else {
                         // even if there are no urivariables in affordances, the security urivariables is distinct
-                        // fixes https://github.com/thingweb/thingweb-playground/issues/422
+                        // fixes https://github.com/eclipse-thingweb/playground/issues/422
                         if (uriVariablesDistinctResult !== "fail") {
                             uriVariablesDistinctResult = "pass";
                         }
@@ -869,7 +869,7 @@ function checkUriSecurity(td) {
                             }
                         } else {
                             // even if there are no urivariables in affordances, the security urivariables is distinct
-                            // fixes https://github.com/thingweb/thingweb-playground/issues/422
+                            // fixes https://github.com/eclipse-thingweb/playground/issues/422
                             if (uriVariablesDistinctResult !== "fail") {
                                 uriVariablesDistinctResult = "pass";
                             }
@@ -919,7 +919,7 @@ function checkUriSecurity(td) {
                             }
                         } else {
                             // even if there are no urivariables in affordances, the security urivariables is distinct
-                            // fixes https://github.com/thingweb/thingweb-playground/issues/422
+                            // fixes https://github.com/eclipse-thingweb/playground/issues/422
                             if (uriVariablesDistinctResult !== "fail") {
                                 uriVariablesDistinctResult = "pass";
                             }

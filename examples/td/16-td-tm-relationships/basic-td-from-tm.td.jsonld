@@ -18,7 +18,7 @@
     "links": [
         {
             "rel": "type",
-            "href": "https://raw.githubusercontent.com/thingweb/thingweb-playground/master/examples/tm/1-basic/basic-tm.tm.jsonld",
+            "href": "https://raw.githubusercontent.com/eclipse-thingweb/playground/master/examples/tm/1-basic/basic-tm.tm.jsonld",
             "type": "application/tm+json"
         }
     ],
