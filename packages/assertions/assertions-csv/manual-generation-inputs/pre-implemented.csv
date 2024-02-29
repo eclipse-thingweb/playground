@@ -1,10 +1,4 @@
 "ID","Status","Comment","Assertion"
-"privacy-distributed-ids","not-impl","data/id must match pattern ""^(urn:uuid:)[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}""","TD identifiers SHOULD be generated using a distributed mechanism such as UUIDs that provides a high probability of uniqueness."
-"privacy-id-metadata","not-impl","data/id must match pattern ""^(urn:uuid:)[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}""","TD identifiers SHOULD be generated using a distributed mechanism such as UUIDs that provides a high probability of uniqueness."
-"sec-body-name-json-pointer","not-impl",,"When used in the context of a body security information location, the value of name MUST be in the form of a JSON pointer [[!RFC6901]] relative to the root of the input DataSchema for each interaction it is used with."
-"sec-body-name-json-pointer-array","not-impl",,"The JSON pointer used in the body locator MAY use the - character to indicate a non-existent array element when it is necessary to insert an element after the last element of an existing array"
-"sec-security-vocab-auto-in-no-name","not-impl",,
-"sec-vuln-auto","not-impl",,
 "td-action-arrays","not-impl","data must have required property 'actions'","The type of the members forms MUST be serialized as a JSON array."
 "td-action-names","not-impl","Error message can be seen in the children assertions",
 "td-action-names_at-type","not-impl",,"Each optional vocabulary term as defined in the class Action and its superclass InteractionPattern MUST be serialized as a JSON name within an Action object."
@@ -132,6 +126,8 @@
 "td-op-for-event","not-impl",,"When a forms term member is present in an Event instance, the value(s) of op in the forms MUST be one of subscribeevent or unsubscribeevent. "
 "td-op-for-property","not-impl",,"When a forms term member is present in a Property instance, the value(s) of op in the forms MUST be one of readproperty, writeproperty or observeproperty. "
 "td-op-for-thing","not-impl",,"When a forms term member is present in a Thing instance, the value(s) of op in the forms MUST be one of readallproperties, writeallproperties, readmultipleproperties or writemultipleproperties. "
+"td-privacy-distributed-ids","not-impl","data/id must match pattern ""^(urn:uuid:)[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}""","TD identifiers SHOULD be generated using a distributed mechanism such as UUIDs that provides a high probability of uniqueness."
+"td-privacy-id-metadata","not-impl","data/id must match pattern ""^(urn:uuid:)[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}""","TD identifiers SHOULD be generated using a distributed mechanism such as UUIDs that provides a high probability of uniqueness."
 "td-processor","pass",,
 "td-properties","not-impl","Error message can be seen in the children assertions",
 "td-properties_existence","not-impl","data must have required property 'properties'"," Properties (and sub-properties) offered by a Thing MUST be collected in the JSON-object based properties member with (unique) Property names as JSON names. (Checking their existence)"
@@ -174,6 +170,8 @@
 "td-security-bearer-format-extensions_alg","not-impl",,"alg: Encoding, encryption, or digest algorithm (one of MD5, ES256, or ES512-256). MUST be included. Type: string."
 "td-security-bearer-format-extensions_format","not-impl",,"alg: Encoding, encryption, or digest algorithm (one of MD5, ES256, or ES512-256). MUST be included. Type: string."
 "td-security-binding","pass","result of a merge",
+"td-security-body-name-json-pointer","not-impl",,"When used in the context of a body security information location, the value of name MUST be in the form of a JSON pointer [[!RFC6901]] relative to the root of the input DataSchema for each interaction it is used with."
+"td-security-body-name-json-pointer-array","not-impl",,"The JSON pointer used in the body locator MAY use the - character to indicate a non-existent array element when it is necessary to insert an element after the last element of an existing array"
 "td-security-combo-deprecation","not-impl",,
 "td-security-combo-exclusive-oneof-or-allof","not-impl",,"Exactly one of either oneOf or allOf MUST be included."
 "td-security-in-query-over-uri","not-impl",,"The value uri SHOULD be specified for the name in in a security scheme only if query is not applicable."
@@ -186,7 +184,9 @@
 "td-security-overrides","not-impl",,
 "td-security-scheme-name","pass",,
 "td-security-schemes","pass",,
+"td-security-security-vocab-auto-in-no-name","not-impl",,
 "td-security-uri-variables-distinct","not-impl","no use of name in a uri apikey scheme",
+"td-security-vuln-auto","not-impl",,
 "td-string-type","pass","result of a merge",
 "td-text-at-direction","not-impl","data/@context must be array","Given that the Thing Description format is based on JSON-LD 1.1 [[?json-ld11]], @direction with the string values ltr, rtl and null value null MAY be used inside the @context to indicate the default text direction for the human readable strings in the entire TD document."
 "td-title-description","not-impl","Error message can be seen in the children assertions",
@@ -348,22 +348,22 @@
 "td-vocab-uriVariables--Thing","not-impl","data must have required property 'uriVariables'","forms: Indicates one or more endpoints at which operation(s) on this resource are accessible. In this version of TD, all operations that can be described at the Thing level are concerning how to interact with the Thing's Property interaction resources collectively at once. MAY be included. Type: array of Form."
 "td-vocab-version--Thing","not-impl","data must have required property 'version'","The version container MAY be used to provide additional application and/or device specific version information based on terms from non-TD namespaces."
 "td-vocab-writeOnly--DataSchema","not-impl",,"writeOnly: Boolean value that indicates whether a property interaction / value is write only (=true) or not (=false). MUST be included. Type: boolean."
-"thing-model-td-generation-processor-imports","not-impl","td does not link to tm",
-"thing-model-td-generation-processor-optional","not-impl","td does not link to tm",
-"thing-model-td-generation-processor-type","not-impl","td does not link to tm",
 "tm-compose-name-collision","not-impl",,
 "tm-rel-type-maximum","not-impl","no links array in the td",
+"tm-td-generation-processor-imports","not-impl","td does not link to tm",
+"tm-td-generation-processor-optional","not-impl","td does not link to tm",
+"tm-td-generation-processor-type","not-impl","td does not link to tm",
 "well-known-operation-types-only","not-impl","result of a merge",
-"bindings-requirements-scheme","null","not testable with Assertion Tester","Every form in a WoT Thing Description MUST follow the requirements of the Protocol Binding indicated by the URI scheme [[!RFC3986]] of its href member."
-"bindings-server-accept","null","not testable with Assertion Tester","Every form in a WoT Thing Description MUST accurately describe requests (including request headers, if present) accepted by the Thing in an interaction."
-"client-data-schema","null","not testable with Assertion Tester","A Consumer when interacting with another target Thingdescribed in a WoT Thing Description MUST generate data organized according to the data schemas given in the correspondinginteractions."
-"client-data-schema-accept-extras","null","not testable with Assertion Tester","A Consumer when interacting with another Thing MUST accept withouterror any additional data not described in the data schemas given in the Thing Description of the target Thing."
-"client-data-schema-no-extras","null","not testable with Assertion Tester","A Consumer when interacting with another Thing MUST NOT generate datanot described in the data schemas given in the Thing Description of that Thing."
-"client-uri-template","null","not testable with Assertion Tester","A Consumer when interacting with another Thing MUST generate URIsaccording to the URI Templates, base URIs, and form href parametersgiven in the Thing Description of the target Thing."
-"sec-body-name-json-pointer-creatable","null","not testable with Assertion Tester","When an element of a data schema indicated by a JSON pointer indicated in a body locator does not already exist in the indicated schema, it MUST be possible to insert the indicated element at the location indicated by the pointer."
-"server-data-schema","null","not testable with Assertion Tester","A WoT Thing Description MUST accurately describe the data returned and accepted by each interaction."
-"server-data-schema-extras","null","not testable with Assertion Tester","A Thing MAY return additional data from an interactioneven when such data is not described in the data schemas given in its WoT Thing Description."
-"server-uri-template","null","not testable with Assertion Tester","URI Templates, base URIs, and href membersin a WoT Thing Description MUST accurately describe the WoT Interface of the Thing."
+"td-bindings-requirements-scheme","null","not testable with Assertion Tester","Every form in a WoT Thing Description MUST follow the requirements of the Protocol Binding indicated by the URI scheme [[!RFC3986]] of its href member."
+"td-bindings-server-accept","null","not testable with Assertion Tester","Every form in a WoT Thing Description MUST accurately describe requests (including request headers, if present) accepted by the Thing in an interaction."
+"td-client-data-schema","null","not testable with Assertion Tester","A Consumer when interacting with another target Thingdescribed in a WoT Thing Description MUST generate data organized according to the data schemas given in the correspondinginteractions."
+"td-client-data-schema-accept-extras","null","not testable with Assertion Tester","A Consumer when interacting with another Thing MUST accept withouterror any additional data not described in the data schemas given in the Thing Description of the target Thing."
+"td-client-data-schema-no-extras","null","not testable with Assertion Tester","A Consumer when interacting with another Thing MUST NOT generate datanot described in the data schemas given in the Thing Description of that Thing."
+"td-client-uri-template","null","not testable with Assertion Tester","A Consumer when interacting with another Thing MUST generate URIsaccording to the URI Templates, base URIs, and form href parametersgiven in the Thing Description of the target Thing."
+"td-security-body-name-json-pointer-creatable","null","not testable with Assertion Tester","When an element of a data schema indicated by a JSON pointer indicated in a body locator does not already exist in the indicated schema, it MUST be possible to insert the indicated element at the location indicated by the pointer."
+"td-server-data-schema","null","not testable with Assertion Tester","A WoT Thing Description MUST accurately describe the data returned and accepted by each interaction."
+"td-server-data-schema-extras","null","not testable with Assertion Tester","A Thing MAY return additional data from an interactioneven when such data is not described in the data schemas given in its WoT Thing Description."
+"td-server-uri-template","null","not testable with Assertion Tester","URI Templates, base URIs, and href membersin a WoT Thing Description MUST accurately describe the WoT Interface of the Thing."
 "td-context-default-language-direction-independence","null","not testable with Assertion Tester","However, when interpreting human-readable text, each human-readable string value MUST be processed independently."
 "td-default-alg","null","not testable with Assertion Tester","BearerSecurityScheme alg ES256"
 "td-default-contentType","null","not testable with Assertion Tester","Form contentType application/json"
@@ -400,22 +400,22 @@
 "td-security-no-extras","null","not testable with Assertion Tester","If a Thing does not require a specific access mechanism for an interaction, that mechanism MUST NOT be specified in the security configuration of the Thing Description."
 "td-security-no-secrets","null","not testable with Assertion Tester","For all security schemes, any keys, passwords, or other sensitive information directly providing access MUST NOT be stored in the TD and should instead be shared and stored out-of-band via other mechanisms."
 "td-vocabulary-defaults","null","not testable with Assertion Tester","When assignments in a TD are missing, a TD Processor MUST follow the Default Value assignments expressed in the table of Default Value Definitions."
-"privacy-auth-users-only","null","not testable with Assertion Tester","Only authorized users SHOULD be provided access to the Thing Description for a Thing."
-"privacy-centralized-ids","null","not testable with Assertion Tester","TD identifiers SHOULD NOT be generated using a centralized authority."
-"privacy-essential-metadata-only","null","not testable with Assertion Tester","Only the amount of information needed for the level of authorization and the use case SHOULD be provided in a TD."
-"privacy-immutable-id-as-property","null","not testable with Assertion Tester","Ideally, any required immutable identifiers SHOULD only be made available via affordances, such as a property, whose value can only be obtained after appropriate authentication and authorization, and managed separately from the TD identifier."
-"privacy-mutable-identifiers","null","not testable with Assertion Tester","All identifiers used in a TD SHOULD be mutable, and in particular there SHOULD be a mechanism to update the id of a Thing when necessary."
-"privacy-temp-id-metadata","null","not testable with Assertion Tester","Any temporary ID generated to manage TDs, for example an ID for a database or directory service, SHOULD NOT contain metadata describing the Thing or from the TD itself."
-"sec-body-name-json-pointer-type","null","not testable with Assertion Tester","."
-"sec-inj-no-intl-markup","null","not testable with Assertion Tester","HTML markup SHOULD NOT be used for internationalization purposes in TD strings."
+"td-privacy-auth-users-only","null","not testable with Assertion Tester","Only authorized users SHOULD be provided access to the Thing Description for a Thing."
+"td-privacy-centralized-ids","null","not testable with Assertion Tester","TD identifiers SHOULD NOT be generated using a centralized authority."
+"td-privacy-essential-metadata-only","null","not testable with Assertion Tester","Only the amount of information needed for the level of authorization and the use case SHOULD be provided in a TD."
+"td-privacy-immutable-id-as-property","null","not testable with Assertion Tester","Ideally, any required immutable identifiers SHOULD only be made available via affordances, such as a property, whose value can only be obtained after appropriate authentication and authorization, and managed separately from the TD identifier."
+"td-privacy-mutable-identifiers","null","not testable with Assertion Tester","All identifiers used in a TD SHOULD be mutable, and in particular there SHOULD be a mechanism to update the id of a Thing when necessary."
+"td-privacy-temp-id-metadata","null","not testable with Assertion Tester","Any temporary ID generated to manage TDs, for example an ID for a database or directory service, SHOULD NOT contain metadata describing the Thing or from the TD itself."
+"td-security-body-name-json-pointer-type","null","not testable with Assertion Tester","."
+"td-security-inj-no-intl-markup","null","not testable with Assertion Tester","HTML markup SHOULD NOT be used for internationalization purposes in TD strings."
 "security-context-secure-fetch","null","not testable with Assertion Tester","If it is necessary to fetch a context definition file, an implementation SHOULD first attempt to use HTTP over TLS even when only an HTTP URL is given."
-"security-jsonld-expansion","null","not testable with Assertion Tester","Consumers SHOULD set and enforce limits on memory usage to prevent buffer overflow and resource exhaustion during JSON-LD processing."
-"security-mutual-auth-td","null","not testable with Assertion Tester","Thing Descriptions SHOULD be obtained only through mutually authenticated secure channels."
-"security-no-execution","null","not testable with Assertion Tester","A WoT Thing Description JSON-LD serialization MUST NOT be passed through a code execution mechanism such as JavaScript's eval() function to be parsed."
-"security-oauth-limits","null","not testable with Assertion Tester","To limit the scope and duration of access to Things, tokens SHOULD be used to manage access."
-"security-remote-context","null","not testable with Assertion Tester","Constrained implementations SHOULD NOT follow links to remote contexts."
-"security-server-auth-td","null","not testable with Assertion Tester","In cases where the Consumer is associated with a person, e.g. browsers, TDs MAY be obtained through a channel where only the TD provider is authenticated."
-"security-static-context","null","not testable with Assertion Tester","Constrained implementations SHOULD use vetted versions of their supported context extensions managed statically or as part of a secure update process."
+"td-security-jsonld-expansion","null","not testable with Assertion Tester","Consumers SHOULD set and enforce limits on memory usage to prevent buffer overflow and resource exhaustion during JSON-LD processing."
+"td-security-mutual-auth-td","null","not testable with Assertion Tester","Thing Descriptions SHOULD be obtained only through mutually authenticated secure channels."
+"td-security-no-execution","null","not testable with Assertion Tester","A WoT Thing Description JSON-LD serialization MUST NOT be passed through a code execution mechanism such as JavaScript's eval() function to be parsed."
+"td-security-oauth-limits","null","not testable with Assertion Tester","To limit the scope and duration of access to Things, tokens SHOULD be used to manage access."
+"td-security-remote-context","null","not testable with Assertion Tester","Constrained implementations SHOULD NOT follow links to remote contexts."
+"td-security-server-auth-td","null","not testable with Assertion Tester","In cases where the Consumer is associated with a person, e.g. browsers, TDs MAY be obtained through a channel where only the TD provider is authenticated."
+"td-security-static-context","null","not testable with Assertion Tester","Constrained implementations SHOULD use vetted versions of their supported context extensions managed statically or as part of a secure update process."
 "td-context-ns-td10-namespacev10","null","not testable with Assertion Tester","TD 1.1 consumers MUST accept TDs satisfying the W3C WoT Thing Description 1.0 [[wot-thing-description]] specification."
 "td-default-AdditionalResponseContentType","null","not testable with Assertion Tester","AdditionalExpectedResponse contentType value of the contentType of the Form element it belongs to."
 "td-default-observable","null","not testable with Assertion Tester","PropertyAffordance observable false"
@@ -424,6 +424,7 @@
 "td-security-extension","null","not testable with Assertion Tester","Additional security schemes MUST be Subclasses of the Class SecurityScheme."
 "td-text-direction-first-strong","null","not testable with Assertion Tester","When metadata such as @direction is not present, TD Consumers SHOULD use [=first-strong detection=] as a fallback."
 "td-text-direction-language-tag","null","not testable with Assertion Tester","For the MultiLanguage Map, TD Consumers MAY infer the [=base direction=] from the language tag of the individual strings."
+"ID","Status","Comment","Assertion"
 "tm-compose-instanceName","not-impl",,
 "tm-compose-submodel","not-impl",,
 "tm-context-requirement","pass",,
@@ -442,10 +443,10 @@
 "tm-tmRef-usecase","not-impl",,
 "tm-tmRef1","not-impl",,
 "tm-versioning-2","not-impl","data must have required property 'version'",
-"thing-model-td-generation-processor-extends","null","not testable with Assertion Tester","If used"
-"thing-model-td-generation-processor-forms","null","not testable with Assertion Tester","Missing communication and/or security metadata details MUST be completed in the Thing Description instance based on Section and/or ."
-"thing-model-td-generation-processor-placeholder","null","not testable with Assertion Tester","If used, all placeholders (see Section ) in the Thing Model MUST be replaced with a valid corresponding value in the Partial TD."
-"thing-model-td-generation-processor-required","null","not testable with Assertion Tester","All required interactions (not listed in tm:optional) MUST be taken over to the Partial TD instance."
+"tm-td-generation-processor-extends","null","not testable with Assertion Tester","If used, links element entry with rel:tm:extends MUST be removed from the current Partial TD"
+"tm-td-generation-processor-forms","null","not testable with Assertion Tester","Missing communication and/or security metadata details MUST be completed in the Thing Description instance based on Section and/or ."
+"tm-td-generation-processor-placeholder","null","not testable with Assertion Tester","If used, all placeholders (see Section ) in the Thing Model MUST be replaced with a valid corresponding value in the Partial TD."
+"tm-td-generation-processor-required","null","not testable with Assertion Tester","All required interactions (not listed in tm:optional) MUST be taken over to the Partial TD instance."
 "tm-derivation-validity","null","not testable with Assertion Tester","When a Thing Descriptions is instantiated by relying on a Thing Model, it SHOULD be valid according to that Thing Model."
 "tm-overwrite-interaction","null","not testable with Assertion Tester","A Thing Model SHOULD NOT overwrite the JSON names defined within the properties, actions, and/or events Map of the extended Thing Model."
 "tm-overwrite-types","null","not testable with Assertion Tester","Definitions SHOULD NOT be overwritten in such a way that possible instance values are no longer valid compared to the origin extended definitions."
