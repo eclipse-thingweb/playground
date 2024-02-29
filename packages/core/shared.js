@@ -1093,8 +1093,8 @@ async function fetchLinkedTm(td) {
  * @param {object} td - TD to check
  */
 async function checkLinkedAffordances(td) {
-    const ASSERTION_REQUIRED = "thing-model-td-generation-processor-type";
-    const ASSERTION_OPTIONAL = "thing-model-td-generation-processor-optional";
+    const ASSERTION_REQUIRED = "tm-td-generation-processor-type";
+    const ASSERTION_OPTIONAL = "tm-td-generation-processor-optional";
 
     const tmResult = await fetchLinkedTm(td);
     if (!tmResult.success) {
@@ -1203,7 +1203,7 @@ async function checkLinkedAffordances(td) {
  * @param {object} td - TD to check
  */
 async function checkLinkedStructure(td) {
-    const ASSERTION_NAME = "thing-model-td-generation-processor-imports";
+    const ASSERTION_NAME = "tm-td-generation-processor-imports";
 
     const tmResult = await fetchLinkedTm(td);
     if (!tmResult.success) {
