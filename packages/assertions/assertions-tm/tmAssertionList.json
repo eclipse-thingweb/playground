@@ -1,11 +1,1 @@
-[
-    "tm-compose-instanceName.json",
-    "tm-compose-submodel.json",
-    "tm-extend.json",
-    "tm-identification.json",
-    "tm-placeholder.json",
-    "tm-protocol-security-restriction.json",
-    "tm-tmOptional.json",
-    "tm-tmRef1.json",
-    "tm-versioning-2.json"
-]
+["tm-compose-instanceName.json","tm-compose-submodel.json","tm-extend.json","tm-identification.json","tm-placeholder.json","tm-protocol-security-restriction.json","tm-tmOptional.json","tm-tmRef1.json","tm-versioning-2.json"]

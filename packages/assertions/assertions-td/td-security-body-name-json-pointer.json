@@ -1,5 +1,5 @@
 {
-    "title": "sec-body-name-json-pointer",
+    "title": "td-security-body-name-json-pointer",
     "description": "When used in the context of a body security information location, the value of name MUST be in the form of a JSON pointer [[!RFC6901]] relative to the root of the input DataSchema for each interaction it is used with.",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "is-complex": true,
@@ -36,7 +36,7 @@
                 "required": ["in", "scheme", "name"]
             },
             "then": {
-                "const": "sec-body-name-json-pointer=pass"
+                "const": "td-security-body-name-json-pointer=pass"
             }
         }
     }
