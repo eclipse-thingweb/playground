@@ -324,7 +324,7 @@ async function initEditor(ideNumber, editorValue, editorLanguage) {
     setFontSize(editorInstance)
   })
 
-  editorInstance.getModel().onDidChangeContent(_ => {
+  editorInstance.getModel().onDidChangeContent(() => {
 
     try {
       const editorValues = getEditorData(editorInstance)

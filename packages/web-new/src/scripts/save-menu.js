@@ -38,7 +38,7 @@ const downloadBtn = document.querySelector("#download-btn")
 // const saveAsBtn = document.querySelector("#save-as-btn")
 // const saveAsWarning = document.querySelector(".save-warning")
 const saveMenuContainer = document.querySelector(".save-menu__container")
-let fileHandle;
+// let fileHandle;
 openUrlTab.disabled = true
 shareUrlContainer.value = ""
 
@@ -160,6 +160,8 @@ downloadBtn.addEventListener("click", () => {
   openUrlTab.disabled = true
 })
 
+
+//TODO: Uncomment when https is implemented
 /* Save as btn functionality */
 // saveAsBtn.addEventListener("click", () => {
 //   saveAsFile()
@@ -169,13 +171,12 @@ downloadBtn.addEventListener("click", () => {
  * Saves the td as a file in the file system
  * @param {*} content
  */
-async function saveFileInSystem(content) {
-  let stream = await fileHandle.createWritable()
-  await stream.write(content)
-  await stream.close()
-}
+// async function saveFileInSystem(content) {
+//   let stream = await fileHandle.createWritable()
+//   await stream.write(content)
+//   await stream.close()
+// }
 
-//TODO: Uncomment when https is implemented
 /**
  * Opens the file system allows the user to input a file
  * name and save it as json , jsonld or yaml
