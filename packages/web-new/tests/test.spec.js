@@ -1007,7 +1007,7 @@ test.describe("OpenAPI view functionality", () => {
         const openAPIContainer = openAPIEditor.getByRole('code').locator('div').filter({ hasText: '"openapi": "3.0.3",' }).nth(4)
 
         await expect(openAPIEditor).toHaveAttribute('data-mode-id', "json")
-        await expect(openAPIContainer).toHaveText('\"openapi\": \"3.0.3\",')
+        await expect(openAPIContainer).toHaveText('"openapi": "3.0.3",')
 
         const openAPIJsonBtn = page.locator('#open-api-json')
 
@@ -1160,7 +1160,7 @@ test.describe("OpenAPI view functionality", () => {
         const openAPIContainer = openAPIEditor.getByRole('code').locator('div').filter({ hasText: '"openapi": "3.0.3",' }).nth(4)
 
         await expect(openAPIEditor).toHaveAttribute('data-mode-id', "json")
-        await expect(openAPIContainer).toHaveText('\"openapi\": \"3.0.3\",')
+        await expect(openAPIContainer).toHaveText('"openapi": "3.0.3",')
 
         const openAPIJsonBtn = page.locator('#open-api-json')
         await expect(openAPIJsonBtn).toBeDisabled()

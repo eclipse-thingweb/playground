@@ -6,7 +6,8 @@
         "jest": true
     },
     "parserOptions": {
-        "ecmaVersion": 8
+        "ecmaVersion": 2018,
+        "sourceType": "module"
     },
     "extends": ["eslint:recommended", "prettier"],
     "ignorePatterns": ["dist", "node_modules", "bin"]

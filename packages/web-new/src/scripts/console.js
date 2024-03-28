@@ -146,7 +146,7 @@ visualizationOptions.forEach(option => {
                         showConsoleError("This function is only allowed for Thing Descriptions!")
                     } else {
                         switch (option.id) {
-                            case "open-api-tab":
+                            case "open-api-tab": {
 
                                 if (fileType === "yaml") {
                                     openApiJsonBtn.disabled = false
@@ -159,8 +159,8 @@ visualizationOptions.forEach(option => {
                                 enableAPIConversionWithProtocol(editorInstance)
 
                                 break;
-
-                            case "async-api-tab":
+                            }
+                            case "async-api-tab": {
                                 if (fileType === "yaml") {
                                     asyncApiJsonBtn.disabled = false
                                     asyncApiYamlBtn.disabled = true
@@ -172,15 +172,15 @@ visualizationOptions.forEach(option => {
                                 enableAPIConversionWithProtocol(editorInstance)
 
                                 break;
-
-                            case "aas-tab":
+                            }
+                            case "aas-tab": {
 
                                 generateAAS(fileType, editorInstance)
                                 AASView.classList.remove("hidden")
 
                                 break;
-
-                            case "defaults-tab":
+                            }
+                            case "defaults-tab": {
                                 if (fileType === "yaml") {
                                     defaultsJsonBtn.disabled = false
                                     defaultsYamlBtn.disabled = true
@@ -194,21 +194,22 @@ visualizationOptions.forEach(option => {
                                 defaultsView.classList.remove("hidden")
 
                                 break;
-
-                            case "visualize-tab":
+                            }
+                            case "visualize-tab": {
                                 visualize(td)
 
                                 break;
-
-                            case "validation-tab":
+                            }
+                            case "validation-tab": {
                                 validationView.classList.remove("hidden")
                                 const editorData = getEditorData(editorInstance)
                                 validate(editorData[1], editorValue)
 
                                 break;
-
-                            default:
+                            }
+                            default: {
                                 break;
+                            }
                         }
 
                     }
