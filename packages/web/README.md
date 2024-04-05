@@ -103,7 +103,7 @@ Finally the web application can be deployed in production or in development mode
 
 ### Development mode
 
-1. Utilize the command `npm  run dev` which will start the webpack-dev-server in development mode, generate source maps for easier debugging, open your default browser and serve the application.
+1. Utilize the command `npm  run dev` which will start the webpack-dev-server in development mode, generate source maps for easier debugging, open your default browser, and serve the application.
 
 ```sh
 npm run dev
@@ -132,4 +132,3 @@ For a more visual approach to writing and visualizing tests, you can use the com
 Debugging can also be accomplished by running the Playwright test command with the `--debug` flag, like this: `npx playwright test --debug`.
 
 For additional information on how to run and debug tests, please refer to the [official Playwright website](https://playwright.dev/docs/running-tests).
-
