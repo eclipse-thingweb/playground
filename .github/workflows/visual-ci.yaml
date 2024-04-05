@@ -1,4 +1,4 @@
-name: Visual Testing Pipeline
+name: Web Package Visual Testing Pipeline
 
 on:
     pull_request:
@@ -14,26 +14,31 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
-            - name: Use Node.js 16
-              uses: actions/setup-node@v1
+            - name: Use Node.js 18
+              uses: actions/setup-node@v3
               with:
-                  node-version: "16.x"
+                  node-version: "18.x"
 
             - name: Use lerna
               run: npm install -g lerna@6.6.2
 
             - name: Bootstrap
               run: lerna bootstrap --no-ci
-
-            - name: Visual Test
+            
+            - name: Visual Tests
+              timeout-minutes: 30
               run: |
-                  cd ./packages/web
-                  npm test
+                cd ./packages/web
+                npm install
+                npx playwright install chromium firefox
+                npm run build
+                npm test
 
-            - name: Upload test screenshots
-              uses: actions/upload-artifact@v2
+            - uses: actions/upload-artifact@v3
+              if: always()
               with:
-                  name: playwright screenshots and downloads
-                  path: packages/web/test_results
+                name: playwright-report
+                path: ./packages/web/playwright-report/
+                retention-days: 30
