@@ -1,0 +1,5 @@
+[[plugins]]
+  package = "@netlify/plugin-lighthouse"
+
+  [plugins.inputs.settings]
+    preset = "desktop" # Run Lighthouse using a desktop configuration since we target only desktop
