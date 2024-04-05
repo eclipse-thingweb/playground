@@ -326,7 +326,7 @@ export function jsonldVis(jsonld, selector, config) {
     const nodeEnter = node.enter()
       .append('g')
       .attr('class', 'node')
-      .attr('transform', function (d) { return 'translate(' + source.y0 + ',' + source.x0 + ')'; })
+      .attr('transform', function () { return 'translate(' + source.y0 + ',' + source.x0 + ')'; })
       .on('click', click);
 
     nodeEnter.append('circle')
@@ -389,7 +389,7 @@ export function jsonldVis(jsonld, selector, config) {
     const nodeExit = node.exit().transition()
       .duration(transitionDuration)
       .ease(transitionEase)
-      .attr('transform', function (d) { return 'translate(' + source.y + ',' + source.x + ')'; })
+      .attr('transform', function () { return 'translate(' + source.y + ',' + source.x + ')'; })
       .remove();
 
     nodeExit.select('circle').attr('r', 0);
@@ -400,7 +400,7 @@ export function jsonldVis(jsonld, selector, config) {
 
     link.enter().insert('path', 'g')
       .attr('class', 'link')
-      .attr('d', function (d) {
+      .attr('d', function () {
         const o = { x: source.x0, y: source.y0 };
         return diagonal({ source: o, target: o });
       });
@@ -413,7 +413,7 @@ export function jsonldVis(jsonld, selector, config) {
     link.exit().transition()
       .duration(transitionDuration)
       .ease(transitionEase)
-      .attr('d', function (d) {
+      .attr('d', function () {
         const o = { x: source.x, y: source.y };
         return diagonal({ source: o, target: o });
       })
