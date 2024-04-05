@@ -53,7 +53,7 @@ Reusable packages:
 End Product Packages:
 
 -   [cli](./packages/cli/): The CLI package wraps the above packages in a way they can be used from the command line. Additionally, it allows the functionalities of the other packages to be executed on a set of TDs. [NPM](https://www.npmjs.com/package/@thing-description-playground/cli).
--   [web](./packages/web/): The Web package wraps the above packages in a way they can be used from a browser interface. You can host/adapt your own browser version of the playground. It is online at [http://plugfest.thingweb.io/playground/](http://plugfest.thingweb.io/playground/)[NPM](https://www.npmjs.com/package/@thing-description-playground/web).
+-   [web](./packages/web/): The Web package wraps the above packages in a way they can be used from a browser interface. You can host/adapt your own browser version of the playground. It is online at [https://playground.thingweb.io/](https://playground.thingweb.io/)[NPM](https://www.npmjs.com/package/@thing-description-playground/web).
 
 ## Examples
 
@@ -61,11 +61,11 @@ Examples are included in the [core](./packages/core/examples) and in the [exampl
 
 ## Browser-based Thing Description Validation
 
--   Online: It is hosted [here](http://plugfest.thingweb.io/playground/)
+-   Online: It is hosted [here](https://playground.thingweb.io/)
 
     -   Simply paste a TD in the text field and click validate
     -   Safari browser has unexpected behavior with JSON-LD documents
-    -   If you loose your internet connection when validating JSON-LD validation will fail since it tries to access the documents under `@context` (can be turned off)
+    -   If you lose your internet connection when validating JSON-LD validation will fail since it tries to access the documents under `@context` (can be turned off)
 
 -   Offline/OnPremise: by hosting the `web` yourself. Therefore, please deliver the "index.html" file with a web-server.
 
@@ -94,4 +94,3 @@ All packages are licensed under the Eclipse Public License v. 2.0. You find a co
 ## Adapting Licenses
 
 One can use the VS Code plugin at <https://marketplace.visualstudio.com/items?itemName=angelo-breuer.license-header-manager> to updating the copyright fields on top of each file.
-

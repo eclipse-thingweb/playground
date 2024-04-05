@@ -1,5 +1,5 @@
 {
     "packages": ["packages/*"],
     "version": "independent",
-    "ignore": ["packages/web-new"]
+    "ignore": ["packages/web"]
 }
