@@ -68,6 +68,7 @@
             width: fit-content;
             opacity: 1;
             transform: scaleX(1);
+            margin-top: .5rem;
             transition: opacity 250ms var(--trans-bouncy), transform 250ms var(--trans-bouncy);
         }
 

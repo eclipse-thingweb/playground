@@ -242,8 +242,19 @@
         width: 100%;
         text-align: center;
 
-        p {
+        .project-links {
             margin-bottom: 1rem;
+            
+            p {
+                margin-bottom: .5rem;
+            }
+
+            .netlify-link {
+                a {
+                    font-weight: bold;
+                }
+            }
+
         }
 
         .footer-links {
@@ -251,6 +262,7 @@
             flex-direction: row;
             align-items: center;
             justify-content: center;
+
 
             a {
                 font-size: 1.2rem;

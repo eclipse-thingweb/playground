@@ -162,10 +162,10 @@ function onmousemoveY(e) {
     // DOWN
     if (deltaY > 0) {
       const h = Math.round(parseInt(getComputedStyle(b).height) - deltaY)
-      b.style.flex = `0 ${h < 50 ? 39 : h}px`
+      b.style.flex = `0 ${h < 55 ? 43 : h}px`
       t.style.flex = "1 0"
 
-      if (h < 39) {
+      if (h < 43) {
         consoleElement.classList.remove("expanded")
         consoleElement.classList.add("collapsed")
 
@@ -183,7 +183,7 @@ function onmousemoveY(e) {
     // UP
     if (deltaY < 0) {
       const h = Math.round(parseInt(getComputedStyle(t).height) + deltaY)
-      t.style.flex = `0 ${h < 220 ? 210 : h}px`
+      t.style.flex = `0 ${h < 225 ? 210 : h}px`
       b.style.flex = "1 0"
 
       if (h > 714) {

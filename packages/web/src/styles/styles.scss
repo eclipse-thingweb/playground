@@ -57,8 +57,8 @@
     --lh-h2: 4rem;
     --lh-h3: 3.5rem;
     --lh-sub-header: 3rem;
-    --lh-p: 1.8rem;
-    --lh-footer: 1.25rem;
+    --lh-p: 2.2rem;
+    --lh-footer: 1.4rem;
     --lh-i: 2rem;
 
     /*colors*/
@@ -177,7 +177,7 @@ h3 {
 p,
 li {
     font-size: var(--fs-p);
-    line-height: var(--lh-sub-header);
+    line-height: var(--lh-p);
     font-weight: var(--fw-regular);
 }
 
