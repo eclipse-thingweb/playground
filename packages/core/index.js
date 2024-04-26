@@ -26,6 +26,8 @@ const fullTdSchema = require("./td-schema-full.json");
 const tmSchema = require("./tm-schema.json");
 const builder = require("junit-report-builder");
 
+const jsonValidator = require("json-dup-key-validator");
+
 module.exports.tdValidator = tdValidator;
 module.exports.tmValidator = tmValidator;
 module.exports.propUniqueness = coreAssertions.checkPropUniqueness;
@@ -42,7 +44,15 @@ module.exports.detectProtocolSchemes = detectProtocolSchemes;
 module.exports.convertTDJsonToYaml = convertTDJsonToYaml;
 module.exports.convertTDYamlToJson = convertTDYamlToJson;
 
-const jsonValidator = require("json-dup-key-validator");
+
+// This is implemented to avoid a test error, where jest seems to intercept the request
+const customLoader = async (url) => {
+	return {
+		contextUrl: null, // this is for a context via a link header
+		document: {}, // this is the actual document that was loaded
+		documentUrl: url // this is the actual context URL after redirects
+	};
+};
 
 /**
  * A function that provides the core functionality of the TD Playground.
@@ -260,7 +270,8 @@ function tdValidator(
             start = Date.now();
             jsonld
                 .toRDF(tdJson, {
-                    format: "application/nquads",
+                    format: "application/n-quads",
+                    documentLoader: customLoader,
                 })
                 .then(
                     (nquads) => {
@@ -853,7 +864,8 @@ function tmValidator(tmString, logFunc, { checkDefaults = true, checkJsonLd = tr
             start = Date.now();
             jsonld
                 .toRDF(tmJson, {
-                    format: "application/nquads",
+                    format: "application/n-quads",
+                    documentLoader: customLoader,
                 })
                 .then(
                     (nquads) => {
