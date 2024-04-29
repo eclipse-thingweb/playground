@@ -173,7 +173,7 @@ export function generateAAS(fileType, editorInstance) {
         ? editorInstance.getValue()
         : convertTDYamlToJson(editorInstance.getValue())
 
-    const AASInstance = assetInterfaceDescription.transformTD2AID(tdToConvert, { createAAS: true }, [])
+    const AASInstance = assetInterfaceDescription.transformTD2AID(tdToConvert, { createAAS: false }, [])
     try {
         const content = JSON.stringify(JSON.parse(AASInstance), undefined, 4)
 
