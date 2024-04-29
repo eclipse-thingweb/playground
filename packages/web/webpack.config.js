@@ -53,8 +53,15 @@ module.exports = (env, argv) => {
             hot: false,
             compress: true,
             historyApiFallback: true,
-        } 
-        : {},
+        } : {},
+        resolve: {
+            fallback: {
+              "http": false,
+              "https": false,
+              "fs": false,
+              "url": false
+            }
+        },
         module: {
             rules: [
                 {

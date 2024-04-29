@@ -25,7 +25,8 @@ import { convertTDJsonToYaml, convertTDYamlToJson, tdValidator, tmValidator, com
 import tdToOpenAPI from '../../../td_to_openAPI/dist/web-bundle.min.js'
 import tdToAsyncAPI from '../../../td_to_asyncapi/dist/web-bundle.min.js'
 import { addDefaults, removeDefaults } from '../../../defaults/dist/web-bundle.min.js'
-import { AssetInterfaceDescriptionUtil } from '@node-wot/td-tools/dist/util/asset-interface-description.js'
+// import { AssetInterfaceDescriptionUtil } from '@node-wot/td-tools/dist/util/asset-interface-description.js'
+import { AssetInterfacesDescription } from "@thingweb/aas-aid";
 import { validateJsonLdBtn, tmConformanceBtn, sectionHeaders } from './validation'
 
 
@@ -166,13 +167,13 @@ export function generateAAP(fileType, editorInstance) {
  * @param { Monaco Object } editorInstance - Monaco editor object
  */
 export function generateAAS(fileType, editorInstance) {
-    const assetInterfaceDescriptionUtil = new AssetInterfaceDescriptionUtil()
+    const assetInterfaceDescription = new AssetInterfacesDescription()
 
     const tdToConvert = fileType === "json"
         ? editorInstance.getValue()
         : convertTDYamlToJson(editorInstance.getValue())
 
-    const AASInstance = assetInterfaceDescriptionUtil.transformTD2SM(tdToConvert)
+    const AASInstance = assetInterfaceDescription.transformTD2AID(tdToConvert, { createAAS: true }, [])
     try {
         const content = JSON.stringify(JSON.parse(AASInstance), undefined, 4)
 
