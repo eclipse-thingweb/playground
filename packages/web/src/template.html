@@ -37,6 +37,36 @@
     <link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#33b8a4">
     <meta name="msapplication-TileColor" content="#33b8a4">
     <meta name="theme-color" content="#33b8a4">
+
+    <!-- Google Consent Default State -->
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+
+        if (localStorage.getItem('consentMode') === null) {
+            gtag('consent', 'default', {
+                'ad_storage': 'denied',
+                'analytics_storage': 'denied',
+                'ad_user_data': 'denied',
+                'ad_personalization': 'denied',
+                'personalization_storage': 'denied',
+                'functionality_storage': 'denied',
+                'security_storage': 'denied',
+            });
+        }
+        else {
+            gtag('consent', 'default', JSON.parse(localStorage.getItem('consentMode')))
+        }
+    </script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FTBPVB8Z65"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-FTBPVB8Z65');
+    </script>
+    <!-- Google tag end -->
 </head>
 
 <body>
@@ -974,21 +1004,27 @@
 
             <footer>
                 <div class="project-links">
-                    <p class="thingweb-link"><a href="https://www.thingweb.io/" target="_blank" id="thingweb-link">© 2024 The Eclipse Thingweb
-                            Project</a></p>
+                    <p class="thingweb-link"><a href="https://www.thingweb.io/" target="_blank" id="thingweb-link">©
+                            2024 The Eclipse Thingweb Project</a></p>
                     <p class="netlify-link">This site is powered by <a href="https://www.netlify.com" target="_blank"
                             id="netlify-link">Netlify</a></p>
                 </div>
 
                 <div class="footer-links">
                     <a href="https://www.eclipse.org" target="_blank" id="eclipse-link">Eclipse</a>
+                    <div class="footer-links__separator"></div>
                     <a href="https://www.eclipse.org/legal/privacy.php" target="_blank" id="privacy-link">Privacy
                         Policy</a>
+                    <div class="footer-links__separator"></div>
                     <a href="https://www.eclipse.org/legal/termsofuse.php" target="_blank" id="terms-link">Terms of
                         Use</a>
+                    <div class="footer-links__separator"></div>
                     <a href="https://www.eclipse.org/legal/copyright.php" target="_blank" id="copyright-link">Copyright
                         Agent</a>
+                    <div class="footer-links__separator"></div>
                     <a href="https://www.eclipse.org/legal/" target="_blank" id="legal-link">Legal</a>
+                    <div class="footer-links__separator"></div>
+                    <a href="#" id="consent-link">Manage Consent</a>
                 </div>
             </footer>
         </div>
@@ -1149,8 +1185,22 @@
                 </div>
             </div>
         </div>
-
     </main>
+
+    <div class="analytics-banner hidden" id="analytics-banner">
+        <div class="analytics-banner__disclaimer">
+            <h4>Site Analytics Consent</h4>
+            <p>We are an open-source project under the Eclipse Foundation. This means that without your consent
+                we don't track anything at all and even with consent we don't track any personal information, we
+                only look at the website usage statistics. For more details, check out the <a
+                    href="https://www.eclipse.org/legal/privacy.php">Eclipse Foundation Privacy Policy.</a></p>
+            <p>You can change your preference later at the <b>Manage Consent</b> link in the settings menu.</p>
+        </div>
+        <form action="#" class="analytics-banner__interactions">
+            <button type="button" class="decline-btn" id="decline-analytics-btn">Decline</button>
+            <button type="button" class="accept-btn" id="accept-analytics-btn">Allow</button>
+        </form>
+    </div>
 </body>
 
 </html>

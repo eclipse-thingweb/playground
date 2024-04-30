@@ -40,17 +40,22 @@
     --fs-h2: 2.5rem;
     --fs-sub-header: 1.75rem;
     --fs-p: 1.2rem;
+    --fs-p-lg: 1.4rem;
     --fs-footer: 0.8rem;
     --fs-i: 1.4rem;
 
-    //responsive font size values
-    --fs-h1: clamp(2rem, 1.8rem + 0.625vw, 3rem);
-    --fs-h2: clamp(2rem, 1.8rem + 0.625vw, 3rem);
-    --fs-h3: clamp(1.5rem, 1.3rem + 0.625vw, 2.5rem);
+    //Fluid typography values
+    //Min viewport value: 20rem = 320px
+    //Max viewport value: 120rem = 1920px
+    --fs-h1: clamp(2rem, 1.8rem + 1vw, 3rem);
+    --fs-h2: clamp(2rem, 1.8rem + 1vw, 3rem);
+    --fs-h3: clamp(1.5rem, 1.3rem + 1vw, 2.5rem);
     --fs-sub-header: clamp(1.25rem, 1.05rem + 1vw, 2.25rem);
     --fs-p: clamp(1rem, 0.92rem + 0.3999999999999999vw, 1.4rem);
+    --fs-p-lg: clamp(1.2rem, 1.1199999999999999rem + 0.4000000000000002vw, 1.6rem);
     --fs-footer: clamp(0.8rem, 0.76rem + 0.19999999999999996vw, 1rem);
     --fs-i: clamp(1.2rem, 1.04rem + 0.8vw, 2rem);
+
 
     /*line heights*/
     --lh-h1: 4rem;
@@ -402,6 +407,78 @@ main {
     &.hidden{
         opacity: 0;
         pointer-events: none;
+    }
+}
+
+/** Analytics banner **/
+.analytics-banner{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 90;
+    width: 100%;
+    padding: 2rem;
+    background-color: var(--clr-neutral-900);
+    box-shadow: 0px -5px 10px var(--clr-neutral-300);
+
+    &.hidden {
+        display: none;
+    }
+
+    &__disclaimer {
+        color: var(--clr-neutral-100);
+
+        & > *{
+            margin-bottom: 1rem;
+        }
+
+        h4 {
+            font-size: var(--fs-h2);
+            color: var(--clr-controls-bg);
+        }
+
+        p {
+            font-size: var(--fs-p-lg);
+
+            a {
+                text-decoration: underline;
+                color: var(--clr-neutral-300);
+            }
+        }
+    }
+
+    &__interactions {
+        margin-top: 2rem;
+
+        button {
+            appearance:unset;
+            padding: 0.75rem 1.75rem;
+            min-width: 9rem;
+            cursor: pointer;
+            border: 2px solid var(--clr-controls-bg);
+            border-radius: 5px;
+            font-size: var(--fs-p-lg);
+            font-weight: var(--fw-bold);
+            transition: all 250ms ease-in-out;
+
+            &.decline-btn {
+                background-color: transparent;
+                color: var(--clr-controls-bg);
+                margin-right: 1rem;
+            }
+
+            &.accept-btn{
+                background-color: var(--clr-controls-bg);
+                color: var(--clr-controls);
+            }
+
+            &:hover {
+                background-color: var(--clr-primary-900);
+                color: var(--clr-controls);
+                border-color: var(--clr-primary-900);
+            }
+        }
+
     }
 }
 

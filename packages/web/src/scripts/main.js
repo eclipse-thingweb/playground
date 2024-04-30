@@ -20,6 +20,7 @@
  * to integrate the monaco editor
  */
 
+import './consent-banner'
 import './visualize'
 import './editor'
 import './json-yaml'
@@ -33,6 +34,7 @@ import './aas'
 import './defaults'
 import './visualize'
 import './validation'
+
 
 /***********************************************************/
 /*                          Loader                         */
