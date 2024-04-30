@@ -44,7 +44,7 @@
     "webpack-dev-server": "^5.0.4"
   },
   "dependencies": {
-    "@node-wot/td-tools": "0.8.12",
+    "@thingweb/aas-aid": "^1.0.2",
     "d3": "^3.5.17",
     "d3-tip": "^0.6.7",
     "express": "^4.19.2",
