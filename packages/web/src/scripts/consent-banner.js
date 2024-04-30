@@ -52,7 +52,6 @@ analyticsAcceptBtn.addEventListener("click", () => {
  * @param { Object } preferences 
  */
 function updateConsentMode(preferences) {
-    // eslint-disable-next-line no-undef
     gtag('consent', 'update', preferences)
     localStorage.setItem('consentMode', JSON.stringify(preferences))
 }
