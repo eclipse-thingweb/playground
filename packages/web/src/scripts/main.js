@@ -58,6 +58,17 @@ const resizerX = document.querySelector(".vertical-divider")
 /*** Horizontal sizing section ***/
 
 /**
+ * @const { number } menuCollapseThreshold - Width limit of the menu element before it collapses into its final width (px)
+ * @const { number } menuExpandThreshold - Width limit of the menu element before it expands into its final width (px)
+ * @const { number } menuCollapseFinal - Final width size of the menu element when fully collapsed (px)
+ * @const { number } menuExpandFinal - Final width size of the menu element when fully expanded (px)
+ */
+const menuCollapseThreshold = 45;
+const menuExpandThreshold = 65;
+const menuCollapseFinal = 30;
+const menuExpandFinal = 80;
+
+/**
  * Mouse down event listener for the resizerX element which
  * then runs the onmousemoveX and the onmouseupX functions
  * @param {event} e - the mousedown event
@@ -77,8 +88,8 @@ function onmousemoveX(e) {
   e.preventDefault()
   let clientX = e.clientX
   const deltaX = clientX - (resizerX.clientX || clientX)
-  const l = resizerX.previousElementSibling
-  const r = resizerX.nextElementSibling
+  const menuContainer = resizerX.previousElementSibling
+  const editorContainer = resizerX.nextElementSibling
 
   if (clientX > screen.width) {
     resizerX.clientX = screen.width
@@ -89,24 +100,26 @@ function onmousemoveX(e) {
   else {
     resizerX.clientX = clientX
 
-    // LEFT
+    // LEFT (menu collapse)
     if (deltaX < 0) {
-      const w = Math.round(parseInt(getComputedStyle(l).width) + deltaX)
-      l.style.flex = `0 ${w < 45 ? 30 : w}px`
-      r.style.flex = "1 0"
-      if (w < 65) {
+      const elementWidth = Math.round(parseInt(getComputedStyle(menuContainer).width) + deltaX)
+      menuContainer.style.flex = `0 ${elementWidth < menuCollapseThreshold ? menuCollapseFinal : elementWidth}px`
+      editorContainer.style.flex = "1 0"
+      //Hide the buttons text when the menus width is less than the menuExpandThreshold
+      if (elementWidth < menuExpandThreshold) {
         textIcon.forEach(text => {
           text.classList.add("hiddenH")
         })
       }
     }
 
-    // RIGHT
+    // RIGHT (menu expand)
     if (deltaX > 0) {
-      const w = Math.round(parseInt(getComputedStyle(l).width) + deltaX)
-      l.style.flex = `0 ${w > 65 ? 80 : w}px`
-      r.style.flex = "1 0"
-      if (w > 65) {
+      const elementWidth = Math.round(parseInt(getComputedStyle(menuContainer).width) + deltaX)
+      menuContainer.style.flex = `0 ${elementWidth > menuExpandThreshold ? menuExpandFinal : elementWidth}px`
+      editorContainer.style.flex = "1 0"
+      //Show the buttons text when the menus width is bigger than the menuExpandThreshold
+      if (elementWidth > menuExpandThreshold) {
         textIcon.forEach(text => {
           text.classList.remove("hiddenH")
         })
@@ -131,6 +144,23 @@ function onmouseupX(e) {
 /*** Vertical sizing section ***/
 
 /**
+ * @const { number } consoleCollapseThreshold - Width limit of the console element before it collapses into its final width (px)
+ * @const { number } consoleExpandThreshold - Width limit of the console element before it expands into its final width (px)
+ * @const { number } consoleCollapseFinal - Final width size of the console element when fully collapsed (px)
+ * @const { number } consoleExpandFinal - Final width size of the console element when fully expanded (px)
+ * @const { number } showTextThreshold - Console height threshold for displaying text on the menu buttons (px)
+ * @const { number } hideTextThreshold - Editor height threshold for hiding text on the menu buttons (px)
+ * @const { number } minExpandedConsole - Minimum editor height to consider the console to be expanded
+ */
+const consoleCollapseThreshold = 55;
+const consoleExpandThreshold = 225;
+const consoleCollapseFinal = 43;
+const consoleExpandFinal = 210;
+const showTextThreshold = 445;
+const hideTextThreshold = 310;
+const minExpandedConsole = 714;
+
+/**
  * Mouse down event listener for the resizerY element which
  * then runs the onmousemoveY and the onmouseupY functions
  * @param {event} e - the mousedown event
@@ -150,8 +180,8 @@ function onmousemoveY(e) {
   e.preventDefault()
   const clientY = e.clientY
   const deltaY = clientY - (resizerY.clientY || clientY)
-  const t = resizerY.previousElementSibling
-  const b = resizerY.nextElementSibling
+  const editorContainer = resizerY.previousElementSibling
+  const consoleContainer = resizerY.nextElementSibling
 
   if (clientY > screen.height) {
     resizerY.clientY = screen.height
@@ -161,13 +191,15 @@ function onmousemoveY(e) {
   }
   else {
     resizerY.clientY = clientY
-    // DOWN
-    if (deltaY > 0) {
-      const h = Math.round(parseInt(getComputedStyle(b).height) - deltaY)
-      b.style.flex = `0 ${h < 55 ? 43 : h}px`
-      t.style.flex = "1 0"
 
-      if (h < 43) {
+    // DOWN (Console collapse)
+    if (deltaY > 0) {
+      const consoleHeight = Math.round(parseInt(getComputedStyle(consoleContainer).height) - deltaY)
+      consoleContainer.style.flex = `0 ${consoleHeight < consoleCollapseThreshold ? consoleCollapseFinal : consoleHeight}px`
+      editorContainer.style.flex = "1 0"
+
+      //If the console is fully collapse, then change the state of the console element, as well as changing to the expand arrows icon
+      if (consoleHeight < consoleCollapseFinal) {
         consoleElement.classList.remove("expanded")
         consoleElement.classList.add("collapsed")
 
@@ -176,19 +208,24 @@ function onmousemoveY(e) {
         minMaxBtn.children[0].classList.remove("collapse-arrows")
       }
 
-      if (h < 445) {
+      //Show the buttons text only if the console height is smaller than showTextThreshold
+      if (consoleHeight < showTextThreshold) {
         textIcon.forEach(text => {
           text.classList.remove("hiddenV")
         })
       }
     }
-    // UP
-    if (deltaY < 0) {
-      const h = Math.round(parseInt(getComputedStyle(t).height) + deltaY)
-      t.style.flex = `0 ${h < 225 ? 210 : h}px`
-      b.style.flex = "1 0"
 
-      if (h > 714) {
+    // UP (Console expand)
+    /*Note: Unlike the horizontal resizer, to decide how much the console should be able to expand the height of the editor is used rather than the console height.
+    This is to assure be responsiveness, since it is easier to know how small the editor can be in any screen size.*/
+    if (deltaY < 0) {
+      const editorHeight = Math.round(parseInt(getComputedStyle(editorContainer).height) + deltaY)
+      editorContainer.style.flex = `0 ${editorHeight < consoleExpandThreshold ? consoleExpandFinal : editorHeight}px`
+      consoleContainer.style.flex = "1 0"
+
+      //If the console is not fully collapse, update the console element state to expanded and show the collapse arrows icon
+      if (editorHeight > minExpandedConsole) {
         consoleElement.classList.remove("collapsed")
         consoleElement.classList.add("expanded")
 
@@ -197,7 +234,8 @@ function onmousemoveY(e) {
         minMaxBtn.children[0].classList.add("collapse-arrows")
       }
 
-      if (h < 310) {
+      //Hide the buttons text when the editors height is smaller than the hideTextThreshold
+      if (editorHeight < hideTextThreshold) {
         textIcon.forEach(text => {
           text.classList.add("hiddenV")
         })
