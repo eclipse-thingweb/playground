@@ -9,6 +9,9 @@
         "ecmaVersion": 2018,
         "sourceType": "module"
     },
+    "globals": {
+        "gtag": "readonly"
+    },
     "extends": ["eslint:recommended", "prettier"],
     "ignorePatterns": ["dist", "node_modules", "bin"]
 }

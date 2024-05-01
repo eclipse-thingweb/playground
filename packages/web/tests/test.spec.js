@@ -19,6 +19,50 @@ test.beforeEach(async ({ page }) => {
     await page.goto('/')
 });
 
+//Check the initial state of the consent banner and close it to allow the other tests to run
+test.beforeEach(async ({ page }) => {
+
+    // Before the user sets any preferences the local storage should be empty
+    const localStorageBefore = await page.evaluate(() => {
+        return JSON.stringify(localStorage);
+    });
+
+    expect(localStorageBefore).toEqual("{}")
+
+    //If the user hasn't set any preference (local storage is empty) then the default value  for the gtag should all be set to denied
+    const gtagDefaultValue = await page.evaluate(() => {
+        return window.dataLayer[0]['2'];
+    });
+
+    expect(gtagDefaultValue).toEqual({
+        'ad_storage': 'denied',
+        'analytics_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'personalization_storage': 'denied',
+        'functionality_storage': 'denied',
+        'security_storage': 'denied'
+    })
+
+    //If no preferences set, then the banner should always be shown to the user
+    const consentBanner = page.locator('#analytics-banner')
+    await expect(consentBanner).toHaveClass("analytics-banner")
+
+    //After setting the preferences the banner should be hidden
+    const declineAnalyticsBtn = page.locator('#decline-analytics-btn')
+    await declineAnalyticsBtn.click()
+
+    await expect(consentBanner).toHaveClass("analytics-banner hidden")
+
+    // If the user declined the consent, the new preference is saved in the local storage with every tags set to denied
+    const localStorageAfter = await page.evaluate(() => {
+        return JSON.stringify(localStorage);
+    });
+
+    const declinedObject = { "consentMode": "{\"ad_storage\":\"denied\",\"analytics_storage\":\"denied\",\"ad_user_data\":\"denied\",\"ad_personalization\":\"denied\",\"personalization_storage\":\"denied\",\"functionality_storage\":\"denied\",\"security_storage\":\"denied\"}" }
+    expect(localStorageAfter).toEqual(JSON.stringify(declinedObject))
+});
+
 test.describe("Load initial state", () => {
     test('Has title', async ({ page }) => {
         await expect(page).toHaveTitle("TD Playground")
@@ -126,6 +170,55 @@ test.describe("Check all links", () => {
         const legalPage = await legalPromise
         await expect(legalPage).toHaveTitle("Eclipse Foundation Legal Resources | The Eclipse Foundation")
         await expect(legalPage).toHaveURL("https://www.eclipse.org/legal/")
+    })
+})
+
+test.describe("Consent banner interactions", () => {
+    test("Open consent banner and accept analytics", async ({ page }) => {
+        // Check for the user preferences in the local storage
+        const localStorageBefore = await page.evaluate(() => {
+            return JSON.stringify(localStorage);
+        });
+
+        //Since before all the tests start the consent banner has already been declined the default consent object in the localStorage should already be set to deny all
+        const declinedObject = { "consentMode": "{\"ad_storage\":\"denied\",\"analytics_storage\":\"denied\",\"ad_user_data\":\"denied\",\"ad_personalization\":\"denied\",\"personalization_storage\":\"denied\",\"functionality_storage\":\"denied\",\"security_storage\":\"denied\"}" }
+        expect(localStorageBefore).toEqual(JSON.stringify(declinedObject))
+
+        //Check that the banner is hidden
+        const consentBanner = page.locator('#analytics-banner')
+        await expect(consentBanner).toHaveClass("analytics-banner hidden")
+
+        // Open settings to access the consent management link and open the consent banner
+        await page.locator('#settings-btn').click()
+        await page.locator('#consent-link').click()
+        await expect(consentBanner).toHaveClass("analytics-banner")
+
+        //Accept analytics and hide banner
+        const acceptAnalyticsBtn = page.locator('#accept-analytics-btn')
+        await acceptAnalyticsBtn.click()
+        await expect(consentBanner).toHaveClass("analytics-banner hidden")
+
+        //After accepting analytics, the preference should be saved in the local storage as well as updated in the gtag from the window dataLayer
+        const allowedObject = { "consentMode": "{\"ad_storage\":\"denied\",\"analytics_storage\":\"granted\",\"ad_user_data\":\"denied\",\"ad_personalization\":\"denied\",\"personalization_storage\":\"denied\",\"functionality_storage\":\"denied\",\"security_storage\":\"denied\"}" }
+        const localStorageAfter = await page.evaluate(() => {
+            return JSON.stringify(localStorage);
+        });
+
+        expect(localStorageAfter).toEqual(JSON.stringify(allowedObject))
+
+        const gtagUpdatedValue = await page.evaluate(() => {
+            return window.dataLayer[8]["2"];
+        });
+
+        expect(gtagUpdatedValue).toEqual({
+            'ad_storage': 'denied',
+            'analytics_storage': 'granted',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied',
+            'personalization_storage': 'denied',
+            'functionality_storage': 'denied',
+            'security_storage': 'denied'
+        })   
     })
 })
 
@@ -665,7 +758,7 @@ test.describe("Settings menu functionality", () => {
         const fontSizeSlider = page.locator('#font-size')
         await fontSizeSlider.click()
 
-        await expect(editorFontSize).toHaveText("23")   
+        await expect(editorFontSize).toHaveText("23")
 
         await page.reload({ waitUntil: 'domcontentloaded' })
 

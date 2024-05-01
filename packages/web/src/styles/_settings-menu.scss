@@ -31,7 +31,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    z-index: 100;
+    z-index: 80;
 
     .settings {
         width: 100%;
@@ -72,7 +72,6 @@
 
                 label {
                     font-size: var(--fs-p);
-                    max-width: 10ch;
                 }
 
                 input[type="checkbox"] {
@@ -261,17 +260,21 @@
             display: flex;
             flex-direction: row;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
 
 
             a {
-                font-size: 1.2rem;
-                padding: 0 1rem;
+                font-size: 1.1rem;
                 height: 100%;
+                text-wrap: nowrap;
+                font-weight: bold;
+            }
 
-                &:not(:last-child) {
-                    border-right: 1px solid var(--clr-neutral-50);
-                }
+            &__separator {
+                height: 1rem;
+                width: 1px;
+                background-color: var(--clr-neutral-50);
+                margin: 0 .5rem;
             }
         }
     }
