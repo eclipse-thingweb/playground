@@ -5,20 +5,20 @@ You can find more information about the Playground [here](https://github.com/ecl
 
 Limitations:
 
--   There is limited nested spell checking. Some of the $ref definitions can be nested infinitely, therefore spell checking stops at the first detection of recursive nesting.
--   This tool mainly developed for Thing Descriptions. Even though it can be used for all JSON Schemas, it may not cover all the rules of a schema. For example 'if, else, then' rule of Open API schema is not supported yet but this functionality could be added in the future.
+-   There is limited nested spell-checking. Some of the $ref definitions can be nested infinitely. Therefore, spell-checking stops when recursive nesting is first detected.
+-   This tool is mainly developed for Thing Descriptions. Even though it can be used for all JSON Schemas, it may not cover all schema rules. For example 'if, else, then' rule of Open API schema is not supported yet, but this functionality could be added in the future.
 
 ## License
 
 Licensed under the MIT license, see [License](../../LICENSE.md).
 
-## Script based Spell Checking
+## Script-based Spell Checking
 
-This is a Node.js based tool.
+JSON spell checker is a Node.js based tool.
 
 You can use the functionality of this package by:
 
--   Install the package with npm `npm install @thing-description-playground/json-spell-checker` (or clone repo and install the package with `npm install`)
+-   Install the package with npm `npm install @thing-description-playground/json-spell-checker` (or clone the repo and install the package with `npm install`)
 -   Node.js or Browser
 
     -   Node.js: Require the package and use the validation function
@@ -33,7 +33,7 @@ You can use the functionality of this package by:
     <script src="./node_modules/@thing-description-playground/json-spell-checker/dist/web-bundle.min.js"></script>
     ```
 
--   First configure your spell checker using (similarityThreshold should be between 0 and 1 and try to set maxLengthDifference low in case you need quick typo evaluation):
+-   First, configure your spell checker using (similarityThreshold should be between 0 and 1 and try to set maxLengthDifference low if you need quick typo evaluation):
 
 ```javascript
 jsonSpellChecker.configure(yourSchema, similarityThreshold, maxLengthDifference);
@@ -61,5 +61,5 @@ The [index.js](./index.js) file contains the main validation functionality and e
 
 ## Test Usage
 
-Test Examples are located under examples directory.
-For examples you need to fill 'typoCount' field that corresponds to the number of typos existing in the TD.
+Test Examples are located under the examples directory.
+When preparing TD examples, you must fill in the 'typoCount' field corresponding to the number of typos in the TD.
