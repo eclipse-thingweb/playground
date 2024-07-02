@@ -13,7 +13,6 @@ This package provides the new web interface of the Web of Things Playground. It 
   - Downloaded directly
   - Saved in a specific folder within your file system (This function is only available on `Chrome`, `Edge` and `Opera`)
 - A preferences menu within the settings, where the color theme, and font size can be change
-- OpenAPI conversion
 - AsyncAPI conversion
 - A defaults view where all defaults can be added or removed from your current TD
 - Visualize view, where your current TD/TM can be represented visually as a Graph or Tree, as well as downloaded as either SVG or PNG

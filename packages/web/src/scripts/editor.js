@@ -30,7 +30,7 @@ import { jsonBtn, yamlBtn } from './json-yaml'
 import tdSchema from '../../../core/td-schema.json'
 import tmSchema from '../../../core/tm-schema.json'
 import { convertTDJsonToYaml, convertTDYamlToJson } from '../../../core/dist/web-bundle.min.js'
-import { configure, checkTypos } from '../../../json-spell-checker/dist/web-bundle.min.js'
+import { configure, checkTypos } from '@thingweb/json-spell-checker/dist/web-bundle.min.js'
 import { clearConsole } from './console'
 
 /***********************************************************/
