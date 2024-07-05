@@ -23,7 +23,7 @@
 import { editor } from 'monaco-editor'
 import { convertTDJsonToYaml, convertTDYamlToJson, tdValidator, tmValidator, compress, decompress } from '../../../core/dist/web-bundle.min.js'
 import tdToOpenAPI from '@thingweb/open-api-converter/dist/web-bundle.min.js'
-import tdToAsyncAPI from '../../../td_to_asyncapi/dist/web-bundle.min.js'
+import tdToAsyncAPI from '@thingweb/async-api-converter/dist/web-bundle.min.js'
 import { addDefaults, removeDefaults } from '../../../defaults/dist/web-bundle.min.js'
 import { AssetInterfacesDescription } from "@thingweb/aas-aid";
 import { validateJsonLdBtn, tmConformanceBtn, sectionHeaders } from './validation'

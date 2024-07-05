@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "@thingweb/aas-aid": "^1.0.2",
+    "@thingweb/async-api-converter": "^1.0.0",
     "@thingweb/json-spell-checker": "^1.0.0",
     "@thingweb/open-api-converter": "^1.0.0",
     "d3": "^3.5.17",
