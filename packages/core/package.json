@@ -20,7 +20,7 @@
         "prepare": "npm run bundle"
     },
     "dependencies": {
-        "@node-wot/td-tools": "~0.8.5",
+        "@thingweb/thing-model": "^1.0.1",
         "ajv": "^8.11.0",
         "ajv-formats": "^2.1.1",
         "ajv-formats-draft2019": "^1.6.1",

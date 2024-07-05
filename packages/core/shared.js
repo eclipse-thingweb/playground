@@ -1060,7 +1060,7 @@ async function fetchLinkedTm(td) {
     // But it can relate to other tms as well
     // Recursively resolve all other tms using node-wot td-tools
 
-    const ThingModelHelpers = new (require("@node-wot/td-tools").ThingModelHelpers)();
+    const ThingModelHelpers = new (require("@thingweb/thing-model").ThingModelHelpers)();
 
     // The tm resolver expects values for placeholders
     // However, we don't know (and don't need) them at this moment
