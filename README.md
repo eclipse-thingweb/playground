@@ -46,9 +46,7 @@ Reusable packages:
     It uses the official JSON Schema plus additional scripts for aspects that cannot be checked with a JSON Schema alone. It generates a JSON report of the validation results. [NPM](https://www.npmjs.com/package/@thing-description-playground/core).
 -   [assertions](./packages/assertions/): The assertions package allows to check whether all of the features of the TD standard are present in a single TD or a group of TDs representing an implementation. It needs to be used together with the core package since some features are detected by the core package. [NPM](https://www.npmjs.com/package/@thing-description-playground/assertions).
 -   [defaults](./packages/defaults/): The defaults package can be used to add or remove explicitly stated default values in a TD. It has no dependency to other playground packages. [NPM](https://www.npmjs.com/package/@thing-description-playground/defaults).
--   [td_to_openAPI](./packages/td_to_openAPI): The Open API package allows to create an Open API instance from a Thing Description which has HTTP in the forms. It has no dependency to other playground packages.[NPM](https://www.npmjs.com/package/@thing-description-playground/td_to_openapi).
 -   [td_to_asyncAPI](./packages/td_to_openAPI): The Async API package allows to create an Async API instance from a Thing Description which has MQTT in the forms. It only depends on the defaults package to add defaults to a TD before generating the Async API instance. [NPM](https://www.npmjs.com/package/@thing-description-playground/td_to_asyncapi).
--   [json-spell-checker](./packages/json-spell-checker): The JSON Spell Checker package allows to find spelling mistakes (e.g. action instead of actions) in a JSON document according to its JSON Schema. Such JSON documents could be TDs, Open API specs etc. [NPM](https://www.npmjs.com/package/@thing-description-playground/json-spell-checker).
 
 End Product Packages:
 
