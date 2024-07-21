@@ -25,7 +25,8 @@ import { AASView } from './aas'
 import { defaultsView, defaultsJsonBtn, defaultsYamlBtn, defaultsAddBtn } from './defaults'
 import { visualize } from './visualize'
 import { validationView, validationTab } from './validation'
-import { convertTDYamlToJson, detectProtocolSchemes } from '../../../core/dist/web-bundle.min.js'
+import { convertTDYamlToJson } from '../../../core/dist/web-bundle.min.js'
+import { detectProtocolSchemes } from '@thingweb/td-utils/dist/web-bundle.min.js' 
 import { generateOAP, generateAAP, addDefaultsUtil, validate, generateAAS, resetValidationStatus } from './util'
 import { editorList, getEditorData } from './editor'
 import { textIcon } from './main.js'
@@ -239,7 +240,7 @@ function enableAPIConversionWithProtocol(editorInstance) {
     if (protocolSchemes) {
 
         if (openApiTab.checked === true) {
-            if (["http", "https"].some(p => protocolSchemes.includes(p))) {
+            if (["http", "https"].some(p => Object.keys(protocolSchemes).includes(p))) {
                 generateOAP(editorInstance["_domElement"].dataset.modeId, editorInstance)
                 openApiView.classList.remove("hidden")
             } else {
@@ -248,7 +249,7 @@ function enableAPIConversionWithProtocol(editorInstance) {
         }
 
         if (asyncApiTab.checked === true) {
-            if (["mqtt", "mqtts"].some(p => protocolSchemes.includes(p))) {
+            if (["mqtt", "mqtts"].some(p => Object.keys(protocolSchemes).includes(p))) {
                 generateAAP(editorInstance["_domElement"].dataset.modeId, editorInstance)
                 asyncApiView.classList.remove("hidden")
             } else {
