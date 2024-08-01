@@ -48,6 +48,7 @@
     "@thingweb/async-api-converter": "^1.0.0",
     "@thingweb/json-spell-checker": "^1.0.0",
     "@thingweb/open-api-converter": "^1.0.0",
+    "@thingweb/td-utils": "^1.0.0",
     "d3": "^3.5.17",
     "d3-tip": "^0.6.7",
     "express": "^4.19.2",
