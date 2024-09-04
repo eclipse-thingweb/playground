@@ -142,7 +142,7 @@ test.describe("Check all links", () => {
         await page.locator("#privacy-link").click()
         const privacyPage = await privacyPromise
         await expect(privacyPage).toHaveTitle("Eclipse Foundation Website Privacy Policy | The Eclipse Foundation")
-        await expect(privacyPage).toHaveURL("https://www.eclipse.org/legal/privacy.php")
+        await expect(privacyPage).toHaveURL("https://www.eclipse.org/legal/privacy/")
     })
 
     test("Check terms of use footer link", async ({ page }) => {
@@ -151,7 +151,7 @@ test.describe("Check all links", () => {
         await page.locator("#terms-link").click()
         const termsPage = await termsPromise
         await expect(termsPage).toHaveTitle("Eclipse.org Terms of Use | The Eclipse Foundation")
-        await expect(termsPage).toHaveURL("https://www.eclipse.org/legal/termsofuse.php")
+        await expect(termsPage).toHaveURL("https://www.eclipse.org/legal/terms-of-use/")
     })
 
     test("Check copyright agent footer link", async ({ page }) => {
@@ -160,7 +160,7 @@ test.describe("Check all links", () => {
         await page.locator("#copyright-link").click()
         const copyrightPage = await copyrightPromise
         await expect(copyrightPage).toHaveTitle("Copyright Agent | The Eclipse Foundation")
-        await expect(copyrightPage).toHaveURL("https://www.eclipse.org/legal/copyright.php")
+        await expect(copyrightPage).toHaveURL("https://www.eclipse.org/legal/copyright/")
     })
 
     test("Check legal footer link", async ({ page }) => {
