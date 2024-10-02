@@ -288,7 +288,7 @@ export function createIde(ideNumber, exampleValue) {
   newIde.classList.add("active")
 
   //Create the new tab depending if its a TM or TD
-  if ( (defaultValue["@type"] === "tm:ThingModel") || (defaultValue["@type"].indexOf("tm:ThingModel") > 0) {
+  if ( (defaultValue["@type"] === "tm:ThingModel") || (defaultValue["@type"].indexOf("tm:ThingModel") > 0) ) {
     createTab(ideNumber, defaultValue["title"], "TM")
   }
   else {
@@ -340,7 +340,7 @@ async function initEditor(ideNumber, editorValue, editorLanguage) {
       //Only use the spell checker if file is json
       if (editorValues[0] === "json") {
         //Get if thing type and set the respective schema
-        if ( (editorValues[2]["@type"] === "tm:ThingModel") || (editorValues[2]["@type"].indexOf("tm:ThingModel") > 0) {
+        if ( (editorValues[2]["@type"] === "tm:ThingModel") || (editorValues[2]["@type"].indexOf("tm:ThingModel") > 0) ) {
           // Configure JSON language support with schemas and schema associations
           languages.json.jsonDefaults.setDiagnosticsOptions({
             validate: true,
@@ -410,7 +410,7 @@ export function getEditorData(editorInstance) {
   const formatType = editorInstance["_domElement"].dataset.modeId
   const editorContent = formatType === "json" ? JSON.parse(editorInstance.getValue()) : JSON.parse(convertTDYamlToJson(editorInstance.getValue()))
   let thingType = "td"
-  if ( (editorContent["@type"] === "tm:ThingModel") || (editorContent.indexOf("tm:ThingModel") > 0) {
+  if ( (editorContent["@type"] === "tm:ThingModel") || (editorContent.indexOf("tm:ThingModel") > 0) ) {
     thingType = "tm"
   } else {
     thingType = "td"
