@@ -27,7 +27,7 @@ import { visualize } from './visualize'
 import { validationView, validationTab } from './validation'
 import { convertTDYamlToJson } from '../../../core/dist/web-bundle.min.js'
 import { detectProtocolSchemes } from '@thingweb/td-utils/dist/web-bundle.min.js' 
-import { generateOAP, generateAAP, addDefaultsUtil, validate, generateAAS, resetValidationStatus } from './util'
+import { generateOAP, generateAAP, addDefaultsUtil, validate, generateAAS, resetValidationStatus, checkDocumentType } from './util'
 import { editorList, getEditorData } from './editor'
 import { textIcon } from './main.js'
 
@@ -143,68 +143,71 @@ visualizationOptions.forEach(option => {
                     let td = JSON.parse(editorValue)
                     hideConsoleError()
 
-                    if ((td["@type"] === "tm:ThingModel" && option.id === "open-api-tab") || (td["@type"] === "tm:ThingModel" && option.id === "async-api-tab") || (td["@type"] === "tm:ThingModel" && option.id === "defaults-tab") || (td["@type"] === "tm:ThingModel" && option.id === "aas-tab")) {
-                        showConsoleError("This function is only allowed for Thing Descriptions!")
+                    if (
+                        (checkDocumentType(td) === "tm" && option.id === "open-api-tab") ||
+                        (checkDocumentType(td) === "tm" && option.id === "async-api-tab") ||
+                        (checkDocumentType(td) === "tm" && option.id === "defaults-tab") ||
+                        (checkDocumentType(td) === "tm" && option.id === "aas-tab")
+                    ) {
+                        showConsoleError("This function is only allowed for Thing Descriptions!");
                     } else {
                         switch (option.id) {
                             case "open-api-tab": {
-
                                 if (fileType === "yaml") {
-                                    openApiJsonBtn.disabled = false
-                                    openApiYamlBtn.disabled = true
+                                    openApiJsonBtn.disabled = false;
+                                    openApiYamlBtn.disabled = true;
                                 } else {
-                                    openApiJsonBtn.disabled = true
-                                    openApiYamlBtn.disabled = false
+                                    openApiJsonBtn.disabled = true;
+                                    openApiYamlBtn.disabled = false;
                                 }
 
-                                enableAPIConversionWithProtocol(editorInstance)
+                                enableAPIConversionWithProtocol(editorInstance);
 
                                 break;
                             }
                             case "async-api-tab": {
                                 if (fileType === "yaml") {
-                                    asyncApiJsonBtn.disabled = false
-                                    asyncApiYamlBtn.disabled = true
+                                    asyncApiJsonBtn.disabled = false;
+                                    asyncApiYamlBtn.disabled = true;
                                 } else {
-                                    asyncApiJsonBtn.disabled = true
-                                    asyncApiYamlBtn.disabled = false
+                                    asyncApiJsonBtn.disabled = true;
+                                    asyncApiYamlBtn.disabled = false;
                                 }
 
-                                enableAPIConversionWithProtocol(editorInstance)
+                                enableAPIConversionWithProtocol(editorInstance);
 
                                 break;
                             }
                             case "aas-tab": {
-
-                                generateAAS(fileType, editorInstance)
-                                AASView.classList.remove("hidden")
+                                generateAAS(fileType, editorInstance);
+                                AASView.classList.remove("hidden");
 
                                 break;
                             }
                             case "defaults-tab": {
                                 if (fileType === "yaml") {
-                                    defaultsJsonBtn.disabled = false
-                                    defaultsYamlBtn.disabled = true
+                                    defaultsJsonBtn.disabled = false;
+                                    defaultsYamlBtn.disabled = true;
                                 } else {
-                                    defaultsJsonBtn.disabled = true
-                                    defaultsYamlBtn.disabled = false
+                                    defaultsJsonBtn.disabled = true;
+                                    defaultsYamlBtn.disabled = false;
                                 }
 
-                                addDefaultsUtil(editorInstance)
-                                defaultsAddBtn.disabled = true
-                                defaultsView.classList.remove("hidden")
+                                addDefaultsUtil(editorInstance);
+                                defaultsAddBtn.disabled = true;
+                                defaultsView.classList.remove("hidden");
 
                                 break;
                             }
                             case "visualize-tab": {
-                                visualize(td)
+                                visualize(td);
 
                                 break;
                             }
                             case "validation-tab": {
-                                validationView.classList.remove("hidden")
-                                const editorData = getEditorData(editorInstance)
-                                validate(editorData[1], editorValue)
+                                validationView.classList.remove("hidden");
+                                const editorData = getEditorData(editorInstance);
+                                validate(editorData[1], editorValue);
 
                                 break;
                             }
@@ -212,7 +215,6 @@ visualizationOptions.forEach(option => {
                                 break;
                             }
                         }
-
                     }
 
                 }
