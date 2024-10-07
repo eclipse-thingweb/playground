@@ -20,32 +20,40 @@
  * and offers a few utility functions.
  */
 
-import { editor } from 'monaco-editor'
-import { convertTDJsonToYaml, convertTDYamlToJson, tdValidator, tmValidator, compress, decompress } from '../../../core/dist/web-bundle.min.js'
-import tdToOpenAPI from '@thingweb/open-api-converter/dist/web-bundle.min.js'
-import tdToAsyncAPI from '@thingweb/async-api-converter/dist/web-bundle.min.js'
-import { addDefaults, removeDefaults } from '../../../defaults/dist/web-bundle.min.js'
+import { editor } from "monaco-editor";
+import {
+    convertTDJsonToYaml,
+    convertTDYamlToJson,
+    tdValidator,
+    tmValidator,
+    compress,
+    decompress,
+} from "../../../core/dist/web-bundle.min.js";
+import tdToOpenAPI from "@thingweb/open-api-converter/dist/web-bundle.min.js";
+import tdToAsyncAPI from "@thingweb/async-api-converter/dist/web-bundle.min.js";
+import { addDefaults, removeDefaults } from "../../../defaults/dist/web-bundle.min.js";
 import { AssetInterfacesDescription } from "@thingweb/aas-aid";
-import { validateJsonLdBtn, tmConformanceBtn, sectionHeaders } from './validation'
+import { validateJsonLdBtn, tmConformanceBtn, sectionHeaders } from "./validation";
 
-
-let errorMessages = []
+let errorMessages = [];
 /**
  * Fetch the TD from the given address and return the JSON object
  * @param {string} urlAddr url of the TD to fetch
  */
 export function getTdUrl(urlAddr) {
-    return new Promise(resolve => {
-
+    return new Promise((resolve) => {
         fetch(urlAddr)
-            .then(res => res.json())
-            .then(data => {
-                resolve(data)
-            }, err => { alert("JSON could not be fetched from: " + urlAddr + "\n Error: " + err) })
-
-    })
+            .then((res) => res.json())
+            .then(
+                (data) => {
+                    resolve(data);
+                },
+                (err) => {
+                    alert("JSON could not be fetched from: " + urlAddr + "\n Error: " + err);
+                }
+            );
+    });
 }
-
 
 /**
  *  Offers a given content for download as a file.
@@ -54,26 +62,26 @@ export function getTdUrl(urlAddr) {
  * @param {string} type The content-type to output, e.g., text/csv;charset=utf-8;
  */
 export function offerFileDownload(fileName, content, type) {
-
     const blob = new Blob([content], { type });
-    if (navigator.msSaveBlob) { // IE 10+
+    if (navigator.msSaveBlob) {
+        // IE 10+
         navigator.msSaveBlob(blob, fileName);
     } else {
         const link = document.createElement("a");
-        if (link.download !== undefined) { // feature detection
+        if (link.download !== undefined) {
+            // feature detection
             // Browsers that support HTML5 download attribute
-            const url = URL.createObjectURL(blob)
-            link.setAttribute("href", url)
-            link.setAttribute("download", fileName)
-            link.setAttribute("src", url.slice(5))
+            const url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", fileName);
+            link.setAttribute("src", url.slice(5));
             link.style.visibility = "hidden";
-            document.body.appendChild(link)
+            document.body.appendChild(link);
             link.click();
-            document.body.removeChild(link)
-            URL.revokeObjectURL(url)
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
         }
     }
-
 }
 
 /**
@@ -83,27 +91,26 @@ export function offerFileDownload(fileName, content, type) {
  */
 export function generateTD(fileType, editorInstance) {
     return new Promise((res, rej) => {
-        const tdToValidate = editorInstance.getValue()
+        const tdToValidate = editorInstance.getValue();
 
         if (tdToValidate === "") {
-            rej("No TD given to generate TD instance")
-        }
-        else if (fileType !== "json" && fileType !== "yaml") {
-            rej("Wrong content type required: " + fileType)
-        }
-        else {
+            rej("No TD given to generate TD instance");
+        } else if (fileType !== "json" && fileType !== "yaml") {
+            rej("Wrong content type required: " + fileType);
+        } else {
             try {
-                const content = fileType === "json"
-                    ? JSON.stringify(JSON.parse(convertTDYamlToJson(tdToValidate)), undefined, 4)
-                    : convertTDJsonToYaml(tdToValidate)
+                const content =
+                    fileType === "json"
+                        ? JSON.stringify(JSON.parse(convertTDYamlToJson(tdToValidate)), undefined, 4)
+                        : convertTDJsonToYaml(tdToValidate);
 
-                editor.setModelLanguage(editorInstance.getModel(), fileType)
-                editorInstance.setValue(content)
+                editor.setModelLanguage(editorInstance.getModel(), fileType);
+                editorInstance.setValue(content);
             } catch (err) {
-                rej("TD generation problem: " + err)
+                rej("TD generation problem: " + err);
             }
         }
-    })
+    });
 }
 
 /**
@@ -113,24 +120,27 @@ export function generateTD(fileType, editorInstance) {
  */
 export function generateOAP(fileType, editorInstance) {
     return new Promise((res, rej) => {
-        const tdToValidate = fileType === "json"
-            ? editorInstance.getValue()
-            : convertTDYamlToJson(editorInstance.getValue())
+        const tdToValidate =
+            fileType === "json" ? editorInstance.getValue() : convertTDYamlToJson(editorInstance.getValue());
 
         if (tdToValidate === "") {
-            rej("No TD given to generate OpenAPI instance")
+            rej("No TD given to generate OpenAPI instance");
+        } else if (fileType !== "json" && fileType !== "yaml") {
+            rej("Wrong content type required: " + fileType);
+        } else {
+            tdToOpenAPI(JSON.parse(tdToValidate)).then(
+                (openAPI) => {
+                    const content =
+                        fileType === "json" ? JSON.stringify(openAPI[fileType], undefined, 4) : openAPI[fileType];
+                    editor.setModelLanguage(window.openApiEditor.getModel(), fileType);
+                    window.openApiEditor.getModel().setValue(content);
+                },
+                (err) => {
+                    rej("OpenAPI generation problem: " + err);
+                }
+            );
         }
-        else if (fileType !== "json" && fileType !== "yaml") {
-            rej("Wrong content type required: " + fileType)
-        }
-        else {
-            tdToOpenAPI(JSON.parse(tdToValidate)).then(openAPI => {
-                const content = fileType === "json" ? JSON.stringify(openAPI[fileType], undefined, 4) : openAPI[fileType]
-                editor.setModelLanguage(window.openApiEditor.getModel(), fileType)
-                window.openApiEditor.getModel().setValue(content)
-            }, err => { rej("OpenAPI generation problem: " + err) })
-        }
-    })
+    });
 }
 
 /**
@@ -140,24 +150,27 @@ export function generateOAP(fileType, editorInstance) {
  */
 export function generateAAP(fileType, editorInstance) {
     return new Promise((res, rej) => {
-        const tdToValidate = fileType === "json"
-            ? editorInstance.getValue()
-            : convertTDYamlToJson(editorInstance.getValue())
+        const tdToValidate =
+            fileType === "json" ? editorInstance.getValue() : convertTDYamlToJson(editorInstance.getValue());
 
         if (tdToValidate === "") {
-            rej("No TD given to generate AsyncAPI instance")
+            rej("No TD given to generate AsyncAPI instance");
+        } else if (fileType !== "json" && fileType !== "yaml") {
+            rej("Wrong content type required: " + fileType);
+        } else {
+            tdToAsyncAPI(JSON.parse(tdToValidate)).then(
+                (asyncAPI) => {
+                    const content =
+                        fileType === "json" ? JSON.stringify(asyncAPI[fileType], undefined, 4) : asyncAPI[fileType];
+                    editor.setModelLanguage(window.asyncApiEditor.getModel(), fileType);
+                    window.asyncApiEditor.getModel().setValue(content);
+                },
+                (err) => {
+                    rej("AsyncAPI generation problem: " + err);
+                }
+            );
         }
-        else if (fileType !== "json" && fileType !== "yaml") {
-            rej("Wrong content type required: " + fileType)
-        }
-        else {
-            tdToAsyncAPI(JSON.parse(tdToValidate)).then(asyncAPI => {
-                const content = fileType === "json" ? JSON.stringify(asyncAPI[fileType], undefined, 4) : asyncAPI[fileType]
-                editor.setModelLanguage(window.asyncApiEditor.getModel(), fileType)
-                window.asyncApiEditor.getModel().setValue(content)
-            }, err => { rej("AsyncAPI generation problem: " + err) })
-        }
-    })
+    });
 }
 
 /**
@@ -166,18 +179,17 @@ export function generateAAP(fileType, editorInstance) {
  * @param { Monaco Object } editorInstance - Monaco editor object
  */
 export function generateAAS(fileType, editorInstance) {
-    const assetInterfaceDescription = new AssetInterfacesDescription()
+    const assetInterfaceDescription = new AssetInterfacesDescription();
 
-    const tdToConvert = fileType === "json"
-        ? editorInstance.getValue()
-        : convertTDYamlToJson(editorInstance.getValue())
+    const tdToConvert =
+        fileType === "json" ? editorInstance.getValue() : convertTDYamlToJson(editorInstance.getValue());
 
-    const AASInstance = assetInterfaceDescription.transformTD2AID(tdToConvert)
+    const AASInstance = assetInterfaceDescription.transformTD2AID(tdToConvert);
     try {
-        const content = JSON.stringify(JSON.parse(AASInstance), undefined, 4)
+        const content = JSON.stringify(JSON.parse(AASInstance), undefined, 4);
 
-        editor.setModelLanguage(window.AASEditor.getModel(), 'json')
-        window.AASEditor.getModel().setValue(content)
+        editor.setModelLanguage(window.AASEditor.getModel(), "json");
+        window.AASEditor.getModel().setValue(content);
     } catch (err) {
         console.error(err);
     }
@@ -188,14 +200,15 @@ export function generateAAS(fileType, editorInstance) {
  * to the TD in the editor
  */
 export function addDefaultsUtil(editorInstance) {
-    const tdToExtend = editorInstance["_domElement"].dataset.modeId === "json"
-        ? JSON.parse(editorInstance.getValue())
-        : JSON.parse(convertTDYamlToJson(editorInstance.getValue()))
-    addDefaults(tdToExtend)
-    window.defaultsEditor.getModel().setValue(JSON.stringify(tdToExtend, undefined, 4))
-    editor.setModelLanguage(window.defaultsEditor.getModel(), editorInstance["_domElement"].dataset.modeId)
+    const tdToExtend =
+        editorInstance["_domElement"].dataset.modeId === "json"
+            ? JSON.parse(editorInstance.getValue())
+            : JSON.parse(convertTDYamlToJson(editorInstance.getValue()));
+    addDefaults(tdToExtend);
+    window.defaultsEditor.getModel().setValue(JSON.stringify(tdToExtend, undefined, 4));
+    editor.setModelLanguage(window.defaultsEditor.getModel(), editorInstance["_domElement"].dataset.modeId);
     if (editorInstance["_domElement"].dataset.modeId === "yaml") {
-        generateTD("yaml", window.defaultsEditor)
+        generateTD("yaml", window.defaultsEditor);
     }
 }
 
@@ -205,14 +218,15 @@ export function addDefaultsUtil(editorInstance) {
  * in the editor
  */
 export function removeDefaultsUtil(editorInstance) {
-    const tdToReduce = editorInstance["_domElement"].dataset.modeId === "json"
-        ? JSON.parse(editorInstance.getValue())
-        : JSON.parse(convertTDYamlToJson(editorInstance.getValue()))
-    removeDefaults(tdToReduce)
-    window.defaultsEditor.getModel().setValue(JSON.stringify(tdToReduce, undefined, 4))
-    editor.setModelLanguage(window.defaultsEditor.getModel(), editorInstance["_domElement"].dataset.modeId)
+    const tdToReduce =
+        editorInstance["_domElement"].dataset.modeId === "json"
+            ? JSON.parse(editorInstance.getValue())
+            : JSON.parse(convertTDYamlToJson(editorInstance.getValue()));
+    removeDefaults(tdToReduce);
+    window.defaultsEditor.getModel().setValue(JSON.stringify(tdToReduce, undefined, 4));
+    editor.setModelLanguage(window.defaultsEditor.getModel(), editorInstance["_domElement"].dataset.modeId);
     if (editorInstance["_domElement"].dataset.modeId === "yaml") {
-        generateTD("yaml", window.defaultsEditor)
+        generateTD("yaml", window.defaultsEditor);
     }
 }
 
@@ -227,86 +241,94 @@ export function removeDefaultsUtil(editorInstance) {
  * *Error circle icon gotten from: https://fontawesome.com/icons/circle-xmark?f=classic&s=solid
  */
 export function validate(thingType, editorContent) {
+    resetValidationStatus();
 
-    resetValidationStatus()
+    const checkJsonLd = validateJsonLdBtn.checked;
+    const checkTmConformance = tmConformanceBtn.checked;
 
-    const checkJsonLd = validateJsonLdBtn.checked
-    const checkTmConformance = tmConformanceBtn.checked
+    const validator = thingType === "td" ? tdValidator : tmValidator;
 
-    const validator = thingType === "td" ? tdValidator : tmValidator
+    validator(editorContent, log, { checkDefaults: true, checkJsonLd, checkTmConformance }).then((result) => {
+        Object.keys(result.report).forEach((el) => {
+            const spotName = "spot-" + el;
+            document.getElementById(spotName).removeAttribute("open");
+            const resultIcon = document.getElementById(spotName).children[0].children[0].children[0];
 
-    validator(editorContent, log, { checkDefaults: true, checkJsonLd, checkTmConformance })
-        .then(result => {
-            Object.keys(result.report).forEach(el => {
-                const spotName = "spot-" + el
-                document.getElementById(spotName).removeAttribute('open')
-                const resultIcon = document.getElementById(spotName).children[0].children[0].children[0]
+            if (result.report[el] === "passed") {
+                resultIcon.children[0].setAttribute(
+                    "d",
+                    "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"
+                );
+                resultIcon.classList.remove("neutral-circle-icon");
+                resultIcon.classList.add("success-circle-icon");
+            } else if (result.report[el] === "warning") {
+                resultIcon.children[0].setAttribute(
+                    "d",
+                    "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"
+                );
+                resultIcon.classList.remove("neutral-circle-icon");
+                resultIcon.classList.add("warning-circle-icon");
+            } else if (result.report[el] === "failed") {
+                resultIcon.children[0].setAttribute(
+                    "d",
+                    "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"
+                );
+                resultIcon.classList.remove("neutral-circle-icon");
+                resultIcon.classList.add("error-circle-icon");
+            } else if (result.report[el] === null) {
+                // do nothing
+            } else {
+                console.error("unknown report feedback value");
+            }
+        });
 
-                if (result.report[el] === "passed") {
-                    resultIcon.children[0].setAttribute("d", "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z")
-                    resultIcon.classList.remove("neutral-circle-icon")
-                    resultIcon.classList.add("success-circle-icon")
-                }
-                else if (result.report[el] === "warning") {
-                    resultIcon.children[0].setAttribute("d", "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z")
-                    resultIcon.classList.remove("neutral-circle-icon")
-                    resultIcon.classList.add("warning-circle-icon")
-                }
-                else if (result.report[el] === "failed") {
-                    resultIcon.children[0].setAttribute("d", "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z")
-                    resultIcon.classList.remove("neutral-circle-icon")
-                    resultIcon.classList.add("error-circle-icon")
-                }
-                else if (result.report[el] === null) {
+        Object.keys(result.details).forEach((el) => {
+            const detailsName = el + "-section";
+            if (document.getElementById(detailsName)) {
+                document.getElementById(detailsName).removeAttribute("open");
+                const detailsIcon = document.getElementById(detailsName).children[0].children[0].children[0];
+
+                if (result.details[el] === "passed") {
+                    detailsIcon.children[0].setAttribute(
+                        "d",
+                        "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"
+                    );
+                    detailsIcon.classList.remove("neutral-circle-icon");
+                    detailsIcon.classList.add("success-circle-icon");
+                } else if (result.details[el] === "warning" || result.details[el] === "not-impl") {
+                    detailsIcon.children[0].setAttribute(
+                        "d",
+                        "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"
+                    );
+                    detailsIcon.classList.remove("neutral-circle-icon");
+                    detailsIcon.classList.add("warning-circle-icon");
+                } else if (result.details[el] === "failed") {
+                    detailsIcon.children[0].setAttribute(
+                        "d",
+                        "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"
+                    );
+                    detailsIcon.classList.remove("neutral-circle-icon");
+                    detailsIcon.classList.add("error-circle-icon");
+                } else if (result.details[el] === null) {
                     // do nothing
+                } else {
+                    console.error("unknown report feedback value");
                 }
-                else {
-                    console.error("unknown report feedback value")
-                }
-            })
+            }
+        });
 
-            Object.keys(result.details).forEach(el => {
-                const detailsName = el + "-section"
-                if (document.getElementById(detailsName)) {
-                    document.getElementById(detailsName).removeAttribute('open')
-                    const detailsIcon = document.getElementById(detailsName).children[0].children[0].children[0]
+        Object.keys(result.detailComments).forEach((el) => {
+            const detailsName = el + "-section";
 
-                    if (result.details[el] === "passed") {
-                        detailsIcon.children[0].setAttribute("d", "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z")
-                        detailsIcon.classList.remove("neutral-circle-icon")
-                        detailsIcon.classList.add("success-circle-icon")
-                    }
-                    else if (result.details[el] === "warning" || result.details[el] === "not-impl") {
-                        detailsIcon.children[0].setAttribute("d", "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z")
-                        detailsIcon.classList.remove("neutral-circle-icon")
-                        detailsIcon.classList.add("warning-circle-icon")
-                    }
-                    else if (result.details[el] === "failed") {
-                        detailsIcon.children[0].setAttribute("d", "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z")
-                        detailsIcon.classList.remove("neutral-circle-icon")
-                        detailsIcon.classList.add("error-circle-icon")
-                    }
-                    else if (result.details[el] === null) {
-                        // do nothing
-                    }
-                    else {
-                        console.error("unknown report feedback value")
-                    }
-                }
-            })
+            if (document.querySelector(`#${detailsName} .description`)) {
+                const detailsDesc = document.querySelector(`#${detailsName} .description`);
 
-            Object.keys(result.detailComments).forEach(el => {
-                const detailsName = el + "-section"
+                detailsDesc.textContent = result.detailComments[el];
+            }
+        });
 
-                if (document.querySelector(`#${detailsName} .description`)) {
-                    const detailsDesc = document.querySelector(`#${detailsName} .description`)
-
-                    detailsDesc.textContent = result.detailComments[el]
-                }
-            })
-
-            populateCategory(errorMessages)
-        })
+        populateCategory(errorMessages);
+    });
 }
 
 /**
@@ -314,27 +336,29 @@ export function validate(thingType, editorContent) {
  */
 export function resetValidationStatus() {
     while (errorMessages.length > 0) {
-        errorMessages.pop()
+        errorMessages.pop();
     }
 
-    sectionHeaders.forEach(header => {
-        const headerIcon = header.children[0].children[0]
+    sectionHeaders.forEach((header) => {
+        const headerIcon = header.children[0].children[0];
 
-        if(!headerIcon.classList.contains("neutral-circle-icon")){
-            headerIcon.children[0].setAttribute("d", "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z")
-            headerIcon.classList.remove("success-circle-icon", "warning-circle-icon", "error-circle-icon")
-            headerIcon.classList.add("neutral-circle-icon")
+        if (!headerIcon.classList.contains("neutral-circle-icon")) {
+            headerIcon.children[0].setAttribute("d", "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z");
+            headerIcon.classList.remove("success-circle-icon", "warning-circle-icon", "error-circle-icon");
+            headerIcon.classList.add("neutral-circle-icon");
         }
-    })
+    });
 
-    document.querySelectorAll("#spot-json, #spot-schema, #spot-defaults, #spot-jsonld, #spot-additional").forEach(category => {
-        category.open = false
-        category.classList.add("disabled")
-        const categoryContainer = category.querySelector("ul.section-content")
-        while (categoryContainer.children.length > 0) {
-            categoryContainer.children[0].remove()
-        }
-    })
+    document
+        .querySelectorAll("#spot-json, #spot-schema, #spot-defaults, #spot-jsonld, #spot-additional")
+        .forEach((category) => {
+            category.open = false;
+            category.classList.add("disabled");
+            const categoryContainer = category.querySelector("ul.section-content");
+            while (categoryContainer.children.length > 0) {
+                categoryContainer.children[0].remove();
+            }
+        });
 }
 
 /**
@@ -342,7 +366,7 @@ export function resetValidationStatus() {
  * @param { String } message - text sent from the validator
  */
 function log(message) {
-    errorMessages.push(message)
+    errorMessages.push(message);
 }
 
 //TODO: This function should only be used for the moment being as it should be changed or adapted when the corresponding changes to the Validator have been finalized
@@ -352,34 +376,39 @@ function log(message) {
  */
 function populateCategory(messagesList) {
     // console.log(messagesList);
-    document.querySelectorAll("#spot-json, #spot-schema, #spot-defaults, #spot-jsonld, #spot-additional").forEach(category => {
-        const categoryContainer = category.querySelector("ul.section-content")
-        category.classList.remove("disabled")
+    document
+        .querySelectorAll("#spot-json, #spot-schema, #spot-defaults, #spot-jsonld, #spot-additional")
+        .forEach((category) => {
+            const categoryContainer = category.querySelector("ul.section-content");
+            category.classList.remove("disabled");
 
-        const categoryIcon = category.children[0].children[0].children[0]
-        
-        if (categoryIcon.classList.contains("error-circle-icon") || categoryIcon.classList.contains("warning-circle-icon")) {
-            const noticePrompt = document.createElement("p")
-            noticePrompt.textContent = "*This feature is still in the testing phase, and it may not refer to the correct source of the error*"
-            noticePrompt.classList.add("notice-prompt")
-            categoryContainer.append(noticePrompt)
-            messagesList.forEach(message => {
-                const listElement = document.createElement("li")
-                listElement.textContent = message
-                categoryContainer.append(listElement)
-            })
-        }
-        else if (categoryIcon.classList.contains("success-circle-icon")) {
-            const successMessage = document.createElement("li")
-            successMessage.textContent = "Validated Successfully"
-            categoryContainer.append(successMessage)
-        }
-        else {
-            const nullMessage = document.createElement("li")
-            nullMessage.textContent = "A previous validation has failed or it is only available for Thing Descriptions"
-            categoryContainer.append(nullMessage)
-        }
-    })
+            const categoryIcon = category.children[0].children[0].children[0];
+
+            if (
+                categoryIcon.classList.contains("error-circle-icon") ||
+                categoryIcon.classList.contains("warning-circle-icon")
+            ) {
+                const noticePrompt = document.createElement("p");
+                noticePrompt.textContent =
+                    "*This feature is still in the testing phase, and it may not refer to the correct source of the error*";
+                noticePrompt.classList.add("notice-prompt");
+                categoryContainer.append(noticePrompt);
+                messagesList.forEach((message) => {
+                    const listElement = document.createElement("li");
+                    listElement.textContent = message;
+                    categoryContainer.append(listElement);
+                });
+            } else if (categoryIcon.classList.contains("success-circle-icon")) {
+                const successMessage = document.createElement("li");
+                successMessage.textContent = "Validated Successfully";
+                categoryContainer.append(successMessage);
+            } else {
+                const nullMessage = document.createElement("li");
+                nullMessage.textContent =
+                    "A previous validation has failed or it is only available for Thing Descriptions";
+                categoryContainer.append(nullMessage);
+            }
+        });
 }
 
 /**
@@ -388,16 +417,15 @@ function populateCategory(messagesList) {
  * @param {string} format "json" or "yaml"
  */
 export async function save(formatType, thingType, editorContent) {
-
-    const value = JSON.stringify(editorContent)
+    const value = JSON.stringify(editorContent);
     if (!value) {
         alert(`No ${thingType.toUpperCase()} provided`);
         return;
     }
 
-    const data = thingType + formatType + value
-    const compressed = compress(data)
-    return `${window.location.href}#${compressed}`
+    const data = thingType + formatType + value;
+    const compressed = compress(data);
+    return `${window.location.href}#${compressed}`;
 }
 
 /**
@@ -406,24 +434,23 @@ export async function save(formatType, thingType, editorContent) {
  * @param {string} format "json" or "yaml"
  */
 export async function openEditdor(formatType, thingType, editorInstance) {
-
-    const value = formatType === "yaml" ? convertTDYamlToJson(editorInstance.getValue()) : editorInstance.getValue()
+    const value = formatType === "yaml" ? convertTDYamlToJson(editorInstance.getValue()) : editorInstance.getValue();
     if (!value) {
-        alert(`No ${thingType.toUpperCase()} provided`)
+        alert(`No ${thingType.toUpperCase()} provided`);
         return;
     }
-    const data = thingType + formatType + value
-    const compressed = compress(data)
-    const URL = `https://eclipse.github.io/editdor/?td=${compressed}`
-    window.open(URL, '_blank')
+    const data = thingType + formatType + value;
+    const compressed = compress(data);
+    const URL = `https://eclipse.github.io/editdor/?td=${compressed}`;
+    window.open(URL, "_blank");
 }
 
 /**
  * Given a URL fragment construct current value of an editor.
  */
 export function getEditorValue(fragment) {
-    const data = decompress(fragment)
-    return data || '';
+    const data = decompress(fragment);
+    return data || "";
 }
 
 // Monaco Location Pointer
@@ -434,24 +461,24 @@ export function getEditorValue(fragment) {
  * @param {ITextModel} The text model of Monaco editor
  */
 export function findJSONLocationOfMonacoText(text, textModel) {
-    const matches = textModel.findMatches(text, false, false, false, null, false)
-    const results = []
+    const matches = textModel.findMatches(text, false, false, false, null, false);
+    const results = [];
 
-    matches.forEach(match => {
-        const path = searchPath(textModel, getEndPositionOfMatch(match))
-        results.push({ match, path })
-    })
+    matches.forEach((match) => {
+        const path = searchPath(textModel, getEndPositionOfMatch(match));
+        results.push({ match, path });
+    });
 
-    return results
+    return results;
 }
 
-const QUOTE = '"'
-const LEFT_BRACKET = "{"
-const RIGHT_BRACKET = "}"
-const SEMICOLON = ":"
-const LEFT_SQUARE_BRACKET = "["
-const RIGHT_SQUARE_BRACKET = "]"
-const COMMA = ","
+const QUOTE = '"';
+const LEFT_BRACKET = "{";
+const RIGHT_BRACKET = "}";
+const SEMICOLON = ":";
+const LEFT_SQUARE_BRACKET = "[";
+const RIGHT_SQUARE_BRACKET = "]";
+const COMMA = ",";
 
 /**
  * Looks for specific characters on the model to figure out the path of the position/search text
@@ -460,104 +487,104 @@ const COMMA = ","
  * @returns A string that is the path of the searched text. Search is done with the text's position on the editor
  */
 function searchPath(textModel, position) {
-    let path = '/'
-    let parentKey = ''
-    const stack = []
-    let recordingParent = false
-    let isValue = true
-    let commaCount = 0
+    let path = "/";
+    let parentKey = "";
+    const stack = [];
+    let recordingParent = false;
+    let isValue = true;
+    let commaCount = 0;
 
     for (let i = position.lineNumber; i > 0; i--) {
-        const currentColumnIndex = (i === position.lineNumber ? position.column : textModel.getLineLength(i)) - 1
-        const lineContent = textModel.getLineContent(i)
+        const currentColumnIndex = (i === position.lineNumber ? position.column : textModel.getLineLength(i)) - 1;
+        const lineContent = textModel.getLineContent(i);
         for (let j = currentColumnIndex; j >= 0; j--) {
-            const currentChar = lineContent[j]
+            const currentChar = lineContent[j];
 
             if (recordingParent) {
                 if (currentChar === QUOTE) {
                     if (stack[stack.length - 1] === QUOTE) {
-                        stack.pop()
-                        path = "/" + parentKey + path
-                        parentKey = ""
-                        recordingParent = false
+                        stack.pop();
+                        path = "/" + parentKey + path;
+                        parentKey = "";
+                        recordingParent = false;
                     } else {
-                        stack.push(currentChar)
-                        continue
+                        stack.push(currentChar);
+                        continue;
                     }
                 }
 
                 if (stack[stack.length - 1] === QUOTE) {
-                    parentKey = currentChar + parentKey
-                    continue
+                    parentKey = currentChar + parentKey;
+                    continue;
                 }
             } else {
                 if (currentChar === SEMICOLON) {
-                    recordingParent = isValue
+                    recordingParent = isValue;
 
                     if (stack.length > 0) {
-                        const top = stack[stack.length - 1]
+                        const top = stack[stack.length - 1];
 
                         if (top === LEFT_SQUARE_BRACKET) {
-                            parentKey = "/" + commaCount.toString()
-                            stack.pop()
-                            recordingParent = true
+                            parentKey = "/" + commaCount.toString();
+                            stack.pop();
+                            recordingParent = true;
                         }
 
                         if (top === LEFT_BRACKET) {
-                            stack.pop()
-                            recordingParent = true
+                            stack.pop();
+                            recordingParent = true;
                         }
                     }
                 }
 
                 if (currentChar === LEFT_SQUARE_BRACKET) {
-                    isValue = false
+                    isValue = false;
                     if (stack.length > 0) {
                         if (stack[stack.length - 1] === RIGHT_SQUARE_BRACKET) {
-                            stack.pop()
+                            stack.pop();
                         }
 
                         if (stack[stack.length - 1] === LEFT_BRACKET) {
-                            stack.pop()
-                            stack.push(currentChar)
+                            stack.pop();
+                            stack.push(currentChar);
                         }
                     } else {
-                        commaCount = 0
-                        stack.push(currentChar)
+                        commaCount = 0;
+                        stack.push(currentChar);
                     }
                 }
 
                 if (currentChar === LEFT_BRACKET) {
-                    isValue = false
+                    isValue = false;
                     if (stack.length > 0 && stack[stack.length - 1] === RIGHT_BRACKET) {
-                        stack.pop()
+                        stack.pop();
                     } else {
-                        commaCount = 0
-                        stack.push(currentChar)
+                        commaCount = 0;
+                        stack.push(currentChar);
                     }
                 }
 
                 if (currentChar === COMMA) {
-                    isValue = false
+                    isValue = false;
                     if (stack.length <= 1) {
-                        commaCount++
+                        commaCount++;
                     }
                 }
 
                 if (currentChar === RIGHT_SQUARE_BRACKET) {
-                    isValue = false
-                    stack.push(currentChar)
+                    isValue = false;
+                    stack.push(currentChar);
                 }
 
                 if (currentChar === RIGHT_BRACKET) {
-                    isValue = false
-                    stack.push(currentChar)
+                    isValue = false;
+                    stack.push(currentChar);
                 }
             }
         }
     }
 
-    return path
+    return path;
 }
 
 /**
@@ -568,8 +595,8 @@ function searchPath(textModel, position) {
 function getEndPositionOfMatch(match) {
     return {
         column: match.range.endColumn,
-        lineNumber: match.range.endLineNumber
-    }
+        lineNumber: match.range.endLineNumber,
+    };
 }
 
 /**
@@ -580,17 +607,44 @@ function getEndPositionOfMatch(match) {
  * @returns The location of the text on Monaco editor by describing its column and line number range
  */
 export function findMonacoLocationOfJSONText(jsonPath, text, textModel) {
-    const results = findJSONLocationOfMonacoText(text, textModel)
-    let monacoLocation = {}
+    const results = findJSONLocationOfMonacoText(text, textModel);
+    let monacoLocation = {};
 
     if (results) {
-        results.forEach(result => {
+        results.forEach((result) => {
             if (jsonPath.localeCompare(result.path) === 0) {
-                monacoLocation = result.match.range
-                return
+                monacoLocation = result.match.range;
+                return;
             }
-        })
+        });
     }
 
-    return monacoLocation
+    return monacoLocation;
+}
+
+/**
+ * Checks if the input is a TD or TM
+ * @param {jsonDocument} 
+ * @returns "tm" or "td"
+ */
+export function checkDocumentType(jsonDocument) {
+    //TODO: Move to core package after refactoring
+    if ( "@type" in jsonDocument ){
+        if (typeof jsonDocument["@type"] === "string") {
+            if (jsonDocument["@type"] === "tm:ThingModel") {
+                return "tm";
+            } else {
+                return "td";
+            }
+        } else {
+            // then it is an array
+            if (jsonDocument["@type"].includes("tm:ThingModel")) {
+                return "tm";
+            } else {
+                return "td";
+            }
+        }
+    } else {
+        return "td"
+    }
 }
