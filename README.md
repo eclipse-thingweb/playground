@@ -15,6 +15,7 @@ The place where you can create and play with WoT Thing Descriptions. Try it onli
 [![Discord](https://img.shields.io/badge/Discord-7289DA?logo=discord&logoColor=white&label=td-playground)](https://discord.gg/9yaFmkJ9GT)
 [<img alt="npm" src="https://img.shields.io/npm/dw/@thing-description-playground/core">](https://npm-stat.com/charts.html?package=%2540thing-description-playground%252Fcore)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/51a65a70-cb51-49e1-bbb6-82e83983c6cf/deploy-status)](https://app.netlify.com/sites/thingweb-playground/deploys)
+[![Static Badge](https://img.shields.io/badge/Show%20Adopters%20and%20Users-%2331b8a3ff?logoColor=31b8a3ff)](https://github.com/eclipse-thingweb/node-wot#adopters)
 
 ## Installation
 
@@ -92,3 +93,9 @@ All packages are licensed under the Eclipse Public License v. 2.0. You find a co
 ## Adapting Licenses
 
 One can use the VS Code plugin at <https://marketplace.visualstudio.com/items?itemName=angelo-breuer.license-header-manager> to updating the copyright fields on top of each file.
+
+## Adopters
+
+If you are using Eclipse Thingweb Playground within your organization, please support us by adding your logo to the [Eclipse IoT adopters list](https://iot.eclipse.org/adopters/#iot.thingweb).
+To do so, simply open an issue at [the Eclipse Gitlab](https://gitlab.eclipse.org/eclipsefdn/it/api/eclipsefdn-project-adopters/-/issues/new?issuable_template=adopter_request) by providing the name of your organization, its logo, and a link to your organization or team.
+You should be affiliated with that organization for the issue to be implemented.
