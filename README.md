@@ -15,7 +15,7 @@ The place where you can create and play with WoT Thing Descriptions. Try it onli
 [![Discord](https://img.shields.io/badge/Discord-7289DA?logo=discord&logoColor=white&label=td-playground)](https://discord.gg/9yaFmkJ9GT)
 [<img alt="npm" src="https://img.shields.io/npm/dw/@thing-description-playground/core">](https://npm-stat.com/charts.html?package=%2540thing-description-playground%252Fcore)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/51a65a70-cb51-49e1-bbb6-82e83983c6cf/deploy-status)](https://app.netlify.com/sites/thingweb-playground/deploys)
-[![Static Badge](https://img.shields.io/badge/Show%20Adopters%20and%20Users-%2331b8a3ff?logoColor=31b8a3ff)](https://github.com/eclipse-thingweb/node-wot#adopters)
+[![Static Badge](https://img.shields.io/badge/Show%20Adopters%20and%20Users-%2331b8a3ff?logoColor=31b8a3ff)](https://github.com/eclipse-thingweb/playground#adopters)
 
 ## Installation
 
