@@ -100,7 +100,7 @@ test.describe("Check all links", () => {
         await page.locator(".logo").click()
         const thingwebPage = await thingwebPromise
         await expect(thingwebPage).toHaveTitle("Eclipse Thingweb")
-        await expect(thingwebPage).toHaveURL("https://www.thingweb.io")
+        await expect(thingwebPage).toHaveURL("https://www.thingweb.io/")
     })
 
     test("Check CLI link", async ({ page }) => {
@@ -124,7 +124,7 @@ test.describe("Check all links", () => {
         await page.locator("#thingweb-link").click()
         const thingwebPage = await thingwebPromise
         await expect(thingwebPage).toHaveTitle("Eclipse Thingweb")
-        await expect(thingwebPage).toHaveURL("https://www.thingweb.io")
+        await expect(thingwebPage).toHaveURL("https://www.thingweb.io/")
     })
 
     test("Check Eclipse footer link", async ({ page }) => {
