@@ -51,7 +51,7 @@
     "@thingweb/td-utils": "^1.0.0",
     "d3": "^3.5.17",
     "d3-tip": "^0.6.7",
-    "express": "^4.21.1",
+    "express": "^4.21.2",
     "monaco-editor": "^0.40.0",
     "papaparse": "^5.4.1",
     "string-direction": "^0.1.2",
