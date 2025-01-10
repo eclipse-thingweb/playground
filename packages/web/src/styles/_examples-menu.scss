@@ -278,7 +278,7 @@
                 width: 100%;
                 height: fit-content;
                 opacity: 1;
-                overflow-y: visible;
+                overflow-y: auto;
                 transition: opacity 250ms ease-in-out 250ms, width 250ms ease-in-out 0ms, height 250ms ease-in-out 0ms;
 
                 .examples-category {
