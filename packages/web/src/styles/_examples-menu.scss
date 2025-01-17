@@ -38,8 +38,8 @@
         border-radius: 10px;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: center;
+        align-items: flex-start;
+        justify-content: flex-start;
 
         &__close {
             width: 100%;
@@ -271,16 +271,14 @@
             display: flex;
             flex-direction: row;
             width: 100%;
-            height: 100%;
-            overflow-y: hidden;
+            overflow-x: hidden;
 
             &__td,
             &__tm {
                 width: 100%;
-                min-height: fit-content;
+                height: fit-content;
                 opacity: 1;
                 overflow-y: auto;
-
                 transition: opacity 250ms ease-in-out 250ms, width 250ms ease-in-out 0ms, height 250ms ease-in-out 0ms;
 
                 .examples-category {
@@ -413,7 +411,7 @@
                                 height: 0;
                                 opacity: 0;
                                 font-size: var(--fs-p);
-                                // line-height: var(--lh-p);
+                                width: 100%;
                                 max-width: 60ch;
                                 overflow-y: scroll;
                                 overflow-x: hidden;
@@ -520,6 +518,7 @@
                     width: 0;
                     height: 0;
                     opacity: 0;
+                    overflow: hidden;
                     transition: opacity 100ms ease-in-out 0s, width 0s ease-in-out 250ms, height 0s ease-in-out 250ms;
                 }
             }

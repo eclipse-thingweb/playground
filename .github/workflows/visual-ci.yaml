@@ -33,6 +33,7 @@ jobs:
                 cd ./packages/web
                 npm install
                 npx playwright install chromium firefox
+                npx playwright install-deps
                 npm run build
                 npm test
 
