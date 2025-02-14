@@ -56,7 +56,7 @@
     "papaparse": "^5.4.1",
     "string-direction": "^0.1.2",
     "svg-crowbar": "^0.7.0",
-    "vega": "^5.22.1",
+    "vega": "^5.31.0",
     "vega-embed": "^6.21.0"
   }
 }
