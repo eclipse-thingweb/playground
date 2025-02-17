@@ -99,7 +99,7 @@ test.describe("Check all links", () => {
         const thingwebPromise = page.waitForEvent('popup')
         await page.locator(".logo").click()
         const thingwebPage = await thingwebPromise
-        await expect(thingwebPage).toHaveTitle("Eclipse Thingweb")
+        await expect(thingwebPage).toHaveTitle("Eclipse Thingweb | Connect More, Code Less")
         await expect(thingwebPage).toHaveURL("https://thingweb.io/")
     })
 
@@ -123,7 +123,7 @@ test.describe("Check all links", () => {
         const thingwebPromise = page.waitForEvent('popup')
         await page.locator("#thingweb-link").click()
         const thingwebPage = await thingwebPromise
-        await expect(thingwebPage).toHaveTitle("Eclipse Thingweb")
+        await expect(thingwebPage).toHaveTitle("Eclipse Thingweb | Connect More, Code Less")
         await expect(thingwebPage).toHaveURL("https://thingweb.io/")
     })
 
