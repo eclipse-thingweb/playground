@@ -37,7 +37,7 @@ jobs:
               run: lerna bootstrap --no-ci
 
             - name: Test
-              run: lerna run test --no-bail --stream --ignore=packages/web
+              run: lerna run --ignore @thing-description-playground/web test --no-bail --stream
 
             - name: TD test
               run: node packages/cli/index.js -i examples/td/*/*.jsonld

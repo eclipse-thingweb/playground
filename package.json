@@ -23,6 +23,7 @@
         "lint:sarif": "npx eslint . --config .eslintrc.json --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif",
         "lint:fix": "npx eslint . --config .eslintrc.json --fix",
         "format": "prettier --write . && npm run format --silent --workspaces --if-present",
-        "format:quick": "pretty-quick"
+        "format:quick": "pretty-quick",
+        "test": "lerna run --ignore @thing-description-playground/web test"
     }
 }
