@@ -13,6 +13,21 @@
  *  SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
  */
 
+/*** Imports ***/
+
+@use "editor";
+@use "control-panel";
+@use "console";
+
+/** Additional menus **/
+@use "settings-menu";
+@use "examples-menu";
+@use "save-menu";
+@use "json-yaml-warning";
+
+/** Visualizations **/
+@use "jsonld-vis";
+
 /*** Globals **/
 *,
 *::before,
@@ -493,18 +508,3 @@ main {
     50%{transform: scale(1);}
     100%{transform: scale(1.1);}
 }
-
-/*** Main Content ***/
-
-@import "editor";
-@import "control-panel";
-@import "console";
-
-/** Additional menus **/
-@import "settings-menu";
-@import "examples-menu";
-@import "save-menu";
-@import "json-yaml-warning";
-
-/** Visualizations **/
-@import "jsonld-vis"
