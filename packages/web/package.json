@@ -34,7 +34,7 @@
     "monaco-editor": "^0.40.0",
     "string-direction": "^0.1.2",
     "svg-crowbar": "^0.7.0",
-    "vega": "^5.31.0",
+    "vega": "^5.33.0",
     "vega-embed": "^6.21.0"
   },
   "devDependencies": {
