@@ -132,7 +132,7 @@ test.describe("Check all links", () => {
         const eclipsePromise = page.waitForEvent('popup')
         await page.locator("#eclipse-link").click()
         const eclipsePage = await eclipsePromise
-        await expect(eclipsePage).toHaveTitle("The Community for Open Collaboration and Innovation | The Eclipse Foundation")
+        await expect(eclipsePage).toHaveTitle("Eclipse Foundation | Powering Open Innovation")
         await expect(eclipsePage).toHaveURL("https://www.eclipse.org")
     })
 
