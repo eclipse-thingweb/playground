@@ -30,7 +30,7 @@
     "@thingweb/td-utils": "^1.0.0",
     "d3": "^3.5.17",
     "d3-tip": "^0.6.7",
-    "express": "^4.21.2",
+    "express": "^4.22.1",
     "monaco-editor": "^0.40.0",
     "string-direction": "^0.1.2",
     "svg-crowbar": "^0.7.0",
