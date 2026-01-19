@@ -27,7 +27,7 @@
         "js-yaml": "^4.1.0",
         "json-diff": "^1.0.0",
         "json-dup-key-validator": "^1.0.3",
-        "jsonld": "^8.3.2",
+        "jsonld": "^9.0.0",
         "junit-report-builder": "^3.0.1",
         "lz-string": "^1.4.4",
         "node-fetch": "^2.6.7"
