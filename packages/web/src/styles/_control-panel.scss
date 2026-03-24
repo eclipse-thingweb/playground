@@ -40,7 +40,7 @@
         &:last-child {
             border-color: var(--clr-neutral-50);
 
-            &:hover{
+            &:hover {
                 border-color: var(--clr-primary-500);
             }
         }
@@ -68,8 +68,10 @@
             width: fit-content;
             opacity: 1;
             transform: scaleX(1);
-            margin-top: .5rem;
-            transition: opacity 250ms var(--trans-bouncy), transform 250ms var(--trans-bouncy);
+            margin-top: 0.5rem;
+            transition:
+                opacity 250ms ease-out,
+                transform 500ms ease-out;
         }
 
         .text-icon.hiddenV {
