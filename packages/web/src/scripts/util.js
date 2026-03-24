@@ -190,8 +190,8 @@ export function generateJsonLd(format, editorInstance) {
             const content = format === "nquads" ? result : JSON.stringify(result, undefined, 4);
             const language = format === "nquads" ? "text" : "json";
 
-            editor.setModelLanguage(window.openApiEditor.getModel(), language);
-            window.openApiEditor.getModel().setValue(content);
+            editor.setModelLanguage(window.jsonLdEditor.getModel(), language);
+            window.jsonLdEditor.getModel().setValue(content);
             res(content);
         } catch (err) {
             rej("JSON-LD operation problem: " + err);

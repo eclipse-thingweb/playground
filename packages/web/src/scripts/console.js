@@ -25,6 +25,7 @@ import { AASView } from './aas'
 import { defaultsView, defaultsJsonBtn, defaultsYamlBtn, defaultsAddBtn } from './defaults'
 import { visualize } from './visualize'
 import { validationView, validationTab } from './validation'
+import { jsonLdTab, jsonLdView } from './json-ld'
 import { convertTDYamlToJson } from '../../../core/dist/web-bundle.min.js'
 import { detectProtocolSchemes } from '@thingweb/td-utils/dist/web-bundle.min.js' 
 import { generateOAP, generateAAP, addDefaultsUtil, validate, generateAAS, resetValidationStatus, checkDocumentType } from './util'
@@ -120,6 +121,7 @@ function clearVisualizationEditors() {
     window.asyncApiEditor.getModel().setValue('')
     window.defaultsEditor.getModel().setValue('')
     window.AASEditor.getModel().setValue('')
+    window.jsonLdEditor.getModel().setValue('')
 }
 
 
@@ -208,6 +210,11 @@ visualizationOptions.forEach(option => {
                                 validationView.classList.remove("hidden");
                                 const editorData = getEditorData(editorInstance);
                                 validate(editorData[1], editorValue);
+
+                                break;
+                            }
+                            case "jsonld-tab": {
+                                jsonLdView.classList.remove("hidden");
 
                                 break;
                             }

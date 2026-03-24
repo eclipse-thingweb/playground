@@ -22,8 +22,8 @@
 
 import { editor } from "monaco-editor";
 import { setFontSize, editorForm, fontSizeSlider } from "./settings-menu";
-import { generateTD, offerFileDownload, generateJsonLd, generateOAP } from "./util";
-import { getEditorData, editorList } from "./editor";
+import { generateTD, offerFileDownload, generateOAP } from "./util";
+import { getEditorData } from "./editor";
 
 /******************************************************************/
 /*                    OpenAPI functionality                       */
@@ -65,30 +65,14 @@ initOpenApiEditor();
 
 //Json conversion btn
 openApiJsonBtn.addEventListener("click", () => {
-    const hasActiveFormat = Object.values(formatButtons).some((btn) => btn && btn.classList.contains("active-format"));
-    const activeIDE = editorList.find((ide) => ide["_domElement"].classList.contains("active"));
-
-    if (hasActiveFormat && activeIDE) {
-        updateFormatButtonStates(null);
-        generateOAP("json", activeIDE);
-    } else {
-        generateTD("json", window.openApiEditor);
-    }
+    generateTD("json", window.openApiEditor);
     openApiJsonBtn.disabled = true;
     openApiYamlBtn.disabled = false;
 });
 
 //Yaml conversion btn
 openApiYamlBtn.addEventListener("click", () => {
-    const hasActiveFormat = Object.values(formatButtons).some((btn) => btn && btn.classList.contains("active-format"));
-    const activeIDE = editorList.find((ide) => ide["_domElement"].classList.contains("active"));
-
-    if (hasActiveFormat && activeIDE) {
-        updateFormatButtonStates(null);
-        generateOAP("yaml", activeIDE);
-    } else {
-        generateTD("yaml", window.openApiEditor);
-    }
+    generateTD("yaml", window.openApiEditor);
     openApiJsonBtn.disabled = false;
     openApiYamlBtn.disabled = true;
 });
@@ -105,77 +89,4 @@ openApiDownload.addEventListener("click", () => {
         window.openApiEditor.getModel().getValue(),
         contentType
     );
-});
-
-// Format Filters logic
-const formatButtons = {
-    expanded: document.querySelector("#format-expanded"),
-    compacted: document.querySelector("#format-compacted"),
-    flattened: document.querySelector("#format-flattened"),
-    framed: document.querySelector("#format-framed"),
-    nquads: document.querySelector("#format-nquads"),
-};
-
-function updateFormatButtonStates(activeFormat) {
-    Object.keys(formatButtons).forEach(format => {
-        if (formatButtons[format]) {
-            if (format === activeFormat) {
-                formatButtons[format].classList.add("active-format");
-                formatButtons[format].style.backgroundColor = "var(--clr-primary-500)";
-                formatButtons[format].style.color = "var(--clr-neutral-50)";
-                formatButtons[format].style.border = "none";
-            } else {
-                formatButtons[format].classList.remove("active-format");
-                formatButtons[format].style.backgroundColor = "transparent";
-                formatButtons[format].style.color = "var(--clr-primary-500)";
-                formatButtons[format].style.border = "2px solid var(--clr-primary-500)";
-            }
-        }
-    });
-    if (activeFormat) {
-        if (activeFormat === "nquads") {
-            openApiJsonBtn.disabled = false;
-            openApiYamlBtn.disabled = false;
-        } else {
-            // Expanded, compacted, flattened, framed are JSON formats
-            openApiJsonBtn.disabled = true;
-            openApiYamlBtn.disabled = false;
-        }
-    }
-}
-
-Object.keys(formatButtons).forEach((format) => {
-    if (formatButtons[format]) {
-        formatButtons[format].addEventListener("click", async () => {
-            const activeIDE = editorList.find((ide) => ide["_domElement"].classList.contains("active"));
-            if (!activeIDE) return;
-
-            const isAlreadyActive = formatButtons[format].classList.contains("active-format");
-
-            try {
-                if (isAlreadyActive) {
-                    // Clicked again - Toggle OFF (Revert to OpenAPI)
-                    updateFormatButtonStates(null); // Clear all active states
-                    const fileType = activeIDE["_domElement"].dataset.modeId;
-                    await generateOAP(fileType, activeIDE);
-
-                    // Restore JSON/YAML toggles based on IDE fileType
-                    if (fileType === "yaml") {
-                        openApiJsonBtn.disabled = false;
-                        openApiYamlBtn.disabled = true;
-                    } else {
-                        openApiJsonBtn.disabled = true;
-                        openApiYamlBtn.disabled = false;
-                    }
-                } else {
-                    // Toggle ON
-                    await generateJsonLd(format, activeIDE);
-                    updateFormatButtonStates(format);
-                }
-            } catch (err) {
-                console.error("Failed to toggle format filter:", err);
-                alert("Conversion error: " + err);
-            }
-        });
-    }
 });
