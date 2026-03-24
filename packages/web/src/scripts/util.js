@@ -680,7 +680,7 @@ export function findMonacoLocationOfJSONText(jsonPath, text, textModel) {
 
 /**
  * Checks if the input is a TD or TM
- * @param {jsonDocument} 
+ * @param {jsonDocument}
  * @returns "tm" or "td"
  */
 export function checkDocumentType(jsonDocument) {
@@ -701,6 +701,6 @@ export function checkDocumentType(jsonDocument) {
             }
         }
     } else {
-        return "td"
+        return "td";
     }
 }
