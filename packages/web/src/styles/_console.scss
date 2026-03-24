@@ -377,7 +377,7 @@
                     gap: 1rem;
 
                     .icon {
-                        fill: var(--clr-neutral-50);
+                        fill: currentColor;
                         width: var(--fs-i);
                     }
 
@@ -403,6 +403,31 @@
 
                     button {
                         border-radius: 0;
+                        background-color: transparent;
+                        color: var(--clr-primary-500);
+                        border: 2px solid var(--clr-primary-500);
+                        transition: all 250ms ease-in-out;
+
+                        &:hover {
+                            background-color: rgba(147, 51, 234, 0.05); /* very light primary shade fallback or transparent hover */
+                        }
+
+                        &:disabled {
+                            background-color: var(--clr-primary-500);
+                            color: var(--clr-neutral-50);
+                        }
+                    }
+
+                    &.solid {
+                        button {
+                            background-color: var(--clr-primary-500);
+                            color: var(--clr-neutral-50);
+                            border: none;
+
+                            &:hover {
+                                background-color: var(--clr-primary-900);
+                            }
+                        }
                     }
                 }
 
@@ -465,13 +490,15 @@
                             appearance: none;
                             width: 100%;
                             min-height: 3.25rem;
-                            background-color: var(--clr-primary-500);
+                            background-color: transparent;
+                            border: 2px solid var(--clr-primary-500);
+                            border-radius: 5px;
                             cursor: pointer;
-                            transition: background-color 250ms ease-in-out;
+                            transition: all 250ms ease-in-out;
                             position: relative;
 
                             &:hover {
-                                background-color: var(--clr-primary-900);
+                                background-color: rgba(147, 51, 234, 0.05); /* very light primary shade */
                             }
 
                             &::before {
@@ -486,7 +513,7 @@
                                 font-family: var(--ff-primary);
                                 font-weight: var(--fw-bold);
                                 text-transform: capitalize;
-                                color: var(--clr-neutral-50);
+                                color: var(--clr-primary-500); /* hollow state text color */
                             }
 
                             &:nth-child(1) {
@@ -503,7 +530,10 @@
                         }
 
                         input[type="radio"]:checked {
-                            background-color: var(--clr-neutral-300);
+                            background-color: var(--clr-primary-500);
+                            &::before {
+                                color: var(--clr-neutral-50); /* solid state text color */
+                            }
                             cursor: auto;
                         }
                     }
@@ -664,11 +694,14 @@
                                 label {
                                     position: relative;
                                     z-index: 0;
-                                    color: var(--clr-neutral-50);
+                                    color: var(--clr-primary-500); /* hollow text color */
                                     padding: .75rem 1.5rem;
                                     justify-content: center;
                                     font-weight: var(--fw-bold);
                                     cursor: pointer;
+                                    border: 2px solid var(--clr-primary-500);
+                                    border-radius: 5px;
+                                    transition: all 250ms ease-in-out;
 
                                     input[type='radio'] {
                                         appearance: none;
@@ -677,19 +710,19 @@
                                         left: 0;
                                         width: 100%;
                                         height: 100%;
-                                        background-color: var(--clr-primary-500);
+                                        background-color: transparent;
                                         cursor: pointer;
                                         z-index: -1;
                                         transition: background-color 250ms ease-in-out;
 
                                         &:hover {
-                                            background-color: var(--clr-primary-900);
+                                            background-color: rgba(147, 51, 234, 0.05); /* very light primary hover */
                                         }
                                     }
 
-                                    input[type="radio"]:checked {
-                                        background-color: var(--clr-neutral-300);
-                                        cursor: auto;
+                                    &:has(input[type="radio"]:checked) {
+                                        background-color: var(--clr-primary-500);
+                                        color: var(--clr-neutral-50); /* solid text color */
                                     }
                                 }
                             }

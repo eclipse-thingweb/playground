@@ -28,6 +28,7 @@ import {
     tmValidator,
     compress,
     decompress,
+    jsonld,
 } from "../../../core/dist/web-bundle.min.js";
 import tdToOpenAPI from "@thingweb/open-api-converter/dist/web-bundle.min.js";
 import tdToAsyncAPI from "@thingweb/async-api-converter/dist/web-bundle.min.js";
@@ -139,6 +140,61 @@ export function generateOAP(fileType, editorInstance) {
                     rej("OpenAPI generation problem: " + err);
                 }
             );
+        }
+    });
+}
+
+/**
+ * Generates JSON-LD output in various formats
+ * @param {"expanded"|"compacted"|"flattened"|"framed"|"nquads"} format
+ * @param {Monaco Object} editorInstance - Monaco editor object of the main TD
+ */
+export function generateJsonLd(format, editorInstance) {
+    return new Promise(async (res, rej) => {
+        const tdToValidate =
+            editorInstance["_domElement"].dataset.modeId === "json"
+                ? editorInstance.getValue()
+                : convertTDYamlToJson(editorInstance.getValue());
+
+        if (tdToValidate === "") {
+            rej("No TD given to generate JSON-LD");
+            return;
+        }
+
+        try {
+            const doc = JSON.parse(tdToValidate);
+            let result;
+
+            switch (format) {
+                case "expanded":
+                    result = await jsonld.expand(doc);
+                    break;
+                case "compacted":
+                    result = await jsonld.compact(doc, doc["@context"] || {});
+                    break;
+                case "flattened":
+                    result = await jsonld.flatten(doc);
+                    break;
+                case "framed":
+                    const frame = { "@context": doc["@context"] || {} };
+                    result = await jsonld.frame(doc, frame);
+                    break;
+                case "nquads":
+                    result = await jsonld.toRDF(doc, { format: "application/n-quads" });
+                    break;
+                default:
+                    rej("Unknown JSON-LD format: " + format);
+                    return;
+            }
+
+            const content = format === "nquads" ? result : JSON.stringify(result, undefined, 4);
+            const language = format === "nquads" ? "text" : "json";
+
+            editor.setModelLanguage(window.openApiEditor.getModel(), language);
+            window.openApiEditor.getModel().setValue(content);
+            res(content);
+        } catch (err) {
+            rej("JSON-LD operation problem: " + err);
         }
     });
 }
@@ -629,7 +685,7 @@ export function findMonacoLocationOfJSONText(jsonPath, text, textModel) {
  */
 export function checkDocumentType(jsonDocument) {
     //TODO: Move to core package after refactoring
-    if ( "@type" in jsonDocument ){
+    if (jsonDocument && typeof jsonDocument === "object" && "@type" in jsonDocument) {
         if (typeof jsonDocument["@type"] === "string") {
             if (jsonDocument["@type"] === "tm:ThingModel") {
                 return "tm";
