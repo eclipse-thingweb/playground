@@ -68,7 +68,7 @@ const formatButtons = {
 };
 
 function updateFormatButtonStates(activeFormat) {
-    Object.keys(formatButtons).forEach(format => {
+    Object.keys(formatButtons).forEach((format) => {
         if (formatButtons[format]) {
             if (format === activeFormat) {
                 formatButtons[format].classList.add("active-format");
@@ -111,15 +111,26 @@ Object.keys(formatButtons).forEach((format) => {
     }
 });
 
+/**
+ * Activate the default "expanded" format for JSON-LD
+ */
+export async function activateDefaultFormat() {
+    const activeIDE = editorList.find((ide) => ide["_domElement"].classList.contains("active"));
+    if (!activeIDE) return;
+
+    try {
+        await generateJsonLd("expanded", activeIDE);
+        updateFormatButtonStates("expanded");
+    } catch (err) {
+        console.error("Failed to set default JSON-LD format:", err);
+    }
+}
+
 // Download btn
 jsonLdDownload.addEventListener("click", () => {
     const editorData = getEditorData(window.jsonLdEditor);
     const contentType = `application/${editorData[0]};charset=utf-8;`;
     const title = "jsonld-output";
 
-    offerFileDownload(
-        `${title}.${editorData[0]}`,
-        window.jsonLdEditor.getModel().getValue(),
-        contentType
-    );
+    offerFileDownload(`${title}.${editorData[0]}`, window.jsonLdEditor.getModel().getValue(), contentType);
 });
