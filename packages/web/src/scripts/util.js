@@ -340,9 +340,10 @@ export function validate(thingType, editorContent) {
 
         Object.keys(result.details).forEach((el) => {
             const detailsName = el + "-section";
-            if (document.getElementById(detailsName)) {
-                document.getElementById(detailsName).removeAttribute("open");
-                const detailsIcon = document.getElementById(detailsName).children[0].children[0].children[0];
+            const detailsElement = document.getElementById(detailsName);
+            if (detailsElement) {
+                detailsElement.removeAttribute("open");
+                const detailsIcon = detailsElement.children[0].children[0].children[0];
 
                 if (result.details[el] === "passed") {
                     detailsIcon.children[0].setAttribute(
@@ -370,6 +371,7 @@ export function validate(thingType, editorContent) {
                 } else {
                     console.error("unknown report feedback value");
                 }
+                detailsElement.classList.remove("disabled");
             }
         });
 
@@ -415,6 +417,10 @@ export function resetValidationStatus() {
                 categoryContainer.children[0].remove();
             }
         });
+
+    document.querySelectorAll("#validation-view details[id$='-section']").forEach((section) => {
+        section.classList.add("disabled");
+    });
 }
 
 /**

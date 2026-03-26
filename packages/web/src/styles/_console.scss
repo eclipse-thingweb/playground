@@ -192,6 +192,7 @@
 
                 details {
                     margin-bottom: 1rem;
+                    transition: opacity 250ms ease-in-out;
 
                     summary {
                         user-select: none;
@@ -304,6 +305,7 @@
 
                 details.disabled {
                     pointer-events: none;
+                    opacity: 0.5;
                 }
             }
         }
