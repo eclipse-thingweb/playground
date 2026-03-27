@@ -149,54 +149,51 @@ export function generateOAP(fileType, editorInstance) {
  * @param {"expanded"|"compacted"|"flattened"|"framed"|"nquads"} format
  * @param {Monaco Object} editorInstance - Monaco editor object of the main TD
  */
-export function generateJsonLd(format, editorInstance) {
-    return new Promise(async (res, rej) => {
-        const tdToValidate =
-            editorInstance["_domElement"].dataset.modeId === "json"
-                ? editorInstance.getValue()
-                : convertTDYamlToJson(editorInstance.getValue());
+export async function generateJsonLd(format, editorInstance) {
+    const tdToValidate =
+        editorInstance["_domElement"].dataset.modeId === "json"
+            ? editorInstance.getValue()
+            : convertTDYamlToJson(editorInstance.getValue());
 
-        if (tdToValidate === "") {
-            rej("No TD given to generate JSON-LD");
-            return;
-        }
+    if (tdToValidate === "") {
+        throw new Error("No TD given to generate JSON-LD");
+    }
 
-        try {
-            const doc = JSON.parse(tdToValidate);
-            let result;
+    try {
+        const doc = JSON.parse(tdToValidate);
+        let result;
 
-            switch (format) {
-                case "expanded":
-                    result = await jsonld.expand(doc);
-                    break;
-                case "compacted":
-                    result = await jsonld.compact(doc, doc["@context"] || {});
-                    break;
-                case "flattened":
-                    result = await jsonld.flatten(doc);
-                    break;
-                case "framed":
-                    const frame = { "@context": doc["@context"] || {} };
-                    result = await jsonld.frame(doc, frame);
-                    break;
-                case "nquads":
-                    result = await jsonld.toRDF(doc, { format: "application/n-quads" });
-                    break;
-                default:
-                    rej("Unknown JSON-LD format: " + format);
-                    return;
+        switch (format) {
+            case "expanded":
+                result = await jsonld.expand(doc);
+                break;
+            case "compacted":
+                result = await jsonld.compact(doc, doc["@context"] || {});
+                break;
+            case "flattened":
+                result = await jsonld.flatten(doc);
+                break;
+            case "framed": {
+                const frame = { "@context": doc["@context"] || {} };
+                result = await jsonld.frame(doc, frame);
+                break;
             }
-
-            const content = format === "nquads" ? result : JSON.stringify(result, undefined, 4);
-            const language = format === "nquads" ? "text" : "json";
-
-            editor.setModelLanguage(window.jsonLdEditor.getModel(), language);
-            window.jsonLdEditor.getModel().setValue(content);
-            res(content);
-        } catch (err) {
-            rej("JSON-LD operation problem: " + err);
+            case "nquads":
+                result = await jsonld.toRDF(doc, { format: "application/n-quads" });
+                break;
+            default:
+                throw new Error("Unknown JSON-LD format: " + format);
         }
-    });
+
+        const content = format === "nquads" ? result : JSON.stringify(result, undefined, 4);
+        const language = format === "nquads" ? "text" : "json";
+
+        editor.setModelLanguage(window.jsonLdEditor.getModel(), language);
+        window.jsonLdEditor.getModel().setValue(content);
+        return content;
+    } catch (err) {
+        throw new Error("JSON-LD operation problem: " + err);
+    }
 }
 
 /**

@@ -22,7 +22,7 @@
 
 import { editor } from "monaco-editor";
 import { setFontSize, editorForm, fontSizeSlider } from "./settings-menu";
-import { generateTD, offerFileDownload, generateOAP } from "./util";
+import { generateTD, offerFileDownload } from "./util";
 import { getEditorData } from "./editor";
 
 /******************************************************************/
