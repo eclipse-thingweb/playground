@@ -28,6 +28,7 @@ import {
     tmValidator,
     compress,
     decompress,
+    jsonld,
 } from "../../../core/dist/web-bundle.min.js";
 import tdToOpenAPI from "@thingweb/open-api-converter/dist/web-bundle.min.js";
 import tdToAsyncAPI from "@thingweb/async-api-converter/dist/web-bundle.min.js";
@@ -141,6 +142,58 @@ export function generateOAP(fileType, editorInstance) {
             );
         }
     });
+}
+
+/**
+ * Generates JSON-LD output in various formats
+ * @param {"expanded"|"compacted"|"flattened"|"framed"|"nquads"} format
+ * @param {Monaco Object} editorInstance - Monaco editor object of the main TD
+ */
+export async function generateJsonLd(format, editorInstance) {
+    const tdToValidate =
+        editorInstance["_domElement"].dataset.modeId === "json"
+            ? editorInstance.getValue()
+            : convertTDYamlToJson(editorInstance.getValue());
+
+    if (tdToValidate === "") {
+        throw new Error("No TD given to generate JSON-LD");
+    }
+
+    try {
+        const doc = JSON.parse(tdToValidate);
+        let result;
+
+        switch (format) {
+            case "expanded":
+                result = await jsonld.expand(doc);
+                break;
+            case "compacted":
+                result = await jsonld.compact(doc, doc["@context"] || {});
+                break;
+            case "flattened":
+                result = await jsonld.flatten(doc);
+                break;
+            case "framed": {
+                const frame = { "@context": doc["@context"] || {} };
+                result = await jsonld.frame(doc, frame);
+                break;
+            }
+            case "nquads":
+                result = await jsonld.toRDF(doc, { format: "application/n-quads" });
+                break;
+            default:
+                throw new Error("Unknown JSON-LD format: " + format);
+        }
+
+        const content = format === "nquads" ? result : JSON.stringify(result, undefined, 4);
+        const language = format === "nquads" ? "text" : "json";
+
+        editor.setModelLanguage(window.jsonLdEditor.getModel(), language);
+        window.jsonLdEditor.getModel().setValue(content);
+        return content;
+    } catch (err) {
+        throw new Error("JSON-LD operation problem: " + err);
+    }
 }
 
 /**
@@ -284,9 +337,10 @@ export function validate(thingType, editorContent) {
 
         Object.keys(result.details).forEach((el) => {
             const detailsName = el + "-section";
-            if (document.getElementById(detailsName)) {
-                document.getElementById(detailsName).removeAttribute("open");
-                const detailsIcon = document.getElementById(detailsName).children[0].children[0].children[0];
+            const detailsElement = document.getElementById(detailsName);
+            if (detailsElement) {
+                detailsElement.removeAttribute("open");
+                const detailsIcon = detailsElement.children[0].children[0].children[0];
 
                 if (result.details[el] === "passed") {
                     detailsIcon.children[0].setAttribute(
@@ -314,6 +368,7 @@ export function validate(thingType, editorContent) {
                 } else {
                     console.error("unknown report feedback value");
                 }
+                detailsElement.classList.remove("disabled");
             }
         });
 
@@ -359,6 +414,10 @@ export function resetValidationStatus() {
                 categoryContainer.children[0].remove();
             }
         });
+
+    document.querySelectorAll("#validation-view details[id$='-section']").forEach((section) => {
+        section.classList.add("disabled");
+    });
 }
 
 /**
@@ -624,12 +683,12 @@ export function findMonacoLocationOfJSONText(jsonPath, text, textModel) {
 
 /**
  * Checks if the input is a TD or TM
- * @param {jsonDocument} 
+ * @param {jsonDocument}
  * @returns "tm" or "td"
  */
 export function checkDocumentType(jsonDocument) {
     //TODO: Move to core package after refactoring
-    if ( "@type" in jsonDocument ){
+    if (jsonDocument && typeof jsonDocument === "object" && "@type" in jsonDocument) {
         if (typeof jsonDocument["@type"] === "string") {
             if (jsonDocument["@type"] === "tm:ThingModel") {
                 return "tm";
@@ -645,6 +704,6 @@ export function checkDocumentType(jsonDocument) {
             }
         }
     } else {
-        return "td"
+        return "td";
     }
 }

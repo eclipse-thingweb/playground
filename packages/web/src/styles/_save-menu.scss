@@ -13,7 +13,7 @@
  *  SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
  */
 
-.save-menu{
+.save-menu {
     position: absolute;
     top: 0;
     left: 0;
@@ -23,18 +23,19 @@
     place-items: center;
     background-color: var(--clr-shades-trans);
     opacity: 1;
-    transform: scale(1);
     pointer-events: all;
-    transition: all 500ms var(--trans-bouncy);
+    transition: opacity 200ms ease-out;
 
-    &__container{
+    &__container {
         width: 50rem;
         border-radius: 10px;
         background-color: var(--clr-neutral-50);
         box-shadow: 0px 0px 10px 0px var(--clr-shadow);
         padding: 2rem;
+        transform: scale(1);
+        transition: transform 200ms ease-out;
 
-        .save-menu-close{
+        .save-menu-close {
             width: 100%;
             text-align: right;
             margin-bottom: 2rem;
@@ -47,8 +48,8 @@
             }
         }
 
-        .save-menu-title{
-            p{
+        .save-menu-title {
+            p {
                 color: var(--clr-neutral-900);
                 font-weight: var(--fw-bold);
                 font-size: var(--fs-sub-header);
@@ -56,26 +57,26 @@
             margin-bottom: 3rem;
         }
 
-        .share-td{
+        .share-td {
             width: 100%;
             margin-bottom: 3rem;
 
-            & > *{
+            & > * {
                 width: 100%;
                 height: 4rem;
-                border-radius: 5px;  
+                border-radius: 5px;
                 font-family: var(--ff-primary);
-                font-size: var(--fs-p); 
+                font-size: var(--fs-p);
             }
 
-            &__input{
+            &__input {
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 width: 100%;
                 margin-bottom: 1rem;
 
-                .share-url-input{
+                .share-url-input {
                     width: 100%;
                     height: 4rem;
                     background-color: var(--clr-neutral-50);
@@ -90,16 +91,16 @@
                     color: var(--clr-neutral-900);
                     padding: 1rem;
 
-                    &.error{
+                    &.error {
                         color: var(--clr-error-500);
                     }
 
-                    &:focus{
+                    &:focus {
                         outline: none;
                     }
                 }
 
-                .open-url-tab{
+                .open-url-tab {
                     height: 4rem;
                     width: fit-content;
                     background-color: var(--clr-neutral-200);
@@ -116,18 +117,18 @@
                         width: var(--fs-i);
                     }
 
-                    &:hover{
+                    &:hover {
                         background-color: var(--clr-neutral-300);
                     }
 
-                    &:disabled{
+                    &:disabled {
                         background-color: var(--clr-neutral-200);
                         cursor: default;
                     }
                 }
             }
 
-            &__btn{
+            &__btn {
                 cursor: pointer;
                 font-weight: var(--fw-bold);
                 transition: all 250ms ease-in-out;
@@ -136,50 +137,50 @@
                 justify-content: center;
                 gap: 1rem;
 
-                &.share-url{
+                &.share-url {
                     margin-bottom: 1rem;
                     background-color: var(--clr-primary-500);
                     color: var(--clr-neutral-50);
                     border: none;
                     transition: background-color 250ms ease-in-out;
-                    
+
                     .icon {
                         /* height: var(--fs-i); */
                         width: var(--fs-i);
                         fill: var(--clr-neutral-50);
                     }
 
-                    &:hover{
+                    &:hover {
                         background-color: var(--clr-primary-700);
                     }
                 }
 
-                &.open-editdor{
+                &.open-editdor {
                     border: 2px solid var(--clr-primary-500);
                     background-color: transparent;
                     color: var(--clr-primary-500);
                     transition: all 250ms ease-in-out;
 
-                    &:hover{
+                    &:hover {
                         background-color: var(--clr-primary-700);
                         border-color: var(--clr-primary-700);
                         color: var(--clr-neutral-50);
                     }
-                }  
+                }
             }
         }
 
-        .save-td{
+        .save-td {
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 1rem;
-            margin-bottom: .5rem;
+            margin-bottom: 0.5rem;
             padding-top: 3rem;
             border-top: 2px solid var(--clr-primary-500);
 
-            & > *{
+            & > * {
                 flex: 1;
                 height: 4rem;
                 display: flex;
@@ -196,11 +197,11 @@
                 font-weight: var(--fw-bold);
                 transition: background-color 250ms ease-in-out;
 
-                &:disabled{
+                &:disabled {
                     background-color: var(--clr-primary-100);
                     cursor: not-allowed;
 
-                    &:hover{
+                    &:hover {
                         background-color: var(--clr-primary-100);
                     }
                 }
@@ -211,35 +212,38 @@
                     fill: var(--clr-neutral-50);
                 }
 
-                &:hover{
+                &:hover {
                     background-color: var(--clr-primary-700);
                 }
             }
         }
 
-        .save-warning{
+        .save-warning {
             margin-bottom: 3rem;
-            p{
+            p {
                 color: var(--clr-neutral-300);
                 font-size: var(--fs-footer);
                 transition: color 150ms ease-in-out;
 
-                span{
+                span {
                     font-weight: var(--fw-bold);
                 }
             }
 
-            &.active{
-                p{
+            &.active {
+                p {
                     color: var(--clr-error-500);
                 }
             }
         }
     }
 
-    &.closed{
-        transform: scale(0);
+    &.closed {
         opacity: 0;
         pointer-events: none;
+
+        .save-menu__container {
+            transform: scale(0.8);
+        }
     }
 }

@@ -42,15 +42,15 @@ module.exports.checkLinkedAffordances = coreAssertions.checkLinkedAffordances;
 module.exports.checkLinkedStructure = coreAssertions.checkLinkedStructure;
 module.exports.convertTDJsonToYaml = convertTDJsonToYaml;
 module.exports.convertTDYamlToJson = convertTDYamlToJson;
-
+module.exports.jsonld = jsonld;
 
 // This is implemented to avoid a test error, where jest seems to intercept the request
 const customLoader = async (url) => {
-	return {
-		contextUrl: null, // this is for a context via a link header
-		document: {}, // this is the actual document that was loaded
-		documentUrl: url // this is the actual context URL after redirects
-	};
+    return {
+        contextUrl: null, // this is for a context via a link header
+        document: {}, // this is the actual document that was loaded
+        documentUrl: url, // this is the actual context URL after redirects
+    };
 };
 
 /**

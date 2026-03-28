@@ -40,8 +40,8 @@
 
 :root {
     /*Fonts styles*/
-    --ff-primary: 'Roboto', sans-serif;
-    --ff-secondary: 'Open Sans', sans-serif;
+    --ff-primary: "Roboto", sans-serif;
+    --ff-secondary: "Open Sans", sans-serif;
 
     /*Font weights*/
     --fw-light: 300;
@@ -71,7 +71,6 @@
     --fs-footer: clamp(0.8rem, 0.76rem + 0.19999999999999996vw, 1rem);
     --fs-i: clamp(1.2rem, 1.04rem + 0.8vw, 2rem);
 
-
     /*line heights*/
     --lh-h1: 4rem;
     --lh-h2: 4rem;
@@ -83,16 +82,16 @@
 
     /*colors*/
     //neutrals
-    --clr-neutral-50: #FFFFFE;
-    --clr-neutral-100: #E4E6E6;
-    --clr-neutral-200: #CACCCC;
-    --clr-neutral-300: #B1B3B3;
+    --clr-neutral-50: #fffffe;
+    --clr-neutral-100: #e4e6e6;
+    --clr-neutral-200: #cacccc;
+    --clr-neutral-300: #b1b3b3;
     --clr-neutral-900: #141414;
 
     //primary
-    --clr-primary-100: #95E5D9;
-    --clr-primary-300: #5ED1C0;
-    --clr-primary-500: #33B8A4;
+    --clr-primary-100: #95e5d9;
+    --clr-primary-300: #5ed1c0;
+    --clr-primary-500: #33b8a4;
     --clr-primary-700: #179985;
     --clr-primary-900: #067362;
 
@@ -101,46 +100,43 @@
     --clr-shadow: rgba(0, 0, 0, 0.4);
 
     //success
-    --clr-success-100: #80F2AA;
-    --clr-success-300: #63E592;
-    --clr-success-500: #4ADE80;
-    --clr-success-700: #2DC464;
-    --clr-success-900: #16AB4C;
+    --clr-success-100: #80f2aa;
+    --clr-success-300: #63e592;
+    --clr-success-500: #4ade80;
+    --clr-success-700: #2dc464;
+    --clr-success-900: #16ab4c;
 
     //warning
-    --clr-warning-100: #FFDE59;
-    --clr-warning-300: #FCD63F;
-    --clr-warning-500: #FACC15;
-    --clr-warning-700: #EDBF09;
-    --clr-warning-900: #E0B300;
+    --clr-warning-100: #ffde59;
+    --clr-warning-300: #fcd63f;
+    --clr-warning-500: #facc15;
+    --clr-warning-700: #edbf09;
+    --clr-warning-900: #e0b300;
 
     //error
-    --clr-error-100: #FAA5A5;
-    --clr-error-300: #FA8C8C;
-    --clr-error-500: #F87171;
-    --clr-error-700: #EB5454;
-    --clr-error-900: #DE3A3A;
+    --clr-error-100: #faa5a5;
+    --clr-error-300: #fa8c8c;
+    --clr-error-500: #f87171;
+    --clr-error-700: #eb5454;
+    --clr-error-900: #de3a3a;
 
     //td
     --clr-td-300: #d6935d;
-    --clr-td-500: #E07A26;
+    --clr-td-500: #e07a26;
 
     //settings menu
     --clr-controls: var(--clr-neutral-50);
     --clr-controls-bg: var(--clr-primary-500);
     --clr-controls-txt: var(--clr-neutral-900);
-
-    /* transitions */
-    --trans-bouncy: cubic-bezier(0.68, -0.75, 0.27, 1.75);
 }
 
 //IDE Themes
 .dark-mode {
-    --clr-neutral-50: #1E1E1E;
-    --clr-neutral-100: #4C4D4C;
+    --clr-neutral-50: #1e1e1e;
+    --clr-neutral-100: #4c4d4c;
     --clr-neutral-200: #656666;
-    --clr-neutral-300: #7E807F;
-    --clr-neutral-900: #FFFFFE;
+    --clr-neutral-300: #7e807f;
+    --clr-neutral-900: #fffffe;
 
     --clr-shades-trans: rgba(30, 30, 30, 0.7);
     --clr-shadow: rgba(255, 255, 255, 0.4);
@@ -148,15 +144,15 @@
 
 .monochrome-mode {
     --clr-neutral-50: #549087;
-    --clr-neutral-100: #4C4D4C;
+    --clr-neutral-100: #4c4d4c;
     --clr-neutral-200: #656666;
-    --clr-neutral-300: #7E807F;
-    --clr-neutral-900: #FFFFFE;
+    --clr-neutral-300: #7e807f;
+    --clr-neutral-900: #fffffe;
 
-    --clr-primary-500: #FFFFFE;
-    --clr-primary-700: #E4E6E6;
+    --clr-primary-500: #fffffe;
+    --clr-primary-700: #e4e6e6;
 
-    --clr-controls: #FFFFFE;
+    --clr-controls: #fffffe;
     --clr-controls-bg: var(--clr-neutral-50);
     --clr-controls-txt: #141414;
 
@@ -244,12 +240,11 @@ img {
     border: none;
 }
 
-@supports (scrollbar-color: var(--clr-primary-500) var(--clr-neutral-50)){
-    *{
+@supports (scrollbar-color: var(--clr-primary-500) var(--clr-neutral-50)) {
+    * {
         scrollbar-color: var(--clr-primary-500) var(--clr-neutral-50);
     }
 }
-
 
 /***** Header *****/
 header {
@@ -277,8 +272,8 @@ header {
             }
         }
 
-        &__title{
-            span{
+        &__title {
+            span {
                 font-size: var(--fs-p);
             }
         }
@@ -308,7 +303,7 @@ header {
 
             .icon {
                 height: var(--fs-i);
-                margin-bottom: .5rem;
+                margin-bottom: 0.5rem;
                 fill: var(--clr-neutral-50);
                 transition: fill 250ms ease-in-out;
             }
@@ -398,7 +393,7 @@ main {
 }
 
 /**Loader**/
-.loader-container{
+.loader-container {
     position: absolute;
     top: 0;
     left: 0;
@@ -411,22 +406,24 @@ main {
     transition: opacity 500ms ease-in-out;
     z-index: 100;
 
-    .loader{
+    .loader {
         width: 20rem;
-        animation: fade 1.5s infinite ease-in-out, pulsate 1.5s infinite ease-in-out;
-        svg{
-            width: 100%
+        animation:
+            fade 1.5s infinite ease-in-out,
+            pulsate 1.5s infinite ease-in-out;
+        svg {
+            width: 100%;
         }
     }
 
-    &.hidden{
+    &.hidden {
         opacity: 0;
         pointer-events: none;
     }
 }
 
 /** Analytics banner **/
-.analytics-banner{
+.analytics-banner {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -443,7 +440,7 @@ main {
     &__disclaimer {
         color: var(--clr-neutral-100);
 
-        & > *{
+        & > * {
             margin-bottom: 1rem;
         }
 
@@ -466,7 +463,7 @@ main {
         margin-top: 2rem;
 
         button {
-            appearance:unset;
+            appearance: unset;
             padding: 0.75rem 1.75rem;
             min-width: 9rem;
             cursor: pointer;
@@ -482,7 +479,7 @@ main {
                 margin-right: 1rem;
             }
 
-            &.accept-btn{
+            &.accept-btn {
                 background-color: var(--clr-controls-bg);
                 color: var(--clr-controls);
             }
@@ -493,18 +490,29 @@ main {
                 border-color: var(--clr-primary-900);
             }
         }
-
     }
 }
 
-@keyframes fade{
-    0%{opacity: 1;}
-    50%{opacity: .1;}
-    100%{opacity: 1;}
+@keyframes fade {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.1;
+    }
+    100% {
+        opacity: 1;
+    }
 }
-  
-@keyframes pulsate{
-    0%{transform: scale(1.1);}
-    50%{transform: scale(1);}
-    100%{transform: scale(1.1);}
+
+@keyframes pulsate {
+    0% {
+        transform: scale(1.1);
+    }
+    50% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.1);
+    }
 }
