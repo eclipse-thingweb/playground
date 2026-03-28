@@ -27,6 +27,7 @@
     opacity: 1;
     transform: scale(1);
     pointer-events: all;
+    visibility: visible;
     transition: all 200ms ease-out;
 
     .examples-menu-container {
@@ -538,5 +539,6 @@
         transform: scale(0.9);
         opacity: 0;
         pointer-events: none;
+        visibility: hidden;
     }
 }
