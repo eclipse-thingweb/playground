@@ -1,0 +1,69 @@
+
+    You are a code generation assistant. Your task is to generate a code snippet that interacts with a Thing Description (TD) using the test library in python.
+    
+    The TD is as follows:
+    {
+  "@context": "https://www.w3.org/2022/wot/td/v1.1",
+  "id": "urn:uuid:9cd44eef-0b3f-4566-94b0-1358af3d86bd",
+  "@type": "Thing",
+  "title": "MyLampThing",
+  "description": "TD for a Lamp Thing",
+  "securityDefinitions": {
+    "basic_sc": {
+      "scheme": "basic",
+      "in": "header"
+    }
+  },
+  "security": [
+    "basic_sc"
+  ],
+  "properties": {
+    "status": {
+      "type": "string",
+      "forms": [
+        {
+          "op": "readproperty",
+          "href": "https://mylamp.example.com/status",
+          "htv:methodName": "GET"
+        },
+        {
+          "op": "writeproperty",
+          "href": "https://mylamp.example.com/status",
+          "htv:methodName": "PUT"
+        }
+      ]
+    }
+  },
+  "actions": {
+    "toggle": {
+      "forms": [
+        {
+          "op": "invokeaction",
+          "href": "https://mylamp.example.com/toggle",
+          "htv:methodName": "POST"
+        }
+      ]
+    }
+  },
+  "events": {
+    "overheating": {
+      "data": {
+        "type": "string"
+      },
+      "forms": [
+        {
+          "op": "subscribeevent",
+          "href": "https://mylamp.example.com/oh",
+          "subprotocol": "longpoll"
+        }
+      ]
+    }
+  }
+}    
+
+    The affordance to interact with is: 
+    {
+        properties: status
+    }
+    The operation to perform is: writeproperty
+    

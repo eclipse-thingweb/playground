@@ -1,0 +1,16 @@
+{
+    "name": "@thingweb/code-gen",
+    "version": "1.0.0",
+    "description": "Generates code snippets for Thing Descriptions. Supports multiple programming languages. For unsupported languages generates a prompt for an llm to generate the code snippet.",
+    "main": "index.js",
+    "homepage": "https://thingweb.io",
+    "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
+    "license": "EPL-2.0 OR W3C-20150513",
+    "type": "module",
+    "dependencies": {
+        "@inquirer/prompts": "^8.4.1"
+    },
+    "devDependencies": {
+        "@types/node": "^25.5.2"
+    }
+}
