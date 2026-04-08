@@ -1,97 +1,101 @@
-/* 
+/*
  *  Copyright (c) 2023 Contributors to the Eclipse Foundation
- *  
+ *
  *  See the NOTICE file(s) distributed with this work for additional
  *  information regarding copyright ownership.
- *  
+ *
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v. 2.0 which is available at
  *  http://www.eclipse.org/legal/epl-2.0, or the W3C Software Notice and
  *  Document License (2015-05-13) which is available at
  *  https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document.
- *  
+ *
  *  SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
  */
 
 /**
  * @file The `save-menu.js` handle the main functionality for the save menu
  * such as generating a sharable link, allowing to open such link in a new playground
- * tab, or in ediTDor. As well as allowing the user to download the current TD/TM or 
+ * tab, or in ediTDor. As well as allowing the user to download the current TD/TM or
  * save it directly in their file system.
  */
 
-import { save, openEditdor, offerFileDownload } from "./util"
-import { editorList, getEditorData } from "./editor"
+import { save, openEditdor, offerFileDownload } from "./util";
+import { editorList, getEditorData } from "./editor";
 
 /***********************************************************/
 /*                 Save Menu functionality                 */
 /***********************************************************/
-const saveMenu = document.querySelector(".save-menu")
-const saveMenuBtn = document.querySelector("#save-btn")
-const closeSaveMenu = document.querySelector(".save-menu-close .x-icon")
-const shareUrlContainer = document.querySelector("#share-url-input")
-const openUrlTab = document.querySelector("#open-url-tab")
-const thingTypeText = document.querySelector('#thing-type-text')
-const shareUrlBtn = document.querySelector("#share-url-btn")
-const openEditdorBtn = document.querySelector('#open-editdor-btn')
-const downloadBtn = document.querySelector("#download-btn")
+const saveMenu = document.querySelector(".save-menu");
+const saveMenuBtn = document.querySelector("#save-btn");
+const closeSaveMenu = document.querySelector(".save-menu-close .x-icon");
+const shareUrlContainer = document.querySelector("#share-url-input");
+const openUrlTab = document.querySelector("#open-url-tab");
+const thingTypeText = document.querySelector("#thing-type-text");
+const shareUrlBtn = document.querySelector("#share-url-btn");
+const openEditdorBtn = document.querySelector("#open-editdor-btn");
+const downloadBtn = document.querySelector("#download-btn");
 // const saveAsBtn = document.querySelector("#save-as-btn")
 // const saveAsWarning = document.querySelector(".save-warning")
-const saveMenuContainer = document.querySelector(".save-menu__container")
+const saveMenuContainer = document.querySelector(".save-menu__container");
 // let fileHandle;
-openUrlTab.disabled = true
-shareUrlContainer.value = ""
+openUrlTab.disabled = true;
+shareUrlContainer.value = "";
 
 //Open the save menu and change the text depending on the Thing type (TD or TM)
 saveMenuBtn.addEventListener("click", () => {
-  editorList.forEach(editorInstance => {
-    if (editorInstance["_domElement"].classList.contains("active")) {
-      const editorValues = getEditorData(editorInstance)
-      thingTypeText.innerText = editorValues[1].toUpperCase()
-    }
-  })
-  saveMenu.classList.remove("closed")
-})
+    editorList.forEach((editorInstance) => {
+        if (editorInstance["_domElement"].classList.contains("active")) {
+            const editorValues = getEditorData(editorInstance);
+            thingTypeText.innerText = editorValues[1].toUpperCase();
+        }
+    });
+    saveMenu.classList.remove("closed");
+});
 
 //Hide save menu
 closeSaveMenu.addEventListener("click", () => {
-  saveMenu.classList.add("closed")
-  shareUrlContainer.value = ""
-  openUrlTab.disabled = true
-})
+    saveMenu.classList.add("closed");
+    shareUrlContainer.value = "";
+    openUrlTab.disabled = true;
+});
 
 //Handle click outside the save menu
-document.addEventListener('click', (e) => {
-  if (!saveMenuBtn.contains(e.target) && !saveMenuContainer.contains(e.target) && !saveMenu.classList.contains("closed")) {
-    saveMenu.classList.add("closed")
-    shareUrlContainer.value = ""
-    openUrlTab.disabled = true
-  }
-})
+document.addEventListener("click", (e) => {
+    if (
+        !saveMenuBtn.contains(e.target) &&
+        !saveMenuContainer.contains(e.target) &&
+        !saveMenu.classList.contains("closed")
+    ) {
+        saveMenu.classList.add("closed");
+        shareUrlContainer.value = "";
+        openUrlTab.disabled = true;
+    }
+});
 
 /**
  * Get the active editor, the format type, doc type and editor
  * and call the saveAsURL function
  */
 shareUrlBtn.addEventListener("click", () => {
-  try {
-    editorList.forEach(editorInstance => {
-      if (editorInstance["_domElement"].classList.contains("active")) {
-        const editorValues = getEditorData(editorInstance)
+    try {
+        editorList.forEach((editorInstance) => {
+            if (editorInstance["_domElement"].classList.contains("active")) {
+                const editorValues = getEditorData(editorInstance);
 
-        saveAsURL(editorValues[0], editorValues[1], editorValues[2])
-      }
-    })
-  } catch (err) {
-    console.error(err);
-    shareUrlContainer.value = "Invalid JSON Object"
-    shareUrlContainer.classList.add("error")
-    setTimeout(() => {
-      shareUrlContainer.value = ""
-      shareUrlContainer.classList.remove("error")
-    }, 1500)
-  }
-})
+                saveAsURL(editorValues[0], editorValues[1], editorValues[2]);
+            }
+        });
+    } catch (err) {
+        console.error(err);
+        shareUrlContainer.value = "Invalid JSON Object";
+        shareUrlContainer.classList.add("error");
+        setTimeout(() => {
+            shareUrlContainer.value = "";
+            shareUrlContainer.classList.remove("error");
+        }, 1500);
+    }
+});
 
 /**
  * Get the doc type, format type and editor and calls the utils save function
@@ -101,11 +105,11 @@ shareUrlBtn.addEventListener("click", () => {
  * @param { Object } editor - the editor reference object
  */
 async function saveAsURL(formatType, thingType, editorContent) {
-  const URL = await save(formatType, thingType, editorContent)
-  if (URL !== undefined) {
-    shareUrlContainer.value = URL
-    openUrlTab.disabled = false
-  }
+    const URL = await save(formatType, thingType, editorContent);
+    if (URL !== undefined) {
+        shareUrlContainer.value = URL;
+        openUrlTab.disabled = false;
+    }
 }
 
 /**
@@ -113,53 +117,52 @@ async function saveAsURL(formatType, thingType, editorContent) {
  * and call the openEditdor function from utils
  */
 openEditdorBtn.addEventListener("click", () => {
-  try {
-    editorList.forEach(editorInstance => {
-      if (editorInstance["_domElement"].classList.contains("active")) {
-        const editorValues = getEditorData(editorInstance)
+    try {
+        editorList.forEach((editorInstance) => {
+            if (editorInstance["_domElement"].classList.contains("active")) {
+                const editorValues = getEditorData(editorInstance);
 
-        openEditdor(editorValues[0], editorValues[1], editorInstance)
-      }
-    })
-  } catch (err) {
-    console.error(err);
-    shareUrlContainer.value = "Invalid JSON Object"
-    shareUrlContainer.classList.add("error")
-    setTimeout(() => {
-      shareUrlContainer.value = ""
-      shareUrlContainer.classList.remove("error")
-    }, 1500)
-  }
-})
+                openEditdor(editorValues[0], editorValues[1], editorInstance);
+            }
+        });
+    } catch (err) {
+        console.error(err);
+        shareUrlContainer.value = "Invalid JSON Object";
+        shareUrlContainer.classList.add("error");
+        setTimeout(() => {
+            shareUrlContainer.value = "";
+            shareUrlContainer.classList.remove("error");
+        }, 1500);
+    }
+});
 
 /**
  * Open the generated sharable link in a new playground tab
  */
 openUrlTab.addEventListener("click", () => {
-  if (shareUrlContainer.value !== "" || shareUrlContainer.value !== "Invalid JSON Object") {
-    window.open(shareUrlContainer.value, '_blank');
-  }
-})
+    if (shareUrlContainer.value !== "" || shareUrlContainer.value !== "Invalid JSON Object") {
+        window.open(shareUrlContainer.value, "_blank");
+    }
+});
 
 /**
  * Gets the active editor, editor content type and tab name,
  * then it calls the utils offerFileDownload
  */
 downloadBtn.addEventListener("click", () => {
-  editorList.forEach(editorInstance => {
-    if (editorInstance["_domElement"].classList.contains("active")) {
-      const editorValues = getEditorData(editorInstance)
-      let tabName = editorValues[2]["title"].replaceAll(' ', '-')
-      const contentType = `application/${editorValues[0]};charset=utf-8;`
+    editorList.forEach((editorInstance) => {
+        if (editorInstance["_domElement"].classList.contains("active")) {
+            const editorValues = getEditorData(editorInstance);
+            let tabName = editorValues[2]["title"].replaceAll(" ", "-");
+            const contentType = `application/${editorValues[0]};charset=utf-8;`;
 
-      offerFileDownload(`${tabName}.${editorValues[0]}`, editorInstance.getValue(), contentType)
-    }
-  })
-  saveMenu.classList.add("closed")
-  shareUrlContainer.value = ""
-  openUrlTab.disabled = true
-})
-
+            offerFileDownload(`${tabName}.${editorValues[0]}`, editorInstance.getValue(), contentType);
+        }
+    });
+    saveMenu.classList.add("closed");
+    shareUrlContainer.value = "";
+    openUrlTab.disabled = true;
+});
 
 //TODO: Uncomment when https is implemented
 /* Save as btn functionality */
@@ -197,7 +200,6 @@ downloadBtn.addEventListener("click", () => {
 //         acceptDesc = editorValues[0] === "json" ? "json or jsonld files only" : "yaml files only"
 //       }
 //     })
-
 
 //     const opts = {
 //       suggestedName: fileName,

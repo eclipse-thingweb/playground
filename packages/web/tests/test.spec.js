@@ -2025,3 +2025,232 @@ test.describe("Visualization view functionality", () => {
         expect(download.suggestedFilename()).toBe(expectedFilename)
     })
 })
+
+test.describe("Code generation view functionality", () => {
+
+    // Helper to open the Basic TD example so the code generation inputs have affordances to work with
+    async function openBasicTDExample(page) {
+        await page.locator("#examples-btn").click()
+
+        const quickAccessBtn = page.locator(".example").filter({ hasText: 'Basic TD' }).getByRole("button").nth(0)
+        await quickAccessBtn.click()
+
+        const exampleTab = page.locator("#tab").nth(1)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
+        await expect(exampleTab).toHaveText("TDMyLampThingCloseCancel")
+        await expect(exampleTab).toHaveClass("active")
+    }
+
+    test("Open the Code generation view with the Thing Template", async ({ page }) => {
+
+        const initialTab = page.locator("#tab").nth(0)
+        await expect(initialTab).toHaveAttribute('data-tab-id', "1")
+        await expect(initialTab).toHaveText("TDThing TemplateCloseCancel")
+        await expect(initialTab).toHaveClass("active")
+
+        const codeGenView = page.locator('#code-gen-view')
+        const consoleError = page.locator('#console-error')
+        const codeGenTab = page.locator("#code-gen-tab")
+
+        await expect(codeGenView).toHaveClass("console-view code-gen-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(codeGenTab).toBeChecked({ checked: false })
+
+        await codeGenTab.click()
+
+        await expect(codeGenTab).toBeChecked({ checked: true })
+        await expect(codeGenView).toHaveClass("console-view code-gen-view")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+
+        // The provided by the code-gen package populate the language and library dropdowns with their defaults
+        const languageSelect = page.locator('#code-gen-language')
+        const librarySelect = page.locator('#code-gen-library')
+        const affordanceTypeSelect = page.locator('#code-gen-affordance-type')
+        const affordanceKeySelect = page.locator('#code-gen-affordance-key')
+        const operationSelect = page.locator('#code-gen-operation')
+
+        await expect(languageSelect).toHaveValue("javascript")
+        await expect(librarySelect).toHaveValue("fetch")
+        await expect(affordanceTypeSelect).toHaveValue("properties")
+
+        // The Thing Template has no affordances so the key and operation dropdowns show placeholders and are disabled
+        await expect(affordanceKeySelect).toBeDisabled()
+        await expect(affordanceKeySelect.locator("option")).toHaveText("No properties found")
+        await expect(operationSelect).toBeDisabled()
+        await expect(operationSelect.locator("option")).toHaveText("No operations available")
+
+        // The copy and download buttons start disabled since no code has been generated yet
+        await expect(page.locator('#code-gen-copy')).toBeDisabled()
+        await expect(page.locator('#code-gen-download')).toBeDisabled()
+    })
+
+    test("Open the Code generation view with the Basic TD example and check populated inputs", async ({ page }) => {
+
+        await openBasicTDExample(page)
+
+        const codeGenView = page.locator('#code-gen-view')
+        const codeGenTab = page.locator("#code-gen-tab")
+
+        await expect(codeGenView).toHaveClass("console-view code-gen-view hidden")
+        await expect(codeGenTab).toBeChecked({ checked: false })
+
+        await codeGenTab.click()
+
+        await expect(codeGenTab).toBeChecked({ checked: true })
+        await expect(codeGenView).toHaveClass("console-view code-gen-view")
+
+        const languageSelect = page.locator('#code-gen-language')
+        const librarySelect = page.locator('#code-gen-library')
+        const affordanceTypeSelect = page.locator('#code-gen-affordance-type')
+        const affordanceKeySelect = page.locator('#code-gen-affordance-key')
+        const operationSelect = page.locator('#code-gen-operation')
+
+        // Languages and libraries come from the code-gen package LANGUAGES_SUPPORT map
+        await expect(languageSelect.locator("option")).toHaveText(["javascript", "python", "java", "rust", "go", "c#", "php", "ruby", "dart", "Other"])
+        await expect(librarySelect.locator("option")).toHaveText(["fetch", "node-wot", "webthing", "modbus-serial", "Other"])
+
+        // Affordance types are the fixed AFFORDANCE_TYPES from the code-gen package
+        await expect(affordanceTypeSelect.locator("option")).toHaveText(["properties", "actions", "events"])
+
+        // The Basic TD example exposes a "status" property that supports read and write operations
+        await expect(affordanceKeySelect).toBeEnabled()
+        await expect(affordanceKeySelect.locator("option")).toHaveText(["status"])
+        await expect(operationSelect).toBeEnabled()
+        await expect(operationSelect.locator("option")).toHaveText(["readproperty", "writeproperty"])
+    })
+
+    test("Switching affordance type updates the affordance keys and operations", async ({ page }) => {
+
+        await openBasicTDExample(page)
+
+        await page.locator("#code-gen-tab").click()
+        await expect(page.locator('#code-gen-view')).toHaveClass("console-view code-gen-view")
+
+        const affordanceTypeSelect = page.locator('#code-gen-affordance-type')
+        const affordanceKeySelect = page.locator('#code-gen-affordance-key')
+        const operationSelect = page.locator('#code-gen-operation')
+
+        // Switch to actions -> the Basic TD example has a "toggle" action
+        await affordanceTypeSelect.selectOption("actions")
+        await expect(affordanceKeySelect.locator("option")).toHaveText(["toggle"])
+        await expect(operationSelect.locator("option")).toHaveText(["invokeaction"])
+
+        // Switch to events -> the Basic TD example has an "overheating" event
+        await affordanceTypeSelect.selectOption("events")
+        await expect(affordanceKeySelect.locator("option")).toHaveText(["overheating"])
+        await expect(operationSelect.locator("option")).toHaveText(["subscribeevent"])
+    })
+
+    test("Generate JavaScript fetch code for a property", async ({ page }) => {
+
+        await openBasicTDExample(page)
+
+        await page.locator("#code-gen-tab").click()
+        await expect(page.locator('#code-gen-view')).toHaveClass("console-view code-gen-view")
+
+        const codeGenDownload = page.locator('#code-gen-download')
+        const codeGenCopy = page.locator('#code-gen-copy')
+
+        await expect(codeGenDownload).toBeDisabled()
+        await expect(codeGenCopy).toBeDisabled()
+
+        await page.locator("#code-gen-generate").click()
+
+        // The generated code is produced by the code-gen package fetch generator
+        const generatedCode = await page.evaluate(() => window.codeGenEditor.getValue())
+        expect(generatedCode).toContain("Auto-generated code using the Fetch API")
+        expect(generatedCode).toContain("Operation: readproperty on \"status\"")
+        expect(generatedCode).toContain("https://mylamp.example.com/status")
+        expect(generatedCode).toContain("await fetch(url,")
+
+        // After successfully generating code both the copy and download buttons become enabled
+        await expect(codeGenDownload).toBeEnabled()
+        await expect(codeGenCopy).toBeEnabled()
+    })
+
+    test("Generate code and download it as a JavaScript file", async ({ page }) => {
+
+        await openBasicTDExample(page)
+
+        await page.locator("#code-gen-tab").click()
+        await expect(page.locator('#code-gen-view')).toHaveClass("console-view code-gen-view")
+
+        await page.locator("#code-gen-generate").click()
+
+        const codeGenDownload = page.locator('#code-gen-download')
+        await expect(codeGenDownload).toBeEnabled()
+
+        // Start waiting for download before clicking.
+        const downloadPromise = page.waitForEvent('download')
+        await codeGenDownload.click()
+        const download = await downloadPromise
+        // The file extension comes from the code-gen package LANGUAGES_SUPPORT map (javascript -> js)
+        const expectedFilename = 'generated-code.js'
+        expect(download.suggestedFilename()).toBe(expectedFilename)
+    })
+
+    test("Generate an LLM prompt when using an unsupported library", async ({ page }) => {
+
+        await openBasicTDExample(page)
+
+        await page.locator("#code-gen-tab").click()
+        await expect(page.locator('#code-gen-view')).toHaveClass("console-view code-gen-view")
+
+        const librarySelect = page.locator('#code-gen-library')
+        const libraryCustomInput = page.locator('#code-gen-library-custom')
+
+        // Selecting "Other" reveals the custom library input
+        await expect(libraryCustomInput).toHaveClass("code-gen-custom-input hidden")
+        await librarySelect.selectOption("__other__")
+        await expect(libraryCustomInput).toHaveClass("code-gen-custom-input")
+
+        await libraryCustomInput.fill("my-custom-lib")
+        await page.locator("#code-gen-generate").click()
+
+        // Libraries without an algorithmic generator fall back to a prompt generated by the code-gen package
+        const generatedPrompt = await page.evaluate(() => window.codeGenEditor.getValue())
+        expect(generatedPrompt).toContain("You are a code generation assistant")
+        expect(generatedPrompt).toContain("my-custom-lib")
+        expect(generatedPrompt).toContain("properties/status")
+
+        // A prompt is not downloadable code, so the download button stays disabled
+        await expect(page.locator('#code-gen-download')).toBeDisabled()
+    })
+
+    test("Selecting the Other language reveals the custom language input", async ({ page }) => {
+
+        await openBasicTDExample(page)
+
+        await page.locator("#code-gen-tab").click()
+        await expect(page.locator('#code-gen-view')).toHaveClass("console-view code-gen-view")
+
+        const languageSelect = page.locator('#code-gen-language')
+        const languageCustomInput = page.locator('#code-gen-language-custom')
+
+        await expect(languageCustomInput).toHaveClass("code-gen-custom-input hidden")
+
+        await languageSelect.selectOption("__other__")
+        await expect(languageCustomInput).toHaveClass("code-gen-custom-input")
+
+        // Switching back to a known language hides the custom input again
+        await languageSelect.selectOption("python")
+        await expect(languageCustomInput).toHaveClass("code-gen-custom-input hidden")
+    })
+
+    test("Generating code without any affordances shows an error", async ({ page }) => {
+
+        // The Thing Template has empty properties/actions/events so there is nothing to generate for
+        const initialTab = page.locator("#tab").nth(0)
+        await expect(initialTab).toHaveText("TDThing TemplateCloseCancel")
+
+        await page.locator("#code-gen-tab").click()
+        await expect(page.locator('#code-gen-view')).toHaveClass("console-view code-gen-view")
+
+        await page.locator("#code-gen-generate").click()
+
+        const generatedCode = await page.evaluate(() => window.codeGenEditor.getValue())
+        expect(generatedCode).toBe("// Error: No properties found in the TD")
+
+        await expect(page.locator('#code-gen-download')).toBeDisabled()
+    })
+})
