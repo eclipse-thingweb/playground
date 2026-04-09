@@ -1,4 +1,4 @@
-import { AffordanceType, Form, Op, TD } from "../types.js";
+import { AffordanceType, Form, Op, TD } from "../../types.js";
 
 /**
  * Generates a Python code snippet using the requests library
@@ -101,5 +101,10 @@ function isWriteOperation(op: Op): boolean {
 }
 
 function isSubscribeOperation(op: Op): boolean {
-    return op === "subscribeevent" || op === "subscribeallevents" || op === "observeproperty" || op === "observeallproperties";
+    return (
+        op === "subscribeevent" ||
+        op === "subscribeallevents" ||
+        op === "observeproperty" ||
+        op === "observeallproperties"
+    );
 }

@@ -53,5 +53,11 @@ export type Op = (typeof operations)[keyof typeof operations][number];
 export const supportedLibraries = {
     javascript: ["fetch", "node-wot", "modbus-serial"],
     python: ["requests"],
+    java: ["httpclient"],
+    rust: ["reqwest"],
+    go: ["net-http"],
+    csharp: ["httpclient"],
+    php: ["curl"],
+    ruby: ["net-http"],
 };
 export type SupportedLanguage = keyof typeof supportedLibraries;
