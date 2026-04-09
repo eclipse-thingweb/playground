@@ -11,11 +11,24 @@ export type TD = Record<AffordanceType, Record<string, Affordance>>;
 
 export const affordance_types = ["properties", "actions", "events"] as const;
 export type AffordanceType = (typeof affordance_types)[number];
+export interface Form {
+    href: string;
+    op: Op | Op[];
+    "htv:methodName"?: string;
+    subprotocol?: string;
+    "modv:unitID"?: number;
+    "modv:address"?: number;
+    "modv:function"?: string;
+    "modv:quantity"?: number;
+    [key: string]: unknown;
+}
+
 export interface Affordance {
-    forms: {
-        href: string;
-        op: Op | Op[];
-    }[];
+    forms: Form[];
+    type?: string;
+    input?: Record<string, unknown>;
+    output?: Record<string, unknown>;
+    data?: Record<string, unknown>;
 }
 
 export const operations = {
@@ -36,11 +49,8 @@ export const operations = {
 } as const;
 export type Op = (typeof operations)[keyof typeof operations][number];
 
-export const supportedLanguages = ["javascript", "python", "java"] as const;
-export type SupportedLanguage = (typeof supportedLanguages)[number];
-
-export const supportedLibraries: Record<SupportedLanguage, string[]> = {
-    javascript: ["fetch", "axios"],
-    python: ["requests", "httpx"],
-    java: ["okhttp", "apache-httpclient"],
+export const supportedLibraries = {
+    javascript: ["fetch", "node-wot", "modbus-serial"],
+    python: ["requests"],
 };
+export type SupportedLanguage = keyof typeof supportedLibraries;

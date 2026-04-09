@@ -36,11 +36,11 @@ const cliOptions = {
     },
     language: {
         type: "string",
-        short: "ln",
+        short: "l",
     },
     library: {
         type: "string",
-        short: "lb",
+        short: "b",
     },
 } as const;
 const { values: cliParams } = parseArgs({ options: cliOptions });
@@ -81,9 +81,10 @@ async function runCLI() {
                 message: "Select a language:",
                 choices: [
                     new Separator("Algorithmic approach:"),
-                    { name: "JavaScript", value: "javascript" },
-                    { name: "Python", value: "python" },
-                    { name: "Java", value: "java" },
+                    ...Object.keys(supportedLibraries).map((language) => ({
+                        name: language.slice(0, 1).toUpperCase() + language.slice(1),
+                        value: language as SupportedLanguage,
+                    })),
                     new Separator("Generate using AI:"),
                     { name: "Other", value: "other" },
                 ],
