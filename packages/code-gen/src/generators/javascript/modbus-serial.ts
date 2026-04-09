@@ -12,7 +12,9 @@ export function generateModbusSerialCode(
 ): { code: string; extension: string } {
     const affordance = td[affordanceType][affordanceKey];
     const form = affordance.forms.find((f) => {
-        return Array.isArray(f.op) ? f.op.includes(operation) : f.op === operation;
+        const hasOp = Array.isArray(f.op) ? f.op.includes(operation) : f.op === operation;
+        const isModbus = f.href.startsWith("modbus:") || f.href.startsWith("modbus+tcp:");
+        return hasOp && isModbus;
     });
 
     if (!form) {

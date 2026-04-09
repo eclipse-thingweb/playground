@@ -88,7 +88,9 @@ function generateCode({ td, language, library, affordanceType, affordanceKey, op
  * @throws Error if the affordance type, affordance key, or operation is not correct
  */
 function validateAffordanceOperation({ td, affordanceType, affordanceKey, operation }: ExecuteParams) {
-    if (!td[affordanceType][affordanceKey]?.forms.some((form) => form.op === operation)) {
+    if (
+        !td[affordanceType][affordanceKey]?.forms.some((form) => form.op === operation || form.op.includes(operation))
+    ) {
         throw new Error(`Operation ${operation} is not supported for affordance ${affordanceKey}`);
     }
 }

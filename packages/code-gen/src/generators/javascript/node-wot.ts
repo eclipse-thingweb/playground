@@ -1,4 +1,4 @@
-import { AffordanceType, Op, TD } from "../../types.js";
+import { AffordanceType, Form, Op, TD } from "../../types.js";
 
 /**
  * Generates a JavaScript code snippet using the node-wot library
@@ -19,17 +19,36 @@ export function generateNodeWotCode(
         throw new Error(`No form found for operation "${operation}" on ${affordanceType}/${affordanceKey}`);
     }
 
-    const code = buildNodeWotSnippet(td, affordanceKey, operation);
+    const code = buildNodeWotSnippet(td, affordanceKey, operation, form);
     return { code, extension: "js" };
 }
 
-function buildNodeWotSnippet(td: TD, affordanceKey: string, operation: Op): string {
+function buildNodeWotSnippet(td: TD, affordanceKey: string, operation: Op, form: Form): string {
     const lines: string[] = [];
     const indent = "    ";
 
     // Imports
     lines.push(`import { Servient } from "@node-wot/core";`);
-    lines.push(`import { HttpClientFactory } from "@node-wot/binding-http";`);
+
+    const scheme = form.href.split(":")[0];
+    let factoryImport = `import { HttpClientFactory } from "@node-wot/binding-http";`;
+    let factoryClass = "HttpClientFactory";
+
+    if (scheme === "modbus" || scheme === "modbus+tcp") {
+        factoryImport = `import { ModbusClientFactory } from "@node-wot/binding-modbus";`;
+        factoryClass = "ModbusClientFactory";
+    } else if (scheme === "coap" || scheme === "coaps") {
+        factoryImport = `import { CoapClientFactory } from "@node-wot/binding-coap";`;
+        factoryClass = "CoapClientFactory";
+    } else if (scheme === "mqtt" || scheme === "mqtts") {
+        factoryImport = `import { MqttClientFactory } from "@node-wot/binding-mqtt";`;
+        factoryClass = "MqttClientFactory";
+    } else if (scheme === "file") {
+        factoryImport = `import { FileClientFactory } from "@node-wot/binding-file";`;
+        factoryClass = "FileClientFactory";
+    }
+
+    lines.push(factoryImport);
     lines.push(``);
     lines.push(`// Auto-generated code using node-wot`);
     lines.push(`// Operation: ${operation} on "${affordanceKey}"`);
@@ -48,7 +67,7 @@ function buildNodeWotSnippet(td: TD, affordanceKey: string, operation: Op): stri
 
     // Servient setup
     lines.push(`${indent}const servient = new Servient();`);
-    lines.push(`${indent}servient.addClientFactory(new HttpClientFactory());`);
+    lines.push(`${indent}servient.addClientFactory(new ${factoryClass}());`);
     lines.push(``);
     lines.push(`${indent}const wotHelper = await servient.start();`);
     lines.push(`${indent}const thing = await wotHelper.consume(td);`);
