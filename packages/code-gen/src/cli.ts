@@ -10,7 +10,7 @@ import {
     AffordanceType,
 } from "./types.js";
 import { readFileSync } from "node:fs";
-import { extensionMap, extractAffordances } from "./utils.js";
+import { extensionMap, extractAffordances, isConfigSupported } from "./utils.js";
 import { execute } from "./index.js";
 
 const cliOptions = {
@@ -69,10 +69,10 @@ async function runCLI() {
             executeParams.affordanceKey = affordance.affordanceKey;
 
             // Get operation from user
-            const operation = await select({
+            const operation = await select<Op>({
                 message: "Select an operation: ",
                 choices: [
-                    ...affordance.op.map((op) => ({
+                    ...affordance.op.map((op: Op) => ({
                         name: op,
                         value: op,
                     })),
@@ -108,7 +108,7 @@ async function runCLI() {
                 executeParams.library = library;
             } else {
                 // Get the library from user
-                let library = await select({
+                let library = await select<string>({
                     message: "Select a library:",
                     choices: [
                         ...supportedLibraries[language].map((library) => ({
@@ -129,11 +129,16 @@ async function runCLI() {
                 executeParams.library = library;
             }
 
-            const extension = extensionMap[language as SupportedLanguage] || "<ext>";
+            const defaultFileName = isConfigSupported(executeParams.language!, executeParams.library!)
+                ? "output"
+                : "prompt";
+            const extension = isConfigSupported(executeParams.language!, executeParams.library!)
+                ? extensionMap[executeParams.language as SupportedLanguage]
+                : "txt";
 
             // Get output file path from user
             const outputPath = await input({
-                message: `Output file path (default: ./output.${extension}): `,
+                message: `Output file path (default: ./${defaultFileName}.${extension}): `,
             });
             executeParams.output = outputPath;
         }
@@ -174,7 +179,7 @@ runCLI();
  * @returns The selected affordance
  */
 async function getAffordanceFromUser(affordances: TD) {
-    return await select({
+    return await select<{ affordanceType: AffordanceType; affordanceKey: string; op: Op[] }>({
         message: "Select an affordance: ",
         choices: [
             ...affordance_types.flatMap((affordanceType) => {

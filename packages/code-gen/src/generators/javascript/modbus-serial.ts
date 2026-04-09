@@ -1,4 +1,4 @@
-import { AffordanceType, Form, Op, TD } from "../types.js";
+import { AffordanceType, Form, Op, TD } from "../../types.js";
 
 /**
  * Generates a JavaScript code snippet using the modbus-serial library
@@ -64,10 +64,12 @@ function buildModbusSnippet(form: Form, operation: Op, affordanceKey: string): s
     // Operation-specific code
     if (modbusFunction) {
         // Use the explicit modbus function from the form
-        lines.push(...buildModbusFunctionCall(modbusFunction, address, quantity, affordanceKey).map(l => `${indent}${l}`));
+        lines.push(
+            ...buildModbusFunctionCall(modbusFunction, address, quantity, affordanceKey).map((l) => `${indent}${l}`)
+        );
     } else {
         // Infer from the WoT operation type
-        lines.push(...inferModbusCall(operation, address, quantity, affordanceKey).map(l => `${indent}${l}`));
+        lines.push(...inferModbusCall(operation, address, quantity, affordanceKey).map((l) => `${indent}${l}`));
     }
 
     lines.push(``);
@@ -79,7 +81,12 @@ function buildModbusSnippet(form: Form, operation: Op, affordanceKey: string): s
     return lines.join("\n");
 }
 
-function buildModbusFunctionCall(modbusFunction: string, address: number, quantity: number, affordanceKey: string): string[] {
+function buildModbusFunctionCall(
+    modbusFunction: string,
+    address: number,
+    quantity: number,
+    affordanceKey: string
+): string[] {
     const lines: string[] = [];
 
     switch (modbusFunction) {

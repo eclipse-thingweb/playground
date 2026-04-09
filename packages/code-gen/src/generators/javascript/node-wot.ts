@@ -1,4 +1,4 @@
-import { AffordanceType, Op, TD } from "../types.js";
+import { AffordanceType, Op, TD } from "../../types.js";
 
 /**
  * Generates a JavaScript code snippet using the node-wot library

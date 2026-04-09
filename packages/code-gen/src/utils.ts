@@ -64,4 +64,10 @@ export function generatePrompt({
 export const extensionMap: Record<SupportedLanguage, string> = {
     javascript: "js",
     python: "py",
+    java: "java",
+    rust: "rs",
+    go: "go",
+    csharp: "cs",
+    php: "php",
+    ruby: "rb",
 };
