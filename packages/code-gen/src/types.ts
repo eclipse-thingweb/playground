@@ -1,3 +1,12 @@
+export interface ExecuteParams {
+    td: TD;
+    language: string;
+    library: string;
+    affordanceType: AffordanceType;
+    affordanceKey: string;
+    operation: Op;
+}
+
 export type TD = Record<AffordanceType, Record<string, Affordance>>;
 
 export const affordance_types = ["properties", "actions", "events"] as const;
@@ -29,6 +38,7 @@ export type Op = (typeof operations)[keyof typeof operations][number];
 
 export const supportedLanguages = ["javascript", "python", "java"] as const;
 export type SupportedLanguage = (typeof supportedLanguages)[number];
+
 export const supportedLibraries: Record<SupportedLanguage, string[]> = {
     javascript: ["fetch", "axios"],
     python: ["requests", "httpx"],
