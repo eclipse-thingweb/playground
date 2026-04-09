@@ -10,7 +10,7 @@ import {
     AffordanceType,
 } from "./types.js";
 import { readFileSync } from "node:fs";
-import { extractAffordances } from "./utils.js";
+import { extensionMap, extractAffordances } from "./utils.js";
 import { execute } from "./index.js";
 
 const cliOptions = {
@@ -42,6 +42,10 @@ const cliOptions = {
         type: "string",
         short: "b",
     },
+    output: {
+        type: "string",
+        short: "O",
+    },
 } as const;
 const { values: cliParams } = parseArgs({ options: cliOptions });
 
@@ -51,10 +55,10 @@ async function runCLI() {
         // Interactive input
         if (cliParams.interactive) {
             // Get TD from user
-            const tdAddress = await input({
-                message: "Enter the address of the JSON file containing the TD: ",
+            const tdPath = await input({
+                message: "Enter the path to the JSON file containing the TD: ",
             });
-            const td = readFileSync(tdAddress, "utf-8");
+            const td = readFileSync(tdPath, "utf-8");
             const tdJson = JSON.parse(td);
             executeParams.td = tdJson;
 
@@ -124,6 +128,14 @@ async function runCLI() {
                 }
                 executeParams.library = library;
             }
+
+            const extension = extensionMap[language as SupportedLanguage] || "<ext>";
+
+            // Get output file path from user
+            const outputPath = await input({
+                message: `Output file path (default: ./output.${extension}): `,
+            });
+            executeParams.output = outputPath;
         }
         // One line input
         else {
@@ -140,11 +152,15 @@ async function runCLI() {
             executeParams.operation = cliParams.operation as Op;
             executeParams.language = cliParams.language;
             executeParams.library = cliParams.library;
+            executeParams.output = cliParams.output;
         }
 
         const parsedExecuteParams = parseExecuteParams(executeParams);
         execute(parsedExecuteParams);
     } catch (error) {
+        if (error instanceof Error && error.name === "ExitPromptError") {
+            process.exit(0);
+        }
         console.error(error);
         process.exit(1);
     }
@@ -190,8 +206,9 @@ async function getAffordanceFromUser(affordances: TD) {
  * @returns The parsed execute parameters
  */
 function parseExecuteParams(executeParams: Partial<ExecuteParams>): ExecuteParams {
+    const optionalParams: (keyof ExecuteParams)[] = ["output"];
     Object.entries(executeParams).forEach(([key, value]) => {
-        if (!value) {
+        if (!value && !optionalParams.includes(key as keyof ExecuteParams)) {
             throw new Error(`Missing parameter: ${key}`);
         }
     });

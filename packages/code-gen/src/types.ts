@@ -5,6 +5,7 @@ export interface ExecuteParams {
     affordanceType: AffordanceType;
     affordanceKey: string;
     operation: Op;
+    output?: string;
 }
 
 export type TD = Record<AffordanceType, Record<string, Affordance>>;
