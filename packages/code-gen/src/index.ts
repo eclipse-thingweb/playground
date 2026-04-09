@@ -6,17 +6,26 @@ import { generateNodeWotCode } from "./generators/node-wot.js";
 import { generateModbusSerialCode } from "./generators/modbus-serial.js";
 import { generateRequestsCode } from "./generators/requests.js";
 
-export function execute(params: ExecuteParams) {
+type ExecutionResult =
+    | {
+          code: string;
+      }
+    | {
+          prompt: string;
+      };
+
+export function execute(params: ExecuteParams): ExecutionResult {
     validateAffordanceOperation(params);
-    const { td, language, library, affordanceType, affordanceKey, operation } = params;
+    const { td, language, library, affordanceType, affordanceKey, operation, output } = params;
 
     if (isConfigSupported(language, library)) {
         const { code, extension } = generateCode(params);
-        const fileName = `output.${extension}`;
+        const fileName = output || `./output.${extension}`;
         writeFileSync(fileName, code);
-        console.log(`Code generated successfully: ./${fileName}`);
+        console.log(`Code generated successfully: ${fileName}`);
+        return { code };
     } else {
-        generatePrompt({
+        const prompt = generatePrompt({
             td,
             language,
             library,
@@ -24,6 +33,12 @@ export function execute(params: ExecuteParams) {
             affordanceKey,
             operation,
         });
+        const promptFile = output || "./prompt.txt";
+        writeFileSync(promptFile, prompt);
+        console.log(
+            `The current configuration is still in progress. Please upload the generated ${promptFile} to your LLM to get the code snippet. \n`
+        );
+        return { prompt };
     }
 }
 

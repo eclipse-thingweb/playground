@@ -1,5 +1,4 @@
-import { writeFileSync } from "fs";
-import { affordance_types, AffordanceType, ExecuteParams, Op, supportedLibraries, TD } from "./types.js";
+import { affordance_types, ExecuteParams, SupportedLanguage, supportedLibraries, TD } from "./types.js";
 
 /**
  * Checks if the given language and library combination is supported for the algorithmic approach.
@@ -49,10 +48,7 @@ export function generatePrompt({
     affordanceKey,
     operation,
 }: ExecuteParams): string {
-    console.log(
-        "The current configuration is still in progress. Please upload the generated ./prompt.txt to your LLM to get the code snippet. \n"
-    );
-    const prompt = `You are a code generation assistant. Your task is to generate a code snippet that interacts with a Thing Description (TD) using the ${library} library in ${language}.
+    return `You are a code generation assistant. Your task is to generate a code snippet that interacts with a Thing Description (TD) using the ${library} library in ${language}.
     
     The TD is as follows:
     ${JSON.stringify(td, null, 2)}    
@@ -60,6 +56,12 @@ export function generatePrompt({
     The affordance to interact with is: ${affordanceType}/${affordanceKey}
     The operation to perform is: ${operation}
     `;
-    writeFileSync("./prompt.txt", prompt);
-    return prompt;
 }
+
+/**
+ * Maps supported languages to their file extensions
+ */
+export const extensionMap: Record<SupportedLanguage, string> = {
+    javascript: "js",
+    python: "py",
+};
