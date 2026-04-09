@@ -12,7 +12,9 @@ export function generateCSharpHttpClientCode(
 ): { code: string; extension: string } {
     const affordance = td[affordanceType][affordanceKey];
     const form = affordance.forms.find((f) => {
-        return Array.isArray(f.op) ? f.op.includes(operation) : f.op === operation;
+        const hasOp = Array.isArray(f.op) ? f.op.includes(operation) : f.op === operation;
+        const isHttp = f.href.startsWith("http://") || f.href.startsWith("https://");
+        return hasOp && isHttp;
     });
 
     if (!form) {

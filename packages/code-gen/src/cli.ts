@@ -183,24 +183,27 @@ async function getAffordanceFromUser(affordances: TD) {
         message: "Select an affordance: ",
         choices: [
             ...affordance_types.flatMap((affordanceType) => {
-                return [
-                    new Separator(affordanceType.charAt(0).toUpperCase() + affordanceType.slice(1) + ":"),
-                    ...Object.keys(affordances[affordanceType]).map((affordanceKey) => ({
-                        name: affordanceKey,
-                        value: {
-                            affordanceType,
-                            affordanceKey,
-                            op: affordances[affordanceType][affordanceKey].forms.reduce((acc, form) => {
-                                if (Array.isArray(form.op)) {
-                                    acc.push(...form.op);
-                                } else {
-                                    acc.push(form.op);
-                                }
-                                return acc;
-                            }, [] as Op[]),
-                        },
-                    })),
-                ];
+                const affordanceKeys = Object.keys(affordances[affordanceType as keyof TD]);
+                return affordanceKeys.length > 0
+                    ? [
+                          new Separator(affordanceType.charAt(0).toUpperCase() + affordanceType.slice(1) + ":"),
+                          ...affordanceKeys.map((affordanceKey) => ({
+                              name: affordanceKey,
+                              value: {
+                                  affordanceType,
+                                  affordanceKey,
+                                  op: affordances[affordanceType][affordanceKey].forms.reduce((acc, form) => {
+                                      if (Array.isArray(form.op)) {
+                                          acc.push(...form.op);
+                                      } else {
+                                          acc.push(form.op);
+                                      }
+                                      return acc;
+                                  }, [] as Op[]),
+                              },
+                          })),
+                      ]
+                    : [];
             }),
         ],
     });
