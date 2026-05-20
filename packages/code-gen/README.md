@@ -1,0 +1,1 @@
+-   to add params when running the script write them after --

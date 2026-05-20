@@ -1,96 +1,117 @@
 import { writeFileSync } from "fs";
-import { ExecuteParams } from "./types.js";
-import { generatePrompt, isConfigSupported } from "./utils.js";
-import { generateFetchCode } from "./generators/javascript/fetch.js";
-import { generateNodeWotCode } from "./generators/javascript/node-wot.js";
-import { generateModbusSerialCode } from "./generators/javascript/modbus-serial.js";
-import { generateRequestsCode } from "./generators/python/requests.js";
-import { generateJavaHttpClientCode } from "./generators/java/httpclient.js";
-import { generateCSharpHttpClientCode } from "./generators/csharp/httpclient.js";
-import { generateRustReqwestCode } from "./generators/rust/reqwest.js";
-import { generateGoNetHttpCode } from "./generators/go/net-http.js";
-import { generatePhpCurlCode } from "./generators/php/curl.js";
-import { generateRubyNetHttpCode } from "./generators/ruby/net-http.js";
+import { GenerateCodeParams, GenerateCodeResult, LANGUAGES_SUPPORT, PROTOCOL } from "./types.js";
+import { getProtocolFromHref } from "./cli.js";
 
-type ExecutionResult =
-    | {
-          code: string;
-      }
-    | {
-          prompt: string;
-      };
+export function generateCode(params: GenerateCodeParams): GenerateCodeResult {
+    try {
+        // Required for the CLI
+        validateParams(params);
+        const { td, language, library, affordanceType, affordanceKey, operation } = params;
 
-export function execute(params: ExecuteParams): ExecutionResult {
-    validateAffordanceOperation(params);
-    const { td, language, library, affordanceType, affordanceKey, operation, output } = params;
+        // Get the forms for the affordance
+        const forms = td[affordanceType][affordanceKey].forms;
+        if (!forms) {
+            throw new Error(`The ${affordanceType} ${affordanceKey} does not exist in the TD`);
+        }
 
-    if (isConfigSupported(language, library)) {
-        const { code, extension } = generateCode(params);
-        const fileName = output || `./output.${extension}`;
-        writeFileSync(fileName, code);
-        console.log(`Code generated successfully: ${fileName}`);
-        return { code };
-    } else {
-        const prompt = generatePrompt({
-            td,
-            language,
-            library,
-            affordanceType,
-            affordanceKey,
-            operation,
-        });
-        const promptFile = output || "./prompt.txt";
-        writeFileSync(promptFile, prompt);
-        console.log(
-            `The current configuration is still in progress. Please upload the generated ${promptFile} to your LLM to get the code snippet. \n`
+        // Filter forms for the given operation
+        const availableFormsForOperation = forms.filter((form) => form.op === operation || form.op.includes(operation));
+        if (availableFormsForOperation.length === 0) {
+            throw new Error(`${operation} is not supported for the ${affordanceType} ${affordanceKey}`);
+        }
+
+        // The library does not support the algorithmic approach
+        if (LANGUAGES_SUPPORT[language]?.libraries[library] === undefined) {
+            const prompt = generatePrompt({
+                td: td,
+                language,
+                library,
+                affordanceType,
+                affordanceKey,
+                operation,
+            });
+            return { prompt };
+        }
+
+        // Filter forms for the given protocol support
+        const availableFormsForProtocol = availableFormsForOperation.filter((form) =>
+            isProtocolSupported(language, library, getProtocolFromHref(form.href))
         );
-        return { prompt };
+
+        if (availableFormsForProtocol.length > 0) {
+            return { code: execute(params) };
+        } else {
+            throw new Error(
+                `The ${library} library does not support the protocol(s) used by the ${affordanceType} ${affordanceKey} for the ${operation} operation. Supported protocols for this library are: ${LANGUAGES_SUPPORT[
+                    language
+                ].libraries[library].join(
+                    ", "
+                )}. Available protocols for this affordance are: ${availableFormsForOperation
+                    .map((form) => getProtocolFromHref(form.href))
+                    .join(", ")}.`
+            );
+        }
+    } catch (error) {
+        console.error(error instanceof Error ? error.message : JSON.stringify(error, null, 2));
+        process.exit(1);
     }
+}
+
+/**
+ * Checks if the given language and library combination is supported for the algorithmic approach.
+ * @returns True if the language and library combination is supported, false otherwise.
+ */
+export function isProtocolSupported(language: string, library: string, protocol: string): boolean {
+    return !!LANGUAGES_SUPPORT[language]?.libraries[library]?.some((supportedProtocol) =>
+        supportedProtocol.includes(protocol)
+    );
 }
 
 /**
  * Dispatches code generation to the appropriate library-specific generator
  * @returns The generated code and file extension
  */
-function generateCode({ td, language, library, affordanceType, affordanceKey, operation }: ExecuteParams): {
-    code: string;
-    extension: string;
-} {
+function execute({ td, language, library, affordanceType, affordanceKey, operation }: GenerateCodeParams): string {
     const key = `${language}:${library}`;
     switch (key) {
-        case "javascript:fetch":
-            return generateFetchCode(td, affordanceType, affordanceKey, operation);
-        case "javascript:node-wot":
-            return generateNodeWotCode(td, affordanceType, affordanceKey, operation);
-        case "javascript:modbus-serial":
-            return generateModbusSerialCode(td, affordanceType, affordanceKey, operation);
-        case "python:requests":
-            return generateRequestsCode(td, affordanceType, affordanceKey, operation);
-        case "java:httpclient":
-            return generateJavaHttpClientCode(td, affordanceType, affordanceKey, operation);
-        case "csharp:httpclient":
-            return generateCSharpHttpClientCode(td, affordanceType, affordanceKey, operation);
-        case "rust:reqwest":
-            return generateRustReqwestCode(td, affordanceType, affordanceKey, operation);
-        case "go:net-http":
-            return generateGoNetHttpCode(td, affordanceType, affordanceKey, operation);
-        case "php:curl":
-            return generatePhpCurlCode(td, affordanceType, affordanceKey, operation);
-        case "ruby:net-http":
-            return generateRubyNetHttpCode(td, affordanceType, affordanceKey, operation);
         default:
             throw new Error(`No generator available for ${language} with library "${library}"`);
     }
 }
 
 /**
- * Validates the correctness of the affordance type, affordance key, and operation
- * @throws Error if the affordance type, affordance key, or operation is not correct
+ * Parses the execute parameters and throws an error if any of the parameters are missing
  */
-function validateAffordanceOperation({ td, affordanceType, affordanceKey, operation }: ExecuteParams) {
-    if (
-        !td[affordanceType][affordanceKey]?.forms.some((form) => form.op === operation || form.op.includes(operation))
-    ) {
-        throw new Error(`Operation ${operation} is not supported for affordance ${affordanceKey}`);
-    }
+function validateParams(executeParams: GenerateCodeParams): void {
+    const optionalParams: (keyof GenerateCodeParams)[] = ["output", "library"];
+    Object.entries(executeParams).forEach(([key, value]) => {
+        if (!value && !optionalParams.includes(key as keyof GenerateCodeParams)) {
+            throw new Error(
+                `Missing parameter: ${key}. To run the CLI in interactive mode, use the --interactive or -i flag.`
+            );
+        }
+    });
+}
+
+/**
+ * Generates a prompt for an LLM to generate a code snippet
+ * @returns The generated prompt
+ * @file ./prompt.txt - generated prompt for LLM
+ */
+export function generatePrompt({
+    td: td,
+    language,
+    library,
+    affordanceType,
+    affordanceKey,
+    operation,
+}: GenerateCodeParams): string {
+    return `You are a code generation assistant. Your task is to generate a code snippet that interacts with a Thing Description (TD) using the ${library} library in ${language}.
+    
+    The TD is as follows:
+    ${JSON.stringify(td, null, 2)}    
+
+    The affordance to interact with is: ${affordanceType}/${affordanceKey}
+    The operation to perform is: ${operation}
+    `;
 }
