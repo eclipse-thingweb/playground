@@ -1,205 +1,287 @@
 import { parseArgs } from "node:util";
 import { input, select, Separator } from "@inquirer/prompts";
 import {
-    affordance_types,
-    SupportedLanguage,
-    supportedLibraries,
-    TD,
+    AFFORDANCE_TYPES,
+    Affordances,
     Op,
-    ExecuteParams,
+    GenerateCodeParams,
     AffordanceType,
+    Affordance,
+    Form,
+    LANGUAGES_SUPPORT,
 } from "./types.js";
-import { readFileSync } from "node:fs";
-import { extensionMap, extractAffordances, isConfigSupported } from "./utils.js";
-import { execute } from "./index.js";
+import { readFileSync, writeFileSync } from "node:fs";
+import { generateCode } from "./index.js";
 
-const cliOptions = {
-    interactive: {
-        type: "boolean",
-        short: "i",
-    },
-    td: {
-        type: "string",
-        short: "t",
-    },
-    "affordance-type": {
-        type: "string",
-        short: "a",
-    },
-    "affordance-key": {
-        type: "string",
-        short: "k",
-    },
-    operation: {
-        type: "string",
-        short: "o",
-    },
-    language: {
-        type: "string",
-        short: "l",
-    },
-    library: {
-        type: "string",
-        short: "b",
-    },
-    output: {
-        type: "string",
-        short: "O",
-    },
-} as const;
-const { values: cliParams } = parseArgs({ options: cliOptions });
+(async () => {
+    const cliOptions = {
+        interactive: {
+            type: "boolean",
+            short: "i",
+        },
+        td: {
+            type: "string",
+            short: "t",
+        },
+        "affordance-type": {
+            type: "string",
+            short: "a",
+        },
+        "affordance-key": {
+            type: "string",
+            short: "k",
+        },
+        operation: {
+            type: "string",
+            short: "o",
+        },
+        language: {
+            type: "string",
+            short: "l",
+        },
+        library: {
+            type: "string",
+            short: "b",
+        },
+        output: {
+            type: "string",
+            short: "O",
+        },
+    } as const;
+    const { values: userInputParams } = parseArgs({ options: cliOptions });
 
-async function runCLI() {
-    const executeParams: Partial<ExecuteParams> = {};
+    const generateCodeParams: Partial<GenerateCodeParams> = {
+        output: "./",
+    };
+
+    let generatesUknownLibraryPrompt = false;
+    let generatesUknownProtocolPrompt = false;
+
     try {
         // Interactive input
-        if (cliParams.interactive) {
+        if (userInputParams.interactive) {
             // Get TD from user
             const tdPath = await input({
                 message: "Enter the path to the JSON file containing the TD: ",
             });
             const td = readFileSync(tdPath, "utf-8");
             const tdJson = JSON.parse(td);
-            executeParams.td = tdJson;
+            generateCodeParams.td = tdJson;
 
             // Get affordance from user
-            const affordances = extractAffordances(tdJson);
+            const affordances = extractAvailableAffordances(tdJson);
             const affordance = await getAffordanceFromUser(affordances);
-            executeParams.affordanceType = affordance.affordanceType;
-            executeParams.affordanceKey = affordance.affordanceKey;
+            generateCodeParams.affordanceType = affordance.affordanceType;
+            generateCodeParams.affordanceKey = affordance.affordanceKey;
 
             // Get operation from user
+            const availableOperations = Array.from(
+                new Set(affordance.forms.flatMap((form) => (Array.isArray(form.op) ? form.op : [form.op])))
+            );
             const operation = await select<Op>({
                 message: "Select an operation: ",
-                choices: [
-                    ...affordance.op.map((op: Op) => ({
-                        name: op,
-                        value: op,
-                    })),
-                ],
+                choices: availableOperations.map((op: Op) => ({
+                    name: op,
+                    value: op,
+                })),
             });
-            executeParams.operation = operation;
+            generateCodeParams.operation = operation;
 
             // Get language from user
-            const language = await select<SupportedLanguage | "other">({
+            const language = await select({
                 message: "Select a language:",
                 choices: [
                     new Separator("Algorithmic approach:"),
-                    ...Object.keys(supportedLibraries).map((language) => ({
-                        name: language.slice(0, 1).toUpperCase() + language.slice(1),
-                        value: language as SupportedLanguage,
+                    ...Object.keys(LANGUAGES_SUPPORT).map((language) => ({
+                        name: capitalizeFirstLetter(language),
+                        value: language,
                     })),
                     new Separator("Generate using AI:"),
                     { name: "Other", value: "other" },
                 ],
             });
-            executeParams.language = language;
+            generateCodeParams.language = language;
 
+            // Get the library from user
+            const availableProtocols = affordance.forms
+                .filter((form) => form.op === operation || form.op.includes(operation))
+                .map((form) => getProtocolFromHref(form.href));
+
+            // Both the language and library are not supported yet
+            // Genereate a prompt for an LLM to generate the code snippet
             if (language === "other") {
-                // Get the custom language and library from user
+                generatesUknownLibraryPrompt = true;
                 const otherLanguage = await input({
                     message: "Enter the language name: ",
                 });
-                executeParams.language = otherLanguage;
+                generateCodeParams.language = otherLanguage;
 
                 const library = await input({
                     message: "Enter the library name: ",
                 });
-                executeParams.library = library;
+                generateCodeParams.library = library;
             } else {
-                // Get the library from user
-                let library = await select<string>({
-                    message: "Select a library:",
-                    choices: [
-                        ...supportedLibraries[language].map((library) => ({
-                            name: library,
-                            value: library,
-                        })),
-                        new Separator("Generate using AI:"),
-                        { name: "Other", value: "other" },
-                    ],
-                });
-
-                if (library === "other") {
-                    // Generate a prompt for an LLM to generate the code snippet
-                    library = await input({
-                        message: "Enter the library name: ",
+                const librariesForLanguage = LANGUAGES_SUPPORT[language].libraries;
+                const { supportedLibraries, unsupportedLibraries } = Object.entries(librariesForLanguage).reduce(
+                    (acc, [name, protocols]) =>
+                        protocols.some((protocol) => availableProtocols.includes(protocol))
+                            ? { ...acc, supportedLibraries: [...acc.supportedLibraries, name] }
+                            : { ...acc, unsupportedLibraries: [...acc.unsupportedLibraries, name] },
+                    {
+                        supportedLibraries: [] as string[],
+                        unsupportedLibraries: [] as string[],
+                    }
+                );
+                // Protocols not supported for any library
+                if (supportedLibraries.length === 0) {
+                    generatesUknownProtocolPrompt = true;
+                    console.warn(
+                        `No libraries found for ${language} that support the protocol(s) used in the TD. A prompt will be generated for an LLM to generate the code snippet.`
+                    );
+                } else {
+                    let library = await select<string>({
+                        message: "Select a library:",
+                        choices: [
+                            ...supportedLibraries.map((library) => ({
+                                name: library,
+                                value: library,
+                            })),
+                            new Separator("Generate using AI:"),
+                            { name: "Other", value: "other" },
+                            new Separator("Protocol not supported:"),
+                            ...unsupportedLibraries.map((library) => ({
+                                name: library,
+                                value: library,
+                                disabled: true,
+                            })),
+                        ],
                     });
+
+                    // The library is not supported yet
+                    // Genereate a prompt for an LLM to generate the code snippet
+                    if (library === "other") {
+                        // Generate a prompt for an LLM to generate the code snippet
+                        generatesUknownLibraryPrompt = true;
+                        library = await input({
+                            message: "Enter the library name: ",
+                        });
+                    }
+                    generateCodeParams.library = library;
                 }
-                executeParams.library = library;
+
+                const outputFolderPath = await input({
+                    message: `Output folder path (default: ./): `,
+                });
+                generateCodeParams.output = outputFolderPath || "./";
             }
-
-            const defaultFileName = isConfigSupported(executeParams.language!, executeParams.library!)
-                ? "output"
-                : "prompt";
-            const extension = isConfigSupported(executeParams.language!, executeParams.library!)
-                ? extensionMap[executeParams.language as SupportedLanguage]
-                : "txt";
-
-            // Get output file path from user
-            const outputPath = await input({
-                message: `Output file path (default: ./${defaultFileName}.${extension}): `,
-            });
-            executeParams.output = outputPath;
         }
         // One line input
         else {
-            const tdAddress = cliParams.td;
+            const tdAddress = userInputParams.td;
             if (!tdAddress) {
-                throw new Error("Missing required flag: --td");
+                throw new Error(
+                    "Missing required flag: --td. To run the CLI in interactive mode, use the --interactive or -i flag."
+                );
             }
             const td = readFileSync(tdAddress, "utf-8");
             const tdJson = JSON.parse(td);
 
-            executeParams.td = tdJson;
-            executeParams.affordanceType = cliParams["affordance-type"] as AffordanceType;
-            executeParams.affordanceKey = cliParams["affordance-key"];
-            executeParams.operation = cliParams.operation as Op;
-            executeParams.language = cliParams.language;
-            executeParams.library = cliParams.library;
-            executeParams.output = cliParams.output;
+            generateCodeParams.td = tdJson;
+            generateCodeParams.affordanceType = userInputParams["affordance-type"] as AffordanceType;
+            generateCodeParams.affordanceKey = userInputParams["affordance-key"];
+            generateCodeParams.operation = userInputParams.operation as Op;
+            generateCodeParams.language = userInputParams.language;
+            generateCodeParams.library = userInputParams.library;
+            generateCodeParams.output = userInputParams.output;
         }
 
-        const parsedExecuteParams = parseExecuteParams(executeParams);
-        execute(parsedExecuteParams);
+        // Output file details
+        const outputFileName = generatesUknownLibraryPrompt ? "prompt" : "output";
+        const outputFileExtension = generatesUknownLibraryPrompt
+            ? "txt"
+            : LANGUAGES_SUPPORT[generateCodeParams.language!].fileExtension;
+        const fullFileName = `${outputFileName}.${outputFileExtension}`;
+        const fullPath = `${generateCodeParams.output}/${fullFileName}`;
+
+        let generationText: string;
+        if (generatesUknownProtocolPrompt) {
+            generationText = generateProtocolNotSupportedPrompt(generateCodeParams as GenerateCodeParams);
+        } else {
+            const generationResult = generateCode(generateCodeParams as GenerateCodeParams);
+
+            if ("code" in generationResult) {
+                console.log(`Code generated successfully: ${fullFileName}`);
+                generationText = generationResult.code;
+            } else {
+                console.log(
+                    `The current configuration is still in progress. Please upload the generated ${fullFileName} to your LLM to get the code snippet. \n`
+                );
+                generationText = generationResult.prompt;
+            }
+        }
+
+        writeFileSync(fullPath, generationText);
     } catch (error) {
+        // Manual exit by the user
         if (error instanceof Error && error.name === "ExitPromptError") {
             process.exit(0);
         }
-        console.error(error);
+        console.error(error instanceof Error ? error.message : error);
+        process.exit(1);
+    }
+})();
+
+function capitalizeFirstLetter(str: string): string {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+/**
+ * Extracts affordances from a Thing Description
+ * @param td The Thing Description as a JSON object
+ * @returns An object containing the affordances grouped by type
+ */
+function extractAvailableAffordances(td: Affordances): Affordances {
+    try {
+        const affordances: Affordances = {
+            properties: {},
+            actions: {},
+            events: {},
+        };
+        for (const affordance_type of AFFORDANCE_TYPES) {
+            if (td[affordance_type]) {
+                affordances[affordance_type] = td[affordance_type];
+            }
+        }
+        return affordances;
+    } catch (error) {
+        console.error("Invalid TD: ", error);
         process.exit(1);
     }
 }
 
-runCLI();
-
 /**
- * Gets an affordance from the user
+ * Lets the user select an affordance from the available affordances in the TD
  * @param affordances The affordances to choose from
  * @returns The selected affordance
  */
-async function getAffordanceFromUser(affordances: TD) {
-    return await select<{ affordanceType: AffordanceType; affordanceKey: string; op: Op[] }>({
+async function getAffordanceFromUser(affordances: Affordances) {
+    return await select<{ affordanceType: AffordanceType; affordanceKey: string; forms: Form[] }>({
         message: "Select an affordance: ",
         choices: [
-            ...affordance_types.flatMap((affordanceType) => {
-                const affordanceKeys = Object.keys(affordances[affordanceType as keyof TD]);
+            ...AFFORDANCE_TYPES.flatMap((affordanceType) => {
+                const separatorTitle = capitalizeFirstLetter(affordanceType) + ":";
+
+                const affordanceKeys = Object.keys(affordances[affordanceType as keyof Affordances]);
+
                 return affordanceKeys.length > 0
                     ? [
-                          new Separator(affordanceType.charAt(0).toUpperCase() + affordanceType.slice(1) + ":"),
+                          new Separator(separatorTitle),
                           ...affordanceKeys.map((affordanceKey) => ({
                               name: affordanceKey,
                               value: {
                                   affordanceType,
                                   affordanceKey,
-                                  op: affordances[affordanceType][affordanceKey].forms.reduce((acc, form) => {
-                                      if (Array.isArray(form.op)) {
-                                          acc.push(...form.op);
-                                      } else {
-                                          acc.push(form.op);
-                                      }
-                                      return acc;
-                                  }, [] as Op[]),
+                                  forms: affordances[affordanceType][affordanceKey].forms,
                               },
                           })),
                       ]
@@ -209,16 +291,16 @@ async function getAffordanceFromUser(affordances: TD) {
     });
 }
 
-/**
- * Parses the execute parameters and throws an error if any of the parameters are missing
- * @returns The parsed execute parameters
- */
-function parseExecuteParams(executeParams: Partial<ExecuteParams>): ExecuteParams {
-    const optionalParams: (keyof ExecuteParams)[] = ["output"];
-    Object.entries(executeParams).forEach(([key, value]) => {
-        if (!value && !optionalParams.includes(key as keyof ExecuteParams)) {
-            throw new Error(`Missing parameter: ${key}`);
-        }
-    });
-    return executeParams as ExecuteParams;
+export function getProtocolFromHref(href: string): string {
+    return href.split(":")[0].split(".")[0].split("+")[0];
+}
+
+function generateProtocolNotSupportedPrompt(generateParams: GenerateCodeParams): string {
+    return `Find a library in ${generateParams.language} that supports the protocol(s) used in the TD for the ${
+        generateParams.affordanceType
+    } ${generateParams.affordanceKey} and the ${
+        generateParams.operation
+    } operation and generate a code snippet for the operation.
+
+    TD: ${JSON.stringify(generateParams.td, null, 2)}`;
 }
