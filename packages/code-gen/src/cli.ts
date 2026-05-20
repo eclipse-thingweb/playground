@@ -287,6 +287,11 @@ async function getAffordanceFromUser(affordances: Affordances) {
     });
 }
 
+/**
+ * Extracts the protocol from a given href
+ * @param href The href string
+ * @returns The protocol extracted from the href
+ */
 export function getProtocolFromHref(href: string): string {
     return href.split(":")[0].split(".")[0].split("+")[0];
 }
