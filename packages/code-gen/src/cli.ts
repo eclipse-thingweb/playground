@@ -6,7 +6,6 @@ import {
     Op,
     GenerateCodeParams,
     AffordanceType,
-    Affordance,
     Form,
     LANGUAGES_SUPPORT,
 } from "./types.js";
@@ -15,10 +14,6 @@ import { generateCode } from "./index.js";
 
 (async () => {
     const cliOptions = {
-        interactive: {
-            type: "boolean",
-            short: "i",
-        },
         td: {
             type: "string",
             short: "t",
@@ -59,7 +54,7 @@ import { generateCode } from "./index.js";
 
     try {
         // Interactive input
-        if (userInputParams.interactive) {
+        if (userInputParams === undefined || Object.keys(userInputParams).length === 0) {
             // Get TD from user
             const tdPath = await input({
                 message: "Enter the path to the JSON file containing the TD: ",
@@ -196,10 +191,11 @@ import { generateCode } from "./index.js";
         }
 
         // Output file details
-        const outputFileName = generatesUknownLibraryPrompt ? "prompt" : "output";
-        const outputFileExtension = generatesUknownLibraryPrompt
-            ? "txt"
-            : LANGUAGES_SUPPORT[generateCodeParams.language!].fileExtension;
+        const outputFileName = generatesUknownLibraryPrompt || generatesUknownProtocolPrompt ? "prompt" : "output";
+        const outputFileExtension =
+            generatesUknownLibraryPrompt || generatesUknownProtocolPrompt
+                ? "txt"
+                : LANGUAGES_SUPPORT[generateCodeParams.language!].fileExtension;
         const fullFileName = `${outputFileName}.${outputFileExtension}`;
         const fullPath = `${generateCodeParams.output}/${fullFileName}`;
 
@@ -210,11 +206,11 @@ import { generateCode } from "./index.js";
             const generationResult = generateCode(generateCodeParams as GenerateCodeParams);
 
             if ("code" in generationResult) {
-                console.log(`Code generated successfully: ${fullFileName}`);
+                console.log(`Code generated successfully: ${fullPath}`);
                 generationText = generationResult.code;
             } else {
                 console.log(
-                    `The current configuration is still in progress. Please upload the generated ${fullFileName} to your LLM to get the code snippet. \n`
+                    `The current configuration is still in progress. Please upload the generated ${fullPath} to your LLM to get the code snippet. \n`
                 );
                 generationText = generationResult.prompt;
             }
@@ -300,7 +296,7 @@ function generateProtocolNotSupportedPrompt(generateParams: GenerateCodeParams):
         generateParams.affordanceType
     } ${generateParams.affordanceKey} and the ${
         generateParams.operation
-    } operation and generate a code snippet for the operation.
+    } operation and generate a code snippet for the operation. Don't forget to include all the required imports for the library including the protocol binding.
 
     TD: ${JSON.stringify(generateParams.td, null, 2)}`;
 }

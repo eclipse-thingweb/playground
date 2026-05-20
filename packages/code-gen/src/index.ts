@@ -1,9 +1,11 @@
-import { writeFileSync } from "fs";
-import { GenerateCodeParams, GenerateCodeResult, LANGUAGES_SUPPORT, PROTOCOL } from "./types.js";
+import { GenerateCodeParams, GenerateCodeResult, LANGUAGES_SUPPORT } from "./types.js";
 import { getProtocolFromHref } from "./cli.js";
+import { GENERATOR_REGISTRY } from "./generators/index.js";
+import { selectForm } from "./generators/helpers.js";
 
 export function generateCode(params: GenerateCodeParams): GenerateCodeResult {
     try {
+        console.log("Generating code");
         // Required for the CLI
         validateParams(params);
         const { td, language, library, affordanceType, affordanceKey, operation } = params;
@@ -39,7 +41,20 @@ export function generateCode(params: GenerateCodeParams): GenerateCodeResult {
         );
 
         if (availableFormsForProtocol.length > 0) {
-            return { code: execute(params) };
+            const key = `${language}:${library}`;
+            const generator = GENERATOR_REGISTRY[key];
+            if (!generator) {
+                throw new Error(`No generator available for ${language} with library "${library}"`);
+            }
+
+            const forms = td[affordanceType][affordanceKey].forms;
+            const supportedProtocols = LANGUAGES_SUPPORT[language].libraries[library];
+            const form = selectForm(forms, operation, supportedProtocols);
+            const affordance = td[affordanceType][affordanceKey];
+
+            console.log("using generator for", key);
+            const code = generator({ td, affordanceType, affordanceKey, operation, form, affordance });
+            return { code };
         } else {
             throw new Error(
                 `The ${library} library does not support the protocol(s) used by the ${affordanceType} ${affordanceKey} for the ${operation} operation. Supported protocols for this library are: ${LANGUAGES_SUPPORT[
@@ -65,18 +80,6 @@ export function isProtocolSupported(language: string, library: string, protocol:
     return !!LANGUAGES_SUPPORT[language]?.libraries[library]?.some((supportedProtocol) =>
         supportedProtocol.includes(protocol)
     );
-}
-
-/**
- * Dispatches code generation to the appropriate library-specific generator
- * @returns The generated code and file extension
- */
-function execute({ td, language, library, affordanceType, affordanceKey, operation }: GenerateCodeParams): string {
-    const key = `${language}:${library}`;
-    switch (key) {
-        default:
-            throw new Error(`No generator available for ${language} with library "${library}"`);
-    }
 }
 
 /**
