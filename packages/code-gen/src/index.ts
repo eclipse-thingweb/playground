@@ -1,11 +1,13 @@
 import { GenerateCodeParams, GenerateCodeResult, LANGUAGES_SUPPORT } from "./types.js";
-import { getProtocolFromHref } from "./cli.js";
+import { getProtocolFromHref } from "./generators/helpers.js";
 import { GENERATOR_REGISTRY } from "./generators/index.js";
-import { selectForm } from "./generators/helpers.js";
+import { selectForm, getEffectiveOps } from "./generators/helpers.js";
+
+export { LANGUAGES_SUPPORT, AFFORDANCE_TYPES, OPERATIONS, PROTOCOL } from "./types.js";
+export type { GenerateCodeParams, GenerateCodeResult } from "./types.js";
 
 export function generateCode(params: GenerateCodeParams): GenerateCodeResult {
     try {
-        console.log("Generating code");
         // Required for the CLI
         validateParams(params);
         const { td, language, library, affordanceType, affordanceKey, operation } = params;
@@ -17,7 +19,11 @@ export function generateCode(params: GenerateCodeParams): GenerateCodeResult {
         }
 
         // Filter forms for the given operation
-        const availableFormsForOperation = forms.filter((form) => form.op === operation || form.op.includes(operation));
+        const affordance = td[affordanceType][affordanceKey];
+        const availableFormsForOperation = forms.filter((form) => {
+            const ops = getEffectiveOps(form, affordanceType, affordance);
+            return ops.includes(operation);
+        });
         if (availableFormsForOperation.length === 0) {
             throw new Error(`${operation} is not supported for the ${affordanceType} ${affordanceKey}`);
         }
@@ -25,7 +31,7 @@ export function generateCode(params: GenerateCodeParams): GenerateCodeResult {
         // The library does not support the algorithmic approach
         if (LANGUAGES_SUPPORT[language]?.libraries[library] === undefined) {
             const prompt = generatePrompt({
-                td: td,
+                td,
                 language,
                 library,
                 affordanceType,
@@ -49,8 +55,7 @@ export function generateCode(params: GenerateCodeParams): GenerateCodeResult {
 
             const forms = td[affordanceType][affordanceKey].forms;
             const supportedProtocols = LANGUAGES_SUPPORT[language].libraries[library];
-            const form = selectForm(forms, operation, supportedProtocols);
-            const affordance = td[affordanceType][affordanceKey];
+            const form = selectForm(forms, operation, supportedProtocols, affordanceType, affordance);
 
             console.log("using generator for", key);
             const code = generator({ td, affordanceType, affordanceKey, operation, form, affordance });
@@ -67,8 +72,7 @@ export function generateCode(params: GenerateCodeParams): GenerateCodeResult {
             );
         }
     } catch (error) {
-        console.error(error instanceof Error ? error.message : JSON.stringify(error, null, 2));
-        process.exit(1);
+        throw error instanceof Error ? error : new Error(JSON.stringify(error, null, 2));
     }
 }
 

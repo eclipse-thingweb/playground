@@ -23,6 +23,8 @@ export type AffordanceType = (typeof AFFORDANCE_TYPES)[number];
 export interface Affordance {
     forms: Form[];
     type?: string;
+    readOnly?: boolean;
+    writeOnly?: boolean;
     input?: Record<string, unknown>;
     output?: Record<string, unknown>;
     data?: Record<string, unknown>;
@@ -30,7 +32,7 @@ export interface Affordance {
 
 export interface Form {
     href: string;
-    op: Op | Op[];
+    op?: Op | Op[];
     "htv:methodName"?: string;
     subprotocol?: string;
     "modv:unitID"?: number;
@@ -75,7 +77,7 @@ interface LanguagesSupport {
     [language: string]: {
         fileExtension: string;
         libraries: {
-            [libraryName: string]: PROTOCOL[];
+            [libraryName: string]: readonly PROTOCOL[];
         };
     };
 }

@@ -11,6 +11,7 @@ import {
 } from "./types.js";
 import { readFileSync, writeFileSync } from "node:fs";
 import { generateCode } from "./index.js";
+import { getProtocolFromHref, getEffectiveOps } from "./generators/helpers.js";
 
 (async () => {
     const cliOptions = {
@@ -70,8 +71,11 @@ import { generateCode } from "./index.js";
             generateCodeParams.affordanceKey = affordance.affordanceKey;
 
             // Get operation from user
+            const tdAffordance = tdJson[affordance.affordanceType][affordance.affordanceKey];
             const availableOperations = Array.from(
-                new Set(affordance.forms.flatMap((form) => (Array.isArray(form.op) ? form.op : [form.op])))
+                new Set(
+                    affordance.forms.flatMap((form) => getEffectiveOps(form, affordance.affordanceType, tdAffordance))
+                )
             );
             const operation = await select<Op>({
                 message: "Select an operation: ",
@@ -99,7 +103,7 @@ import { generateCode } from "./index.js";
 
             // Get the library from user
             const availableProtocols = affordance.forms
-                .filter((form) => form.op === operation || form.op.includes(operation))
+                .filter((form) => getEffectiveOps(form, affordance.affordanceType, tdAffordance).includes(operation))
                 .map((form) => getProtocolFromHref(form.href));
 
             // Both the language and library are not supported yet
@@ -252,6 +256,7 @@ function extractAvailableAffordances(td: Affordances): Affordances {
     } catch (error) {
         console.error("Invalid TD: ", error);
         process.exit(1);
+        throw error; // unreachable, helps TypeScript
     }
 }
 
@@ -285,15 +290,6 @@ async function getAffordanceFromUser(affordances: Affordances) {
             }),
         ],
     });
-}
-
-/**
- * Extracts the protocol from a given href
- * @param href The href string
- * @returns The protocol extracted from the href
- */
-export function getProtocolFromHref(href: string): string {
-    return href.split(":")[0].split(".")[0].split("+")[0];
 }
 
 function generateProtocolNotSupportedPrompt(generateParams: GenerateCodeParams): string {
