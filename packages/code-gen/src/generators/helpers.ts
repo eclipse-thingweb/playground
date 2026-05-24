@@ -1,5 +1,34 @@
 import { Affordance, AffordanceType, Affordances, Form, Op, PROTOCOL } from "../types.js";
-import { getProtocolFromHref } from "../cli.js";
+
+/**
+ * Extracts the protocol from a form's href.
+ * e.g. "https://example.com" → "https", "modbus+tcp://..." → "modbus"
+ */
+export function getProtocolFromHref(href: string): string {
+    return href.split(":")[0].split(".")[0].split("+")[0];
+}
+
+/**
+ * Returns the effective op(s) for a form, applying WoT TD defaults when op is omitted.
+ * - properties: ["readproperty", "writeproperty"] (or adjusted by readOnly/writeOnly)
+ * - actions: ["invokeaction"]
+ * - events: ["subscribeevent"]
+ */
+export function getEffectiveOps(form: Form, affordanceType: AffordanceType, affordance?: Affordance): Op[] {
+    if (form.op !== undefined) {
+        return Array.isArray(form.op) ? form.op : [form.op];
+    }
+    switch (affordanceType) {
+        case "properties":
+            if (affordance?.readOnly) return ["readproperty"] as Op[];
+            if (affordance?.writeOnly) return ["writeproperty"] as Op[];
+            return ["readproperty", "writeproperty"] as Op[];
+        case "actions":
+            return ["invokeaction"] as Op[];
+        case "events":
+            return ["subscribeevent"] as Op[];
+    }
+}
 
 /** Context passed to each code generator */
 export interface CodeGeneratorContext {
@@ -65,10 +94,16 @@ export function isStreamingOperation(operation: Op): boolean {
 /**
  * Selects the first form that matches the operation and one of the supported protocols.
  */
-export function selectForm(forms: Form[], operation: Op, supportedProtocols: PROTOCOL[]): Form {
+export function selectForm(
+    forms: Form[],
+    operation: Op,
+    supportedProtocols: readonly PROTOCOL[],
+    affordanceType?: AffordanceType,
+    affordance?: Affordance
+): Form {
     const match = forms.find(
         (form) =>
-            (form.op === operation || (Array.isArray(form.op) && form.op.includes(operation))) &&
+            getEffectiveOps(form, affordanceType ?? "properties", affordance).includes(operation) &&
             supportedProtocols.some((p) => getProtocolFromHref(form.href).includes(p))
     );
     if (!match) {
