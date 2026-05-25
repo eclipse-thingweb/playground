@@ -119,5 +119,7 @@ export function generatePrompt({
 
     The affordance to interact with is: ${affordanceType}/${affordanceKey}
     The operation to perform is: ${operation}
+
+    Make sure to import any required modules from the ${library} library or other necessary dependencies.
     `;
 }
