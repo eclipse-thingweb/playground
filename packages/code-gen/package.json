@@ -16,7 +16,7 @@
         "@inquirer/prompts": "^8.4.1"
     },
     "devDependencies": {
-        "@types/node": "^25.5.2",
-        "vitest": "^4.1.7"
+        "@types/node": "^18.19.0",
+        "vitest": "^3.2.1"
     }
 }
