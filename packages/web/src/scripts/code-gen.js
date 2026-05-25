@@ -336,5 +336,3 @@ codeGenDownload.addEventListener("click", () => {
 });
 
 populateLanguages();
-
-populateLanguages();

@@ -57,7 +57,6 @@ export function generateCode(params: GenerateCodeParams): GenerateCodeResult {
             const supportedProtocols = LANGUAGES_SUPPORT[language].libraries[library];
             const form = selectForm(forms, operation, supportedProtocols, affordanceType, affordance);
 
-            console.log("using generator for", key);
             const code = generator({ td, affordanceType, affordanceKey, operation, form, affordance });
             return { code };
         } else {
@@ -81,8 +80,8 @@ export function generateCode(params: GenerateCodeParams): GenerateCodeResult {
  * @returns True if the language and library combination is supported, false otherwise.
  */
 export function isProtocolSupported(language: string, library: string, protocol: string): boolean {
-    return !!LANGUAGES_SUPPORT[language]?.libraries[library]?.some((supportedProtocol) =>
-        supportedProtocol.includes(protocol)
+    return !!LANGUAGES_SUPPORT[language]?.libraries[library]?.some(
+        (supportedProtocol) => supportedProtocol === protocol
     );
 }
 

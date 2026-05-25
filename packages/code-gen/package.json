@@ -9,12 +9,14 @@
     "type": "module",
     "scripts": {
         "build": "tsc --outDir dist",
-        "cli": "tsx src/cli.ts "
+        "cli": "tsx src/cli.ts ",
+        "test": "vitest run"
     },
     "dependencies": {
         "@inquirer/prompts": "^8.4.1"
     },
     "devDependencies": {
-        "@types/node": "^25.5.2"
+        "@types/node": "^25.5.2",
+        "vitest": "^4.1.7"
     }
 }
