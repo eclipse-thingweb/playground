@@ -74,7 +74,7 @@
         "directory": "packages/web"
     },
     "scripts": {
-        "build": "node external-scripts/generate-paths.js && webpack --mode production",
+        "build": "npm run --prefix ../code-gen build && node external-scripts/generate-paths.js && webpack --mode production",
         "dev": "webpack serve --mode development",
         "serve": "node server/server.js",
         "examples": "node external-scripts/generate-paths.js",
