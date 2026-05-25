@@ -22,6 +22,7 @@
 import { editor } from "monaco-editor";
 import { setFontSize, editorForm, fontSizeSlider } from "./settings-menu";
 import { generateCode, LANGUAGES_SUPPORT, AFFORDANCE_TYPES, OPERATIONS } from "../../../code-gen/dist/index.js";
+import { copyToClipboard } from "./util";
 
 /******************************************************************/
 /*                    DOM Elements                                */
@@ -38,6 +39,7 @@ const affordanceKeySelect = document.querySelector("#code-gen-affordance-key");
 const operationSelect = document.querySelector("#code-gen-operation");
 const generateBtn = document.querySelector("#code-gen-generate");
 const codeGenDownload = document.querySelector("#code-gen-download");
+const codeGenCopy = document.querySelector("#code-gen-copy");
 
 /******************************************************************/
 /*                    Editor initialization                        */
@@ -59,9 +61,14 @@ async function initCodeGenEditor() {
     editorForm.addEventListener("reset", () => {
         setFontSize(window.codeGenEditor);
     });
+
+    window.codeGenEditor.getModel().onDidChangeContent(() => {
+        codeGenCopy.disabled = !window.codeGenEditor.getValue();
+    });
 }
 
 initCodeGenEditor();
+codeGenCopy.disabled = true;
 
 /******************************************************************/
 /*                    Populate dropdowns                           */
@@ -109,7 +116,12 @@ function populateLibraries() {
     otherOption.value = "__other__";
     otherOption.textContent = "Other";
     librarySelect.appendChild(otherOption);
-    libraryCustomInput.classList.add("hidden");
+
+    if (librarySelect.value === "__other__") {
+        libraryCustomInput.classList.remove("hidden");
+    } else {
+        libraryCustomInput.classList.add("hidden");
+    }
 }
 
 function populateAffordanceTypes() {
@@ -249,6 +261,11 @@ affordanceKeySelect.addEventListener("change", () => {
 });
 
 codeGenDownload.disabled = true;
+
+//Copy btn
+codeGenCopy.addEventListener("click", () => {
+    copyToClipboard(window.codeGenEditor.getValue(), codeGenCopy);
+});
 
 generateBtn.addEventListener("click", () => {
     codeGenDownload.disabled = true;
