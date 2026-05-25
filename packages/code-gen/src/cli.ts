@@ -87,7 +87,7 @@ import { getProtocolFromHref, getEffectiveOps } from "./generators/helpers.js";
             generateCodeParams.operation = operation;
 
             // Get language from user
-            const language = await select({
+            const language = await select<string>({
                 message: "Select a language:",
                 choices: [
                     new Separator("Algorithmic approach:"),

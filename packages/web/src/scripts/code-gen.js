@@ -21,7 +21,7 @@
 
 import { editor } from "monaco-editor";
 import { setFontSize, editorForm, fontSizeSlider } from "./settings-menu";
-import { generateCode, LANGUAGES_SUPPORT, AFFORDANCE_TYPES, OPERATIONS } from "../../../code-gen/dist/index.js";
+import { generateCode, LANGUAGES_SUPPORT, AFFORDANCE_TYPES, OPERATIONS } from "@thingweb/code-gen";
 import { copyToClipboard } from "./util";
 
 /******************************************************************/
