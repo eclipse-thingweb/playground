@@ -615,9 +615,7 @@ function openApiGeneration(input) {
     // input checks
     if (input === "default") {
         input = path.join(
-            "node_modules",
-            "@thing-description-playground",
-            "core",
+            corePackageDir,
             "examples",
             "tds",
             "valid",
@@ -682,9 +680,7 @@ function defaultManipulation(input) {
     // input checks
     if (input === "default") {
         input = path.join(
-            "node_modules",
-            "@thing-description-playground",
-            "core",
+            corePackageDir,
             "examples",
             "tds",
             "valid",
