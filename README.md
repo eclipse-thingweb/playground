@@ -21,7 +21,7 @@ The place where you can create and play with WoT Thing Descriptions. Try it onli
 
 There are different ways to use Playground:
 
--   Install all packages and their dependencies via `npm install` in the root directory. This script calls `lerna bootstrap`.
+-   Install all packages and their dependencies via `npm install` in the root directory. This project uses [npm workspaces](https://docs.npmjs.com/cli/using-npm/workspaces) to manage the monorepo.
 -   You can install the different packages from npm ([see below](./packages)) or in their respective directories.
 
 ## Structure
@@ -86,9 +86,9 @@ All packages are licensed under the Eclipse Public License v. 2.0. You find a co
 
 ## Publish a new version
 
-1. Run `lerna bootstrap` to install dependencies among the packages, even if a package has never been published before. Make sure you have not increased the dependency versions yet, e.g., you have a new package _newExample_ and the _oldExample_ depends on it. The _newExample_ is on version `0.0.0` (since you want to publish it as `1.0.0`) then in the _oldExample_ package.json the dependency has to be on the same version (or lower) so `"dependencies" { newExample: "^0.0.0"}}`. **Otherwise lerna will not accept linking the local _newExample_.**
-2. If `lerna bootstrap` was successful you can now bump dependency versions (if required), e.g., you could now do `"dependencies" { newExample: "^1.0.0"}}` in the _oldExample_ package.json.
-3. Run `lerna publish` to publish all the new package versions. Lerna will then ask for every changed package whether it received a patch, minor or major update. In our example, you should now select major for the _newExample_ so that it will be published as `1.0.0` version. You should log in to npm via `npm login` before doing this.
+1. Run `npm install` in the root directory to install and link all workspace dependencies.
+2. Bump the version of each changed package using `npm version <patch|minor|major>` inside the respective package directory.
+3. Publish each updated package with `npm publish` from its directory (or use `npm publish --workspaces` from the root to publish all). You should log in to npm via `npm login` before doing this.
 
 ## Adapting Licenses
 
