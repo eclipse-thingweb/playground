@@ -24,6 +24,7 @@
 const fs = require("fs");
 const path = require("path");
 const { tdValidator, tmValidator } = require("@thing-description-playground/core");
+const corePackageDir = path.dirname(require.resolve("@thing-description-playground/core/package.json"));
 const { tdAssertions, tmAssertions } = require("@thing-description-playground/assertions");
 const assertManualToJson = require("@thing-description-playground/assertions").manualToJson;
 const assertMergeResults = require("@thing-description-playground/assertions").mergeResults;
@@ -197,7 +198,7 @@ function tdAssertionReport(inputParam) {
     }
 
     if (inputParam === "default" && !myArguments.mergeOnly) {
-        inputParam = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds", "valid");
+        inputParam = path.join(corePackageDir, "examples", "tds", "valid");
     }
 
     if (typeof inputParam === "object") {
@@ -379,7 +380,7 @@ function coreValidation(input) {
     let tdToCheck = "";
 
     if (input === "default") {
-        input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tds");
+        input = path.join(corePackageDir, "examples", "tds");
     }
     if (fs.lstatSync(input).isDirectory()) {
         // check Valid, Invalid and Warning Subfolders
@@ -647,9 +648,7 @@ function asyncApiGeneration(input) {
     // input checks
     if (input === "default") {
         input = path.join(
-            "node_modules",
-            "@thing-description-playground",
-            "core",
+            corePackageDir,
             "examples",
             "tds",
             "valid",
@@ -754,7 +753,7 @@ function tmAssertionReport(inputParam) {
     }
 
     if (inputParam === "default") {
-        inputParam = path.join("node_modules", "@thing-description-playground", "core", "examples", "tms", "valid");
+        inputParam = path.join(corePackageDir, "examples", "tms", "valid");
     }
 
     let numberOfFilesAssertion = 0;
@@ -829,7 +828,7 @@ function tmCoreValidation(input) {
     let tmToCheck = "";
 
     if (input === "default") {
-        input = path.join("node_modules", "@thing-description-playground", "core", "examples", "tms");
+        input = path.join(corePackageDir, "examples", "tms");
     }
     if (fs.lstatSync(input).isDirectory()) {
         // check Valid, Invalid and Warning Subfolders

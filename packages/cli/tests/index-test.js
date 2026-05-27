@@ -15,6 +15,8 @@
 
 const { exec } = require("child_process");
 const { fstat, existsSync } = require("fs");
+const path = require("path");
+const coreExampleTds = path.join(path.dirname(require.resolve("@thing-description-playground/core/package.json")), "examples", "tds");
 
 /**
  * The testing processes stack object
@@ -113,8 +115,7 @@ processStack.add("node ./index.js --async-api --aap-yaml", "AsyncAPI YAML genera
 processStack.add("node ./index.js --junit", "JUnit output testing", () => existsSync("junit-tests.xml"));
 // test multiple inputs
 processStack.add(
-    "node ./index.js -i node_modules/@thing-description-playground/core/examples/tds/ " +
-        "node_modules/@thing-description-playground/core/examples/tds/",
+    `node ./index.js -i ${coreExampleTds}/ ${coreExampleTds}/`,
     "Check multiple inputs",
     (sOut) =>
         sOut.search("Warning test successful") !== -1 &&
