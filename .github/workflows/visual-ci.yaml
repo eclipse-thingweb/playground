@@ -21,11 +21,8 @@ jobs:
               with:
                   node-version: "18.x"
 
-            - name: Use lerna
-              run: npm install -g lerna@6.6.2
-
-            - name: Bootstrap
-              run: lerna bootstrap --no-ci
+            - name: Install dependencies
+              run: npm ci
             
             - name: Visual Tests
               timeout-minutes: 30

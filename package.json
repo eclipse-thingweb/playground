@@ -2,6 +2,12 @@
     "name": "thingweb.playground",
     "description": "W3C Web of Things (WoT) Thing Description tooling (root project, not published)",
     "private": true,
+    "workspaces": [
+        "packages/core",
+        "packages/assertions",
+        "packages/defaults",
+        "packages/cli"
+    ],
     "author": "Eclipse Thingweb <thingweb-dev@eclipse.org> (https://thingweb.io/)",
     "license": "EPL-2.0 OR W3C-20150513",
     "repository": {
@@ -13,17 +19,15 @@
         "eslint": "^8.22.0",
         "eslint-config-prettier": "^8.8.0",
         "husky": "^7.0.4",
-        "lerna": "^5.4.3",
         "prettier": "^2.3.2",
         "pretty-quick": "^3.1.1"
     },
     "scripts": {
-        "install": "lerna bootstrap",
         "lint": "npx eslint . --config .eslintrc.json",
         "lint:sarif": "npx eslint . --config .eslintrc.json --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif",
         "lint:fix": "npx eslint . --config .eslintrc.json --fix",
         "format": "prettier --write . && npm run format --silent --workspaces --if-present",
         "format:quick": "pretty-quick",
-        "test": "lerna run --ignore @thing-description-playground/web test"
+        "test": "npm test -w packages/core -w packages/assertions -w packages/defaults -w packages/cli"
     }
 }

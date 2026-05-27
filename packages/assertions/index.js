@@ -81,7 +81,7 @@ async function tdAssertions(tdStrings, fileLoader, logFunc, givenManual, doneEve
 
         loadProm.push(
             fileLoader(
-                path.join(pathOffset, "./node_modules", "@thing-description-playground", "core", "td-schema.json")
+                require.resolve("@thing-description-playground/core/td-schema.json")
             )
         );
         if (givenManual === undefined) {
@@ -199,7 +199,7 @@ function tmAssertions(tmStrings, fileLoader, logFunc, givenManual, doneEventEmit
         );
         loadProm.push(
             fileLoader(
-                path.join(pathOffset, "./node_modules", "@thing-description-playground", "core", "tm-schema.json")
+                require.resolve("@thing-description-playground/core/tm-schema.json")
             )
         );
         if (givenManual === undefined) {
