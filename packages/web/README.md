@@ -84,17 +84,12 @@ The `webpack.config.js` file is used to set up Webpack for the project. It manag
 
 ### 4. Deployment
 
-Requires [Lerna](https://www.npmjs.com/package/lerna) to be installed globally (`npm install -g lerna`).
-
 1. Clone the repo
-2. Install the monorepo (allows linking unpublished versions)
-3. Install the web package locally to ensure that e.g. `core` dependency is not just a symlink
+2. Install all workspace dependencies from the root (this links local packages automatically via [npm workspaces](https://docs.npmjs.com/cli/using-npm/workspaces))
 
 ```sh
 git clone git@github.com:eclipse-thingweb/playground.git
 cd playground
-lerna bootstrap
-cd ./packages/web
 npm install
 ```
 
