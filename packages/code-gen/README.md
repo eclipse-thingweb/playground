@@ -76,5 +76,3 @@ npm run cli -- --td ./my-thing.td.jsonld --affordance-type properties --affordan
 ## License
 
 Licensed under the MIT license, see [License](../../LICENSE.md).
-
-test
