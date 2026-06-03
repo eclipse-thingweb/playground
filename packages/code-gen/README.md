@@ -51,7 +51,7 @@ npm run cli -- --td ./my-thing.td.jsonld --affordance-type properties --affordan
 | `-o, --operation`       | Operation to perform (e.g. `readproperty`, `invokeaction`) |
 | `-l, --language`        | Programming language                                       |
 | `-b, --library`         | Library to use                                             |
-| `-O, --output`          | Output folder path (default: `./`)                         |
+| `-O, --output`          | Output folder path (relative or absolute, default: `./`)   |
 
 ## Supported Languages and Libraries
 

@@ -1,5 +1,5 @@
 import { parseArgs } from "node:util";
-import { input, select, Separator } from "@inquirer/prompts";
+import { input, search, select, Separator } from "@inquirer/prompts";
 import {
     AFFORDANCE_TYPES,
     Affordances,
@@ -9,7 +9,9 @@ import {
     Form,
     LANGUAGES_SUPPORT,
 } from "./types.js";
-import { readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { basename, isAbsolute, join, resolve } from "node:path";
+import { homedir } from "node:os";
 import { generateCode } from "./index.js";
 import { getProtocolFromHref, getEffectiveOps } from "./generators/helpers.js";
 
@@ -57,9 +59,10 @@ import { getProtocolFromHref, getEffectiveOps } from "./generators/helpers.js";
         // Interactive input
         if (userInputParams === undefined || Object.keys(userInputParams).length === 0) {
             // Get TD from user
-            const tdPath = await input({
-                message: "Enter the path to the JSON file containing the TD: ",
-            });
+            const tdPath = await inputPathWithAutocomplete(
+                "Type or select the path to the JSON file containing the TD: ",
+                { mode: "file" }
+            );
             const td = readFileSync(tdPath, "utf-8");
             const tdJson = JSON.parse(td);
             generateCodeParams.td = tdJson;
@@ -168,9 +171,12 @@ import { getProtocolFromHref, getEffectiveOps } from "./generators/helpers.js";
                     generateCodeParams.library = library;
                 }
 
-                const outputFolderPath = await input({
-                    message: `Output folder path (default: ./): `,
-                });
+                const outputFolderPath = await inputPathWithAutocomplete(
+                    "Type or select the output folder path (default: ./): ",
+                    {
+                        mode: "directory",
+                    }
+                );
                 generateCodeParams.output = outputFolderPath || "./";
             }
         }
@@ -191,7 +197,7 @@ import { getProtocolFromHref, getEffectiveOps } from "./generators/helpers.js";
             generateCodeParams.operation = userInputParams.operation as Op;
             generateCodeParams.language = userInputParams.language;
             generateCodeParams.library = userInputParams.library;
-            generateCodeParams.output = userInputParams.output;
+            generateCodeParams.output = userInputParams.output || "./";
         }
 
         // Output file details
@@ -201,7 +207,12 @@ import { getProtocolFromHref, getEffectiveOps } from "./generators/helpers.js";
                 ? "txt"
                 : LANGUAGES_SUPPORT[generateCodeParams.language!].fileExtension;
         const fullFileName = `${outputFileName}.${outputFileExtension}`;
-        const fullPath = `${generateCodeParams.output}/${fullFileName}`;
+        const outputDirectory = isAbsolute(generateCodeParams.output!)
+            ? generateCodeParams.output!
+            : resolve(generateCodeParams.output!);
+        const fullPath = join(outputDirectory, fullFileName);
+
+        mkdirSync(outputDirectory, { recursive: true });
 
         let generationText: string;
         if (generatesUknownProtocolPrompt) {
@@ -233,6 +244,87 @@ import { getProtocolFromHref, getEffectiveOps } from "./generators/helpers.js";
 
 function capitalizeFirstLetter(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+type PathMode = "file" | "directory";
+
+async function inputPathWithAutocomplete(message: string, options: { mode: PathMode }): Promise<string> {
+    if (!process.stdin.isTTY || !process.stdout.isTTY) {
+        return expandHome(await input({ message }));
+    }
+
+    let currentBase = "";
+    while (true) {
+        const selected = await search<string>({
+            message: currentBase ? `${message}[${currentBase}] ` : message,
+            source: async (value) => getPathChoices(value ?? "", options.mode, currentBase),
+        });
+
+        const expanded = expandHome(selected);
+        const absolute = isAbsolute(expanded) ? expanded : resolve(expanded);
+        const endsWithSep = /[\\/]$/.test(selected);
+
+        let isDir = endsWithSep;
+        if (!isDir) {
+            try {
+                isDir = statSync(absolute).isDirectory();
+            } catch {
+                isDir = false;
+            }
+        }
+
+        // In file mode, selecting a directory drills into it instead of submitting.
+        if (options.mode === "file" && isDir) {
+            currentBase =
+                selected.endsWith("/") || selected.endsWith("\\")
+                    ? selected
+                    : selected + (selected.includes("/") ? "/" : "\\");
+            continue;
+        }
+
+        return expanded;
+    }
+}
+
+function expandHome(p: string): string {
+    if (p === "~") return homedir();
+    if (p.startsWith("~/") || p.startsWith("~\\")) return join(homedir(), p.slice(2));
+    return p;
+}
+
+function getPathChoices(line: string, mode: PathMode, base: string): { name: string; value: string }[] {
+    const effective = line.length > 0 ? line : base;
+    const sep = effective.includes("/") || effective.startsWith("~") ? "/" : "\\";
+    const hasTrailingSep = /[\\/]$/.test(effective);
+    const lineBaseName = hasTrailingSep ? "" : basename(effective);
+    const lineDirectory = hasTrailingSep ? effective : effective.slice(0, effective.length - lineBaseName.length);
+    const searchDirectory = resolve(expandHome(lineDirectory || "."));
+
+    const typedChoice = {
+        name:
+            line.length > 0 ? `Use typed path: ${line}` : base ? `Use directory: ${base}` : "Use current directory: ./",
+        value: line.length > 0 ? line : base || "./",
+    };
+
+    try {
+        const entries = readdirSync(searchDirectory, { withFileTypes: true })
+            .filter((entry) => {
+                if (!entry.name.toLowerCase().startsWith(lineBaseName.toLowerCase())) return false;
+                return mode === "file" ? true : entry.isDirectory();
+            })
+            .sort((a, b) => {
+                if (a.isDirectory() !== b.isDirectory()) return a.isDirectory() ? -1 : 1;
+                return a.name.localeCompare(b.name);
+            })
+            .map((entry) => {
+                const suggestedPath = `${lineDirectory}${entry.name}${entry.isDirectory() ? sep : ""}`;
+                return { name: suggestedPath, value: suggestedPath };
+            });
+
+        return [typedChoice, ...entries];
+    } catch {
+        return [typedChoice];
+    }
 }
 
 /**
