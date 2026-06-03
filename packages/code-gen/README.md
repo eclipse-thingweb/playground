@@ -45,7 +45,7 @@ npm run cli -- --td ./my-thing.td.jsonld --affordance-type properties --affordan
 
 | Flag                    | Description                                                |
 | ----------------------- | ---------------------------------------------------------- |
-| `-t, --td`              | Path to the TD JSON file                                   |
+| `-t, --td`              | Path to the TD JSON file (relative or absolute)            |
 | `-a, --affordance-type` | Affordance type: `properties`, `actions`, or `events`      |
 | `-k, --affordance-key`  | Key name of the affordance                                 |
 | `-o, --operation`       | Operation to perform (e.g. `readproperty`, `invokeaction`) |
