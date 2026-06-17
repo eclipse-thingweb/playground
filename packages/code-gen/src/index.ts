@@ -1,5 +1,5 @@
 import { GenerateCodeParams, GenerateCodeResult, LANGUAGES_SUPPORT } from "./types.js";
-import { getProtocolFromHref } from "./generators/helpers.js";
+import { getProtocolFromForm } from "./generators/helpers.js";
 import { GENERATOR_REGISTRY } from "./generators/index.js";
 import { selectForm, getEffectiveOps } from "./generators/helpers.js";
 
@@ -43,7 +43,7 @@ export function generateCode(params: GenerateCodeParams): GenerateCodeResult {
 
         // Filter forms for the given protocol support
         const availableFormsForProtocol = availableFormsForOperation.filter((form) =>
-            isProtocolSupported(language, library, getProtocolFromHref(form.href))
+            isProtocolSupported(language, library, getProtocolFromForm(form))
         );
 
         if (availableFormsForProtocol.length > 0) {
@@ -66,7 +66,7 @@ export function generateCode(params: GenerateCodeParams): GenerateCodeResult {
                 ].libraries[library].join(
                     ", "
                 )}. Available protocols for this affordance are: ${availableFormsForOperation
-                    .map((form) => getProtocolFromHref(form.href))
+                    .map((form) => getProtocolFromForm(form))
                     .join(", ")}.`
             );
         }

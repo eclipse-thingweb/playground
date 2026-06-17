@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
     getProtocolFromHref,
+    getProtocolFromForm,
     getEffectiveOps,
     getHttpMethod,
     operationHasPayload,
@@ -42,6 +43,51 @@ describe("getProtocolFromHref", () => {
 
     it("extracts coaps from coaps URL", () => {
         expect(getProtocolFromHref("coaps://example.com/sensor")).toBe("coaps");
+    });
+
+    it("returns empty string for a relative href with no scheme", () => {
+        expect(getProtocolFromHref("/")).toBe("");
+        expect(getProtocolFromHref("/properties/status")).toBe("");
+    });
+});
+
+describe("getProtocolFromForm", () => {
+    it("uses the href scheme when the href is absolute", () => {
+        expect(getProtocolFromForm({ href: "https://example.com/foo" })).toBe("https");
+        expect(getProtocolFromForm({ href: "modbus+tcp://192.168.1.1:502/1/100" })).toBe("modbus");
+    });
+
+    it("infers modbus from vocabulary prefixes when the href is relative", () => {
+        const form = {
+            op: ["readproperty"],
+            href: "/",
+            "modbus:unitID": "{{UNITID}}",
+            "modbus:quantity": 1,
+            "modbus:address": 109,
+            "modbus:entity": "HoldingRegister",
+        } as unknown as Form;
+        expect(getProtocolFromForm(form)).toBe("modbus");
+    });
+
+    it("infers modbus from the official modv prefix", () => {
+        expect(getProtocolFromForm({ href: "/", "modv:address": 1 } as unknown as Form)).toBe("modbus");
+    });
+
+    it("prefers a protocol-specific prefix over the generic HTTP vocabulary", () => {
+        const form = {
+            href: "/",
+            "htv:methodName": "GET",
+            "modbus:address": 1,
+        } as unknown as Form;
+        expect(getProtocolFromForm(form)).toBe("modbus");
+    });
+
+    it("falls back to http when only the HTTP vocabulary is present on a relative href", () => {
+        expect(getProtocolFromForm({ href: "/", "htv:methodName": "GET" } as unknown as Form)).toBe("http");
+    });
+
+    it("returns empty string when no protocol can be determined", () => {
+        expect(getProtocolFromForm({ href: "/" })).toBe("");
     });
 });
 

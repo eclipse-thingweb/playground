@@ -1,11 +1,63 @@
 import { Affordance, AffordanceType, Affordances, Form, Op, PROTOCOL } from "../types.js";
 
 /**
- * Extracts the protocol from a form's href.
- * e.g. "https://example.com" → "https", "modbus+tcp://..." → "modbus"
+ * Maps vendor-specific vocabulary prefixes used on form keys to their protocol.
+ * Used to infer the protocol when a form has a relative href (no URI scheme),
+ * e.g. a form carrying `modbus:address` / `modv:address` keys uses Modbus.
+ */
+const PROTOCOL_VOCABULARY_PREFIXES: Record<string, string> = {
+    htv: PROTOCOL.HTTP,
+    cov: PROTOCOL.COAP,
+    mqv: PROTOCOL.MQTT,
+    modv: PROTOCOL.MODBUS,
+    modbus: PROTOCOL.MODBUS,
+    opc: PROTOCOL.OPC_UA,
+    mbus: PROTOCOL.M_BUS,
+};
+
+/**
+ * Extracts the protocol from a URI scheme.
+ * e.g. "https://example.com" → "https", "modbus+tcp://..." → "modbus".
+ * Returns "" when the href is relative and carries no scheme (e.g. "/").
  */
 export function getProtocolFromHref(href: string): string {
-    return href.split(":")[0].split(".")[0].split("+")[0];
+    const scheme = /^([a-zA-Z][a-zA-Z0-9+.-]*):/.exec(href);
+    if (!scheme) {
+        return "";
+    }
+    return scheme[1].split(".")[0].split("+")[0].toLowerCase();
+}
+
+/**
+ * Determines the protocol used by a form.
+ * Prefers the URI scheme from the href; if the href is relative (no scheme),
+ * falls back to vendor-specific vocabulary prefixes on the form's keys
+ * (e.g. "modbus:address" → "modbus").
+ */
+export function getProtocolFromForm(form: Form): string {
+    const scheme = getProtocolFromHref(form.href);
+    if (scheme) {
+        return scheme;
+    }
+
+    let httpFallback = "";
+    for (const key of Object.keys(form)) {
+        const prefix = key.split(":")[0];
+        if (prefix === key) {
+            continue; // not a namespaced key
+        }
+        const protocol = PROTOCOL_VOCABULARY_PREFIXES[prefix.toLowerCase()];
+        if (!protocol) {
+            continue;
+        }
+        // Protocol-specific prefixes win over the generic HTTP vocabulary.
+        if (protocol === PROTOCOL.HTTP) {
+            httpFallback = protocol;
+        } else {
+            return protocol;
+        }
+    }
+    return httpFallback;
 }
 
 /**
@@ -104,7 +156,7 @@ export function selectForm(
     const match = forms.find(
         (form) =>
             getEffectiveOps(form, affordanceType ?? "properties", affordance).includes(operation) &&
-            supportedProtocols.some((p) => getProtocolFromHref(form.href).includes(p))
+            supportedProtocols.some((p) => getProtocolFromForm(form).includes(p))
     );
     if (!match) {
         throw new Error(`No form found for operation "${operation}" with supported protocols`);
@@ -168,7 +220,7 @@ export function getNodeWotBindings(forms: Form[]): BindingInfo[] {
     const seen = new Set<string>();
     const bindings: BindingInfo[] = [];
     for (const form of forms) {
-        const protocol = getProtocolFromHref(form.href);
+        const protocol = getProtocolFromForm(form);
         const binding = NODE_WOT_BINDINGS[protocol];
         if (binding && !seen.has(binding.factoryName)) {
             seen.add(binding.factoryName);

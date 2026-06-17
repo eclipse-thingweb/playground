@@ -13,7 +13,7 @@ import { mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "n
 import { basename, isAbsolute, join, resolve } from "node:path";
 import { homedir } from "node:os";
 import { generateCode } from "./index.js";
-import { getProtocolFromHref, getEffectiveOps } from "./generators/helpers.js";
+import { getProtocolFromForm, getEffectiveOps } from "./generators/helpers.js";
 
 (async () => {
     const cliOptions = {
@@ -107,7 +107,7 @@ import { getProtocolFromHref, getEffectiveOps } from "./generators/helpers.js";
             // Get the library from user
             const availableProtocols = affordance.forms
                 .filter((form) => getEffectiveOps(form, affordance.affordanceType, tdAffordance).includes(operation))
-                .map((form) => getProtocolFromHref(form.href));
+                .map((form) => getProtocolFromForm(form));
 
             // Both the language and library are not supported yet
             // Genereate a prompt for an LLM to generate the code snippet
