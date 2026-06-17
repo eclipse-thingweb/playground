@@ -21,7 +21,15 @@
 
 import { editor } from "monaco-editor";
 import { setFontSize, editorForm, fontSizeSlider } from "./settings-menu";
-import { generateCode, LANGUAGES_SUPPORT, AFFORDANCE_TYPES, OPERATIONS } from "@thingweb/code-gen";
+import {
+    generateCode,
+    LANGUAGES_SUPPORT,
+    AFFORDANCE_TYPES,
+    extractAvailableAffordances,
+    getAvailableLanguages,
+    getAvailableLibraries,
+    getAvailableOperations,
+} from "@thingweb/code-gen";
 import { copyToClipboard } from "./util";
 
 /******************************************************************/
@@ -87,7 +95,7 @@ function setDisabledWithPlaceholder(selectEl, text) {
 
 function populateLanguages() {
     languageSelect.innerHTML = "";
-    Object.keys(LANGUAGES_SUPPORT).forEach((lang) => {
+    getAvailableLanguages().forEach((lang) => {
         const option = document.createElement("option");
         option.value = lang;
         option.textContent = lang;
@@ -105,7 +113,7 @@ function populateLibraries() {
     const lang = languageSelect.value;
     librarySelect.innerHTML = "";
     librarySelect.disabled = false;
-    const libs = LANGUAGES_SUPPORT[lang] ? Object.keys(LANGUAGES_SUPPORT[lang].libraries) : [];
+    const libs = getAvailableLibraries(lang);
     libs.forEach((lib) => {
         const option = document.createElement("option");
         option.value = lib;
@@ -140,7 +148,8 @@ function populateAffordanceKeys() {
     const type = affordanceTypeSelect.value;
     affordanceKeySelect.innerHTML = "";
 
-    const keys = td && td[type] ? Object.keys(td[type]) : [];
+    const affordances = td ? extractAvailableAffordances(td) : null;
+    const keys = affordances ? Object.keys(affordances[type]) : [];
     if (keys.length === 0) {
         setDisabledWithPlaceholder(affordanceKeySelect, "No " + type + " found");
     } else {
@@ -161,34 +170,7 @@ function populateOperations() {
     const key = affordanceKeySelect.value;
     operationSelect.innerHTML = "";
 
-    // Get the full set of candidate operations for this affordance type
-    let candidateOps = [];
-    if (type === "properties") candidateOps = OPERATIONS.property;
-    else if (type === "actions") candidateOps = OPERATIONS.action;
-    else if (type === "events") candidateOps = OPERATIONS.event;
-
-    // Filter to only operations that exist in the affordance's forms
-    const forms = td?.[type]?.[key]?.forms;
-    let ops = [];
-    if (forms && forms.length > 0) {
-        const formOps = new Set();
-        forms.forEach((form) => {
-            if (Array.isArray(form.op)) {
-                form.op.forEach((o) => formOps.add(o));
-            } else if (form.op) {
-                formOps.add(form.op);
-            }
-        });
-
-        if (formOps.size > 0) {
-            ops = candidateOps.filter((o) => formOps.has(o));
-        } else {
-            // No op declared — use TD spec defaults per affordance type
-            if (type === "properties") ops = ["readproperty", "writeproperty"];
-            else if (type === "actions") ops = ["invokeaction"];
-            else if (type === "events") ops = ["subscribeevent", "unsubscribeevent"];
-        }
-    }
+    const ops = getAvailableOperations(td?.[type]?.[key], type);
 
     if (ops.length === 0) {
         setDisabledWithPlaceholder(operationSelect, "No operations available");
@@ -213,26 +195,6 @@ export function initCodeGen(td) {
     currentTD = td;
     populateLanguages();
     populateAffordanceTypes();
-    populateAffordanceKeysFromTD(td);
-}
-
-function populateAffordanceKeysFromTD(td) {
-    const type = affordanceTypeSelect.value;
-    affordanceKeySelect.innerHTML = "";
-
-    const keys = td && td[type] ? Object.keys(td[type]) : [];
-    if (keys.length === 0) {
-        setDisabledWithPlaceholder(affordanceKeySelect, "No " + type + " found");
-    } else {
-        affordanceKeySelect.disabled = false;
-        keys.forEach((key) => {
-            const option = document.createElement("option");
-            option.value = key;
-            option.textContent = key;
-            affordanceKeySelect.appendChild(option);
-        });
-    }
-    populateOperations();
 }
 
 languageSelect.addEventListener("change", () => {

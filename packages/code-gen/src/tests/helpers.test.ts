@@ -9,8 +9,15 @@ import {
     selectForm,
     parseModbusInfo,
     getNodeWotBindings,
+    extractAvailableAffordances,
+    getAvailableOperations,
+    getAvailableProtocols,
+    getAvailableLanguages,
+    getAvailableLibraries,
+    splitLibrariesByProtocolSupport,
 } from "../generators/helpers.js";
 import { Form, Op } from "../types.js";
+import { HTTP_TD, MODBUS_TD, EMPTY_TD, WRITE_ONLY_TD } from "./fixtures.js";
 
 describe("getProtocolFromHref", () => {
     it("extracts http from a standard URL", () => {
@@ -345,5 +352,113 @@ describe("getNodeWotBindings", () => {
         expect(bindings).toHaveLength(2);
         expect(bindings.map((b) => b.factoryName)).toContain("MqttClientFactory");
         expect(bindings.map((b) => b.factoryName)).toContain("ModbusClientFactory");
+    });
+});
+
+describe("extractAvailableAffordances", () => {
+    it("returns affordances grouped by type", () => {
+        const affordances = extractAvailableAffordances(HTTP_TD);
+        expect(Object.keys(affordances.properties)).toEqual(["temperature", "status"]);
+        expect(Object.keys(affordances.actions)).toEqual(["toggle"]);
+        expect(Object.keys(affordances.events)).toEqual(["overheating"]);
+    });
+
+    it("always returns a complete shape with empty records for missing types", () => {
+        const affordances = extractAvailableAffordances(MODBUS_TD);
+        expect(affordances.actions).toEqual({});
+        expect(affordances.events).toEqual({});
+    });
+
+    it("returns empty records for an empty TD", () => {
+        const affordances = extractAvailableAffordances(EMPTY_TD);
+        expect(affordances).toEqual({ properties: {}, actions: {}, events: {} });
+    });
+});
+
+describe("getAvailableOperations", () => {
+    it("returns the declared ops for an affordance", () => {
+        const ops = getAvailableOperations(HTTP_TD.properties.temperature, "properties");
+        expect(ops).toEqual(["readproperty", "writeproperty"]);
+    });
+
+    it("applies readOnly default when op is omitted", () => {
+        const ops = getAvailableOperations(HTTP_TD.properties.status, "properties");
+        expect(ops).toEqual(["readproperty"]);
+    });
+
+    it("applies writeOnly default when op is omitted", () => {
+        const ops = getAvailableOperations(WRITE_ONLY_TD.properties.command, "properties");
+        expect(ops).toEqual(["writeproperty"]);
+    });
+
+    it("de-duplicates ops across multiple forms", () => {
+        const ops = getAvailableOperations(MODBUS_TD.properties.coilStatus, "properties");
+        expect(ops.sort()).toEqual(["readproperty", "writeproperty"]);
+    });
+
+    it("returns an empty array for an undefined affordance", () => {
+        expect(getAvailableOperations(undefined, "properties")).toEqual([]);
+    });
+
+    it("returns an empty array for an affordance with no forms", () => {
+        expect(getAvailableOperations({ forms: [] }, "properties")).toEqual([]);
+    });
+});
+
+describe("getAvailableProtocols", () => {
+    it("returns the protocols used by all forms when no operation is given", () => {
+        const protocols = getAvailableProtocols(HTTP_TD.properties.temperature, "properties");
+        expect(protocols).toEqual(["https"]);
+    });
+
+    it("filters forms by operation when one is supplied", () => {
+        const readProtocols = getAvailableProtocols(MODBUS_TD.properties.coilStatus, "properties", "readproperty");
+        expect(readProtocols).toEqual(["modbus"]);
+    });
+
+    it("returns an empty array for an undefined affordance", () => {
+        expect(getAvailableProtocols(undefined, "properties")).toEqual([]);
+    });
+});
+
+describe("getAvailableLanguages", () => {
+    it("includes the supported languages", () => {
+        const languages = getAvailableLanguages();
+        expect(languages).toContain("javascript");
+        expect(languages).toContain("python");
+        expect(languages).toContain("java");
+    });
+});
+
+describe("getAvailableLibraries", () => {
+    it("returns the libraries for a known language", () => {
+        const libraries = getAvailableLibraries("javascript");
+        expect(libraries).toContain("fetch");
+        expect(libraries).toContain("node-wot");
+    });
+
+    it("returns an empty array for an unknown language", () => {
+        expect(getAvailableLibraries("cobol")).toEqual([]);
+    });
+});
+
+describe("splitLibrariesByProtocolSupport", () => {
+    it("splits libraries by whether they support the available protocols", () => {
+        const { supportedLibraries, unsupportedLibraries } = splitLibrariesByProtocolSupport("javascript", ["http"]);
+        expect(supportedLibraries).toContain("fetch");
+        expect(supportedLibraries).toContain("node-wot");
+        expect(supportedLibraries).toContain("webthing");
+        expect(unsupportedLibraries).toContain("modbus-serial");
+    });
+
+    it("marks all libraries unsupported when no protocol matches", () => {
+        const { supportedLibraries, unsupportedLibraries } = splitLibrariesByProtocolSupport("javascript", []);
+        expect(supportedLibraries).toEqual([]);
+        expect(unsupportedLibraries.length).toBeGreaterThan(0);
+    });
+
+    it("returns empty lists for an unknown language", () => {
+        const result = splitLibrariesByProtocolSupport("cobol", ["http"]);
+        expect(result).toEqual({ supportedLibraries: [], unsupportedLibraries: [] });
     });
 });

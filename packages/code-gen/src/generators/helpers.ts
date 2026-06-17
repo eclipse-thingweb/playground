@@ -1,4 +1,13 @@
-import { Affordance, AffordanceType, Affordances, Form, Op, PROTOCOL } from "../types.js";
+import {
+    AFFORDANCE_TYPES,
+    Affordance,
+    AffordanceType,
+    Affordances,
+    Form,
+    LANGUAGES_SUPPORT,
+    Op,
+    PROTOCOL,
+} from "../types.js";
 
 /**
  * Maps vendor-specific vocabulary prefixes used on form keys to their protocol.
@@ -80,6 +89,101 @@ export function getEffectiveOps(form: Form, affordanceType: AffordanceType, affo
         case "events":
             return ["subscribeevent"] as Op[];
     }
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Shared selection helpers                                                  */
+/*  Used by every code-gen front-end (CLI, web playground, ...) so that the   */
+/*  available affordances, operations, languages, libraries and protocols are */
+/*  derived from a single source of truth.                                    */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Extracts the interaction affordances present in a Thing Description,
+ * grouped by affordance type. Missing affordance types resolve to an empty
+ * record so the returned shape is always complete.
+ */
+export function extractAvailableAffordances(td: Affordances): Affordances {
+    const affordances: Affordances = {
+        properties: {},
+        actions: {},
+        events: {},
+    };
+    for (const affordanceType of AFFORDANCE_TYPES) {
+        if (td?.[affordanceType]) {
+            affordances[affordanceType] = td[affordanceType];
+        }
+    }
+    return affordances;
+}
+
+/**
+ * Returns the de-duplicated list of operations available for an affordance,
+ * applying WoT TD op defaults (via {@link getEffectiveOps}) when a form omits
+ * its `op`. Returns an empty array when the affordance has no forms.
+ */
+export function getAvailableOperations(affordance: Affordance | undefined, affordanceType: AffordanceType): Op[] {
+    if (!affordance?.forms?.length) {
+        return [];
+    }
+    return Array.from(new Set(affordance.forms.flatMap((form) => getEffectiveOps(form, affordanceType, affordance))));
+}
+
+/**
+ * Returns the de-duplicated list of protocols used by an affordance's forms.
+ * When an `operation` is supplied, only the forms supporting that operation
+ * are considered. Forms whose protocol cannot be determined are ignored.
+ */
+export function getAvailableProtocols(
+    affordance: Affordance | undefined,
+    affordanceType: AffordanceType,
+    operation?: Op
+): string[] {
+    if (!affordance?.forms?.length) {
+        return [];
+    }
+    const forms = operation
+        ? affordance.forms.filter((form) => getEffectiveOps(form, affordanceType, affordance).includes(operation))
+        : affordance.forms;
+    return Array.from(new Set(forms.map((form) => getProtocolFromForm(form)).filter(Boolean)));
+}
+
+/**
+ * Returns the languages supported by the algorithmic (non-LLM) generators.
+ */
+export function getAvailableLanguages(): string[] {
+    return Object.keys(LANGUAGES_SUPPORT);
+}
+
+/**
+ * Returns the libraries available for a given language. Unknown languages
+ * resolve to an empty array.
+ */
+export function getAvailableLibraries(language: string): string[] {
+    return Object.keys(LANGUAGES_SUPPORT[language]?.libraries ?? {});
+}
+
+/**
+ * Splits a language's libraries into those that support at least one of the
+ * supplied protocols and those that do not. Useful for front-ends that want to
+ * surface compatible libraries while still listing the incompatible ones
+ * (e.g. as disabled choices).
+ */
+export function splitLibrariesByProtocolSupport(
+    language: string,
+    availableProtocols: string[]
+): { supportedLibraries: string[]; unsupportedLibraries: string[] } {
+    const supportedLibraries: string[] = [];
+    const unsupportedLibraries: string[] = [];
+    const librariesForLanguage = LANGUAGES_SUPPORT[language]?.libraries ?? {};
+    for (const [name, protocols] of Object.entries(librariesForLanguage)) {
+        if (protocols.some((protocol) => availableProtocols.includes(protocol))) {
+            supportedLibraries.push(name);
+        } else {
+            unsupportedLibraries.push(name);
+        }
+    }
+    return { supportedLibraries, unsupportedLibraries };
 }
 
 /** Context passed to each code generator */

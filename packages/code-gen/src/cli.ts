@@ -13,7 +13,12 @@ import { mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "n
 import { basename, isAbsolute, join, resolve } from "node:path";
 import { homedir } from "node:os";
 import { generateCode } from "./index.js";
-import { getProtocolFromForm, getEffectiveOps } from "./generators/helpers.js";
+import {
+    extractAvailableAffordances,
+    getAvailableOperations,
+    getAvailableProtocols,
+    splitLibrariesByProtocolSupport,
+} from "./generators/helpers.js";
 
 (async () => {
     const cliOptions = {
@@ -75,11 +80,7 @@ import { getProtocolFromForm, getEffectiveOps } from "./generators/helpers.js";
 
             // Get operation from user
             const tdAffordance = tdJson[affordance.affordanceType][affordance.affordanceKey];
-            const availableOperations = Array.from(
-                new Set(
-                    affordance.forms.flatMap((form) => getEffectiveOps(form, affordance.affordanceType, tdAffordance))
-                )
-            );
+            const availableOperations = getAvailableOperations(tdAffordance, affordance.affordanceType);
             const operation = await select<Op>({
                 message: "Select an operation: ",
                 choices: availableOperations.map((op: Op) => ({
@@ -105,9 +106,7 @@ import { getProtocolFromForm, getEffectiveOps } from "./generators/helpers.js";
             generateCodeParams.language = language;
 
             // Get the library from user
-            const availableProtocols = affordance.forms
-                .filter((form) => getEffectiveOps(form, affordance.affordanceType, tdAffordance).includes(operation))
-                .map((form) => getProtocolFromForm(form));
+            const availableProtocols = getAvailableProtocols(tdAffordance, affordance.affordanceType, operation);
 
             // Both the language and library are not supported yet
             // Genereate a prompt for an LLM to generate the code snippet
@@ -123,16 +122,9 @@ import { getProtocolFromForm, getEffectiveOps } from "./generators/helpers.js";
                 });
                 generateCodeParams.library = library;
             } else {
-                const librariesForLanguage = LANGUAGES_SUPPORT[language].libraries;
-                const { supportedLibraries, unsupportedLibraries } = Object.entries(librariesForLanguage).reduce(
-                    (acc, [name, protocols]) =>
-                        protocols.some((protocol) => availableProtocols.includes(protocol))
-                            ? { ...acc, supportedLibraries: [...acc.supportedLibraries, name] }
-                            : { ...acc, unsupportedLibraries: [...acc.unsupportedLibraries, name] },
-                    {
-                        supportedLibraries: [] as string[],
-                        unsupportedLibraries: [] as string[],
-                    }
+                const { supportedLibraries, unsupportedLibraries } = splitLibrariesByProtocolSupport(
+                    language,
+                    availableProtocols
                 );
                 // Protocols not supported for any library
                 if (supportedLibraries.length === 0) {
@@ -324,31 +316,6 @@ function getPathChoices(line: string, mode: PathMode, base: string): { name: str
         return [typedChoice, ...entries];
     } catch {
         return [typedChoice];
-    }
-}
-
-/**
- * Extracts affordances from a Thing Description
- * @param td The Thing Description as a JSON object
- * @returns An object containing the affordances grouped by type
- */
-function extractAvailableAffordances(td: Affordances): Affordances {
-    try {
-        const affordances: Affordances = {
-            properties: {},
-            actions: {},
-            events: {},
-        };
-        for (const affordance_type of AFFORDANCE_TYPES) {
-            if (td[affordance_type]) {
-                affordances[affordance_type] = td[affordance_type];
-            }
-        }
-        return affordances;
-    } catch (error) {
-        console.error("Invalid TD: ", error);
-        process.exit(1);
-        throw error; // unreachable, helps TypeScript
     }
 }
 

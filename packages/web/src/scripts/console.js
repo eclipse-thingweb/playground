@@ -165,8 +165,7 @@ visualizationOptions.forEach((option) => {
                         (checkDocumentType(td) === "tm" && option.id === "open-api-tab") ||
                         (checkDocumentType(td) === "tm" && option.id === "async-api-tab") ||
                         (checkDocumentType(td) === "tm" && option.id === "defaults-tab") ||
-                        (checkDocumentType(td) === "tm" && option.id === "aas-tab") ||
-                        (checkDocumentType(td) === "tm" && option.id === "code-gen-tab")
+                        (checkDocumentType(td) === "tm" && option.id === "aas-tab")
                     ) {
                         showConsoleError("This function is only allowed for Thing Descriptions!");
                     } else {

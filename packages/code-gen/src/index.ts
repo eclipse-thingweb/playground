@@ -5,6 +5,16 @@ import { selectForm, getEffectiveOps } from "./generators/helpers.js";
 
 export { LANGUAGES_SUPPORT, AFFORDANCE_TYPES, OPERATIONS, PROTOCOL } from "./types.js";
 export type { GenerateCodeParams, GenerateCodeResult } from "./types.js";
+export {
+    extractAvailableAffordances,
+    getAvailableOperations,
+    getAvailableProtocols,
+    getAvailableLanguages,
+    getAvailableLibraries,
+    splitLibrariesByProtocolSupport,
+    getProtocolFromForm,
+    getEffectiveOps,
+} from "./generators/helpers.js";
 
 export function generateCode(params: GenerateCodeParams): GenerateCodeResult {
     try {
