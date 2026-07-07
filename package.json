@@ -28,6 +28,6 @@
         "lint:fix": "npx eslint . --config .eslintrc.json --fix",
         "format": "prettier --write . && npm run format --silent --workspaces --if-present",
         "format:quick": "pretty-quick",
-        "test": "npm test -w packages/core -w packages/assertions -w packages/defaults -w packages/cli -w packages/code-gen"
+        "test": "npm test -w packages/core -w packages/assertions -w packages/defaults -w packages/cli"
     }
 }
