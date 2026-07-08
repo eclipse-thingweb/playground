@@ -22,7 +22,7 @@
 
 import { editor } from "monaco-editor";
 import { setFontSize, editorForm, fontSizeSlider } from "./settings-menu";
-import { generateTD, offerFileDownload } from "./util";
+import { generateTD, offerFileDownload, copyToClipboard } from "./util";
 import { getEditorData } from "./editor";
 
 /******************************************************************/
@@ -35,6 +35,7 @@ export const openApiJsonBtn = document.querySelector("#open-api-json");
 export const openApiYamlBtn = document.querySelector("#open-api-yaml");
 export const openApiView = document.querySelector("#open-api-view");
 const openApiDownload = document.querySelector("#open-api-download");
+const openApiCopy = document.querySelector("#open-api-copy");
 
 /**
  * Initialize the monaco editor for the OpenAPI feature, sets it to an empty value,
@@ -59,9 +60,14 @@ async function initOpenApiEditor() {
     editorForm.addEventListener("reset", () => {
         setFontSize(window.openApiEditor);
     });
+
+    window.openApiEditor.getModel().onDidChangeContent(() => {
+        openApiCopy.disabled = !window.openApiEditor.getValue();
+    });
 }
 
 initOpenApiEditor();
+openApiCopy.disabled = true;
 
 //Json conversion btn
 openApiJsonBtn.addEventListener("click", () => {
@@ -89,4 +95,9 @@ openApiDownload.addEventListener("click", () => {
         window.openApiEditor.getModel().getValue(),
         contentType
     );
+});
+
+//Copy btn
+openApiCopy.addEventListener("click", () => {
+    copyToClipboard(window.openApiEditor.getModel().getValue(), openApiCopy);
 });

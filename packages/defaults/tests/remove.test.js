@@ -24,9 +24,7 @@ const fs = require("fs");
 const { TestScheduler } = require("jest");
 const { removeDefaults } = require("../index.js");
 
-if (!fs.existsSync("./out")) {
-    fs.mkdirSync("./out");
-}
+fs.mkdirSync("./out", { recursive: true });
 
 const staticTd = JSON.parse(fs.readFileSync("./examples/td-with-defaults.json", "utf-8"));
 const referenceOutput = JSON.parse(fs.readFileSync("./examples/td-without-defaults.json", "utf-8"));

@@ -115,6 +115,10 @@
                     content: "JSON-LD";
                 }
 
+                &:nth-child(8)::before {
+                    content: "Code Gen";
+                }
+
                 &:hover {
                     background-color: var(--clr-primary-500);
                     color: var(--clr-neutral-50);
@@ -315,7 +319,8 @@
         .aas-view,
         .defaults-view,
         .visualize-view,
-        .jsonld-view {
+        .jsonld-view,
+        .code-gen-view {
             display: flex;
             flex-direction: row;
             align-items: flex-start;
@@ -328,7 +333,8 @@
             .aas-container,
             .defaults-container,
             .visualize-container,
-            .jsonld-container {
+            .jsonld-container,
+            .code-gen-editor-container {
                 height: 100%;
                 width: calc(100% - 30rem);
             }
@@ -338,7 +344,8 @@
             .aas-inputs,
             .defaults-inputs,
             .visualize-inputs,
-            .jsonld-inputs {
+            .jsonld-inputs,
+            .code-gen-inputs {
                 width: 30rem;
                 height: 100%;
                 padding: 0 1rem;
@@ -443,6 +450,7 @@
                     display: flex;
                     align-items: flex-end;
                     justify-content: center;
+                    gap: 0.5rem;
                 }
             }
         }
@@ -454,6 +462,64 @@
                     align-items: center;
                     justify-content: center;
                     gap: 1rem;
+                }
+            }
+        }
+
+        .code-gen-view {
+            .code-gen-inputs {
+                label {
+                    width: 100%;
+                    font-family: var(--ff-primary);
+                    font-size: var(--fs-p);
+                    font-weight: var(--fw-bold);
+                    color: var(--clr-neutral-900);
+                    margin-bottom: 0.25rem;
+                }
+
+                select {
+                    width: 100%;
+                    height: 3.25rem;
+                    border-radius: 5px;
+                    border: 2px solid var(--clr-primary-500);
+                    padding: 0.5rem;
+                    font-family: var(--ff-primary);
+                    font-size: var(--fs-p);
+                    background-color: var(--clr-neutral-50);
+                    color: var(--clr-neutral-900);
+                    cursor: pointer;
+
+                    &:disabled {
+                        border-color: var(--clr-neutral-300);
+                        color: var(--clr-neutral-300);
+                        cursor: not-allowed;
+                        opacity: 0.7;
+                    }
+                }
+
+                .input-field {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    min-height: auto;
+                    gap: 0.25rem;
+                    overflow: visible;
+
+                    .code-gen-custom-input {
+                        width: 100%;
+                        height: 3.25rem;
+                        border-radius: 5px;
+                        border: 2px dashed var(--clr-primary-500);
+                        padding: 0.5rem;
+                        font-family: var(--ff-primary);
+                        font-size: var(--fs-p);
+                        background-color: var(--clr-neutral-50);
+                        color: var(--clr-neutral-900);
+                        margin-top: 0.5rem;
+
+                        &.hidden {
+                            display: none;
+                        }
+                    }
                 }
             }
         }
@@ -554,10 +620,7 @@
                     justify-content: center;
                     gap: 2rem;
                     opacity: 1;
-                    transition:
-                        width 0s,
-                        height 0s,
-                        opacity 250ms ease-in-out;
+                    transition: width 0s, height 0s, opacity 250ms ease-in-out;
 
                     &.hidden {
                         width: 0;
