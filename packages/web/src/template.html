@@ -1872,6 +1872,22 @@
                     </div>
                 </div>
             </div>
+
+            <!--postMessage LOAD_TD confirmation popup-->
+            <div class="post-message-dialog closed">
+                <div class="post-message-dialog__container">
+                    <div class="dialog-text">
+                        <h3>Import Thing Description</h3>
+                        <p>An external application wants to load a Thing Description into the editor:</p>
+                        <p class="post-message-dialog__description" id="post-message-description"></p>
+                        <p>Do you want to load it?</p>
+                    </div>
+                    <div class="dialog-btns">
+                        <button class="confirm-btn" id="post-message-confirm-btn">Load</button>
+                        <button class="cancel-btn" id="post-message-cancel-btn">Cancel</button>
+                    </div>
+                </div>
+            </div>
         </main>
 
         <div class="analytics-banner hidden" id="analytics-banner">
