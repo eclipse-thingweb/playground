@@ -22,7 +22,7 @@
 
 import { editor } from "monaco-editor";
 import { setFontSize, editorForm, fontSizeSlider } from "./settings-menu";
-import { generateJsonLd, offerFileDownload } from "./util";
+import { generateJsonLd, offerFileDownload, copyToClipboard } from "./util";
 import { editorList, getEditorData } from "./editor";
 
 /******************************************************************/
@@ -33,6 +33,7 @@ import { editorList, getEditorData } from "./editor";
 export const jsonLdTab = document.querySelector(".jsonld-tab-btn");
 export const jsonLdView = document.querySelector("#jsonld-view");
 const jsonLdDownload = document.querySelector("#jsonld-download");
+const jsonLdCopy = document.querySelector("#jsonld-copy");
 
 /**
  * Initialize the Monaco editor for the JSON-LD feature
@@ -54,9 +55,14 @@ async function initJsonLdEditor() {
     editorForm.addEventListener("reset", () => {
         setFontSize(window.jsonLdEditor);
     });
+
+    window.jsonLdEditor.getModel().onDidChangeContent(() => {
+        jsonLdCopy.disabled = !window.jsonLdEditor.getValue();
+    });
 }
 
 initJsonLdEditor();
+jsonLdCopy.disabled = true;
 
 // Format Filters logic
 const formatButtons = {
@@ -133,4 +139,9 @@ jsonLdDownload.addEventListener("click", () => {
     const title = "jsonld-output";
 
     offerFileDownload(`${title}.${editorData[0]}`, window.jsonLdEditor.getModel().getValue(), contentType);
+});
+
+// Copy btn
+jsonLdCopy.addEventListener("click", () => {
+    copyToClipboard(window.jsonLdEditor.getModel().getValue(), jsonLdCopy);
 });

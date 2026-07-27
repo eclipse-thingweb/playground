@@ -1,15 +1,15 @@
-/* 
+/*
  *  Copyright (c) 2023 Contributors to the Eclipse Foundation
- *  
+ *
  *  See the NOTICE file(s) distributed with this work for additional
  *  information regarding copyright ownership.
- *  
+ *
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v. 2.0 which is available at
  *  http://www.eclipse.org/legal/epl-2.0, or the W3C Software Notice and
  *  Document License (2015-05-13) which is available at
  *  https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document.
- *  
+ *
  *  SPDX-License-Identifier: EPL-2.0 OR W3C-20150513
  */
 
@@ -20,40 +20,40 @@
  * to integrate the monaco editor
  */
 
-import './consent-banner'
-import './visualize'
-import './editor'
-import './json-yaml'
-import './settings-menu'
-import './save-menu'
-import './examples-menu'
-import { consoleElement, minMaxBtn } from './console'
-import './open-api'
-import './async-api'
-import './aas'
-import './defaults'
-import './visualize'
-import './validation'
-
+import "./consent-banner";
+import "./visualize";
+import "./editor";
+import "./json-yaml";
+import "./settings-menu";
+import "./save-menu";
+import "./examples-menu";
+import "./code-gen";
+import { consoleElement, minMaxBtn } from "./console";
+import "./open-api";
+import "./async-api";
+import "./aas";
+import "./defaults";
+import "./visualize";
+import "./validation";
 
 /***********************************************************/
 /*                          Loader                         */
 /***********************************************************/
 //Show loader until the document is fully loaded
-const loader = document.querySelector(".loader-container")
+const loader = document.querySelector(".loader-container");
 let stateCheck = setInterval(() => {
-  if (document.readyState === 'complete') {
-    clearInterval(stateCheck)
-    loader.classList.add("hidden")
-  }
-}, 100)
+    if (document.readyState === "complete") {
+        clearInterval(stateCheck);
+        loader.classList.add("hidden");
+    }
+}, 100);
 
 /***********************************************************/
 /*                Resizing functionality                   */
 /***********************************************************/
-export const textIcon = document.querySelectorAll(".text-icon")
-const resizerY = document.querySelector(".horizontal-divider")
-const resizerX = document.querySelector(".vertical-divider")
+export const textIcon = document.querySelectorAll(".text-icon");
+const resizerY = document.querySelector(".horizontal-divider");
+const resizerX = document.querySelector(".vertical-divider");
 
 /*** Horizontal sizing section ***/
 
@@ -74,10 +74,10 @@ const menuExpandFinal = 80;
  * @param {event} e - the mousedown event
  */
 resizerX.addEventListener("mousedown", (e) => {
-  e.preventDefault()
-  document.addEventListener("mousemove", onmousemoveX)
-  document.addEventListener("mouseup", onmouseupX)
-})
+    e.preventDefault();
+    document.addEventListener("mousemove", onmousemoveX);
+    document.addEventListener("mouseup", onmouseupX);
+});
 
 /**
  * Function to calculate the x position of the element to be
@@ -85,47 +85,45 @@ resizerX.addEventListener("mousedown", (e) => {
  * @param {event} e - the mousemove event
  */
 function onmousemoveX(e) {
-  e.preventDefault()
-  let clientX = e.clientX
-  const deltaX = clientX - (resizerX.clientX || clientX)
-  const menuContainer = resizerX.previousElementSibling
-  const editorContainer = resizerX.nextElementSibling
+    e.preventDefault();
+    let clientX = e.clientX;
+    const deltaX = clientX - (resizerX.clientX || clientX);
+    const menuContainer = resizerX.previousElementSibling;
+    const editorContainer = resizerX.nextElementSibling;
 
-  if (clientX > screen.width) {
-    resizerX.clientX = screen.width
-  }
-  else if (clientX < 0) {
-    resizerX.clientX = 0
-  }
-  else {
-    resizerX.clientX = clientX
+    if (clientX > screen.width) {
+        resizerX.clientX = screen.width;
+    } else if (clientX < 0) {
+        resizerX.clientX = 0;
+    } else {
+        resizerX.clientX = clientX;
 
-    // LEFT (menu collapse)
-    if (deltaX < 0) {
-      const elementWidth = Math.round(parseInt(getComputedStyle(menuContainer).width) + deltaX)
-      menuContainer.style.flex = `0 ${elementWidth < menuCollapseThreshold ? menuCollapseFinal : elementWidth}px`
-      editorContainer.style.flex = "1 0"
-      //Hide the buttons text when the menus width is less than the menuExpandThreshold
-      if (elementWidth < menuExpandThreshold) {
-        textIcon.forEach(text => {
-          text.classList.add("hiddenH")
-        })
-      }
+        // LEFT (menu collapse)
+        if (deltaX < 0) {
+            const elementWidth = Math.round(parseInt(getComputedStyle(menuContainer).width) + deltaX);
+            menuContainer.style.flex = `0 ${elementWidth < menuCollapseThreshold ? menuCollapseFinal : elementWidth}px`;
+            editorContainer.style.flex = "1 0";
+            //Hide the buttons text when the menus width is less than the menuExpandThreshold
+            if (elementWidth < menuExpandThreshold) {
+                textIcon.forEach((text) => {
+                    text.classList.add("hiddenH");
+                });
+            }
+        }
+
+        // RIGHT (menu expand)
+        if (deltaX > 0) {
+            const elementWidth = Math.round(parseInt(getComputedStyle(menuContainer).width) + deltaX);
+            menuContainer.style.flex = `0 ${elementWidth > menuExpandThreshold ? menuExpandFinal : elementWidth}px`;
+            editorContainer.style.flex = "1 0";
+            //Show the buttons text when the menus width is bigger than the menuExpandThreshold
+            if (elementWidth > menuExpandThreshold) {
+                textIcon.forEach((text) => {
+                    text.classList.remove("hiddenH");
+                });
+            }
+        }
     }
-
-    // RIGHT (menu expand)
-    if (deltaX > 0) {
-      const elementWidth = Math.round(parseInt(getComputedStyle(menuContainer).width) + deltaX)
-      menuContainer.style.flex = `0 ${elementWidth > menuExpandThreshold ? menuExpandFinal : elementWidth}px`
-      editorContainer.style.flex = "1 0"
-      //Show the buttons text when the menus width is bigger than the menuExpandThreshold
-      if (elementWidth > menuExpandThreshold) {
-        textIcon.forEach(text => {
-          text.classList.remove("hiddenH")
-        })
-      }
-    }
-  }
 }
 
 /**
@@ -134,12 +132,11 @@ function onmousemoveX(e) {
  * @param {event} e - the mouseup event
  */
 function onmouseupX(e) {
-  e.preventDefault()
-  document.removeEventListener("mousemove", onmousemoveX)
-  document.removeEventListener("mouseup", onmouseupX)
-  delete e.clientX
+    e.preventDefault();
+    document.removeEventListener("mousemove", onmousemoveX);
+    document.removeEventListener("mouseup", onmouseupX);
+    delete e.clientX;
 }
-
 
 /*** Vertical sizing section ***/
 
@@ -166,10 +163,10 @@ const minExpandedConsole = 714;
  * @param {event} e - the mousedown event
  */
 resizerY.addEventListener("mousedown", (e) => {
-  e.preventDefault()
-  document.addEventListener("mousemove", onmousemoveY)
-  document.addEventListener("mouseup", onmouseupY)
-})
+    e.preventDefault();
+    document.addEventListener("mousemove", onmousemoveY);
+    document.addEventListener("mouseup", onmouseupY);
+});
 
 /**
  * Function to calculate the y position of the element to be
@@ -177,71 +174,79 @@ resizerY.addEventListener("mousedown", (e) => {
  * @param {event} e - the mousemove event
  */
 function onmousemoveY(e) {
-  e.preventDefault()
-  const clientY = e.clientY
-  const deltaY = clientY - (resizerY.clientY || clientY)
-  const editorContainer = resizerY.previousElementSibling
-  const consoleContainer = resizerY.nextElementSibling
+    e.preventDefault();
+    const clientY = e.clientY;
+    const deltaY = clientY - (resizerY.clientY || clientY);
+    const editorContainer = resizerY.previousElementSibling;
+    const consoleContainer = resizerY.nextElementSibling;
 
-  if (clientY > screen.height) {
-    resizerY.clientY = screen.height
-  }
-  else if (clientY < 0) {
-    resizerY.clientY = 0
-  }
-  else {
-    resizerY.clientY = clientY
+    if (clientY > screen.height) {
+        resizerY.clientY = screen.height;
+    } else if (clientY < 0) {
+        resizerY.clientY = 0;
+    } else {
+        resizerY.clientY = clientY;
 
-    // DOWN (Console collapse)
-    if (deltaY > 0) {
-      const consoleHeight = Math.round(parseInt(getComputedStyle(consoleContainer).height) - deltaY)
-      consoleContainer.style.flex = `0 ${consoleHeight < consoleCollapseThreshold ? consoleCollapseFinal : consoleHeight}px`
-      editorContainer.style.flex = "1 0"
+        // DOWN (Console collapse)
+        if (deltaY > 0) {
+            const consoleHeight = Math.round(parseInt(getComputedStyle(consoleContainer).height) - deltaY);
+            consoleContainer.style.flex = `0 ${
+                consoleHeight < consoleCollapseThreshold ? consoleCollapseFinal : consoleHeight
+            }px`;
+            editorContainer.style.flex = "1 0";
 
-      //If the console is fully collapse, then change the state of the console element, as well as changing to the expand arrows icon
-      if (consoleHeight < consoleCollapseFinal) {
-        consoleElement.classList.remove("expanded")
-        consoleElement.classList.add("collapsed")
+            //If the console is fully collapse, then change the state of the console element, as well as changing to the expand arrows icon
+            if (consoleHeight < consoleCollapseFinal) {
+                consoleElement.classList.remove("expanded");
+                consoleElement.classList.add("collapsed");
 
-        minMaxBtn.children[0].children[0].setAttribute("d", "M344 0H488c13.3 0 24 10.7 24 24V168c0 9.7-5.8 18.5-14.8 22.2s-19.3 1.7-26.2-5.2l-39-39-87 87c-9.4 9.4-24.6 9.4-33.9 0l-32-32c-9.4-9.4-9.4-24.6 0-33.9l87-87L327 41c-6.9-6.9-8.9-17.2-5.2-26.2S334.3 0 344 0zM168 512H24c-13.3 0-24-10.7-24-24V344c0-9.7 5.8-18.5 14.8-22.2s19.3-1.7 26.2 5.2l39 39 87-87c9.4-9.4 24.6-9.4 33.9 0l32 32c9.4 9.4 9.4 24.6 0 33.9l-87 87 39 39c6.9 6.9 8.9 17.2 5.2 26.2s-12.5 14.8-22.2 14.8z")
-        minMaxBtn.children[0].classList.add("expand-arrows")
-        minMaxBtn.children[0].classList.remove("collapse-arrows")
-      }
+                minMaxBtn.children[0].children[0].setAttribute(
+                    "d",
+                    "M344 0H488c13.3 0 24 10.7 24 24V168c0 9.7-5.8 18.5-14.8 22.2s-19.3 1.7-26.2-5.2l-39-39-87 87c-9.4 9.4-24.6 9.4-33.9 0l-32-32c-9.4-9.4-9.4-24.6 0-33.9l87-87L327 41c-6.9-6.9-8.9-17.2-5.2-26.2S334.3 0 344 0zM168 512H24c-13.3 0-24-10.7-24-24V344c0-9.7 5.8-18.5 14.8-22.2s19.3-1.7 26.2 5.2l39 39 87-87c9.4-9.4 24.6-9.4 33.9 0l32 32c9.4 9.4 9.4 24.6 0 33.9l-87 87 39 39c6.9 6.9 8.9 17.2 5.2 26.2s-12.5 14.8-22.2 14.8z"
+                );
+                minMaxBtn.children[0].classList.add("expand-arrows");
+                minMaxBtn.children[0].classList.remove("collapse-arrows");
+            }
 
-      //Show the buttons text only if the console height is smaller than showTextThreshold
-      if (consoleHeight < showTextThreshold) {
-        textIcon.forEach(text => {
-          text.classList.remove("hiddenV")
-        })
-      }
-    }
+            //Show the buttons text only if the console height is smaller than showTextThreshold
+            if (consoleHeight < showTextThreshold) {
+                textIcon.forEach((text) => {
+                    text.classList.remove("hiddenV");
+                });
+            }
+        }
 
-    // UP (Console expand)
-    /*Note: Unlike the horizontal resizer, to decide how much the console should be able to expand the height of the editor is used rather than the console height.
+        // UP (Console expand)
+        /*Note: Unlike the horizontal resizer, to decide how much the console should be able to expand the height of the editor is used rather than the console height.
     This is to assure be responsiveness, since it is easier to know how small the editor can be in any screen size.*/
-    if (deltaY < 0) {
-      const editorHeight = Math.round(parseInt(getComputedStyle(editorContainer).height) + deltaY)
-      editorContainer.style.flex = `0 ${editorHeight < consoleExpandThreshold ? consoleExpandFinal : editorHeight}px`
-      consoleContainer.style.flex = "1 0"
+        if (deltaY < 0) {
+            const editorHeight = Math.round(parseInt(getComputedStyle(editorContainer).height) + deltaY);
+            editorContainer.style.flex = `0 ${
+                editorHeight < consoleExpandThreshold ? consoleExpandFinal : editorHeight
+            }px`;
+            consoleContainer.style.flex = "1 0";
 
-      //If the console is not fully collapse, update the console element state to expanded and show the collapse arrows icon
-      if (editorHeight > minExpandedConsole) {
-        consoleElement.classList.remove("collapsed")
-        consoleElement.classList.add("expanded")
+            //If the console is not fully collapse, update the console element state to expanded and show the collapse arrows icon
+            if (editorHeight > minExpandedConsole) {
+                consoleElement.classList.remove("collapsed");
+                consoleElement.classList.add("expanded");
 
-        minMaxBtn.children[0].children[0].setAttribute("d", "M439 7c9.4-9.4 24.6-9.4 33.9 0l32 32c9.4 9.4 9.4 24.6 0 33.9l-87 87 39 39c6.9 6.9 8.9 17.2 5.2 26.2s-12.5 14.8-22.2 14.8H296c-13.3 0-24-10.7-24-24V72c0-9.7 5.8-18.5 14.8-22.2s19.3-1.7 26.2 5.2l39 39L439 7zM72 272H216c13.3 0 24 10.7 24 24V440c0 9.7-5.8 18.5-14.8 22.2s-19.3 1.7-26.2-5.2l-39-39L73 505c-9.4 9.4-24.6 9.4-33.9 0L7 473c-9.4-9.4-9.4-24.6 0-33.9l87-87L55 313c-6.9-6.9-8.9-17.2-5.2-26.2s12.5-14.8 22.2-14.8z")
-        minMaxBtn.children[0].classList.remove("expand-arrows")
-        minMaxBtn.children[0].classList.add("collapse-arrows")
-      }
+                minMaxBtn.children[0].children[0].setAttribute(
+                    "d",
+                    "M439 7c9.4-9.4 24.6-9.4 33.9 0l32 32c9.4 9.4 9.4 24.6 0 33.9l-87 87 39 39c6.9 6.9 8.9 17.2 5.2 26.2s-12.5 14.8-22.2 14.8H296c-13.3 0-24-10.7-24-24V72c0-9.7 5.8-18.5 14.8-22.2s19.3-1.7 26.2 5.2l39 39L439 7zM72 272H216c13.3 0 24 10.7 24 24V440c0 9.7-5.8 18.5-14.8 22.2s-19.3 1.7-26.2-5.2l-39-39L73 505c-9.4 9.4-24.6 9.4-33.9 0L7 473c-9.4-9.4-9.4-24.6 0-33.9l87-87L55 313c-6.9-6.9-8.9-17.2-5.2-26.2s12.5-14.8 22.2-14.8z"
+                );
+                minMaxBtn.children[0].classList.remove("expand-arrows");
+                minMaxBtn.children[0].classList.add("collapse-arrows");
+            }
 
-      //Hide the buttons text when the editors height is smaller than the hideTextThreshold
-      if (editorHeight < hideTextThreshold) {
-        textIcon.forEach(text => {
-          text.classList.add("hiddenV")
-        })
-      }
+            //Hide the buttons text when the editors height is smaller than the hideTextThreshold
+            if (editorHeight < hideTextThreshold) {
+                textIcon.forEach((text) => {
+                    text.classList.add("hiddenV");
+                });
+            }
+        }
     }
-  }
 }
 
 /**
@@ -250,8 +255,8 @@ function onmousemoveY(e) {
  * @param {event} e - the mouseup event
  */
 function onmouseupY(e) {
-  e.preventDefault()
-  document.removeEventListener("mousemove", onmousemoveY)
-  document.removeEventListener("mouseup", onmouseupY)
-  delete e.clientY
+    e.preventDefault();
+    document.removeEventListener("mousemove", onmousemoveY);
+    document.removeEventListener("mouseup", onmouseupY);
+    delete e.clientY;
 }
