@@ -29,5 +29,8 @@
         "format": "prettier --write . && npm run format --silent --workspaces --if-present",
         "format:quick": "pretty-quick",
         "test": "npm test -w packages/core -w packages/assertions -w packages/defaults -w packages/cli"
+    },
+    "dependencies": {
+        "fast-uri": "^3.1.3"
     }
 }
