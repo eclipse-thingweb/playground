@@ -32,7 +32,7 @@
 
 import { createIde, ideCount } from "./editor.js";
 
-const READY_MESSAGE_TYPE = "EDITDOR_READY";
+const READY_MESSAGE_TYPE = "APPLICATION_READY";
 const LOAD_TD_MESSAGE_TYPE = "LOAD_TD";
 
 //DOM elements of the confirmation dialog
@@ -92,7 +92,7 @@ function handleMessage(event) {
     if (!data || typeof data !== "object" || data.type !== LOAD_TD_MESSAGE_TYPE) {
         return;
     }
-    
+
     if (readyInterval) {
         clearInterval(readyInterval);
         readyInterval = null;
@@ -125,10 +125,7 @@ postMessageCancelBtn.addEventListener("click", () => {
 
 //Close the dialog when clicking outside of it
 document.addEventListener("click", (e) => {
-    if (
-        !postMessageDialog.classList.contains("closed") &&
-        !postMessageContainer.contains(e.target)
-    ) {
+    if (!postMessageDialog.classList.contains("closed") && !postMessageContainer.contains(e.target)) {
         closeDialog();
     }
 });
