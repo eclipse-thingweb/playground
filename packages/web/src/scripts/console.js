@@ -23,6 +23,7 @@ import { openApiTab, openApiJsonBtn, openApiYamlBtn, openApiView } from "./open-
 import { asyncApiTab, asyncApiJsonBtn, asyncApiYamlBtn, asyncApiView } from "./async-api";
 import { AASView } from "./aas";
 import { defaultsView, defaultsJsonBtn, defaultsYamlBtn, defaultsAddBtn } from "./defaults";
+import { codeGenView, initCodeGen } from "./code-gen";
 import { visualize } from "./visualize";
 import { validationView, validationTab } from "./validation";
 import { jsonLdView, activateDefaultFormat } from "./json-ld";
@@ -136,6 +137,7 @@ function clearVisualizationEditors() {
     window.defaultsEditor.getModel().setValue("");
     window.AASEditor.getModel().setValue("");
     window.jsonLdEditor.getModel().setValue("");
+    window.codeGenEditor.getModel().setValue("");
 }
 
 //Set the behavior for each visualization tab when clicked on it
@@ -230,6 +232,12 @@ visualizationOptions.forEach((option) => {
                             case "jsonld-tab": {
                                 jsonLdView.classList.remove("hidden");
                                 activateDefaultFormat();
+
+                                break;
+                            }
+                            case "code-gen-tab": {
+                                codeGenView.classList.remove("hidden");
+                                initCodeGen(td);
 
                                 break;
                             }
