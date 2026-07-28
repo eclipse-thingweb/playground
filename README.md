@@ -68,6 +68,30 @@ Examples are included in the [core](./packages/core/examples) and in the [exampl
 
 -   Offline/OnPremise: by hosting the `web` yourself. Therefore, please deliver the "index.html" file with a web-server.
 
+### Using postMessage API communication feature
+
+The TD Playground can receive a Thing Description from another web application through the browser `postMessage` API (Documentation [here](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage)). When TD Playground is opened by another application in a new window or tab, it sends a readiness message back to the opener:
+
+```json
+{ "type": "APPLICATION_READY" }
+```
+
+After that, the parent application can send a Thing Description to TD Playground with a message in the following format:
+
+```json
+{
+  "type": "LOAD_TD",
+  "description": "Imported TD",
+  "payload": "{ \"@context\": \"https://www.w3.org/ns/wot-next/td\", \"title\": \"MyThing\" }"
+}
+```
+
+- **type** must be LOAD_TD
+- **description** is a string to show in the confirmation dialog, e.g. title, id
+- **payload** must be a valid JSON string containing the Thing Description
+
+When a valid message is received, ediTDor shows a confirmation dialog before loading the TD into the editor. If the payload is not valid JSON, an error message is shown instead.
+
 ## Batch Testing
 
 Please have a look at the `cli` [package](https://github.com/eclipse-thingweb/playground/tree/master/packages/cli#batch-testing) for batch testing of Thing Descriptions.
