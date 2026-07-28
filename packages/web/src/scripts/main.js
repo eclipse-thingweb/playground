@@ -20,21 +20,22 @@
  * to integrate the monaco editor
  */
 
-import "./consent-banner";
-import "./visualize";
-import "./editor";
-import "./json-yaml";
-import "./settings-menu";
-import "./save-menu";
-import "./examples-menu";
-import "./code-gen";
-import { consoleElement, minMaxBtn } from "./console";
-import "./open-api";
-import "./async-api";
-import "./aas";
-import "./defaults";
-import "./visualize";
-import "./validation";
+import './consent-banner'
+import './visualize'
+import './editor'
+import './json-yaml'
+import './settings-menu'
+import './save-menu'
+import './examples-menu'
+import './post-message'
+import { consoleElement, minMaxBtn } from './console'
+import './open-api'
+import './async-api'
+import './aas'
+import './defaults'
+import './visualize'
+import './validation'
+
 
 /***********************************************************/
 /*                          Loader                         */
