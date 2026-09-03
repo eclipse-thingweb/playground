@@ -31,7 +31,7 @@
         "@thingweb/td-utils": "^1.0.0",
         "d3": "^3.5.17",
         "d3-tip": "^0.6.7",
-        "express": "^4.22.2",
+        "express": "^5.2.1",
         "monaco-editor": "^0.40.0",
         "string-direction": "^0.1.2",
         "svg-crowbar": "^0.7.0",
@@ -56,6 +56,6 @@
         "style-loader": "^4.0.0",
         "webpack": "^5.107.2",
         "webpack-cli": "^6.0.1",
-        "webpack-dev-server": "^5.2.6"
+        "webpack-dev-server": "^6.0.0"
     }
 }
